@@ -14,56 +14,79 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const getResults = async (selectedRoles = [], key = "", isHiring = true, selectedTags = []) => {
+const getResults = async (selectedRoles = [], key = "", isHiring = true, selectedTags = [], type = "project") => {
     let results = [];
 
     const dbRef = ref(getDatabase(app));
     await get(child(dbRef, `users`)).then((snapshot) => {
         if (snapshot.exists()) {
             for (let user in snapshot.val()) {
-                for (let id in snapshot.val()[user]) {
-                    let project = snapshot.val()[user][id];
+                if (type == "project") {
+                    for (let id in snapshot.val()[user].projects) {
+                        let project = snapshot.val()[user].projects[id];
 
-                    // Check if keyword has been entered, skip if key is not in title
-                    if (key &&
-                        !decodeURI(project.title).toLowerCase().includes(key.toLowerCase()))
-                        continue;
+                        // Check if keyword has been entered, skip if key is not in title
+                        if (key &&
+                            !decodeURI(project.title).toLowerCase().includes(key.toLowerCase()))
+                            continue;
 
-                    // Filter hiring
-                    if (isHiring != project.isHiring) continue;
+                        // Filter hiring
+                        if (isHiring != project.isHiring) continue;
 
-                    // If any selected tag does not apply, skip
-                    let hasTags = true;
-                    if (selectedTags.length > 0) {
-                        for (let tag of project.tags) {
-                            let check = tag.toLowerCase();
-                            if (!selectedTags.includes(check)) hasTags = false;
+                        // If any selected tag does not apply, skip
+                        let hasTags = false;
+                        if (selectedTags.length <= 0) hasTags = true; 
+                        else {
+                            for (let tag of project.tags) {
+                                let check = tag.toLowerCase();
+                                if (selectedTags.includes(check)) hasTags = true;
+                            }
                         }
-                    }
-                    if (!hasTags) continue;
+                        if (!hasTags) continue;
 
-                    // Same process applied to roles
-                    let hasRoles = true;
-                    if (project.needs) {
-                        const pRoles = project.needs.map(r => { return r.roleType });
-                        for (let role of selectedRoles) {
-                            if (!pRoles.includes(role)) hasRoles = false;
+                        // Same process applied to roles
+                        let hasRoles = true;
+                        if (project.needs) {
+                            const pRoles = project.needs.map(r => { return r.roleType });
+                            for (let role of selectedRoles) {
+                                if (!pRoles.includes(role)) hasRoles = false;
+                            }
                         }
-                    }
-                    if (!hasRoles) continue;
+                        if (!hasRoles) continue;
 
-                    // Add result to results array
-                    let newResult = `
+                        // Add result to results array
+                        let newResult = `
                         <hr>
                         <p><h3>${decodeURI(project.title).replace('<', '&lt;').replace('>', '&gt;')}</h3></p>
-                        <p><b>Author: <i>${user}</i>, Project ID: <i>${id}</i></b></p>
+                        <p><b>Author: <i>${snapshot.val()[user].username}</i>, Project ID: <i>${id}</i></b></p>
                         <p>${decodeURI(project.description).replace('<', '&lt;').replace('>', '&gt;')}</p>
                         <p><i>${project.tags.join(", ")}</i></p>
                     `;
-                    if (project.needs){
-                        let addRoles = project.needs.map(r => {return r.roleType});
-                        newResult += `<p>Looking for: ${addRoles.join(", ")}</p>`;
-                    } 
+                        if (project.needs) {
+                            let addRoles = project.needs.map(r => { return r.roleType });
+                            newResult += `<p>Looking for: ${addRoles.join(", ")}</p>`;
+                        }
+                        results.push(newResult);
+                    }
+                }
+                else if (type == "profile") {
+                    let profile = snapshot.val()[user];
+
+                    if (key &&
+                        !decodeURI(profile.username).toLowerCase().includes(key)
+                    ) continue;
+
+                    if (selectedRoles.length > 0 &&
+                        !selectedRoles.includes(profile.role)
+                    ) continue;
+
+                    let newResult = `
+                    <hr>
+                    <p><h3>${decodeURI(profile.username).replace('<', '&lt;').replace('>', '&gt;')}</h3></p>
+                    <p><b>${profile.name}</b></p>
+                    <p>${profile.role}</p>
+                    <p><i>${decodeURI(profile.bio).replace('<', '&lt;').replace('>', '&gt;')}</i></p>
+                    `;
                     results.push(newResult);
                 }
             }
@@ -78,10 +101,25 @@ const getResults = async (selectedRoles = [], key = "", isHiring = true, selecte
 }
 
 const init = () => {
+    // These two objects are used for quick searching
+    // For now they only store one value each, but more can be added later
+    let me = {
+        role: ""
+    };
+    let myProject = {
+        needs: []
+    };
+
+    // These elements are always displayed and control which search/quicksearch methods are used
+    const searchType = document.querySelector("#search-select");
+    const signIn = document.querySelector("#signin"); // Placeholder for actual login functionality
+
     // Get filters
     const keyword = document.querySelector("#keyword-input");
     const hiring = document.querySelector("#check");
     const roles = document.querySelector("#role-selection").querySelectorAll("option");
+    const uname = document.querySelector("#uname-input");
+    const uroles = document.querySelector("#u-role-selection");
 
     // Tag elements
     const tagInput = document.querySelector("#tag-input");
@@ -91,19 +129,95 @@ const init = () => {
     let tags = [];
 
     // Quicksearch Elements
-    const quickRole = document.querySelector("#quick-select");
+    const quickSelect = document.querySelector("#quick-select");
     const quickSearch = document.querySelector("#quick-search");
 
     // Search elements
     const search = document.querySelector("#user-data-search");
     const results = document.querySelector("#results");
 
+    const refreshSignIn = () => {
+        // Called every time the page refreshes or the search type is changed
+        // Fills the signin dropdown with all users and sets the default values for "me"
+
+        const db = getDatabase(app);
+
+        signIn.innerHTML = "";
+
+        get(child(ref(db), "users")).then(snapshot => {
+            if (snapshot.exists()) {
+                // Fill signin
+                for (let user in snapshot.val()) {
+                    let newOpt = document.createElement("option");
+                    newOpt.innerHTML = decodeURI(snapshot.val()[user].username).replace('<', '&lt;').replace('>', '&gt;');
+                    newOpt.value = user;
+                    signIn.appendChild(newOpt);
+                }
+                me.role = snapshot.val()[signIn.value].role;
+                refreshProjects();
+            }
+        })
+    }
+
+    const refreshProjects = () => {
+        // Called after every refreshSignIn or when the signin selection is changed
+        // Fills the quicksearch dropdown with the signin user's projects and set the default values of "myProject"
+
+        const db = getDatabase(app);
+
+        quickSelect.innerHTML = "";
+
+        get(child(ref(db), "users")).then(snapshot => {
+            if (snapshot.exists()) {
+                let user = signIn.value;
+                if (snapshot.val()[user].projects) {
+                    for (let projectID in snapshot.val()[user].projects) {
+                        let project = snapshot.val()[user].projects[projectID];
+                        let newOpt = document.createElement("option");
+                        newOpt.innerHTML = decodeURI(project.title).replace('<', '&lt;').replace('>', '&gt;');
+                        newOpt.value = projectID;
+                        quickSelect.appendChild(newOpt);
+                    }
+                    myProject.needs = [];
+                    let myNeeds = snapshot.val()[user].projects[quickSelect.value].needs;
+                    for(let i = 0; i < myNeeds.length; i++){
+                        myProject.needs.push(myNeeds[i].roleType);
+                    }
+                }
+            }
+        });
+    }
+
+    signIn.onchange = () => {
+        const db = getDatabase(app);
+
+        get(child(ref(db), "users")).then(snapshot => {
+            if (snapshot.exists()) {
+                me.role = snapshot.val()[signIn.value].role;
+            }
+        });
+
+        refreshProjects();
+    }
+
+    quickSelect.onchange = () => {
+        const db = getDatabase(app);
+
+        get(child(ref(db), "users")).then(snapshot => {
+            if (snapshot.exists()) {
+                myProject.needs = snapshot.val()[signIn.value].projects[quickSelect.value].needs;
+            }
+        });
+    }
+
     const searchProjects = async (selectedRoles = [], key = "", isHiring = true, selectedTags = []) => {
         // Clear results
         results.innerHTML = "";
 
+        const type = searchType.value;
+
         // Search database for viable results
-        let foundResults = await getResults(selectedRoles, key, isHiring, selectedTags);
+        let foundResults = await getResults(selectedRoles, key, isHiring, selectedTags, type);
 
         // If no results were found, let the user know & quit
         if (foundResults.length <= 0) {
@@ -141,19 +255,39 @@ const init = () => {
     // Search function (search by selected filters)
     search.onclick = () => {
         let selectedRoles = [];
-        for (let i = 0; i < roles.length; i++) if (roles[i].selected) selectedRoles.push(roles[i].value);
+        const rolePool = (searchType.value == "project") ? roles : uroles;
 
-        const key = keyword.value;
+        for (let i = 0; i < rolePool.length; i++) if (rolePool[i].selected) selectedRoles.push(rolePool[i].value);
+
+        const key = (searchType.value == "project") ? keyword.value : uname.value;
 
         const isHiring = hiring.checked;
 
         searchProjects(selectedRoles, key, isHiring, tags);
     }
 
-    // Quicksearch function (search by needed roles)
+    // Quicksearch function
     quickSearch.onclick = () => {
-        searchProjects([quickRole.value]);
+        searchProjects((searchType.value == "project") ? [me.role] : myProject.needs);
     }
+
+    // Switches which divs are displayed depending on searchType
+    searchType.onchange = () => {
+        const projDiv = document.querySelector("#project");
+        const profDiv = document.querySelector("#profile");
+        const qsDiv = document.querySelector("#qs-items");
+        if (searchType.value == "project") {
+            projDiv.style = "";
+            profDiv.style = "display:none";
+            qsDiv.style = "display:none";
+            return;
+        }
+        projDiv.style = "display:none";
+        profDiv.style = "";
+        qsDiv.style = "";
+    }
+
+    refreshSignIn();
 }
 
 init();

@@ -15,20 +15,70 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const writeProjectData = (owner, id = 0, project, hasOpenings) => {
+const generateRandomID = async (db, uid) => {
+  // Generate a random ID
+  let tryID = Math.floor(Math.random() * 1000);
+
+  // If the ID already exists, generate it again until unique
+  await get(child(ref(db), `users/${uid}/projects`)).then(async snapshot => {
+    if (snapshot.exists())
+      for (let id in snapshot.val()) {
+        if (id == tryID) tryID = await generateRandomID(db, uid);
+      }
+  });
+
+  return tryID;
+}
+
+const initOptions = async (e) => {
+  const db = getDatabase(app);
+  await get(child(ref(db), "users")).then(snapshot => {
+    if(snapshot.exists()){
+      for(let id in snapshot.val()){
+        let newOpt = document.createElement("option");
+        newOpt.value = id;
+        newOpt.innerHTML = snapshot.val()[id].username;
+        e.appendChild(newOpt);
+      }
+    }
+  })
+}
+
+const writeProjectData = async (id = "-1", project, hasOpenings) => {
+  console.log(id);
+
   // encode strings
   let eTitle = encodeURI(project.title);
   let eDesc = encodeURI(project.description);
 
   const db = getDatabase(app);
-  const r = ref(db, `users/${owner}/${id}`);
 
-  set(r, {
-    title: eTitle,
-    description: eDesc,
-    tags: project.keywords,
-    isHiring: hasOpenings,
-    needs: project.roles
+  get(child(ref(db), `users`)).then(snapshot => {
+    if (snapshot.exists()) {
+      //Ensure the entered ID exists in the database
+      for (let user in snapshot.val()) {
+        console.log(user);
+        if (user == id) {
+          return true;
+        };
+      }
+      return false;
+    }
+  }).then(async userExists => {
+    if (userExists) {
+      const r = ref(db, `users/${id}/projects/${await generateRandomID(db, id)}`);
+
+      set(r, {
+        title: eTitle,
+        description: eDesc,
+        tags: project.keywords,
+        isHiring: hasOpenings,
+        needs: project.roles
+      });
+    }
+    else{
+      console.log("User ID must correspond to existing user.")
+    }
   });
 };
 
@@ -37,9 +87,8 @@ const titleInput = document.querySelector('#title');
 const sizeInput = document.querySelector('#size');
 const descInput = document.querySelector('#description');
 const imgInput = document.querySelector('#image');
-const userInput = document.querySelector('#user');
 const idInput = document.querySelector('#id');
-const prefInput = document.querySelector('preferences');
+const prefInput = document.querySelector('#preferences');
 //keyword elements
 const keywordSubmit = document.querySelector('#keyword-submit');
 const keyword = document.querySelector('#keyword');
@@ -59,6 +108,7 @@ let links = [];
 
 //roleCount tracks what number to assign to role id's
 let roleCount = 0;
+let selectedID = -1;
 
 //Runs after loading
 const init = () =>
@@ -84,6 +134,12 @@ const init = () =>
   }
   //Adds function to submit button if not editing
   newProject.onclick = createProject;
+
+  initOptions(idInput);
+
+  idInput.onchange = () => {
+    selectedID = idInput.value;
+  }
 }
 
 const editProject = async (urlParams) =>
@@ -266,21 +322,16 @@ const removeItem = (element) =>
 //Create a JSON object using input values
 const createProject = () =>
 {
-  //Get username and ID inputs
-  let username = userInput.value;
-  let projectId = idInput.value;
   //Get title, description, and size inputs
   let title = titleInput.value;
   let size = sizeInput.value;
   let description = descInput.value;
   let preferences = prefInput.value;
   //Run checks to ensure fields are filled & valid, exit if not
-  if (username == '' || title == '' || description == '' || keywords.length == 0)
-  {
+  if (title == '' || description == '' || keywords.length == 0) {
     console.log('Not all fields filled, requires username, title, description, & at least 1 keyword')
     return;
-  } else if (projectId == '' || projectId < 0)
-  {
+  } else if (selectedID == '' || selectedID < 0) {
     console.log('Please use only positive numbers in project ID');
     return;
   }
@@ -313,7 +364,7 @@ const createProject = () =>
   let json = {title, size, description, keywords, roles};
   //Currently unused items: links, preferences, image
   //Left out to not cause problems with current firebase setup
-  writeProjectData(username, projectId, json, hiring);
+  writeProjectData(selectedID, json, hiring);
 }
 
 //Basic help function, capitalizes the inputted word

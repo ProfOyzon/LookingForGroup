@@ -20,8 +20,8 @@ const generateRandomID = async (db) => {
 
     // If the ID already exists, generate it again until unique
     await get(child(ref(db), "users")).then(async snapshot => {
-        if (snapshot.exists)
-            for (let id in snapshot.value) {
+        if (snapshot.exists())
+            for (let id in snapshot.val()) {
                 if (id == tryID) tryID = await generateRandomID(db);
             }
     });

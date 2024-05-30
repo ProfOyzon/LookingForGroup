@@ -103,12 +103,17 @@ const linkContainer = document.querySelector('#link-container');
 //project create button
 const newProject = document.querySelector('#submit');
 
+//arrays for various input fields
 let keywords = [];
 let links = [];
 
 //roleCount tracks what number to assign to role id's
 let roleCount = 0;
 let selectedID = -1;
+
+//variables used when editing a project, unused if page is used for creation
+let userId;
+let projectId;
 
 //Runs after loading
 const init = () =>
@@ -121,13 +126,13 @@ const init = () =>
   linkSubmit.onclick = addLink;
   
   //Checks if there are queries in url
-  /*let queryString = window.location.search;
+  let queryString = window.location.search;
   if (queryString != '')
   {
     let urlParams = new URLSearchParams(queryString);
     editProject(urlParams);
     return;
-  }*/
+  }
 
   for (let i = 0; i < 3; i++){
     createRole();
@@ -142,14 +147,17 @@ const init = () =>
   }
 }
 
+//Is called when url parameters are present
+//To use, type '?userid=(id of user)&projectid=(id of project)' without the ''
+//Replace parentheses items with the respective ids of the user and project you wish to test
 const editProject = async (urlParams) =>
 {
-  let username = urlParams.get('username');
+  let userid = urlParams.get('userid');
   let id = urlParams.get('projectid');
 
   const dbRef = ref(getDatabase(app));
   await get(child(dbRef, `users`)).then((snapshot) => {
-    if (!snapshot.exists() || snapshot.val()[username] == undefined || snapshot.val()[username][id] == undefined)
+    if (!snapshot.exists() || snapshot.val()[userid] == undefined || snapshot.val()[userid].projects[id] == undefined)
     {
       console.log('project not found, loading as creation page'); //For test purposes
       //If project is not found, continues loading as project creation page
@@ -160,12 +168,12 @@ const editProject = async (urlParams) =>
       return;
     }
 
-    let project = snapshot.val()[username][id];
+    document.querySelector('h1').innerHTML = 'Edit Project';
+    let project = snapshot.val()[userid].projects[id];
     console.log(project); //For test purposes
 
     //Make username and id inputs unusable
-    document.querySelector('#user-box').innerHTML = `Username: ${username}`;
-    document.querySelector('id-box').innerHTML = `Project ID: ${id}`;
+    document.querySelector('#id-box').innerHTML = `Username: ${snapshot.val()[userid].name}`;
 
     //Fill in inputs with current project data
     titleInput.value = decode(project.title);
@@ -178,6 +186,14 @@ const editProject = async (urlParams) =>
     }
 
     //Fill in roles
+    for (let role of project.needs)
+    {
+      createCustomRole(role.roleType, role.roleNum);
+    }
+
+    //store user and project ids for rewriting later
+    userId = userid;
+    projectId = id;
   }).catch((error) => {
     console.error(error);
   });
@@ -261,13 +277,44 @@ const createRole = () =>
   console.log('new role created');
 }
 
-/*const createCustomRole = () =>
+const createCustomRole = (roleType, roleNum) =>
 {
   roleCount++;
 
   let element = document.createElement('div');
   element.setAttribute("class", "role");
-}*/
+  element.innerHTML = `
+    <label for="role${roleCount}">Role:</label>
+    <select id="role${roleCount}" name="role${roleCount}">
+      <option value="general">General</option>
+      <option value="programmer">Programmer</option>
+      <option value="artist">Artist</option>
+      <option value="designer">Designer</option>
+      <option value="tester">Tester</option>
+      <option value="manager">Manager</option>
+    </select>
+    <label for="num${roleCount}">Positions:</label>
+    <input type="number" id="num${roleCount}" name="num${roleCount}" min="1" value="3">
+  `
+
+  let options = element.querySelectorAll('option');
+  for (let option of options)
+  {
+    if (option.value == roleType)
+    {
+      option.setAttribute('selected', 'selected');
+      break;
+    }
+  }
+
+  //Add remove button and assign function to it
+  let removeButton = element.appendChild(document.createElement('button'));
+  removeButton.innerHTML = '-';
+  removeButton.onclick = function() {removeItem(element)};
+  //Add element to role list
+  roles.appendChild(element);
+  console.log('new role created');
+}
 
 //Creates a new link element and adds it to relevant project links
 const addLink = () =>

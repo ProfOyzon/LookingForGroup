@@ -29,7 +29,7 @@ const generateRandomID = async (db) => {
     return tryID;
 }
 
-const writeProfileData = async (uName, fName, lName, bio, userRole) => {
+const writeProfileData = async (uName, fName, lName, bio, userRole, pronouns, pInt, rInt) => {
     const db = getDatabase(app);
     const uID = await generateRandomID(db);
 
@@ -37,14 +37,20 @@ const writeProfileData = async (uName, fName, lName, bio, userRole) => {
     const realName = `${fName} ${lName}`;
     const userName = encodeURI(uName);
     const eBio = encodeURI(bio);
+    const ePronouns = encodeURI(pronouns);
+    const epint = encodeURI(pInt);
+    const erint = encodeURI(rInt);
 
     // Set reference and write
     const r = ref(db, `users/${uID}`);
     set(r, {
         name: realName,
         username: userName,
+        pronouns: ePronouns,
         bio: eBio,
-        role: userRole
+        role: userRole,
+        projectInterests: epint,
+        roleInterests: erint
     });
 }
 
@@ -56,15 +62,23 @@ const init = () => {
     const bio = document.querySelector("#bio");
     const role = document.querySelector("#role");
     const submit = document.querySelector("#create-profile");
+    const pronounBox = document.querySelector("#pronouns");
+    const pIntInput = document.querySelector("#proj-interests");
+    const rIntInput = document.querySelector("#role-interests");
 
     // Submission event
     submit.onclick = () => {
+        let pieces = pronounBox.querySelectorAll("input");
+        const pronouns = pieces[0].value + "/" + pieces[1].value;
         writeProfileData(
             uname.value,
             fname.value,
             lname.value,
             bio.value,
-            role.value
+            role.value,
+            pronouns,
+            pIntInput.value,
+            rIntInput.value
         );
     }
 }

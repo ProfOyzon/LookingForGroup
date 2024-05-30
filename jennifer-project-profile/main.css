@@ -1,0 +1,172 @@
+/* Jennifer Pichardo
+Project Profile Page CSS */
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color:#d0d3d4;
+}
+header{
+    height: 40px;
+    background-color: #f76902;
+    padding: 1em 2em;
+}
+main{
+    margin: 0 auto;
+}
+/* Project info section */
+#project-info{
+    margin: 1em 4em;
+    display: flex;
+    flex-flow: row nowrap;
+}
+#keywords{
+    font-size: 14px;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 2em;
+}
+#keywords span{
+    text-align: center;
+    background-color: #8b8b8b;
+    padding: 0.3em;
+}
+hr{
+    border: 2px solid black;
+}
+/* Looking for section */
+#looking-for{
+    margin: 1em 2.5em;
+}
+.position{
+    padding: 0.2em 0.6em;
+    background-color: rgba(255, 255, 255, 0.573);
+    margin: 8px;
+}
+
+/* Project members section */
+#members{
+    margin: 1em 2.5em;
+}
+.wrapper { 
+    margin: 0 auto;
+    max-width: 2000px; 
+    width: 90%; 
+    position: relative; 
+} 
+  
+.wrapper i { 
+    height: 42px; 
+    width: 42px; 
+    background: #f76902; 
+    text-align: center; 
+    line-height: 42px; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    position: absolute; 
+    top: 50%; 
+    font-size: 1.25 rem; 
+    transform: translateY(-50%); 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.521); 
+  
+} 
+  
+.wrapper i:first-child { 
+    left: -30px; 
+} 
+  
+.wrapper i:last-child { 
+    right: -30px; 
+} 
+  
+.wrapper .carousel { 
+    display: grid; 
+    grid-auto-flow: column; 
+    gap: 4px; 
+    overflow-x: auto; 
+    scroll-snap-type: x mandatory; 
+    scroll-behavior: smooth; 
+    scrollbar-width: 0; 
+} 
+  
+.carousel::-webkit-scrollbar { 
+    display: none; 
+} 
+  
+.carousel :where(.card, .img) { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+} 
+  
+.carousel.dragging { 
+    scroll-snap-type: none; 
+    scroll-behavior: auto; 
+} 
+  
+.carousel.no-transition { 
+    scroll-behavior: auto; 
+} 
+  
+.carousel.dragging .card { 
+    cursor: grab; 
+    user-select: none; 
+} 
+  
+.carousel .card { 
+    scroll-snap-align: start; 
+    height: 180px; 
+    list-style: none; 
+    display: flex; 
+    cursor: pointer; 
+    width: 200px; 
+    padding: 10px; 
+    align-items: center; 
+    justify-content: center; 
+    flex-direction: column; 
+} 
+
+.card .img { 
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%; 
+} 
+  
+.card .img img { 
+    width: 100px; 
+    height: 100px; 
+    object-fit: cover; 
+    border-radius: 50%; 
+    border: 4px solid #fff;
+    box-shadow: 2px 2px 4px black; 
+} 
+  
+.card h2 {
+    text-align: center; 
+    font-weight: 500; 
+    font-size: 1rem;  
+} 
+  
+.card span { 
+    color: #6a6d78; 
+    font-size: 1rem; 
+  
+} 
+  
+@media screen and (max-width: 900px) { 
+    /* .wrapper { 
+        width: 80%;
+    }  */
+} 
+  
+@media screen and (max-width: 600px) { 
+    #project-info{
+        flex-flow: row wrap;
+        justify-content: center;
+    }
+    #members h2{
+        margin-left: 0;
+        text-align: center;
+    } 
+}

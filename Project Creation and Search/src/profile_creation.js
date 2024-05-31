@@ -75,7 +75,8 @@ const init = () => {
     const skillDiv = document.querySelector("#skills");
     const skillTextInput = document.querySelector("#skill-name");
     const skillType = document.querySelector("#skill-type");
-    const endorseText = document.querySelector("#endorseText");
+    const endorseProj = document.querySelector("#endorse-project");
+    const endorseText = document.querySelector("#endorse-text");
     const skillAdd = document.querySelector("#add-skills");
     const skillClear = document.querySelector("#clear-skills");
     const linkDiv = document.querySelector("#links");
@@ -105,13 +106,14 @@ const init = () => {
 
     skillAdd.onclick = () => {
         let newSkill = document.createElement("p");
-        newSkill.innerText = skillTextInput.value + ", " + skillType.value + "," + endorseText.value;
+        newSkill.innerText = skillTextInput.value + ", " + skillType.value + ", " + endorseProj.value + ", "+ endorseText.value;
         skillDiv.appendChild(newSkill);
         skillHolder.push({
             skill: skillTextInput.value,
             type: skillType.value,
-            isEndorsed: endorseText.value.length > 0,
-            endorsement: endorseText.value
+            isEndorsed: (endorseText.value.length > 0 || endorseProj.value.length > 0),
+            endorsement: endorseText.value,
+            endorseProject: endorseProj.value
         });
     }
     skillClear.onclick = () => {

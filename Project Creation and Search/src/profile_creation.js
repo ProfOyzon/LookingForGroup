@@ -29,7 +29,7 @@ const generateRandomID = async (db) => {
     return tryID;
 }
 
-const writeProfileData = async (uName, fName, lName, bio, userRole, pronouns, pInt, rInt) => {
+const writeProfileData = async (uName, fName, lName, bio, userRole, pronouns, pInt, rInt, myLinks) => {
     const db = getDatabase(app);
     const uID = await generateRandomID(db);
 
@@ -50,11 +50,14 @@ const writeProfileData = async (uName, fName, lName, bio, userRole, pronouns, pI
         bio: eBio,
         role: userRole,
         projectInterests: epint,
-        roleInterests: erint
+        roleInterests: erint,
+        links: myLinks
     });
 }
 
 const init = () => {
+    let linkHolder = [];
+
     // Get HTML elements
     const fname = document.querySelector("#fname");
     const lname = document.querySelector("#lname");
@@ -65,6 +68,11 @@ const init = () => {
     const pronounBox = document.querySelector("#pronouns");
     const pIntInput = document.querySelector("#proj-interests");
     const rIntInput = document.querySelector("#role-interests");
+    const linkDiv = document.querySelector("#links");
+    const linkTextInput = document.querySelector("#link-name");
+    const linkURLInput = document.querySelector("#link-url");
+    const linkAdd = document.querySelector("#add-link");
+    const linkClear = document.querySelector("#clear-links");
 
     // Submission event
     submit.onclick = () => {
@@ -78,8 +86,24 @@ const init = () => {
             role.value,
             pronouns,
             pIntInput.value,
-            rIntInput.value
+            rIntInput.value,
+            linkHolder
         );
+    }
+
+    linkAdd.onclick = () => {
+        let newLink = document.createElement("a");
+        newLink.href = linkURLInput.value;
+        newLink.innerHTML = linkTextInput.value;
+        linkDiv.appendChild(newLink);
+        linkHolder.push({
+            text: linkTextInput.value,
+            url: linkURLInput.value
+        });
+    }
+    linkClear.onclick = () => {
+        linkDiv.innerHTML = "";
+        linkHolder = [];
     }
 }
 

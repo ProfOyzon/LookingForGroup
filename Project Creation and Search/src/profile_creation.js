@@ -75,6 +75,7 @@ const init = () => {
     const skillDiv = document.querySelector("#skills");
     const skillTextInput = document.querySelector("#skill-name");
     const skillType = document.querySelector("#skill-type");
+    const featured = document.querySelector("#featured")
     const endorseProj = document.querySelector("#endorse-project");
     const endorser = document.querySelector("#endorser")
     const endorseText = document.querySelector("#endorse-text");
@@ -107,12 +108,13 @@ const init = () => {
 
     skillAdd.onclick = () => {
         let newSkill = document.createElement("p");
-        newSkill.innerText = skillTextInput.value + ", " + skillType.value + ", " + endorseProj.value + ", " + endorser.value + ", " + endorseText.value;
+        newSkill.innerText = skillTextInput.value + ", " + skillType.value + ", " + Boolean(featured.checked) + ", " + endorseProj.value + ", " + endorser.value + ", " + endorseText.value;
         skillDiv.appendChild(newSkill);
         skillHolder.push({
             skill: skillTextInput.value,
             type: skillType.value,
-            isEndorsed: (endorseText.value.length > 0 || endorseProj.value.length > 0 || endorser.value.length > 0),
+            featured: Boolean(featured.checked),
+            endorsed: (endorseText.value.length > 0 || endorseProj.value.length > 0 || endorser.value.length > 0),
             endorsement: endorseText.value,
             endorseProject: endorseProj.value,
             endorser: endorser.value

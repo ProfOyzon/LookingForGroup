@@ -44,7 +44,7 @@ const initOptions = async (e) => {
   })
 }
 
-const writeProjectData = async (id = "-1", project, hasOpenings) => {
+const writeProjectData = async (id = "-1", project, hasOpenings, editing = false) => {
   console.log(id);
 
   // encode strings
@@ -66,15 +66,30 @@ const writeProjectData = async (id = "-1", project, hasOpenings) => {
     }
   }).then(async userExists => {
     if (userExists) {
-      const r = ref(db, `users/${id}/projects/${await generateRandomID(db, id)}`);
+      //Generate new project id if project is new, otherwise use current project id
+      if (!editing)
+      {
+        const r = ref(db, `users/${id}/projects/${await generateRandomID(db, id)}`);
 
-      set(r, {
-        title: eTitle,
-        description: eDesc,
-        tags: project.keywords,
-        isHiring: hasOpenings,
-        needs: project.roles
-      });
+        set(r, {
+          title: eTitle,
+          description: eDesc,
+          tags: project.keywords,
+          isHiring: hasOpenings,
+          needs: project.roles
+        });
+      }
+      else {
+        const r = ref(db, `users/${id}/projects/${projectID}`);
+
+        set(r, {
+          title: eTitle,
+          description: eDesc,
+          tags: project.keywords,
+          isHiring: hasOpenings,
+          needs: project.roles
+        });
+      } 
     }
     else{
       console.log("User ID must correspond to existing user.")
@@ -112,8 +127,7 @@ let roleCount = 0;
 let selectedID = -1;
 
 //variables used when editing a project, unused if page is used for creation
-let userId;
-let projectId;
+let projectID = -1;
 
 //Runs after loading
 const init = () =>
@@ -152,12 +166,12 @@ const init = () =>
 //Replace parentheses items with the respective ids of the user and project you wish to test
 const editProject = async (urlParams) =>
 {
-  let userid = urlParams.get('userid');
-  let id = urlParams.get('projectid');
+  selectedID = urlParams.get('userid');
+  projectID = urlParams.get('projectid');
 
   const dbRef = ref(getDatabase(app));
   await get(child(dbRef, `users`)).then((snapshot) => {
-    if (!snapshot.exists() || snapshot.val()[userid] == undefined || snapshot.val()[userid].projects[id] == undefined)
+    if (!snapshot.exists() || snapshot.val()[selectedID] == undefined || snapshot.val()[selectedID].projects[projectID] == undefined)
     {
       console.log('project not found, loading as creation page'); //For test purposes
       //If project is not found, continues loading as project creation page
@@ -169,11 +183,11 @@ const editProject = async (urlParams) =>
     }
 
     document.querySelector('h1').innerHTML = 'Edit Project';
-    let project = snapshot.val()[userid].projects[id];
+    let project = snapshot.val()[selectedID].projects[projectID];
     console.log(project); //For test purposes
 
     //Make username and id inputs unusable
-    document.querySelector('#id-box').innerHTML = `Username: ${snapshot.val()[userid].name}`;
+    document.querySelector('#id-box').innerHTML = `Username: ${snapshot.val()[selectedID].name}`;
 
     //Fill in inputs with current project data
     titleInput.value = decode(project.title);
@@ -191,9 +205,9 @@ const editProject = async (urlParams) =>
       createCustomRole(role.roleType, role.roleNum);
     }
 
-    //store user and project ids for rewriting later
-    userId = userid;
-    projectId = id;
+    //Assign function to submit button & change display
+    newProject.innerHTML = "Save Changes";
+    newProject.onclick = saveEdits;
   }).catch((error) => {
     console.error(error);
   });
@@ -294,7 +308,7 @@ const createCustomRole = (roleType, roleNum) =>
       <option value="manager">Manager</option>
     </select>
     <label for="num${roleCount}">Positions:</label>
-    <input type="number" id="num${roleCount}" name="num${roleCount}" min="1" value="3">
+    <input type="number" id="num${roleCount}" name="num${roleCount}" min="1" value="${roleNum}">
   `
 
   let options = element.querySelectorAll('option');
@@ -366,8 +380,8 @@ const removeItem = (element) =>
   element.remove();
 }
 
-//Create a JSON object using input values
-const createProject = () =>
+//Gets values from inputs and compiles into a json object
+const getInputs = () =>
 {
   //Get title, description, and size inputs
   let title = titleInput.value;
@@ -377,10 +391,10 @@ const createProject = () =>
   //Run checks to ensure fields are filled & valid, exit if not
   if (title == '' || description == '' || keywords.length == 0) {
     console.log('Not all fields filled, requires username, title, description, & at least 1 keyword')
-    return;
+    return undefined;
   } else if (selectedID == '' || selectedID < 0) {
     console.log('Please use only positive numbers in project ID');
-    return;
+    return undefined;
   }
   //Create array of role objects
   let roles = [];
@@ -393,7 +407,7 @@ const createProject = () =>
     if (roleCheck.indexOf(roleType) != -1)
     {
       console.log('Multiple listings of same role type exist, please ensure each role is unique');
-      return;
+      return undefined;
     }
     roleCheck.push(roleType);
     let roleNum = item.querySelector('input').value;
@@ -401,17 +415,31 @@ const createProject = () =>
     if (roleNum == '' || roleNum < 0)
     {
       console.log('Please use only positive numbers in position numbers');
-      return;
+      return undefined;
     }
     let newRole = {roleType, roleNum};
     roles.push(newRole);
   }
-  let hiring = roles.length ? true : false;
+  //let hiring = roles.length ? true : false;
   //Construct json object
   let json = {title, size, description, keywords, roles};
-  //Currently unused items: links, preferences, image
-  //Left out to not cause problems with current firebase setup
+  return json;
+}
+
+//Create a JSON object using input values & uploads it to the user's projects
+const createProject = () =>
+{
+  let json = getInputs();
+  let hiring = json.roles.length ? true : false;
   writeProjectData(selectedID, json, hiring);
+}
+
+//Overwrite the data of the current project being edited with current input data
+const saveEdits = () =>
+{
+  let json = getInputs();
+  let hiring = json.roles.length ? true: false;
+  writeProjectData(selectedID, json, hiring, true);
 }
 
 //Basic help function, capitalizes the inputted word

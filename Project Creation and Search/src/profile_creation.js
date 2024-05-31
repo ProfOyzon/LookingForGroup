@@ -108,12 +108,12 @@ const init = () => {
 
     skillAdd.onclick = () => {
         let newSkill = document.createElement("p");
-        newSkill.innerText = skillTextInput.value + ", " + skillType.value + ", " + Boolean(featured.checked) + ", " + endorseProj.value + ", " + endorser.value + ", " + endorseText.value;
+        newSkill.innerText = skillTextInput.value + ", " + skillType.value + ", " + featured.checked + ", " + endorseProj.value + ", " + endorser.value + ", " + endorseText.value;
         skillDiv.appendChild(newSkill);
         skillHolder.push({
             skill: skillTextInput.value,
             type: skillType.value,
-            featured: Boolean(featured.checked),
+            featured: featured.checked,
             endorsed: (endorseText.value.length > 0 || endorseProj.value.length > 0 || endorser.value.length > 0),
             endorsement: endorseText.value,
             endorseProject: endorseProj.value,

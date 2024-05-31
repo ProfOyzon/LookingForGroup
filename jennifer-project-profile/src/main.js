@@ -1,7 +1,17 @@
 // Jennifer Pichardo
 // Project Profile Page
 
-document.addEventListener("DOMContentLoaded", function() { 
+const init = () => {
+    setupUI();
+};
+
+const setupUI = () => {
+    //Follow button
+    document.querySelector("#follow-btn").onclick = () => {
+        console.log("Click!");
+    };
+
+    //Member carousel
     const carousel = document.querySelector(".carousel"); 
     const arrowBtns = document.querySelectorAll(".wrapper i"); 
     const wrapper = document.querySelector(".wrapper"); 
@@ -60,4 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 -firstCardWidth : firstCardWidth; 
         }); 
     }); 
-}); 
+
+};
+
+init();

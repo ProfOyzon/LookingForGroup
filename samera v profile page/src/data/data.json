@@ -74,28 +74,32 @@
             "name" : "Project 4",
             "date" : "mm/dd/yy",
             "role" : "Project Lead",
-            "description" : "blah blah blah"
+            "description" : "blah blah blah",
+            "permissions" : "owner"
         },
 
         {
             "name" : "Project 3",
             "date" : "mm/dd/yy",
             "role" : "3D Artist",
-            "description" : "blah blah blah"
+            "description" : "blah blah blah",
+            "permissions" : "admin"
         },
 
         {
             "name" : "Project 2",
             "date" : "mm/dd/yy",
             "role" : "Pixel Artist",
-            "description" : "blah blah blah"
+            "description" : "blah blah blah",
+            "permissions" : "member"
         },
 
         {
             "name" : "Project 1",
             "date" : "mm/dd/yy",
             "role" : "Pixel Artist",
-            "description" : "blah blah blah"
+            "description" : "blah blah blah",
+            "permissions" : "member"
         }
     ]
 }

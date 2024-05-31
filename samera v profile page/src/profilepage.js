@@ -1,7 +1,5 @@
 window.onload = function(){
-    loadData();
-   
-    
+    loadData();    
 }
 
 const loadData = () => {
@@ -86,7 +84,7 @@ const loadProfileData = (e) => {
   //load the projects
   const projects = JSON.parse(e.target.responseText).Projects;
   for (let project of projects){
-    addProject(project.name, project.date, project.description, project.role)
+    addProject(project.name, project.date, project.description, project.role, project.permissions)
   }
 }
 
@@ -152,7 +150,7 @@ function addEndorsedSkill(skill, text, project, first){
   document.getElementById("textList").appendChild(skillDiv);
 }
 
-function addProject (name, date, description, role){
+function addProject (name, date, description, role, permissions){
   let project = document.createElement("div");
   project.classList.add("box");
   let headerDiv = document.createElement("div")
@@ -166,15 +164,24 @@ function addProject (name, date, description, role){
   dateText.innerText = date;
   headerDiv.appendChild(dateText)
 
-  //let editButton = document.createElement("button");
-  //editButton.classList.add("editButton");
-  //let editButtonImg = document.createElement("img")
-  //editButtonImg.alt = "edit"
-  //editButtonImg.src = "assets/pencil.jpg"
-  //editButtonImg.width = 20;
-  //editButtonImg.height = 20;
-  //editButton.appendChild(editButtonImg);
-  //headerDiv.appendChild(editButton);
+  let permImage = document.createElement("img");
+  permImage.width = "20";
+  permImage.height = "20";
+
+  switch(permissions){
+    case "owner":
+      permImage.src = "assets/ownercrown.png";
+      permImage.alt = "project owner"
+      break;
+    case "admin":
+      permImage.src = "assets/admincrown.png";
+      permImage.alt = "project admin"
+      break;
+  }
+
+  console.log(permImage)
+
+  headerDiv.appendChild(permImage)
 
   project.appendChild(headerDiv);
 

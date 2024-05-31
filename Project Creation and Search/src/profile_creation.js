@@ -29,7 +29,7 @@ const generateRandomID = async (db) => {
     return tryID;
 }
 
-const writeProfileData = async (uName, fName, lName, bio, userRole, pronouns, pInt, rInt, myLinks) => {
+const writeProfileData = async (uName, fName, lName, bio, userRole, pronouns, pInt, rInt, avail, myLinks, mySkills) => {
     const db = getDatabase(app);
     const uID = await generateRandomID(db);
 
@@ -51,12 +51,15 @@ const writeProfileData = async (uName, fName, lName, bio, userRole, pronouns, pI
         role: userRole,
         projectInterests: epint,
         roleInterests: erint,
-        links: myLinks
+        availability: avail,
+        links: myLinks,
+        skills: mySkills
     });
 }
 
 const init = () => {
     let linkHolder = [];
+    let skillHolder = [];
 
     // Get HTML elements
     const fname = document.querySelector("#fname");
@@ -68,6 +71,13 @@ const init = () => {
     const pronounBox = document.querySelector("#pronouns");
     const pIntInput = document.querySelector("#proj-interests");
     const rIntInput = document.querySelector("#role-interests");
+    const availInput = document.querySelector("#availability");
+    const skillDiv = document.querySelector("#skills");
+    const skillTextInput = document.querySelector("#skill-name");
+    const skillType = document.querySelector("#skill-type");
+    const endorseText = document.querySelector("#endorseText");
+    const skillAdd = document.querySelector("#add-skills");
+    const skillClear = document.querySelector("#clear-skills");
     const linkDiv = document.querySelector("#links");
     const linkTextInput = document.querySelector("#link-name");
     const linkURLInput = document.querySelector("#link-url");
@@ -87,8 +97,26 @@ const init = () => {
             pronouns,
             pIntInput.value,
             rIntInput.value,
-            linkHolder
+            availInput.value,
+            linkHolder,
+            skillHolder
         );
+    }
+
+    skillAdd.onclick = () => {
+        let newSkill = document.createElement("p");
+        newSkill.innerText = skillTextInput.value + ", " + skillType.value + "," + endorseText.value;
+        skillDiv.appendChild(newSkill);
+        skillHolder.push({
+            skill: skillTextInput.value,
+            type: skillType.value,
+            isEndorsed: endorseText.value.length > 0,
+            endorsement: endorseText.value
+        });
+    }
+    skillClear.onclick = () => {
+        skillDiv.innerHTML = "";
+        skillHolder = [];
     }
 
     linkAdd.onclick = () => {

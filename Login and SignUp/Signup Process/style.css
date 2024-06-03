@@ -167,6 +167,44 @@ font-size: 3vh;
   transition: 0.5s; 
 }
 
+/*Soft Skills section */
+.flexcolumn5{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.flexRow6{
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+  width: 75%;
+  height: auto;
+}
+
+.flexRow7{
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  background-color: grey;
+  width: 75%;
+  height: 50vh;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+  border-bottom: solid black 5px;
+  border-right: solid black 5px;
+  border-left: solid black 5px;
+}
+
+.flexRow8{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+}
 
 /* Style for the parent container */
 .flexRowContainer {

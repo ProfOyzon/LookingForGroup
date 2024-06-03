@@ -149,7 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    
 
     // Create alignment scales based on saved state
     const container = document.getElementById('alignment-scales-container');

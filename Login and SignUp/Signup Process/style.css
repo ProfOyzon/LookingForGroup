@@ -564,6 +564,27 @@ h1 {
   color: white;
 }
 
+.softSkill-button {
+  border: 2px solid yellow;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.softSkill-button.active {
+  background-color: yellow;
+  color: white;
+}
+
+.softSkill-row{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
 
 .padded-left {
   padding-left: 30px;

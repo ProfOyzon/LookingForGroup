@@ -17,10 +17,10 @@ const app = initializeApp(firebaseConfig);
 
 const generateRandomID = async (db, uid) => {
   // Generate a random ID
-  let tryID = Math.floor(Math.random() * 1000);
+  let tryID = Math.floor(Math.random() * 30000);
 
   // If the ID already exists, generate it again until unique
-  await get(child(ref(db), `users/${uid}/projects`)).then(async snapshot => {
+  await get(child(ref(db), `lgf-test/projects`)).then(async snapshot => {
     if (snapshot.exists())
       for (let id in snapshot.val()) {
         if (id == tryID) tryID = await generateRandomID(db, uid);
@@ -32,7 +32,7 @@ const generateRandomID = async (db, uid) => {
 
 const initOptions = async (e) => {
   const db = getDatabase(app);
-  await get(child(ref(db), "users")).then(snapshot => {
+  await get(child(ref(db), "lfg-test/users")).then(snapshot => {
     if(snapshot.exists()){
       for(let id in snapshot.val()){
         let newOpt = document.createElement("option");
@@ -53,41 +53,51 @@ const writeProjectData = async (id = "-1", project, hasOpenings, editing = false
 
   const db = getDatabase(app);
 
-  get(child(ref(db), `users`)).then(snapshot => {
+  get(child(ref(db), `lfg-test`)).then(snapshot => {
     if (snapshot.exists()) {
       //Ensure the entered ID exists in the database
-      for (let user in snapshot.val()) {
+      for (let user in snapshot.val().users) {
         console.log(user);
         if (user == id) {
-          return true;
+          return user;
         };
       }
-      return false;
+      return -1;
     }
-  }).then(async userExists => {
-    if (userExists) {
+  }).then(async userID => {
+    if (userID >= 0) {
       //Generate new project id if project is new, otherwise use current project id
       if (!editing)
       {
-        const r = ref(db, `users/${id}/projects/${await generateRandomID(db, id)}`);
+        const pid = await generateRandomID(db, userID)
+        let r = ref(db, `lfg-test/projects/${pid}`);
 
         set(r, {
           title: eTitle,
           description: eDesc,
           tags: project.keywords,
           isHiring: hasOpenings,
-          needs: project.roles
+          needs: project.roles,
+          owner: userID
         });
+        
+        r = ref(db, `lfg-test/users/${userID}/projects/${pid}`);
+        
+        set(r,{
+          status: "owner"
+        })
+        
       }
       else {
-        const r = ref(db, `users/${id}/projects/${projectID}`);
+        const r = ref(db, `lfg-test/projects/${projectID}`);
 
         set(r, {
           title: eTitle,
           description: eDesc,
           tags: project.keywords,
           isHiring: hasOpenings,
-          needs: project.roles
+          needs: project.roles,
+          owner: id
         });
       } 
     }

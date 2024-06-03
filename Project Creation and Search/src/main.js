@@ -18,78 +18,79 @@ const getResults = async (selectedRoles = [], key = "", isHiring = true, selecte
     let results = [];
 
     const dbRef = ref(getDatabase(app));
-    await get(child(dbRef, `users`)).then((snapshot) => {
+    await get(child(dbRef, `lfg-test`)).then((snapshot) => {
         if (snapshot.exists()) {
-            for (let user in snapshot.val()) {
-                if (type == "project") {
-                    for (let id in snapshot.val()[user].projects) {
-                        let project = snapshot.val()[user].projects[id];
+            if (type == "project") {
+                for (let id in snapshot.val().projects) {
+                    let project = snapshot.val().projects[id];
 
-                        // Check if keyword has been entered, skip if key is not in title
-                        if (key &&
-                            !decodeURI(project.title).toLowerCase().includes(key.toLowerCase()))
-                            continue;
+                    // Check if keyword has been entered, skip if key is not in title
+                    if (key &&
+                        !decodeURI(project.title).toLowerCase().includes(key.toLowerCase()))
+                        continue;
 
-                        // Filter hiring
-                        if (isHiring != project.isHiring) continue;
+                    // Filter hiring
+                    if (isHiring != project.isHiring) continue;
 
-                        // If any selected tag does not apply, skip
-                        let hasTags = false;
-                        if (selectedTags.length <= 0) hasTags = true; 
-                        else {
-                            for (let tag of project.tags) {
-                                let check = tag.toLowerCase();
-                                if (selectedTags.includes(check)) hasTags = true;
-                            }
+                    // If any selected tag does not apply, skip
+                    let hasTags = false;
+                    if (selectedTags.length <= 0) hasTags = true;
+                    else {
+                        for (let tag of project.tags) {
+                            let check = tag.toLowerCase();
+                            if (selectedTags.includes(check)) hasTags = true;
                         }
-                        if (!hasTags) continue;
+                    }
+                    if (!hasTags) continue;
 
-                        // Same process applied to roles
-                        let hasRoles = true;
-                        if (project.needs) {
-                            const pRoles = project.needs.map(r => { return r.roleType });
-                            for (let role of selectedRoles) {
-                                if (!pRoles.includes(role)) hasRoles = false;
-                            }
+                    // Same process applied to roles
+                    let hasRoles = true;
+                    if (project.needs) {
+                        const pRoles = project.needs.map(r => { return r.roleType });
+                        for (let role of selectedRoles) {
+                            if (!pRoles.includes(role)) hasRoles = false;
                         }
-                        if (!hasRoles) continue;
+                    }
+                    if (!hasRoles) continue;
 
-                        // Add result to results array
-                        let newResult = `
+                    // Add result to results array
+                    let newResult = `
                         <hr>
                         <p><h3>${decodeURI(project.title).replace('<', '&lt;').replace('>', '&gt;')}</h3></p>
-                        <p><b>Author: <i>${snapshot.val()[user].username}</i>, Project ID: <i>${id}</i></b></p>
+                        <p><b>Author: <i>${snapshot.val().users[project.owner].username}</i>, Project ID: <i>${id}</i></b></p>
                         <p>${decodeURI(project.description).replace('<', '&lt;').replace('>', '&gt;')}</p>
                         <p><i>${project.tags.join(", ")}</i></p>
                     `;
-                        if (project.needs) {
-                            let addRoles = project.needs.map(r => { return r.roleType });
-                            newResult += `<p>Looking for: ${addRoles.join(", ")}</p>`;
-                        }
-                        results.push(newResult);
+                    if (project.needs) {
+                        let addRoles = project.needs.map(r => { return r.roleType });
+                        newResult += `<p>Looking for: ${addRoles.join(", ")}</p>`;
                     }
+                    results.push(newResult);
                 }
-                else if (type == "profile") {
-                    let profile = snapshot.val()[user];
+            }
+            else if (type == "profile") {
+                for (let id in snapshot.val().users) {
+                    let user = snapshot.val().users[user];
 
                     if (key &&
-                        !decodeURI(profile.username).toLowerCase().includes(key)
+                        !decodeURI(user.username).toLowerCase().includes(key)
                     ) continue;
 
                     if (selectedRoles.length > 0 &&
-                        !selectedRoles.includes(profile.role)
+                        !selectedRoles.includes(user.profile.role)
                     ) continue;
 
                     let newResult = `
                     <hr>
-                    <p><h3>${decodeURI(profile.username).replace('<', '&lt;').replace('>', '&gt;')}</h3></p>
-                    <p><b>${profile.name}</b></p>
-                    <p>${profile.role}</p>
-                    <p><i>${decodeURI(profile.bio).replace('<', '&lt;').replace('>', '&gt;')}</i></p>
+                    <p><h3>${decodeURI(user.username).replace('<', '&lt;').replace('>', '&gt;')}</h3></p>
+                    <p><b>${user.profile.name}</b></p>
+                    <p>${user.profile.role}</p>
+                    <p><i>${decodeURI(user.profile.bio).replace('<', '&lt;').replace('>', '&gt;')}</i></p>
                     `;
                     results.push(newResult);
                 }
             }
+
         } else {
             console.log("No data available");
         }
@@ -144,7 +145,7 @@ const init = () => {
 
         signIn.innerHTML = "";
 
-        get(child(ref(db), "users")).then(snapshot => {
+        get(child(ref(db), "lfg-test/users")).then(snapshot => {
             if (snapshot.exists()) {
                 // Fill signin
                 for (let user in snapshot.val()) {
@@ -167,20 +168,20 @@ const init = () => {
 
         quickSelect.innerHTML = "";
 
-        get(child(ref(db), "users")).then(snapshot => {
+        get(child(ref(db), "lfg-test")).then(snapshot => {
             if (snapshot.exists()) {
                 let user = signIn.value;
-                if (snapshot.val()[user].projects) {
-                    for (let projectID in snapshot.val()[user].projects) {
-                        let project = snapshot.val()[user].projects[projectID];
+                if (snapshot.val().users[user].projects) {
+                    for (let projectID in snapshot.val().users[user].projects) {
+                        let project = snapshot.val().projects[projectID];
                         let newOpt = document.createElement("option");
                         newOpt.innerHTML = decodeURI(project.title).replace('<', '&lt;').replace('>', '&gt;');
                         newOpt.value = projectID;
                         quickSelect.appendChild(newOpt);
                     }
                     myProject.needs = [];
-                    let myNeeds = snapshot.val()[user].projects[quickSelect.value].needs;
-                    for(let i = 0; i < myNeeds.length; i++){
+                    let myNeeds = snapshot.val().projects[quickSelect.value].needs;
+                    for (let i = 0; i < myNeeds.length; i++) {
                         myProject.needs.push(myNeeds[i].roleType);
                     }
                 }

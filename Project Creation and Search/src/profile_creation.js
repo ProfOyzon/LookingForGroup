@@ -19,7 +19,7 @@ const generateRandomID = async (db) => {
     let tryID = Math.floor(Math.random() * 30000);
 
     // If the ID already exists, generate it again until unique
-    await get(child(ref(db), "users")).then(async snapshot => {
+    await get(child(ref(db), "lfg-test/users")).then(async snapshot => {
         if (snapshot.exists())
             for (let id in snapshot.val()) {
                 if (id == tryID) tryID = await generateRandomID(db);
@@ -42,18 +42,20 @@ const writeProfileData = async (uName, fName, lName, bio, userRole, pronouns, pI
     const erint = encodeURI(rInt);
 
     // Set reference and write
-    const r = ref(db, `users/${uID}`);
+    const r = ref(db, `lfg-test/users/${uID}`);
     set(r, {
-        name: realName,
         username: userName,
-        pronouns: ePronouns,
-        bio: eBio,
-        role: userRole,
-        projectInterests: epint,
-        roleInterests: erint,
-        availability: avail,
-        links: myLinks,
-        skills: mySkills
+        profile: {
+            name: realName,
+            pronouns: ePronouns,
+            bio: eBio,
+            role: userRole,
+            projectInterests: epint,
+            roleInterests: erint,
+            availability: avail,
+            links: myLinks,
+            skills: mySkills
+        }
     });
 }
 

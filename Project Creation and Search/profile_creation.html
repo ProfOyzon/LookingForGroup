@@ -38,12 +38,37 @@
 
     <label for="role-interests">Role Interests: </label>
     <input type="text" id="role-interests"><p></p>
+    <label for="availability">Availability: </label>
+    <input type="text" id="availability"><p></p>
+
+    <hr>
+
+    <div id="skills"></div><p></p>
+    Add Skill: <input type="text" id="skill-name"><p></p>
+    <label for="skill-type">Skill type: </label>
+    <select id="skill-type">
+        <option value="proficiency">Proficiency</option>
+        <option value="hardSkill">Hard Skill</option>
+        <option value="softSkill">Soft Skill</option>
+    </select><p></p>
+    Featured: <input type="checkbox" id="featured" name="featured"/>
+    <p>Add project title, endorser, or text to endorse:</p>
+    project title: <input type="text" id="endorse-project"><p></p>
+    endorser: <input type="text" id="endorser"><p></p>
+    endorsement:<textarea type="textarea" id="endorse-text"></textarea><p></p>
+
+    <button id="add-skills">Add</button>
+    <button id="clear-skills">Clear</button><p></p>
+
+    <hr>
 
     <div id="links"></div><p></p>
     Link Text: <input type="text" id="link-name"><p></p>
     Link URL: <input type="text" id="link-url"><p></p>
     <button id="add-link">Add</button>
     <button id="clear-links">Clear</button><p></p>
+
+    <hr>
     
     <button id="create-profile">Submit</button>
 </body>

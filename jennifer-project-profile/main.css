@@ -20,6 +20,10 @@ main{
     margin: 1em 4em;
     display: flex;
     flex-flow: row nowrap;
+    gap: 20px;
+}
+#project-desc{
+    max-width: 360px;
 }
 #keywords{
     font-size: 14px;
@@ -31,6 +35,15 @@ main{
     text-align: center;
     background-color: #8b8b8b;
     padding: 0.3em;
+}
+#follow-btn{
+    padding: 0.2em;
+    border: 2px solid black;
+    border-radius: 12px;
+    font-size: 20px;
+    width: 120px;
+    height: 40px;
+    margin-top: 1em;
 }
 hr{
     border: 2px solid black;
@@ -164,9 +177,14 @@ hr{
     #project-info{
         flex-flow: row wrap;
         justify-content: center;
+        text-align: center;
+        gap: 10px;
     }
     #members h2{
         margin-left: 0;
         text-align: center;
     } 
+    #follow-btn{
+        margin-top: 0;
+    }
 }

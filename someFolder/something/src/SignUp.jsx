@@ -23,7 +23,7 @@ const SignUp = () => {
 
     if (name === 'password1') {
       checkPasswordStrength(value);
-    }
+    } 
   };
 
   const checkPasswordStrength = (password) => {

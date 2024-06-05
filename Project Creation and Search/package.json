@@ -7,8 +7,14 @@
   "version": "1.0.0",
   "description": "A test run of running this prototype with react",
   "main": "./src/main.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.24.6",
+    "@babel/core": "^7.24.6",
+    "@babel/preset-react": "^7.24.6"
+  },
   "scripts": {
+    "start": "react-scripts start",
+    "compile": "babel src -d lib",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +22,17 @@
     "url": "LookingForGroup"
   },
   "author": "Joseph Dunne",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

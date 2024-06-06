@@ -1,5 +1,3 @@
-/* Page One */
-
 .flexColumn {
   display: flex;
   flex-flow: column;
@@ -136,7 +134,6 @@ footer {
   margin-left: 5px;
   margin-bottom: 10px;
   font-size: 16px;
-
 }
 
 .flexRow4 {
@@ -272,7 +269,6 @@ footer {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
 }
 
 .flexRow11 {
@@ -640,6 +636,19 @@ h1 {
   width: 10vw;
 }
 
+.project-button {
+  border: 2px solid yellow;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  padding: 5px 10px; /* Reduced padding */
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 5px; /* Reduced margin */
+  width: 10vw; /* Adjust width to fit more buttons in a row */
+  height: auto; /* Let the height adjust automatically */
+}
+
 .des-button.active {
   background-color: yellow;
   color: white;
@@ -689,7 +698,6 @@ h1 {
   margin-bottom: 10px;
 }
 
-
 .padded-left {
   padding-left: 30px;
 }
@@ -713,4 +721,12 @@ a:hover {
 
 a:active {
   color: red;
+}
+
+.search-bar {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

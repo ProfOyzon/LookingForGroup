@@ -5,7 +5,7 @@ import Login from "./Pages/Login";
 import Home from "./Pages/Home";
 import Proficiencies from "./Pages/Proficiencies";
 import SoftHardSkills from "./Pages/SoftHardSkills";
-
+import Project from "./Pages/Project";
 function App() {
   return (
     <Router>
@@ -15,6 +15,7 @@ function App() {
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/Proficiencies" element={<Proficiencies />} />
         <Route path="/SoftHardSkills" element={<SoftHardSkills />} />
+        <Route path= "/Project" element={<Project />} />
       </Routes>
     </Router>
   );

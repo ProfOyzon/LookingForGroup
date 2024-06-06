@@ -117,6 +117,7 @@ const editProject = async (urlParams) => {
 
   //Make username and id inputs unusable
   document.querySelector('#id-box').innerHTML = `Project ID: ${projectID}`;
+  selectedID = snapshot.projects[projectID].owner;
 
   //Fill in inputs with current project data
   titleInput.value = decode(project.title);

@@ -1,4 +1,6 @@
-import {createRoot} from 'react-dom/client';
+const React = require('react');
+const ReactDOM = require('react-dom');
+//import { createRoot } from 'react-dom/client';
 
 const ProjectCreator = (props) =>
 {
@@ -81,9 +83,10 @@ const ProjectCreator = (props) =>
 
 const init = () =>
 {
-  const ProjectForm = createRoot(document.getElementById('project-form'));
-  ProjectForm.render(<ProjectCreator />);
+  //const ProjectForm = createRoot(document.getElementById('project-form'));
+  //ProjectForm.render(<ProjectCreator />);
+  ReactDOM.render(<ProjectCreator />, document.getElementById('project-form'));
   console.log('is this even running?');
 }
 
-window.onload = init;
+init();

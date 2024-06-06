@@ -76,18 +76,18 @@ const SignUp = () => {
   };
 
   return (
-    <div className="centerContainer">
-      <div className="flexRow4">
+    <div class="centerContainer">
+      <div class="flexRow4">
         <h1>Welcome!!</h1>
         <h2>Already have an account?</h2>
-        <button className="button-77" type="button" onClick={() => window.location.href = '/login.html'}>Login</button>
+        <button className="button-77" type="button" onClick={() => window.location.href = '/Login'}>Login</button>
       </div>
 
-      <div className="flexRow3">
+      <div class="flexRow3">
         <form id="signupForm" onSubmit={handleSubmit}>
           <h1>Sign Up</h1>
-          <input type="text" id="fname" name="fname" placeholder="First name" value={formData.fname} onChange={handleChange} /><br />
-          <input type="text" id="lname" name="lname" placeholder="Last name" value={formData.lname} onChange={handleChange} /><br />
+          <div class = "Name"><input type="text" id="fname" name="fname" placeholder="First name" value={formData.fname} onChange={handleChange} /><br />
+          <input type="text" id="lname" name="lname" placeholder="Last name" value={formData.lname} onChange={handleChange} /><br /></div>
           <input type="text" id="username" name="username" placeholder="Username" value={formData.username} onChange={handleChange} /><br />
           <input type="email" id="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} /><br />
           <input type="password" id="password1" name="password1" placeholder="Password" value={formData.password1} onChange={handleChange} /><br />
@@ -107,7 +107,7 @@ const SignUp = () => {
           )}
           <input type="password" id="password2" name="password2" placeholder="Retype Password" value={formData.password2} onChange={handleChange} /><br />
           {error && <div id="error-message" style={{ color: 'red' }}>{error}</div>}
-          <button className="button-77" type="submit">Continue</button>
+          <button className="button-77" type="button" onClick={() => window.location.href = '/login.html'}>Continue</button>
         </form>
       </div>
     </div>

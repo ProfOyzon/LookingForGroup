@@ -11,16 +11,12 @@ const Home = () => {
             <header></header>
             <div className="flexColumn">
                 <div className="flexRow">
-                    <h1>    
+                    <h1>
                         Looking For Group
                     </h1>
                     <div className="button-group">
-                        <a href="login.html">
-                            <button className="button" type="submit">Login</button>
-                        </a>
-                        <a href="signup.html">
-                            <button className="button" type="submit">SignUp</button>
-                        </a>
+                        <button className="button" type="button" onClick={() => window.location.href = '/Login'}>Login</button>
+                        <button className="button" type="button" onClick={() => window.location.href = '/SignUp'}>SignUp</button>
                         <img src={menu} width="32" height="32" alt="Menu Icon" />
                     </div>
                 </div>
@@ -38,7 +34,7 @@ const Home = () => {
                 </div>
 
                 <div className="flexImgRow">
-                    <img src={project} width="100" height="100" alt="Project Icon" />                   
+                    <img src={project} width="100" height="100" alt="Project Icon" />
                     <img src={designer} width="100" height="100" alt="Designer Icon" />
                     <img src={logo} width="100" height="100" alt="Developer Icon" />
                 </div>

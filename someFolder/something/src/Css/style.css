@@ -103,7 +103,8 @@ footer {
 }
 
 /* Flexbox the SignIn box */
-.flexRow3, .flexRow4 {
+.flexRow3,
+.flexRow4 {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,6 +121,24 @@ footer {
   border-bottom-right-radius: 25px;
 }
 
+.flexRow3 .Name {
+  display: flex;
+  flex-direction: row;
+  padding-right: 10px;
+}
+
+.flexRow3 .Name input {
+  border-radius: 10px;
+  padding: 10px;
+  width: 10vw;
+  height: 2.5vh;
+  border: 1px solid grey;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  font-size: 16px;
+
+}
+
 .flexRow4 {
   background-color: plum;
   border-top-left-radius: 25px;
@@ -127,11 +146,12 @@ footer {
 }
 
 /*SignUp */
-.flexcolumn4{
+.flexcolumn4 {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .flexRow5 {
   display: flex;
   flex-flow: row;
@@ -141,9 +161,9 @@ footer {
   width: 75%;
 }
 
-.flexRow5 h1{
-font-weight: bold;
-font-size: 3vh;
+.flexRow5 h1 {
+  font-weight: bold;
+  font-size: 3vh;
 }
 
 .flexColumn2 {
@@ -152,29 +172,30 @@ font-size: 3vh;
   align-items: center;
 }
 
-.power-container { 
-  background-color: #2E424D; 
-  width: 100%; 
-  height: 15px; 
-  border-radius: 5px; 
-} 
+.power-container {
+  background-color: #2E424D;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+}
 
-.power-container #power-point { 
-  background-color: #D73F40; 
-  width: 1%; 
-  height: 100%; 
-  border-radius: 5px; 
-  transition: 0.5s; 
+.power-container #power-point {
+  background-color: #D73F40;
+  width: 1%;
+  height: 100%;
+  border-radius: 5px;
+  transition: 0.5s;
 }
 
 /*Soft Skills section */
-.flexcolumn5{
+.flexcolumn5 {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.flexRow6{
+
+.flexRow6 {
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -184,7 +205,7 @@ font-size: 3vh;
   height: auto;
 }
 
-.flexRow7{
+.flexRow7 {
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -199,7 +220,7 @@ font-size: 3vh;
   border-left: solid black 5px;
 }
 
-.flexRow8{
+.flexRow8 {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -218,6 +239,10 @@ font-size: 3vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: yellow;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  width: 100%
 }
 
 .flexRowProfic {
@@ -226,8 +251,58 @@ font-size: 3vh;
   align-items: center;
   border-radius: 25px;
   padding: 20px;
-  background-color: yellow;
   height: auto;
+}
+
+.flexRowButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: white;
+  border-bottom: solid black 2px;
+  border-left: solid black 2px;
+  border-right: solid black 2px;
+  width: 100%;
+}
+
+.flexColumn9 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.flexRow11 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  background-color: orange;
+  border-top: solid black 2px;
+  border-left: solid black 2px;
+  border-right: solid black 2px;
+  width: 75vw;
+  height: 10vh;
+}
+
+.flexRow12 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: white;
+  border-bottom: solid black 2px;
+  border-left: solid black 2px;
+  border-right: solid black 2px;
+  width: 75vw;
+  min-height: 75vh;
+  height: auto;
+  justify-content: center;
 }
 
 /* Sticky section CSS */
@@ -238,12 +313,12 @@ font-size: 3vh;
 
 .stickySection {
   position: fixed;
+  flex-direction: row;
   bottom: 0;
   left: 0;
-  background-color: grey;
+  background-color: lightgrey;
   width: 100%;
   height: 10%;
-  padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -255,11 +330,12 @@ font-size: 3vh;
 
 .button-sticky {
   padding: 10px 20px;
-  background-color: blue;
+  background-color: Grey;
   color: white;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 10px;
+  margin: 10px;
 }
 
 form {
@@ -299,12 +375,13 @@ h1 {
 
 @keyframes fadeIn {
   from {
-      opacity: 0;
-      transform: translateY(20px);
+    opacity: 0;
+    transform: translateY(20px);
   }
+
   to {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -351,7 +428,8 @@ h1 {
   background-image: none;
   border-style: none;
   box-sizing: border-box;
-  color: #4B0082; /* Indigo text for contrast */
+  color: #4B0082;
+  /* Indigo text for contrast */
   cursor: pointer;
   display: inline-block;
   flex-direction: row;
@@ -382,7 +460,7 @@ h1 {
 
 @media (min-width: 768px) {
   .button-77 {
-      padding: 19px 32px;
+    padding: 19px 32px;
   }
 }
 
@@ -392,7 +470,8 @@ h1 {
 }
 
 .button-77:before {
-  background-color: rgba(255, 248, 220, 0.32); /* Light cream background color */
+  background-color: rgba(255, 248, 220, 0.32);
+  /* Light cream background color */
   content: "";
   display: block;
   height: 100%;
@@ -406,7 +485,8 @@ h1 {
 
 .button-77:after {
   background-color: initial;
-  background-image: linear-gradient(92.83deg, #FFFDD0 0%, #F5DEB3 100%); /* Cream gradient for contrast */
+  background-image: linear-gradient(92.83deg, #FFFDD0 0%, #F5DEB3 100%);
+  /* Cream gradient for contrast */
   bottom: 0;
   content: "";
   display: block;
@@ -474,29 +554,40 @@ h1 {
 }
 
 .button-1 {
-  padding: 17px 40px;
+  padding: 17px 50px;
+  /* Increase padding to make the button wider */
   cursor: pointer;
   border: 0;
-  background-color: white;
-  box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+  background-color: hsl(48, 100%, 50%);
+  /* Vibrant yellow color */
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 8px;
+  /* Slightly darker shadow for better contrast */
   letter-spacing: 1.5px;
   text-transform: uppercase;
   font-size: 15px;
   transition: all 0.5s ease;
+  color: hsl(0, 0%, 20%);
+  /* Dark text color for contrast */
 }
 
 .button-1:hover {
   letter-spacing: 3px;
-  background-color: hsl(261deg 80% 48%);
+  background-color: hsl(48, 100%, 40%);
+  /* Slightly darker yellow on hover */
   color: hsl(0, 0%, 100%);
-  box-shadow: rgb(93 24 220) 0px 7px 29px 0px;
+  /* White text on hover for better readability */
+  box-shadow: rgba(255, 165, 0, 0.7) 0px 7px 29px 0px;
+  /* Orange shadow for a warm glow */
 }
 
 .button-1:active {
   letter-spacing: 3px;
-  background-color: hsl(261deg 80% 48%);
+  background-color: hsl(48, 100%, 40%);
+  /* Keep the same darker yellow on active state */
   color: hsl(0, 0%, 100%);
-  box-shadow: rgb(93 24 220) 0px 0px 0px 0px;
+  /* White text on active for better readability */
+  box-shadow: rgba(255, 165, 0, 0) 0px 0px 0px 0px;
+  /* Remove shadow on active state */
   transform: translateY(10px);
   transition: 100ms;
 }
@@ -513,6 +604,8 @@ h1 {
   background-color: white;
   color: black;
   padding: 10px 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -520,12 +613,6 @@ h1 {
 .dev-button.active {
   background-color: orange;
   color: white;
-}
-
-.designer-buttons .row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
 }
 
 .des-button {
@@ -536,6 +623,21 @@ h1 {
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.skill-button {
+  border: 2px solid yellow;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: 10vw;
 }
 
 .des-button.active {
@@ -556,6 +658,8 @@ h1 {
   color: black;
   padding: 10px 20px;
   cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 10px;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -579,7 +683,7 @@ h1 {
   color: white;
 }
 
-.softSkill-row{
+.softSkill-row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
@@ -610,4 +714,3 @@ a:hover {
 a:active {
   color: red;
 }
-

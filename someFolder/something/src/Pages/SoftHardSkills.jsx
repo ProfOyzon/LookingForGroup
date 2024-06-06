@@ -4,16 +4,17 @@ import '../Css/style.css';
 export const SoftHardSkills = () => {
     const [selectedskillButtons, setSelectedskillButtons] = useState([]);
     const [canProceed, setCanProceed] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        setCanProceed(selectedskillButtons.length === 5);
+        setCanProceed(selectedskillButtons.length >= 5);
     }, [selectedskillButtons]);
 
     const toggleButton = (buttonLabel) => {
         setSelectedskillButtons(prevState => {
             if (prevState.includes(buttonLabel)) {
                 return prevState.filter(label => label !== buttonLabel);
-            } else if (prevState.length < 3) {
+            } else if (prevState.length < 5) {
                 return [...prevState, buttonLabel];
             } else {
                 return prevState;
@@ -47,28 +48,55 @@ export const SoftHardSkills = () => {
         'Organizational Skills', 'Data Structures and Algorithms', 'Time Management'
     ];
 
+    const filteredSkills = skills.filter(skill =>
+        skill.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className='flexColumn9'>
             <div className='flexRow11'>
-                {/* You can put any content you want here */}
+                <h1>Select at least 5 Skills you would like to show</h1>
             </div>
 
             <div className='flexRow12'>
-                {skills.map(skill => (
-                    <button
-                        key={skill}
-                        className="skill-button"
-                        onClick={() => toggleButton(skill)}
-                        style={{
-                            backgroundColor: selectedskillButtons.includes(skill) ? 'yellow' : 'white',
-                            color: selectedskillButtons.includes(skill) ? 'white' : 'black'
-                        }}
-                    >
-                        {skill}
-                    </button>
-                ))}
+                <input
+                    type="text"
+                    placeholder="Search skills..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="search-bar"
+                />
+                <div className='skill-buttons-container'>
+                    {filteredSkills.map(skill => (
+                        <button
+                            key={skill}
+                            className="skill-button"
+                            onClick={() => toggleButton(skill)}
+                            style={{
+                                backgroundColor: selectedskillButtons.includes(skill) ? 'yellow' : 'white',
+                                color: selectedskillButtons.includes(skill) ? 'white' : 'black'
+                            }}
+                        >
+                            {skill}
+                        </button>
+                    ))}
+                </div>
             </div>
-            {/* You might want to display some message based on canProceed state */}
+
+            <div className="flexFixedSection">
+                <form className="stickySection">
+                    <button className="button-sticky" type="button" onClick={() => window.location.href = '/Proficiencies'}>Back</button>
+                    <button
+                        className="button-sticky"
+                        type="button"
+                        onClick={() => window.location.href = '/'}
+                        disabled={!canProceed}
+                        style={{ backgroundColor: canProceed ? 'orange' : 'grey', color: canProceed ? 'white' : 'black' }}
+                    >
+                        Next
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };

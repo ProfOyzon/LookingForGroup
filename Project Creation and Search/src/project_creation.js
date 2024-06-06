@@ -97,48 +97,44 @@ const init = () => {
 //To use, type '?userid=(id of user)&projectid=(id of project)' without the ''
 //Replace parentheses items with the respective ids of the user and project you wish to test
 const editProject = async (urlParams) => {
-  selectedID = urlParams.get('userid');
   projectID = urlParams.get('projectid');
 
-  const dbRef = ref(getDatabase(app));
-  await get(child(dbRef, `users`)).then((snapshot) => {
-    if (!snapshot.exists() || snapshot.val()[selectedID] == undefined || snapshot.val()[selectedID].projects[projectID] == undefined) {
-      console.log('project not found, loading as creation page'); //For test purposes
-      //If project is not found, continues loading as project creation page
-      for (let i = 0; i < 3; i++) {
-        createRole();
-      }
-      newProject.onclick = createProject;
-      return;
+  const snapshot = await database.getData();
+  
+  if (snapshot.projects[projectID] == undefined) {
+    console.log('project not found, loading as creation page');
+    //If project is not found, continues loading as project creation page
+    for (let i = 0; i < 3; i++) {
+      createRole();
     }
+    newProject.onclick = createProject;
+    return;
+  }
 
-    document.querySelector('h1').innerHTML = 'Edit Project';
-    let project = snapshot.val()[selectedID].projects[projectID];
-    console.log(project); //For test purposes
+  document.querySelector('h1').innerHTML = 'Edit Project';
+  let project = snapshot.projects[projectID];
+  console.log(project); //For test purposes
 
-    //Make username and id inputs unusable
-    document.querySelector('#id-box').innerHTML = `Username: ${snapshot.val()[selectedID].name}`;
+  //Make username and id inputs unusable
+  document.querySelector('#id-box').innerHTML = `Project ID: ${projectID}`;
 
-    //Fill in inputs with current project data
-    titleInput.value = decode(project.title);
-    descInput.value = decode(project.description);
+  //Fill in inputs with current project data
+  titleInput.value = decode(project.title);
+  descInput.value = decode(project.description);
 
-    //Fill in keywords
-    for (let word of project.tags) {
-      addKeyword(word);
-    }
+  //Fill in keywords
+  for (let word of project.tags) {
+    addKeyword(word);
+  }
 
-    //Fill in roles
-    for (let role of project.needs) {
-      createCustomRole(role.roleType, role.roleNum);
-    }
+  //Fill in roles
+  for (let role of project.needs) {
+    createCustomRole(role.roleType, role.roleNum);
+  }
 
-    //Assign function to submit button & change display
-    newProject.innerHTML = "Save Changes";
-    newProject.onclick = saveEdits;
-  }).catch((error) => {
-    console.error(error);
-  });
+  //Assign function to submit button & change display
+  newProject.innerHTML = "Save Changes";
+  newProject.onclick = saveEdits;
 }
 
 //Creates a keyword based on content of the keyword input

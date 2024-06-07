@@ -234,12 +234,16 @@ footer {
 
 .flexColumnProfic {
   display: flex;
-  flex-direction: column;
   align-items: center;
   background-color: yellow;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   width: 100%
+}
+
+.flexColumnProfic h1 {
+  flex: 1;
+  text-align: center;
 }
 
 .flexRowProfic {
@@ -273,7 +277,7 @@ footer {
 
 .flexRow11 {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
@@ -283,6 +287,13 @@ footer {
   border-right: solid black 2px;
   width: 75vw;
   height: 10vh;
+}
+
+.flexRow11 h1 {
+  font-size: 2vw;
+  flex: 1;
+  text-align: center;
+
 }
 
 .flexRow12 {
@@ -641,12 +652,16 @@ h1 {
   border-radius: 50px;
   background-color: white;
   color: black;
-  padding: 5px 10px; /* Reduced padding */
+  padding: 5px 10px;
+  /* Reduced padding */
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
-  margin: 5px; /* Reduced margin */
-  width: 10vw; /* Adjust width to fit more buttons in a row */
-  height: auto; /* Let the height adjust automatically */
+  margin: 5px;
+  /* Reduced margin */
+  width: 10vw;
+  /* Adjust width to fit more buttons in a row */
+  height: auto;
+  /* Let the height adjust automatically */
 }
 
 .des-button.active {

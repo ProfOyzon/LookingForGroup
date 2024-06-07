@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../Css/style.css';
 
 const Proficiencies = () => {
@@ -6,6 +7,7 @@ const Proficiencies = () => {
     const [selectedDeveloperButtons, setSelectedDeveloperButtons] = useState([]);
     const [selectedOtherButtons, setSelectedOtherButtons] = useState([]);
     const [canProceed, setCanProceed] = useState(false);
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
         const totalSelected = selectedDesignerButtons.length + selectedDeveloperButtons.length + selectedOtherButtons.length;
@@ -121,11 +123,17 @@ const Proficiencies = () => {
 
             <div className="flexFixedSection">
                 <form className="stickySection">
-                    <button className="button-sticky" role="button" onClick={() => window.location.href = '/SignUp'}>Back</button>
                     <button
+                        type="button"
                         className="button-sticky"
-                        role="button"
-                        onClick={() => window.location.href = '/SoftHardSkills'}
+                        onClick={() => navigate('/SignUp')}
+                    >
+                        Back
+                    </button>
+                    <button
+                        type="button"
+                        className="button-sticky"
+                        onClick={() => navigate('/SoftHardSkills')}
                         disabled={!canProceed}
                         style={{ backgroundColor: canProceed ? 'orange' : 'grey', color: canProceed ? 'white' : 'black' }}
                     >

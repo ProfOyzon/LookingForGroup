@@ -6,6 +6,7 @@ import Home from "./Pages/Home";
 import Proficiencies from "./Pages/Proficiencies";
 import SoftHardSkills from "./Pages/SoftHardSkills";
 import Project from "./Pages/Project";
+import SideBar from "./Components/SideBar"
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
         <Route path="/Proficiencies" element={<Proficiencies />} />
         <Route path="/SoftHardSkills" element={<SoftHardSkills />} />
         <Route path= "/Project" element={<Project />} />
+        <Route path= "/SideBar" element={<SideBar />} />
       </Routes>
     </Router>
   );

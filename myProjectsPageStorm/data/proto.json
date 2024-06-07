@@ -1,0 +1,59 @@
+{
+    "projects": [
+        {
+            "name": "A Very Good Game",
+            "description": "A really good game, alright?",
+            "type": "Puzzle",
+            "length": "Long",
+            "url": "../src/giphy.jpg",
+            "tags": ["Puzzle", "Fun", "Challenging"],
+            "icon":"../src/icons/blueBlur.png",
+            "isAdmin": true
+
+        },
+
+        {
+            "name": "House Cleaning Frenzy",
+            "description": "Clean a house, in a frenzy",
+            "type": "Action",
+            "length": "Short",
+            "url": "../src/akaza.gif",
+            "tags": ["Action", "Adventure", "Casual"],
+            "icon":"../src/icons/caligula.png",
+            "isAdmin": false
+        },
+
+        {
+            "name": "Salami and the Cold Cuts",
+            "description": "Save the Cold Cut Crew from Master Charcuterie!",
+            "type": "Adventure",
+            "length": "Medium",
+            "url": "../src/gran.gif",
+            "tags": ["2D", "Cartoony", "Hand-Drawn", "Anime"],
+            "icon":"../src/icons/laffey.jpg",
+            "isAdmin": false
+        },
+
+        {
+            "name": "Watt's Your Deal!?",
+            "description": "The ever-rude Watt Spark has some unfinished business to settle!",
+            "type": "Fighting",
+            "length": "Medium",
+            "url": "../src/sasuke.gif",
+            "tags": ["Hardcore", "Souls-like", "Metroidvania", "Easy"],
+            "icon":"../src/icons/vegito.png",
+            "isAdmin": false
+        },
+
+        {
+            "name": "Something or Other",
+            "description": "This game is about...erm, it's about...uh...something or other!",
+            "type": "Puzzle",
+            "length": "Long",
+            "url": "../src/dbz.gif",
+            "tags": ["Something", "or", "Other", "uh..."],
+            "icon":"../src/icons/saiki.jpg",
+            "isAdmin": true
+        }
+    ]
+}

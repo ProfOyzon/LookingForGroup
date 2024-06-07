@@ -1,8 +1,42 @@
 // Jennifer Pichardo
 // Project Profile Page
+import * as firebase from "./firebase.js";
+
+let projectID;
 
 const init = () => {
+    projectID = 6109;
     setupUI();
+    getProjectData();
+};
+
+const getProjectData = async () => {
+    const db = await firebase.getData();
+    //console.log(db);
+
+    let project = db.projects[projectID];
+    console.log(project);
+
+    //show project title and description
+    document.title = `${decodeURI(project.title)} | LFG`;
+    document.querySelector("#title").innerHTML = decodeURI(project.title);
+    document.querySelector("#description").innerHTML = decodeURI(project.description);
+
+    //show project tags
+    project.tags.forEach(tag => {
+        document.querySelector("#keywords").innerHTML += `<span>${tag}</span>`;
+    });
+
+    //show what project is hiring for
+    if(project.isHiring){
+        let hiringNeeds  = document.querySelector("#role-container");
+
+        project.needs.forEach(role => {
+            hiringNeeds.innerHTML += `<div class = "position">
+            <h3>${role.roleType}: ${role.roleNum} </h3>
+            </div>`;
+        });
+    }
 };
 
 const setupUI = () => {

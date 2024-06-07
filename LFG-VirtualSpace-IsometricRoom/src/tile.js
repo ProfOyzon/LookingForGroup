@@ -56,10 +56,11 @@ export class Tile {
     }
 
     removeDecoration = () => {
+        console.log(`Before: ${this.child.decoration.sprite.position.x}, ${this.child.decoration.sprite.position.y}`); // --------------------------
         this.child.decoration.attachedTile = null;
+        // console.log(`After: ${this.child.decoration.sprite.position.x}, ${this.child.decoration.sprite.position.y}`); // --------------------------
         // removes a decoration
         this.child = null;
-        // console.log('removed'); // --------------------------
         drawTile(this);
     }
 }

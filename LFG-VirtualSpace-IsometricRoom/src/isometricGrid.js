@@ -17,14 +17,23 @@ export class IsometricGrid {
             height: this.originalWidth/2,
             halfHeight: this.originalWidth/4
         };
-        // console.log(this.container.toGlobal(this.container));
-        console.log(this.origin);
+        this.container.pivot.set(0, this.tileSize.halfHeight * this.size.y);
+        // this.container.position.x = this.tileSize.halfWidth * this.size.x;
+        // this.container.position.y = 0;
+        // console.log(this.origin);
+    }
+
+    setPosition = ({x,y}) => {
+        this.container.position.x += x;
+        this.container.position.y += y;
+        // console.log(this.container.position);
     }
 
     update = () => {
         let parentScale = this.container.parent.scale;
         this.updateOrigin();
         this.updateTileSize(parentScale.x);
+        // console.log(this.container.toGlobal(this.container));
     }
 
     updateTileSize = (scale) => {

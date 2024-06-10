@@ -1,4 +1,4 @@
-import "../pages.css";
+import "./pages.css";
 
 const Home = (props) => {
     return (

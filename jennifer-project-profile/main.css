@@ -37,13 +37,11 @@ main{
     padding: 0.3em;
 }
 #follow-btn{
-    padding: 0.2em;
+    padding: 10px;
     border: 2px solid black;
     border-radius: 12px;
-    font-size: 20px;
-    width: 120px;
-    height: 40px;
-    margin-top: 1em;
+    font-size: 18px;
+    font-weight: bold;
 }
 hr{
     border: 2px solid black;
@@ -129,26 +127,26 @@ hr{
   
 .carousel .card { 
     scroll-snap-align: start; 
-    height: 180px; 
+    height: 120px; 
     list-style: none; 
     display: flex; 
     cursor: pointer; 
-    width: 200px; 
-    padding: 10px; 
+    width: 180px; 
+    padding: 10px 20px; 
     align-items: center; 
     justify-content: center; 
     flex-direction: column; 
 } 
 
 .card .img { 
-    width: 100px; 
-    height: 100px; 
+    width: 50px; 
+    height: 50px; 
     border-radius: 50%; 
 } 
   
 .card .img img { 
-    width: 100px; 
-    height: 100px; 
+    width: 50px; 
+    height: 50px; 
     object-fit: cover; 
     border-radius: 50%; 
     border: 4px solid #fff;
@@ -158,12 +156,13 @@ hr{
 .card h2 {
     text-align: center; 
     font-weight: 500; 
-    font-size: 1rem;  
+    font-size: 16px;
+    margin-bottom: 6px;
 } 
   
 .card span { 
     color: #6a6d78; 
-    font-size: 1rem; 
+    font-size: 16px; 
   
 } 
   

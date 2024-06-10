@@ -1,101 +1,19 @@
-//Firebase data taken from search prototype
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-import { getDatabase, ref, get, set, child } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+import * as database from "./db.js";
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBimRr67hSVEwVyo4QhDnPNyGNfG_KDwIo",
-  authDomain: "lfg-test-7da4d.firebaseapp.com",
-  projectId: "lfg-test-7da4d",
-  storageBucket: "lfg-test-7da4d.appspot.com",
-  messagingSenderId: "362431495411",
-  appId: "1:362431495411:web:964887f9b6f667c6f0cb86"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-const generateRandomID = async (db, uid) => {
-  // Generate a random ID
-  let tryID = Math.floor(Math.random() * 1000);
-
-  // If the ID already exists, generate it again until unique
-  await get(child(ref(db), `users/${uid}/projects`)).then(async snapshot => {
-    if (snapshot.exists())
-      for (let id in snapshot.val()) {
-        if (id == tryID) tryID = await generateRandomID(db, uid);
-      }
-  });
-
-  return tryID;
-}
-
+// Used to fill in the signin dropdown with available users
 const initOptions = async (e) => {
-  const db = getDatabase(app);
-  await get(child(ref(db), "users")).then(snapshot => {
-    if(snapshot.exists()){
-      for(let id in snapshot.val()){
-        let newOpt = document.createElement("option");
-        newOpt.value = id;
-        newOpt.innerHTML = snapshot.val()[id].username;
-        e.appendChild(newOpt);
-      }
-    }
-  })
+  const db = await database.getData();
+  if (!db) {
+    console.log("ERROR: No database exists");
+    return;
+  }
+  for (let id in db.users) {
+    let newOpt = document.createElement("option");
+    newOpt.value = id;
+    newOpt.innerHTML = db.users[id].username;
+    e.appendChild(newOpt);
+  }
 }
-
-const writeProjectData = async (id = "-1", project, hasOpenings, editing = false) => {
-  console.log(id);
-
-  // encode strings
-  let eTitle = encodeURI(project.title);
-  let eDesc = encodeURI(project.description);
-
-  const db = getDatabase(app);
-
-  get(child(ref(db), `users`)).then(snapshot => {
-    if (snapshot.exists()) {
-      //Ensure the entered ID exists in the database
-      for (let user in snapshot.val()) {
-        console.log(user);
-        if (user == id) {
-          return true;
-        };
-      }
-      return false;
-    }
-  }).then(async userExists => {
-    if (userExists) {
-      //Generate new project id if project is new, otherwise use current project id
-      if (!editing)
-      {
-        const r = ref(db, `users/${id}/projects/${await generateRandomID(db, id)}`);
-
-        set(r, {
-          title: eTitle,
-          description: eDesc,
-          tags: project.keywords,
-          isHiring: hasOpenings,
-          needs: project.roles
-        });
-      }
-      else {
-        const r = ref(db, `users/${id}/projects/${projectID}`);
-
-        set(r, {
-          title: eTitle,
-          description: eDesc,
-          tags: project.keywords,
-          isHiring: hasOpenings,
-          needs: project.roles
-        });
-      } 
-    }
-    else{
-      console.log("User ID must correspond to existing user.")
-    }
-  });
-};
 
 //title/desc/size/image/username/id/preferences elements
 const titleInput = document.querySelector('#title');
@@ -129,26 +47,40 @@ let selectedID = -1;
 //variables used when editing a project, unused if page is used for creation
 let projectID = -1;
 
+const writeProjectData = async (id = "-1", project, hasOpenings) => {
+  // Encode strings
+  let eTitle = encodeURI(project.title);
+  let eDesc = encodeURI(project.description);
+
+  // Write
+  database.writeData({
+    title: eTitle,
+    description: eDesc,
+    tags: project.keywords,
+    isHiring: hasOpenings,
+    needs: project.roles,
+    owner: id
+  }, "projects", projectID);
+}
+
 //Runs after loading
-const init = () =>
-{
+const init = () => {
   console.log('initializing');
 
   //Adds functions to respective buttons
   keywordSubmit.onclick = submitKeyword;
   addRole.onclick = createRole;
   linkSubmit.onclick = addLink;
-  
+
   //Checks if there are queries in url
   let queryString = window.location.search;
-  if (queryString != '')
-  {
+  if (queryString != '') {
     let urlParams = new URLSearchParams(queryString);
     editProject(urlParams);
     return;
   }
 
-  for (let i = 0; i < 3; i++){
+  for (let i = 0; i < 3; i++) {
     createRole();
   }
   //Adds function to submit button if not editing
@@ -164,58 +96,50 @@ const init = () =>
 //Is called when url parameters are present
 //To use, type '?userid=(id of user)&projectid=(id of project)' without the ''
 //Replace parentheses items with the respective ids of the user and project you wish to test
-const editProject = async (urlParams) =>
-{
-  selectedID = urlParams.get('userid');
+const editProject = async (urlParams) => {
   projectID = urlParams.get('projectid');
 
-  const dbRef = ref(getDatabase(app));
-  await get(child(dbRef, `users`)).then((snapshot) => {
-    if (!snapshot.exists() || snapshot.val()[selectedID] == undefined || snapshot.val()[selectedID].projects[projectID] == undefined)
-    {
-      console.log('project not found, loading as creation page'); //For test purposes
-      //If project is not found, continues loading as project creation page
-      for (let i = 0; i < 3; i++){
-        createRole();
-      }
-      newProject.onclick = createProject;
-      return;
+  const snapshot = await database.getData();
+  
+  if (snapshot.projects[projectID] == undefined) {
+    console.log('project not found, loading as creation page');
+    //If project is not found, continues loading as project creation page
+    for (let i = 0; i < 3; i++) {
+      createRole();
     }
+    newProject.onclick = createProject;
+    return;
+  }
 
-    document.querySelector('h1').innerHTML = 'Edit Project';
-    let project = snapshot.val()[selectedID].projects[projectID];
-    console.log(project); //For test purposes
+  document.querySelector('h1').innerHTML = 'Edit Project';
+  let project = snapshot.projects[projectID];
+  console.log(project); //For test purposes
 
-    //Make username and id inputs unusable
-    document.querySelector('#id-box').innerHTML = `Username: ${snapshot.val()[selectedID].name}`;
+  //Make username and id inputs unusable
+  document.querySelector('#id-box').innerHTML = `Project ID: ${projectID}`;
+  selectedID = snapshot.projects[projectID].owner;
 
-    //Fill in inputs with current project data
-    titleInput.value = decode(project.title);
-    descInput.value = decode(project.description);
+  //Fill in inputs with current project data
+  titleInput.value = decode(project.title);
+  descInput.value = decode(project.description);
 
-    //Fill in keywords
-    for (let word of project.tags)
-    {
-      addKeyword(word);
-    }
+  //Fill in keywords
+  for (let word of project.tags) {
+    addKeyword(word);
+  }
 
-    //Fill in roles
-    for (let role of project.needs)
-    {
-      createCustomRole(role.roleType, role.roleNum);
-    }
+  //Fill in roles
+  for (let role of project.needs) {
+    createCustomRole(role.roleType, role.roleNum);
+  }
 
-    //Assign function to submit button & change display
-    newProject.innerHTML = "Save Changes";
-    newProject.onclick = saveEdits;
-  }).catch((error) => {
-    console.error(error);
-  });
+  //Assign function to submit button & change display
+  newProject.innerHTML = "Save Changes";
+  newProject.onclick = saveEdits;
 }
 
 //Creates a keyword based on content of the keyword input
-const submitKeyword = () =>
-{
+const submitKeyword = () => {
   //Check if input has content, returns if empty
   if (keyword.value == '') {
     console.log('keyword input is empty, no keyword created');
@@ -223,8 +147,7 @@ const submitKeyword = () =>
   }
   let word = keyword.value.toLowerCase();
   //Check if keyword already exists, exits if it does
-  if (keywords.indexOf(word) != -1)
-  {
+  if (keywords.indexOf(word) != -1) {
     console.log('keyword already exists');
     return;
   }
@@ -234,8 +157,7 @@ const submitKeyword = () =>
 }
 
 //Adds a keyword to keywords list and container
-const addKeyword = (word) =>
-{
+const addKeyword = (word) => {
   //Create element with content from keyword input
   let element = document.createElement('div');
   element.setAttribute("class", "keyword");
@@ -244,7 +166,7 @@ const addKeyword = (word) =>
   //Add remove button and assign function to it
   let removeButton = element.appendChild(document.createElement('button'));
   removeButton.innerHTML = 'x';
-  removeButton.onclick = function() {removeKeyword(element)};
+  removeButton.onclick = function () { removeKeyword(element) };
   //Add keyword to keywords array
   keywords.push(word);
   //Add element to keyword container
@@ -254,8 +176,7 @@ const addKeyword = (word) =>
 
 //Removes the respective keyword element from keyword container
 //Also removes the keyword from the 'keywords' array
-const removeKeyword = (element) =>
-{
+const removeKeyword = (element) => {
   console.log('removing keyword');
   let index = keywords.indexOf(element.value);
   keywords.splice(index, 1);
@@ -263,8 +184,7 @@ const removeKeyword = (element) =>
 }
 
 //Adds a new role to project roles
-const createRole = () =>
-{
+const createRole = () => {
   roleCount++;
   //Create body of new role element
   let element = document.createElement('div');
@@ -285,14 +205,13 @@ const createRole = () =>
   //Add remove button and assign function to it
   let removeButton = element.appendChild(document.createElement('button'));
   removeButton.innerHTML = '-';
-  removeButton.onclick = function() {removeItem(element)};
+  removeButton.onclick = function () { removeItem(element) };
   //Add element to role list
   roles.appendChild(element);
   console.log('new role created');
 }
 
-const createCustomRole = (roleType, roleNum) =>
-{
+const createCustomRole = (roleType, roleNum) => {
   roleCount++;
 
   let element = document.createElement('div');
@@ -312,10 +231,8 @@ const createCustomRole = (roleType, roleNum) =>
   `
 
   let options = element.querySelectorAll('option');
-  for (let option of options)
-  {
-    if (option.value == roleType)
-    {
+  for (let option of options) {
+    if (option.value == roleType) {
       option.setAttribute('selected', 'selected');
       break;
     }
@@ -324,15 +241,14 @@ const createCustomRole = (roleType, roleNum) =>
   //Add remove button and assign function to it
   let removeButton = element.appendChild(document.createElement('button'));
   removeButton.innerHTML = '-';
-  removeButton.onclick = function() {removeItem(element)};
+  removeButton.onclick = function () { removeItem(element) };
   //Add element to role list
   roles.appendChild(element);
   console.log('new role created');
 }
 
 //Creates a new link element and adds it to relevant project links
-const addLink = () =>
-{
+const addLink = () => {
   //Get link from input
   let newLink = linkInput.value;
 
@@ -341,7 +257,7 @@ const addLink = () =>
     let url = new URL(newLink);
   } catch (_) {
     console.log('invalid link');
-    return;  
+    return;
   }
   //Create div item that will contain link and button
   let linkDiv = document.createElement('div');
@@ -350,13 +266,13 @@ const addLink = () =>
   //Create new link element
   let linkElement = document.createElement('a');
   linkElement.setAttribute('href', newLink);
-  linkElement.setAttribute('target','_blank');
+  linkElement.setAttribute('target', '_blank');
   linkElement.innerHTML = newLink;
   linkDiv.appendChild(linkElement);
   //Add remove button and assign function to it
   let removeButton = linkDiv.appendChild(document.createElement('button'));
   removeButton.innerHTML = 'x';
-  removeButton.onclick = function() {removeLink(linkDiv)};
+  removeButton.onclick = function () { removeLink(linkDiv) };
   //Add element to link container, add link to link array and remove input content
   linkContainer.appendChild(linkDiv);
   links.push(newLink);
@@ -364,8 +280,7 @@ const addLink = () =>
 }
 
 //Removes the respective link from the link container and link array
-const removeLink = (element) => 
-{
+const removeLink = (element) => {
   console.log('removing link');
   let index = links.indexOf(element.value);
   links.splice(index, 1);
@@ -374,15 +289,13 @@ const removeLink = (element) =>
 
 //Removes an element when called
 //element - the html element that is removed when called
-const removeItem = (element) =>
-{
+const removeItem = (element) => {
   console.log('removing element');
   element.remove();
 }
 
 //Gets values from inputs and compiles into a json object
-const getInputs = () =>
-{
+const getInputs = () => {
   //Get title, description, and size inputs
   let title = titleInput.value;
   let size = sizeInput.value;
@@ -400,57 +313,50 @@ const getInputs = () =>
   let roles = [];
   let roleCheck = [];
   let roleList = document.getElementsByClassName('role');
-  for (let item of roleList)
-  {
+  for (let item of roleList) {
     let roleType = item.querySelector('select').value;
     //Check if there is no duplicate role titles
-    if (roleCheck.indexOf(roleType) != -1)
-    {
+    if (roleCheck.indexOf(roleType) != -1) {
       console.log('Multiple listings of same role type exist, please ensure each role is unique');
       return undefined;
     }
     roleCheck.push(roleType);
     let roleNum = item.querySelector('input').value;
     //Check if number of positions is valid
-    if (roleNum == '' || roleNum < 0)
-    {
+    if (roleNum == '' || roleNum < 0) {
       console.log('Please use only positive numbers in position numbers');
       return undefined;
     }
-    let newRole = {roleType, roleNum};
+    let newRole = { roleType, roleNum };
     roles.push(newRole);
   }
   //let hiring = roles.length ? true : false;
   //Construct json object
-  let json = {title, size, description, keywords, roles};
+  let json = { title, size, description, keywords, roles };
   return json;
 }
 
 //Create a JSON object using input values & uploads it to the user's projects
-const createProject = () =>
-{
+const createProject = () => {
   let json = getInputs();
   let hiring = json.roles.length ? true : false;
   writeProjectData(selectedID, json, hiring);
 }
 
 //Overwrite the data of the current project being edited with current input data
-const saveEdits = () =>
-{
+const saveEdits = () => {
   let json = getInputs();
-  let hiring = json.roles.length ? true: false;
+  let hiring = json.roles.length ? true : false;
   writeProjectData(selectedID, json, hiring, true);
 }
 
 //Basic help function, capitalizes the inputted word
-const capitalize = (word) =>
-{
+const capitalize = (word) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 //Help function, condenses decoding & string replacing into a single function
-const decode = (content) =>
-{
+const decode = (content) => {
   return decodeURI(content).replace('<', '&lt;').replace('>', '&gt;');
 }
 

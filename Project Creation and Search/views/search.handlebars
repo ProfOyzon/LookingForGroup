@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>search test</title>
+    <script src="assets/main_bundle.js" type="module"></script>
+</head>
+
+<body>
+    <label for="signin">User: </label>
+    <select id="signin"></select>
+    <p></p>
+
+    <label for="search-select">Looking for: </label>
+    <select id="search-select">
+        <option value="project">Project</option>
+        <option value="profile">Profile</option>
+    </select>
+    <p></p>
+
+    <div id="project">
+        <input type="search" id="keyword-input">
+        <p></p>
+
+        <input type="checkbox" id="check">
+        <label for="check">Hiring</label>
+        <p></p>
+
+        <p><i id="tag-list">No tags selected</i></p>
+        <input type="text" id="tag-input">
+        <button id="tag-submission">Submit</button>
+        <button id="tag-clear">Clear</button>
+        <p></p>
+
+        <select id="role-selection" multiple>
+            <option value="general">General</option>
+            <option value="programmer">Programmer</option>
+            <option value="artist">Artist</option>
+            <option value="designer">Designer</option>
+            <option value="tester">Tester</option>
+            <option value="manager">Manager</option>
+        </select>
+        <p></p>
+    </div>
+    <div id="profile" style="display:none">
+        <input type="search" id="uname-input">
+        <p></p>
+
+        <select id="u-role-selection" multiple>
+            <option value="general">General</option>
+            <option value="programmer">Programmer</option>
+            <option value="artist">Artist</option>
+            <option value="designer">Designer</option>
+            <option value="tester">Tester</option>
+            <option value="manager">Manager</option>
+        </select>
+        <p></p>
+    </div>
+    <p></p>
+
+    <button id="user-data-search">Search</button>
+    <p></p>
+    <div id="qs-items" style="display:none">
+        <label for="quick-select">Quick search for project: </label>
+        <select id="quick-select"></select>
+    </div>
+    <button id="quick-search">Quick Search</button>
+    <p></p>
+
+    <a href="https://ninja-muffin24.itch.io/funkin">Play Friday Night Funkin' instead</a>
+
+    <div id="results"></div>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+#header{
+    display: flex;
+    background-color: gray;
+    justify-content: space-between;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 2px 8px;
+}
+
+div, section, #about{
+    padding: 4px;
+    margin: 8px;
+}
+
+#about{
+    width: 30%;
+    background-color: white;
+}
+
+#profileHeader{
+    justify-content: space-between;
+}
+
+
+#projectList, .skillList, #endorseList, #linkList{
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px;
+}
+
+
+.box, .skillList > p, #linkList > a{
+    width: fit-content;
+    border-color: black;
+    border-style: solid;
+    background-color: darkgray;
+    border: 2px;
+    padding: 2px 8px;
+    border-style: solid;
+    box-shadow: 3px 3px black;
+}
+
+#pfp{
+    border-radius: 50%;
+    border-color: black;
+    border: 2px;
+    border-style: solid;
+}
+
+#imageList{
+    height: 300px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+#imageList > img{
+    padding: 3px;
+    height: 300px;
+}
+
+section{
+    border-color: black;
+    border-style: solid;
+    background-color: lightgray;
+    border: 2px;
+    padding: 2px 8px;
+
+    border-style: solid;
+}
+
+.active{
+    background-color: lightyellow;
+}

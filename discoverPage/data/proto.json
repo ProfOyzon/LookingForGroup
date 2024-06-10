@@ -1,0 +1,73 @@
+{
+    "projects": [
+        {
+            "name": "A Very Good Game",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Puzzle",
+            "length": "Long",
+            "url": "../src/giphy.jpg",
+            "tags": ["Puzzle", "Fun", "Challenging"],
+            "icon":"../src/icons/blueBlur.png",
+            "isAdmin": true,
+            "lookingFor": ["Programmers", "UI/UX"]
+
+        },
+
+        {
+            "name": "House Cleaning Frenzy",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Action",
+            "length": "Short",
+            "url": "../src/akaza.gif",
+            "tags": ["Action", "Adventure", "Casual"],
+            "icon":"../src/icons/caligula.png",
+            "isAdmin": false,
+            "lookingFor": ["Programmers", "Artists", "UI/UX"]
+        },
+
+        {
+            "name": "Salami and the Cold Cuts",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Adventure",
+            "length": "Medium",
+            "url": "../src/gran.gif",
+            "tags": ["2D", "Cartoony", "Hand-Drawn", "Anime"],
+            "icon":"../src/icons/laffey.jpg",
+            "isAdmin": false,
+            "lookingFor": ["Programmers", "Artists", "UI/UX"]
+        },
+
+        {
+            "name": "Watt's Your Deal!?",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Fighting",
+            "length": "Medium",
+            "url": "../src/sasuke.gif",
+            "tags": ["Hardcore", "Souls-like", "Metroidvania", "Easy"],
+            "icon":"../src/icons/vegito.png",
+            "isAdmin": false,
+            "lookingFor": ["Artists", "UI/UX"]
+        },
+
+        {
+            "name": "Something or Other",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Puzzle",
+            "length": "Long",
+            "url": "../src/dbz.gif",
+            "tags": ["Something", "or", "Other", "uh..."],
+            "icon":"../src/icons/saiki.jpg",
+            "isAdmin": true,
+            "lookingFor": ["Anyone"]
+        }
+    ],
+
+    "people": [
+        {
+            "name": "A Very Good Game",
+            "bio": "A really good game, alright?",
+            "skills": ["Puzzle", "Fun", "Challenging"],
+            "icon":"../src/icons/blueBlur.png"
+        }
+    ]
+}

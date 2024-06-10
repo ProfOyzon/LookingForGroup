@@ -1,0 +1,105 @@
+{
+    "Bio": [
+        {
+            "name" : "Jane Doe",
+            "username" : "jdoe123",
+            "pronouns" : "she/her",
+            "about" : "Some stuff about me: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+        }
+    ],
+
+    "Images": [
+        {"src" : "assets/placeholder.png", "alt" : "placeholder"},
+        {"src" : "assets/placeholder2.png", "alt" : "placeholder two"},
+        {"src" : "assets/placeholder2.png", "alt" : "placeholder two"},
+        {"src" : "assets/placeholder.png", "alt" : "placeholder"},
+        {"src" : "assets/placeholder2.png", "alt" : "placeholder two"},
+        {"src" : "assets/placeholder2.png", "alt" : "placeholder two"},
+        {"src" : "assets/placeholder.png", "alt" : "placeholder"},
+        {"src" : "assets/placeholder2.png", "alt" : "placeholder two"}
+    ],
+
+    "Links":[
+        {"text" : "My Youtube Channel", "link" : "https://youtube.com"},
+        {"text" : "My Twitter", "link" : "https://twitter.com"},
+        {"text" : "My itch.io", "link" : "https://itch.io"},
+        {"text" : "My Discord", "link" : "https://discord.com"}
+    ],
+
+    "Interests" : [
+        {
+            "ProjectInterests" : "I want to work on creative projects with a serious team",
+            "RoleInterests" : "I want to take on art and animation roles",
+            "Availability" : "Tuesday and Thursday nights"
+        }
+    ],
+
+    "Languages" : [
+        {"skill" : "C++", "featured" : true},
+        {"skill" : "Unity", "featured" : false },
+        {"skill" : "Unreal", "featured" : false},
+        {"skill" : "Blender", "featured" : false},
+        {"skill" : "Photoshop", "featured" : false},
+        {"skill" : "After Effects", "featured" : false},
+        {"skill" : "Figma", "featured" : false}
+    ],
+
+    "TechSkills" : [
+        {"skill" : "Project Manager", "featured" : false},
+        {"skill" : "Pixel Art", "featured" : true},
+        {"skill" : "Coder", "featured" : false},
+        {"skill" : "Animation", "featured" : false},
+        {"skill" : "Graphic Design", "featured" : false},
+        {"skill" : "Optimization", "featured" : false},
+        {"skill" : "VFX", "featured" : false}
+    ],
+
+    "SoftSkills" : [
+        {"skill" : "Leadership", "featured" : true},
+        {"skill" : "Teamwork", "featured" : false},
+        {"skill" : "Time Management", "featured" : false},
+        {"skill" : "Communication", "featured" : false},
+        {"skill" : "Creativity", "featured" : false},
+        {"skill" : "Problem Solving", "featured" : false}
+    ],
+
+    "EndorsedSkills" : [
+        {"name": "C++", "text" : "Jane is very good at this", "project": "Project 4"},
+        {"name": "Leadership", "text" : "Jane saved our project with this", "project": "Project 2"},
+        {"name": "Unity", "text" : "This is Jane's biggest strength" , "project": "Project 1"}
+    ],
+
+    "Projects" : [
+        {
+            "name" : "Project 4",
+            "date" : "mm/dd/yy",
+            "role" : "Project Lead",
+            "description" : "blah blah blah",
+            "permissions" : "owner"
+        },
+
+        {
+            "name" : "Project 3",
+            "date" : "mm/dd/yy",
+            "role" : "3D Artist",
+            "description" : "blah blah blah",
+            "permissions" : "admin"
+        },
+
+        {
+            "name" : "Project 2",
+            "date" : "mm/dd/yy",
+            "role" : "Pixel Artist",
+            "description" : "blah blah blah",
+            "permissions" : "member"
+        },
+
+        {
+            "name" : "Project 1",
+            "date" : "mm/dd/yy",
+            "role" : "Pixel Artist",
+            "description" : "blah blah blah",
+            "permissions" : "member"
+        }
+    ]
+}

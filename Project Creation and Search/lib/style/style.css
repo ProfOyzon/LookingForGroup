@@ -1,0 +1,118 @@
+nav {
+  background-color: #C0C0C0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+h1 {
+  text-align:center;
+}
+
+#project-form {
+  width: 60vw;
+  margin:auto;
+  display:grid;
+  grid-template: .2fr .2fr 1fr / 1fr 1fr;
+  gap: 20px;
+  grid-template-areas: 'user id'
+                       'title size'
+                       'desc image'
+                       'keywords roles'
+                       'prefs links'
+                       'submit submit';
+}
+/*Contains info on css grid placement*/
+#user-box {
+  grid-area: user;
+  justify-self:end;
+}
+
+#id-box {
+  grid-area: id;
+  justify-self:start;
+}
+
+#title-box {
+  grid-area: title;
+  justify-self:end;
+}
+
+#size-box {
+  grid-area: size;
+  justify-self:start;
+}
+
+#desc-box {
+  grid-area: desc;
+  justify-self: end;
+}
+
+#img-box {
+  grid-area: image;
+  justify-self: start;
+}
+
+#keywords-box {
+  grid-area: keywords;
+  justify-self: end;
+}
+
+#roles-box {
+  grid-area: roles;
+}
+
+#prefs-box {
+  grid-area: prefs;
+  justify-self: end;
+}
+
+#links-box {
+  grid-area: links;
+}
+
+#submit {
+  grid-area: submit;
+  justify-self: center;
+  width: 20vw;
+  height: 100px;
+}
+
+/*Other rules*/
+#keyword-container {
+  width: 300px;
+  height: 200px;
+  background-color: #c0c0c0;
+  margin-bottom: 20px;
+  display:flex;
+  flex-wrap:wrap;
+  align-content:flex-start;
+}
+
+#link-container {
+  width: 300px;
+  height: 200px;
+  background-color: #c0c0c0;
+  margin-bottom: 20px;
+  display:flex;
+  flex-wrap:wrap;
+  flex-direction:column;
+  align-content:flex-start;
+}
+
+.keyword{
+  margin: 5px;
+  padding: 2px;
+  background-color: lightblue;
+}
+
+.rel-link{
+  margin: 5px;
+  padding: 2px;
+  background-color: lightblue;
+}
+
+.role{
+  margin-top:5px;
+  margin-bottom:5px;
+}

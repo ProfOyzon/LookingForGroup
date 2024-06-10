@@ -8,7 +8,7 @@ const app = new PIXI.Application({
 });
 document.body.appendChild(app.view);
 
-app.loader.add(["images/post.png", "images/button.png"]);
+app.loader.add(["images/post.png", "images/button.png", "images/trash.png"]);
 
 // constants
 const sceneWidth = app.view.width;
@@ -19,6 +19,8 @@ let stage;
 let dragTarget = null;
 let postTexture1 = new PIXI.Texture(PIXI.BaseTexture.from("images/post.png"));
 let buttonTexture = new PIXI.Texture(PIXI.BaseTexture.from("images/button.png"));
+let trashTexture = new PIXI.Texture(PIXI.BaseTexture.from("images/trash.png"));
+let trash;
 let postButton;
 let textStyle = new PIXI.TextStyle(    
 {
@@ -46,6 +48,12 @@ function setup()
     {
         stage.addChild(p);
     }
+
+    //Set up the trash can
+    trash = new PIXI.Sprite(trashTexture);
+    stage.addChild(trash);
+    trash.x = 1110;
+    trash.y = 690;
 
     //Set the game loop
     app.ticker.add(gameLoop);
@@ -202,6 +210,9 @@ function onDragEnd()
     {
         stage.off('pointermove', onDragMove);
         dragTarget.alpha = 1;
+        if(rectsIntersect(dragTarget, trash)){
+            stage.removeChild(dragTarget);
+        }
         dragTarget = null;
     }
 }

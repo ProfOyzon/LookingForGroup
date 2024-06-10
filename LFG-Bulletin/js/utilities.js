@@ -1,7 +1,6 @@
-
-// Checks if the bounding box of an object contains the mouse
-function containsMouse(a){
+// bounding box collision detection - it compares PIXI.Rectangles
+function rectsIntersect(a,b){
 	var ab = a.getBounds();
-	let mousePosition = app.renderer.plugins.interaction.mouse.global;
-	return ab.x < mousePosition.x && ab.x + ab.width > mousePosition.x && ab.y < mousePosition.y && ab.y + ab.height > mousePosition.y;
+	var bb = b.getBounds();
+	return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
 }

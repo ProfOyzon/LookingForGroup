@@ -1,14 +1,17 @@
 import React from 'react';
 import '../Css/style.css';
+import { useNavigate } from 'react-router-dom'; 
 
 const Login = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="centerContainer">
             <div className="flexRowContainer">
                 <div className="flexRow4">
-                    <h1>Welcome!!</h1>
+                    <h1>   Welcome!!</h1>
                     <h2>Don't have an account?</h2>
-                    <button className="button-77" type="button" onClick={() => window.location.href = '/SignUp'}>Sign Up</button>
+                    <button className="button-77" type="button" onClick={() => navigate('/SignUp')}>Sign Up</button>
                 </div>
 
                 <div className="flexRow3">

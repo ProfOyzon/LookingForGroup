@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../Css/style.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const SignUp = () => {
 
   const [error, setError] = useState('');
   const [passwordStrength, setPasswordStrength] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,15 +37,6 @@ const SignUp = () => {
     };
 
     const metRequirements = Object.values(requirements).every(Boolean);
-
-    let strength = 'Weak';
-    if (metRequirements) {
-      strength = 'Strong';
-    } else if (password.length >= 6 && password.length < 8) {
-      strength = 'Moderate';
-    }
-
-    setPasswordStrength(strength);
 
     // Update checklist UI
     const checklistItems = {
@@ -76,28 +69,28 @@ const SignUp = () => {
   };
 
   return (
-    <div class="centerContainer">
-      <div class="flexRow4">
+    <div className="centerContainer">
+      <div className="flexRow4">
         <h1>Welcome!!</h1>
         <h2>Already have an account?</h2>
         <button className="button-77" type="button" onClick={() => window.location.href = '/Login'}>Login</button>
       </div>
 
-      <div class="flexRow3">
+      <div className="flexRow3">
         <form id="signupForm" onSubmit={handleSubmit}>
           <h1>Sign Up</h1>
-          <div class = "Name"><input type="text" id="fname" name="fname" placeholder="First name" value={formData.fname} onChange={handleChange} /><br />
-          <input type="text" id="lname" name="lname" placeholder="Last name" value={formData.lname} onChange={handleChange} /><br /></div>
+          <div className="Name">
+            <input type="text" id="fname" name="fname" placeholder="First name" value={formData.fname} onChange={handleChange} /><br />
+            <input type="text" id="lname" name="lname" placeholder="Last name" value={formData.lname} onChange={handleChange} /><br />
+          </div>
           <input type="text" id="username" name="username" placeholder="Username" value={formData.username} onChange={handleChange} /><br />
           <input type="email" id="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} /><br />
           <input type="password" id="password1" name="password1" placeholder="Password" value={formData.password1} onChange={handleChange} /><br />
           {formData.password1 && (
             <>
-              <label htmlFor="password1" id="strengthLabel">Strength of password: {passwordStrength}</label>
-              <div className="power-container">
-                <div id="power-point" className={passwordStrength.toLowerCase()}></div>
-              </div>
+              <h4>A Password must include the following: </h4>
               <ul>
+                
                 <li id="check-length">8-20 Characters</li>
                 <li id="check-capital">At least one capital letter</li>
                 <li id="check-number">At least one number</li>
@@ -107,7 +100,7 @@ const SignUp = () => {
           )}
           <input type="password" id="password2" name="password2" placeholder="Retype Password" value={formData.password2} onChange={handleChange} /><br />
           {error && <div id="error-message" style={{ color: 'red' }}>{error}</div>}
-          <button className="button-77" type="button" onClick={() => window.location.href = '/login.html'}>Continue</button>
+          <button className="button-77" type="submit">Continue</button>
         </form>
       </div>
     </div>

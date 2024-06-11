@@ -7,6 +7,8 @@ import Proficiencies from "./Pages/Proficiencies";
 import SoftHardSkills from "./Pages/SoftHardSkills";
 import Project from "./Pages/Project";
 import SideBar from "./Components/SideBar"
+import ForgotPassword from "./Pages/ForgotPassword";
+import AskEmail from "./Pages/AskEmail";
 function App() {
   return (
     <Router>
@@ -18,6 +20,8 @@ function App() {
         <Route path="/SoftHardSkills" element={<SoftHardSkills />} />
         <Route path= "/Project" element={<Project />} />
         <Route path= "/SideBar" element={<SideBar />} />
+        <Route path= "/ForgotPassword" element={<ForgotPassword />} />
+        <Route path= "/AskEmail" element={<AskEmail />} />
       </Routes>
     </Router>
   );

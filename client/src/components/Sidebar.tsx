@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
 import './styles.css';
+import homeIcon from '../img/AhomeIcon.png';
+import Bell from '../img/bell.png';
+import folder from '../img/folder.png';
+import message from '../img/message.png';
+import profile from '../img/profile-user.png';
+import setting from '../img/setting.png';
+import search from '../img/search.png';
+
 
 const SideBar = () => {
   const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
@@ -11,28 +19,26 @@ const SideBar = () => {
 
   return (
     <div className='SideBarContainer'>
-      <div className='headerContiner'>
-      <h1>Looking For {headerText}</h1>  
+      <div className='headerContainer'>
+        <h1>Looking For {headerText}</h1>  
       </div>
       
-
-      <div className = 'ProfileContainer'>
-      <span className="dot">
-     
-      </span>
+      <div className='ProfileContainer'>
+        <span className="dot"></span>
       </div>
+      
       <h1>UserName</h1>
+      
       <div className='containerButtonSideBar'>
-        <button onClick={() => handleTextChange('Discovery')}>Discovery</button>
-        <button onClick={() => handleTextChange('My Feed')}>My Feed</button>
-        <button onClick={() => handleTextChange('My Projects')}>My Projects</button>
-        <button onClick={() => handleTextChange('Messages')}>Messages</button>
-        <button onClick={() => handleTextChange('Profile')}>Profile</button>
-        <button onClick={() => handleTextChange('Settings')}>Settings</button>
+        <button onClick={() => handleTextChange('Discovery')}> <img src={homeIcon} width="32" height="32" alt="Home" /> Home </button>
+        <button onClick={() => handleTextChange('My Projects')}> <img src={folder} width="32" height="32" alt="Projects" /> My Projects</button>
+        <button onClick={() => handleTextChange('Messages')}> <img src={message} width="32" height="32" alt="Messages" /> Messages</button>
+        <button onClick={() => handleTextChange('Profile')}> <img src={profile} width="32" height="32" alt="Profile" /> Profile</button>
+        <button onClick={() => handleTextChange('Settings')}> <img src={setting} width="32" height="32" alt="Setting" /> Settings</button>
       </div>
 
       <div className='Logout'>
-      <button>Logout</button>
+        <button>Logout</button>
       </div>
     </div>
   );

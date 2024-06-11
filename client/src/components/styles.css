@@ -31,7 +31,10 @@
     background-color: white;
     border: solid lightgrey 1px;
     cursor: pointer;
-
+    font-size:larger;
+    text-align:left;
+    padding-left:4vw;
+    padding-right: auto;
 }
 
 .containerButtonSideBar button:hover{
@@ -77,10 +80,5 @@ h1{
     transition-duration: 0.25s;
     cursor: pointer;
 }
-
-button{
-    font-size:larger;
-}
-
 
 

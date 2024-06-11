@@ -1,0 +1,53 @@
+.discover-card {
+    max-width: 60%;
+    max-height: 250px;
+    border: 2px solid black;
+    box-shadow: 10px 10px 5px lightblue;
+    display: flex;
+    grid-template-columns: 50% 50%;
+    text-align: left;
+    padding: 2%;
+    margin: auto;
+}
+
+#discover-card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    grid-template-rows: 33% 33% 33%;
+    align-items: center;
+}
+
+#discover-card-body > *{
+    flex: 1;
+}
+
+#discover-card-profile-picture {
+   width: 100%;
+}
+
+#discover-card-name {
+    text-align: center;
+}
+
+#discover-card-description {
+    /* font-size: 1vw; */
+}
+
+#discover-card-tag-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.tag {
+    /* display: none; */
+    border: 2px solid lightseagreen;
+    border-radius: 5px;
+    text-align: center;
+    padding: 3px 15px;
+}
+
+.tag-name {
+    margin: 0;
+}

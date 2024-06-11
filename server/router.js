@@ -7,6 +7,13 @@ const router = (app) => {
     app.get("/default", mid.requiresSecure, controllers.Database.defaultPage);
     app.get("/notFound", mid.requiresSecure, controllers.Database.notFound);
 
+    // Testing 
+    app.get("/TestAccountSchema", mid.requiresSecure, controllers.Database.makeFakeAccount);
+    app.get("/TestProjectSchema", mid.requiresSecure, controllers.Database.makeFakeProject);
+    app.get("/TestMessageSchema", mid.requiresSecure, controllers.Database.makeFakeMessage);
+    app.get("/TestPostSchema", mid.requiresSecure, controllers.Database.makeFakePost);
+    app.get("/TestCommentSchema", mid.requiresSecure, controllers.Database.makeFakeComment);
+
     app.get("/", mid.requiresSecure, controllers.Database.api);
     app.get("/*", mid.requiresSecure, controllers.Database.notFound);
 };

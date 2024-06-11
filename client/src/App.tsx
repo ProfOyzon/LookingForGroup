@@ -12,9 +12,9 @@ import SideBar from "./components/Sidebar";
 
 function App() {
   return (
-    <div className="App">
-      <SideBar />
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="App">
+        <SideBar />
         <Routes>
           <Route path={paths.routes.DEFAULT} element={<Home />} />
           <Route path={paths.routes.HOME} element={<Home />} />
@@ -25,8 +25,8 @@ function App() {
           <Route path={paths.routes.SETTINGS} element={<Settings />} />
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }
 

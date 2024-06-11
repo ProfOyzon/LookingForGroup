@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './styles.css';
 
+
 const SideBar = () => {
   const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
 
@@ -15,10 +16,9 @@ const SideBar = () => {
       <h1>Looking For {headerText}</h1>  
       </div>
       
-
       <div className = 'ProfileContainer'>
       <span className="dot">
-     
+      
       </span>
       </div>
       <h1>UserName</h1>

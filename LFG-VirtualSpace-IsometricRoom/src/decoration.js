@@ -1,10 +1,19 @@
+// Wilson Xia
 import * as PIXI from 'pixi.js';
 export class Decoration{
-    constructor(src){
+    constructor(src, size){
         this.sprite = drawSprite(src);
-        this.attachedTile = null;
+        this.attachedTiles = [];
+        this.size = size;//{x:1,y:1};
         // Attatch this info to the sprite
         this.sprite.decoration = this;
+    }
+
+    removeTiles = () => {
+        for(let tile of this.attachedTiles){
+            tile.removeDecoration();
+        }
+        this.attachedTiles = [];
     }
 
     setUpEvents(onDragStart){
@@ -24,10 +33,7 @@ export class Decoration{
 
 const drawSprite = (src) => {
     let sprite = PIXI.Sprite.from(src);
-    sprite.anchor.set(0.5, 0.5);
-    sprite.scale.set(2.5);
-    sprite.position.x = 300;
-    sprite.position.y = 200;
+    sprite.anchor.set(0.3, 1);
 
     // Set up drag
     sprite.eventMode = 'static';

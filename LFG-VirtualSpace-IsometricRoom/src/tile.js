@@ -1,3 +1,4 @@
+// Wilson Xia
 import * as PIXI from 'pixi.js';
 
 export class Tile {
@@ -17,11 +18,12 @@ export class Tile {
         this.sprite = new PIXI.Graphics();
         drawTile(this);
         this.container.addChild(this.sprite);
-        // console.log(this.container);
+        this.container.zIndex = this.position.y / this.height * 2; // For rendering, so things in the back get drawn first, then get overlapped by things in the front
+        this.container.zIndex += this.position.x / this.width; // For rendering, so things side by side are drawn from left to right
         this.setUpEvents();
     }
 
-    setUpEvents = () => {
+    setUpEvents = () => { // TODO: Get rid of events, and change to a constant update for hovering
         // Events & Interaction
         this.sprite.eventMode = 'static';
         this.sprite.onpointerover = (event) => {
@@ -40,25 +42,18 @@ export class Tile {
     repositionChild = () => {
         // Move d to this.position, assuming they share the same anchor point
         this.child.position = this.position;
+        this.child.position.y += this.height;
     }
 
     addDecoration = (d) => {
         // Adds a decoration and re-draws the decoration into the center of this tile
         this.child = d;
-        if(this.child.decoration.attachedTile){
-            this.child.decoration.attachedTile.removeDecoration();
-        }
-        this.child.decoration.attachedTile = this;
-        this.container.addChild(this.child);
-        this.repositionChild();
-        // console.log(`Position: ${this.position.x}, ${this.position.y}`); // --------------------------
+        this.child.decoration.attachedTiles.push(this);
+        this.container.addChild(this.child); // TODO: Change so that the decoration adds itself to the correct container
         drawTile(this, '#4c4c4c');
     }
 
     removeDecoration = () => {
-        console.log(`Before: ${this.child.decoration.sprite.position.x}, ${this.child.decoration.sprite.position.y}`); // --------------------------
-        this.child.decoration.attachedTile = null;
-        // console.log(`After: ${this.child.decoration.sprite.position.x}, ${this.child.decoration.sprite.position.y}`); // --------------------------
         // removes a decoration
         this.child = null;
         drawTile(this);

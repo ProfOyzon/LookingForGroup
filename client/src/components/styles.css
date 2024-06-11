@@ -50,4 +50,85 @@
 
 .tag-name {
     margin: 0;
+}.SideBarContainer{
+    width: 15vw;
+    height: 100vh;
+    border: solid black 2px;
+    position: sticky;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
 }
+.ProfileContainer{
+    width: 15vw;
+    height: 20vh;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.headerContainer h1{
+    font-weight: bold;
+    font-size: 2vw;
+    height: 10vh;
+}
+
+.containerButtonSideBar{
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.containerButtonSideBar button{
+    width: 15vw;
+    height: 6vh;
+    background-color: white;
+    border: solid lightgrey 1px;
+    cursor: pointer;
+
+}
+
+.containerButtonSideBar button:hover{
+    transform: scale(1.1);
+    transition-duration: 0.25s;
+}
+
+.dot{
+  height: 15vh;
+  width: 10vw;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  border: solid black 2px;
+
+}
+
+h1{
+    width: 15vw;
+    height: 5vh;
+    font-size: 2vw;
+}
+
+.Logout{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.Logout button{
+    background-color: orange;
+    color: white;    
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 30px;
+    width: 8vw;
+    height: 4vh;
+}
+
+.Logout button:hover{
+    transform: scale(1.1);
+    transition-duration: 0.25s;
+    cursor: pointer;
+}
+
+
+

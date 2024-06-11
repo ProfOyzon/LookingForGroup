@@ -2,7 +2,7 @@
     width: 15vw;
     height: 100vh;
     border: solid black 2px;
-    position: sticky;
+    position: fixed;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
 }
 .ProfileContainer{
@@ -76,6 +76,10 @@ h1{
     transform: scale(1.1);
     transition-duration: 0.25s;
     cursor: pointer;
+}
+
+button{
+    font-size:larger;
 }
 
 

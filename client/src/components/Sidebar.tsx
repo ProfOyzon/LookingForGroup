@@ -23,7 +23,7 @@ const SideBar = () => {
       </div>
       <h1>UserName</h1>
       <div className='containerButtonSideBar'>
-        <button onClick={() => handleTextChange('Discovery')}>Discovery</button>
+        <button onClick={() => handleTextChange('Discovery')}><img src='../img/AhomeIcon.png' alt=''/>Discovery</button>
         <button onClick={() => handleTextChange('My Feed')}>My Feed</button>
         <button onClick={() => handleTextChange('My Projects')}>My Projects</button>
         <button onClick={() => handleTextChange('Messages')}>Messages</button>

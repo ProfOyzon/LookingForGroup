@@ -26,10 +26,19 @@ const newProject = document.querySelector('#submit');
 
 //arrays for various input fields
 let keywords = [];
+let roleList = [];
+const roleTypes = [
+  'general',
+  'programmer',
+  'artist',
+  'designer',
+  'tester',
+  'manager'
+]
 let links = [];
 
 //roleCount tracks what number to assign to role id's
-let roleCount = 0;
+//let roleCount = 0;
 let selectedID = -1;
 
 //variables used when editing a project, unused if page is used for creation
@@ -146,6 +155,9 @@ const writeProjectData = async (id = "-1", project, hasOpenings) => {
   );
 }*/
 
+
+//Returns a keyword for KeywordContainer
+// props.word = the word to be added
 const Keyword = (props) => 
 {
   return (
@@ -156,6 +168,7 @@ const Keyword = (props) =>
   )
 }
 
+//Returns a full keyword container to be rendered based on keywords array
 const KeywordContainer = (props) => 
 {
   const keywordList = keywords.map(newWord =>
@@ -165,6 +178,76 @@ const KeywordContainer = (props) =>
     <>{keywordList}</>
   )
 }
+
+//Returns a single role selector option for RoleContainer
+//props.roleType = the role type to be set as the default option
+//props.roleCount = current numbered role selector in RoleContainer
+//props.roleNum = specifies what number to have open slots set to by default
+
+/// To-do: add remove button, update addRole and addCustomRole functions to accommodate new roleList array
+const Role = (props) => 
+{
+  let updateType = (count, newType) =>
+  {
+    roleList[count].roleType = newType;
+    console.log('type updated:');
+    console.log(roleList);
+  }
+
+  let updateNum = (count, newNum) =>
+  {
+    roleList[count].roleNum = newNum;
+    console.log('num updated');
+    console.log(roleList);
+  }
+
+  let options = roleTypes.map(optionType => 
+    <RoleOption option={optionType} roleType={props.roleType} />);
+  return (
+    <>
+    <label for={`role${props.roleCount}`}>Role:</label>
+    <select id={`role${props.roleCount}`} name={`role${props.roleCount}`} 
+      onChange={(e) => {updateType(props.roleCount, e.target.value)}}>
+      {options}
+    </select>
+    <label for={`num${props.roleCount}`}>Positions:</label>
+    <input type='number' id={`num${props.roleCount}`} name={`num${props.roleCount}`} 
+      min="1" value={props.roleNum} onChange={(e) => {updateNum(props.roleCount, e.target.value)}}></input>
+    <button type='button' onClick={() => {removeRole(props.roleCount)}}>-</button>
+    <br/>
+    </>
+  );
+}
+
+//Returns a single option the Role element, repeated for each possible role option
+//If props.roleType is specified, automatically selects that one to start
+//props.option = current role option in roleTypes array
+const RoleOption = (props) =>
+{
+  if (props.option == props.roleType)
+  {
+    return (<option value={props.option} selected='selected'>{capitalize(props.option)}</option>);
+  } else {
+    return (<option value={props.option}>{capitalize(props.option)}</option>);
+  };
+}
+
+//Returns a full list of role selecting options based on the roleList array
+const RoleContainer = (props) =>
+{
+  let i = 0;
+  let roleSelectors = roleList.map(currentRole =>
+    <Role roleCount={i++} roleType={currentRole.roleType} roleNum={currentRole.roleNum}/>);
+  return (
+    <>{roleSelectors}</>
+  )
+}
+
+///   Two possible ways to resolve roles update
+///   1 - Create roleList array that details current role selections
+///   pros - re-rendering roleContainer would be easy; cons - need to figure out how to update array whenever data changes
+///   2 - Figure out way to append newly created components into an already-existing element
+///   pros - code for reading role inputs this way is already here; cons - Need to see if this is even possible
 
 const init = () =>
 {
@@ -177,7 +260,7 @@ const init = () =>
 
   //Adds functions to respective buttons
   keywordSubmit.onclick = submitKeyword;
-  addRole.onclick = createRole;
+  addRole.onclick = function () {createRole(roleTypes[0], 3)};
   linkSubmit.onclick = addLink;
 
   //Checks if there are queries in url
@@ -188,9 +271,11 @@ const init = () =>
     return;
   }
 
+  //Initializes role selectors
   for (let i = 0; i < 3; i++) {
-    createRole();
+    createRole(roleTypes[0], 3);
   }
+  console.log(roleList);
   //Adds function to submit button if not editing
   newProject.onclick = createProject;
 
@@ -284,8 +369,8 @@ const removeKeyword = (word) => {
 }
 
 //Adds a new role to project roles
-const createRole = () => {
-  roleCount++;
+const createRole = (type, num) => {
+  /*roleCount++;
   //Create body of new role element
   let element = document.createElement('div');
   element.setAttribute("class", "role");
@@ -307,8 +392,11 @@ const createRole = () => {
   removeButton.innerHTML = '-';
   removeButton.onclick = function () { removeItem(element) };
   //Add element to role list
-  roles.appendChild(element);
+  roles.appendChild(element);*/
+  roleList.push({'roleType': type, 'roleNum': num});
+  ReactDOM.render(<RoleContainer />, roles);
   console.log('new role created');
+  console.log(roleList);
 }
 
 const createCustomRole = (roleType, roleNum) => {
@@ -333,7 +421,7 @@ const createCustomRole = (roleType, roleNum) => {
   let options = element.querySelectorAll('option');
   for (let option of options) {
     if (option.value == roleType) {
-      option.setAttribute('selected', 'selected');
+      option.setAttribute('selected', 'false');
       break;
     }
   }
@@ -345,6 +433,12 @@ const createCustomRole = (roleType, roleNum) => {
   //Add element to role list
   roles.appendChild(element);
   console.log('new role created');
+}
+
+const removeRole = (count) => {
+  roleList.splice(count, 1);
+  ReactDOM.render(<RoleContainer />, roles);
+  console.log(roleList);
 }
 
 //Creates a new link element and adds it to relevant project links

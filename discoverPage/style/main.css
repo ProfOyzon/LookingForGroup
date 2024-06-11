@@ -1,0 +1,149 @@
+a{
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+a:link, a:visited{
+    color: rgb(65, 72, 65);
+}
+
+a:hover{
+    opacity: 1;
+}
+
+body{
+    background-color: rgb(40, 118, 167);
+    margin: 0 auto;
+}
+
+h3 {
+    font-size: 2vw;
+    color: rgb(0, 0, 0);
+    margin-left: 5px;
+    
+    
+}
+
+img {
+    margin-right: 10px;
+}
+
+.userIcon{
+    border: 3px solid rgb(16, 206, 16);
+    border-radius: 50%;
+
+    width: 5em;
+    height: auto;
+}
+
+.user{
+    display: flex;
+    justify-content: space-around;
+    width: auto;
+}
+
+#otherLinks{
+    display: flex;
+    justify-content: space-between;
+    justify-self: end;
+    width: 20vw;
+    margin-right: 10px;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    background-color: #EBF5DF;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.mobileHeader{
+    display: none;
+}
+
+#projectsList{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    width: auto;
+    height: 60vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    
+}
+
+.additional{
+    display: flex;
+    justify-content: space-around;
+    width: 75vw;
+    height: auto;
+}
+
+.project{
+    border: 5px solid rgb(74, 7, 140);
+    padding: 10px;
+    font-size: 2vw;
+    color: #EBF5DF;
+    background-image: linear-gradient(rgba(243, 172, 31, 0.82), rgb(158, 107, 13));
+    text-align: center;
+    margin: 50px;
+    width: 85vw;
+    height: auto;
+    transition: 1s;
+    scroll-snap-align: start;
+}
+
+.project:hover{
+    transform: scale(1.1);
+    
+}
+
+.title{
+    color: #afebeb;
+}
+
+/* Mobile Phones */
+
+@media only screen and (max-width: 700px){
+
+    body{
+        background-color: yellowgreen;
+    }
+
+    .project{
+        width: 60vw;
+        height: 60vw;
+        display: flex;
+        flex-direction: column;
+        margin: 20px;
+    }
+
+    .title{
+        font-size: 6vw;
+    }
+
+    .project p{
+        font-size: 6vw;
+    }
+
+    .additional{
+        display: none;
+        font-size: 2vw;
+        justify-content: center;
+    }
+
+    .header{
+        display: none;
+    }
+
+    .mobileHeader{
+        display: block;
+    }
+}
+

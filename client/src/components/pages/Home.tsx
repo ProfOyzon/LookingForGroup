@@ -44,6 +44,7 @@ const Home = (props) => {
                             :null
             }
             <ProfileCard profile={profiles[0]}></ProfileCard>
+            <ProjectCard project={projects[0]}></ProjectCard>
         </div>
     );
 }

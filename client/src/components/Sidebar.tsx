@@ -8,7 +8,16 @@ import profile from '../img/profile-user.png';
 import setting from '../img/setting.png';
 import * as paths from "../constants/routes";
 
+// To Do:
+// Make mobile friendly version stay at bottom of screen
+// Ensure page content is not covered by sidebar
+// Decide how/if width changes with window size
+// Have profile pic displayed if a user is logged in
+
 const SideBar = () => {
+  const [width, setWidth] = React.useState(window.innerWidth);
+  const breakpoint = 620;
+
   const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
   const navigate = useNavigate(); // Hook for navigation
 
@@ -18,6 +27,36 @@ const SideBar = () => {
     navigate(path); // Navigate to the specified path
   };
 
+  React.useEffect(() => {
+    window.addEventListener('resize', () => setWidth(window.innerWidth));
+  })
+
+  // Mobile layout
+  if (width < breakpoint) {
+    return (
+      <div className='sideBarContainer'>
+        <div className='containerButtonSideBar'>
+          <button onClick={() => handleTextChange('Discovery', paths.routes.HOME)}> 
+            <img src={homeIcon} width="32" height="32" alt="Home" />
+          </button>
+          <button onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}> 
+            <img src={folder} width="32" height="32" alt="Projects" />
+          </button>
+          <button onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}> 
+            <img src={message} width="32" height="32" alt="Messages" />
+          </button>
+          <button onClick={() => handleTextChange('Profile', paths.routes.PROFILE)}> 
+            <img src={profile} width="32" height="32" alt="Profile" />
+          </button>
+          <button onClick={() => handleTextChange('Settings', paths.routes.SETTINGS)}> 
+            <img src={setting} width="32" height="32" alt="Setting" />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop layout
   return (
     <div className='SideBarContainer'>
       <div className='headerContainer'>

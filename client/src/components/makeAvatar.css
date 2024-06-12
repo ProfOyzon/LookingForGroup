@@ -4,6 +4,10 @@
   --lightGray: #EEEEEE;
 }
 
+body {
+  padding: 0px 20px;
+}
+
 .MakeAvatar {
   background-color: white;
   margin: auto;
@@ -11,10 +15,10 @@
   justify-content: center;
   align-items: center;
   height: 800px;
-  width: 1000px;
+  min-width: fit-content;
+  max-width: 1000px;
   border-radius: 4px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-  /* border: 1px solid black; */
   flex-direction: column;
 }
 
@@ -33,7 +37,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  gap: 40px;
+  gap: 30px;
 
   margin-top: 10px;
 
@@ -50,8 +54,9 @@
 
 .avatar-slide {
   display: none;
-  height: 220px;
+  max-height: 200px;
   width: 220px;
+
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -73,7 +78,8 @@
   top: 20px;
 }
 
-.active, .slide-dot:hover {
+.active,
+.slide-dot:hover {
   background-color: var(--orange);
 }
 
@@ -100,8 +106,9 @@
 .animals {
   border-radius: 4px;
   object-fit: cover;
-  width: 220px;
   height: 220px;
+  width: 220px;
+
   border: 2px solid var(--medGray);
 }
 
@@ -114,7 +121,9 @@
   width: 60px;
 }
 
-.cat-hat, .dog-hat, .frog-hat{
+.cat-hat,
+.dog-hat,
+.frog-hat {
   margin-top: 24px;
   margin-left: 80px;
 }
@@ -146,7 +155,7 @@
 
   margin-top: 10px;
 
-  width: 700px;
+  max-width: 700px;
   height: 350px;
 }
 
@@ -162,34 +171,30 @@
   gap: 10px;
 }
 
+#hats {
+  gap: 10px;
+}
+
 .color-option img {
   width: 120px;
   height: 120px;
   border-radius: 4px;
   object-fit: cover;
-}
-
-.color-option {
-  width: 120px;
-  height: 120px;
   border: 2px solid var(--medGray);
   border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-color: rgb(255, 255, 255);
 }
 
-.color-option:hover, .hat-option:hover, .clothes-option:hover {
+.color-option:hover,
+.hat-option:hover {
   cursor: pointer;
 }
 
-.color-option:active, .hat-option:active, .clothes-option:active {
+.color-option:active,
+.hat-option:active {
   transform: scale(0.9);
 }
 
-.hat-option, .clothes-option{
+.hat-option {
   width: 80px;
   height: 80px;
   border: 2px solid var(--medGray);
@@ -216,7 +221,7 @@
   gap: 25px;
 
   border-radius: 2px 2px 0px 0px;
-  width: 540px;
+  max-width: 540px;
   height: 50px;
   margin-top: 20px;
   padding: 10px;
@@ -239,12 +244,6 @@
   background-color: white;
   outline: 2px solid var(--medGray);
 }
-
-.icon {
-  width: 40px;
-  height: 40px;
-}
-
 
 .tab-links {
   cursor: pointer;
@@ -276,10 +275,6 @@
   display: flex;
 }
 
-.option {
-  font-size: 34px;
-}
-
 /* 
   Create button
 */
@@ -304,4 +299,122 @@
 
 #createBtn:active {
   transform: scale(0.95);
+}
+
+@media screen and (max-width: 650px){
+
+  .options, .tabs, #avatar-select {
+    width: 400px;
+  }
+
+  .color-option img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .hat-option {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+}
+
+@media screen and (max-width: 500px){
+  body {
+    padding: 0px;
+  }
+
+  .MakeAvatar {
+    box-shadow: none;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 400px){
+  body {
+    padding: 0px;
+  }
+
+  .MakeAvatar {
+    box-shadow: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  #customize-title {
+    font-size: 24px;
+  }
+
+  .slide-dot {
+    height: 10px;
+    width: 10px;
+    top: 0px;
+  }
+
+  #avatar-select {
+    gap: 10px;
+    height: 180px;
+  }
+
+  .arrowBtn {
+    height: 35px;
+    width: 35px;
+  }
+
+  .btn-icon {
+    width: 20px;
+  }
+
+  .animals{
+    height: 160px;
+    width: 160px;
+  }
+
+  #avatar-customization {
+    height: 300px;
+    margin-top: 0px;
+  }
+
+  .tabs {
+    height: 40px;
+  }
+
+  .tab-links {
+    width: 40px;
+    height: 35px;
+  }
+  
+  .tab-links img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .options, .tabs, #avatar-select {
+    width: 300px;
+  }
+
+  .color-option img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .hat-option {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
 }

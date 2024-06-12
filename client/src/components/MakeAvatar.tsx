@@ -144,7 +144,7 @@ const MakeAvatar = () => {
           </div>
 
           {/* dot indicators */}
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: "center"}}>
             {Object.keys(avatars).map((_, index) => (
               <span
                 className={`slide-dot ${slideIndex === index + 1 ? "active" : ""}`}

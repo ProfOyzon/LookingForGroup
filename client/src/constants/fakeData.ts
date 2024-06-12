@@ -5,7 +5,7 @@ import { softSkills } from "./skills";
 export const projects = [
     {
         _id: 0,
-        title: "Cool Game",
+        name: "A Cool Project!",
         members: [
             {
                 userID: 0,

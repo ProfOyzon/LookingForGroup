@@ -33,7 +33,7 @@
     cursor: pointer;
     font-size:larger;
     text-align:left;
-    padding-left:4vw;
+    padding-left:calc(8vw / 2);
     padding-right: auto;
 }
 
@@ -98,7 +98,7 @@ h1{
 
     .containerButtonSideBar button{
         width: 20vw;
-        padding-left: calc(32vw / 5);
+        padding-left: calc((100vw - 160px) / 10);
         padding-right: auto;
     }
 }

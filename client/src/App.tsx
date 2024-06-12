@@ -10,6 +10,7 @@ import Settings from "./components/pages/Settings";
 import NotFound from "./components/pages/NotFound";
 import SideBar from "./components/Sidebar";
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +25,7 @@ function App() {
           <Route path={paths.routes.PROFILE} element={<Profile />} />
           <Route path={paths.routes.SETTINGS} element={<Settings />} />
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
+          <Route path={paths.routes.SIDEBAR} element={<SideBar />} />
         </Routes>
       </div>
     </BrowserRouter>

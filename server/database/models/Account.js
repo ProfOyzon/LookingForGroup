@@ -24,7 +24,6 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        match: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
     },
     profilePicture: {
         name: {
@@ -41,6 +40,58 @@ const AccountSchema = new mongoose.Schema({
             trim: true,
             required: false,
         }
+    },
+    username: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    pronouns: {
+        type: [String],
+        required: true,
+        default: ["", ""]
+    },
+    bio: {
+        type: String,
+        required: true,
+        default: ""
+    },
+    messages: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Message'
+        }],
+        required: true,
+        default: [],
+    },
+    skills: {
+        type: [{
+            skill: {
+                type: String,
+                required: true,
+                default: ""
+            },
+            endorsed: {
+                type: Boolean,
+                required: true,
+                default: false
+            },
+            highlighted: {
+                type: Boolean,
+                required: true,
+                default: false
+            }
+        }],
+        require: true,
+        default: [],
+    },
+    projects: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Project'
+        }],
+        required: true,
+        default: [],
     },
     createdDate: {
         type: Date,

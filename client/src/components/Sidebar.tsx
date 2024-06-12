@@ -14,6 +14,7 @@ import * as paths from "../constants/routes";
 // Decide how/if width changes with window size
 // Have profile pic displayed if a user is logged in
 
+
 const SideBar = () => {
   const [width, setWidth] = React.useState(window.innerWidth);
   const breakpoint = 620;

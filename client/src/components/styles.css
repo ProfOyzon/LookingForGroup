@@ -1,21 +1,29 @@
+:root {
+    --orange: #F76902;
+    --orange-hover: #DE6B17;
+}
+
 .discover-card {
-    max-width: 60%;
-    max-height: 250px;
+    width: 60%;
+    max-width: 765px;
+    max-height: 265px;
     border: 2px solid black;
     box-shadow: 10px 10px 5px lightblue;
-    display: flex;
-    grid-template-columns: 50% 50%;
+    display: grid;
+    grid-template-columns: 30% 70%;
     text-align: left;
     padding: 2%;
     margin: auto;
 }
 
 #discover-card-body {
+    margin-left:10%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    grid-template-rows: 33% 33% 33%;
-    align-items: center;
+    grid-template-rows: 10% 50% 40%;
+    /* align-items: center; */
+    font-size: 1vw;
 }
 
 #discover-card-body > *{
@@ -28,29 +36,80 @@
 
 #discover-card-name {
     text-align: center;
+    margin-bottom: 0;
 }
 
 #discover-card-description {
-    /* font-size: 1vw; */
+    margin-top: 0;
+    max-width: 450px;
+    overflow: hidden;
 }
 
 #discover-card-tag-wrapper {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+    max-width: 450px;
 }
 
 .tag {
-    /* display: none; */
+    display: flex;
+    align-items: center;
     border: 2px solid lightseagreen;
     border-radius: 5px;
     text-align: center;
     padding: 3px 15px;
+    max-height: 25px;
 }
 
 .tag-name {
     margin: 0;
-}.SideBarContainer{
+}
+
+.page-title {
+    margin-bottom: 0;
+}
+
+.discover-button-inactive {
+    background-color: white;
+    color: var(--orange);
+    border: 2px solid var(--orange);
+    font-size: 25px;
+    font-weight: bold;
+    padding: 8px;
+    margin: 15px;
+}
+
+.discover-button-inactive:hover {
+    background-color: rgb(126, 124, 124);
+    cursor: pointer;
+}
+
+.discover-button-active {
+    background-color: var(--orange);
+    color: white;
+    border: 2px solid var(--orange);
+    font-size: 25px;
+    font-weight: bold;
+    padding: 8px;
+    margin: 15px;
+}
+
+.discover-button-active:hover {
+    background-color: var(--orange-hover);
+    border-color: var(--orange-hover);
+    cursor: pointer;
+}
+
+#discover-button-wrapper {
+    text-align: left;
+    margin-left: 2vw;
+}
+
+
+
+
+.SideBarContainer{
     width: 15vw;
     height: 100vh;
     border: solid black 2px;

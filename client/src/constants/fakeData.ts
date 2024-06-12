@@ -5,6 +5,7 @@ import { softSkills } from "./skills";
 export const projects = [
     {
         _id: 0,
+        title: "Cool Game",
         members: [
             {
                 userID: 0,
@@ -25,7 +26,7 @@ export const projects = [
                 role: "Developer"
             },
         ],
-        description: "The bestest project yet!",
+        description: "The bestest project yet!  I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! ",
         tags: ["Game Development", "Rouguelike", "FPS", "So Retro"],
         neededRoles: [
             {

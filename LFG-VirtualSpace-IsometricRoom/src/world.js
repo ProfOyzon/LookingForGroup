@@ -1,3 +1,4 @@
+// Wilson Xia
 import * as PIXI from 'pixi.js';
 import { IsometricGrid } from './isometricGrid';
 import { Decoration } from './decoration';
@@ -5,7 +6,6 @@ import { onDragStart } from './events';
 
 export class World{
     constructor({rows, columns}){
-        //
         this.grid;
         this.gridSize = {rows, columns};
         this.decorations = [];
@@ -21,12 +21,13 @@ export class World{
         this.grid.update();
     }
 
-    createDecorations = ({ count = 2, src = 'assets/images/isoTable.png', scale = 1 }) => {
+    createDecorations = ({ count = 1, src = 'assets/images/isoTable.png', scale = 1 , size = {x:1,y:1}, anchor = 0.5}) => {
         // Will be removed with the slider to pull out the decorations
         for (let i = 0; i < count; i++) {
-            let newDec = new Decoration(src);
-            newDec.setUpEvents(onDragStart); 
+            let newDec = new Decoration(src, size);
+            newDec.setUpEvents(onDragStart);
             newDec.sprite.scale.set(scale);
+            newDec.sprite.anchor.set(anchor,1);
             this.decorations.push(newDec);
             this.container.addChild(newDec.sprite);
         }

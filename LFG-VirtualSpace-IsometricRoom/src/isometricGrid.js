@@ -1,3 +1,4 @@
+// Wilson Xia
 import { Container } from 'pixi.js';
 import { Tile } from './tile';
 
@@ -18,22 +19,17 @@ export class IsometricGrid {
             halfHeight: this.originalWidth/4
         };
         this.container.pivot.set(0, this.tileSize.halfHeight * this.size.y);
-        // this.container.position.x = this.tileSize.halfWidth * this.size.x;
-        // this.container.position.y = 0;
-        // console.log(this.origin);
     }
 
     setPosition = ({x,y}) => {
         this.container.position.x += x;
         this.container.position.y += y;
-        // console.log(this.container.position);
     }
 
     update = () => {
         let parentScale = this.container.parent.scale;
         this.updateOrigin();
         this.updateTileSize(parentScale.x);
-        // console.log(this.container.toGlobal(this.container));
     }
 
     updateTileSize = (scale) => {
@@ -80,6 +76,7 @@ export class IsometricGrid {
 
     drawTiles = (parent) => {
         // Draws all tiles in its list
+        this.container.sortableChildren = true; // Allows for z-index to be utilized, draws the tiles from back to front
         for (let tile of this.tiles) {
             tile.draw();
             this.container.addChild(tile.container);

@@ -221,4 +221,33 @@ h1{
     }
 }
 
+/* Project page style rules */
 
+#current-page{
+    margin-left:15.5vw;
+}
+
+#project-info{
+    display: grid;
+    grid-template:  1fr 1fr / .2fr 1.5fr 1fr;
+    grid-template-areas: 'picture header listing'
+                         'blank desc listing'
+}
+
+#project-picture{
+    width: 64px;
+    height: 64px;
+    grid-area: picture;
+}
+
+#project-header{
+    grid-area: header;
+}
+
+#project-desc{
+    grid-area: desc;
+}
+
+#project-listing{
+    grid-area: listing;
+}

@@ -125,11 +125,14 @@ function editText()
 {
     //Make a text input at the bottom of the screen
     let text = this;
-    var space = document.createElement("hr")
+    let mousePosition = app.renderer.plugins.interaction.mouse.global;
+
     var input = document.createElement("input");
+    input.style.position = "absolute";
+    input.style.left = (mousePosition.x - 75).toString() + "px";
+    input.style.top = mousePosition.y.toString() + "px";
     input.type = "text";
     input.value = text.text;
-    document.body.appendChild(space);
     document.body.appendChild(input);
     //Disable interaction
     for(let p of posts){
@@ -165,7 +168,6 @@ function editText()
         text.style = textStyle;
         console.log(input.value);
         stage.removeChild(this);
-        space.remove();
         input.remove();
         for(let p of posts){
             p.interactive = true;

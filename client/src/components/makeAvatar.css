@@ -1,0 +1,307 @@
+:root {
+  --orange: #F76902;
+  --medGray: #E3E3E3;
+  --lightGray: #EEEEEE;
+}
+
+.MakeAvatar {
+  background-color: white;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 800px;
+  width: 1000px;
+  border-radius: 4px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  /* border: 1px solid black; */
+  flex-direction: column;
+}
+
+#customize-title {
+  font-size: 28px;
+  color: var(--orange);
+  width: 250px;
+}
+
+/*
+  Avatar selection
+  https://www.w3schools.com/howto/howto_js_slideshow.asp
+*/
+#avatar-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 40px;
+
+  margin-top: 10px;
+
+  width: 480px;
+  height: 240px;
+}
+
+#avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.avatar-slide {
+  display: none;
+  height: 220px;
+  width: 220px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* The dots/bullets/indicators */
+.slide-dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: var(--medGray);
+  border: none;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+
+  position: relative;
+  top: 20px;
+}
+
+.active, .slide-dot:hover {
+  background-color: var(--orange);
+}
+
+.btn-icon {
+  width: 25px;
+}
+
+.left-btn {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.arrowBtn {
+  cursor: pointer;
+  border: none;
+  height: 45px;
+  width: 45px;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.animals {
+  border-radius: 4px;
+  object-fit: cover;
+  width: 220px;
+  height: 220px;
+  border: 2px solid var(--medGray);
+}
+
+/*
+  Hats
+*/
+
+.hat {
+  position: absolute;
+  width: 60px;
+}
+
+.cat-hat, .dog-hat, .frog-hat{
+  margin-top: 24px;
+  margin-left: 80px;
+}
+
+.otter-hat {
+  margin-top: 20px;
+  margin-left: 28px;
+}
+
+.dragon-hat {
+  margin-top: 0px;
+  margin-left: 105px;
+}
+
+.toad-hat {
+  margin-top: 35px;
+  margin-left: 80px;
+}
+
+/*
+  Avatar Customization
+*/
+
+#avatar-customization {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  margin-top: 10px;
+
+  width: 700px;
+  height: 350px;
+}
+
+#customize-options {
+  display: flex;
+  flex-direction: column;
+}
+
+#colors {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-option img {
+  width: 120px;
+  height: 120px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.color-option {
+  width: 120px;
+  height: 120px;
+  border: 2px solid var(--medGray);
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+}
+
+.color-option:hover, .hat-option:hover, .clothes-option:hover {
+  cursor: pointer;
+}
+
+.color-option:active, .hat-option:active, .clothes-option:active {
+  transform: scale(0.9);
+}
+
+.hat-option, .clothes-option{
+  width: 80px;
+  height: 80px;
+  border: 2px solid var(--medGray);
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: white;
+}
+
+.hat-option img {
+  width: 80%;
+}
+
+/* 
+  Tabs 
+*/
+.tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 25px;
+
+  border-radius: 2px 2px 0px 0px;
+  width: 540px;
+  height: 50px;
+  margin-top: 20px;
+  padding: 10px;
+  outline: 2px solid var(--medGray);
+  background-color: var(--lightGray);
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 540px;
+  height: 200px;
+
+  border-radius: 0px 0px 2px 2px;
+  padding: 10px;
+  background-color: white;
+  outline: 2px solid var(--medGray);
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+}
+
+
+.tab-links {
+  cursor: pointer;
+  width: 55px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  font-size: 25px;
+  transition: color 0.2s ease;
+  background-color: white;
+  border: 2px solid var(--medGray);
+}
+
+.tab-links:hover {
+  border-color: rgb(197, 197, 197);
+}
+
+.tab-links.active-link {
+  border: 2px solid var(--orange);
+}
+
+.tab-contents {
+  display: none;
+}
+
+.active-tab {
+  display: flex;
+}
+
+.option {
+  font-size: 34px;
+}
+
+/* 
+  Create button
+*/
+#createBtn {
+  margin-top: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 2px;
+  height: 45px;
+  width: 100px;
+  font-size: 16px;
+  font-weight: 900;
+  color: white;
+  background-color: var(--orange);
+}
+
+#createBtn:hover {
+  background-color: white;
+  color: var(--orange);
+  border: 2px solid var(--orange);
+}
+
+#createBtn:active {
+  transform: scale(0.95);
+}

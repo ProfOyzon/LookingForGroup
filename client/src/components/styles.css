@@ -59,6 +59,11 @@
     max-width: 450px;
 }
 
+#profile-card-pronouns {
+    margin-top: 0%;
+    text-align: center;
+}
+
 .tag {
     display: flex;
     align-items: center;

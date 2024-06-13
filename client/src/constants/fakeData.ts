@@ -85,7 +85,7 @@ export const profiles = [
         _id: 1,
         name: "Wario Wario",
         username: "Wario",
-        pronouns: ["they", "them"],
+        pronouns: ["they", "them", "she", "her"],
         bio: "The best Wario to grace this land!",
         messages: [0, 1],
         skills: [

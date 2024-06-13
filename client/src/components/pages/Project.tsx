@@ -31,7 +31,7 @@ const addInterested = () => {
 
 const Project = (props) => {
   return (
-    <div id='current-page' className='page'>
+    <div className='page'>
       <div id='return-button-container'>
       <button id='return-button' className='white-button' onClick={previousPage}>&lt; return</button>
       </div>

@@ -103,6 +103,13 @@ body {
   align-items: center;
 }
 
+.myAvatar {
+  /* center  */
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+
 .animals {
   border-radius: 4px;
   object-fit: cover;
@@ -114,33 +121,50 @@ body {
 
 /*
   Hats
+  This is going to change a lot once we have the actual hats, their sizes, positions, etc.
+  Current hats are just placeholders (random images I found)
 */
 
+#hat-container {
+  /* border: 1px solid black; */
+  position: fixed;
+  width: 220px;
+  height: 85px;
+
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+
 .hat {
-  position: absolute;
-  width: 60px;
+  width: 50px;
 }
 
 .cat-hat,
-.dog-hat,
+.dog-hat {
+  margin-right: 6px;
+  margin-bottom: 20px;
+}
+
 .frog-hat {
-  margin-top: 24px;
-  margin-left: 80px;
+  margin-right: 6px;
+  margin-bottom: 10px;
 }
 
 .otter-hat {
-  margin-top: 20px;
-  margin-left: 28px;
+  margin-bottom: 10px;
+  margin-right: 110px;
 }
 
 .dragon-hat {
-  margin-top: 0px;
-  margin-left: 105px;
+  margin-bottom: 40px;
+  margin-left: 50px;
+  width: 40px;
 }
 
 .toad-hat {
-  margin-top: 35px;
-  margin-left: 80px;
+  margin-bottom: 5px;
+  margin-right: 4px;
 }
 
 /*

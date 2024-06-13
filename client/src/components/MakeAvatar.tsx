@@ -13,15 +13,15 @@ const avatars = {
 // array of hat images and alt text
 const hats = [
   { src: "images/icons/cancel.png", alt: "none" },
-  { src: "images/hats/pinkBow.png", alt: "pink bow" },
-  { src: "images/hats/flowerCrown.webp", alt: "flower crown" },
+  // { src: "images/hats/pinkBow.png", alt: "pink bow" },
+  { src: "images/hats/flowerCrown.png", alt: "flower crown" },
   { src: "images/hats/hardHat.png", alt: "hard hat" },
   { src: "images/hats/cowboyHat.png", alt: "cowboy hat" },
   { src: "images/hats/chefsHat.png", alt: "chefs hat" },
   { src: "images/hats/partyHat.png", alt: "party hat" },
   { src: "images/hats/leafHat.png", alt: "leaf hat" },
-  { src: "images/hats/baseballHat.png", alt: "baseball hat" },
-  { src: "images/hats/pirateHat.png", alt: "pirate hat" },
+  // { src: "images/hats/baseballHat.png", alt: "baseball hat" },
+  // { src: "images/hats/pirateHat.png", alt: "pirate hat" },
 ]
 
 const MakeAvatar = () => {
@@ -34,7 +34,7 @@ const MakeAvatar = () => {
   const [colorOptions, setColorOptions] = useState(avatars.cat);
   // active customization tab (color or hats)
   const [activeTab, setActiveTab] = useState("color");
-  
+
   // current color
   const [currentColors, setCurrentColors] = useState({
     cat: avatars.cat[0],
@@ -80,7 +80,7 @@ const MakeAvatar = () => {
     setCurrentHats((prevHats) => ({
       ...prevHats,
       // if the hat is the cancel icon, remove the hat
-      [selectedAvatar]: hat === "images/icons/cancel.png" ? "" : hat, 
+      [selectedAvatar]: hat === "images/icons/cancel.png" ? "" : hat,
     }));
   };
 
@@ -135,8 +135,11 @@ const MakeAvatar = () => {
                 style={{ display: slideIndex === index + 1 ? "flex" : "none" }}
               >
                 {/* avatar */}
-                <div className="myAvatar" id={key}>
-                  <img src={currentHats[key]} alt="" className={getHatClass(key)} />
+                <div className="myAvatar" id={key} >
+                  <div id="hat-container">
+                    <img src={currentHats[key]} alt="" className={getHatClass(key)}/>
+                  </div>
+
                   <img src={currentColors[key]} alt={key} className="animals" />
                 </div>
               </div>
@@ -144,7 +147,7 @@ const MakeAvatar = () => {
           </div>
 
           {/* dot indicators */}
-          <div style={{ textAlign: "center"}}>
+          <div style={{ textAlign: "center" }}>
             {Object.keys(avatars).map((_, index) => (
               <span
                 className={`slide-dot ${slideIndex === index + 1 ? "active" : ""}`}

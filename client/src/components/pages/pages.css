@@ -1,0 +1,12 @@
+.page button{
+  background-color: #F76902;
+  color:white;
+  font-size:large;
+  border:none;
+  cursor:pointer;
+  margin: 10px;
+}
+
+.page button:hover{
+  background-color: #c95700;
+}

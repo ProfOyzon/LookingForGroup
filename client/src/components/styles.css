@@ -77,6 +77,10 @@
     margin-bottom: 0;
 }
 
+.discover-main-content{
+    margin-left: 40px;
+}
+
 .discover-button-inactive {
     background-color: white;
     color: var(--orange);

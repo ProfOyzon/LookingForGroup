@@ -21,18 +21,23 @@ const Home = (props) => {
 
     let DEFAULT_TAB = 'Projects';
     let [selectedTab, setSelectedTab] = useState(DEFAULT_TAB);
+    let projectButton = document.querySelector(".discover-button-active") as HTMLInputElement;
+
+    let placeholderText = projectButton.value;
 
     const handleButtonClick = (selectedButton) => {
         setSelectedTab(selectedButton);
     }
 
+    
     return (
-        <div>
+        <div className="discover-main-content">
             <h1 className="page-title">Discover</h1>
             <div id="discover-button-wrapper">                
                 <DiscoverButton isActive={selectedTab === 'Projects'} onClick={() => handleButtonClick('Projects')}>Projects</DiscoverButton>
                 <DiscoverButton isActive={selectedTab === 'People'} onClick={() => handleButtonClick('People')}>People</DiscoverButton>
-                <SearchBar currentSelection="All"></SearchBar>
+                <SearchBar currentSelection={placeholderText}></SearchBar>
+                
             </div>
 
             {/* Prints all projects in the fake dataset on screen */}

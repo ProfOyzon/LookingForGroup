@@ -7,6 +7,7 @@ import message from '../img/message.png';
 import profile from '../img/profile-user.png';
 import setting from '../img/setting.png';
 import * as paths from "../constants/routes";
+import { useSelector } from 'react-redux';
 
 // To Do:
 // Make mobile friendly version stay at bottom of screen
@@ -17,7 +18,7 @@ import * as paths from "../constants/routes";
 
 const SideBar = () => {
   const [width, setWidth] = React.useState(window.innerWidth);
-  const breakpoint = 800;
+  const breakpoint = useSelector((state:any) => state.page.MOBILE_BREAKPOINT);
 
   const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
   const navigate = useNavigate(); // Hook for navigation

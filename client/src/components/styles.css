@@ -1,6 +1,7 @@
 :root {
     --orange: #F76902;
     --orange-hover: #DE6B17;
+    --MOBILE_BREAKPOINT: 800px;
 }
 
 .project-card, .profile-card {
@@ -157,6 +158,11 @@
 	outline: inherit;
 }
 
+.navIcon {
+    width: 32px;
+    height: 32px;
+}
+
 
 .SideBarContainer{
     width: 220px;
@@ -242,7 +248,8 @@ h1{
     cursor: pointer;
 }
 
-@media only screen and (max-width: 800px){
+@media only screen and (max-width: var(--MOBILE_BREAKPOINT)){
+
     .SideBarContainer{
         width: 100vw;
         height: 100px;

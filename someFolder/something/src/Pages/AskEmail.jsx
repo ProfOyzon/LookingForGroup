@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Css/style.css';
-import imagePassword from '../img/passwordLock';
+import imagePassword from '../img/passwordLock.png';
 
 const AskEmail = () =>{
     return(

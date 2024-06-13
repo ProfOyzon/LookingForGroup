@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 
 export const DiscoverButton = ({children, isActive, onClick}) => {
     let [buttonClassName, setButtonClassName] = useState(isActive ? "discover-button-active": "discover-button-inactive");
+    
     useEffect(() => {
         if(isActive){
             setButtonClassName('discover-button-active');
@@ -11,6 +12,6 @@ export const DiscoverButton = ({children, isActive, onClick}) => {
     }, [onClick]);
 
     return (
-        <button className={buttonClassName} onClick={onClick}>{children}</button>
+        <button className={buttonClassName + " discover-button"} onClick={onClick}>{children}</button>
     );
 }

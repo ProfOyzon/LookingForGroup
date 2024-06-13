@@ -33,6 +33,11 @@ export const projects = [
                 Role: "Game Developer",
                 amount: 2,
                 description: "We are looking for game developers familiar with Unreal Engine 5",
+            },
+            {
+                Role: "Artist",
+                amount: 3,
+                description: "We are looking for artists who know how to draw bees",
             }
         ],
         posts: [0, 1, 2]
@@ -80,7 +85,7 @@ export const profiles = [
         _id: 1,
         name: "Wario Wario",
         username: "Wario",
-        pronouns: ["they", "them"],
+        pronouns: ["they", "them", "she", "her"],
         bio: "The best Wario to grace this land!",
         messages: [0, 1],
         skills: [

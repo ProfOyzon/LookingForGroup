@@ -7,6 +7,7 @@ import message from '../img/message.png';
 import profile from '../img/profile-user.png';
 import setting from '../img/setting.png';
 import * as paths from "../constants/routes";
+import { useSelector } from 'react-redux';
 
 // To Do:
 // Make mobile friendly version stay at bottom of screen
@@ -17,7 +18,7 @@ import * as paths from "../constants/routes";
 
 const SideBar = () => {
   const [width, setWidth] = React.useState(window.innerWidth);
-  const breakpoint = 620;
+  const breakpoint = useSelector((state:any) => state.page.MOBILE_BREAKPOINT);
 
   const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
   const navigate = useNavigate(); // Hook for navigation
@@ -38,19 +39,19 @@ const SideBar = () => {
       <div className='sideBarContainer'>
         <div className='containerButtonSideBar'>
           <button onClick={() => handleTextChange('Discovery', paths.routes.HOME)}> 
-            <img src={homeIcon} width="32" height="32" alt="Home" />
+            <img src={homeIcon} className="navIcon" alt="Home" />
           </button>
           <button onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}> 
-            <img src={folder} width="32" height="32" alt="Projects" />
+            <img src={folder} className="navIcon" alt="Projects" />
           </button>
           <button onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}> 
-            <img src={message} width="32" height="32" alt="Messages" />
+            <img src={message} className="navIcon" alt="Messages" />
           </button>
           <button onClick={() => handleTextChange('Profile', paths.routes.PROFILE)}> 
-            <img src={profile} width="32" height="32" alt="Profile" />
+            <img src={profile} className="navIcon" alt="Profile" />
           </button>
           <button onClick={() => handleTextChange('Settings', paths.routes.SETTINGS)}> 
-            <img src={setting} width="32" height="32" alt="Setting" />
+            <img src={setting} className="navIcon" alt="Setting" />
           </button>
         </div>
       </div>
@@ -72,19 +73,19 @@ const SideBar = () => {
       
       <div className='containerButtonSideBar'>
         <button onClick={() => handleTextChange('Discovery', paths.routes.HOME)}> 
-          <img src={homeIcon} width="32" height="32" alt="Home" /> Home 
+          <img src={homeIcon} className="navIcon" alt="Home" /> Home 
         </button>
         <button onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}> 
-          <img src={folder} width="32" height="32" alt="Projects" /> My Projects
+          <img src={folder} className="navIcon" alt="Projects" /> My Projects
         </button>
         <button onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}> 
-          <img src={message} width="32" height="32" alt="Messages" /> Messages
+          <img src={message} className="navIcon" alt="Messages" /> Messages
         </button>
         <button onClick={() => handleTextChange('Profile', paths.routes.PROFILE)}> 
-          <img src={profile} width="32" height="32" alt="Profile" /> Profile
+          <img src={profile} className="navIcon" alt="Profile" /> Profile
         </button>
         <button onClick={() => handleTextChange('Settings', paths.routes.SETTINGS)}> 
-          <img src={setting} width="32" height="32" alt="Setting" /> Settings
+          <img src={setting} className="navIcon" alt="Setting" /> Settings
         </button>
       </div>
 

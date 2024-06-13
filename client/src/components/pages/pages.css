@@ -1,12 +1,16 @@
-.page button{
-  background-color: #F76902;
-  color:white;
-  font-size:large;
-  border:none;
-  cursor:pointer;
-  margin: 10px;
+.page {
+    position: absolute;
+    width: calc(100% - 220px);
+    height: 100%;
+    top:0px;
+    left:220px;
 }
 
-.page button:hover{
-  background-color: #c95700;
+@media only screen and (max-width: 800px){
+    .page {
+        left: 0px;
+        top: 100px;
+        width: 100%;
+        height: calc(100% - 100px);
+    }
 }

@@ -12,6 +12,6 @@ export const DiscoverButton = ({children, isActive, onClick}) => {
     }, [onClick]);
 
     return (
-        <button className={buttonClassName} onClick={onClick}>{children}</button>
+        <button className={buttonClassName + " discover-button"} onClick={onClick}>{children}</button>
     );
 }

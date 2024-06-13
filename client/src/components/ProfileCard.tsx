@@ -8,12 +8,12 @@ import { projects } from "../constants/fakeData";
 
 export const ProfileCard = ({profile}) => {
     return (
-        <div className="profile-card">
-            <img id="profile-card-profile-picture" src={profilePicture} alt={profile.name}/>
-            <div id="profile-card-body">
-                <span><h2 id="profile-card-name">{profile.name}</h2><p id="profile-card-pronouns">{profile.pronouns[0]}/{profile.pronouns[1]}</p></span>
-                <p id="profile-card-description">{profile.bio}</p>
-                <div id="profile-card-tag-wrapper">
+        <div className="discover-card">
+            <img id="discover-card-profile-picture" src={profilePicture} alt={profile.name}/>
+            <div id="discover-card-body">
+                <span><h2 id="discover-card-name">{profile.name}</h2><p id="profile-card-pronouns">{profile.pronouns.map(p => `${p}`).join("/")}</p></span>
+                <p id="discover-card-description">{profile.bio}</p>
+                <div id="discover-card-tag-wrapper">
                     <Tags>{profile.skills[0].skill}</Tags>
                     <Tags>{profile.skills[1].skill}</Tags>
                     <Tags>{profile.skills[2].skill}</Tags>

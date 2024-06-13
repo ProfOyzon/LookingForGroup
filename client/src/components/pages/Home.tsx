@@ -12,7 +12,6 @@ import {useState} from 'react';
 const Home = (props) => {
 
     // THINGS TO DO:
-    // CHANGE CARD CONTENTS TO MATCH CLICKED BUTTON
     // ADD FOLLOWING BUTTON AND OTHER STUFF TO CARDS
     // MAKE PAGE MOBILE FRIENDLY
     // ADD SEARCH BAR
@@ -21,9 +20,28 @@ const Home = (props) => {
 
     let DEFAULT_TAB = 'Projects';
     let [selectedTab, setSelectedTab] = useState(DEFAULT_TAB);
-    let projectButton = document.querySelector(".discover-button-active") as HTMLInputElement;
 
-    let placeholderText = projectButton.value;
+    let projectContent = <>{
+        projects ?
+            projects.length > 0 ?
+                projects.map((project) => (
+                    <ProjectCard project={project}></ProjectCard>
+                ))
+                :null
+                    :null
+    }</>;
+
+    let profileContent = <>{
+        profiles ?
+            profiles.length > 0 ?
+                profiles.map((profile) => (
+                    <ProfileCard profile={profile}></ProfileCard>
+                ))
+                :null
+                    :null
+    }</>;
+
+    let discoverContent = selectedTab === 'Projects' ? projectContent : profileContent;
 
     const handleButtonClick = (selectedButton) => {
         setSelectedTab(selectedButton);
@@ -31,7 +49,7 @@ const Home = (props) => {
 
     
     return (
-        <div className="discover-main-content">
+        <div className="page">
             <h1 className="page-title">Discover</h1>
             <div id="discover-button-wrapper">                
                 <DiscoverButton isActive={selectedTab === 'Projects'} onClick={() => handleButtonClick('Projects')}>Projects</DiscoverButton>
@@ -41,17 +59,8 @@ const Home = (props) => {
             </div>
 
             {/* Prints all projects in the fake dataset on screen */}
-            {
-                projects ?
-                    projects.length > 0 ?
-                        projects.map((project) => (
-                            <ProjectCard project={project}></ProjectCard>
-                        ))
-                        :null
-                            :null
-            }
-            <ProfileCard profile={profiles[0]}></ProfileCard>
-            <ProjectCard project={projects[0]}></ProjectCard>
+            {discoverContent}
+            {/* <ProfileCard profile={profiles[0]}></ProfileCard> */}
         </div>
     );
 }

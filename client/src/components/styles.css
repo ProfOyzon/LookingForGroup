@@ -3,7 +3,7 @@
     --orange-hover: #DE6B17;
 }
 
-.project-card, .profile-card {
+.discover-card{
     width: 60%;
     max-width: 765px;
     max-height: 265px;
@@ -15,48 +15,69 @@
     padding: 2%;
     margin: 2.5% auto;
     transition: 1s;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
 }
 
-.project-card:hover, .profile-card:hover {
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.discover-card:hover, .profile-card:hover {
     transform: scale(1.05);
 }
 
-#project-card-body, #profile-card-body {
+#discover-card-body, #profile-card-body {
     margin-left:10%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    grid-template-rows: 10% 50% 40%;
+    grid-template-rows: 10% 50% 30% 10%;
     /* align-items: center; */
-    font-size: 1vw;
+    font-size: 0.8rem;
 }
 
 
 
-#project-card-body > *, #profile-card-body > *{
+#discover-card-body > *, #profile-card-body > *{
     flex: 1;
 }
 
-#project-card-profile-picture, #profile-card-profile-picture {
+#discover-card-profile-picture, #profile-card-profile-picture {
    width: 100%;
+   border: 2px solid black;
+   border-radius: 100%;
 }
 
-#project-card-name, #profile-card-name {
+#discover-card-name, #profile-card-name {
     text-align: center;
     margin-bottom: 0;
 }
 
-#project-card-description, #profile-card-description {
+#discover-card-description, #profile-card-description {
     margin-top: 0;
     max-width: 450px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
-#project-card-tag-wrapper, #profile-card-tag-wrapper {
+#discover-card-tag-wrapper, #profile-card-tag-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     max-width: 450px;
+}
+
+#profile-card-pronouns {
+    margin-top: 0%;
+    text-align: center;
 }
 
 .tag {
@@ -65,16 +86,28 @@
     border: 2px solid lightseagreen;
     border-radius: 5px;
     text-align: center;
-    padding: 3px 15px;
+    padding: 0.5vw 1vw;
     max-height: 25px;
 }
 
 .tag-name {
     margin: 0;
+    font-size: 0.8rem;
 }
 
 .page-title {
     margin-bottom: 0;
+    font-size: 30px;
+}
+
+.discover-button {
+    border-radius: 10px;
+    border: 2px solid var(--orange);
+    font-size: 1.5vw;
+    font-weight: bold;
+    padding: 0.6vw;
+    margin: 1vw;
+    cursor: pointer;
 }
 
 .discover-main-content{
@@ -84,59 +117,51 @@
 .discover-button-inactive {
     background-color: white;
     color: var(--orange);
-    border: 2px solid var(--orange);
-    font-size: 25px;
-    font-weight: bold;
-    padding: 8px;
-    margin: 15px;
 }
 
 .discover-button-inactive:hover {
     background-color: rgb(126, 124, 124);
-    cursor: pointer;
 }
 
 .discover-button-active {
     background-color: var(--orange);
     color: white;
-    border: 2px solid var(--orange);
-    font-size: 25px;
-    font-weight: bold;
-    padding: 8px;
-    margin: 15px;
 }
 
 .discover-button-active:hover {
     background-color: var(--orange-hover);
     border-color: var(--orange-hover);
-    cursor: pointer;
 }
 
 #discover-button-wrapper {
-    display: flex;
+    display: grid;
     flex-direction: row;
     justify-self: center;
     text-align: left;
     margin-left: 2vw;
-    width: 80%;
-    
+    width: 100%;
+    grid-template-columns: 14% 14% 72%;
 }
 
 .search-wrapper{
     display: flex;
     flex-direction: row;
-    align-content: center;
-    height: 60px;
-    width: 40%;
+    align-content: right;
+    justify-self: end;
+    height: auto;
+    /* width: 40%; */
+    margin: 1vw 50px;
+}
 
-    margin-left: auto;
+#discover-button-wrapper > * {
+    max-height: 50px;
 }
 
 .search-bar{
     padding: 2px;
     border: 3px solid gray;
     border-radius: 10px;
-    font-size: 2vw;
+    font-size: 1vw;
     text-align: left;
     display: flex;
     flex-direction: row;
@@ -163,17 +188,23 @@
 	outline: inherit;
 }
 
+.navIcon {
+    width: 32px;
+    height: 32px;
+}
+
 
 .SideBarContainer{
-    width: 15vw;
+    width: 220px;
     height: 100vh;
     border: solid black 2px;
-    position: fixed;
+    position:fixed;
+    top: 0px;
+    left: 0px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
 }
 .ProfileContainer{
-    width: 15vw;
-    height: 20vh;  
+    width: 220px; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -192,7 +223,7 @@
 }
 
 .containerButtonSideBar button{
-    width: 15vw;
+    width: 220px;
     height: 6vh;
     background-color: white;
     border: solid lightgrey 1px;
@@ -232,7 +263,7 @@ h1{
 }
 
 .Logout button{
-    background-color: orange;
+    background-color: var(--orange);
     color: white;    
     position: absolute;
     bottom: 0;
@@ -247,13 +278,39 @@ h1{
     cursor: pointer;
 }
 
-@media only screen and (max-width: 620px){
+@media only screen and (max-width: 800px){
+
+    #discover-button-wrapper {
+        grid-template-columns: 20% 20% 60%;
+    }
+
+    .search-bar {
+        font-size: 0.5rem;
+    }
+
+    .discover-button {
+        font-size: 0.8rem;
+    }
+    
+    .tag-name {
+        font-size: 2vw;
+    }
+    
+    .discover-card {
+        width: 90%;
+        max-width: 90%;
+    }
+
     .SideBarContainer{
         width: 100vw;
         height: 100px;
         border: solid black 2px;
         position: fixed;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+    }
+
+    .ProfileContainer{
+        width: 15vw;
     }
 
     .containerButtonSideBar{

@@ -1,6 +1,7 @@
 :root {
     --orange: #F76902;
     --orange-hover: #DE6B17;
+    --MOBILE_BREAKPOINT: 800px;
 }
 
 .project-card, .profile-card {
@@ -59,6 +60,11 @@
     max-width: 450px;
 }
 
+#profile-card-pronouns {
+    margin-top: 0%;
+    text-align: center;
+}
+
 .tag {
     display: flex;
     align-items: center;
@@ -77,55 +83,103 @@
     margin-bottom: 0;
 }
 
+.discover-button {
+    border-radius: 10px;
+    border: 2px solid var(--orange);
+    font-size: 1.5vw;
+    font-weight: bold;
+    padding: 0.6vw;
+    margin: 1vw;
+    cursor: pointer;
+}
+
 .discover-button-inactive {
     background-color: white;
     color: var(--orange);
-    border: 2px solid var(--orange);
-    font-size: 25px;
-    font-weight: bold;
-    padding: 8px;
-    margin: 15px;
 }
 
 .discover-button-inactive:hover {
     background-color: rgb(126, 124, 124);
-    cursor: pointer;
 }
 
 .discover-button-active {
     background-color: var(--orange);
     color: white;
-    border: 2px solid var(--orange);
-    font-size: 25px;
-    font-weight: bold;
-    padding: 8px;
-    margin: 15px;
 }
 
 .discover-button-active:hover {
     background-color: var(--orange-hover);
     border-color: var(--orange-hover);
-    cursor: pointer;
 }
 
 #discover-button-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
     text-align: left;
     margin-left: 2vw;
+    width: 80%;
+    
 }
 
+.search-wrapper{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    height: 60px;
+    width: 40%;
 
+    margin-left: auto;
+}
+
+.search-bar{
+    padding: 2px;
+    border: 3px solid gray;
+    border-radius: 10px;
+    font-size: 2vw;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+}
+
+.search-input{
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 4px;
+	font: inherit;
+	cursor: text;
+	outline: inherit;
+}
+
+.search-button{
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 4px;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.navIcon {
+    width: 32px;
+    height: 32px;
+}
 
 
 .SideBarContainer{
-    width: 15vw;
+    width: 220px;
     height: 100vh;
     border: solid black 2px;
-    position: fixed;
+    position:fixed;
+    top: 0px;
+    left: 0px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
 }
 .ProfileContainer{
-    width: 15vw;
-    height: 20vh;  
+    width: 220px; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -144,7 +198,7 @@
 }
 
 .containerButtonSideBar button{
-    width: 15vw;
+    width: 220px;
     height: 6vh;
     background-color: white;
     border: solid lightgrey 1px;
@@ -184,7 +238,7 @@ h1{
 }
 
 .Logout button{
-    background-color: orange;
+    background-color: var(--orange);
     color: white;    
     position: absolute;
     bottom: 0;
@@ -199,13 +253,18 @@ h1{
     cursor: pointer;
 }
 
-@media only screen and (max-width: 620px){
+@media only screen and (max-width: var(--MOBILE_BREAKPOINT)){
+
     .SideBarContainer{
         width: 100vw;
         height: 100px;
         border: solid black 2px;
         position: fixed;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+    }
+
+    .ProfileContainer{
+        width: 15vw;
     }
 
     .containerButtonSideBar{

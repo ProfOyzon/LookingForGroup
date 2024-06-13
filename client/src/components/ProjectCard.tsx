@@ -18,6 +18,7 @@ export const ProjectCard = ({project}) => {
                     <Tags>{project.tags[1]}</Tags>
                     <Tags>{project.tags[2]}</Tags>
                 </div>
+                <p id="project-card-needed-roles"><b>Looking for:</b> {project.neededRoles.map(r => `${r.Role}(${r.amount})`).join(", ")}</p>
             </div>
             {/* <button id="project-card-follow" >
                 <img src={followPicture}/>

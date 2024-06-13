@@ -4,7 +4,7 @@ export const pageSlice = createSlice({
     name: 'page',
     initialState: {
         variable: true,
-        MOBILE_BREAKPOINT: "800px"
+        MOBILE_BREAKPOINT: 800
     },
     reducers: {
         setVariable: (state, action) => {

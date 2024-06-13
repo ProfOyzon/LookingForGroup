@@ -12,7 +12,6 @@ import {useState} from 'react';
 const Home = (props) => {
 
     // THINGS TO DO:
-    // CHANGE CARD CONTENTS TO MATCH CLICKED BUTTON
     // ADD FOLLOWING BUTTON AND OTHER STUFF TO CARDS
     // MAKE PAGE MOBILE FRIENDLY
     // ADD SEARCH BAR

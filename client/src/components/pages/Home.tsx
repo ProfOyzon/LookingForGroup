@@ -54,7 +54,7 @@ const Home = (props) => {
             <div id="discover-button-wrapper">                
                 <DiscoverButton isActive={selectedTab === 'Projects'} onClick={() => handleButtonClick('Projects')}>Projects</DiscoverButton>
                 <DiscoverButton isActive={selectedTab === 'People'} onClick={() => handleButtonClick('People')}>People</DiscoverButton>
-                <SearchBar currentSelection={placeholderText}></SearchBar>
+                <SearchBar currentSelection="All"></SearchBar>
                 
             </div>
 

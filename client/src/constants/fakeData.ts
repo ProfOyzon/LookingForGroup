@@ -176,7 +176,7 @@ export const posts = [
     {
         _id: 0,
         author: 0,
-        createdDate: "",
+        createdDate: "sample date",
         title: "A great post",
         postText: "hello",
         postImage: {
@@ -189,7 +189,7 @@ export const posts = [
     {
         _id: 1,
         author: 0,
-        createdDate: "",
+        createdDate: "sample date",
         title: "The bestest post",
         postText: "Wassup",
         postImage: {
@@ -202,7 +202,7 @@ export const posts = [
     {
         _id: 2,
         author: 1,
-        createdDate: "",
+        createdDate: "sample date",
         title: "A prettttty cooool project!",
         postText: "Yoooo!",
         postImage: {

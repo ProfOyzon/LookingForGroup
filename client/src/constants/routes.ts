@@ -5,6 +5,7 @@ export const routes = {
     "MYFEED": "/myFeed",
     "MYPROJECTS": "/myProjects",
     "PROFILE": "/profile",
+    "PROJECT": "/project",
     "SETTINGS": "/settings",
     "NOTFOUND": "/notFound",
 }

@@ -197,7 +197,7 @@
 .SideBarContainer{
     width: 220px;
     height: 100vh;
-    border: solid black 2px;
+    /* border: solid black 2px; */
     position:fixed;
     top: 0px;
     left: 0px;
@@ -233,26 +233,31 @@
     width: 220px;
     height: 6vh;
     background-color: white;
-    border: solid lightgrey 1px;
+    border: none;
+    outline: solid lightgrey 1px;
     cursor: pointer;
     font-size:larger;
     text-align:left;
-    padding-left:50px;
+    padding-left: 34px;
     padding-right: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .containerButtonSideBar button:hover{
-    transform: scale(1.1);
+    /* transform: scale(1.1); */
     transition-duration: 0.25s;
+    background-color: #eeeeee;
 }
 
 .dot{
-  height: 10vw;
-  width: 10vw;
+  height: 125px;
+  width: 125px;
   background-color: white;
   border-radius: 50%;
   display: inline-block;
-  border: solid black 2px;
+  border: solid black 1px;
 
 }
 
@@ -268,14 +273,21 @@
     color: white;    
     position: absolute;
     bottom: 0;
-    margin-bottom: 30px;
-    width: 150px;
+    margin-bottom: 40px;
+    width: 100px;
     height: 40px;
+    font-size: 18px;
+    border: none;
+    outline: solid var(--orange) 2px;
+    font-weight: 900;
 }
 
 .Logout button:hover{
-    transform: scale(1.1);
+    /* transform: scale(1.1); */
     transition-duration: 0.25s;
+    background-color: white;
+    color: var(--orange);
+    outline: solid var(--orange) 2px;
     cursor: pointer;
 }
 

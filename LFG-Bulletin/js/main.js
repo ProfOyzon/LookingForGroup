@@ -144,24 +144,11 @@ function editText()
     postButton.buttonMode = false;
     //Make a confirmation button
     let button = new PIXI.Sprite(buttonTexture);
-    button.x = app.view.width/2;
-    button.y = app.view.width/2;
+    button.alpha = 0.5;
     button.interactive = true;
     button.buttonMode = true;
     button.eventMode = 'static';
     button.cursor = 'pointer';
-    button.anchor.set(0.5, 1);
-    //Text for button
-    let buttonStyle = new PIXI.TextStyle(    
-        {
-            font: '12px Arial',
-            fill: 0x000000,
-            height: 7,
-            width: 10,
-        });
-    let buttonText = new PIXI.Text('Click when done editing', buttonStyle);
-    buttonText.anchor.set(0.5, 7);
-    button.addChild(buttonText);
     //When the button is clicked, change the text value and reenable interaction
     button.on('pointerdown', function(e) { 
         text.text = input.value;

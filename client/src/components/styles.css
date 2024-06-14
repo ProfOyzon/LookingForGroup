@@ -402,6 +402,13 @@
                          'blank desc listing'
 }
 
+#project-info-member{
+    display: grid;
+    grid-template: 1fr 1fr / .2fr 1fr .5fr 1fr;
+    grid-template-areas: 'picture header buttons listing'
+                         'blank desc buttons listing';
+}
+
 #project-picture{
     width: 96px;
     height: 96px;
@@ -420,9 +427,36 @@
     align-items:center;
 }
 
+#member-buttons{
+    grid-area:buttons;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    margin: 15px 20px;
+}
+
+#member-buttons button{
+    border:1px solid #D0D0D0;
+}
+
+#virtual-space-entrance{
+    height: 100px;
+}
+
 #more-options-popup{
     background-color:white;
     box-shadow: 2px 2px 5px black;
+    
+    width: 200px;
+    height: 100px;
+}
+
+#more-options-popup button{
+    display:block;
+    border: 1px solid rgb(209, 209, 209);
+    width: 90%;
+    height: 40%;
+    margin: 2.5% auto;
 }
 
 .hide{

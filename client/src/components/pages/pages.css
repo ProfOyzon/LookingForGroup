@@ -6,6 +6,32 @@
     left:220px;
 }
 
+#profileHeader{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 2px 8px;
+}
+
+section{
+    margin: 10px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 3px;
+}
+
+#projectList, .skillList{
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px;
+}
+
 @media only screen and (max-width: 800px){
     .page {
         left: 0px;

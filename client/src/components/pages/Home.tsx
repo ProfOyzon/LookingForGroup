@@ -12,7 +12,6 @@ import {useState} from 'react';
 const Home = (props) => {
 
     // THINGS TO DO:
-    // CHANGE CARD CONTENTS TO MATCH CLICKED BUTTON
     // ADD FOLLOWING BUTTON AND OTHER STUFF TO CARDS
     // MAKE PAGE MOBILE FRIENDLY
     // ADD SEARCH BAR
@@ -48,6 +47,7 @@ const Home = (props) => {
         setSelectedTab(selectedButton);
     }
 
+    
     return (
         <div className="page">
             <h1 className="page-title">Discover</h1>
@@ -55,6 +55,7 @@ const Home = (props) => {
                 <DiscoverButton isActive={selectedTab === 'Projects'} onClick={() => handleButtonClick('Projects')}>Projects</DiscoverButton>
                 <DiscoverButton isActive={selectedTab === 'People'} onClick={() => handleButtonClick('People')}>People</DiscoverButton>
                 <SearchBar currentSelection="All"></SearchBar>
+                
             </div>
 
             {/* Prints all projects in the fake dataset on screen */}

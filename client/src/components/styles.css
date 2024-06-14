@@ -205,7 +205,7 @@
 }
 
 .SideBarContainer h1{
-    width: 15vw;
+    width: 220px;
     height: 5vh;
     font-size: 2vw;
 }
@@ -219,7 +219,7 @@
 
 .headerContainer h1{
     font-weight: bold;
-    font-size: 2vw;
+    font-size: 30px;
     height: 10vh;
 }
 
@@ -237,7 +237,7 @@
     cursor: pointer;
     font-size:larger;
     text-align:left;
-    padding-left:calc(8vw / 2);
+    padding-left:50px;
     padding-right: auto;
 }
 
@@ -269,8 +269,8 @@
     position: absolute;
     bottom: 0;
     margin-bottom: 30px;
-    width: 8vw;
-    height: 4vh;
+    width: 150px;
+    height: 40px;
 }
 
 .Logout button:hover{
@@ -329,9 +329,43 @@
 
 /* Project page style rules */
 
+#project-page{
+    padding: 0px 15px;
+    width: calc(100% - 250px);
+}
+
+@media only screen and (max-width: 800px){
+    #project-page{
+        width:calc(100% - 30px);
+    }
+
+    /*#project-info{
+        display:grid;
+        grid-template:  .2fr 2fr / 1fr 1fr 1fr;
+        grid-template-areas: 'picture header'
+                             'desc desc'
+                             'listing listing'
+    }*/
+}
+
+.orange-button{
+    background-color: var(--orange);
+    color:white;
+    font-size:large;
+    border:none;
+    cursor:pointer;
+    margin: 10px;
+}
+
+.orange-button:hover{
+    background-color: var(--orange-hover);
+}
+
 .white-button{
     background-color:white;
     color:black;
+    border:none;
+    cursor:pointer;
 }
 
 .white-button:hover{
@@ -343,13 +377,10 @@
 }
 
 #return-button{
-    background-color:white;
-    color:black;
     font-weight:bold;
-}
-
-#return-button:hover{
-    background-color:#D0D0D0;
+    font-size:larger;
+    height:40px;
+    margin-bottom:10px;
 }
 
 #project-info{
@@ -377,18 +408,18 @@
     align-items:center;
 }
 
-#more-options-button{
-    background-color:white;
-    color:black;
-}
-
-#more-options-button:hover{
-    background-color:#D0D0D0;
-}
-
 #more-options-popup{
+    background-color:white;
+    box-shadow: 2px 2px 5px black;
+}
+
+.hide{
     position:absolute;
     display:none;
+}
+
+.show{
+    display:block;
 }
 
 #follow-project{
@@ -418,6 +449,15 @@
 
 #interested-button:hover{
     background-color:#D0D0D0;
+}
+
+#member-divider hr{
+    display:inline-block;
+    width:calc((100% - 120px)/2);
+}
+
+#member-divider span{
+    margin: 0px 24px;
 }
 
 #project-members{

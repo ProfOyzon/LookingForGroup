@@ -11,7 +11,7 @@ export const ProjectPost = (props) => {
           <div className='post-date'>{props.date}</div>
         </div>
       
-        <button><img src='' alt=''/></button>
+        <button className='white-button'><img src='' alt=''/></button>
       </div>
     </div>
   )

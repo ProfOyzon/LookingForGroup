@@ -29,9 +29,14 @@ const addInterested = () => {
   console.log('This will add the current user to the list of people interested');
 }
 
+const toggleOptionDisplay = () => {
+  document.getElementById("more-options-popup").classList.toggle("show");
+  console.log(document.getElementById("more-options-popup"));
+}
+
 const Project = (props) => {
   return (
-    <div className='page'>
+    <div id='project-page' className='page'>
       <div id='return-button-container'>
       <button id='return-button' className='white-button' onClick={previousPage}>&lt; return</button>
       </div>
@@ -42,10 +47,10 @@ const Project = (props) => {
         <div id='project-header'>
           <h1 id='project-title'>{projects[0].name}</h1>
           <div id='header-buttons'>
-            <button id='follow-project' onClick={followProject}>Follow</button>
+            <button id='follow-project' className='orange-button' onClick={followProject}>Follow</button>
             <div id='more-options'>
-              <button id='more-options-button' className='white-button'><img src='elipses.png' alt="..."/></button>
-              <div id='more-options-popup'>Sample text</div>
+              <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}><img src='elipses.png' alt="..."/></button>
+              <div id='more-options-popup' className='hide'>Sample text</div>
             </div>
           </div>
         </div>
@@ -68,7 +73,12 @@ const Project = (props) => {
         </div>
       </div>
 
-      <hr/>
+      <div id='member-divider'>
+        <hr/>
+        <span>Members</span>
+        <hr/>
+      </div>
+      
 
       <div id='project-members'>
         {

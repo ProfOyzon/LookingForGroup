@@ -125,11 +125,14 @@ function editText()
 {
     //Make a text input at the bottom of the screen
     let text = this;
-    var space = document.createElement("hr")
+    let mousePosition = app.renderer.plugins.interaction.mouse.global;
+
     var input = document.createElement("input");
+    input.style.position = "absolute";
+    input.style.left = (mousePosition.x - 75).toString() + "px";
+    input.style.top = mousePosition.y.toString() + "px";
     input.type = "text";
     input.value = text.text;
-    document.body.appendChild(space);
     document.body.appendChild(input);
     //Disable interaction
     for(let p of posts){
@@ -141,31 +144,17 @@ function editText()
     postButton.buttonMode = false;
     //Make a confirmation button
     let button = new PIXI.Sprite(buttonTexture);
-    button.x = app.view.width/2;
-    button.y = app.view.width/2;
+    button.alpha = 0.5;
     button.interactive = true;
     button.buttonMode = true;
     button.eventMode = 'static';
     button.cursor = 'pointer';
-    button.anchor.set(0.5, 1);
-    //Text for button
-    let buttonStyle = new PIXI.TextStyle(    
-        {
-            font: '12px Arial',
-            fill: 0x000000,
-            height: 7,
-            width: 10,
-        });
-    let buttonText = new PIXI.Text('Click when done editing', buttonStyle);
-    buttonText.anchor.set(0.5, 7);
-    button.addChild(buttonText);
     //When the button is clicked, change the text value and reenable interaction
     button.on('pointerdown', function(e) { 
         text.text = input.value;
         text.style = textStyle;
         console.log(input.value);
         stage.removeChild(this);
-        space.remove();
         input.remove();
         for(let p of posts){
             p.interactive = true;

@@ -314,12 +314,15 @@
         max-width: 90%;
     }
 
-    .SideBarContainer{
+    .sideBarContainer{
         width: 100vw;
-        height: 100px;
-        border: solid black 2px;
+        height: 50px;
+        /*border: solid black 2px;*/
         position: fixed;
-        box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+        bottom:0;
+        background-color: white;
+        z-index: 1;
+        /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
     }
 
     .ProfileContainer{
@@ -334,6 +337,7 @@
 
     .containerButtonSideBar button{
         width: 20vw;
+        height: 50px;
         padding-left: calc((100vw - 160px) / 10);
         padding-right: auto;
     }
@@ -346,18 +350,62 @@
     width: calc(100% - 250px);
 }
 
+#project-info{
+    display: grid;
+    grid-template:  1fr 1fr / .2fr 1.5fr 400px;
+    grid-template-areas: 'picture header listing'
+                         'blank desc listing'
+}
+
+#project-info-member{
+    display: grid;
+    grid-template: 1fr 1fr / .2fr 1fr 200px 400px;
+    grid-template-areas: 'picture header buttons listing'
+                         'blank desc buttons listing';
+}
+
+#member-buttons{
+    grid-area:buttons;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    margin: 15px 20px;
+}
+
 @media only screen and (max-width: 800px){
     #project-page{
         width:calc(100% - 30px);
     }
 
-    /*#project-info{
+    #project-info{
         display:grid;
-        grid-template:  .2fr 2fr / 1fr 1fr 1fr;
+        grid-template:  1fr .5fr 1fr / .2fr 2fr;
         grid-template-areas: 'picture header'
                              'desc desc'
-                             'listing listing'
-    }*/
+                             'listing listing';
+    }
+
+    #project-info-member{
+        grid-template: 1fr .5fr 1fr / .2fr 2fr;
+        grid-template-areas: 'picture header'
+                             'buttons buttons'
+                             'desc desc'
+                             'listing listing';
+    }
+
+    #member-buttons{
+        flex-direction: row;
+        align-items:center;
+    }
+
+    #virtual-space-entrance{
+        width: 40vw;
+        max-width: 200px;
+    }
+
+    #more-options-popup{
+        right:16px;
+    }
 }
 
 .orange-button{
@@ -395,20 +443,6 @@
     margin-bottom:10px;
 }
 
-#project-info{
-    display: grid;
-    grid-template:  1fr 1fr / .2fr 1.5fr 1fr;
-    grid-template-areas: 'picture header listing'
-                         'blank desc listing'
-}
-
-#project-info-member{
-    display: grid;
-    grid-template: 1fr 1fr / .2fr 1fr .5fr 1fr;
-    grid-template-areas: 'picture header buttons listing'
-                         'blank desc buttons listing';
-}
-
 #project-picture{
     width: 96px;
     height: 96px;
@@ -427,20 +461,16 @@
     align-items:center;
 }
 
-#member-buttons{
-    grid-area:buttons;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    margin: 15px 20px;
-}
-
 #member-buttons button{
     border:1px solid #D0D0D0;
 }
 
 #virtual-space-entrance{
-    height: 100px;
+    height: 80px;
+}
+
+#make-post-button{
+    height: 60px;
 }
 
 #more-options-popup{
@@ -465,6 +495,7 @@
 }
 
 .show{
+    position:absolute;
     display:block;
 }
 
@@ -491,6 +522,7 @@
     border: 2px solid grey;
     border-radius: 3px;
     width: 50%;
+    margin:10px;
 }
 
 #interested-button:hover{
@@ -534,14 +566,17 @@
 
 .project-post{
     box-shadow: 5px 5px 10px grey;
-    width: 440px;
+    width: 95%;
+    max-width: 440px;
     height: 520px;
     padding: 10px;
 }
 
 .project-post img{
-    width: 420px;
-    height: 420px;
+    width: 85vw;
+    height: 85vw;
+    max-width: 420px;
+    max-height: 420px;
 }
 
 .post-content{

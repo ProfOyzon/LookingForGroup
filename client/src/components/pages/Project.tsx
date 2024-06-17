@@ -127,7 +127,7 @@ const ProjectInfoMember = (props) => {
 
         <div id='member-buttons'>
           <button id='virtual-space-entrance' className='white-button' onClick={enterVirtualSpace}>Enter virtual space</button>
-          <button className='white-button' onClick={makeProjectPost}>+ New Post</button>
+          <button id='make-post-button' className='white-button' onClick={makeProjectPost}>+ New Post</button>
         </div>
 
         <div id='project-listings'>

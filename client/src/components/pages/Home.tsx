@@ -22,6 +22,10 @@ const Home = (props) => {
     let DEFAULT_TAB = 'Projects';
     let [selectedTab, setSelectedTab] = useState(DEFAULT_TAB);
 
+    const handleSearch = () => {
+
+    }
+
     let projectContent = <>{
         projects ?
             projects.length > 0 ?
@@ -57,7 +61,7 @@ const Home = (props) => {
             <div id="discover-button-wrapper">                
                 <DiscoverButton isActive={selectedTab === 'Projects'} onClick={() => handleButtonClick('Projects')}>Projects</DiscoverButton>
                 <DiscoverButton isActive={selectedTab === 'People'} onClick={() => handleButtonClick('People')}>People</DiscoverButton>
-                <SearchBar currentSelection="All"></SearchBar>
+                <SearchBar currentSelection="All" onChange={() => handleSearch()}></SearchBar>
                 
             </div>
 

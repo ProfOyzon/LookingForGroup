@@ -507,6 +507,7 @@
 }
 
 #more-options-popup{
+    position:absolute;
     background-color:white;
     box-shadow: 2px 2px 5px black;
     
@@ -523,12 +524,10 @@
 }
 
 .hide{
-    position:absolute;
     display:none;
 }
 
 .show{
-    position:absolute;
     display:block;
 }
 
@@ -631,4 +630,72 @@
 .post-content img{
     width: 32px;
     height: 32px;
+}
+
+#settings-cover{
+    position:fixed;
+    background-color:black;
+    opacity: 50%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#settings-window{
+    position:fixed;
+    background-color: white;
+    width: 80vw;
+    height: 80vh;
+    opacity: 100%;
+    top: 10vh;
+    left: 10vw;
+    z-index: 1;
+}
+
+#settings-content{
+    margin: 0 15%;
+}
+
+/* project page general settings rules */
+
+#general-settings{
+    display:grid;
+    grid-template: 1fr 1fr 1fr / 1fr 3fr;
+    grid-template-areas: 'image name'
+                         'image theme'
+                         'pic-edit hiring';
+}
+
+#picture-edit{
+    grid-area: image;
+    width:64px;
+    height:64px;
+}
+
+#name-edit{
+    grid-area: name;
+}
+
+#theme-select{
+    grid-area: theme;
+}
+
+#edit-button{
+    grid-area: pic-edit;
+}
+
+#hiring-checkbox{
+    grid-area: hiring;
+}
+
+/* project page member settings rules */
+
+.member-settings-listing{
+    display:flex;
+    margin: 10px 0;
+}
+
+.member-settings-listing img{
+    width:48px;
 }

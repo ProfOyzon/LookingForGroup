@@ -147,6 +147,58 @@ const ProjectInfoMember = (props) => {
   )
 }
 
+//Used for the general tab of project settings
+const GeneralSettings = (props) => {
+  return(
+    <div id='general-settings'>
+      <img id='picture-edit' src={profilePlaceholder} alt='project image'/>
+      <button id='edit-button' className='white-button'>Edit Picture</button>
+      <input id='name-edit' name='project-name' type='text' value={projects[0].name}></input>
+      <select id='theme-select'>
+        <option value='classic'>Classic</option>
+        <option value='cute'>Cute</option>
+        <option value='western'>Western</option>
+        <option value='fantasy'>Fantasy</option>
+        <option value='cyberpunk'>Cyberpunk</option>
+      </select>
+      <div id='hiring-checkbox'>
+          <label>Is Hiring: </label>
+          <input name='is-hiring' type='checkbox' id='is-hiring'/>
+        </div>
+    </div>
+  )
+}
+
+//Used for the members tab of the project settings
+const MemberSettings = (props) => {
+  return(
+    <div id='member-settings'>
+      <div>Search bar component here?</div>
+      <button className='white-button'>Invite</button>
+      <div id='member-settings-list'>
+        {projects[0].members.map(member => {
+          return(
+            <MemberListing id={member.userID} role={member.role}/>
+          )
+        })
+        }
+      </div>
+    </div>
+  )
+}
+
+const MemberListing = (props) => {
+  return(
+    <div className='member-settings-listing'>
+    <img className='member-settings-profile' src={profilePlaceholder} alt=''/>
+    <span className='member-settings-name'>{profiles[props.id].name}</span>
+    <span className='member-settings-role'>{props.role}</span>
+    <button className='member-settings-edit'><img src=''/></button>
+    <button className='member-settings-more'><img src='' alt='...'/></button>
+    </div>
+  )
+}
+
 const Project = (props) => {
   return (
     <div id='project-page' className='page'>
@@ -182,6 +234,20 @@ const Project = (props) => {
             );
           })
         }
+      </div>
+
+      <div id='settings-cover' className='show'/>
+
+      <div id='settings-window' className='show'>
+          <h1>Project Settings</h1>
+          <div id='settings-tabs'>
+            <button className='white-button'>General</button>
+            <button className='white-button'>Members</button>
+          </div>
+          <hr/>
+          <div id='settings-content'>
+          <MemberSettings/>
+          </div>
       </div>
     </div>
   );

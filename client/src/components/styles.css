@@ -3,6 +3,39 @@
     --orange-hover: #DE6B17;
 }
 
+#notif-popup{
+    position: absolute;
+    width: 30vw;
+    height: 15vw;
+    background-color: #D0D0D0;
+    z-index: 5;
+    padding: 10px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    right: 30px;
+}
+
+.notif-popup-boxes{
+    border: 2px dashed black;
+    margin: 5px 0;
+}
+
+.notif-button-wrapper{
+    position: relative;
+    float: right;
+}
+
+.notif-button-icon{
+    width: 4vw;
+    height: auto;
+}
+
+.hidden{
+    display: none;
+}
+
 .discover-card{
     width: 60%;
     max-width: 765px;
@@ -178,7 +211,7 @@
 	outline: inherit;
 }
 
-.search-button{
+.search-button, #notif-button{
     background: none;
 	color: inherit;
 	border: none;

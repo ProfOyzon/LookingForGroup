@@ -2,6 +2,7 @@ import "./pages.css";
 import { ProjectCard } from "../ProjectCard";
 import { ProfileCard } from "../ProfileCard";
 import { DiscoverButton } from "../DiscoverButton";
+import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
 import "../styles.css";
 import { projects } from "../../constants/fakeData";
@@ -50,7 +51,9 @@ const Home = (props) => {
     
     return (
         <div className="page">
+            <NotifButton></NotifButton>
             <h1 className="page-title">Discover</h1>
+            
             <div id="discover-button-wrapper">                
                 <DiscoverButton isActive={selectedTab === 'Projects'} onClick={() => handleButtonClick('Projects')}>Projects</DiscoverButton>
                 <DiscoverButton isActive={selectedTab === 'People'} onClick={() => handleButtonClick('People')}>People</DiscoverButton>

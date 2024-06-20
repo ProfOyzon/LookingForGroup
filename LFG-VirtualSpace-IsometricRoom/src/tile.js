@@ -11,7 +11,7 @@ export class Tile {
         this.child = null;
         this.sprite = null;
         this.drawMethod;
-        // Attatch this info to the sprite
+        this.useStroke = false;
     }
 
     draw = (isWall) => {
@@ -69,7 +69,7 @@ export class Tile {
     }
 }
 
-const drawTile = (tile, color='#FFFFFF') => {
+const drawTile = (tile, color='rgba(255, 255, 255, 0)') => {
     // Starting point
     tile.sprite.save();
     tile.sprite.clear();
@@ -81,13 +81,15 @@ const drawTile = (tile, color='#FFFFFF') => {
     tile.sprite.lineTo(tile.position.x, tile.position.y);
     // Stroke
     tile.sprite.fill({color});
-    tile.sprite.stroke({ color: 'black', width: 1 });
+    if(tile.useStroke){
+        tile.sprite.stroke({ color: 'red', width: 2 });
+    }
     tile.sprite.restore();
 
     tile.sprite.tile = tile;
 }
 
-const drawWallTile = (tile, color='#FFFFFF') => {
+const drawWallTile = (tile, color='rgba(255, 255, 255, 0)') => {
     // Starting point
     tile.sprite.save();
     tile.sprite.clear();
@@ -99,7 +101,9 @@ const drawWallTile = (tile, color='#FFFFFF') => {
     tile.sprite.lineTo(tile.position.x, tile.position.y); // home, bottom left
     // Stroke
     tile.sprite.fill({color});
-    tile.sprite.stroke({ color: 'red', width: 1 });
+    if(tile.useStroke){
+        tile.sprite.stroke({ color: 'red', width: 2 });
+    }
     tile.sprite.restore();
 
     tile.sprite.tile = tile;

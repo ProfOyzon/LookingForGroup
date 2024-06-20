@@ -17,10 +17,10 @@ const init = async () => {
     world = new World({ rows: 6, columns: 6 });
     app.stage.addChild(world.container);
     world.setUpGrid(app);
-    // world.createDecorations({ count: 2, src: 'assets/images/chest.png', scale: 1.3, size: {x:1,y:2}, anchor: 0.35});
+    world.createDecorations({ count: 1, src: 'assets/images/chest.png', scale: 1.3, size: {x:1,y:2}, anchor: 0.35});
     world.createDecorations({ count: 1, src: 'fancyTable' });
     world.createDecorations({ count: 1, src: 'fancyTable', isWall: true});
-    // world.createDecorations({ count: 1, src: 'cozyBlankets'});
+    // world.createDecorations({ count: 1, src: 'cozyBlankets', scale:3});
     // world.createDecorations({ count: 1, src: 'cozyPlant' });
     
     // Set up stage events
@@ -54,7 +54,11 @@ const loadTextures = async () => {
         { alias: 'cuteBear', src: 'assets/images/VS_Cute(Bear).png'},
         { alias: 'cuteFish', src: 'assets/images/VS_Cute(Fish).png'},
        ]);
+    PIXI.Assets.addBundle('rooms', [
+        { alias: 'westernRoom', src: 'assets/images/VS_Room(Western).png'}
+    ]);
     await PIXI.Assets.loadBundle('decorations');
+    await PIXI.Assets.loadBundle('rooms');
     await PIXI.Assets.load('assets/images/isoTable.png');
     await PIXI.Assets.load('assets/images/chest.png');
 }

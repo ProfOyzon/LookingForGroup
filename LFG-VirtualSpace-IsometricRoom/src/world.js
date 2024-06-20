@@ -19,6 +19,12 @@ export class World{
     }
 
     setUpGrid = (app) => {
+        // TODO: SEPARATE ROOM TEXTURES
+        // Create a room texture
+        let sprite = PIXI.Sprite.from('westernRoom');
+        sprite.scale.set(2.06);
+        sprite.anchor.set(0.5);
+        this.container.addChild(sprite);
         // Walls
         this.rightWall = new IsometricWall({ size: { x: this.gridSize.rows, y: this.gridSize.columns }}); //  { x: this.gridSize.rows, y: this.gridSize.columns }
         this.rightWall.createTiles(this.container);
@@ -41,16 +47,32 @@ export class World{
     }
 
     selectGrid = (value) => {
+        // Deselect the currently selected grid
+        for(let tile of this.selectedGrid.tiles){
+            tile.useStroke = false;
+            tile.drawMethod(tile);
+        }
+        // For implementing the state change
+        const selectTiles = (tiles) => {
+            for(let tile of tiles){
+                tile.useStroke = true;
+                tile.drawMethod(tile);
+            }
+        }
+        
         if(value == 'right'){
             this.selectedGrid = this.rightWall;
+            selectTiles(this.rightWall.tiles);
         }
         else if(value == 'left'){
             this.selectedGrid = this.leftWall;
+            selectTiles(this.leftWall.tiles);
         }
         else{
             this.selectedGrid = this.grid;
+            selectTiles(this.grid.tiles);
         }
-        console.log(value + " selected!");
+        // console.log(value + " selected!");
     }
 
     createDecorations = ({ count = 1, src = 'assets/images/isoTable.png', scale = 1 , size = {x:1,y:1}, anchor = 0.5, isWall = false}) => {

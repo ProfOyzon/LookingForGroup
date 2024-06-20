@@ -77,7 +77,6 @@ export const onDragStart = (event) => {
     dragTarget.parent.toLocal(event.global, null, dragTarget.position); // Set it back to screen position, not world position
     // Decide which grid to use
     if(dragTarget.decoration.isWall){
-        console.log(dragTarget.decoration.isWall);
         // TODO: Base which wall to use on rotation
         world.selectGrid('right');
     }

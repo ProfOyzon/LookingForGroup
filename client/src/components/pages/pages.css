@@ -21,21 +21,24 @@
 
 section{
     margin: 10px;
+    padding: 4px 8px 4px 8px;
     border-style: solid;
     border-color: black;
     border-radius: 3px;
 }
 
-#projectList, .skillList{
+.list{
     display: flex;
     flex-flow: row wrap;
-    gap: 8px;
+    align-items: center;
+    justify-content: center;
+
 }
 
 @media only screen and (max-width: 800px){
     .page {
         left: 0px;
-        /*top: 100px;*/
+        top: 100px;
         width: 100%;
         height: calc(100% - 100px);
     }

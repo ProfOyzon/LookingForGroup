@@ -11,7 +11,7 @@ export const ProjectCard = ({project}) => {
         <div className="discover-card">
             <img id="discover-card-profile-picture" src={profilePicture} alt={project.name}/>
             <div id="discover-card-body">
-                <h2 id="discover-card-name">{project.name}</h2>
+                <h2 id="discover-card-name" onClick={() => window.location.href="project"}>{project.name}</h2>
                 <p id="discover-card-description">{project.description}</p>
                 <div id="discover-card-tag-wrapper">
                     <Tags>{project.tags[0]}</Tags>

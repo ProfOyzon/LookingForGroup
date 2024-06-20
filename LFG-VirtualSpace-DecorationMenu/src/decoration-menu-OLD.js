@@ -111,6 +111,7 @@ const loadScrollBoxTextures = async (scrollBox) => {
     }
 
     scrollMaxPosition = (currentItemCount * MENU_HEIGHT) - scrollBox.width;
+    console.log('set scrollMaxPosition: ' + scrollMaxPosition);
 }
 
 // adds sprite to a scrollbox

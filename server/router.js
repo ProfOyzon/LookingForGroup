@@ -4,7 +4,6 @@ const mid = require('./middleware');
 const router = (app) => {
     // Constants
     app.get("/api", mid.requiresSecure, controllers.Database.api);
-    app.get("/default", mid.requiresSecure, controllers.Database.defaultPage);
     app.get("/notFound", mid.requiresSecure, controllers.Database.notFound);
 
     // Accounts

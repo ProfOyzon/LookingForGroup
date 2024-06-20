@@ -425,6 +425,10 @@
                          'blank desc buttons listing';
 }
 
+.member-name:hover{
+    text-decoration: underline;
+}
+
 #member-buttons{
     grid-area:buttons;
     display:flex;

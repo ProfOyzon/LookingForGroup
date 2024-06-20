@@ -169,7 +169,7 @@ const Project = (props) => {
         {
           projects[projectID].members.map(member => {
             return (
-              <ProjectMember name={profiles[member.userID].name} role={member.role} />
+              <ProjectMember onClick={() => window.location.href="profile"} name={profiles[member.userID].name} role={member.role} />
             );
           })
         }

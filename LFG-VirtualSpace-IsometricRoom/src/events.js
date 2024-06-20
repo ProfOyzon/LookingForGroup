@@ -39,7 +39,7 @@ export const setUpStageEvents = () => {
 
 // Panning
 const onPanStart = () => {
-    world.grid.update();
+    world.selectedGrid.update();
     if (panMode && !dragTarget) {
         startPanX = mouseCoords.x;
         startPanY = mouseCoords.y;
@@ -68,13 +68,22 @@ export const onDragStart = (event) => {
     // Store a reference to the data
     dragTarget = event.target;
     dragTarget.alpha = 0.5;
+    // Clean up the reference
     if (dragTarget.decoration.attachedTiles.length > 0) {
         // Remove it from its attached tiles
         dragTarget.decoration.removeTiles();
     }
-    // Bring it back to the front
-    bringToFront(dragTarget);
+    bringToFront(dragTarget); // Bring it back to the front of the screen
     dragTarget.parent.toLocal(event.global, null, dragTarget.position); // Set it back to screen position, not world position
+    // Decide which grid to use
+    if(dragTarget.decoration.isWall){
+        console.log(dragTarget.decoration.isWall);
+        // TODO: Base which wall to use on rotation
+        world.selectGrid('right');
+    }
+    else{
+        world.selectGrid('floor');
+    }
     // Procede to Move handling
     app.stage.on('pointermove', onDragMove);
 }
@@ -93,7 +102,7 @@ const onDragEnd = () => {
         // Turn off
         app.stage.off('pointermove', onDragMove);
         // Check if on grid
-        if (world.grid.isInMap(mouseCoords)) {
+        if (world.selectedGrid.isInMap(mouseCoords)) {
             // Check if the current position can fit the decoration by checking the extended coordinates.
             // This is based on the decoration's size (2x2, 3x4)
             if (checkIfDecorationFits()) {
@@ -125,7 +134,7 @@ const onZoom = (e) => {
     world.container.scale.set(newScale);
     // Bind Extents
     world.bindExtents(app);
-    world.grid.update();
+    world.selectedGrid.update();
 }
 
 // Utility
@@ -138,9 +147,9 @@ const bringToFront = (sprite) => {
 const checkIfDecorationFits = () => {
     // TODO: Change the offset by looking at the dragTarget's rotation or size
     // Finds the last tile the decoration would be attached to and checks if its on the map
-    let lastMouseX = mouseCoords.x + (dragTarget.decoration.size.x - 1) * world.grid.tileSize.halfWidth;
-    let lastMouseY = mouseCoords.y - (dragTarget.decoration.size.y - 1) * world.grid.tileSize.halfHeight;
-    return world.grid.isInMap({ x: lastMouseX, y: lastMouseY });
+    let lastMouseX = mouseCoords.x + (dragTarget.decoration.size.x - 1) * world.selectedGrid.tileSize.halfWidth;
+    let lastMouseY = mouseCoords.y - (dragTarget.decoration.size.y - 1) * world.selectedGrid.tileSize.halfHeight;
+    return world.selectedGrid.isInMap({ x: lastMouseX, y: lastMouseY });
 }
 
 const obtainEmptyTiles = (dragTarget) => {
@@ -153,18 +162,18 @@ const obtainEmptyTiles = (dragTarget) => {
         // Y
         for (let i = 0; i < dragTarget.decoration.size.x; i++) {
             // X
-            let currentTile = world.grid.getTile(tempPos);
+            let currentTile = world.selectedGrid.getTile(tempPos);
             // Only add empty tiles
             if (currentTile && currentTile.child == null) {
                 tileList.push(currentTile);
             }
             // Change in x
-            tempPos.x += world.grid.tileSize.halfWidth;
-            tempPos.y += world.grid.tileSize.halfHeight;
+            tempPos.x += world.selectedGrid.tileSize.halfWidth;
+            tempPos.y += world.selectedGrid.tileSize.halfHeight;
         }
         // Change in y
-        tempPos.x = mouseCoords.x + world.grid.tileSize.halfWidth * (j + 1);
-        tempPos.y = mouseCoords.y - world.grid.tileSize.halfHeight * (j + 1);
+        tempPos.x = mouseCoords.x + world.selectedGrid.tileSize.halfWidth * (j + 1);
+        tempPos.y = mouseCoords.y - world.selectedGrid.tileSize.halfHeight * (j + 1);
     }
     return tileList;
 }

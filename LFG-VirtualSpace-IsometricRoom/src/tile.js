@@ -10,14 +10,22 @@ export class Tile {
         this.height = width / 2;
         this.child = null;
         this.sprite = null;
+        this.drawMethod;
         // Attatch this info to the sprite
     }
 
-    draw = () => {
+    draw = (isWall) => {
         // Draws an isometric tile
         this.sprite = new PIXI.Graphics();
-        drawTile(this);
+        if(!isWall){
+            this.drawMethod = drawTile;
+        }
+        else{
+            this.drawMethod = drawWallTile;
+        }
+        this.drawMethod(this);
         this.container.addChild(this.sprite);
+        // Rendering Order
         this.container.zIndex = this.position.y / this.height * 2; // For rendering, so things in the back get drawn first, then get overlapped by things in the front
         this.container.zIndex += this.position.x / this.width; // For rendering, so things side by side are drawn from left to right
         this.setUpEvents();
@@ -34,9 +42,6 @@ export class Tile {
             // Hover exit
             event.target.tint = '#FFF';
         }
-        this.sprite.onclick = (event) => {
-            console.log(event.target.toGlobal(event.target.position)); 
-        }
     }
 
     repositionChild = () => {
@@ -49,14 +54,18 @@ export class Tile {
         // Adds a decoration and re-draws the decoration into the center of this tile
         this.child = d;
         this.child.decoration.attachedTiles.push(this);
-        this.container.addChild(this.child); // TODO: Change so that the decoration adds itself to the correct container
-        drawTile(this, '#4c4c4c');
+        this.container.addChild(this.child);
+        this.drawMethod(this, '#4c4c4c');
     }
 
     removeDecoration = () => {
         // removes a decoration
         this.child = null;
-        drawTile(this);
+        this.drawMethod(this);
+    }
+
+    colorTile = (color) => {
+        this.drawMethod(this, color);
     }
 }
 
@@ -72,7 +81,25 @@ const drawTile = (tile, color='#FFFFFF') => {
     tile.sprite.lineTo(tile.position.x, tile.position.y);
     // Stroke
     tile.sprite.fill({color});
-    tile.sprite.stroke({ color: 'black', width: 3 });
+    tile.sprite.stroke({ color: 'black', width: 1 });
+    tile.sprite.restore();
+
+    tile.sprite.tile = tile;
+}
+
+const drawWallTile = (tile, color='#FFFFFF') => {
+    // Starting point
+    tile.sprite.save();
+    tile.sprite.clear();
+    tile.sprite.moveTo(tile.position.x, tile.position.y);
+    // Draw edges
+    tile.sprite.lineTo(tile.position.x + tile.width/2, tile.position.y + tile.height/2); // bottom right
+    tile.sprite.lineTo(tile.position.x + tile.width/2, tile.position.y - tile.height/2); // top right
+    tile.sprite.lineTo(tile.position.x, tile.position.y - tile.height); // top left
+    tile.sprite.lineTo(tile.position.x, tile.position.y); // home, bottom left
+    // Stroke
+    tile.sprite.fill({color});
+    tile.sprite.stroke({ color: 'red', width: 1 });
     tile.sprite.restore();
 
     tile.sprite.tile = tile;

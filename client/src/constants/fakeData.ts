@@ -42,6 +42,123 @@ export const projects = [
         ],
         posts: [0, 1, 2]
     },
+    {
+        _id: 1,
+        name: "Rock Eater 9000",
+        members: [
+            {
+                userID: 0,
+                admin: true,
+                owner: true,
+                role: "Project Lead"
+            },
+            {
+                userID: 1,
+                admin: true,
+                owner: false,
+                role: "Team Lead"
+            },
+            {
+                userID: 2,
+                admin: false,
+                owner: false,
+                role: "Developer"
+            },
+        ],
+        description: "Shoveling rocks in my mouth like its Christmas morning. Yum!",
+        tags: ["Rock", "Cooking", "Birthday", "Dirt"],
+        neededRoles: [
+            {
+                Role: "Rock Enthusiast",
+                amount: 2,
+                description: "Must love rocks",
+            },
+            {
+                Role: "Artist",
+                amount: 3,
+                description: "We are looking for artists who know how to draw rocks",
+            }
+        ],
+        posts: [0, 1, 2]
+    },
+    {
+        _id: 2,
+        name: "A Cool Project!",
+        members: [
+            {
+                userID: 0,
+                admin: true,
+                owner: true,
+                role: "Project Lead"
+            },
+            {
+                userID: 1,
+                admin: true,
+                owner: false,
+                role: "Team Lead"
+            },
+            {
+                userID: 2,
+                admin: false,
+                owner: false,
+                role: "Developer"
+            },
+        ],
+        description: "The bestest project yet!  I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! ",
+        tags: ["Game Development", "Rouguelike", "FPS", "So Retro"],
+        neededRoles: [
+            {
+                Role: "Game Developer",
+                amount: 2,
+                description: "We are looking for game developers familiar with Unreal Engine 5",
+            },
+            {
+                Role: "Artist",
+                amount: 3,
+                description: "We are looking for artists who know how to draw bees",
+            }
+        ],
+        posts: [0, 1, 2]
+    },
+    {
+        _id: 3,
+        name: "A Cool Project!",
+        members: [
+            {
+                userID: 0,
+                admin: true,
+                owner: true,
+                role: "Project Lead"
+            },
+            {
+                userID: 1,
+                admin: true,
+                owner: false,
+                role: "Team Lead"
+            },
+            {
+                userID: 2,
+                admin: false,
+                owner: false,
+                role: "Developer"
+            },
+        ],
+        description: "The bestest project yet!  I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! ",
+        tags: ["Game Development", "Rouguelike", "FPS", "So Retro"],
+        neededRoles: [
+            {
+                Role: "Game Developer",
+                amount: 2,
+                description: "We are looking for game developers familiar with Unreal Engine 5",
+            },
+            {
+                Role: "Artist",
+                amount: 3,
+                description: "We are looking for artists who know how to draw bees",
+            }
+        ],
+        posts: [0, 1, 2]
+    },
 ]
 
 export const profiles = [

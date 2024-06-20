@@ -14,98 +14,67 @@ const notFound = (req, res) => {
     return res.json({ message: "Not Found" });
 }
 
-const makeFakeAccount = async (req, res) => {
-    const email = "fakeEmail@gmail.com";
-    const username = "The Best Username";
-    const password = "Password123!";
-    const bio = "A Cool Bio!";
+// Accounts
 
-    try {
-        const profilePicture = {
-            name: "default-profile",
-            data: null,
-            mimeType: null,
-        }
-        const hash = await Account.generateHash(password);
-        const newAccount = new Account({ email, username, password: hash, profilePicture, bio });
-        await newAccount.save();
-        return res.json({
-            loggedIn: true,
-            account: newAccount
-        });
-    } catch (err) {
-        console.log(err);
-        if (err.code === 11000) {
-            return res.status(400).json({ error: 'Username already in use' });
-        }
-        return res.status(400).json({ error: 'An error occurred' });
-    }
+const login = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
 }
 
-const makeFakeProject = async (req, res) => {
-    const name = "A Cool Projject";
-    const bio = "A Cool Bio!";
-
-    try {
-        const newProject = new Project({ name, bio });
-        await newProject.save();
-        return res.json({
-            project: newProject
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({ error: 'An error occurred' });
-    }
+const signup = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
 }
 
-const makeFakeMessage = async (req, res) => {
-    const senderID = "66688b1aee161307c3755037";
-    const recipientID = "66688b1aee161307c3755037";
-    const messageContent = "Hello self!";
-
-    try {
-        const newMessage = new Message({ senderID, recipientID, messageContent });
-        await newMessage.save();
-        return res.json({
-            message: newMessage
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({ error: 'An error occurred' });
-    }
+const updateAccountByID = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
 }
 
-const makeFakePost = async (req, res) => {
-    const author = "66688b1aee161307c3755037";
-    const textContent = "Hello World!";
-    const title = "My First Post";
-
-    try {
-        const newPost = new Post({ author, title, textContent });
-        await newPost.save();
-        return res.json({
-            post: newPost
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({ error: 'An error occurred' });
-    }
+const getAccountByID = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
 }
 
-const makeFakeComment = async (req, res) => {
-    const author = "66688b1aee161307c3755037";
-    const content = "Thats a good post!";
+const addSkillsByAccountID = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
+}
 
-    try {
-        const newComment = new Comment({ author, content });
-        await newComment.save();
-        return res.json({
-            comment: newComment
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({ error: 'An error occurred' });
-    }
+
+// Projects
+
+const createProject = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
+}
+
+const updateProjectByID = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
+}
+
+// Posts
+
+const createPost = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
+}
+
+const updatePostByID = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
+}
+
+// Comments
+
+const createComment = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
+}
+
+const updateCommentByID = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
+}
+
+// Messages
+
+const createMessage = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
+}
+
+const updateMessageByID = (req, res) => {
+    return res.json({ message: "Not Implemented Yet" });
 }
 
 
@@ -113,9 +82,17 @@ module.exports = {
     api,
     defaultPage,
     notFound,
-    makeFakeAccount,
-    makeFakeProject,
-    makeFakeMessage,
-    makeFakePost,
-    makeFakeComment,
+    login,
+    signup,
+    updateAccountByID,
+    getAccountByID,
+    addSkillsByAccountID,
+    createProject,
+    updateProjectByID,
+    createPost,
+    updatePostByID,
+    createComment,
+    updateCommentByID,
+    createMessage,
+    updateMessageByID,
 };

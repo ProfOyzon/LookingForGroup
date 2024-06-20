@@ -10,6 +10,8 @@ import { projects, profiles, posts } from "../../constants/fakeData";
 // Program onClick functions for buttons
 // Create alternate version of page for project members
 
+const projectID = 0;
+
 //Returns user to the previous page they were viewing
 //Will require a reference to the page they were on before
 const previousPage = () => {
@@ -70,7 +72,7 @@ const ProjectInfo = (props) => {
       <img id='project-picture' src={profilePlaceholder} alt=''/>
 
       <div id='project-header'>
-        <h1 id='project-title'>{projects[0].name}</h1>
+        <h1 id='project-title'>{projects[projectID].name}</h1>
         <div id='header-buttons'>
           <button id='follow-project' className='orange-button' onClick={followProject}>Follow</button>
           <div id='more-options'>
@@ -83,14 +85,14 @@ const ProjectInfo = (props) => {
         </div>
       </div>
 
-      <p id='project-desc'>{projects[0].description}
+      <p id='project-desc'>{projects[projectID].description}
       </p>
 
       <div id='project-listings'>
         <h3>Looking for</h3>
         <hr/>
         {
-          projects[0].neededRoles.map(role => {
+          projects[projectID].neededRoles.map(role => {
             return(
               <div>{role.Role} &#40;{role.amount}&#41;</div>
             );
@@ -110,7 +112,7 @@ const ProjectInfoMember = (props) => {
         <img id='project-picture' src={profilePlaceholder} alt=''/>
 
         <div id='project-header'>
-          <h1 id='project-title'>{projects[0].name}</h1>
+          <h1 id='project-title'>{projects[projectID].name}</h1>
           <div id='header-buttons'>
             <div id='more-options'>
               <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}><img src='elipses.png' alt="..."/></button>
@@ -122,7 +124,7 @@ const ProjectInfoMember = (props) => {
           </div>
         </div>
 
-        <p id='project-desc'>{projects[0].description}
+        <p id='project-desc'>{projects[projectID].description}
         </p>
 
         <div id='member-buttons'>
@@ -134,7 +136,7 @@ const ProjectInfoMember = (props) => {
           <h3>Looking for</h3>
           <hr/>
           {
-            projects[0].neededRoles.map(role => {
+            projects[projectID].neededRoles.map(role => {
               return(
                 <div>{role.Role} &#40;{role.amount}&#41;</div>
               );
@@ -165,7 +167,7 @@ const Project = (props) => {
 
       <div id='project-members'>
         {
-          projects[0].members.map(member => {
+          projects[projectID].members.map(member => {
             return (
               <ProjectMember name={profiles[member.userID].name} role={member.role} />
             );
@@ -176,7 +178,7 @@ const Project = (props) => {
 
       <div id='project-posts'>
         {
-          projects[0].posts.map(postNum => {
+          projects[projectID].posts.map(postNum => {
             return(
               <ProjectPost title={posts[postNum].title} date={posts[postNum].createdDate} />
             );

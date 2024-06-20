@@ -119,6 +119,10 @@
     text-align: left;
 }
 
+#discover-card-name:hover, #profile-card-name:hover {
+    text-decoration: underline;
+}
+
 #discover-card-description, #profile-card-description {
     margin-top: 0;
     max-width: 450px;

@@ -60,6 +60,13 @@
     animation: fadeIn 1s forwards;
 }
 
+#message-card{
+    max-height: 45px;
+    grid-template-columns: 10% 90%;
+    padding-top: 0;
+    padding-bottom: 3.5%;
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -85,8 +92,10 @@
     /* align-items: center; */
     font-size: 0.8rem;
 }
-
-
+#message-card #discover-card-body {
+    margin-top: 0%;
+    padding-bottom: 5%;
+}
 
 #discover-card-body > *, #profile-card-body > *{
     flex: 1;
@@ -97,10 +106,17 @@
    border: 2px solid black;
    border-radius: 100%;
 }
+#message-card #discover-card-profile-picture {
+    width: 110%;
+    margin-top: 15%;
+}
 
 #discover-card-name, #profile-card-name {
     text-align: center;
     margin-bottom: 0;
+}
+#message-card #discover-card-name {
+    text-align: left;
 }
 
 #discover-card-description, #profile-card-description {

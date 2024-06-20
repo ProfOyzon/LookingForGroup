@@ -238,7 +238,7 @@ export const messages = [
         _id: 0,
         senderID: 0,
         recipientID: 1,
-        sentDate: "",
+        sentDate: "10/10/10",
         messageConent: "hello",
     },
     {

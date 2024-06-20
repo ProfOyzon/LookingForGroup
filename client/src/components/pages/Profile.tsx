@@ -4,7 +4,6 @@ import pfp from '../../img/profile-user.png';
 import {profiles} from "../../constants/fakeData";
 import{projects} from "../../constants/fakeData";
 import { Tags } from "../Tags";
-import { TagList } from "../TagList";
 import { ProjectCard } from "../ProjectCard";
 const user = profiles[0];
 
@@ -18,9 +17,10 @@ const Profile = (props) => {
           <h3 id = "pronouns">{user.pronouns[0] + "/" + user.pronouns[1]}</h3>
           <div className = "header">
             <p>Featured Skills:</p>
-            <div id = "featuredList" className = "skillList">
+            <div id = "featuredList" className = "list">
               {user.skills.filter(skill => skill.higlighted).map(filteredSkill => (
-              <Tags>{filteredSkill.skill}</Tags> ))}
+                <Tags>{filteredSkill.skill}</Tags> 
+              ))}
             </div>
           </div>
         </div>
@@ -29,7 +29,12 @@ const Profile = (props) => {
 
       <section id = "preferences">
         <h2>Preferences</h2>
-        <h3></h3>
+        <h3> Project Preferences:</h3>
+        <p>{user.preferences.projectPreference}</p> 
+        <h3> Role Preferences:</h3> 
+        <p>{user.preferences.rolePreference}</p>
+        <h3> Availablity:</h3> 
+        <p>{user.preferences.availability}</p>
       </section>
 
       <section id = "gallery">
@@ -38,39 +43,53 @@ const Profile = (props) => {
 
       <section id = "links">
         <h2>Links</h2>
-        <div className="linkList"></div>
+        <div className="list">
+          {user.links.map(link => (
+            <Tags>{link.text}</Tags>
+          ))}
+        </div>
         
       </section>
 
       <section id = "skills">
         <h2>Skills</h2>
         
-        <div id = "proficiencies" className = "skillList">
-          <h3>Proficiencies:</h3>
-          <TagList tagItems={user.skills}></TagList>
+        <div id = "proficiencies" className = "list">
+        <h3>Proficiencies:</h3>
+          {user.skills.filter(skill => skill.type == "proficiency").map(filteredSkill => (
+            <Tags>{filteredSkill.skill}</Tags> 
+          ))}
         </div>
 
         
-        <div id = "hardSkills" className = "skillList">
+        <div id = "hardSkills" className = "list">
           <h3>Hard Skills:</h3>
-          <TagList tagItems={user.skills}></TagList>
+            {user.skills.filter(skill => skill.type == "hardSkill").map(filteredSkill => (
+              <Tags>{filteredSkill.skill}</Tags> 
+            ))}
         </div>
 
-        <div id = "softSkills" className = "skillList">
+        <div id = "softSkills" className = "list">
           <h3>Soft Skills:</h3>
-          <TagList tagItems={user.skills}></TagList>
+            {user.skills.filter(skill => skill.type == "softSkill").map(filteredSkill => (
+              <Tags>{filteredSkill.skill}</Tags> 
+            ))}
         </div>
       </section>
 
       <section id = "endorsements">
             <h2>Endorsements</h2>
-            <div id = "tabList"></div>
+            <div id = "tabList" className="list">
+              {user.skills.filter(skill => skill.endorsed).map(filteredSkill => (
+                <Tags>{filteredSkill.skill}</Tags> 
+              ))}
+            </div>
             <div id = "textList"></div>
         </section>
 
         <section id = "projects">
             <h2>Projects</h2>
-            <div id = "projectList">
+            <div className = "list">
               {/* {user.projects.map(proj => (
                 <ProjectCard project={projects[proj]}></ProjectCard>
               ))} */}

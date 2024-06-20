@@ -1,6 +1,7 @@
 import "./pages.css";
 import "../styles.css";
 import pfp from '../../img/profile-user.png';
+import froggy from "../../images/blue_frog.png";
 import {profiles} from "../../constants/fakeData";
 import{projects} from "../../constants/fakeData";
 import { Tags } from "../Tags";
@@ -39,6 +40,11 @@ const Profile = (props) => {
 
       <section id = "gallery">
         <h2>Gallery</h2>
+        <img id = "pfp" src={froggy} width="200" height="200"></img>
+        <img id = "pfp" src={froggy} width="200" height="200"></img>
+        <img id = "pfp" src={froggy} width="200" height="200"></img>
+        <img id = "pfp" src={froggy} width="200" height="200"></img>
+        <img id = "pfp" src={froggy} width="200" height="200"></img>
       </section>
 
       <section id = "links">

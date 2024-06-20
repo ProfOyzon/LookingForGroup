@@ -32,6 +32,14 @@
     height: auto;
 }
 
+.notif-header{
+    font-weight: 700;
+}
+
+.date-sent-header{
+    background-color: rgb(238, 238, 238);
+}
+
 .hidden{
     display: none;
 }

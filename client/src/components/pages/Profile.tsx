@@ -4,6 +4,7 @@ import pfp from '../../img/profile-user.png';
 import {profiles} from "../../constants/fakeData";
 import{projects} from "../../constants/fakeData";
 import { Tags } from "../Tags";
+import { TagList } from "../TagList";
 import { ProjectCard } from "../ProjectCard";
 const user = profiles[0];
 
@@ -26,28 +27,38 @@ const Profile = (props) => {
         <p id = "about">{user.bio}</p>
       </section>
 
+      <section id = "preferences">
+        <h2>Preferences</h2>
+        <h3></h3>
+      </section>
+
       <section id = "gallery">
         <h2>Gallery</h2>
       </section>
 
       <section id = "links">
         <h2>Links</h2>
+        <div className="linkList"></div>
+        
       </section>
 
       <section id = "skills">
         <h2>Skills</h2>
-        <h3>Proficiencies:</h3>
+        
         <div id = "proficiencies" className = "skillList">
+          <h3>Proficiencies:</h3>
+          <TagList tagItems={user.skills}></TagList>
         </div>
 
-        <h3>Hard Skills:</h3>
-        <div id = "hardSkills" className = "skillList"></div>
+        
+        <div id = "hardSkills" className = "skillList">
+          <h3>Hard Skills:</h3>
+          <TagList tagItems={user.skills}></TagList>
+        </div>
 
-        <h3>Soft Skills</h3>
         <div id = "softSkills" className = "skillList">
-          {user.skills.map(skill => (
-            <Tags>{skill.skill}</Tags>
-          ))}
+          <h3>Soft Skills:</h3>
+          <TagList tagItems={user.skills}></TagList>
         </div>
       </section>
 

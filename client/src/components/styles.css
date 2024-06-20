@@ -478,3 +478,10 @@
     width: 32px;
     height: 32px;
 }
+
+.list{
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px;
+    align-items: center;
+}

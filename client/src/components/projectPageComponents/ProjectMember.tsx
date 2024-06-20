@@ -1,5 +1,5 @@
-import "./styles.css"
-import profilePlaceholder from "../img/profile-user.png";
+import "../styles.css"
+import profilePlaceholder from "../../img/profile-user.png";
 
 export const ProjectMember = (props) => {
   return (

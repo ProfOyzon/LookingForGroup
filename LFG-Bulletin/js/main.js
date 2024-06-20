@@ -8,7 +8,7 @@ const app = new PIXI.Application({
 });
 document.body.appendChild(app.view);
 
-app.loader.add(["images/post.png", "images/button.png", "images/trash.png"]);
+app.loader.add(["images/post1.png", "images/post2.png", "images/post3.png", "images/button.png", "images/trash.png"]);
 
 // constants
 const sceneWidth = app.view.width;
@@ -17,7 +17,7 @@ const sceneHeight = app.view.height;
 //aliases
 let stage;
 let dragTarget = null;
-let postTexture1 = new PIXI.Texture(PIXI.BaseTexture.from("images/post.png"));
+let postTextures = [new PIXI.Texture(PIXI.BaseTexture.from("images/post1.png")), new PIXI.Texture(PIXI.BaseTexture.from("images/post2.png")), new PIXI.Texture(PIXI.BaseTexture.from("images/post3.png"))];
 let buttonTexture = new PIXI.Texture(PIXI.BaseTexture.from("images/button.png"));
 let trashTexture = new PIXI.Texture(PIXI.BaseTexture.from("images/trash.png"));
 let trash;
@@ -95,7 +95,7 @@ function createLabelsAndButtons()
 //Makes a post
 function makePost()
 {
-    const post = new PIXI.Sprite(postTexture1);
+    const post = new PIXI.Sprite(postTextures[Math.floor(Math.random() * 3)]);
     post.x = 100;
     post.y = 100;
     post.interactive = true;
@@ -153,7 +153,6 @@ function editText()
     button.on('pointerdown', function(e) { 
         text.text = input.value;
         text.style = textStyle;
-        console.log(input.value);
         stage.removeChild(this);
         input.remove();
         for(let p of posts){

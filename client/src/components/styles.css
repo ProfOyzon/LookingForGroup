@@ -3,6 +3,47 @@
     --orange-hover: #DE6B17;
 }
 
+#notif-popup{
+    position: absolute;
+    width: 30vw;
+    height: 15vw;
+    background-color: #D0D0D0;
+    z-index: 5;
+    padding: 10px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    right: 30px;
+}
+
+.notif-popup-boxes{
+    border: 2px dashed black;
+    margin: 5px 0;
+}
+
+.notif-button-wrapper{
+    position: relative;
+    float: right;
+}
+
+.notif-button-icon{
+    width: 4vw;
+    height: auto;
+}
+
+.notif-header{
+    font-weight: 700;
+}
+
+.date-sent-header{
+    background-color: rgb(238, 238, 238);
+}
+
+.hidden{
+    display: none;
+}
+
 .discover-card{
     width: 60%;
     max-width: 765px;
@@ -178,7 +219,7 @@
 	outline: inherit;
 }
 
-.search-button{
+.search-button, #notif-button{
     background: none;
 	color: inherit;
 	border: none;
@@ -197,7 +238,7 @@
 .SideBarContainer{
     width: 220px;
     height: 100vh;
-    border: solid black 2px;
+    /* border: solid black 2px; */
     position:fixed;
     top: 0px;
     left: 0px;
@@ -205,7 +246,7 @@
 }
 
 .SideBarContainer h1{
-    width: 15vw;
+    width: 220px;
     height: 5vh;
     font-size: 2vw;
 }
@@ -219,7 +260,7 @@
 
 .headerContainer h1{
     font-weight: bold;
-    font-size: 2vw;
+    font-size: 30px;
     height: 10vh;
 }
 
@@ -233,26 +274,31 @@
     width: 220px;
     height: 6vh;
     background-color: white;
-    border: solid lightgrey 1px;
+    border: none;
+    outline: solid lightgrey 1px;
     cursor: pointer;
     font-size:larger;
     text-align:left;
-    padding-left:calc(8vw / 2);
+    padding-left: 34px;
     padding-right: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .containerButtonSideBar button:hover{
-    transform: scale(1.1);
+    /* transform: scale(1.1); */
     transition-duration: 0.25s;
+    background-color: #eeeeee;
 }
 
 .dot{
-  height: 10vw;
-  width: 10vw;
+  height: 125px;
+  width: 125px;
   background-color: white;
   border-radius: 50%;
   display: inline-block;
-  border: solid black 2px;
+  border: solid black 1px;
 
 }
 
@@ -268,14 +314,21 @@
     color: white;    
     position: absolute;
     bottom: 0;
-    margin-bottom: 30px;
-    width: 8vw;
-    height: 4vh;
+    margin-bottom: 40px;
+    width: 100px;
+    height: 40px;
+    font-size: 18px;
+    border: none;
+    outline: solid var(--orange) 2px;
+    font-weight: 900;
 }
 
 .Logout button:hover{
-    transform: scale(1.1);
+    /* transform: scale(1.1); */
     transition-duration: 0.25s;
+    background-color: white;
+    color: var(--orange);
+    outline: solid var(--orange) 2px;
     cursor: pointer;
 }
 
@@ -302,12 +355,15 @@
         max-width: 90%;
     }
 
-    .SideBarContainer{
+    .sideBarContainer{
         width: 100vw;
-        height: 100px;
-        border: solid black 2px;
+        height: 50px;
+        /*border: solid black 2px;*/
         position: fixed;
-        box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+        bottom:0;
+        background-color: white;
+        z-index: 1;
+        /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
     }
 
     .ProfileContainer{
@@ -322,6 +378,7 @@
 
     .containerButtonSideBar button{
         width: 20vw;
+        height: 50px;
         padding-left: calc((100vw - 160px) / 10);
         padding-right: auto;
     }
@@ -329,9 +386,87 @@
 
 /* Project page style rules */
 
+#project-page{
+    padding: 0px 15px;
+    width: calc(100% - 250px);
+}
+
+#project-info{
+    display: grid;
+    grid-template:  1fr 1fr / .2fr 1.5fr 400px;
+    grid-template-areas: 'picture header listing'
+                         'blank desc listing'
+}
+
+#project-info-member{
+    display: grid;
+    grid-template: 1fr 1fr / .2fr 1fr 200px 400px;
+    grid-template-areas: 'picture header buttons listing'
+                         'blank desc buttons listing';
+}
+
+#member-buttons{
+    grid-area:buttons;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    margin: 15px 20px;
+}
+
+@media only screen and (max-width: 800px){
+    #project-page{
+        width:calc(100% - 30px);
+    }
+
+    #project-info{
+        display:grid;
+        grid-template:  1fr .5fr 1fr / .2fr 2fr;
+        grid-template-areas: 'picture header'
+                             'desc desc'
+                             'listing listing';
+    }
+
+    #project-info-member{
+        grid-template: 1fr .5fr 1fr / .2fr 2fr;
+        grid-template-areas: 'picture header'
+                             'buttons buttons'
+                             'desc desc'
+                             'listing listing';
+    }
+
+    #member-buttons{
+        flex-direction: row;
+        align-items:center;
+    }
+
+    #virtual-space-entrance{
+        width: 40vw;
+        max-width: 200px;
+    }
+
+    #more-options-popup{
+        right:16px;
+    }
+}
+
+.orange-button{
+    background-color: var(--orange);
+    color:white;
+    font-size:large;
+    border:none;
+    cursor:pointer;
+    margin: 10px;
+}
+
+.orange-button:hover{
+    background-color: var(--orange-hover);
+}
+
 .white-button{
     background-color:white;
     color:black;
+    border:none;
+    cursor:pointer;
 }
 
 .white-button:hover{
@@ -343,20 +478,10 @@
 }
 
 #return-button{
-    background-color:white;
-    color:black;
     font-weight:bold;
-}
-
-#return-button:hover{
-    background-color:#D0D0D0;
-}
-
-#project-info{
-    display: grid;
-    grid-template:  1fr 1fr / .2fr 1.5fr 1fr;
-    grid-template-areas: 'picture header listing'
-                         'blank desc listing'
+    font-size:larger;
+    height:40px;
+    margin-bottom:10px;
 }
 
 #project-picture{
@@ -377,18 +502,42 @@
     align-items:center;
 }
 
-#more-options-button{
-    background-color:white;
-    color:black;
+#member-buttons button{
+    border:1px solid #D0D0D0;
 }
 
-#more-options-button:hover{
-    background-color:#D0D0D0;
+#virtual-space-entrance{
+    height: 80px;
+}
+
+#make-post-button{
+    height: 60px;
 }
 
 #more-options-popup{
+    background-color:white;
+    box-shadow: 2px 2px 5px black;
+    
+    width: 200px;
+    height: 100px;
+}
+
+#more-options-popup button{
+    display:block;
+    border: 1px solid rgb(209, 209, 209);
+    width: 90%;
+    height: 40%;
+    margin: 2.5% auto;
+}
+
+.hide{
     position:absolute;
     display:none;
+}
+
+.show{
+    position:absolute;
+    display:block;
 }
 
 #follow-project{
@@ -414,10 +563,20 @@
     border: 2px solid grey;
     border-radius: 3px;
     width: 50%;
+    margin:10px;
 }
 
 #interested-button:hover{
     background-color:#D0D0D0;
+}
+
+#member-divider hr{
+    display:inline-block;
+    width:calc((100% - 120px)/2);
+}
+
+#member-divider span{
+    margin: 0px 24px;
 }
 
 #project-members{
@@ -448,14 +607,17 @@
 
 .project-post{
     box-shadow: 5px 5px 10px grey;
-    width: 440px;
+    width: 95%;
+    max-width: 440px;
     height: 520px;
     padding: 10px;
 }
 
 .project-post img{
-    width: 420px;
-    height: 420px;
+    width: 85vw;
+    height: 85vw;
+    max-width: 420px;
+    max-height: 420px;
 }
 
 .post-content{

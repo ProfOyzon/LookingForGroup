@@ -37,7 +37,7 @@ section{
 @media only screen and (max-width: 800px){
     .page {
         left: 0px;
-        top: 100px;
+        /*top: 100px;*/
         width: 100%;
         height: calc(100% - 100px);
     }

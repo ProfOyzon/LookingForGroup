@@ -3,25 +3,22 @@ import { ProjectCard } from "./ProjectCard";
 import { profiles } from "../constants/fakeData";
 import { projects } from "../constants/fakeData";
 
-export const MyProjectsDisplay = (userID : number) => {
-    let display = <div id="my_projects_display">No projects found, create one to get started!</div>
+export const MyProjectsDisplay = ({userID}) => {
+    return (
+        <div>
+            {projects.map(proj => {
+                let prof = profiles[0];
+                for(let p of profiles){
+                    if(p._id == userID){
+                        prof = p;
+                        break;
+                    }
+                }
 
-    let user = profiles[0];
-    for(let prof of profiles){
-        if(prof._id == userID){
-            user = prof;
-            break;
-        }
-    }
-
-    if(user.projects){
-        display.props = "";
-        for(let proj of projects){
-            if(user.projects.includes(proj._id)){
-               display.props += <ProjectCard project={proj} />;
-            }
-        }
-    }
-
-    return display;
+                if(prof.projects.includes(proj._id)){
+                    return <ProjectCard project={proj} />
+                }
+            })}
+        </div>
+    );
 }

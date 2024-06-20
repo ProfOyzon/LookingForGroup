@@ -4,7 +4,8 @@ export class Decoration{
     constructor(src, size){
         this.sprite = drawSprite(src);
         this.attachedTiles = [];
-        this.size = size;//{x:1,y:1};
+        this.size = size; // {x:1,y:1};
+        this.isWall = false;
         // Attatch this info to the sprite
         this.sprite.decoration = this;
     }
@@ -25,7 +26,7 @@ export class Decoration{
         }
         this.sprite.onpointerout = (event) => {
             // Hover exit
-            event.target.tint = '#ffffff';
+            event.target.tint = '#fff';
         }
         this.sprite.on('pointerdown', onDragStart);
     }
@@ -33,8 +34,6 @@ export class Decoration{
 
 const drawSprite = (src) => {
     let sprite = PIXI.Sprite.from(src);
-    sprite.anchor.set(0.3, 1);
-
     // Set up drag
     sprite.eventMode = 'static';
     sprite.cursor = 'pointer';

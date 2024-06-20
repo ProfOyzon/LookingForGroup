@@ -6,8 +6,9 @@ export class IsometricGrid {
     // Diagonally right = x
     // Diagonally left = y
     constructor({size, origin={x:0,y:0}}) {
-        this.origin = origin;
+        this.isWall = false;
         this.originalOrigin = {...origin};
+        this.origin = origin;
         this.size = size; // x, y = row and columns
         this.tiles = [];
         this.container = new Container();
@@ -18,12 +19,7 @@ export class IsometricGrid {
             height: this.originalWidth/2,
             halfHeight: this.originalWidth/4
         };
-        this.container.pivot.set(0, this.tileSize.halfHeight * this.size.y);
-    }
-
-    setPosition = ({x,y}) => {
-        this.container.position.x += x;
-        this.container.position.y += y;
+        // this.container.pivot.set(0, this.tileSize.halfHeight * this.size.y); // Places in the center of the floor
     }
 
     update = () => {
@@ -33,6 +29,7 @@ export class IsometricGrid {
     }
 
     updateTileSize = (scale) => {
+        // For scaling
         let w = this.originalWidth * scale;
         this.tileSize = {
             width: w,
@@ -43,7 +40,6 @@ export class IsometricGrid {
     }
 
     updateOrigin = () =>{ 
-        // Multiplies the coordinates of the origin with the scale
         let firstTilePos = this.tiles[0].container.getGlobalPosition();
         this.origin.x = this.originalOrigin.x + firstTilePos.x;
         this.origin.y = this.originalOrigin.y + firstTilePos.y;
@@ -66,10 +62,18 @@ export class IsometricGrid {
                 y += this.tileSize.halfHeight;
             }
             // Change on Y axis
-            startX -= this.tileSize.halfWidth;
-            startY += this.tileSize.halfHeight;
+            if(!this.isWall){
+                startX -= this.tileSize.halfWidth;
+                startY += this.tileSize.halfHeight;
+            }
+            else{
+                startY -= this.tileSize.height;
+            }
             x = startX;
             y = startY;
+        }
+        if(this.isLeft){
+            this.container.scale.x = -1;
         }
         this.drawTiles(parent);
     }
@@ -78,7 +82,7 @@ export class IsometricGrid {
         // Draws all tiles in its list
         this.container.sortableChildren = true; // Allows for z-index to be utilized, draws the tiles from back to front
         for (let tile of this.tiles) {
-            tile.draw();
+            tile.draw(this.isWall);
             this.container.addChild(tile.container);
         }
         parent.addChild(this.container);
@@ -123,13 +127,14 @@ export class IsometricGrid {
         // Edit point to follow origin
         let screenPoint = {
             x: point.x - this.origin.x,
-            y: point.y - this.origin.y};
+            y: point.y - this.origin.y
+        };
         let map = {};
         // map.x = screen.x / TILE_WIDTH + screen.y / TILE_HEIGHT;
         map.x = screenPoint.x / this.tileSize.width + screenPoint.y / this.tileSize.height;
         map.x = Math.floor(map.x);
         // map.y = screen.y / TILE_HEIGHT - screen.x / TILE_WIDTH;
-        map.y = screenPoint.y / this.tileSize.height - screenPoint.x / this.tileSize.width; 
+        map.y = screenPoint.y / this.tileSize.height - screenPoint.x / this.tileSize.width;
         map.y = Math.floor(map.y);
         // console.log(`ScreenToMap  ${map.x},${map.y}`); //--------------------------x:${screenPoint.x} y:${screenPoint.y} -->
         return map;

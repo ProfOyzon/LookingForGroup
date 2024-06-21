@@ -15,6 +15,27 @@ import ReactDOM from "react-dom";
 
 const projectID = 0;
 
+//Closes dropdown menus when clicking outside of them
+/// !! Commented out due to it causing errors when clicking on other pages !!
+/*window.onclick = function(event){
+  if (!event.target.matches('#more-options-button-img')){
+    let popup = document.getElementById('more-options-popup');
+    if(popup.classList.contains('show')){
+      popup.classList.remove('show');
+    }
+  }
+  if (!event.target.matches('.member-settings-more') && !event.target.matches('.member-settings-more-img')){
+    let popups = document.getElementsByClassName('settings-show');
+    let fullLength = popups.length;
+    for (let i = 0; i < fullLength; i++){
+      let popup = popups[0];
+      if (popup.classList.contains('settings-show')){
+        popup.classList.remove('settings-show');
+      }
+    }
+  }
+}*/
+
 //Returns user to the previous page they were viewing
 //Will require a reference to the page they were on before
 const previousPage = () => {
@@ -25,12 +46,17 @@ const previousPage = () => {
 //Will require current user id & project id
 const followProject = () => {
   console.log('This will let the user follow this project');
+  //Get current user id (need session info)
+  //Add project id to user's followed project list (need relevant data location)
 }
 
 //Adds/removes current user to the list of people interested in joining the current project
 //Will require current user id & project id
 const addInterested = () => {
   console.log('This will add the current user to the list of people interested');
+  //Get current user id (need session info)
+  //Add project id to user's interested project list (need relevant data location)
+  //Add user to project's list of interested people (need relevant data location)
 }
 
 //Lets the user edit the 'looking for' roles
@@ -41,19 +67,26 @@ const editRoles = () => {
 //Sends the user to the project's virtual space
 const enterVirtualSpace = () => {
   console.log("This will let the member enter the project's virtual space");
+  //Redirect user to virtal space, along with project id to load correct space
 }
 
 //Lets the user create a new post for the project
 const makeProjectPost = () => {
   console.log("This will let the member create a new project post");
+  //Open window or page for making project post
+  //No prototype of this found on project page, so I will refrain from adding further for now
 }
 
 const blockProject = () => {
   console.log('This will allow a user to block the current project');
+  //Get current user id
+  //Add project to user's block projects list
 }
 
 const reportProject = () => {
   console.log('This will let the user report the project to moderators');
+  //Get project id & user id (if user is not anonymous)
+  //Send a report for admins to review filled with relevant info (need location for reports)
 }
 
 //Opens or closes the settings window
@@ -72,6 +105,8 @@ const saveSettings = () => {
 //Lets the user leave the project
 const leaveProject = () => {
   console.log('This will let a project member leave a project (Likely after another confirmation)');
+  //Get current user id
+  //remove user from project members list
 }
 
 //Opens/closes the additional project options tab
@@ -148,7 +183,8 @@ const ProjectInfoMember = (props) => {
         <h1 id='project-title'>{projects[projectID].name}</h1>
         <div id='header-buttons'>
           <div id='more-options'>
-            <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}><img src='elipses.png' alt="..."/></button>
+            <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
+              <img id='more-options-button-img' src='elipses.png' alt="..."/></button>
             <div id='more-options-popup' className='hide'>
               <button className='white-button' onClick={accessSettings}>Project Settings</button>
               <button className='white-button' onClick={leaveProject}>Leave Project</button>
@@ -207,7 +243,7 @@ const Project = (props) => {
       <button id='return-button' className='white-button' onClick={previousPage}>&lt; return</button>
       </div>
 
-      <ProjectInfoMember/>
+      <ProjectInfo/>
 
       <div id='member-divider'>
         <hr/>

@@ -40,6 +40,7 @@ const projectID = 0;
 //Will require a reference to the page they were on before
 const previousPage = () => {
   console.log('This will let the user return to the previous page');
+  window.history.back();
 }
 
 //Adds/removes currently viewed project to the user's followed projects

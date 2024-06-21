@@ -404,6 +404,13 @@
     }
 }
 
+.list{
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px;
+    align-items: center;
+}
+
 /* Project page style rules */
 
 #project-page{
@@ -539,6 +546,7 @@
 }
 
 #more-options-popup{
+    position:absolute;
     background-color:white;
     box-shadow: 2px 2px 5px black;
     
@@ -555,12 +563,10 @@
 }
 
 .hide{
-    position:absolute;
     display:none;
 }
 
 .show{
-    position:absolute;
     display:block;
 }
 
@@ -596,7 +602,7 @@
 
 #member-divider hr{
     display:inline-block;
-    width:calc((100% - 120px)/2);
+    width:calc((100% - 140px)/2);
 }
 
 #member-divider span{
@@ -665,9 +671,155 @@
     height: 32px;
 }
 
-.list{
-    display: flex;
-    flex-flow: row wrap;
-    gap: 8px;
-    align-items: center;
+#settings-cover{
+    position:fixed;
+    background-color:black;
+    opacity: 50%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#settings-window{
+    position:fixed;
+    background-color: white;
+    width: 80vw;
+    height: 80vh;
+    opacity: 100%;
+    top: 10vh;
+    left: 10vw;
+    z-index: 1;
+}
+
+#settings-tabs{
+    display:flex;
+    margin:0 50px;
+    gap: 30px;
+}
+
+.tab{
+    background-color:white;
+    color:black;
+    border:none;
+    cursor:pointer;
+}
+
+.tab-selected{
+    background-color:white;
+    color:black;
+    border:none;
+    cursor:pointer;
+    font-weight:bolder;
+}
+
+#delete-project{
+    margin-left: auto;
+    color: red;
+    border: 2px solid red;
+}
+
+#settings-content{
+    margin: 0 15%;
+}
+
+#settings-close{
+    position:absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#settings-cancel{
+    position:absolute;
+    bottom:50px;
+    left:50px;
+}
+
+#settings-save{
+    position:absolute;
+    bottom:50px;
+    right:50px;
+}
+
+/* project page general settings rules */
+
+#general-settings{
+    display:grid;
+    grid-template: 1fr 1fr 1fr / 1fr 3fr;
+    grid-template-areas: 'image name'
+                         'image theme'
+                         'pic-edit hiring';
+    grid-gap:10px;
+    height: 200px;
+}
+
+#picture-edit{
+    grid-area: image;
+    width:64px;
+    height:64px;
+}
+
+#name-edit{
+    grid-area: name;
+}
+
+#theme-select{
+    grid-area: theme;
+}
+
+#edit-button{
+    grid-area: pic-edit;
+}
+
+#hiring-checkbox{
+    grid-area: hiring;
+    align-self:center;
+}
+
+/* project page member settings rules */
+
+#member-settings-list{
+    height: 50vh;
+    overflow-y:auto;
+}
+
+.member-settings-listing{
+    display:flex;
+    margin: 10px 0;
+    align-items:center;
+    gap: 10px;
+}
+
+.member-settings-listing img{
+    width:48px;
+}
+
+.member-settings-listing button{
+    height: 50%;
+}
+
+.member-settings-more{
+    margin-left:auto;
+}
+
+.settings-hide{
+    display:none;
+}
+
+.settings-show{
+    display:block;
+    position:absolute;
+    width: 200px;
+    background-color:white;
+    box-shadow: 2px 2px 5px black;
+    right:10px;
+    z-index:2;
+}
+
+.settings-show button{
+    display:block;
+    border: 1px solid rgb(209, 209, 209);
+    width: 90%;
+    height: 40%;
+    margin: 2.5% auto;
 }

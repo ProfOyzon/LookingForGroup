@@ -179,6 +179,7 @@ const ProjectInfoMember = (props) => {
     <div id='project-info-member'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
 
+
       <div id='project-header'>
         <h1 id='project-title'>{projects[projectID].name}</h1>
         <div id='header-buttons'>
@@ -256,7 +257,7 @@ const Project = (props) => {
         {
           projects[projectID].members.map(member => {
             return (
-              <ProjectMember name={profiles[member.userID].name} role={member.role} />
+              <ProjectMember onClick={() => window.location.href="profile"} name={profiles[member.userID].name} role={member.role} />
             );
           })
         }

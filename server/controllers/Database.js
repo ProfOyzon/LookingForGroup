@@ -390,7 +390,7 @@ const updateCommentByID = async (req, res) => {
 
     // This data object represents any changes we are making to the Post
     commentData = {
-        content: req.body.content ? req.body.content : null,
+        content: req.body.content,
     }
 
     try {

@@ -1,7 +1,7 @@
 // makes sure that the user is logged in or redirects to the login page
 const requiresLogin = (req, res, next) => {
     if (!req.session.account) {
-        return res.redirect('/login');
+        return res.redirect('/login').json({ message: "user is not logged in" });
     }
     return next();
 };
@@ -9,7 +9,7 @@ const requiresLogin = (req, res, next) => {
 // makes sure that the user is logged out or redirects to the default home page
 const requiresLogout = (req, res, next) => {
     if (req.session.account) {
-        return res.redirect('/').json({ message: "user is not logged in" });
+        return res.redirect('/').json({ message: "user is not logged out" });
     }
     return next();
 };

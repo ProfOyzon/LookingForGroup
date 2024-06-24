@@ -8,6 +8,11 @@ const PostSchema = new mongoose.Schema({
         ref: 'Account',
         required: true
     },
+    projectID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Project',
+        required: true
+    },
     title: {
         type: String,
         required: true,
@@ -31,6 +36,14 @@ const PostSchema = new mongoose.Schema({
             trim: true,
             required: false,
         }
+    },
+    replies: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment'
+        }],
+        required: true,
+        default: []
     },
     createdDate: {
         type: Date,

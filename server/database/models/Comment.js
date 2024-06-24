@@ -11,7 +11,7 @@ const CommentSchema = new mongoose.Schema({
     replies: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Post'
+            ref: 'Comment'
         }],
         required: true,
         default: []

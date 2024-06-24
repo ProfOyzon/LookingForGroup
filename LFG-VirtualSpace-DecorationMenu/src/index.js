@@ -1,25 +1,36 @@
 import * as PIXI from "pixi.js";
-import { createDecorationMenu } from './decoration-menu-OLD.js';
-import { CreateDecorationMenu } from './decoration-menu-2.0.js';
+//import { createDecorationMenu } from './decoration-menu-OLD.js';
+//import { CreateDecorationMenu } from './scroll-box-prototype.js';
+import { DecorationMenu } from './decoration-menu.js';
+
+export let app;
 
 const init = async () => {
     // initialize application
-    const app = new PIXI.Application();
+    app = new PIXI.Application();
     await app.init({ backgroundColor: 0XFFFFFF, resizeTo: window });
     document.body.appendChild(app.canvas);
 
     // create space (container for everything)
     let space = new PIXI.Container();
+    app.stage.addChild(space);
 
     let spaceBG = new PIXI.Graphics().rect(0, 0, app.screen.width * .9, app.screen.height * .9).fill(0X1099BB);
     space.addChild(spaceBG);
 
     //createDecorationMenu(space, 100, 120, 12, 150, 3);
 
-    let menu = CreateDecorationMenu(app);
-    space.addChild(menu);
+    //space.addChild(CreateDecorationMenu(app));
 
-    app.stage.addChild(space);
+    new DecorationMenu({
+        app: app,
+        parent: space,
+        margins: 100,
+        height: 120,
+        padding: 6,
+        scrollMS: 150,
+        scrollCount: 6
+    });
 }
 
 init();

@@ -9,12 +9,9 @@ I'm seeing what i can come up with from scratch.
 
 import {Container, Graphics, Assets, Text, Ticker} from "pixi.js";
 
-const arrowTexture = await Assets.load('images/arrow.png');
-
 let app;
 let container;
 let maskContainer;
-
 
 export const CreateDecorationMenu = (a) => {
     app = a;
@@ -102,7 +99,7 @@ export const CreateDecorationMenu = (a) => {
 
     itemsContainer.on('pointerdown', onDragStart, itemsContainer);
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 40; i++) {
         let box = new Container({x: (i * 80), width: 70, height: 70});
         box.addChild(new Graphics().rect(0,0,70,70).fill(0XFFFFFF / (i+1)));
         itemsContainer.addChild(box); 

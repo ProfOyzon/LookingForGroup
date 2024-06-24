@@ -20,15 +20,10 @@ const ProjectSchema = new mongoose.Schema({
                 required: true,
                 ref: 'Account'
             },
-            admin: {
-                type: Boolean,
+            permissions: {
+                type: String,
                 required: true,
-                default: false
-            },
-            owner: {
-                type: Boolean,
-                required: true,
-                default: false
+                default: 'member'
             },
             role: {
                 type: String,

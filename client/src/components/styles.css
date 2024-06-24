@@ -823,3 +823,89 @@
     height: 40%;
     margin: 2.5% auto;
 }
+
+
+/* Project Post Page style rules */
+
+#post-header{
+    display:flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+/* Need to re-adjust height */
+#post-page-content{
+    display:flex;
+    justify-content:space-evenly;
+    height: 80%;
+}
+
+#post{
+    display:grid;
+    width:45%;
+    grid-template: 40px auto 40px / 4fr 1fr;
+    grid-template-areas: 'name options'
+                         'post post'
+                         'info share';
+}
+
+#post-name{
+    grid-area:name;
+    text-align:left;
+}
+
+#post-options{
+    grid-area:options;
+}
+
+#post-content{
+    grid-area:post;
+    border:1px solid grey;
+    margin: 10px;
+}
+
+#post-info{
+    grid-area:info;
+    text-align:left;
+}
+
+#post-share{
+    grid-area:share;
+}
+
+#comments{
+    display:flex;
+    flex-direction:column;
+    width:45%;
+}
+
+#comments-content{
+    border:1px solid grey;
+    height:100%;
+}
+
+#reply-content{
+    display:grid;
+    grid-template: 1fr 2fr 1fr / 3fr 1fr;
+    grid-template-areas: 'prompt prompt'
+                         'input input'
+                         'buttons submit'
+}
+
+#reply-prompt{
+    grid-area:prompt;
+    text-align:left;
+}
+
+#reply-input{
+    grid-area:input;
+}
+
+#reply-attach-buttons{
+    grid-area:buttons;
+    text-align:left;
+}
+
+#reply-submit{
+    grid-area:submit;
+}

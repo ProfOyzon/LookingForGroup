@@ -11,7 +11,8 @@ export const ProfileCard = ({profile}) => {
         <div className="discover-card">
             <img id="discover-card-profile-picture" src={profilePicture} alt={profile.name}/>
             <div id="discover-card-body">
-                <span><h2 id="discover-card-name">{profile.name}</h2><p id="profile-card-pronouns">{profile.pronouns.map(p => `${p}`).join("/")}</p></span>
+                <span><h2 id="discover-card-name" onClick={() => window.location.href="profile"}>{profile.name}</h2>
+                <p id="profile-card-pronouns">{profile.pronouns.map(p => `${p}`).join("/")}</p></span>
                 <p id="discover-card-description">{profile.bio}</p>
                 <div id="discover-card-tag-wrapper">
                     <Tags>{profile.skills[0].skill}</Tags>

@@ -60,6 +60,13 @@
     animation: fadeIn 1s forwards;
 }
 
+#message-card{
+    max-height: 45px;
+    grid-template-columns: 10% 90%;
+    padding-top: 0;
+    padding-bottom: 3.5%;
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -85,8 +92,10 @@
     /* align-items: center; */
     font-size: 0.8rem;
 }
-
-
+#message-card #discover-card-body {
+    margin-top: 0%;
+    padding-bottom: 5%;
+}
 
 #discover-card-body > *, #profile-card-body > *{
     flex: 1;
@@ -97,10 +106,21 @@
    border: 2px solid black;
    border-radius: 100%;
 }
+#message-card #discover-card-profile-picture {
+    width: 110%;
+    margin-top: 15%;
+}
 
 #discover-card-name, #profile-card-name {
     text-align: center;
     margin-bottom: 0;
+}
+#message-card #discover-card-name {
+    text-align: left;
+}
+
+#discover-card-name:hover, #profile-card-name:hover {
+    text-decoration: underline;
 }
 
 #discover-card-description, #profile-card-description {
@@ -384,6 +404,13 @@
     }
 }
 
+.list{
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px;
+    align-items: center;
+}
+
 /* Project page style rules */
 
 #project-page{
@@ -403,6 +430,10 @@
     grid-template: 1fr 1fr / .2fr 1fr 200px 400px;
     grid-template-areas: 'picture header buttons listing'
                          'blank desc buttons listing';
+}
+
+.member-name:hover{
+    text-decoration: underline;
 }
 
 #member-buttons{
@@ -515,6 +546,7 @@
 }
 
 #more-options-popup{
+    position:absolute;
     background-color:white;
     box-shadow: 2px 2px 5px black;
     
@@ -531,12 +563,10 @@
 }
 
 .hide{
-    position:absolute;
     display:none;
 }
 
 .show{
-    position:absolute;
     display:block;
 }
 
@@ -572,7 +602,7 @@
 
 #member-divider hr{
     display:inline-block;
-    width:calc((100% - 120px)/2);
+    width:calc((100% - 140px)/2);
 }
 
 #member-divider span{
@@ -639,4 +669,157 @@
 .post-content img{
     width: 32px;
     height: 32px;
+}
+
+#settings-cover{
+    position:fixed;
+    background-color:black;
+    opacity: 50%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#settings-window{
+    position:fixed;
+    background-color: white;
+    width: 80vw;
+    height: 80vh;
+    opacity: 100%;
+    top: 10vh;
+    left: 10vw;
+    z-index: 1;
+}
+
+#settings-tabs{
+    display:flex;
+    margin:0 50px;
+    gap: 30px;
+}
+
+.tab{
+    background-color:white;
+    color:black;
+    border:none;
+    cursor:pointer;
+}
+
+.tab-selected{
+    background-color:white;
+    color:black;
+    border:none;
+    cursor:pointer;
+    font-weight:bolder;
+}
+
+#delete-project{
+    margin-left: auto;
+    color: red;
+    border: 2px solid red;
+}
+
+#settings-content{
+    margin: 0 15%;
+}
+
+#settings-close{
+    position:absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#settings-cancel{
+    position:absolute;
+    bottom:50px;
+    left:50px;
+}
+
+#settings-save{
+    position:absolute;
+    bottom:50px;
+    right:50px;
+}
+
+/* project page general settings rules */
+
+#general-settings{
+    display:grid;
+    grid-template: 1fr 1fr 1fr / 1fr 3fr;
+    grid-template-areas: 'image name'
+                         'image theme'
+                         'pic-edit hiring';
+    grid-gap:10px;
+    height: 200px;
+}
+
+#picture-edit{
+    grid-area: image;
+    width:64px;
+    height:64px;
+}
+
+#name-edit{
+    grid-area: name;
+}
+
+#theme-select{
+    grid-area: theme;
+}
+
+#edit-button{
+    grid-area: pic-edit;
+}
+
+#hiring-checkbox{
+    grid-area: hiring;
+    align-self:center;
+}
+
+/* project page member settings rules */
+
+#member-settings-list{
+    height: 50vh;
+    overflow-y:auto;
+}
+
+.member-settings-listing{
+    display:flex;
+    margin: 10px 0;
+    align-items:center;
+    gap: 10px;
+}
+
+.member-settings-listing img{
+    width:48px;
+}
+
+.member-settings-listing button{
+    height: 50%;
+}
+
+.member-settings-more{
+    margin-left:auto;
+}
+
+.settings-hide{
+    display:none;
+}
+
+.settings-show{
+    display:block;
+    position:absolute;
+    width: 200px;
+    background-color:white;
+    box-shadow: 2px 2px 5px black;
+    right:10px;
+    z-index:2;
+}
+
+.settings-show button{
+    display:block;
+    border: 1px solid rgb(209, 209, 209);
+    width: 90%;
+    height: 40%;
+    margin: 2.5% auto;
 }

@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const morgan = require("morgan");
 const bodyParser = require('body-parser');
+const session = require('express-session');
 const mongoose = require('mongoose');
 
 const config = require('./config.js');
@@ -19,6 +20,17 @@ app.use(morgan("tiny"));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.set('trust proxy', 1);
+app.use(session({
+    key: 'sessionid',
+    secret: config.secret,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+    },
+}));
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../client/build")));

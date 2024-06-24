@@ -55,7 +55,8 @@ const Home = (props) => {
     
     return (
         <div className="page">
-            <NotifButton></NotifButton>
+            <div id="containerId"><NotifButton></NotifButton></div>
+            
             <h1 className="page-title">Discover</h1>
             
             <div id="discover-button-wrapper">                

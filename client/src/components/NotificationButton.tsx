@@ -1,6 +1,7 @@
 import React from "react";
 import bellIcon from "../img/bell.png";
-import { CreateNotifs } from "./NotificationBoxes";
+import { DisplayNotifs } from "./NotificationBoxes";
+import { DisplayNotifs2 } from "./NotificationBoxes";
 
 export function NotifButton() {
 
@@ -9,7 +10,8 @@ export function NotifButton() {
             <button id="notif-button" onClick={HandleClick}>
                 <img src={bellIcon} className="notif-button-icon" />
                 <div id="notif-popup" className="hidden">
-                    <CreateNotifs></CreateNotifs>
+                    {/* <DisplayNotifs></DisplayNotifs> */}
+                    <DisplayNotifs2></DisplayNotifs2>
                 </div>
             </button>
 

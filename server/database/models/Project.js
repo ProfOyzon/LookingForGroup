@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 let ProjectModel = {};
 
 const ProjectSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true,
         trim: true,
@@ -20,15 +20,10 @@ const ProjectSchema = new mongoose.Schema({
                 required: true,
                 ref: 'Account'
             },
-            admin: {
-                type: Boolean,
+            permissions: {
+                type: String,
                 required: true,
-                default: false
-            },
-            owner: {
-                type: Boolean,
-                required: true,
-                default: false
+                default: 'member'
             },
             role: {
                 type: String,
@@ -81,6 +76,13 @@ const ProjectSchema = new mongoose.Schema({
 
 // Converts a doc to something we can store in redis later on.
 ProjectSchema.statics.toAPI = (doc) => ({
+    title,
+    description,
+    members,
+    tags,
+    neededRoles,
+    posts,
+    createdDate,
     _id: doc._id,
 });
 

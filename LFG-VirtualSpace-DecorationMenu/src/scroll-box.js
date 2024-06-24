@@ -1,3 +1,6 @@
+// Thomas Martinez
+// Scroll Box used by decoration menu
+
 import {Container, Graphics} from "pixi.js";
 import * as Events from "./scroll-box-events.js";
 
@@ -49,11 +52,6 @@ export class HorizontalScrollBox {
         item.position.x = this.items.length * this.height;//(this.height + this.item_padding);
         this.items.push(item);
         this.itemsContainer.addChild(item);
-        this.scrollBG.width = this.itemsContainer.width;
-        this.maxDistance = this.itemsContainer.width - this.width;
-    }
-
-    test = () => {
         this.scrollBG.width = this.itemsContainer.width;
     }
 

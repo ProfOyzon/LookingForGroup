@@ -1,3 +1,6 @@
+// Thomas Martinez
+// Menu for accessing decoration items in virtual space
+
 import {Container, Graphics, Assets, Sprite, Text, TextStyle, Ticker} from "pixi.js";
 import { HorizontalScrollBox } from "./scroll-box.js";
 import { DecorationMenuItem } from "./decoration-menu-item.js";

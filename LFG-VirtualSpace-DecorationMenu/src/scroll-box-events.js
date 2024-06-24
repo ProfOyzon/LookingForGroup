@@ -1,3 +1,6 @@
+// Thomas Martinez
+// drag events used by scroll box
+
 import { app } from './index.js';
 
 let dragTarget = null;

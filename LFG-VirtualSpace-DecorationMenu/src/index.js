@@ -1,3 +1,4 @@
+// Thomas Martinez
 import * as PIXI from "pixi.js";
 //import { createDecorationMenu } from './decoration-menu-OLD.js';
 //import { CreateDecorationMenu } from './scroll-box-prototype.js';

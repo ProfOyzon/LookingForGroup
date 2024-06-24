@@ -41,7 +41,7 @@ const AccountSchema = new mongoose.Schema({
             required: false,
         }
     },
-    username: {
+    name: {
         type: String,
         required: true,
         trim: true,
@@ -101,8 +101,16 @@ const AccountSchema = new mongoose.Schema({
 
 // Converts a doc to something we can store in redis later on.
 AccountSchema.statics.toAPI = (doc) => ({
+    email: doc.email,
     username: doc.username,
     profilePicture: doc.profilePicture,
+    name: doc.name,
+    pronouns: doc.pronouns,
+    bio: doc.bio,
+    skills: doc.skills,
+    messages: doc.messages,
+    projects: doc.projects,
+    createdDate: doc.createdDate,
     _id: doc._id,
 });
 

@@ -52,21 +52,17 @@ export class HorizontalScrollBox {
         item.position.x = this.items.length * this.height;//(this.height + this.item_padding);
         this.items.push(item);
         this.itemsContainer.addChild(item);
-        this.scrollBG.width = this.itemsContainer.width;
+
+        // this backdrop allows the itemsContainer to be dragged when it is clicked in between each item
+        this.itemsContainer.addChild(
+            new Graphics({zIndex: -1}).rect(0, 0, this.itemsContainer.width, this.height).fill(this.colors.BG_COLOR)
+        );
     }
 
     resetScrollMenu = () => {
         // clear all children
         this.itemsContainer.children = [];
         this.items = [];
-        // this background allows the user to drag the itemsContainer even if hey click inside the padding/margins. 
-        this.scrollBG = new Graphics().rect(0, 0, this.itemsContainer.width, this.height).fill(this.colors.BG_COLOR);
-        this.scrollBG.zIndex = -1;
-        this.itemsContainer.addChild(this.scrollBG);
-    }
-
-    scrollToPosition = () => {
-        // this backdrop allows the itemsContainer to be dragged when it is clicked in between each item
     }
 
     scroll = (distance) => {

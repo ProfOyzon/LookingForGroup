@@ -305,7 +305,5 @@ export class DecorationMenu {
             });
             this.scrollBox.addItem(decorationMenuItem.menuItem);
         }
-
-        this.scrollBox.test();
     }
 }

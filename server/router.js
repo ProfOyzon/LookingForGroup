@@ -12,11 +12,11 @@ const router = (app) => {
     app.get("/logout", mid.requiresSecure, mid.requiresLogin, controllers.Database.logout);
     app.get("/updateAccountByID", mid.requiresSecure, mid.requiresLogin, controllers.Database.updateAccountByID);
     app.get("/getAccountByID", mid.requiresSecure, controllers.Database.getAccountByID);
-    app.get("/addSkillsByAccountID", mid.requiresSecure, mid.requiresLogin, controllers.Database.addSkillsByAccountID);
 
     // Projects
     app.get("/createProject", mid.requiresSecure, mid.requiresLogin, controllers.Database.createProject);
     app.get("/updateProjectByID", mid.requiresSecure, mid.requiresLogin, controllers.Database.updateProjectByID);
+    app.get("/getAccountByID", mid.requiresSecure, controllers.Database.getProjectByID);
 
     // Posts
     app.get("/createPost", mid.requiresSecure, mid.requiresLogin, controllers.Database.createPost);

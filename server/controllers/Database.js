@@ -83,6 +83,7 @@ const signup = async (req, res) => {
 
         // create a new account
         const newAccount = new Account({ email, username, password: hash, profilePicture });
+        // push the new account to the database
         await newAccount.save();
 
         // update the current session to use this account (and convert it to usable json)
@@ -116,17 +117,17 @@ const updateAccountByID = async (req, res) => {
     try {
         // This data object represents any changes we are making to the Account
         data = {
-            email: req.body.data.email ? req.body.data.email : null,
-            username: req.body.data.username ? req.body.data.username : null,
-            profilePicture: req.body.data.profilePicture ? req.body.data.profilePicture : null,
-            name: req.body.data.name ? req.body.data.name : null,
-            pronouns: req.body.data.pronouns ? req.body.data.pronouns : null,
-            bio: req.body.data.bio ? req.body.data.bio : null,
-            skills: req.body.data.skills ? req.body.data.skills : null,
+            email: req.body.email ? req.body.email : null,
+            username: req.body.username ? req.body.username : null,
+            profilePicture: req.body.profilePicture ? req.body.profilePicture : null,
+            name: req.body.name ? req.body.name : null,
+            pronouns: req.body.pronouns ? req.body.pronouns : null,
+            bio: req.body.bio ? req.body.bio : null,
+            skills: req.body.skills ? req.body.skills : null,
         }
 
         // find and update the doc
-        const result = await Project.findOneAndUpdate({ _id: req.body.data._id }, data, { new: true, runValidators: true });
+        const result = await Account.findOneAndUpdate({ _id: req.body.accountID }, data, { new: true, runValidators: true });
         // push the change to the database
         result.save();
         return res.json({ account: result });
@@ -138,7 +139,8 @@ const updateAccountByID = async (req, res) => {
 
 const getAccountByID = async (req, res) => {
     try {
-        const result = await Project.findById(req.body._id);
+        // search for an account doc with the given _id value
+        const result = await Account.findById(req.body.accountID);
         return res.json({ account: result });
     } catch (err) {
         console.log(err);
@@ -149,12 +151,74 @@ const getAccountByID = async (req, res) => {
 
 // Projects
 
-const createProject = (req, res) => {
-    return res.json({ message: "Not Implemented Yet" });
+const createProject = async (req, res) => {
+    // makes sure that a title was given
+    if (!req.body.title) {
+        return res.status(400).json({ error: 'Missing Title' });
+    }
+
+    // this data represents what will be in the new project to start
+    projectData = {
+        title: req.body.title,
+        description: req.body.description ? req.body.description : "",
+        tags: req.body.tags ? req.body.tags : [],
+    }
+
+    try {
+        // create a new project
+        const newProject = new Project({ projectData });
+        // push the new project to the database
+        await newProject.save();
+
+        return res.json({
+            project: newProject
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ error: 'An error occurred' });
+    }
 }
 
-const updateProjectByID = (req, res) => {
-    return res.json({ message: "Not Implemented Yet" });
+const updateProjectByID = async (req, res) => {
+    try {
+        // This data object represents any changes we are making to the Project
+        data = {
+            title: req.body.title ? req.body.title : null,
+            description: req.body.description ? req.body.description : null,
+            members: req.body.members ? req.body.members : null,
+            tags: req.body.tags ? req.body.tags : null,
+            neededRoles: req.body.neededRoles ? req.body.neededRoles : null,
+            posts: req.body.posts ? req.body.posts : null,
+        }
+
+        // find and update the doc
+        const result = await Project.findOneAndUpdate({ _id: req.body.projectID }, data, { new: true, runValidators: true });
+
+        // make sure that the user has permission to update the project
+        member = result.members.filter((member) => member.userID === req.session.account._id)[0];
+        if (!member || (!member.admin && !member.owner)) {
+            return res.status(400).json({ error: 'User doesnt have permission to update this project' });
+        }
+
+        // push the change to the database
+        result.save();
+
+        return res.json({ project: result });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ error: 'An error occurred' });
+    }
+}
+
+const getProjectByID = async (req, res) => {
+    try {
+        // search for a project doc with the given _id value
+        const result = await Project.findById(req.body.projectID);
+        return res.json({ project: result });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ error: 'An error occurred' });
+    }
 }
 
 // Posts
@@ -196,9 +260,9 @@ module.exports = {
     logout,
     updateAccountByID,
     getAccountByID,
-    addSkillsByAccountID,
     createProject,
     updateProjectByID,
+    getProjectByID,
     createPost,
     updatePostByID,
     createComment,

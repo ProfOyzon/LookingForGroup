@@ -7,6 +7,7 @@ import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { projects, profiles, posts } from "../../constants/fakeData";
 import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 // To-do:
 // Figure out image displays once images are added to site
@@ -14,6 +15,9 @@ import ReactDOM from "react-dom";
 // Create alternate version of page for project members
 
 const projectID = 0;
+
+let settingsContainer;
+let settingsRoot;
 
 //Closes dropdown menus when clicking outside of them
 /// !! Commented out due to it causing errors when clicking on other pages !!
@@ -90,6 +94,11 @@ const reportProject = () => {
   //Send a report for admins to review filled with relevant info (need location for reports)
 }
 
+const initSettings = () => {
+  settingsContainer = document.getElementById('settings-content');
+  settingsRoot = createRoot(settingsContainer!);
+}
+
 //Opens or closes the settings window
 const accessSettings = () => {
   document.getElementById('settings-cover').classList.toggle("show");
@@ -118,12 +127,15 @@ const toggleOptionDisplay = () => {
 //Re-renders settings content based on clicked tab, and highlights selected tab
 const changeTabs = (tab) => {
   let content = document.getElementById('settings-content');
+  if (settingsContainer === undefined){
+    initSettings();
+  }
   if (tab === 'general'){
-    ReactDOM.render(<GeneralSettings projectID={projectID}/>, content);
+    settingsRoot.render(<GeneralSettings projectID={projectID}/>);
     document.getElementById('general-tab').className = 'tab-selected';
     document.getElementById('member-tab').className = 'tab';
   } else if (tab === 'members'){
-    ReactDOM.render(<MemberSettings/>, content);
+    settingsRoot.render(<MemberSettings/>);
     document.getElementById('member-tab').className = 'tab-selected';
     document.getElementById('general-tab').className = 'tab';
   }
@@ -245,7 +257,7 @@ const Project = (props) => {
       <button id='return-button' className='white-button' onClick={previousPage}>&lt; return</button>
       </div>
 
-      <ProjectInfo/>
+      <ProjectInfoMember/>
 
       <div id='member-divider'>
         <hr/>

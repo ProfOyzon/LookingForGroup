@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./pages.css";
 import "../styles.css";
 import pfp from '../../img/profile-user.png';
@@ -6,9 +7,13 @@ import {profiles} from "../../constants/fakeData";
 import{projects} from "../../constants/fakeData";
 import { Tags } from "../Tags";
 import { ProjectCard } from "../ProjectCard";
+import { Endorsement } from "../Endorsement";
+import { TabButton, TabContent } from "../Tabs";
 const user = profiles[0];
 
 const Profile = (props) => {
+  const [activeTab, setActiveTab] = useState(0);
+
   return (
     <div className = "page">
       <section id = "profileHeader">
@@ -86,11 +91,11 @@ const Profile = (props) => {
       <section id = "endorsements">
             <h2>Endorsements</h2>
             <div id = "tabList" className="list">
-              {user.skills.filter(skill => skill.endorsed).map(filteredSkill => (
-                <Tags>{filteredSkill.skill}</Tags> 
-              ))}
+              <TabButton names = {getSkillNames(user.skills.filter(skill => skill.endorsed))} activeTab={activeTab} setActiveTab={setActiveTab}></TabButton>
             </div>
-            <div id = "textList"></div>
+            <div id = "textList">
+              <TabContent Children={getChildrenList(user.skills.filter(skill => skill.endorsed))} activeTab={activeTab}></TabContent>
+            </div>
         </section>
 
         <section id = "projects">
@@ -109,6 +114,22 @@ const Profile = (props) => {
         </section>
     </div>
   );
+}
+
+function getSkillNames(skillList) {
+  let names : string[] = [];
+  for (let skill of skillList){
+    names.push(skill.skill);
+  }
+  return names;
+}
+
+function getChildrenList (skillList) {
+  let endorsements : Object[] = [];
+  for (let skill of skillList){
+    endorsements.push(skill.endorsements.map(endorsement =><Endorsement endorsement={endorsement}></Endorsement>))
+  }
+  return endorsements;
 }
 
 export default Profile;

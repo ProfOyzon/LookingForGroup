@@ -44,7 +44,7 @@
     display: none;
 }
 
-.discover-card{
+.discover-card, .endorsement{
     width: 60%;
     max-width: 765px;
     max-height: 265px;
@@ -79,7 +79,7 @@
     }
 }
 
-.discover-card:hover, .profile-card:hover {
+.discover-card:hover, .profile-card:hover .endorsement:hover{
     transform: scale(1.05);
 }
 
@@ -666,4 +666,8 @@
     flex-flow: row wrap;
     gap: 8px;
     align-items: center;
+}
+
+.active{
+    background-color: lightblue;
 }

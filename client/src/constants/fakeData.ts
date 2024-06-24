@@ -62,61 +62,79 @@ export const profiles = [
                 skill: softSkills[0],
                 type: "softSkill",
                 endorsed: false,
-                higlighted: true
+                higlighted: true,
+                endorsements: []
             },
             {
                 skill: softSkills[1],
                 type: "softSkill",
                 endorsed: true,
                 higlighted: true,
-                endorsement: "hes really good at it",
-                endorser: "Wario Wario",
-                endorseProject:"Cool Project"
+                endorsements: [ 
+                    {   endorsement: "hes really good at it",
+                        endorser: "Wario Wario",
+                        endorseProject:"Cool Project"
+                    },
+                    {   endorsement: "his greatest skill",
+                        endorser: "Jane Doe",
+                        endorseProject:"Boring Project"
+                    }
+                ]
             },
             {
                 skill: softSkills[2],
                 type: "softSkill",
                 endorsed: false,
-                higlighted: false
+                higlighted: false,
+                endorsements: []
             },
             {
                 skill: softSkills[3],
                 type: "softSkill",
                 endorsed: false,
                 higlighted: false,
+                endorsements: []
             },
             {
                 skill: hardSkills[0],
                 type: "hardSkill",
                 endorsed: false,
-                higlighted: true
+                higlighted: true,
+                endorsements: []
             },
             {
                 skill: hardSkills[1],
                 type: "hardSkill",
                 endorsed: false,
-                higlighted: false
+                higlighted: false,
+                endorsements: []
             },
             {
                 skill: hardSkills[2],
                 type: "hardSkill",
                 endorsed: false,
-                higlighted: false
+                higlighted: false,
+                endorsements: []
             },
             {
                 skill: proficiencies[0],
                 type: "proficiency",
                 endorsed: true,
                 higlighted: false,
-                endorsement: "he saved our project",
-                endorser: "Bob the Builder",
-                endorseProject:"Cool Project #2"
+                endorsements: [ 
+                    {
+                        endorsement: "he saved our project",
+                        endorser: "Bob the Builder",
+                        endorseProject:"Cool Project #2"
+                    }
+                ]
             },
             {
                 skill: proficiencies[1],
                 type: "proficiency",
                 endorsed: false,
-                higlighted: false
+                higlighted: false,
+                endorsements: []
             },
         ],
         profilePicture: {
@@ -148,25 +166,29 @@ export const profiles = [
                 skill: softSkills[5],
                 type: "softSkill",
                 endorsed: false,
-                higlighted: true
+                higlighted: true,
+                endorsements: []
             },
             {
                 skill: softSkills[1],
                 type: "softSkill",
                 endorsed: false,
-                higlighted: true
+                higlighted: true,
+                endorsements: []
             },
             {
                 skill: softSkills[3],
                 type: "softSkill",
                 endorsed: false,
-                higlighted: true
+                higlighted: true,
+                endorsements: []
             },
             {
                 skill: softSkills[0],
                 type: "softSkill",
                 endorsed: true,
-                higlighted: false
+                higlighted: false,
+                endorsements: []
             },
         ],
         profilePicture: {
@@ -198,25 +220,29 @@ export const profiles = [
                 skill: softSkills[0],
                 type: "softSkill",
                 endorsed: false,
-                higlighted: true
+                higlighted: true,
+                endorsements: []
             },
             {
                 skill: softSkills[1],
                 type: "softSkill",
                 endorsed: false,
-                higlighted: true
+                higlighted: true,
+                endorsements: []
             },
             {
                 skill: softSkills[2],
                 type: "softSkill",
                 endorsed: false,
-                higlighted: true
+                higlighted: true,
+                endorsements: []
             },
             {
                 skill: softSkills[3],
                 type: "softSkill",
                 endorsed: true,
-                higlighted: false
+                higlighted: false,
+                endorsements: []
             },
         ],
         profilePicture: {

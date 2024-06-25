@@ -1,9 +1,32 @@
 import "./pages.css";
 import "../styles.css";
+import { PostComment } from "../PostComment";
 import { projects, profiles, posts, comments } from "../../constants/fakeData";
 
+//List the post and project ids, used throughout component
 const postId = 0;
 const projectId = 0;
+
+const PostReplies = (props) => {
+  if (posts[postId].comments.length !== 0){
+    return(
+      <div>
+        {
+          posts[postId].comments.map(comment => {
+            return(
+              <PostComment commentId={comment}/>
+            )
+          })
+        }
+      </div>
+    )
+  } else {
+    console.log('no comment found');
+    return(
+      <div>No comments</div>
+    );
+  }
+}
 
 const ProjectPostPage = (props) => {
   return(
@@ -43,7 +66,7 @@ const ProjectPostPage = (props) => {
 
         <div id='comments'>
           <div id='comments-content'>
-
+            <PostReplies />
           </div>
 
           <div id='reply-content'>

@@ -411,7 +411,13 @@
     align-items: center;
 }
 
-/* Project page style rules */
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\
+-------------------------------------------------------
+Project page style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/
+*/
 
 #project-page{
     padding: 0px 15px;
@@ -741,7 +747,13 @@
     right:50px;
 }
 
-/* project page general settings rules */
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+project page general settings rules
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
 
 #general-settings{
     display:grid;
@@ -776,7 +788,13 @@
     align-self:center;
 }
 
-/* project page member settings rules */
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+-------------------------------------------------------
+project page member settings rules
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
 
 #member-settings-list{
     height: 50vh;
@@ -825,7 +843,13 @@
 }
 
 
-/* Project Post Page style rules */
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+Project Post Page style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
 
 #post-header{
     display:flex;
@@ -882,6 +906,46 @@
 #comments-content{
     border:1px solid grey;
     height:100%;
+    padding:10px;
+}
+
+.post-comment{
+    display:grid;
+    grid-template: 20px auto 20px auto / 50px auto 32px;
+    grid-template-areas: 'profile header options'
+                         'profile body like'
+                         'profile reply reply'
+                         'profile replies replies'
+    ;
+    margin: 10px 0;
+}
+
+.comment-profile{
+    grid-area:profile;
+}
+
+.comment-header{
+    grid-area:header;
+}
+
+.comment-options{
+    grid-area:options;
+}
+
+.comment-content{
+    grid-area:body;
+}
+
+.comment-like{
+    grid-area:like;
+}
+
+.comment-reply{
+    grid-area:reply;
+}
+
+.comment-reply-container{
+    grid-area:replies;
 }
 
 #reply-content{

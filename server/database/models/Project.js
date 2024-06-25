@@ -76,13 +76,13 @@ const ProjectSchema = new mongoose.Schema({
 
 // Converts a doc to something we can store in redis later on.
 ProjectSchema.statics.toAPI = (doc) => ({
-    title,
-    description,
-    members,
-    tags,
-    neededRoles,
-    posts,
-    createdDate,
+    title: doc.title,
+    description: doc.description,
+    members: doc.members,
+    tags: doc.tags,
+    neededRoles: doc.neededRoles,
+    posts: doc.posts,
+    createdDate: doc.createdDate,
     _id: doc._id,
 });
 

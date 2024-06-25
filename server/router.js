@@ -31,7 +31,7 @@ const router = (app) => {
     // Messages 
     app.get("/createMessage", mid.requiresSecure, mid.requiresLogin, controllers.Database.createMessage);
     app.get("/updateMessageByID", mid.requiresSecure, mid.requiresLogin, mid.requiresMessageSender, controllers.Database.updateMessageByID);
-    app.get("/getMessageByID", mid.requiresSecure, mid.requiresLogin, controllers.Database.getMessageByID);
+    app.get("/getMessageByID", mid.requiresSecure, mid.requiresLogin, mid.requiresMessageAccess, controllers.Database.getMessageByID);
 
     // Testing 
     app.get("/TestAccountSchema", mid.requiresSecure, controllers.Tests.makeFakeAccount);

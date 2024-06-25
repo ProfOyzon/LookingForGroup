@@ -41,6 +41,11 @@ const MessageSchema = new mongoose.Schema({
 
 // Converts a doc to something we can store in redis later on.
 MessageSchema.statics.toAPI = (doc) => ({
+    senderID: doc.senderID,
+    recipientID: doc.recipientID,
+    messageContent: doc.messageContent,
+    imageContent: doc.imageContent,
+    createdDate: doc.createdDate,
     _id: doc._id,
 });
 

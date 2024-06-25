@@ -28,6 +28,10 @@ const CommentSchema = new mongoose.Schema({
 
 // Converts a doc to something we can store in redis later on.
 CommentSchema.statics.toAPI = (doc) => ({
+    author: doc.author,
+    replies: doc.replies,
+    content: doc.content,
+    createdDate: doc.createdDate,
     _id: doc._id,
 });
 

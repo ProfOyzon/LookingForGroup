@@ -37,9 +37,11 @@ export class HorizontalScrollBox {
         this.itemsContainer = new Container({
             height: this.height,
             width: 0,
-            eventMode: 'static'
+            eventMode: 'static',
+            name: 'items_container' // NOT a pixi.js property. used to differentiate drags and clicks
         });
         this.itemsContainer.on('pointerdown', Events.onDragStart, this.itemsContainer);
+        this.itemsContainer.on('pointerup', Events.onMouseUp, this.itemsContainer);
 
         this.resetScrollMenu();
 

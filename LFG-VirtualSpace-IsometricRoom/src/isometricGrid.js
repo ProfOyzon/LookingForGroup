@@ -58,13 +58,13 @@ export class IsometricGrid {
                 let newTile = new Tile({ x, y, i, j, width: this.tileSize.width });
                 this.tiles.push(newTile);
                 // Change on X axis
-                x += this.tileSize.halfWidth;
-                y += this.tileSize.halfHeight;
+                x += this.tileSize.halfWidth;  //  \
+                y += this.tileSize.halfHeight; //   V
             }
             // Change on Y axis
             if(!this.isWall){
-                startX -= this.tileSize.halfWidth;
-                startY += this.tileSize.halfHeight;
+                startX -= this.tileSize.halfWidth;  //   /
+                startY += this.tileSize.halfHeight; //  V 
             }
             else{
                 startY -= this.tileSize.height;
@@ -82,9 +82,10 @@ export class IsometricGrid {
         // Draws all tiles in its list
         this.container.sortableChildren = true; // Allows for z-index to be utilized, draws the tiles from back to front
         for (let tile of this.tiles) {
-            tile.draw(this.isWall);
+            tile.draw(this);
             this.container.addChild(tile.container);
         }
+        this.container.sortChildren();
         parent.addChild(this.container);
     }
 
@@ -92,8 +93,15 @@ export class IsometricGrid {
         // Takes in a screen coordinate and converts it into a map coordinate
         // Uses math to find the id of the tile in the tiles array
         let mapPoint = this.screenToMap(point);
-        let id = mapPoint.x + mapPoint.y * this.size.y;
-        return this.tiles[id];
+        return this.getTileByID(mapPoint);
+    }
+
+    getTileByID = (id) => {
+        // id: {x,y}
+        if(id.x < 0 || id.y < 0){
+            return null;
+        }
+        return this.tiles[id.x + id.y * this.size.y];
     }
 
     isInMap = (point) => {

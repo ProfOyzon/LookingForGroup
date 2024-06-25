@@ -4,20 +4,22 @@ import * as PIXI from 'pixi.js';
 export class Tile {
     constructor({ x, y, width, i, j}) {
         this.container = new PIXI.Container();
-        this.position = {x, y};
-        this.id = {x:i, y:j};
+        this.drawMethod;
+        this.position = {x, y}; // For Drawing sprites
+        this.id = {x:i, y:j}; // Acts as a position in a grid
         this.width = width;
         this.height = width / 2;
         this.child = null;
         this.sprite = null;
-        this.drawMethod;
         this.useStroke = false;
+
+        this.text;
     }
 
-    draw = (isWall) => {
+    draw = (parent) => {
         // Draws an isometric tile
         this.sprite = new PIXI.Graphics();
-        if(!isWall){
+        if(!parent.isWall){
             this.drawMethod = drawTile;
         }
         else{
@@ -25,10 +27,25 @@ export class Tile {
         }
         this.drawMethod(this);
         this.container.addChild(this.sprite);
-        // Rendering Order
-        this.container.zIndex = this.position.y / this.height * 2; // For rendering, so things in the back get drawn first, then get overlapped by things in the front
-        this.container.zIndex += this.position.x / this.width; // For rendering, so things side by side are drawn from left to right
+        // Text
+        this.text = new PIXI.Text({
+            text: 'Test',
+            align: 'center'
+        });
+        this.text.anchor.set(0.5,0);
+        this.text.x = this.position.x;
+        this.text.y = this.position.y;
+        this.setZIndex(this.id.x);
+        this.container.addChild(this.text);
+        // Events
         this.setUpEvents();
+    }
+
+    setZIndex = (zIndex) => {
+         // Rendering Order
+         this.container.zIndex = zIndex;//this.position.y / this.height * 2; // For rendering, so things in the back get drawn first, then get overlapped by things in the front
+         // this.container.zIndex += this.position.x / this.width; // For rendering, so things side by side are drawn from left to right
+         this.text.text = this.container.zIndex; //this.id.x + (this.id.y * parent.size.y)
     }
 
     setUpEvents = () => { // TODO: Get rid of events, and change to a constant update for hovering
@@ -47,7 +64,7 @@ export class Tile {
     repositionChild = () => {
         // Move d to this.position, assuming they share the same anchor point
         this.child.position = this.position;
-        this.child.position.y += this.height;
+        this.child.position.y += this.height - this.child.decoration.offset;
     }
 
     addDecoration = (d) => {

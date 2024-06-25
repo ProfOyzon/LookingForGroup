@@ -110,11 +110,21 @@ const onDragEnd = () => {
                 // There must be enough empty tiles to fit the decoration
                 if (emptyTiles.length == dragTarget.decoration.size.x * dragTarget.decoration.size.y) {
                     // attach all the tiles in the list to that decoration
-                    for (let i = emptyTiles.length - 1; i >= 0; i--) {
+                    for (let i = 0; i < emptyTiles.length; i++) {
                         let tile = emptyTiles[i];
                         tile.addDecoration(dragTarget);
                     } // ends with the first tile, so the decoration gets drawn on that tile
                     emptyTiles[0].repositionChild();
+
+                    // hide tiles for visual effect
+                    // unhides when the decoration is dragged else where
+                    if(emptyTiles.length > 1){
+                        for(let i = 0; i < emptyTiles.length - 1; i++){
+                            // skip the first tile
+                            let tile = emptyTiles[i];
+                            tile.container.visible = false;
+                        }
+                    }
                 }
                 // If not, then don't do anything
             }
@@ -145,6 +155,7 @@ const bringToFront = (sprite) => {
 
 const checkIfDecorationFits = () => {
     // TODO: Change the offset by looking at the dragTarget's rotation or size
+    // TODO: Change so it matches the algorithm in obtainEmptyTiles
     // Finds the last tile the decoration would be attached to and checks if its on the map
     let lastMouseX = mouseCoords.x + (dragTarget.decoration.size.x - 1) * world.selectedGrid.tileSize.halfWidth;
     let lastMouseY = mouseCoords.y - (dragTarget.decoration.size.y - 1) * world.selectedGrid.tileSize.halfHeight;
@@ -155,24 +166,24 @@ const obtainEmptyTiles = (dragTarget) => {
     // Currently, checks the first tile and then the tiles behind it, up-right
     // TODO: Change the offset by looking at the dragTarget's rotation or size
     let tileList = [];
-    let tempPos = { ...mouseCoords };
+    let tempPos = world.selectedGrid.screenToMap(mouseCoords);
     // Check if each tile is empty
     for (let j = 0; j < dragTarget.decoration.size.y; j++) {
         // Y
         for (let i = 0; i < dragTarget.decoration.size.x; i++) {
             // X
-            let currentTile = world.selectedGrid.getTile(tempPos);
+            let currentTile = world.selectedGrid.getTileByID(tempPos);
             // Only add empty tiles
             if (currentTile && currentTile.child == null) {
                 tileList.push(currentTile);
             }
             // Change in x
-            tempPos.x += world.selectedGrid.tileSize.halfWidth;
-            tempPos.y += world.selectedGrid.tileSize.halfHeight;
+            tempPos.x--;
         }
         // Change in y
-        tempPos.x = mouseCoords.x + world.selectedGrid.tileSize.halfWidth * (j + 1);
-        tempPos.y = mouseCoords.y - world.selectedGrid.tileSize.halfHeight * (j + 1);
+        tempPos.y--;
+        tempPos.x += dragTarget.decoration.size.x;
     }
+    // console.log(tileList);
     return tileList;
 }

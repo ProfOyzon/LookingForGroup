@@ -26,21 +26,21 @@ export class World{
         sprite.anchor.set(0.5);
         this.container.addChild(sprite);
         // Walls
-        this.rightWall = new IsometricWall({ size: { x: this.gridSize.rows, y: this.gridSize.columns }}); //  { x: this.gridSize.rows, y: this.gridSize.columns }
-        this.rightWall.createTiles(this.container);
-        this.rightWall.update();
+        // this.rightWall = new IsometricWall({ size: { x: this.gridSize.rows, y: this.gridSize.columns }}); //  { x: this.gridSize.rows, y: this.gridSize.columns }
+        // this.rightWall.createTiles(this.container);
+        // this.rightWall.update();
 
-        this.leftWall = new IsometricWall({ size: { x: this.gridSize.rows, y: this.gridSize.columns }}); //  { x: this.gridSize.rows, y: this.gridSize.columns }
-        this.leftWall.isLeft = true;
-        this.leftWall.createTiles(this.container);
-        this.leftWall.update();
+        // this.leftWall = new IsometricWall({ size: { x: this.gridSize.rows, y: this.gridSize.columns }}); //  { x: this.gridSize.rows, y: this.gridSize.columns }
+        // this.leftWall.isLeft = true;
+        // this.leftWall.createTiles(this.container);
+        // this.leftWall.update();
         
         // Floor
         this.grid = new IsometricGrid({ size: { x: this.gridSize.rows, y: this.gridSize.columns }}); // { x: this.gridSize.rows, y: this.gridSize.columns }
         this.grid.createTiles(this.container);
         this.grid.update();
         // Select the floor on default
-        this.selectedGrid = this.leftWall; // default = grid
+        this.selectedGrid = this.grid; // default = grid
         // Reposition Container
         this.container.position.x = app.screen.width / 2;
         this.container.position.y = app.screen.height / 2;
@@ -75,7 +75,7 @@ export class World{
         // console.log(value + " selected!");
     }
 
-    createDecorations = ({ count = 1, src = 'assets/images/isoTable.png', scale = 1 , size = {x:1,y:1}, anchor = 0.5, isWall = false}) => {
+    createDecorations = ({ count = 1, src = 'assets/images/isoTable.png', scale = 1 , size = {x:1,y:1}, anchor = 0.5, isWall = false, offset = 0}) => {
         // Will be removed with the slider to pull out the decorations
         for (let i = 0; i < count; i++) {
             let newDec = new Decoration(src, size);
@@ -83,6 +83,7 @@ export class World{
             newDec.sprite.scale.set(scale);
             newDec.sprite.anchor.set(anchor, 1); // Anchor notes: 1 = bottom, 1.2 for Halen's props
             newDec.isWall = isWall;
+            newDec.offset = offset;
             this.decorations.push(newDec);
             this.container.addChild(newDec.sprite);
         }

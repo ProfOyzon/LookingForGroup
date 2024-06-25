@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js';
 export class Decoration{
     constructor(src, size){
         this.sprite = drawSprite(src);
+        this.offset = 0;
         this.attachedTiles = [];
         this.size = size; // {x:1,y:1};
         this.isWall = false;
@@ -12,6 +13,7 @@ export class Decoration{
 
     removeTiles = () => {
         for(let tile of this.attachedTiles){
+            tile.container.visible = true;
             tile.removeDecoration();
         }
         this.attachedTiles = [];

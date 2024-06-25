@@ -2,7 +2,7 @@ import { Tags } from "../Tags";
 
 export const ProfileSkills = ({user}) => {
     return (
-        <section id = "skills">
+        <section className="profile-section" id = "profile-skills">
         <h2>Skills</h2>
         <div id = "proficiencies" className = "list">
         <h3>Proficiencies:</h3>

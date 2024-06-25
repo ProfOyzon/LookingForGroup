@@ -1,6 +1,6 @@
 export const ProfilePreferences = ({user}) => {
     return (
-        <section id = "preferences">
+        <section className="profile-section" id = "profile-preferences">
         <h2>Preferences</h2>
         <h3> Project Preferences:</h3>
         <p>{user.preferences.projectPreference}</p> 

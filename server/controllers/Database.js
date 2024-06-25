@@ -48,6 +48,11 @@ const signup = async (req, res) => {
     const username = `${req.body.username}`;
     const password1 = `${req.body.password}`;
     const password2 = `${req.body.password2}`;
+    const profilePicture = {
+        name: "default-profile",
+        data: null,
+        mimeType: null,
+    }
 
     // make sure that we recieved credentials
     if (!username || !password1 || !password2 || !email) {
@@ -75,13 +80,6 @@ const signup = async (req, res) => {
     }
 
     try {
-        // create a placeholder profile picture
-        const profilePicture = {
-            name: "default-profile",
-            data: null,
-            mimeType: null,
-        }
-
         // use the generateHash function in the Account model to encrypt the password
         const hash = await Account.generateHash(password1);
 
@@ -134,6 +132,16 @@ const updateAccount = async (req, res) => {
             skills: req.body.skills ? req.body.skills : null,
         }
 
+        // make sure that email is in the correct format
+        if (data.email && !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
+            return res.status(400).json({ error: 'Email does not match pattern' });
+        }
+
+        // make sure that the username is in the correct format
+        if (data.username && !/^[A-Za-z0-9_\-.]{1,16}$/.test(username)) {
+            return res.status(400).json({ error: 'Username does not match pattern' });
+        }
+
         // find and update the doc
         const result = await Account.findOneAndUpdate({ _id: req.session.account._id }, data, { new: true, runValidators: true });
         // push the change to the database
@@ -168,19 +176,19 @@ const createProject = async (req, res) => {
         return res.status(400).json({ error: 'Missing Title' });
     }
 
-    // this data represents what will be in the new project to start
-    projectData = {
-        title: req.body.title,
-        description: req.body.description ? req.body.description : "",
-        tags: req.body.tags ? req.body.tags : [],
-        members: [{
-            userID: req.session.account._id,
-            permissions: 'owner',
-            role: "",
-        }]
-    }
-
     try {
+        // this data represents what will be in the new project to start
+        projectData = {
+            title: req.body.title,
+            description: req.body.description ? req.body.description : "",
+            tags: req.body.tags ? req.body.tags : [],
+            members: [{
+                userID: req.session.account._id,
+                permissions: 'owner',
+                role: "",
+            }]
+        }
+
         // create a new project
         const newProject = new Project({ projectData });
         // push the new project to the database
@@ -382,7 +390,7 @@ const createComment = async (req, res) => {
 }
 
 const updateCommentByID = async (req, res) => {
-    // middleware makes sure user is author of comment 
+    // middleware makes sure user is logged in and is the author of the comment 
 
     if (!req.body.content) {
         return res.status(400).json({ error: 'Missing Content' });
@@ -502,6 +510,8 @@ const updateMessageByID = async (req, res) => {
 }
 
 const getMessageByID = async (req, res) => {
+    // middleware makes sure that the user is logged in, and has access to the message
+
     // makes sure that a messageID was given
     if (!req.body.messageID) {
         return res.status(400).json({ error: 'Missing messageID' });

@@ -1,7 +1,8 @@
 // Wilson Xia
 import * as PIXI from 'pixi.js';
-import { World } from './world';
-import * as EVENTS from './events';
+import { World } from './room/world';
+import * as EVENTS from './room/events';
+import { DecorationMenu } from './ui/decoration-menu.js';
 
 // DRAG RESOURCE
 //https://pixijs.com/8.x/examples/events/dragging
@@ -13,6 +14,16 @@ const init = async () => {
     // Set up the textures
     await loadTextures();
 
+    // Create the UI
+    let scrollBox = new DecorationMenu({
+        app: app,
+        parent: app.stage,
+        margins: 100,
+        height: 120,
+        padding: 6,
+        scrollMS: 150,
+        scrollCount: 6
+    });
     // Create new world
     world = new World({ rows: 6, columns: 6 });
     app.stage.addChild(world.container);

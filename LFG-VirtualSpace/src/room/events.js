@@ -1,5 +1,5 @@
 // Wilson Xia
-import { app, world } from './main';
+import { app, world } from '../main';
 
 const mouseCoords = { x: 0, y: 0 };
 let dragTarget = null;

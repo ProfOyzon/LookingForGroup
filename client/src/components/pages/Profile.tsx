@@ -15,12 +15,18 @@ const Profile = (props) => {
   return (
     <div className = "page">
       <ProfileHeader user={user}/>
-      <ProfilePreferences user={user}/>
-      <ProfileGallery/>
-      <ProfileLinks user={user}/>
-      <ProfileSkills user={user}/>
-      <ProfileEndorsements user={user}/>
-      <ProfileProjects/>
+      <div id="profile-page">
+        <div>
+          <ProfilePreferences user={user}/>
+          <ProfileGallery/>
+          <ProfileLinks user={user}/>
+        </div>
+        <div>
+          <ProfileSkills user={user}/>
+          <ProfileEndorsements user={user}/>
+          <ProfileProjects/>
+        </div>
+      </div>
     </div>
   );
 }

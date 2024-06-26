@@ -6,7 +6,7 @@ export const ProfileEndorsements = ({user}) => {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <section id = "endorsements">
+        <section className="profile-section" id = "profile-endorsements">
             <h2>Endorsements</h2>
             <div id = "tabList" className="list">
             <TabButton names = {getSkillNames(user.skills.filter(skill => skill.endorsed))} activeTab={activeTab} setActiveTab={setActiveTab}></TabButton>

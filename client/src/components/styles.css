@@ -79,17 +79,16 @@
     }
 }
 
-.discover-card:hover, .profile-card:hover .endorsement:hover{
+.discover-card:hover .endorsement:hover {
     transform: scale(1.05);
 }
 
-#discover-card-body, #profile-card-body {
+#discover-card-body {
     margin-left:10%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     grid-template-rows: 10% 50% 30% 10%;
-    /* align-items: center; */
     font-size: 0.8rem;
 }
 #message-card #discover-card-body {
@@ -97,11 +96,11 @@
     padding-bottom: 5%;
 }
 
-#discover-card-body > *, #profile-card-body > *{
+#discover-card-body > * {
     flex: 1;
 }
 
-#discover-card-profile-picture, #profile-card-profile-picture {
+#discover-card-profile-picture {
    width: 100%;
    border: 2px solid black;
    border-radius: 100%;
@@ -111,7 +110,7 @@
     margin-top: 15%;
 }
 
-#discover-card-name, #profile-card-name {
+#discover-card-name {
     text-align: center;
     margin-bottom: 0;
 }
@@ -119,24 +118,23 @@
     text-align: left;
 }
 
-#discover-card-name:hover, #profile-card-name:hover {
+#discover-card-name:hover {
     text-decoration: underline;
 }
 
-#discover-card-description, #profile-card-description {
+#discover-card-description {
     margin-top: 0;
     max-width: 450px;
-    /* overflow: hidden; */
 }
 
-#discover-card-tag-wrapper, #profile-card-tag-wrapper {
+#discover-card-tag-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     max-width: 450px;
 }
 
-#profile-card-pronouns {
+#discover-card-pronouns {
     margin-top: 0%;
     text-align: center;
 }
@@ -377,6 +375,31 @@
     cursor: pointer;
 }
 
+#profile-page{
+    width: 80%;
+    margin: 2% auto;
+    text-align: left;
+}
+
+#profile-header {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid black;
+    text-align: left;
+}
+
+#profile-header > * {
+    margin: auto 10%;
+}
+
+#profile-page {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+
+
+
 @media only screen and (max-width: 800px){
 
     #discover-button-wrapper {
@@ -429,7 +452,7 @@
     }
 }
 
-.list{
+.profile-list{
     display: flex;
     flex-flow: row wrap;
     gap: 8px;
@@ -437,6 +460,7 @@
 }
 
 /* Project page style rules */
+
 
 #project-page{
     padding: 0px 15px;

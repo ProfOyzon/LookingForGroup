@@ -15,6 +15,7 @@ export const setUpStageEvents = () => {
     app.stage.on('mousemove', (event) => {
         mouseCoords.x = event.global.x;
         mouseCoords.y = event.global.y;
+        // console.log(mouseCoords);
     });
     // app.stage.on('click', ()=>console.log(`mouse: ${mouseCoords.x}, ${mouseCoords.y}`));
     app.stage.on('pointerdown', () => {

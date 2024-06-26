@@ -9,7 +9,7 @@ export let app;
 const init = async () => {
     // initialize application
     app = new PIXI.Application();
-    await app.init({ backgroundColor: 0XFFFFFF, resizeTo: window });
+    await app.init({ backgroundColor: 'white', resizeTo: window });
     document.body.appendChild(app.canvas);
 
     // create space (container for everything)

@@ -20,12 +20,12 @@ export class DecorationMenu {
     constructor({app, parent, margins, height, padding, scrollMS, scrollCount}) {
         this.parent = parent;
         this.LEFT_RIGHT_MARGINS = margins;
-        this.MENU_WIDTH = parent.width;
-        this.SCROLL_BOX_HEIGHT = height;
-        this.SCROLL_BOX_WIDTH = this.MENU_WIDTH - (2 * this.LEFT_RIGHT_MARGINS);
-        this.FILTER_BAR_HEIGHT = height * 0.3;
         this.FILTER_BAR_TEXT_SIZE = 2;
+        this.FILTER_BAR_HEIGHT = height * 0.3;
+        this.MENU_WIDTH = app.screen.width; //parent.width;
         this.MENU_HEIGHT = height + this.FILTER_BAR_HEIGHT;
+        this.SCROLL_BOX_WIDTH = this.MENU_WIDTH - (2 * this.LEFT_RIGHT_MARGINS);
+        this.SCROLL_BOX_HEIGHT = height;
         this.ITEM_PADDING = padding;
         this.BUTTON_MOVE_MS = scrollMS;
         this.SCROLL_COUNT = scrollCount;
@@ -42,8 +42,8 @@ export class DecorationMenu {
 
         // container to hold this menu
         this.decorationMenuContainer = new Container({
-            x: 0,
-            y: this.parent.height - this.MENU_HEIGHT,
+            x: 0, // TODO: Make it work for any container, refer to world hierarchy
+            y: app.screen.height - this.MENU_HEIGHT, // parent.height
             width: this.MENU_WIDTH,
             height: this.MENU_HEIGHT,
         });

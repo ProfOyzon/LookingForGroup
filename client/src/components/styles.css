@@ -851,26 +851,70 @@ Project Post Page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
+#post-page-nav-buttons{
+    text-align:left;
+    margin:0 10px;
+    width:80px;
+}
+
 #post-header{
     display:flex;
     justify-content: center;
     gap: 30px;
+    align-items:center;
+}
+
+#post-header button{
+    height:32px;
+}
+
+#post-project-image{
+    width:64px;
+    height:64px;
 }
 
 /* Need to re-adjust height */
 #post-page-content{
     display:flex;
     justify-content:space-evenly;
+    flex-flow:wrap;
     height: 80%;
 }
 
 #post{
     display:grid;
     width:45%;
-    grid-template: 40px auto 40px / 4fr 1fr;
+    min-width: 500px;
+    grid-template: 40px auto 40px / auto 32px;
     grid-template-areas: 'name options'
                          'post post'
                          'info share';
+}
+
+#comments{
+    display:flex;
+    flex-direction:column;
+    width:45%;
+    min-width: 500px;
+}
+
+@media only screen and (max-width: 800px){
+    #post-page-content{
+        margin-bottom:50px;
+    }
+
+    #post{
+        min-width:0;
+        max-width:500px;
+        width:95%;
+    }
+
+    #comments{
+        min-width:0;
+        max-width:500px;
+        width:95%;
+        padding-bottom:60px;
+    }
 }
 
 #post-name{
@@ -893,25 +937,29 @@ Project Post Page style rules
     text-align:left;
 }
 
-#post-share{
-    grid-area:share;
+#post-author{
+    font-weight:600;
 }
 
-#comments{
-    display:flex;
-    flex-direction:column;
-    width:45%;
+#author-role{
+    color:var(--orange);
+    font-size:small;
+}
+
+#post-share{
+    grid-area:share;
 }
 
 #comments-content{
     border:1px solid grey;
     height:100%;
     padding:10px;
+    overflow-y:auto;
 }
 
 .post-comment{
     display:grid;
-    grid-template: 20px auto 20px auto / 50px auto 32px;
+    grid-template: 20px auto 20px auto / 50px auto 25px;
     grid-template-areas: 'profile header options'
                          'profile body like'
                          'profile reply reply'
@@ -920,12 +968,29 @@ Project Post Page style rules
     margin: 10px 0;
 }
 
+.post-comment button{
+    background-color:white;
+    color:black;
+    border:none;
+    cursor:pointer;
+}
+
+.post-comment button:hover{
+    background-color:#D0D0D0;
+}
+
 .comment-profile{
     grid-area:profile;
+    width:40px;
 }
 
 .comment-header{
     grid-area:header;
+    text-align:left;
+}
+
+.comment-date{
+    color:var(--orange);
 }
 
 .comment-options{
@@ -934,6 +999,7 @@ Project Post Page style rules
 
 .comment-content{
     grid-area:body;
+    text-align:left;
 }
 
 .comment-like{
@@ -942,10 +1008,13 @@ Project Post Page style rules
 
 .comment-reply{
     grid-area:reply;
+    text-align:left;
+    width: 100px;
 }
 
-.comment-reply-container{
+.comment-replies{
     grid-area:replies;
+    text-align:left;
 }
 
 #reply-content{

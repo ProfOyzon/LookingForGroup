@@ -1,7 +1,8 @@
 import "./pages.css";
 import "../styles.css";
+import profilePlaceholder from "../../img/profile-user.png";
 import { PostComment } from "../PostComment";
-import { projects, profiles, posts, comments } from "../../constants/fakeData";
+import { projects, profiles, posts } from "../../constants/fakeData";
 
 //List the post and project ids, used throughout component
 const postId = 0;
@@ -31,14 +32,17 @@ const PostReplies = (props) => {
 const ProjectPostPage = (props) => {
   return(
     <div className='page'>
-      <button>return</button>
-      <button>to project</button>
+      <div id='post-page-nav-buttons'>
+        <button className='white-button'>return</button>
+        <hr/>
+        <button className='white-button'>to project</button>
+      </div>
 
       <div id='post-header'>
-        <img src='' alt='project image'/>
+        <img id='post-project-image' src={profilePlaceholder} alt='project image'/>
         <h2 id='post-project-name'>{projects[projectId].name}</h2>
-        <button>Follow</button>
-        <button>...</button>
+        <button className='orange-button'>Follow</button>
+        <button className='white-button'>...</button>
       </div>
 
       <hr/>
@@ -54,7 +58,7 @@ const ProjectPostPage = (props) => {
 
           <div id='post-info'>
             <div>
-              Posted by: {profiles[posts[postId].author].name}
+              Posted by: <span id='post-author'>{profiles[posts[postId].author].name}</span>
               <span id='author-role'> {projects[projectId].members[posts[postId].author].role}</span>
             </div>
             <div>{posts[postId].createdDate}</div>

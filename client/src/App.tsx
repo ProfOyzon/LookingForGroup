@@ -10,6 +10,7 @@ import Project from "./components/pages/Project";
 import Settings from "./components/pages/Settings";
 import NotFound from "./components/pages/NotFound";
 import SideBar from "./components/Sidebar";
+import MessageHistory from './components/pages/MessageHistory';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path={paths.routes.PROJECT} element={<Project />}/>
           <Route path={paths.routes.SETTINGS} element={<Settings />} />
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
+          <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />}/>
         </Routes>
       </div>
     </BrowserRouter>

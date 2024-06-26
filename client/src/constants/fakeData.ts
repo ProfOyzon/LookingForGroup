@@ -382,14 +382,14 @@ export const messages = [
         senderID: 0,
         recipientID: 1,
         sentDate: "10/10/10",
-        messageConent: "hello",
+        messageContent: "hello",
     },
     {
         _id: 1,
         senderID: 1,
         recipientID: 0,
-        sentDate: "",
-        messageConent: "howdy",
+        sentDate: "1/1/1",
+        messageContent: "howdy",
     },
 ]
 

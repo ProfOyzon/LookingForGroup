@@ -25,6 +25,12 @@ export const projects = [
                 owner: false,
                 role: "Developer"
             },
+            {
+                userID: 3,
+                admin: true,
+                owner: false,
+                role: "Developer"
+            },
         ],
         description: "The bestest project yet!  I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! ",
         tags: ["Game Development", "Rouguelike", "FPS", "So Retro"],
@@ -47,19 +53,13 @@ export const projects = [
         name: "Rock Eater 9000",
         members: [
             {
-                userID: 0,
+                userID: 3,
                 admin: true,
                 owner: true,
                 role: "Project Lead"
             },
             {
                 userID: 1,
-                admin: true,
-                owner: false,
-                role: "Team Lead"
-            },
-            {
-                userID: 2,
                 admin: false,
                 owner: false,
                 role: "Developer"
@@ -83,7 +83,7 @@ export const projects = [
     },
     {
         _id: 2,
-        name: "A Cool Project!",
+        name: "Minerraria",
         members: [
             {
                 userID: 0,
@@ -92,59 +92,106 @@ export const projects = [
                 role: "Project Lead"
             },
             {
-                userID: 1,
+                userID: 2,
                 admin: true,
                 owner: false,
                 role: "Team Lead"
             },
             {
-                userID: 2,
+                userID: 3,
                 admin: false,
                 owner: false,
                 role: "Developer"
             },
         ],
-        description: "The bestest project yet!  I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! ",
-        tags: ["Game Development", "Rouguelike", "FPS", "So Retro"],
+        description: "An epic combination of Minecraft and Terraria. Better than both combined. Please dont sue me.",
+        tags: ["2.5D", "Sandbox", "Adventure", "So Retro"],
         neededRoles: [
             {
-                Role: "Game Developer",
+                Role: "Project Manager",
                 amount: 2,
-                description: "We are looking for game developers familiar with Unreal Engine 5",
+                description: "We are very disorganized",
             },
             {
-                Role: "Artist",
+                Role: "3D Artist",
                 amount: 3,
-                description: "We are looking for artists who know how to draw bees",
+                description: "We are looking for artists who know how to model creepers",
             }
         ],
         posts: [0, 1, 2]
     },
     {
         _id: 3,
-        name: "A Cool Project!",
+        name: "Wario Game",
+        members: [
+            {
+                userID: 1,
+                admin: true,
+                owner: true,
+                role: "Project Lead"
+            }
+        ],
+        description: "WAAAAAAAAAAAAAAH! Suck on that, Mario",
+        tags: ["Wah", "Waah", "Waaah", "Waaaah"],
+        neededRoles: [
+            {
+                Role: "Wario Lover",
+                amount: 2,
+                description: "wah",
+            },
+            {
+                Role: "Garlic Farmer",
+                amount: 3,
+                description: "We need more garlic",
+            }
+        ],
+        posts: [0, 1, 2]
+    },
+    {
+        _id: 4,
+        name: "Boring Project",
+        members: [
+            {
+                userID: 2,
+                admin: true,
+                owner: true,
+                role: "Project Lead"
+            }
+        ],
+        description: "Blah Blah Blah",
+        tags: ["Wah", "Waah", "Waaah", "Waaaah"],
+        neededRoles: [
+            {
+                Role: "Data Analyst",
+                amount: 2,
+                description: "Blah Blah Blah",
+            },
+            {
+                Role: "Productivity Specialist",
+                amount: 3,
+                description: "Blah Blah Blah",
+            },
+            {
+                Role: "Buisnessperson",
+                amount: 3,
+                description: "Blah Blah Blah",
+            }
+        ],
+        posts: [0, 1, 2]
+    },
+    {
+        _id: 5,
+        name: "Class Project",
         members: [
             {
                 userID: 0,
                 admin: true,
                 owner: true,
                 role: "Project Lead"
-            },
-            {
-                userID: 1,
-                admin: true,
-                owner: false,
-                role: "Team Lead"
-            },
-            {
-                userID: 2,
-                admin: false,
-                owner: false,
-                role: "Developer"
-            },
+            }
         ],
-        description: "The bestest project yet!  I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! ",
-        tags: ["Game Development", "Rouguelike", "FPS", "So Retro"],
+        description: "Hey guys I need help on my class project I want an A",
+        tags: ["Class Project"],
         neededRoles: [
             {
                 Role: "Game Developer",
@@ -154,7 +201,7 @@ export const projects = [
             {
                 Role: "Artist",
                 amount: 3,
-                description: "We are looking for artists who know how to draw bees",
+                description: "We are looking for artists who know how to draw my classmates",
             }
         ],
         posts: [0, 1, 2]
@@ -259,7 +306,7 @@ export const profiles = [
             data: "",
             mimeType: "",
         },
-        projects: [0, 1, 2],
+        projects: [0, 2, 5],
         links: [
             {text: "discord", url: "https://www.discord.com/"},
             {text: "twitter", url: "https://www.twitter.com/"},
@@ -280,7 +327,7 @@ export const profiles = [
         messages: [0, 1],
         skills: [
             {
-                skill: softSkills[5],
+                skill: softSkills[0],
                 type: "softSkill",
                 endorsed: false,
                 higlighted: true,
@@ -289,21 +336,77 @@ export const profiles = [
             {
                 skill: softSkills[1],
                 type: "softSkill",
-                endorsed: false,
-                higlighted: true,
-                endorsements: []
-            },
-            {
-                skill: softSkills[3],
-                type: "softSkill",
-                endorsed: false,
-                higlighted: true,
-                endorsements: []
-            },
-            {
-                skill: softSkills[0],
-                type: "softSkill",
                 endorsed: true,
+                higlighted: true,
+                endorsements: [ 
+                    {   endorsement: "The best WAAH-er around",
+                        endorser: "Waluigi",
+                        endorseProject:"Cool Project"
+                    }
+                ]
+            },
+            {
+                skill: softSkills[7],
+                type: "softSkill",
+                endorsed: false,
+                higlighted: false,
+                endorsements: [
+                    {   endorsement: "smells like garlic",
+                        endorser: "Mario",
+                        endorseProject:"Boring Project"
+                    }
+                ]
+            },
+            {
+                skill: softSkills[18],
+                type: "softSkill",
+                endorsed: false,
+                higlighted: false,
+                endorsements: []
+            },
+            {
+                skill: hardSkills[6],
+                type: "hardSkill",
+                endorsed: false,
+                higlighted: true,
+                endorsements: [
+                    {   endorsement: "blblblblblblblblblb",
+                        endorser: "Yoshi",
+                        endorseProject:"Mushroom Project"
+                    }
+                ]
+            },
+            {
+                skill: hardSkills[4],
+                type: "hardSkill",
+                endorsed: false,
+                higlighted: false,
+                endorsements: []
+            },
+            {
+                skill: proficiencies[8],
+                type: "proficiency",
+                endorsed: false,
+                higlighted: false,
+                endorsements: []
+            },
+            {
+                skill: proficiencies[6],
+                type: "proficiency",
+                endorsed: true,
+                higlighted: false,
+                endorsements: [ 
+                    {
+                        endorsement: "killed my brother",
+                        endorser: "luigi",
+                        endorseProject:"Cool Project #2"
+                    }
+                ]
+            },
+            {
+                skill: proficiencies[15],
+                type: "proficiency",
+                endorsed: false,
                 higlighted: false,
                 endorsements: []
             },
@@ -313,7 +416,7 @@ export const profiles = [
             data: "",
             mimeType: "",
         },
-        projects: [3, 4, 5],
+        projects: [0, 1, 3],
         links: [
             {text: "discord", url: "https://www.discord.com/"},
             {text: "twitter", url: "https://www.twitter.com/"},
@@ -341,24 +444,64 @@ export const profiles = [
                 endorsements: []
             },
             {
-                skill: softSkills[1],
+                skill: hardSkills[1],
+                type: "hardSkill",
+                endorsed: false,
+                higlighted: true,
+                endorsements: []
+            },
+            {
+                skill: proficiencies[2],
+                type: "proficiency",
+                endorsed: false,
+                higlighted: true,
+                endorsements: []
+            },
+        ],
+        profilePicture: {
+            name: "image1",
+            data: "",
+            mimeType: "",
+        },
+        projects: [0, 2, 4],
+        links: [
+            {text: "discord", url: "https://www.discord.com/"},
+            {text: "twitter", url: "https://www.twitter.com/"},
+            {text: "itch.io", url: "https://www.itch.io.com/"}
+        ],
+    },
+    {
+        _id: 3,
+        name: "Bob the Builder",
+        username: "ILoveBuilding",
+        pronouns: ["He", "They"],
+        bio: "Bob the Builder is a British animated children's television series created by Keith Chapman for HIT Entertainment and Hot Animation. The series follows the adventures of Bob, a general contractor, specialising in masonry, along with his colleague Wendy, various neighbours, and friends, and equipment, and their gang of anthropomorphised work-vehicles, Scoop, Muck, Dizzy, Roley, Lofty and many others. The series ran from 12 April 1999 to 31 December 20",
+        preferences: {
+            projectPreference: "Construction Games",
+            rolePreference: "Construction please",
+            availability: "All day"
+        },
+        messages: [],
+        skills: [
+            {
+                skill: softSkills[7],
                 type: "softSkill",
                 endorsed: false,
                 higlighted: true,
                 endorsements: []
             },
             {
-                skill: softSkills[2],
-                type: "softSkill",
+                skill: hardSkills[3],
+                type: "hardSkill",
                 endorsed: false,
                 higlighted: true,
                 endorsements: []
             },
             {
-                skill: softSkills[3],
-                type: "softSkill",
-                endorsed: true,
-                higlighted: false,
+                skill: proficiencies[8],
+                type: "proficiency",
+                endorsed: false,
+                higlighted: true,
                 endorsements: []
             },
         ],
@@ -398,8 +541,8 @@ export const posts = [
         _id: 0,
         author: 0,
         createdDate: "sample date",
-        title: "A great post",
-        postText: "hello",
+        title: "A cool post",
+        postText: "welcome to the coolest project of all time",
         postImage: {
             name: "image1",
             data: "",
@@ -411,8 +554,8 @@ export const posts = [
         _id: 1,
         author: 0,
         createdDate: "sample date",
-        title: "The bestest post",
-        postText: "Wassup",
+        title: "a cooler post",
+        postText: "development is going great! our team rocks",
         postImage: {
             name: "image1",
             data: "",
@@ -424,8 +567,34 @@ export const posts = [
         _id: 2,
         author: 1,
         createdDate: "sample date",
-        title: "A prettttty cooool project!",
-        postText: "Yoooo!",
+        title: "help",
+        postText: "can you go to the hospital from eating rocks",
+        postImage: {
+            name: "image1",
+            data: "",
+            mimeType: "",
+        },
+        comments: [],
+    },
+    {
+        _id: 3,
+        author: 1,
+        createdDate: "sample date",
+        title: "WAAH",
+        postText: "wah",
+        postImage: {
+            name: "image1",
+            data: "",
+            mimeType: "",
+        },
+        comments: [],
+    },
+    {
+        _id: 4,
+        author: 0,
+        createdDate: "sample date",
+        title: "guys please join",
+        postText: "i'm going to fail",
         postImage: {
             name: "image1",
             data: "",

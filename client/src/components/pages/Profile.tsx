@@ -24,7 +24,7 @@ const Profile = (props) => {
         <div>
           <ProfileSkills user={user}/>
           <ProfileEndorsements user={user}/>
-          <ProfileProjects/>
+          <ProfileProjects user={user}/>
         </div>
       </div>
     </div>

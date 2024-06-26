@@ -18,6 +18,11 @@ const MyProjects = () => {
                     })
                 }
             </select>
+            <button id="create-proj-btn" className="orange-button" onClick={
+                () => {
+                    // Move to project creation page
+                }
+            }>Create</button>
             <MyProjectsDisplay userID={UID} />
         </div>
     );

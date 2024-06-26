@@ -236,12 +236,12 @@ export const profiles = [
                 higlighted: true,
                 endorsements: [ 
                     {   endorsement: "hes really good at it",
-                        endorser: "Wario Wario",
-                        endorseProject:"Cool Project"
+                        endorserID: "1",
+                        endorseProjectID:"0"
                     },
                     {   endorsement: "his greatest skill",
-                        endorser: "Jane Doe",
-                        endorseProject:"Boring Project"
+                        endorserID: "2",
+                        endorseProjectID:"2"
                     }
                 ]
             },
@@ -288,8 +288,8 @@ export const profiles = [
                 endorsements: [ 
                     {
                         endorsement: "he saved our project",
-                        endorser: "Bob the Builder",
-                        endorseProject:"Cool Project #2"
+                        endorserID: "3",
+                        endorseProjectID:"2"
                     }
                 ]
             },
@@ -340,8 +340,8 @@ export const profiles = [
                 higlighted: true,
                 endorsements: [ 
                     {   endorsement: "The best WAAH-er around",
-                        endorser: "Waluigi",
-                        endorseProject:"Cool Project"
+                        endorserID: "0",
+                        endorseProjectID:"0"
                     }
                 ]
             },
@@ -352,8 +352,8 @@ export const profiles = [
                 higlighted: false,
                 endorsements: [
                     {   endorsement: "smells like garlic",
-                        endorser: "Mario",
-                        endorseProject:"Boring Project"
+                        endorser: "3",
+                        endorseProject:"1"
                     }
                 ]
             },
@@ -370,9 +370,9 @@ export const profiles = [
                 endorsed: false,
                 higlighted: true,
                 endorsements: [
-                    {   endorsement: "blblblblblblblblblb",
-                        endorser: "Yoshi",
-                        endorseProject:"Mushroom Project"
+                    {   endorsement: "she's cool",
+                        endorser: "0",
+                        endorseProject:"3"
                     }
                 ]
             },
@@ -397,9 +397,9 @@ export const profiles = [
                 higlighted: false,
                 endorsements: [ 
                     {
-                        endorsement: "killed my brother",
-                        endorser: "luigi",
-                        endorseProject:"Cool Project #2"
+                        endorsement: "waa'd all over thos guys",
+                        endorserID: "2",
+                        endorseProjectID:"0"
                     }
                 ]
             },
@@ -533,6 +533,48 @@ export const messages = [
         recipientID: 0,
         sentDate: "1/1/1",
         messageContent: "howdy",
+    },
+    {
+        _id: 2,
+        senderID: 1,
+        recipientID: 0,
+        sentDate: "2/2/2",
+        messageContent: "wah amirite",
+    },
+    {
+        _id: 3,
+        senderID: 1,
+        recipientID: 2,
+        sentDate: "1/1/1",
+        messageContent: "hey princess",
+    },
+    {
+        _id: 4,
+        senderID: 2,
+        recipientID: 1,
+        sentDate: "1/1/1",
+        messageContent: "leave me alone",
+    },
+    {
+        _id: 3,
+        senderID: 3,
+        recipientID: 0,
+        sentDate: "1/1/1",
+        messageContent: "i LOVE building",
+    },
+    {
+        _id: 3,
+        senderID: 3,
+        recipientID: 1,
+        sentDate: "1/1/1",
+        messageContent: "i LOVE building",
+    },
+    {
+        _id: 3,
+        senderID: 3,
+        recipientID: 2,
+        sentDate: "1/1/1",
+        messageContent: "i LOVE building",
     },
 ]
 

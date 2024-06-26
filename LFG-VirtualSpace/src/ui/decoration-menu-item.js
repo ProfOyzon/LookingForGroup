@@ -4,6 +4,7 @@ import { Button } from "@pixi/ui";
 export class DecorationMenuItem {
     constructor({textureUrl, sideLength, padding, colors}) {
         this.colors = colors;
+        this.texture = textureUrl;
 
         let squareSide = sideLength - (padding * 2);
         let container = new Container({
@@ -17,7 +18,7 @@ export class DecorationMenuItem {
         container.addChild(this.background);
 
         let sprite = new Sprite({
-            texture: textureUrl,
+            texture: this.texture,
             x: padding,
             y: padding,
             width: squareSide,
@@ -32,8 +33,8 @@ export class DecorationMenuItem {
         this.menuItem = container;
     }
 
-    onClick = () => {
-        console.log('click item');
+    onClick = (e) => {
+        console.log(this.texture);
     }
 
     hover = () => {

@@ -19,8 +19,8 @@ export const setUpScrollBoxEvents = () => {
 
 export const onMouseUp = () => {
     mousedown = false;
-    console.log("mouse down = false");
-    console.log("-------------------------------------------");
+    // console.log("mouse down = false");
+    // console.log("-------------------------------------------");
 } 
 
 export const onDragStart = (event) => {
@@ -32,17 +32,17 @@ export const onDragStart = (event) => {
 
     // NOTE FOR TOMORROW TRY A SET TIMOUT TO DISTINGUISH BETWEEN CLICK AND DRAG
 
-    console.log('mouse down = true');
+    // console.log('mouse down = true');
     mousedown = true;
 
     dragTarget = event.target;
 
     setTimeout(() => {
         if (mousedown) {
-            console.log("dragging: " + dragTarget.name);
+            // console.log("dragging: " + dragTarget.name);
             if (dragTarget.name != "items_container") {
                 dragTarget = dragTarget.parent;
-                console.log("switching target: item to container");
+                // console.log("switching target: item to container");
             }
     
             localMouseStart = dragTarget.parent.toLocal(event.global, null);
@@ -51,9 +51,9 @@ export const onDragStart = (event) => {
 
             app.stage.on('pointermove', onDragMove);
         }
-        else {
-            console.log("click");
-        }
+        // else {
+        //     // console.log("click");
+        // }
     }, 50); 
 }
 
@@ -61,7 +61,7 @@ const onDragMove = (event) => {
     //console.log('entering onDragMove');
     if (dragTarget)
     {
-        console.log(dragTarget.width);
+        // console.log(dragTarget.width);
         const localMouseCurrent = dragTarget.parent.toLocal(event.global, null);
         const mouseDeltaX = -(localMouseStart.x - localMouseCurrent.x);
 

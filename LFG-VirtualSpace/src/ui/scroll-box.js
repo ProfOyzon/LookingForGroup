@@ -80,6 +80,6 @@ export class HorizontalScrollBox {
         this.itemsContainer.position.x = Math.max(projectedFinalPos, -this.maxDistance);
         this.itemsContainer.position.x = Math.min(this.itemsContainer.position.x, 0);
 
-        console.log(`start x: ${startX}, end x: ${this.itemsContainer.position.x}, maxDistance: ${this.maxDistance}`);
+        // console.log(`start x: ${startX}, end x: ${this.itemsContainer.position.x}, maxDistance: ${this.maxDistance}`);
     }
 }

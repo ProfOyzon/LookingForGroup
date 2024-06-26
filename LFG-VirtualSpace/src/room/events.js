@@ -1,5 +1,6 @@
 // Wilson Xia
-import { app, world } from '../main';
+import { app, world, decorationMenu } from '../main';
+import { isScrolling } from '../ui/scroll-box-events';
 
 const mouseCoords = { x: 0, y: 0 };
 let dragTarget = null;
@@ -24,7 +25,10 @@ export const setUpStageEvents = () => {
             dec.sprite.alpha = 1;
             dec.sprite.tint = "#ffffff";
         }
-        onPanStart();
+        // Check to see if we are outside the decoration menu slider
+        if(!decorationMenu.inSlider){ 
+            onPanStart();
+        }
     });
     app.stage.on('pointermove', onPanMove);
     app.stage.on('pointerup', () => {

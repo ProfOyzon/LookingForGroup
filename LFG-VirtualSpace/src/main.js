@@ -8,6 +8,7 @@ import { DecorationMenu } from './ui/decoration-menu.js';
 //https://pixijs.com/8.x/examples/events/dragging
 export let app;
 export let world;
+export let decorationMenu;
 
 const init = async () => {
     await loadPixiCanvas();
@@ -20,7 +21,7 @@ const init = async () => {
     world.setUpGrid(app);
 
     // Create the UI
-    let scrollBox = new DecorationMenu({
+    decorationMenu = new DecorationMenu({
         app: app,
         parent: app.stage,
         margins: 100,

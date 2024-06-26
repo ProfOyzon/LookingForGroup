@@ -3,10 +3,11 @@ import * as PIXI from 'pixi.js';
 export class Decoration {
     constructor(src, size) {
         this.sprite = drawSprite(src);
-        this.offset = 0;
         this.attachedTiles = [];
-        this.size = size; // {x:1,y:1};
         this.isWall = false;
+        // Display Properties
+        this.size = size; // {x:1,y:1};
+        this.offset = 0;
         // Attatch this info to the sprite
         this.sprite.decoration = this;
     }

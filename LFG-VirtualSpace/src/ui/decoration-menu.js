@@ -29,6 +29,7 @@ export class DecorationMenu {
         this.ITEM_PADDING = padding;
         this.BUTTON_MOVE_MS = scrollMS;
         this.SCROLL_COUNT = scrollCount;
+        this.inSlider = false;
 
         // Create this.moveTicker
         this.moveTicker = new Ticker();
@@ -46,11 +47,21 @@ export class DecorationMenu {
             y: app.screen.height - this.MENU_HEIGHT, // parent.height
             width: this.MENU_WIDTH,
             height: this.MENU_HEIGHT,
+            eventMode: 'static'
         });
 
         // background for entire menu
         let menuBackground = new Graphics().rect(0, 0, this.MENU_WIDTH, this.MENU_HEIGHT).fill(colors.BG_COLOR);
         this.decorationMenuContainer.addChild(menuBackground);
+        this.decorationMenuContainer.on('mouseover', ()=>{
+            // console.log('inside');
+            this.inSlider = true;
+        });
+        this.decorationMenuContainer.on('mouseout', ()=>{
+            // console.log('out');
+            this.inSlider = false;
+        });
+
     
         this.scrollBox = new HorizontalScrollBox({
             app: app,

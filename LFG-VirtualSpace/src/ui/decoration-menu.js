@@ -7,6 +7,7 @@ import { DecorationMenuItem } from "./decoration-menu-item.js";
 import { Button } from "@pixi/ui";
 
 const arrowTexture = await Assets.load('assets/images/ui/arrow.png');
+const trashcanTexture = await Assets.load('assets/images/ui/trashcan.png');
 
 const colors = {
     BG_COLOR: 0X393E40,
@@ -29,6 +30,7 @@ export class DecorationMenu {
         this.ITEM_PADDING = padding;
         this.BUTTON_MOVE_MS = scrollMS;
         this.SCROLL_COUNT = scrollCount;
+
         this.inSlider = false;
 
         // Create this.moveTicker
@@ -84,6 +86,8 @@ export class DecorationMenu {
         this.createClosePanelButton();
 
         this.loadScrollBoxTextures();
+
+        this.createDeleteUI();
 
         parent.addChild(this.decorationMenuContainer);
     }
@@ -299,6 +303,31 @@ export class DecorationMenu {
     
         this.menuOpen = !this.menuOpen;
     }
+
+    createDeleteUI = () => {
+        this.deleteOverlayUI = new Container({
+            width: this.MENU_WIDTH,
+            height: this.MENU_HEIGHT,
+            visible: false
+        });
+        let bg = new Graphics({alpha: 0.6}).rect(0,0,this.MENU_WIDTH,this.MENU_HEIGHT).fill(0x000000);
+        this.deleteOverlayUI.addChild(bg);
+        let trashcan = new Sprite({
+            texture: trashcanTexture,
+            anchor: 0.5,
+            x: this.MENU_WIDTH / 2,
+            y: this.MENU_HEIGHT / 2,
+            width: this.MENU_HEIGHT * 0.64,
+            height: this.MENU_HEIGHT * 0.64,
+            tint: colors.FORE_COLOR
+        });
+        this.deleteOverlayUI.addChild(trashcan);
+        this.decorationMenuContainer.addChild(this.deleteOverlayUI);
+    }
+
+    showDeleteUI = () => this.deleteOverlayUI.visible = true;
+
+    hideDeleteUI = () => this.deleteOverlayUI.visible = false;
 
     loadScrollBoxTextures = async () => {
         this.textures = [

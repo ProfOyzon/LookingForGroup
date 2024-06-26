@@ -1,6 +1,5 @@
 // Wilson Xia
 import { app, world, decorationMenu } from '../main';
-import { isScrolling } from '../ui/scroll-box-events';
 
 const mouseCoords = { x: 0, y: 0 };
 let dragTarget = null;
@@ -97,6 +96,15 @@ const onDragMove = (event) => {
         // Sets drag target to the location of the mouse
         // Takes the parent (its container) and moves it along the mouse
         dragTarget.parent.toLocal(event.global, null, dragTarget.position); // https://pixijs.download/v4.8.9/docs/PIXI.Container.html#toLocal
+        
+        // check if decoration has been dragged over top of decoration menu
+        console.log('decorationMenu.inSlider: ' + decorationMenu.inSlider);
+        if (decorationMenu.inSlider) {
+            decorationMenu.showDeleteUI();
+        }
+        else {
+            decorationMenu.hideDeleteUI();
+        }
     }
 }
 

@@ -8,12 +8,23 @@ import { ProfileLinks } from "../Profile/ProfileLinks";
 import { ProfileSkills } from "../Profile/ProfileSkills";
 import { ProfileEndorsements } from "../Profile/ProfileEndorsements";
 import { ProfileProjects } from "../Profile/ProfileProjects";
-
-const user = profiles[0];
+import { useState } from "react";
 
 const Profile = (props) => {
+  const [UID, setUID] = useState(profiles[0]._id);
+  const user = profiles[UID];
+  
   return (
     <div className = "page">
+      <select onChange = {e => {
+                setUID(Number(e.target.value));
+            }}>
+                {
+                    profiles.map(prof => {
+                        return <option value={prof._id}>{prof.username}</option>
+                    })
+                }
+            </select>
       <ProfileHeader user={user}/>
       <div id="profile-page">
         <div>

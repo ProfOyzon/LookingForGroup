@@ -11,7 +11,7 @@ const showRepliesToggle = (i) => {
     currentButton.classList.toggle('show');
   }
 }
-//id={'show-reply-set-' + i}
+
 //Figure out way to indent replies
 //Add function to 'show reply' buttons
 const CommentReplies = (props) => {
@@ -25,7 +25,7 @@ const CommentReplies = (props) => {
           {
             props.comment.replies.map(reply => {
               return(
-                <PostComment commentId={reply}/>
+                <PostComment commentId={reply} callback={props.callback}/>
               )
             })
           }
@@ -56,9 +56,9 @@ export const PostComment = (props) => {
       <button className='comment-options'>...</button>
       <button className='comment-like'><img src='' alt='heart'/></button>
 
-      <button className='comment-reply'>Reply</button>
+      <button className='comment-reply' onClick={() => props.callback(props.commentId)}>Reply</button>
 
-      <CommentReplies comment={comment}/>
+      <CommentReplies comment={comment} callback={props.callback}/>
     </div>
   )
 }

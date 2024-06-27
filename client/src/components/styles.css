@@ -899,9 +899,6 @@ Project Post Page style rules
 }
 
 @media only screen and (max-width: 800px){
-    #post-page-content{
-        margin-bottom:50px;
-    }
 
     #post{
         min-width:0;

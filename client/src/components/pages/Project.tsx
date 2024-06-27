@@ -232,7 +232,7 @@ const ProjectInfoMember = (props) => {
         <button id='edit-roles-button' className='white-button' onClick={editRoles}>Edit Roles</button>
       </div>
 
-      <PagePopup>
+      <PagePopup width={'80vw'} height={'80vh'}>
         <div id='settings-window-test'>
             <h1>Project Settings</h1>
             <div id='settings-tabs'>

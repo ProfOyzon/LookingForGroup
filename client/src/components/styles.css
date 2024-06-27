@@ -1132,11 +1132,11 @@ Page Popup style rules
 #popup-container{
     position: fixed;
     background-color: white;
-    width: 80vw;
-    height: 80vh;
+    max-width: 95vw;
+    max-height: 95vh;
     opacity: 100%;
-    top: 10vh;
-    left: 10vw;
+    /*top: 10vh;
+    left: 10vw;*/
     z-index: 1;
 }
 

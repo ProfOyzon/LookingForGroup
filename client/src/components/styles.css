@@ -1112,6 +1112,40 @@ Project Post Page style rules
     grid-area:submit;
 }
 
+/*
+/\/\/\/\/\/\/\/\/\/\/\
+-------------------------------------------------------
+Page Popup style rules
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#popup-cover{
+    position: fixed;
+    background-color: black;
+    opacity: 50%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#popup-container{
+    position: fixed;
+    background-color: white;
+    max-width: 95vw;
+    max-height: 95vh;
+    opacity: 100%;
+    /*top: 10vh;
+    left: 10vw;*/
+    z-index: 1;
+}
+
+#popup-close{
+    position:absolute;
+    top: 20px;
+    right: 20px;
+}
 
 /* 
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/

@@ -5,6 +5,7 @@ import { ProjectPost } from "../projectPageComponents/ProjectPost";
 import { ProjectMember } from "../projectPageComponents/ProjectMember";
 import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
+import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, profiles, posts } from "../../constants/fakeData";
 import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
@@ -100,16 +101,18 @@ const initSettings = () => {
 }
 
 //Opens or closes the settings window
-const accessSettings = () => {
+// !! No longer needed due to popup component, use openClosePopup instead !!
+/*const accessSettings = () => {
   document.getElementById('settings-cover').classList.toggle("show");
   document.getElementById('settings-window').classList.toggle("show");
-}
+}*/
 
 //Closes settings window, as well as saves changed settings
 const saveSettings = () => {
   console.log('Will also save current inputs to project data');
-  document.getElementById('settings-cover').classList.toggle("show");
-  document.getElementById('settings-window').classList.toggle("show");
+  /*document.getElementById('settings-cover').classList.toggle("show");
+  document.getElementById('settings-window').classList.toggle("show");*/
+  openClosePopup();
 }
 
 //Lets the user leave the project
@@ -200,7 +203,7 @@ const ProjectInfoMember = (props) => {
             <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
               <img id='more-options-button-img' src='elipses.png' alt="..."/></button>
             <div id='more-options-popup' className='hide'>
-              <button className='white-button' onClick={accessSettings}>Project Settings</button>
+              <button className='white-button' onClick={openClosePopup}>Project Settings</button>
               <button className='white-button' onClick={leaveProject}>Leave Project</button>
             </div>
           </div>
@@ -229,6 +232,28 @@ const ProjectInfoMember = (props) => {
         <button id='edit-roles-button' className='white-button' onClick={editRoles}>Edit Roles</button>
       </div>
 
+      <PagePopup>
+        <div id='settings-window-test'>
+            <h1>Project Settings</h1>
+            <div id='settings-tabs'>
+              <button id='general-tab' className='tab-selected' onClick={() => {changeTabs('general')}}>General</button>
+              <button id='member-tab' className='tab' onClick={() => {changeTabs('members')}}>Members</button>
+              <button id='delete-project' onClick={deleteCheck}>Delete Project</button>
+            </div>
+            <hr/>
+            <div id='settings-content'>
+            <GeneralSettings/>
+            </div>
+            <button id='settings-cancel' className='white-button' onClick={openClosePopup}>Cancel</button>
+            <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>
+        </div>
+      </PagePopup>
+      
+    </div>
+  )
+}
+
+/* 
       <div id='settings-cover' className='hide'/>
 
       <div id='settings-window' className='hide'>
@@ -246,9 +271,7 @@ const ProjectInfoMember = (props) => {
           <button id='settings-cancel' className='white-button' onClick={accessSettings}>Cancel</button>
           <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>
       </div>
-    </div>
-  )
-}
+*/
 
 const Project = (props) => {
   return (

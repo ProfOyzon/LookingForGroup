@@ -86,8 +86,22 @@ const requiresMessageSender = async (req, res, next) => {
     }
 
     // make sure that the user is the sender
-    if (comment.author !== req.session.account._id) {
+    if (message.senderID !== req.session.account._id) {
         return res.status(400).json({ error: 'User is not the sender of the message with ID: ' + req.body.messageID });
+    }
+    return next();
+};
+
+const requiresMessageAccess = async (req, res, next) => {
+    // Make sure this message exists
+    const message = await Message.findById(req.body.messageID);
+    if (!message) {
+        return res.status(400).json({ error: 'Invalid or Missing messageID' });
+    }
+
+    // make sure that the user is the sender or recipient
+    if (message.senderID !== req.session.account._id && message.recipientID !== req.session.account._id) {
+        return res.status(400).json({ error: 'User is not the sender or recipient of the message with ID: ' + req.body.messageID });
     }
     return next();
 };
@@ -118,3 +132,4 @@ module.exports.requiresProjectOwner = requiresProjectOwner;
 module.exports.requiresPostAuthor = requiresPostAuthor;
 module.exports.requiresCommentAuthor = requiresCommentAuthor;
 module.exports.requiresMessageSender = requiresMessageSender;
+module.exports.requiresMessageAccess = requiresMessageAccess;

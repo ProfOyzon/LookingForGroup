@@ -53,6 +53,13 @@ const PostSchema = new mongoose.Schema({
 
 // Converts a doc to something we can store in redis later on.
 PostSchema.statics.toAPI = (doc) => ({
+    author: doc.author,
+    projectID: doc.projectID,
+    title: doc.title,
+    textContent: doc.textContent,
+    imageContent: doc.imageContent,
+    replies: doc.replies,
+    createdDate: doc.createdDate,
     _id: doc._id,
 });
 

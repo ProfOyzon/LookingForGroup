@@ -19,9 +19,11 @@ export const MessageCard = ({ msg }) => {
         <div className="discover-card" id="message-card">
             <img src={profilePicture} id="discover-card-profile-picture" />
             <div id="discover-card-body">
-                <h2 id="discover-card-name">{sender.name}</h2>
+                <h2 id="discover-card-name" onClick={
+                    () => window.location.href="messageHistory"
+                }>{sender.name}</h2>
                 <div id="discover-card-description">
-                    <p>{msg.messageConent}</p>
+                    <p>{msg.messageContent}</p>
                     <p><i>{msg.sentDate}</i></p>
                 </div>
             </div>

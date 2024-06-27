@@ -38,6 +38,88 @@ const Settings = (props) => {
           <h5></h5>
           <button id="editAvatarBtn" onClick={() => { setShowAvatarModal(true); }}>Edit Avatar</button>
         </div>
+
+        <div className="setting-in-page">
+          <h5>Language</h5>
+          <select id="language-select">
+            <option value="english">English</option>
+            <option value="spanish">Spanish</option>
+            <option value="french">French</option>
+            <option value="german">German</option>
+          </select>
+        </div>
+
+        <div className="setting-in-page">
+          <h5>Notifications</h5>
+          <div className="row">
+            <p className='text'>All notifications</p>
+            <label className="switch">
+              <input type="checkbox" />
+              <span className="slider round"></span>
+            </label>
+          </div>
+        </div>
+        <div className='setting-in-page'>
+          <h5></h5>
+          <div className="column">
+            <div className="row">
+              <p className='text'>Messages</p>
+              <label className="switch">
+                <input type="checkbox" />
+                <span className="slider round"></span>
+              </label>
+            </div>
+            <div className="row">
+              <p className='text'>Tags/Mentions</p>
+              <label className="switch">
+                <input type="checkbox" />
+                <span className="slider round"></span>
+              </label>
+            </div>
+            <div className="row">
+              <p className='text'>Project Post Activity</p>
+              <label className="switch">
+                <input type="checkbox" />
+                <span className="slider round"></span>
+              </label>
+            </div>
+            <div className="row">
+              <p className='text'>Push Notifications</p>
+              <label className="switch">
+                <input type="checkbox" />
+                <span className="slider round"></span>
+              </label>
+            </div>
+            <div className="row">
+              <p className='text'>Desktop Notifications</p>
+              <label className="switch">
+                <input type="checkbox" />
+                <span className="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div className="setting-in-page">
+          <h5>Dark Mode</h5>
+          <label className="switch">
+            <input type="checkbox" />
+            <span className="slider round"></span>
+          </label>
+        </div>
+
+        <div className="setting-in-page">
+          <h5>Autoplay</h5>
+          <label className="switch">
+            <input type="checkbox" />
+            <span className="slider round"></span>
+          </label>
+        </div>
+
+        <div className="setting-in-page">
+          <h5>Volume</h5>
+        </div>
+
       </div>
 
       {/* account settings */}

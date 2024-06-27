@@ -469,7 +469,13 @@
     align-items: center;
 }
 
-/* Project page style rules */
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\
+-------------------------------------------------------
+Project page style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/
+*/
 
 
 #project-page {
@@ -800,7 +806,13 @@
     right: 50px;
 }
 
-/* project page general settings rules */
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+project page general settings rules
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
 
 #general-settings {
     display: grid;
@@ -835,7 +847,13 @@
     align-self: center;
 }
 
-/* project page member settings rules */
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+-------------------------------------------------------
+project page member settings rules
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
 
 #member-settings-list {
     height: 50vh;
@@ -894,4 +912,201 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
+}
+
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+Project Post Page style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+#post-page-nav-buttons{
+    text-align:left;
+    margin:0 10px;
+    width:80px;
+}
+
+#post-header{
+    display:flex;
+    justify-content: center;
+    gap: 30px;
+    align-items:center;
+}
+
+#post-header button{
+    height:32px;
+}
+
+#post-project-image{
+    width:64px;
+    height:64px;
+}
+
+/* Need to re-adjust height */
+#post-page-content{
+    display:flex;
+    justify-content:space-evenly;
+    flex-flow:wrap;
+    height: 80%;
+}
+
+#post{
+    display:grid;
+    width:45%;
+    min-width: 500px;
+    grid-template: 40px auto 40px / auto 32px;
+    grid-template-areas: 'name options'
+                         'post post'
+                         'info share';
+}
+
+#comments{
+    display:flex;
+    flex-direction:column;
+    width:45%;
+    min-width: 500px;
+}
+
+@media only screen and (max-width: 800px){
+
+    #post{
+        min-width:0;
+        max-width:500px;
+        width:95%;
+    }
+
+    #comments{
+        min-width:0;
+        max-width:500px;
+        width:95%;
+        padding-bottom:60px;
+    }
+}
+
+#post-name{
+    grid-area:name;
+    text-align:left;
+}
+
+#post-options{
+    grid-area:options;
+}
+
+#post-content{
+    grid-area:post;
+    border:1px solid grey;
+    margin: 10px;
+}
+
+#post-info{
+    grid-area:info;
+    text-align:left;
+}
+
+#post-author{
+    font-weight:600;
+}
+
+#author-role{
+    color:var(--orange);
+    font-size:small;
+}
+
+#post-share{
+    grid-area:share;
+}
+
+#comments-content{
+    border:1px solid grey;
+    height:100%;
+    padding:10px;
+    overflow-y:auto;
+}
+
+.post-comment{
+    display:grid;
+    grid-template: 20px auto 20px auto / 50px auto 25px;
+    grid-template-areas: 'profile header options'
+                         'profile body like'
+                         'profile reply reply'
+                         'profile replies replies'
+    ;
+    margin: 10px 0;
+}
+
+.post-comment button{
+    background-color:white;
+    color:black;
+    border:none;
+    cursor:pointer;
+}
+
+.post-comment button:hover{
+    background-color:#D0D0D0;
+}
+
+.comment-profile{
+    grid-area:profile;
+    width:40px;
+}
+
+.comment-header{
+    grid-area:header;
+    text-align:left;
+}
+
+.comment-date{
+    color:var(--orange);
+}
+
+.comment-options{
+    grid-area:options;
+}
+
+.comment-content{
+    grid-area:body;
+    text-align:left;
+}
+
+.comment-like{
+    grid-area:like;
+}
+
+.comment-reply{
+    grid-area:reply;
+    text-align:left;
+    width: 100px;
+}
+
+.comment-replies{
+    grid-area:replies;
+    text-align:left;
+}
+
+#reply-content{
+    display:grid;
+    grid-template: 1fr 2fr 1fr / 3fr 1fr;
+    grid-template-areas: 'prompt prompt'
+                         'input input'
+                         'buttons submit'
+}
+
+#reply-prompt{
+    grid-area:prompt;
+    text-align:left;
+}
+
+#reply-input{
+    grid-area:input;
+}
+
+#reply-attach-buttons{
+    grid-area:buttons;
+    text-align:left;
+}
+
+#reply-submit{
+    grid-area:submit;
 }

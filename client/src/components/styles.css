@@ -1,5 +1,5 @@
 :root {
-    --orange: #F76902;
+    --orange: #efefef;
     --orange-hover: #DE6B17;
 }
 
@@ -28,8 +28,9 @@
 }
 
 .notif-button-icon {
-    width: 4vw;
+    width: 40px;
     height: auto;
+    margin: 10px;
 }
 
 .notif-header {
@@ -301,7 +302,7 @@
 .SideBarContainer h1 {
     width: 220px;
     height: 5vh;
-    font-size: 2vw;
+    font-size: 24px;
 }
 
 .ProfileContainer {
@@ -1151,8 +1152,8 @@ Page Popup style rules
     z-index: 1;
 }
 
-#popup-close{
-    position:absolute;
+#popup-close {
+    position: absolute;
     top: 20px;
     right: 20px;
 }
@@ -1184,7 +1185,7 @@ button {
 .text {
     width: 180px;
     text-align: left;
-    margin-left: 30px;
+    /* margin-left: 30px; */
 }
 
 #language-select {
@@ -1197,10 +1198,20 @@ button {
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
+    /* border: 1px solid lightsalmon; */
     height: auto;
     margin-bottom: 200px;
-    overflow: visible;
+    /* https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#settings-page::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera*/
 }
 
 .settings-page-tabs {
@@ -1208,7 +1219,7 @@ button {
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
-
+    /* border: 1px solid lightgreen; */
     width: 80%;
     border-bottom: 2px solid black;
     margin: 20px 0;
@@ -1232,13 +1243,16 @@ button {
     flex-direction: column;
     width: 80%;
     gap: 18px;
+    /* border: 1px solid lightcoral; */
 }
 
 .setting-in-page {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    flex-wrap: wrap;
+    /* align-items: center; */
     width: 100%;
+    /* border: 1px solid lightblue; */
 }
 
 .settings-page-active-tab {
@@ -1246,9 +1260,23 @@ button {
 }
 
 .setting-in-page h3 {
-    margin-right: 10px;
-    width: 140px;
+    margin-right: 20px;
+    width: 200px;
     text-align: left;
+    /* border: 1px solid lightseagreen; */
+}
+
+.setting-in-page h3 span {
+    font-size: 14px;
+    font-weight: 400;
+    text-wrap: balance;
+}
+
+.setting-content {
+    margin: auto 0px;
+    padding: 5px;
+    /* border: 1px solid lightcoral; */
+
 }
 
 #editAvatarBtn {
@@ -1277,7 +1305,7 @@ button {
     width: 55px;
     height: 28px;
 
-    margin-left: 10px;
+    /* margin-left: 10px; */
 }
 
 /* Hide default HTML checkbox */
@@ -1304,7 +1332,7 @@ button {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #D0D0D0;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -1326,11 +1354,44 @@ input:checked+.slider {
 }
 
 input:focus+.slider {
-    box-shadow: 0 0 1px #efefef;
+    box-shadow: 0 0 1px #D0D0D0;
 }
 
 input:checked+.slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
+}
+
+.volumeSlider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 350px;
+    height: 10px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline: 2px solid white;
+    background: var(--orange);
+    cursor: pointer;
+}
+
+.volumeSlider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline: 2px solid white;
+    background: var(--orange);
+    cursor: pointer;
+}
+
+#setting-spacer {
+    height: 100px;
 }

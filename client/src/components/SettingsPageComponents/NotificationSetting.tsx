@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const  NotificationSettings = (props) => {
 
     return (
-        <div className='setting-in-page'>
+        <div className='setting-content'>
             <div className="column">
               <div className="row">
               <p className='text'>All notifications</p>

@@ -1,6 +1,8 @@
 import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
+import { useNavigate } from 'react-router-dom';
+import * as paths from "../../constants/routes";
 import { ProjectPost } from "../projectPageComponents/ProjectPost";
 import { ProjectMember } from "../projectPageComponents/ProjectMember";
 import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
@@ -44,7 +46,6 @@ let settingsRoot;
 //Returns user to the previous page they were viewing
 //Will require a reference to the page they were on before
 const previousPage = () => {
-  console.log('This will let the user return to the previous page');
   window.history.back();
 }
 
@@ -144,9 +145,10 @@ const changeTabs = (tab) => {
   }
 }
 
-//Opens an 'are you sure' window for deleting the project
-const deleteCheck = () => {
-  console.log("Doesn't immediately delete project, but leads to a 'are you sure' window");
+//Removes project from database and redirects user
+const deleteProject = (callback) => {
+  //Delete project from database
+  callback(paths.routes.MYPROJECTS);
 }
 
 // Displays for users that are not members of the project
@@ -191,6 +193,7 @@ const ProjectInfo = (props) => {
 
 //Displays for users that are members of the project
 const ProjectInfoMember = (props) => {
+  const navigate = useNavigate(); // Hook for navigation
   return (
     <div id='project-info-member'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
@@ -232,7 +235,7 @@ const ProjectInfoMember = (props) => {
         <button id='edit-roles-button' className='white-button' onClick={editRoles}>Edit Roles</button>
       </div>
 
-      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={1}>
+      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={2}>
         <div id='settings-window-test'>
             <h1>Project Settings</h1>
             <div id='settings-tabs'>
@@ -249,10 +252,12 @@ const ProjectInfoMember = (props) => {
         </div>
       </PagePopup>
 
-      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={2}>
-        <h3>Are you sure you want to delete this project?</h3>
-        <button>Cancel</button>
-        <button>DELETE</button>
+      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={3}>
+        <div id='project-delete-check'>
+          <h3>Are you sure you want to delete this project?</h3>
+          <button id='project-delete-cancel' onClick={() => openClosePopup(1)}>Cancel</button>
+          <button id='project-delete-final' onClick={() => deleteProject(navigate)}>DELETE</button>
+        </div>
       </PagePopup>
       
     </div>

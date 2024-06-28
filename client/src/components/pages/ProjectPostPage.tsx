@@ -1,6 +1,8 @@
 import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
+import { useNavigate } from 'react-router-dom';
+import * as paths from "../../constants/routes";
 import { PostComment } from "../PostComment";
 import { projects, profiles, posts, comments } from "../../constants/fakeData";
 
@@ -59,12 +61,13 @@ const PostReplies = (props) => {
 }
 
 const ProjectPostPage = (props) => {
+  const navigate = useNavigate();
   return(
     <div className='page'>
       <div id='post-page-nav-buttons'>
-        <button className='white-button'>return</button>
+        <button className='white-button' onClick={() => window.history.back()}>return</button>
         <hr/>
-        <button className='white-button'>to project</button>
+        <button className='white-button' onClick={() => navigate(paths.routes.PROJECT)}>to project</button>
       </div>
 
       <div id='post-header'>

@@ -786,6 +786,32 @@ Project page style rules
     border: 2px solid red;
 }
 
+#project-delete-check{
+    padding: 10px 0;
+}
+
+#project-delete-cancel{
+    position:absolute;
+    bottom:10px;
+    left:10px;
+    height:30px;
+}
+
+#project-delete-final{
+    position:absolute;
+    bottom:10px;
+    right:10px;
+    background-color:red;
+    color:white;
+    height:30px;
+    border:none;
+}
+
+#project-delete-final:hover{
+    background-color:#af0000;
+    color:#a0a0a0
+}
+
 #settings-content {
     margin: 0 15%;
 }
@@ -1096,8 +1122,10 @@ Project Post Page style rules
 }
 
 #reply-prompt {
+    display: flex;
     grid-area: prompt;
-    text-align: left;
+    flex-direction:row;
+    gap:10px;
 }
 
 #reply-input {
@@ -1149,13 +1177,12 @@ Page Popup style rules
     opacity: 100%;
     /*top: 10vh;
     left: 10vw;*/
-    z-index: 1;
 }
 
 #popup-close {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
 }
 
 /* 

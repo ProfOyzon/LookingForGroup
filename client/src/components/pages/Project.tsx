@@ -1,10 +1,13 @@
 import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
+import { useNavigate } from 'react-router-dom';
+import * as paths from "../../constants/routes";
 import { ProjectPost } from "../projectPageComponents/ProjectPost";
 import { ProjectMember } from "../projectPageComponents/ProjectMember";
 import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
+import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, profiles, posts } from "../../constants/fakeData";
 import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
@@ -43,7 +46,6 @@ let settingsRoot;
 //Returns user to the previous page they were viewing
 //Will require a reference to the page they were on before
 const previousPage = () => {
-  console.log('This will let the user return to the previous page');
   window.history.back();
 }
 
@@ -100,16 +102,18 @@ const initSettings = () => {
 }
 
 //Opens or closes the settings window
-const accessSettings = () => {
+// !! No longer needed due to popup component, use openClosePopup instead !!
+/*const accessSettings = () => {
   document.getElementById('settings-cover').classList.toggle("show");
   document.getElementById('settings-window').classList.toggle("show");
-}
+}*/
 
 //Closes settings window, as well as saves changed settings
 const saveSettings = () => {
   console.log('Will also save current inputs to project data');
-  document.getElementById('settings-cover').classList.toggle("show");
-  document.getElementById('settings-window').classList.toggle("show");
+  /*document.getElementById('settings-cover').classList.toggle("show");
+  document.getElementById('settings-window').classList.toggle("show");*/
+  openClosePopup(0);
 }
 
 //Lets the user leave the project
@@ -141,9 +145,10 @@ const changeTabs = (tab) => {
   }
 }
 
-//Opens an 'are you sure' window for deleting the project
-const deleteCheck = () => {
-  console.log("Doesn't immediately delete project, but leads to a 'are you sure' window");
+//Removes project from database and redirects user
+const deleteProject = (callback) => {
+  //Delete project from database
+  callback(paths.routes.MYPROJECTS);
 }
 
 // Displays for users that are not members of the project
@@ -188,6 +193,7 @@ const ProjectInfo = (props) => {
 
 //Displays for users that are members of the project
 const ProjectInfoMember = (props) => {
+  const navigate = useNavigate(); // Hook for navigation
   return (
     <div id='project-info-member'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
@@ -200,7 +206,7 @@ const ProjectInfoMember = (props) => {
             <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
               <img id='more-options-button-img' src='elipses.png' alt="..."/></button>
             <div id='more-options-popup' className='hide'>
-              <button className='white-button' onClick={accessSettings}>Project Settings</button>
+              <button className='white-button' onClick={() => openClosePopup(0)}>Project Settings</button>
               <button className='white-button' onClick={leaveProject}>Leave Project</button>
             </div>
           </div>
@@ -229,6 +235,36 @@ const ProjectInfoMember = (props) => {
         <button id='edit-roles-button' className='white-button' onClick={editRoles}>Edit Roles</button>
       </div>
 
+      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={2}>
+        <div id='settings-window-test'>
+            <h1>Project Settings</h1>
+            <div id='settings-tabs'>
+              <button id='general-tab' className='tab-selected' onClick={() => {changeTabs('general')}}>General</button>
+              <button id='member-tab' className='tab' onClick={() => {changeTabs('members')}}>Members</button>
+              <button id='delete-project' onClick={() => openClosePopup(1)}>Delete Project</button>
+            </div>
+            <hr/>
+            <div id='settings-content'>
+            <GeneralSettings/>
+            </div>
+            <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(0)}>Cancel</button>
+            <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>
+        </div>
+      </PagePopup>
+
+      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={3}>
+        <div id='project-delete-check'>
+          <h3>Are you sure you want to delete this project?</h3>
+          <button id='project-delete-cancel' onClick={() => openClosePopup(1)}>Cancel</button>
+          <button id='project-delete-final' onClick={() => deleteProject(navigate)}>DELETE</button>
+        </div>
+      </PagePopup>
+      
+    </div>
+  )
+}
+
+/* 
       <div id='settings-cover' className='hide'/>
 
       <div id='settings-window' className='hide'>
@@ -246,9 +282,7 @@ const ProjectInfoMember = (props) => {
           <button id='settings-cancel' className='white-button' onClick={accessSettings}>Cancel</button>
           <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>
       </div>
-    </div>
-  )
-}
+*/
 
 const Project = (props) => {
   return (

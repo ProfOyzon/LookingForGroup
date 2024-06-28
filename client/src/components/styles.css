@@ -1,5 +1,5 @@
 :root {
-    --orange: #F76902;
+    --orange: #efefef;
     --orange-hover: #DE6B17;
 }
 
@@ -28,8 +28,9 @@
 }
 
 .notif-button-icon {
-    width: 4vw;
+    width: 40px;
     height: auto;
+    margin: 10px;
 }
 
 .notif-header {
@@ -193,7 +194,7 @@
     font-size: 30px;
 }
 
-.discover-button, .tab-button{
+.discover-button{
     border-radius: 10px;
     border: 2px solid var(--orange);
     font-size: 1.5vw;
@@ -201,6 +202,18 @@
     padding: 0.6vw;
     margin: 1vw;
     cursor: pointer;
+}
+
+.tab-button{
+    border: 2px solid lightseagreen;
+    border-radius: 5px;
+    text-align: center;
+    padding: .5vw;
+    background-color: white;
+}
+
+.active{
+    background-color: lightblue;
 }
 
 .discover-main-content {
@@ -301,7 +314,7 @@
 .SideBarContainer h1 {
     width: 220px;
     height: 5vh;
-    font-size: 2vw;
+    font-size: 24px;
 }
 
 .ProfileContainer {
@@ -372,6 +385,7 @@
     height: 40px;
     font-size: 18px;
     border: none;
+    border-radius: 50px;
     outline: solid var(--orange) 2px;
     font-weight: 900;
 }
@@ -469,7 +483,13 @@
     align-items: center;
 }
 
-/* Project page style rules */
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\
+-------------------------------------------------------
+Project page style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/
+*/
 
 
 #project-page {
@@ -778,6 +798,32 @@
     border: 2px solid red;
 }
 
+#project-delete-check{
+    padding: 10px 0;
+}
+
+#project-delete-cancel{
+    position:absolute;
+    bottom:10px;
+    left:10px;
+    height:30px;
+}
+
+#project-delete-final{
+    position:absolute;
+    bottom:10px;
+    right:10px;
+    background-color:red;
+    color:white;
+    height:30px;
+    border:none;
+}
+
+#project-delete-final:hover{
+    background-color:#af0000;
+    color:#a0a0a0
+}
+
 #settings-content {
     margin: 0 15%;
 }
@@ -800,7 +846,13 @@
     right: 50px;
 }
 
-/* project page general settings rules */
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+project page general settings rules
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
 
 #general-settings {
     display: grid;
@@ -835,7 +887,13 @@
     align-self: center;
 }
 
-/* project page member settings rules */
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+-------------------------------------------------------
+project page member settings rules
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
 
 #member-settings-list {
     height: 50vh;
@@ -890,4 +948,485 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
+}
+
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+Project Post Page style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+#post-page-nav-buttons {
+    text-align: left;
+    margin: 0 10px;
+    width: 80px;
+}
+
+#post-header {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+}
+
+#post-header button {
+    height: 32px;
+}
+
+#post-project-image {
+    width: 64px;
+    height: 64px;
+}
+
+/* Need to re-adjust height */
+#post-page-content {
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: wrap;
+    height: 80%;
+}
+
+#post {
+    display: grid;
+    width: 45%;
+    min-width: 500px;
+    grid-template: 40px auto 40px / auto 32px;
+    grid-template-areas: 'name options'
+        'post post'
+        'info share';
+}
+
+#comments {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    min-width: 500px;
+}
+
+@media only screen and (max-width: 800px) {
+
+    #post {
+        min-width: 0;
+        max-width: 500px;
+        width: 95%;
+    }
+
+    #comments {
+        min-width: 0;
+        max-width: 500px;
+        width: 95%;
+        padding-bottom: 60px;
+    }
+}
+
+#post-name {
+    grid-area: name;
+    text-align: left;
+}
+
+#post-options {
+    grid-area: options;
+}
+
+#post-content {
+    grid-area: post;
+    border: 1px solid grey;
+    margin: 10px;
+}
+
+#post-info {
+    grid-area: info;
+    text-align: left;
+}
+
+#post-author {
+    font-weight: 600;
+}
+
+#author-role {
+    color: var(--orange);
+    font-size: small;
+}
+
+#post-share {
+    grid-area: share;
+}
+
+#comments-content {
+    border: 1px solid grey;
+    height: 100%;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.post-comment {
+    display: grid;
+    grid-template: 20px auto 20px auto / 50px auto 25px;
+    grid-template-areas: 'profile header options'
+        'profile body like'
+        'profile reply reply'
+        'profile replies replies'
+    ;
+    margin: 10px 0;
+}
+
+.post-comment button {
+    background-color: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+
+.post-comment button:hover {
+    background-color: #D0D0D0;
+}
+
+.comment-profile {
+    grid-area: profile;
+    width: 40px;
+}
+
+.comment-header {
+    grid-area: header;
+    text-align: left;
+}
+
+.comment-date {
+    color: var(--orange);
+}
+
+.comment-options {
+    grid-area: options;
+}
+
+.comment-content {
+    grid-area: body;
+    text-align: left;
+}
+
+.comment-like {
+    grid-area: like;
+}
+
+.comment-reply {
+    grid-area: reply;
+    text-align: left;
+    width: 100px;
+}
+
+.comment-replies {
+    grid-area: replies;
+    text-align: left;
+}
+
+#reply-content {
+    display: grid;
+    grid-template: 1fr 2fr 1fr / 3fr 1fr;
+    grid-template-areas: 'prompt prompt'
+        'input input'
+        'buttons submit'
+}
+
+#reply-prompt {
+    display: flex;
+    grid-area: prompt;
+    flex-direction:row;
+    gap:10px;
+}
+
+#reply-input {
+    grid-area: input;
+}
+
+#reply-attach-buttons {
+    grid-area: buttons;
+    text-align: left;
+}
+
+#reply-submit {
+    grid-area: submit;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\
+-------------------------------------------------------
+Page Popup style rules
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+.popup-cover-hide{
+    display:none;
+}
+
+.popup-hide{
+    display:none;
+}
+
+.popup-cover-show{
+    display:block;
+    position: fixed;
+    background-color: black;
+    opacity: 50%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.popup-show{
+    display:block;
+    position: fixed;
+    background-color: white;
+    max-width: 95vw;
+    max-height: 95vh;
+    opacity: 100%;
+    /*top: 10vh;
+    left: 10vw;*/
+}
+
+#popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+Settings Page style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+button {
+    cursor: pointer;
+    transition: .2s;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.text {
+    width: 180px;
+    text-align: left;
+    /* margin-left: 30px; */
+}
+
+#language-select {
+    width: 200px;
+    height: 40px;
+    padding: 5px 10px;
+}
+
+#settings-page {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    /* border: 1px solid lightsalmon; */
+    height: auto;
+    margin-bottom: 200px;
+    /* https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#settings-page::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera*/
+}
+
+.settings-page-tabs {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    /* border: 1px solid lightgreen; */
+    width: 80%;
+    border-bottom: 2px solid black;
+    margin: 20px 0;
+}
+
+.settings-page-tab-links {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 90px;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.settings-page-tab-links.settings-page-active-link {
+    font-weight: 700;
+}
+
+.settings-page-tab-contents {
+    display: none;
+    flex-direction: column;
+    width: 80%;
+    gap: 18px;
+    /* border: 1px solid lightcoral; */
+}
+
+.setting-in-page {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* align-items: center; */
+    width: 100%;
+    /* border: 1px solid lightblue; */
+}
+
+.settings-page-active-tab {
+    display: flex;
+}
+
+.setting-in-page h3 {
+    margin-right: 20px;
+    width: 200px;
+    text-align: left;
+    /* border: 1px solid lightseagreen; */
+}
+
+.setting-in-page h3 span {
+    font-size: 14px;
+    font-weight: 400;
+    text-wrap: balance;
+}
+
+.setting-content {
+    margin: auto 0px;
+    padding: 5px;
+    /* border: 1px solid lightcoral; */
+
+}
+
+#editAvatarBtn {
+    width: 130px;
+    height: 40px;
+    background-color: white;
+    color: var(--orange);
+    border: 2px solid var(--orange);
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+#editAvatarBtn:hover {
+    background-color: var(--orange);
+    color: white;
+    transition: .2s;
+}
+
+/* From: https://www.w3schools.com/howto/howto_css_switch.asp */
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 28px;
+
+    /* margin-left: 10px; */
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* The switch slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #D0D0D0;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: var(--orange);
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #D0D0D0;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.volumeSlider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 350px;
+    height: 10px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline: 2px solid white;
+    background: var(--orange);
+    cursor: pointer;
+}
+
+.volumeSlider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline: 2px solid white;
+    background: var(--orange);
+    cursor: pointer;
+}
+
+#setting-spacer {
+    height: 100px;
 }

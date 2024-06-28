@@ -6,6 +6,7 @@ export const routes = {
     "MYPROJECTS": "/myProjects",
     "PROFILE": "/profile",
     "PROJECT": "/project",
+    "PROJECTPOST": "/projectPost",
     "MESSAGEHISTORY":"/messageHistory",
     "SETTINGS": "/settings",
     "NOTFOUND": "/notFound",

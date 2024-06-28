@@ -2,11 +2,11 @@
     position: absolute;
     width: calc(100% - 220px);
     height: 100%;
-    top:0px;
-    left:220px;
+    top: 0px;
+    left: 220px;
 }
 
-.header{
+.header {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -15,7 +15,7 @@
     padding: 2px 8px;
 }
 
-section{
+section {
     margin: 10px;
     padding: 4px 8px 4px 8px;
     border-style: solid;
@@ -23,15 +23,7 @@ section{
     box-shadow: 10px 10px 5px lightblue;
 }
 
-.list{
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: center;
-
-}
-
-@media only screen and (max-width: 800px){
+@media only screen and (max-width: 800px) {
     .page {
         left: 0px;
         bottom: 100px;

@@ -9,7 +9,7 @@ export const ProfileHeader = ({user}) => {
           <div id = "profile-info">
             <h2 id="profile-name">{user.name}</h2>
             <h3 id = "profile-pronouns">{user.pronouns[0] + "/" + user.pronouns[1]}</h3>
-            <div className="list" id = "profile-links">
+            <div className="profile-list" id = "profile-links">
               {user.links.map(link => (
                 <Tags>{link.text}</Tags>
               ))}

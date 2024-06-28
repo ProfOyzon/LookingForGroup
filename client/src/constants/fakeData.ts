@@ -27,7 +27,7 @@ export const projects = [
             },
         ],
         description: "The bestest project yet!  I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! ",
-        tags: ["Game Development", "Rouguelike", "FPS", "So Retro"],
+        tags: ["Game Development", "Roguelike", "FPS", "So Retro"],
         neededRoles: [
             {
                 Role: "Game Developer",
@@ -105,7 +105,7 @@ export const projects = [
             },
         ],
         description: "The bestest project yet!  I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! ",
-        tags: ["Game Development", "Rouguelike", "FPS", "So Retro"],
+        tags: ["Game Development", "Roguelike", "FPS", "So Retro"],
         neededRoles: [
             {
                 Role: "Game Developer",
@@ -144,7 +144,7 @@ export const projects = [
             },
         ],
         description: "The bestest project yet!  I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! ",
-        tags: ["Game Development", "Rouguelike", "FPS", "So Retro"],
+        tags: ["Game Development", "Roguelike", "FPS", "So Retro"],
         neededRoles: [
             {
                 Role: "Game Developer",

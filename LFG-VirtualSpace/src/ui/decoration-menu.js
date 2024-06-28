@@ -33,10 +33,10 @@ export class DecorationMenu {
 
         this.inSlider = false;
 
-        // Create this.moveTicker
-        this.moveTicker = new Ticker();
-        this.moveTicker.autoStart = false;
-        this.moveTicker.stop();
+        // Create this.animationTicker
+        this.animationTicker = new Ticker();
+        this.animationTicker.autoStart = false;
+        this.animationTicker.stop();
         this.buttonEnabledTicker = new Ticker();
 
         // display settings
@@ -154,20 +154,20 @@ export class DecorationMenu {
     
         const moveScrollBar = (deltaTime) =>
         {
-            let distancePerTick = (scrollDistance / this.BUTTON_MOVE_MS) * this.moveTicker.elapsedMS;
+            let distancePerTick = (scrollDistance / this.BUTTON_MOVE_MS) * this.animationTicker.elapsedMS;
             //console.log(`moved: ${distancePerTick} `);
             this.scrollBox.scroll(distancePerTick);
         }
     
         // start movement
-        this.moveTicker.add(moveScrollBar);
-        this.moveTicker.start();
-        //console.log("start this.moveTicker");
+        this.animationTicker.add(moveScrollBar);
+        this.animationTicker.start();
+        //console.log("start this.animationTicker");
     
         // stop movement after x milliseconds
         setTimeout(() => {
-            this.moveTicker.stop();
-            this.moveTicker.remove(moveScrollBar);
+            this.animationTicker.stop();
+            this.animationTicker.remove(moveScrollBar);
         }, this.BUTTON_MOVE_MS); 
     }
 
@@ -288,16 +288,16 @@ export class DecorationMenu {
         It is supposed to run after the above if/else is completed instead of using "decorationMenuContainer.y = ".
         const moveMenuAnimated = (deltaTime) =>
         {
-            let distancePerTick = (MENU_HEIGHT / BUTTON_MOVE_MS) * this.moveTicker.elapsedMS;
+            let distancePerTick = (MENU_HEIGHT / BUTTON_MOVE_MS) * this.animationTicker.elapsedMS;
             decorationMenuContainer.y += menuOpen ? -distancePerTick : distancePerTick;
         }
-        this.moveTicker.add(moveMenuAnimated);
-        this.moveTicker.start();
+        this.animationTicker.add(moveMenuAnimated);
+        this.animationTicker.start();
     
         // stop movement after x milliseconds
         setTimeout(() => {
-            this.moveTicker.stop();
-            this.moveTicker.remove(moveMenu);
+            this.animationTicker.stop();
+            this.animationTicker.remove(moveMenu);
         }, BUTTON_MOVE_MS); 
         //*/
     
@@ -325,9 +325,36 @@ export class DecorationMenu {
         this.decorationMenuContainer.addChild(this.deleteOverlayUI);
     }
 
-    showDeleteUI = () => this.deleteOverlayUI.visible = true;
+    showDeleteUI = () => {
+        this.deleteOverlayUI.visible = true;
+        //animateOpacity(0.6, true);
+        //this.deleteOverlayUI.alpha = 0.6;
+    }
 
-    hideDeleteUI = () => this.deleteOverlayUI.visible = false;
+    hideDeleteUI = () => {
+        this.deleteOverlayUI.visible = false;
+        //animateOpacity(-0.6, false);
+        //this.deleteOverlayUI.alpha = 0;
+    }
+
+    animateOpacity = (opacityChange, visibility) => {
+        this.deleteOverlayUI.visible = false;
+
+        const animateOpacity = (deltaTime) =>
+        {
+            let opacityPerTick = (opacityChange / this.BUTTON_MOVE_MS) * this.animationTicker.elapsedMS;
+            decorationMenuContainer.y += opacityPerTick;
+        }
+        this.animationTicker.add(animateOpacity);
+        this.animationTicker.start();
+    
+        // stop movement after x milliseconds
+        setTimeout(() => {
+            this.animationTicker.stop();
+            this.animationTicker.remove(animateOpacity);
+            this.deleteOverlayUI.visible = visibility;
+        }, this.BUTTON_MOVE_MS);
+    }
 
     loadScrollBoxTextures = async () => {
         this.textures = [

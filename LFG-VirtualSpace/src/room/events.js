@@ -98,7 +98,7 @@ const onDragMove = (event) => {
         dragTarget.parent.toLocal(event.global, null, dragTarget.position); // https://pixijs.download/v4.8.9/docs/PIXI.Container.html#toLocal
         
         // check if decoration has been dragged over top of decoration menu
-        console.log('decorationMenu.inSlider: ' + decorationMenu.inSlider);
+        //console.log('decorationMenu.inSlider: ' + decorationMenu.inSlider);
         if (decorationMenu.inSlider) {
             decorationMenu.showDeleteUI();
         }
@@ -113,6 +113,15 @@ const onDragEnd = () => {
     if (dragTarget) {
         // Turn off
         app.stage.off('pointermove', onDragMove);
+        // check if over decoration menu
+        if (decorationMenu.inSlider) {
+            console.log(world.decorations);
+            // remove sprite from reference array
+            delete world.decorations[dragTarget.index];
+            // remove sprite parent
+            dragTarget.parent.removeChild(dragTarget);
+            console.log(world.decorations);
+        }
         // Check if on grid
         if (world.selectedGrid.isInMap(mouseCoords)) {
             // Check if the current position can fit the decoration by checking the extended coordinates.
@@ -144,6 +153,8 @@ const onDragEnd = () => {
         }
         // Get rid of drag target
         dragTarget = null;
+        // ensure delete ui in hidden
+        decorationMenu.hideDeleteUI();
     }
 }
 

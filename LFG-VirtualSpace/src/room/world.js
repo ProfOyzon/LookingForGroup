@@ -85,6 +85,7 @@ export class World{
             newDec.isWall = isWall;
             newDec.offset = offset;
             this.decorations.push(newDec);
+            newDec.sprite.index = this.decorations.length - 1;
             this.container.addChild(newDec.sprite);
         }
     }

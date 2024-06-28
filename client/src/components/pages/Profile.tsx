@@ -4,7 +4,6 @@ import {profiles} from "../../constants/fakeData";
 import { ProfileHeader } from "../Profile/ProfileHeader";
 import { ProfilePreferences } from "../Profile/ProfilePreferences";
 import { ProfileGallery } from "../Profile/ProfileGallery";
-import { ProfileLinks } from "../Profile/ProfileLinks";
 import { ProfileSkills } from "../Profile/ProfileSkills";
 import { ProfileEndorsements } from "../Profile/ProfileEndorsements";
 import { ProfileProjects } from "../Profile/ProfileProjects";
@@ -28,16 +27,15 @@ const Profile = (props) => {
       <ProfileHeader user={user}/>
       <div id="profile-page">
         <div>
+          <ProfileSkills user={user}/>
           <ProfilePreferences user={user}/>
-          <ProfileGallery/>
-          <ProfileLinks user={user}/>
         </div>
         <div>
-          <ProfileSkills user={user}/>
-          <ProfileEndorsements user={user}/>
           <ProfileProjects user={user}/>
         </div>
       </div>
+        <ProfileEndorsements user={user}/>
+        <ProfileGallery/>
     </div>
   );
 }

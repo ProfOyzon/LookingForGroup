@@ -193,7 +193,7 @@
     font-size: 30px;
 }
 
-.discover-button {
+.discover-button, .tab-button{
     border-radius: 10px;
     border: 2px solid var(--orange);
     font-size: 1.5vw;
@@ -881,10 +881,6 @@
     width: 90%;
     height: 40%;
     margin: 2.5% auto;
-}
-
-.active {
-    background-color: lightblue;
 }
 
 #create-proj-btn {

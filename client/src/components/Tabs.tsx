@@ -5,9 +5,9 @@ import { act } from "react";
 //send in a list of names, 1 for each tab
 export const TabButton = ({names, activeTab, setActiveTab}) =>{
     return (
-      <div className="tab__header">
+      <div className="tab-header">
       {names.map((name, index) => (
-        <button className={`${index === activeTab && "active"} tab__button`} key={name} onClick={() => setActiveTab(index)}>
+        <button className={`${index === activeTab && "active"} tab-button`} key={name} onClick={() => setActiveTab(index)}>
           {name}
         </button>
       ))}
@@ -19,7 +19,7 @@ export const TabButton = ({names, activeTab, setActiveTab}) =>{
 //each list index corresponds to a tab button
 export const TabContent = ({Children, activeTab}) =>{
   return (
-    <div className="tabContent">
+    <div className="tab-content">
         {Children[activeTab]}
     </div>
   );

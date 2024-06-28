@@ -1120,7 +1120,16 @@ Page Popup style rules
 \/\/\/\/\/\/\/\/\/\/\/
 */
 
-#popup-cover{
+.popup-cover-hide{
+    display:none;
+}
+
+.popup-hide{
+    display:none;
+}
+
+.popup-cover-show{
+    display:block;
     position: fixed;
     background-color: black;
     opacity: 50%;
@@ -1130,7 +1139,8 @@ Page Popup style rules
     height: 100%;
 }
 
-#popup-container{
+.popup-show{
+    display:block;
     position: fixed;
     background-color: white;
     max-width: 95vw;

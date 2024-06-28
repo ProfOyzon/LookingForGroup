@@ -112,7 +112,7 @@ const saveSettings = () => {
   console.log('Will also save current inputs to project data');
   /*document.getElementById('settings-cover').classList.toggle("show");
   document.getElementById('settings-window').classList.toggle("show");*/
-  openClosePopup();
+  openClosePopup(0);
 }
 
 //Lets the user leave the project
@@ -203,7 +203,7 @@ const ProjectInfoMember = (props) => {
             <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
               <img id='more-options-button-img' src='elipses.png' alt="..."/></button>
             <div id='more-options-popup' className='hide'>
-              <button className='white-button' onClick={openClosePopup}>Project Settings</button>
+              <button className='white-button' onClick={() => openClosePopup(0)}>Project Settings</button>
               <button className='white-button' onClick={leaveProject}>Leave Project</button>
             </div>
           </div>
@@ -232,21 +232,27 @@ const ProjectInfoMember = (props) => {
         <button id='edit-roles-button' className='white-button' onClick={editRoles}>Edit Roles</button>
       </div>
 
-      <PagePopup width={'80vw'} height={'80vh'}>
+      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={1}>
         <div id='settings-window-test'>
             <h1>Project Settings</h1>
             <div id='settings-tabs'>
               <button id='general-tab' className='tab-selected' onClick={() => {changeTabs('general')}}>General</button>
               <button id='member-tab' className='tab' onClick={() => {changeTabs('members')}}>Members</button>
-              <button id='delete-project' onClick={deleteCheck}>Delete Project</button>
+              <button id='delete-project' onClick={() => openClosePopup(1)}>Delete Project</button>
             </div>
             <hr/>
             <div id='settings-content'>
             <GeneralSettings/>
             </div>
-            <button id='settings-cancel' className='white-button' onClick={openClosePopup}>Cancel</button>
+            <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(0)}>Cancel</button>
             <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>
         </div>
+      </PagePopup>
+
+      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={2}>
+        <h3>Are you sure you want to delete this project?</h3>
+        <button>Cancel</button>
+        <button>DELETE</button>
       </PagePopup>
       
     </div>

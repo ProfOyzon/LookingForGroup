@@ -717,16 +717,16 @@ Project page style rules
 .project-post {
     box-shadow: 5px 5px 10px grey;
     width: 95%;
-    max-width: 440px;
-    height: 520px;
+    max-width: 260px;
+    height: 310px;
     padding: 10px;
 }
 
 .project-post img {
-    width: 85vw;
-    height: 85vw;
-    max-width: 420px;
-    max-height: 420px;
+    width: 50vw;
+    height: 50vw;
+    max-width: 220px;
+    max-height: 220px;
 }
 
 .post-content {

@@ -7,7 +7,7 @@ export const ProjectPost = (props) => {
       <img src={postImagePlaceholder} alt=''/>
       <div className='post-content'>
         <div className='post-info'>
-          <h2 className='post-title'>{props.title}</h2>
+          <h3 className='post-title'>{props.title}</h3>
           <div className='post-date'>{props.date}</div>
         </div>
       

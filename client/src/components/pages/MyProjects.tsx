@@ -7,7 +7,7 @@ const MyProjects = () => {
     const [UID, setUID] = useState(profiles[0]._id);
 
     return (
-        <div>
+        <div className='page'>
             My Projects
             <select onChange = {e => {
                 setUID(Number(e.target.value));

@@ -719,6 +719,10 @@ Project page style rules
     width: 95%;
     max-width: 260px;
     height: 310px;
+    /* larger-size rules
+    max-width: 440px;
+    height: 520px;
+    */
     padding: 10px;
 }
 
@@ -727,6 +731,12 @@ Project page style rules
     height: 50vw;
     max-width: 220px;
     max-height: 220px;
+    /* larger-size rules
+    width: 85vw;
+    height: 85vw;
+    max-width: 420px;
+    max-height: 420px;
+    */
 }
 
 .post-content {

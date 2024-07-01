@@ -1053,6 +1053,11 @@ Project Post Page style rules
 
 #post-author {
     font-weight: 600;
+    cursor: pointer;
+}
+
+#post-author:hover {
+    text-decoration-line:underline;
 }
 
 #author-role {
@@ -1103,6 +1108,14 @@ Project Post Page style rules
     text-align: left;
 }
 
+.comment-author {
+    cursor:pointer;
+}
+
+.comment-author:hover{
+    text-decoration-line:underline;
+}
+
 .comment-date {
     color: var(--orange);
 }
@@ -1148,6 +1161,8 @@ Project Post Page style rules
 
 #reply-input {
     grid-area: input;
+    resize: none;
+    width: 100%;
 }
 
 #reply-attach-buttons {

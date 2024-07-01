@@ -25,7 +25,6 @@ const changeReplyTarget = (targetId) => {
   replyTarget = targetId;
   let replyPrompt = document.getElementById('reply-prompt-display');
   replyPrompt.innerHTML = "Replying to " + profiles[comments[targetId].author].username;
-  console.log(replyTarget, replyingToPost);
 }
 
 const resetReplyTarget = () => {
@@ -36,7 +35,6 @@ const resetReplyTarget = () => {
     let promptButton = document.getElementById('reply-prompt-reset');
     promptButton.classList.toggle('show');
   }
-  console.log(replyingToPost);
 }
 
 const PostReplies = (props) => {
@@ -90,7 +88,7 @@ const ProjectPostPage = (props) => {
 
           <div id='post-info'>
             <div>
-              Posted by: <span id='post-author'>{profiles[posts[postId].author].name}</span>
+              Posted by: <span id='post-author' onClick={() => navigate(paths.routes.PROFILE)}>{profiles[posts[postId].author].name}</span>
               <span id='author-role'> {projects[projectId].members[posts[postId].author].role}</span>
             </div>
             <div>{posts[postId].createdDate}</div>
@@ -113,7 +111,7 @@ const ProjectPostPage = (props) => {
             
             
 
-            <input type='text' id='reply-input'></input>
+            <textarea id='reply-input' maxLength={300}/>
 
             <div id='reply-attach-buttons'>
               <button id='reply-attach-1' className='white-button'>attach1</button>

@@ -285,6 +285,7 @@ const ProjectInfoMember = (props) => {
 */
 
 const Project = (props) => {
+  window.scrollTo(0,0);
   return (
     <div id='project-page' className='page'>
       <div id='return-button-container'>

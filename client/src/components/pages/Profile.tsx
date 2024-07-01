@@ -12,6 +12,8 @@ import { useState } from "react";
 const Profile = (props) => {
   const [UID, setUID] = useState(profiles[0]._id);
   const user = profiles[UID];
+
+  window.scrollTo(0,0);
   
   return (
     <div className = "page">

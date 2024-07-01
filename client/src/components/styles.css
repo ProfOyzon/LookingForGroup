@@ -696,6 +696,11 @@ Project page style rules
 .project-member {
     width: 200px;
     min-width: 200px;
+    cursor: pointer;
+}
+
+.project-member:hover {
+    background-color:#dfdfdf;
 }
 
 .project-member img {
@@ -724,6 +729,11 @@ Project page style rules
     height: 520px;
     */
     padding: 10px;
+    cursor: pointer;
+}
+
+.project-post:hover {
+    background-color: #dfdfdf;
 }
 
 .project-post img {

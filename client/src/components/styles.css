@@ -46,8 +46,8 @@
 }
 
 .discover-card,
-.endorsement {
-    width: 60%;
+.endorsement, .profile-project-card {
+    width: 70%;
     max-width: 765px;
     max-height: 265px;
     border: 2px solid black;
@@ -55,7 +55,7 @@
     display: grid;
     grid-template-columns: 30% 70%;
     text-align: left;
-    padding: 2%;
+    padding: 3%;
     margin: 2.5% auto;
     transition: 1s;
     opacity: 0;
@@ -83,17 +83,24 @@
     }
 }
 
-.discover-card:hover .endorsement:hover {
+.discover-card:hover .endorsement:hover, .profile-project-card:hover{
     transform: scale(1.05);
 }
 
-#discover-card-body {
+#discover-card-body{
     margin-left: 10%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     grid-template-rows: 10% 50% 30% 10%;
     font-size: 0.8rem;
+}
+
+#profile-project-body{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
 }
 
 #message-card #discover-card-body {
@@ -105,10 +112,14 @@
     flex: 1;
 }
 
-#discover-card-profile-picture {
+#discover-card-profile-picture, #profile-project-profile-picture {
     width: 100%;
     border: 2px solid black;
     border-radius: 100%;
+}
+
+#profile-project-profile-picture{
+    width: 80%;
 }
 
 #message-card #discover-card-profile-picture {
@@ -125,7 +136,7 @@
     text-align: left;
 }
 
-#discover-card-name:hover {
+#discover-card-name:hover, #profile-project-name:hover {
     text-decoration: underline;
 }
 
@@ -137,7 +148,8 @@
 #discover-card-tag-wrapper {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
+    gap: 4px;
     max-width: 450px;
 }
 
@@ -209,11 +221,16 @@
     border-radius: 5px;
     text-align: center;
     padding: .5vw;
+    margin-left: .5vw;
+    margin-right: .5vw;
     background-color: white;
 }
 
 .active{
     background-color: lightblue;
+}
+
+.tab-header{
 }
 
 .discover-main-content {

@@ -422,6 +422,11 @@
     text-align: left;
 }
 
+#profile-banner{
+    width: 80%;
+    height: 20vh;
+}
+
 #profile-header {
     width: 100%;
     border: none;

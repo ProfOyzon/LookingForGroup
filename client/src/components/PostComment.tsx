@@ -1,4 +1,6 @@
 import "./styles.css";
+import { useNavigate } from 'react-router-dom';
+import * as paths from "../constants/routes";
 import profilePlaceholder from "../img/profile-user.png";
 import { profiles, comments } from "../constants/fakeData";
 
@@ -40,13 +42,14 @@ const CommentReplies = (props) => {
 }
 
 export const PostComment = (props) => {
+  let navigate = useNavigate();
   let comment = comments[props.commentId];
   return(
     <div className='post-comment'>
       <img className='comment-profile' src={profilePlaceholder} alt='profile'/>
       <div className='comment-header'>
-        <span>{profiles[comment.author].username} </span>
-        <span className='comment-date'>{comment.createdDate}</span>
+        <span className='comment-author' onClick={() => navigate(paths.routes.PROFILE)}>{profiles[comment.author].username}</span>
+        <span className='comment-date'> {comment.createdDate}</span>
       </div>
 
       <div className='comment-content'>

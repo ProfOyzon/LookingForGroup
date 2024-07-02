@@ -713,6 +713,11 @@ Project page style rules
 .project-member {
     width: 200px;
     min-width: 200px;
+    cursor: pointer;
+}
+
+.project-member:hover {
+    background-color:#dfdfdf;
 }
 
 .project-member img {
@@ -734,16 +739,31 @@ Project page style rules
 .project-post {
     box-shadow: 5px 5px 10px grey;
     width: 95%;
+    max-width: 260px;
+    height: 310px;
+    /* larger-size rules
     max-width: 440px;
     height: 520px;
+    */
     padding: 10px;
+    cursor: pointer;
+}
+
+.project-post:hover {
+    background-color: #dfdfdf;
 }
 
 .project-post img {
+    width: 50vw;
+    height: 50vw;
+    max-width: 220px;
+    max-height: 220px;
+    /* larger-size rules
     width: 85vw;
     height: 85vw;
     max-width: 420px;
     max-height: 420px;
+    */
 }
 
 .post-content {
@@ -1060,6 +1080,11 @@ Project Post Page style rules
 
 #post-author {
     font-weight: 600;
+    cursor: pointer;
+}
+
+#post-author:hover {
+    text-decoration-line:underline;
 }
 
 #author-role {
@@ -1110,6 +1135,14 @@ Project Post Page style rules
     text-align: left;
 }
 
+.comment-author {
+    cursor:pointer;
+}
+
+.comment-author:hover{
+    text-decoration-line:underline;
+}
+
 .comment-date {
     color: var(--orange);
 }
@@ -1155,6 +1188,8 @@ Project Post Page style rules
 
 #reply-input {
     grid-area: input;
+    resize: none;
+    width: 100%;
 }
 
 #reply-attach-buttons {

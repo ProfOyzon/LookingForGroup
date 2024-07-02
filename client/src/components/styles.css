@@ -937,6 +937,11 @@ project page member settings rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 */
 
+#member-settings-header {
+    display:flex;
+    justify-content: center;
+}
+
 #member-settings-list {
     height: 50vh;
     overflow-y: auto;

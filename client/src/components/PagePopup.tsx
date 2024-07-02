@@ -1,5 +1,16 @@
 import "./styles.css";
-//Might need to import various other components
+
+// How to use:
+// 1. import component with 'import { PagePopup, openClosePopup } from "../PagePopup";'
+// 2. choose a location where the popup would be relevant & choose parameters
+//      - An example would be '<PagePopup width={x} height={y} popupId={z} z-index={q}>  </PagePopup>'
+//      - x & y = popup width/height, respectively; z = number ID to identify this popup; q = the z-index layer of the popup
+// 3. Place whatever content you want within the popup (including elements, components, etc.);
+// 4. Have somewhere for the user to trigger the 'openClosePopup' function to open the popup (it can't open itself!)
+//      - Use the relevant popup's ID number as the parameter for this function to indicate which popup to open
+//      - Example: <button onClick={() => openClosePopup(z)}>Click me!</button>; Where z = the popup's ID number
+
+// Created by Joseph Dunne, if there is an issue you cannot solve regarding popups, let me know
 
 export const openClosePopup = (popupId) => {
   document.getElementById(`popup-cover-${popupId}`).classList.toggle('popup-cover-show');

@@ -372,7 +372,12 @@
 .containerButtonSideBar button:hover {
     /* transform: scale(1.1); */
     transition-duration: 0.25s;
+    background-color: #e3e3e3;
+}
+
+.containerButtonSideBar button.active {
     background-color: #eeeeee;
+    transition: 0.25s;
 }
 
 .dot {

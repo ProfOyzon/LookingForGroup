@@ -1260,6 +1260,11 @@ Page Popup style rules
     right: 10px;
 }
 
+.page-scroll-lock {
+    position:fixed;
+    padding-right:15px;
+}
+
 /* 
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 -------------------------------------------------------

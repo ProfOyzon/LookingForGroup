@@ -147,6 +147,9 @@ const changeTabs = (tab) => {
 
 //Removes project from database and redirects user
 const deleteProject = (callback) => {
+  //Close popups
+  openClosePopup(1);
+  openClosePopup(0);
   //Delete project from database
   callback(paths.routes.MYPROJECTS);
 }

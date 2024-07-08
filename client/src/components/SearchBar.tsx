@@ -11,7 +11,7 @@ export const SearchBar = ({ dataSets, onSearch }) => {
     result = placeholderText.concat("Projects"); 
 
     // --- Searching ---
-    const [query, setQuery] = useState('');
+    /*const [query, setQuery] = useState('');
 
     useEffect(() => {
       const filteredResults = dataSets.map(dataSet =>
@@ -26,7 +26,23 @@ export const SearchBar = ({ dataSets, onSearch }) => {
 
     const HandleChange = (event) => {
         setQuery(event.target.value);
-    }
+    }*/
+
+        const [query, setQuery] = useState('');
+
+        const HandleChange = (event) => {
+          const newQuery = event.target.value;
+          setQuery(newQuery);
+      
+          const filteredResults = dataSets.map(dataSet =>
+            dataSet.data.filter(item =>
+              Object.values(item).some(value =>
+                String(value).toLowerCase().includes(newQuery.toLowerCase())
+              )
+            )
+          );
+          onSearch(filteredResults);
+        };
 
 return (
     <>

@@ -2,6 +2,7 @@ import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import * as paths from "../../constants/routes";
 import { ProjectPost } from "../projectPageComponents/ProjectPost";
 import { ProjectMember } from "../projectPageComponents/ProjectMember";
@@ -9,7 +10,6 @@ import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, profiles, posts } from "../../constants/fakeData";
-import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 
 //This is the Project page component, which contains a layout that allows for displaying project info
@@ -183,13 +183,16 @@ const deleteProject = (callback) => {
 // Page header that displays for users that are not members of the project
 // Includes options to follow, block, report, or show interest in joining the project
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
+
+// projectName, projectDescription, and neededRoles are passed in through props
+// All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
 const ProjectInfo = (props) => {
   return (
     <div id='project-info'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
 
       <div id='project-header'>
-        <h1 id='project-title'>{projects[projectID].name}</h1>
+        <h1 id='project-title'>{props.projectName}</h1>
         <div id='header-buttons'>
           <button id='follow-project' className='orange-button' onClick={followProject}>Follow</button>
           <div id='more-options'>
@@ -202,14 +205,14 @@ const ProjectInfo = (props) => {
         </div>
       </div>
 
-      <p id='project-desc'>{projects[projectID].description}
+      <p id='project-desc'>{props.projectDescription}
       </p>
 
       <div id='project-listings'>
         <h3>Looking for</h3>
         <hr/>
         {
-          projects[projectID].neededRoles.map(role => {
+          props.neededRoles.map(role => {
             return(
               <div>{role.Role} &#40;{role.amount}&#41;</div>
             );
@@ -228,6 +231,8 @@ const ProjectInfo = (props) => {
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
 
 // Utilizes the 'PagePopup' component for project settings, and 'GeneralSettings' as the first rendered tab within it
+// projectName, projectDescription, and neededRoles are passed in through props
+// All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
 const ProjectInfoMember = (props) => {
   const navigate = useNavigate(); // Hook for navigation
   return (
@@ -236,7 +241,7 @@ const ProjectInfoMember = (props) => {
 
 
       <div id='project-header'>
-        <h1 id='project-title'>{projects[projectID].name}</h1>
+        <h1 id='project-title'>{props.projectName}</h1>
         <div id='header-buttons'>
           <div id='more-options'>
             <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
@@ -249,7 +254,7 @@ const ProjectInfoMember = (props) => {
         </div>
       </div>
 
-      <p id='project-desc'>{projects[projectID].description}
+      <p id='project-desc'>{props.projectDescription}
       </p>
 
       <div id='member-buttons'>
@@ -261,7 +266,7 @@ const ProjectInfoMember = (props) => {
         <h3>Looking for</h3>
         <hr/>
         {
-          projects[projectID].neededRoles.map(role => {
+          props.neededRoles.map(role => {
             return(
               <div>{role.Role} &#40;{role.amount}&#41;</div>
             );
@@ -304,15 +309,35 @@ const ProjectInfoMember = (props) => {
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
 // Utilizes the 'ProjectInfo' and 'ProjectInfoMember' components for headers, 'ProjectMember' component for listing project members,
 //    and 'ProjectPost' component for displaying posts the project has made
+
+// No data is passed in through props
+
+// The 'select' element is for testing different projects with this layout, it should not be included in the final product
 const Project = (props) => {
   window.scrollTo(0,0);
+
+  const [projectData, setProjectData] = useState(projects[projectID]);
+
   return (
     <div id='project-page' className='page'>
+
+      <select onChange={e => {
+        setProjectData(projects[e.target.value]);
+      }}>
+        {
+          projects.map(project => {
+            return(
+              <option value={project._id}>{project.name}</option>
+            )
+          })
+        }
+      </select>
+
       <div id='return-button-container'>
       <button id='return-button' className='white-button' onClick={() => window.history.back()}>&lt; return</button>
       </div>
 
-      <ProjectInfo/>
+      <ProjectInfoMember projectName={projectData.name} projectDescription={projectData.description} neededRoles={projectData.neededRoles}/>
 
       <div id='member-divider'>
         <hr/>
@@ -323,7 +348,7 @@ const Project = (props) => {
 
       <div id='project-members'>
         {
-          projects[projectID].members.map(member => {
+          projectData.members.map(member => {
             return (
               <ProjectMember onClick={() => window.location.href="profile"} name={profiles[member.userID].name} role={member.role} />
             );
@@ -334,7 +359,7 @@ const Project = (props) => {
 
       <div id='project-posts'>
         {
-          projects[projectID].posts.map(postNum => {
+          projectData.posts.map(postNum => {
             return(
               <ProjectPost title={posts[postNum].title} date={posts[postNum].createdDate} />
             );

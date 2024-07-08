@@ -79,7 +79,7 @@ export const projects = [
                 description: "We are looking for artists who know how to draw rocks",
             }
         ],
-        posts: [0, 1, 2]
+        posts: [0]
     },
     {
         _id: 2,
@@ -118,7 +118,7 @@ export const projects = [
                 description: "We are looking for artists who know how to model creepers",
             }
         ],
-        posts: [0, 1, 2]
+        posts: [0, 2]
     },
     {
         _id: 3,
@@ -145,7 +145,7 @@ export const projects = [
                 description: "We need more garlic",
             }
         ],
-        posts: [0, 1, 2]
+        posts: [0, 1]
     },
     {
         _id: 4,
@@ -177,7 +177,7 @@ export const projects = [
                 description: "Blah Blah Blah",
             }
         ],
-        posts: [0, 1, 2]
+        posts: [1, 2]
     },
     {
         _id: 5,
@@ -204,7 +204,7 @@ export const projects = [
                 description: "We are looking for artists who know how to draw my classmates",
             }
         ],
-        posts: [0, 1, 2]
+        posts: []
     },
 ]
 

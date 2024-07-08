@@ -12,6 +12,9 @@ import { projects, profiles, posts } from "../../constants/fakeData";
 import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 
+//This is the Project page component, which contains a layout that allows for displaying project info
+//More info and comments on individual parts are found above their respective parts
+
 // To-do:
 // Figure out image displays once images are added to site
 // Program onClick functions for buttons

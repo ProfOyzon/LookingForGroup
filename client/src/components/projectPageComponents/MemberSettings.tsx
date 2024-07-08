@@ -4,6 +4,17 @@ import { SearchBar } from "../SearchBar";
 import { projects } from "../../constants/fakeData";
 import { useState } from 'react';
 
+//This component is used in the project member view of the Project page
+//Contains the layout of the 'Member' tab in the project settings menu
+//There is a button that should allow for inviting users to become project members assuming they are an admin or similar
+//When rendered, displays a list of project members that are rendered with several 'MemberListing' components
+//Uses a 'SearchBar' component to assist with sorting through project members
+//Currently, the SearchBar does not function correctly due to how it and the current data is structured
+//    It currently searches through the project's member data rather than profile data, and no data on user's names are present there
+//    'true' and 'false' also manage to return results despite there being no indicators present within the display due to boolean values used in the data
+
+//No data is passed in through props currently
+
 //Used for the members tab of the project settings
 export const MemberSettings = (props) => {
   let i = 0;

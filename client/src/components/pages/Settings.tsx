@@ -75,10 +75,7 @@ const Settings = (props) => {
             </div>
           </div>
 
-          <div className="setting-in-page">
-            <h3>Notifications</h3>
-            <NotificationSettings />
-          </div>
+          <NotificationSettings />
 
           <div className="setting-in-page">
             <h3>Dark Mode
@@ -106,10 +103,7 @@ const Settings = (props) => {
             </div>
           </div>
 
-          <div className="setting-in-page column">
-            <h3>Volume</h3>
-            <VolumeSettings />
-          </div>
+          <VolumeSettings />
 
           <div id="setting-spacer" ></div>
 

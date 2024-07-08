@@ -8,7 +8,7 @@ const MyProjects = () => {
 
 
     return (
-        <div>
+        <div className='page'>
             My Projects
             <select onChange = {e => {
                 setUID(Number(e.target.value));

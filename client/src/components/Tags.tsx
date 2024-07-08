@@ -1,6 +1,6 @@
 
 export const Tags = ({children}) => {
-    return (
+    return (  
         <div className="tag">
             <p className="tag-name">{children}</p>
         </div>

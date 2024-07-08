@@ -1,9 +1,11 @@
 import pfp from '../../img/profile-user.png';
+import banner from '../../images/banner.png';
 import { Tags } from "../Tags";
 
 export const ProfileHeader = ({user}) => {
     return(
         <section className='profile-section' id = "profile-header">
+          <img id = "profile-banner" src = {banner} alt = "profile banner"></img>
         <div className='header'>
           <img id = "profile-pfp" src={pfp} width="100" height="100"></img>
           <div id = "profile-info">

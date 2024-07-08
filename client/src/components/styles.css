@@ -46,8 +46,8 @@
 }
 
 .discover-card,
-.endorsement {
-    width: 60%;
+.endorsement, .profile-project-card {
+    width: 70%;
     max-width: 765px;
     max-height: 265px;
     border: 2px solid black;
@@ -55,7 +55,7 @@
     display: grid;
     grid-template-columns: 30% 70%;
     text-align: left;
-    padding: 2%;
+    padding: 3%;
     margin: 2.5% auto;
     transition: 1s;
     opacity: 0;
@@ -83,17 +83,24 @@
     }
 }
 
-.discover-card:hover .endorsement:hover {
+.discover-card:hover .endorsement:hover, .profile-project-card:hover{
     transform: scale(1.05);
 }
 
-#discover-card-body {
+#discover-card-body{
     margin-left: 10%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     grid-template-rows: 10% 50% 30% 10%;
     font-size: 0.8rem;
+}
+
+#profile-project-body{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
 }
 
 #message-card #discover-card-body {
@@ -105,10 +112,14 @@
     flex: 1;
 }
 
-#discover-card-profile-picture {
+#discover-card-profile-picture, #profile-project-profile-picture {
     width: 100%;
     border: 2px solid black;
     border-radius: 100%;
+}
+
+#profile-project-profile-picture{
+    width: 80%;
 }
 
 #message-card #discover-card-profile-picture {
@@ -125,7 +136,7 @@
     text-align: left;
 }
 
-#discover-card-name:hover {
+#discover-card-name:hover, #profile-project-name:hover {
     text-decoration: underline;
 }
 
@@ -137,7 +148,8 @@
 #discover-card-tag-wrapper {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
+    gap: 4px;
     max-width: 450px;
 }
 
@@ -209,11 +221,16 @@
     border-radius: 5px;
     text-align: center;
     padding: .5vw;
+    margin-left: .5vw;
+    margin-right: .5vw;
     background-color: white;
 }
 
 .active{
     background-color: lightblue;
+}
+
+.tab-header{
 }
 
 .discover-main-content {
@@ -356,7 +373,12 @@
 .containerButtonSideBar button:hover {
     /* transform: scale(1.1); */
     transition-duration: 0.25s;
+    background-color: #e3e3e3;
+}
+
+.containerButtonSideBar button.active {
     background-color: #eeeeee;
+    transition: 0.25s;
 }
 
 .dot {
@@ -404,6 +426,11 @@
     width: 80%;
     margin: 2% auto;
     text-align: left;
+}
+
+#profile-banner{
+    width: 80%;
+    height: 20vh;
 }
 
 #profile-header {
@@ -697,6 +724,11 @@ Project page style rules
 .project-member {
     width: 200px;
     min-width: 200px;
+    cursor: pointer;
+}
+
+.project-member:hover {
+    background-color:#dfdfdf;
 }
 
 .project-member img {
@@ -718,16 +750,31 @@ Project page style rules
 .project-post {
     box-shadow: 5px 5px 10px grey;
     width: 95%;
+    max-width: 260px;
+    height: 310px;
+    /* larger-size rules
     max-width: 440px;
     height: 520px;
+    */
     padding: 10px;
+    cursor: pointer;
+}
+
+.project-post:hover {
+    background-color: #dfdfdf;
 }
 
 .project-post img {
+    width: 50vw;
+    height: 50vw;
+    max-width: 220px;
+    max-height: 220px;
+    /* larger-size rules
     width: 85vw;
     height: 85vw;
     max-width: 420px;
     max-height: 420px;
+    */
 }
 
 .post-content {
@@ -896,6 +943,11 @@ project page member settings rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 */
 
+#member-settings-header {
+    display:flex;
+    justify-content: center;
+}
+
 #member-settings-list {
     height: 50vh;
     overflow-y: auto;
@@ -1044,6 +1096,11 @@ Project Post Page style rules
 
 #post-author {
     font-weight: 600;
+    cursor: pointer;
+}
+
+#post-author:hover {
+    text-decoration-line:underline;
 }
 
 #author-role {
@@ -1094,6 +1151,14 @@ Project Post Page style rules
     text-align: left;
 }
 
+.comment-author {
+    cursor:pointer;
+}
+
+.comment-author:hover{
+    text-decoration-line:underline;
+}
+
 .comment-date {
     color: var(--orange);
 }
@@ -1139,6 +1204,8 @@ Project Post Page style rules
 
 #reply-input {
     grid-area: input;
+    resize: none;
+    width: 100%;
 }
 
 #reply-attach-buttons {
@@ -1192,6 +1259,11 @@ Page Popup style rules
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+.page-scroll-lock {
+    position:fixed;
+    padding-right:15px;
 }
 
 /* 

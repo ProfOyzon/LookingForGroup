@@ -89,13 +89,13 @@ export const projects = [
                 userID: 0,
                 admin: true,
                 owner: true,
-                role: "Project Lead"
+                role: "Coder"
             },
             {
                 userID: 2,
                 admin: true,
                 owner: false,
-                role: "Team Lead"
+                role: "Project Lead"
             },
             {
                 userID: 3,
@@ -159,7 +159,7 @@ export const projects = [
             }
         ],
         description: "Blah Blah Blah",
-        tags: ["Wah", "Waah", "Waaah", "Waaaah"],
+        tags: ["Boring", "BlahBlahBlah", "abc", "12345"],
         neededRoles: [
             {
                 Role: "Data Analyst",
@@ -190,8 +190,8 @@ export const projects = [
                 role: "Project Lead"
             }
         ],
-        description: "Hey guys I need help on my class project I want an A",
-        tags: ["Class Project"],
+        description: "Hey guys I need help on my class project I'm gonna fail",
+        tags: ["Class Project", "pls help", "idk"],
         neededRoles: [
             {
                 Role: "Game Developer",

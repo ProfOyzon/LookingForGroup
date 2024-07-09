@@ -161,14 +161,16 @@ const MakeAvatarModal = ({ show, onClose, onConfirm }) => {
         }
 
         // save the canvas as a new image
-        const updateAvatar = canvas.toDataURL("image/png");
+        const newAvatar = canvas.toDataURL("image/png");
 
-        // update the user's avatar in the database
-        // for now just open the image in a new tab
-        const newTab = window.open();
-        if (!newTab) return;
+        onConfirm(newAvatar);
+        onClose();
+        // // update the user's avatar in the database
+        // // for now just open the image in a new tab
+        // const newTab = window.open();
+        // if (!newTab) return;
 
-        newTab.document.write(`<img src="${updateAvatar}" />`);
+        // newTab.document.write(`<img src="${updateAvatar}" />`);
     };
 
     // render the page
@@ -267,7 +269,7 @@ const MakeAvatarModal = ({ show, onClose, onConfirm }) => {
 
                 {/* create button */}
                 <div id="avatar-create">
-                    <button id="avatar-createBtn" onClick={() => { updateAvatar(); onConfirm(); }}>
+                    <button id="avatar-createBtn" onClick={updateAvatar}>
                         Save
                     </button>
                 </div>

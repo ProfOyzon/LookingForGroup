@@ -9,7 +9,7 @@ import NotificationSettings from "../SettingsPageComponents/NotificationSetting"
 const Settings = (props) => {
   // state variables
   const [activeTab, setActiveTab] = useState("general");
-  const [showAvatarModal, setShowAvatarModal] = useState(false);
+  // const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   return (
     <div className="page">
@@ -43,7 +43,7 @@ const Settings = (props) => {
 
           *************************************************************/}
         <div className={`settings-page-tab-contents ${activeTab === "general" ? "settings-page-active-tab" : ""}`} id="general">
-          <div className="setting-in-page">
+          {/* <div className="setting-in-page">
             <h3></h3>
             <button id="editAvatarBtn" onClick={() => { setShowAvatarModal(true); }}>Edit Avatar</button>
             <MakeAvatarModal
@@ -53,7 +53,7 @@ const Settings = (props) => {
                 setShowAvatarModal(false);
               }}
             />
-          </div>
+          </div> */}
 
           <div className="setting-in-page">
             <h3>Language

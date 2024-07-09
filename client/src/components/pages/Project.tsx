@@ -1,7 +1,7 @@
 import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import * as paths from "../../constants/routes";
 import { ProjectPost } from "../projectPageComponents/ProjectPost";
@@ -22,7 +22,8 @@ import { createRoot } from "react-dom/client";
 
 // Placeholder ID for the page to use
 // Final product should be able of pull the data of any project with an id number passed in when the page loads
-const projectID = 0;
+//const { p } = useParams();
+//const projectID = p;
 
 // Variables to hold the element with id 'settings-content'
 // Used with ReactDOM to render different settings tabs within the element
@@ -316,6 +317,17 @@ const ProjectInfoMember = (props) => {
 const Project = (props) => {
   window.scrollTo(0,0);
 
+  //Pulls project ID number from search query (should be stored as 'p')
+  //(ex. [site path]/project?p=x , where x = the project ID number)
+  let urlParams = new URLSearchParams(window.location.search);
+  let projectID = urlParams.get('projID');
+
+  //If search query doesn't yield anything, resort to a default project
+  if (projectID === null) {
+    console.log('No query in url, loading default');
+    projectID = '0';
+  }
+
   const [projectData, setProjectData] = useState(projects[projectID]);
 
   return (
@@ -350,7 +362,7 @@ const Project = (props) => {
         {
           projectData.members.map(member => {
             return (
-              <ProjectMember onClick={() => window.location.href="profile"} name={profiles[member.userID].name} role={member.role} />
+              <ProjectMember onClick={() => window.location.href="profile"} memberId={member.userID} role={member.role} />
             );
           })
         }

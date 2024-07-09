@@ -10,7 +10,14 @@ import { ProfileProjects } from "../Profile/ProfileProjects";
 import { useState } from "react";
 
 const Profile = (props) => {
-  const [UID, setUID] = useState(profiles[0]._id);
+  let urlParams = new URLSearchParams(window.location.search);
+  let profileID = urlParams.get('profID');
+
+  if (profileID === null) {
+    profileID = '0';
+  }
+  
+  const [UID, setUID] = useState((profiles.find(p => p._id === Number(profileID)))._id);
   const user = profiles[UID];
 
   window.scrollTo(0,0);

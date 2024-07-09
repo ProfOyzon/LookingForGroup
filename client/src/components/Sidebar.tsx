@@ -25,7 +25,7 @@ const SideBar = () => {
   const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
   const navigate = useNavigate(); // Hook for navigation
 
-  const [activePage, setActivePage] = useState('Discovery'); // State to manage the active page [Home, My Projects, Messages, Profile, Settings]
+  const [activePage, setActivePage] = useState('Group'); // State to manage the active page [Home, My Projects, Messages, Profile, Settings]
 
   const [avatarImage, setAvatarImage] = useState('images/tempProfilePic.png'); // State to manage the avatar image
   const [showAvatarModal, setShowAvatarModal] = useState(false); // State to manage the avatar modal
@@ -51,7 +51,7 @@ const SideBar = () => {
     return (
       <div className='sideBarContainer'>
         <div className='containerButtonSideBar'>
-          <button className={activePage === 'Discovery' ? 'active' : ''} onClick={() => handleTextChange('Discovery', paths.routes.HOME)}>
+          <button className={activePage === 'Group' ? 'active' : ''} onClick={() => handleTextChange('Group', paths.routes.HOME)}>
             <img src={homeIcon} className="navIcon" alt="Home" />
           </button>
           <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
@@ -92,7 +92,7 @@ const SideBar = () => {
       <h1>UserName</h1>
 
       <div className='containerButtonSideBar'>
-        <button className={activePage === 'Discovery' ? 'active' : ''} onClick={() => handleTextChange('Discovery', paths.routes.HOME)}>
+        <button className={activePage === 'Group' ? 'active' : ''} onClick={() => handleTextChange('Group', paths.routes.HOME)}>
           <img src={homeIcon} className="navIcon" alt="Home" /> Home
         </button>
         <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>

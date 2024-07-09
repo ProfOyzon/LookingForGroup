@@ -1406,7 +1406,7 @@ button {
     background-color: white;
     color: var(--orange);
     border: 2px solid var(--orange);
-    border-radius: 50px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;

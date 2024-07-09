@@ -44,7 +44,7 @@ const Settings = (props) => {
           *************************************************************/}
         <div className={`settings-page-tab-contents ${activeTab === "general" ? "settings-page-active-tab" : ""}`} id="general">
           <div className="setting-in-page">
-            <h3></h3>
+            <h3>My Avatar</h3>
             <button id="editAvatarBtn" onClick={() => { setShowAvatarModal(true); }}>Edit Avatar</button>
             <MakeAvatarModal
               show={showAvatarModal}

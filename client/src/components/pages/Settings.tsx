@@ -11,12 +11,6 @@ const Settings = (props) => {
   const [activeTab, setActiveTab] = useState("general");
   const [showAvatarModal, setShowAvatarModal] = useState(false);
 
-  // update the avatar
-  const updateAvatar = () => {
-    // placeholder
-    alert("Avatar updated!");
-  };
-
   return (
     <div className="page">
       {/* <div id="containerId"><NotifButton></NotifButton></div> */}
@@ -57,7 +51,6 @@ const Settings = (props) => {
               onClose={() => { setShowAvatarModal(false); }}
               onConfirm={() => {
                 setShowAvatarModal(false);
-                updateAvatar();
               }}
             />
           </div>

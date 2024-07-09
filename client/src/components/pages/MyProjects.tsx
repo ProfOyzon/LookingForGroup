@@ -6,6 +6,7 @@ import { useState } from "react";
 const MyProjects = () => {
     const [UID, setUID] = useState(profiles[0]._id);
 
+
     return (
         <div className='page'>
             My Projects

@@ -6,30 +6,52 @@ import * as paths from "../../constants/routes";
 import { PostComment } from "../PostComment";
 import { projects, profiles, posts, comments } from "../../constants/fakeData";
 
-//List the post and project ids, used throughout component
+//This is the Project Post Page component, which contains a layout that allows for displaying info regarding a project post
+//  Info displayed includes the post itself, as well as comments
+//More info and comments on individual parts are found above their respective parts
+//Additonally, any profile names found will redirect the user to the profile page when clicked
+//  In the future, they should also redirect specifically to the respective profile that is clicked
+
+//Contains the ids of the post and the project it belongs to, used throughout this file
+//Serves as a placeholder for now, should be altered to have any id passed in to render
 const postId = 0;
 const projectId = 0;
 
-//replyingToPost shows whether or not the target of the reply is the post itself
+//replyingToPost shows whether or not the user is currently replying to the post itself or a comment
+// true = replies given are to the post itself; false = replies given are to a specific comment of the post
 let replyingToPost = true;
-//If not replying directly to the post, replyTarget indicates which comment it is replying to
-//Might need to move this variable later? not sure how to transfer to ProjectPostPage file
+
+//If not replying directly to the post, replyTarget indicates which comment it is replying to, identified by id
 let replyTarget = 0;
 
+//'promptButton' and 'replyPrompt' errors are due to typescript - they still function correctly and are safe to ignore for now
+
+//Changes the current target of any reply inputs
+//targetId - the id of the new comment that the user will reply to
+//Called whenever a 'reply' button is clicked in the comment section
 const changeReplyTarget = (targetId) => {
   if (replyingToPost){
+    //Change values to indicate the user is not replying directly to the post
     replyingToPost = false;
     let promptButton = document.getElementById('reply-prompt-reset');
+    //shows a button to cancel and change reply target back to the post itself
     promptButton.classList.toggle('show');
   }
+  //Change value of replyTarget to indicate which comment to reply to
   replyTarget = targetId;
+  //Change display to show the owner of the comment being replied to
   let replyPrompt = document.getElementById('reply-prompt-display');
   replyPrompt.innerHTML = "Replying to " + profiles[comments[targetId].author].username;
 }
 
+//Resets the target of any reply inputs back to the post itself
+//Called when clicking the 'reply-prompt-reset' button, which shows if replyingToPost = false
 const resetReplyTarget = () => {
+  //Only runs if not already targeting post
   if(!replyingToPost){
+    //Change value to indicate replying to post
     replyingToPost = true;
+    //Reset displays to default
     let replyPrompt = document.getElementById('reply-prompt-display');
     replyPrompt.innerHTML = "Replying to Post";
     let promptButton = document.getElementById('reply-prompt-reset');
@@ -37,6 +59,10 @@ const resetReplyTarget = () => {
   }
 }
 
+//Component that renders the full list of post comments & replies
+//Renders multiple 'PostComment' components within itself, more details can be found in the PostComment.tsx file
+
+//No values are passed in through props
 const PostReplies = (props) => {
   if (posts[postId].comments.length !== 0){
     return(
@@ -58,6 +84,18 @@ const PostReplies = (props) => {
   }
 }
 
+//Main content of the Projest Post Page, which is exported from this file
+//Utilizes the 'PostReplies' component, which is found just above
+//Contains a header with some navigation options & basic project functions (inculding following, reporting, etc.)
+//  (Some header functionality is not currently implemented, but should act similarly to the header found in the Project page)
+//  There is also a button for options, but no options were specified when this was created,
+//  add options here as part of a dropdown menu if some are implemented
+//Displays the post itself on the left side (top if on mobile), featuring the content itself and info on the post
+//Displays comments and replies on the right side (bottom on mobile), as well as a reply input field to send replies
+//  Reply input does not currently write new info to database, needs implementation
+//Both content boxes should be scrollable if there is an overflow of content
+
+//No values are passed in through props
 const ProjectPostPage = (props) => {
   const navigate = useNavigate();
   return(

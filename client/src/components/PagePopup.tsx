@@ -12,9 +12,27 @@ import "./styles.css";
 
 // Created by Joseph Dunne, if there is an issue you cannot solve regarding popups, let me know
 
+let scrollLock = false;
+
 export const openClosePopup = (popupId) => {
   document.getElementById(`popup-cover-${popupId}`).classList.toggle('popup-cover-show');
   document.getElementById(`popup-container-${popupId}`).classList.toggle('popup-show');
+  console.log(document.getElementsByClassName('popup-show'));
+  //If a popup is open, disables scrolling of page
+  //When all popups are closed, re-enables page scrolling
+  if (document.getElementsByClassName('popup-show').length !== 0 && !scrollLock) {
+    let page = document.getElementsByClassName('page');
+    page[0].style.top = `-${window.scrollY}px`;
+    page[0].classList.toggle('page-scroll-lock');
+    scrollLock = true;
+  } else if(document.getElementsByClassName('popup-show').length === 0){
+    let page = document.getElementsByClassName('page');
+    let scrollY = page[0].style.top;
+    page[0].style.top = '';
+    page[0].classList.toggle('page-scroll-lock');
+    window.scrollTo(0, parseInt(scrollY || '0') * -1)
+    scrollLock = false
+  }
 }
 
 export const PagePopup = ({children, width, height, popupId, zIndex}) => {

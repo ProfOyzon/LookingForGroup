@@ -110,7 +110,7 @@ const SideBar = () => {
       </div>
 
       <div className='Logout'>
-        <button>Logout</button>
+        <button onClick={() => {navigate(paths.routes.LOGIN)}}>Logout</button>
       </div>
     </div>
   );

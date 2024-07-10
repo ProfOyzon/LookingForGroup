@@ -8,7 +8,7 @@ export const SearchBar = ({ dataSets, onSearch }) => {
 
     let result;
     let placeholderText = "Search ";
-    result = placeholderText.concat("Projects"); 
+    result = `Search`;
 
     // --- Searching ---
     /*const [query, setQuery] = useState('');

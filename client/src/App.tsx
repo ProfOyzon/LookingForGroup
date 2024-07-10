@@ -1,6 +1,8 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import * as paths from "./constants/routes";
+import Login from './components/pages/Login';
+import Signup from './components/pages/Signup';
 import Home from "./components/pages/Home";
 import Messages from "./components/pages/Messages";
 import MyFeed from "./components/pages/MyFeed";
@@ -21,6 +23,8 @@ function App() {
         <SideBar />
         <Routes>
           <Route path={paths.routes.DEFAULT} element={<Home />} />
+          <Route path={paths.routes.LOGIN} element={<Login />} />
+          <Route path={paths.routes.SIGNUP} element={<Signup />} />
           <Route path={paths.routes.HOME} element={<Home />} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />
           <Route path={paths.routes.MYFEED} element={<MyFeed />} />

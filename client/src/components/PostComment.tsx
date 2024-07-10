@@ -7,8 +7,7 @@ import { profiles, comments } from "../constants/fakeData";
 //This component is used in the Project Post page, and contains code for structuring the full length of a comment
 //  This includes the comment itself, as well as any replies the comment has.
 //  Comprised of 2 different components that are repeatedly used to fully construct a full comment
-//Similarly to ProjectPostPage.tsx, any profile names can be clicked to navigate to the profile page
-//  In the future, it should also redirect specifically to the respective profile that is clicked
+//Similarly to ProjectPostPage.tsx, any profile names can be clicked to navigate to that user's profile page
 
 let i = 0;
 
@@ -73,7 +72,9 @@ export const PostComment = (props) => {
     <div className='post-comment'>
       <img className='comment-profile' src={profilePlaceholder} alt='profile'/>
       <div className='comment-header'>
-        <span className='comment-author' onClick={() => navigate(paths.routes.PROFILE)}>{profiles[comment.author].username}</span>
+        <span className='comment-author' onClick={() => navigate(paths.routes.PROFILE + `?profID=${comment.author}`)}>
+          {profiles[comment.author].username}
+        </span>
         <span className='comment-date'> {comment.createdDate}</span>
       </div>
 

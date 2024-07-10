@@ -18,11 +18,12 @@ import { projects } from "../../constants/fakeData";
 // no data is currently passed in through props
 
 export const GeneralSettings = (props) => {
+  const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
   return(
     <div id='general-settings'>
       <img id='picture-edit' src={profilePlaceholder} alt='project'/>
       <button id='edit-button' className='white-button'>Edit Picture</button>
-      <input id='name-edit' name='project-name' type='text' defaultValue={projects[0].name}></input>
+      <input id='name-edit' name='project-name' type='text' defaultValue={projectData.name}></input>
       <select id='theme-select'>
         <option value='classic'>Classic</option>
         <option value='cute'>Cute</option>

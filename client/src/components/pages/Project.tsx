@@ -23,7 +23,7 @@ import { createRoot } from "react-dom/client";
 // Placeholder ID for the page to use
 // Final product should be able of pull the data of any project with an id number passed in when the page loads
 //const { p } = useParams();
-//const projectID = p;
+let projectId;
 
 // Variables to hold the element with id 'settings-content'
 // Used with ReactDOM to render different settings tabs within the element
@@ -158,7 +158,7 @@ const changeTabs = (tab) => {
     initSettings();
   }
   if (tab === 'general'){
-    settingsRoot.render(<GeneralSettings projectID={projectID}/>);
+    settingsRoot.render(<GeneralSettings projectId={projectId}/>);
     document.getElementById('general-tab').className = 'tab-selected';
     document.getElementById('member-tab').className = 'tab';
   } else if (tab === 'members'){
@@ -277,7 +277,7 @@ const ProjectInfoMember = (props) => {
         <button id='edit-roles-button' className='white-button' onClick={editRoles}>Edit Roles</button>
       </div>
 
-      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={2}>
+      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3}>
         <div id='settings-window-test'>
             <h1>Project Settings</h1>
             <div id='settings-tabs'>
@@ -294,7 +294,7 @@ const ProjectInfoMember = (props) => {
         </div>
       </PagePopup>
 
-      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={3}>
+      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={4}>
         <div id='project-delete-check'>
           <h3>Are you sure you want to delete this project?</h3>
           <button id='project-delete-cancel' onClick={() => openClosePopup(1)}>Cancel</button>
@@ -320,15 +320,17 @@ const Project = (props) => {
   //Pulls project ID number from search query (should be stored as 'p')
   //(ex. [site path]/project?p=x , where x = the project ID number)
   let urlParams = new URLSearchParams(window.location.search);
-  let projectID = urlParams.get('projID');
+  projectId = urlParams.get('projID');
 
   //If search query doesn't yield anything, resort to a default project
-  if (projectID === null) {
+  if (projectId === null) {
     console.log('No query in url, loading default');
-    projectID = '0';
+    projectId = '0';
   }
 
-  const [projectData, setProjectData] = useState(projects[projectID]);
+  const currentProject = projects.find(p => p._id === Number(projectId)) || projects[0];
+
+  const [projectData, setProjectData] = useState(currentProject);
 
   return (
     <div id='project-page' className='page'>
@@ -373,7 +375,7 @@ const Project = (props) => {
         {
           projectData.posts.map(postNum => {
             return(
-              <ProjectPost title={posts[postNum].title} date={posts[postNum].createdDate} />
+              <ProjectPost postID={posts[postNum]._id} />
             );
           })
         }

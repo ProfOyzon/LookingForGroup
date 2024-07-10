@@ -162,9 +162,10 @@ const changeTabs = (tab) => {
     document.getElementById('general-tab').className = 'tab-selected';
     document.getElementById('member-tab').className = 'tab';
   } else if (tab === 'members'){
-    settingsRoot.render(<MemberSettings/>);
+    settingsRoot.render(<MemberSettings projectId={projectId}/>);
     document.getElementById('member-tab').className = 'tab-selected';
     document.getElementById('general-tab').className = 'tab';
+    console.log('member settings loaded');
   }
 }
 
@@ -287,7 +288,7 @@ const ProjectInfoMember = (props) => {
             </div>
             <hr/>
             <div id='settings-content'>
-            <GeneralSettings/>
+            <GeneralSettings projectId={projectId}/>
             </div>
             <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(0)}>Cancel</button>
             <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>

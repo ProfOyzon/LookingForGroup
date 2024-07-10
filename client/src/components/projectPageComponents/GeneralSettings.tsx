@@ -15,7 +15,7 @@ import { projects } from "../../constants/fakeData";
 /// Note: project data is currently hardcoded to only render the first project in the database
 /// Should try to pass in a project id number later to allow for rendering relevant project data
 
-// no data is currently passed in through props
+// projectId is passed through props, which is used to ensure correct data is pulled
 
 export const GeneralSettings = (props) => {
   const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];

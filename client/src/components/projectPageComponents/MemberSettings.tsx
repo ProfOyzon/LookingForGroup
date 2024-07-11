@@ -13,13 +13,14 @@ import { useState } from 'react';
 //    It currently searches through the project's member data rather than profile data, and no data on user's names are present there
 //    'true' and 'false' also manage to return results despite there being no indicators present within the display due to boolean values used in the data
 
-//No data is passed in through props currently
+//A projectId value is passed in to load members of the corresponding project
 
 //Used for the members tab of the project settings
 export const MemberSettings = (props) => {
   let i = 0;
+  const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
 
-  const [memberData, setMemberData] = useState(projects[0].members);
+  const [memberData, setMemberData] = useState(projectData.members);
 
   //Called when searchbar is used to remake member list
   const updateMembers = (members) => {
@@ -29,7 +30,7 @@ export const MemberSettings = (props) => {
   return(
     <div id='member-settings'>
       <div id='member-settings-header'>
-      <SearchBar data={projects[0].members} onSearch={updateMembers}/>
+      <SearchBar data={projectData.members} onSearch={updateMembers}/>
       <button className='white-button'>Invite</button>
       </div>
       <div id='member-settings-list'>

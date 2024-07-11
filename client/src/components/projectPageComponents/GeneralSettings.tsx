@@ -15,14 +15,15 @@ import { projects } from "../../constants/fakeData";
 /// Note: project data is currently hardcoded to only render the first project in the database
 /// Should try to pass in a project id number later to allow for rendering relevant project data
 
-// no data is currently passed in through props
+// projectId is passed through props, which is used to ensure correct data is pulled
 
 export const GeneralSettings = (props) => {
+  const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
   return(
     <div id='general-settings'>
       <img id='picture-edit' src={profilePlaceholder} alt='project'/>
       <button id='edit-button' className='white-button'>Edit Picture</button>
-      <input id='name-edit' name='project-name' type='text' defaultValue={projects[0].name}></input>
+      <input id='name-edit' name='project-name' type='text' defaultValue={projectData.name}></input>
       <select id='theme-select'>
         <option value='classic'>Classic</option>
         <option value='cute'>Cute</option>

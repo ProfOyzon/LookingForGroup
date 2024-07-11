@@ -1,7 +1,7 @@
 import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import * as paths from "../../constants/routes";
 import { ProjectPost } from "../projectPageComponents/ProjectPost";
@@ -22,7 +22,8 @@ import { createRoot } from "react-dom/client";
 
 // Placeholder ID for the page to use
 // Final product should be able of pull the data of any project with an id number passed in when the page loads
-const projectID = 0;
+//const { p } = useParams();
+let projectId;
 
 // Variables to hold the element with id 'settings-content'
 // Used with ReactDOM to render different settings tabs within the element
@@ -152,16 +153,20 @@ const toggleOptionDisplay = () => {
 //  Could potentially be reworked using react's 'useState' functionality
 
 // Utilizes the 'GeneralSettings' and 'MemberSettings' components for the separate tab renders
+// Error is occuring regarding the initSettings call- loading the project page more than once will cause
+// it not to be called, therefore not creating a 'settingsContainer' or 'settingsRoot' to use
 const changeTabs = (tab) => {
   if (settingsContainer === undefined){
+
     initSettings();
   }
+
   if (tab === 'general'){
-    settingsRoot.render(<GeneralSettings projectID={projectID}/>);
+    settingsRoot.render(<GeneralSettings projectId={projectId}/>);
     document.getElementById('general-tab').className = 'tab-selected';
     document.getElementById('member-tab').className = 'tab';
   } else if (tab === 'members'){
-    settingsRoot.render(<MemberSettings/>);
+    settingsRoot.render(<MemberSettings projectId={projectId}/>);
     document.getElementById('member-tab').className = 'tab-selected';
     document.getElementById('general-tab').className = 'tab';
   }
@@ -235,6 +240,7 @@ const ProjectInfo = (props) => {
 // All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
 const ProjectInfoMember = (props) => {
   const navigate = useNavigate(); // Hook for navigation
+  settingsContainer = undefined; // Resets the settingsContainer to ensure settings content loads correctly
   return (
     <div id='project-info-member'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
@@ -276,7 +282,7 @@ const ProjectInfoMember = (props) => {
         <button id='edit-roles-button' className='white-button' onClick={editRoles}>Edit Roles</button>
       </div>
 
-      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={2}>
+      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3}>
         <div id='settings-window-test'>
             <h1>Project Settings</h1>
             <div id='settings-tabs'>
@@ -286,14 +292,14 @@ const ProjectInfoMember = (props) => {
             </div>
             <hr/>
             <div id='settings-content'>
-            <GeneralSettings/>
+            <GeneralSettings projectId={projectId}/>
             </div>
             <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(0)}>Cancel</button>
             <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>
         </div>
       </PagePopup>
 
-      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={3}>
+      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={4}>
         <div id='project-delete-check'>
           <h3>Are you sure you want to delete this project?</h3>
           <button id='project-delete-cancel' onClick={() => openClosePopup(1)}>Cancel</button>
@@ -316,7 +322,20 @@ const ProjectInfoMember = (props) => {
 const Project = (props) => {
   window.scrollTo(0,0);
 
-  const [projectData, setProjectData] = useState(projects[projectID]);
+  //Pulls project ID number from search query (should be stored as 'p')
+  //(ex. [site path]/project?p=x , where x = the project ID number)
+  let urlParams = new URLSearchParams(window.location.search);
+  projectId = urlParams.get('projID');
+
+  //If search query doesn't yield anything, resort to a default project
+  if (projectId === null) {
+    console.log('No query in url, loading default');
+    projectId = '0';
+  }
+
+  const currentProject = projects.find(p => p._id === Number(projectId)) || projects[0];
+
+  const [projectData, setProjectData] = useState(currentProject);
 
   return (
     <div id='project-page' className='page'>
@@ -350,7 +369,7 @@ const Project = (props) => {
         {
           projectData.members.map(member => {
             return (
-              <ProjectMember onClick={() => window.location.href="profile"} name={profiles[member.userID].name} role={member.role} />
+              <ProjectMember onClick={() => window.location.href="profile"} memberId={member.userID} role={member.role} />
             );
           })
         }
@@ -361,7 +380,7 @@ const Project = (props) => {
         {
           projectData.posts.map(postNum => {
             return(
-              <ProjectPost title={posts[postNum].title} date={posts[postNum].createdDate} />
+              <ProjectPost postID={posts[postNum]._id} />
             );
           })
         }

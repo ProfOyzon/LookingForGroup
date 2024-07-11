@@ -24,13 +24,13 @@ export const MemberSettings = (props) => {
 
   //Called when searchbar is used to remake member list
   const updateMembers = (members) => {
-    setMemberData(members);
+    setMemberData(members[0]);
   }
 
   return(
     <div id='member-settings'>
       <div id='member-settings-header'>
-      <SearchBar data={projectData.members} onSearch={updateMembers}/>
+      <SearchBar dataSets={[{data: projectData.members}]} onSearch={updateMembers}/>
       <button className='white-button'>Invite</button>
       </div>
       <div id='member-settings-list'>

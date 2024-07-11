@@ -153,10 +153,14 @@ const toggleOptionDisplay = () => {
 //  Could potentially be reworked using react's 'useState' functionality
 
 // Utilizes the 'GeneralSettings' and 'MemberSettings' components for the separate tab renders
+// Error is occuring regarding the initSettings call- loading the project page more than once will cause
+// it not to be called, therefore not creating a 'settingsContainer' or 'settingsRoot' to use
 const changeTabs = (tab) => {
   if (settingsContainer === undefined){
+
     initSettings();
   }
+
   if (tab === 'general'){
     settingsRoot.render(<GeneralSettings projectId={projectId}/>);
     document.getElementById('general-tab').className = 'tab-selected';
@@ -165,7 +169,6 @@ const changeTabs = (tab) => {
     settingsRoot.render(<MemberSettings projectId={projectId}/>);
     document.getElementById('member-tab').className = 'tab-selected';
     document.getElementById('general-tab').className = 'tab';
-    console.log('member settings loaded');
   }
 }
 
@@ -237,6 +240,7 @@ const ProjectInfo = (props) => {
 // All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
 const ProjectInfoMember = (props) => {
   const navigate = useNavigate(); // Hook for navigation
+  settingsContainer = undefined; // Resets the settingsContainer to ensure settings content loads correctly
   return (
     <div id='project-info-member'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>

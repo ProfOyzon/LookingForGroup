@@ -1,6 +1,7 @@
 import "../styles.css"
 import postImagePlaceholder from "../../img/AhomeIcon.png";
 import { useNavigate } from 'react-router-dom';
+import { posts } from '../../constants/fakeData';
 import * as paths from "../../constants/routes";
 
 //This component is used in the Project page of the site
@@ -14,13 +15,19 @@ import * as paths from "../../constants/routes";
 
 export const ProjectPost = (props) => {
   const navigate = useNavigate();
+  let thisPost = posts.find(p => p._id === props.postID);
+  if (thisPost === undefined){
+    thisPost = posts[0];
+  }
+
+  const pathQuery = `?postID=${thisPost._id}`
   return (
-    <div className='project-post' onClick={() => navigate(paths.routes.PROJECTPOST)}>
+    <div className='project-post' onClick={() => navigate(paths.routes.PROJECTPOST + pathQuery)}>
       <img src={postImagePlaceholder} alt=''/>
       <div className='post-content'>
         <div className='post-info'>
-          <h3 className='post-title'>{props.title}</h3>
-          <div className='post-date'>{props.date}</div>
+          <h3 className='post-title'>{thisPost.title}</h3>
+          <div className='post-date'>{thisPost.createdDate}</div>
         </div>
       
         <button className='white-button'><img src='' alt=''/></button>

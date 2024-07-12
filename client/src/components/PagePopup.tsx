@@ -30,7 +30,6 @@ export const openClosePopup = (popupId) => {
   //document.getElementById errors are due to typescript, they still run without issue
   document.getElementById(`popup-cover-${popupId}`).classList.toggle('popup-cover-show');
   document.getElementById(`popup-container-${popupId}`).classList.toggle('popup-show');
-  console.log(document.getElementsByClassName('popup-show'));
   //If a popup is open, disables scrolling of page
   //When all popups are closed, re-enables page scrolling
   //This is accomplished by toggling a specific style rule on the page itself
@@ -75,7 +74,9 @@ export const PagePopup = ({children, width, height, popupId, zIndex}) => {
         top: `clamp(2.5vh, calc((100% - ${height})/2), 100%)`, 
         left: `clamp(2.5vw, calc((100% - ${width})/2), 100%)`,
         zIndex: zIndex}}>
-        <button id='popup-close' className='white-button' onClick={() => openClosePopup(popupId)}>X</button>
+        <button id='popup-close' className='white-button' onClick={() => openClosePopup(popupId)}>
+          <img src="images/icons/cancel.png" alt="close" />
+        </button>
         <div>{children}</div>
       </div>
     </>

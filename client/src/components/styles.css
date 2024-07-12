@@ -1,6 +1,14 @@
 :root {
-    --orange: #efefef;
-    --orange-hover: #DE6B17;
+    --orange: #F35835;
+    --orange-hover: #d83410;
+    --green: #97E5AB;
+    --blue: #99E6EA;
+    --purple: #B1A2DB;
+    --medGray: #E3E3E3;
+    --lightGray: #EEEEEE;
+    --gray: #969696;
+    --darkGray: #414141;
+    --white: #FBFBFB;
 }
 
 #notif-popup {
@@ -1309,6 +1317,7 @@ Page Popup style rules
     display:block;
     position: fixed;
     background-color: white;
+    border-radius: 4px;
     max-width: 95vw;
     max-height: 95vh;
     opacity: 100%;
@@ -1318,8 +1327,14 @@ Page Popup style rules
 
 #popup-close {
     position: absolute;
+    border-radius: 4px;
     top: 10px;
     right: 10px;
+}
+
+#popup-close img {
+    width:40px;
+    height:40px;
 }
 
 .page-scroll-lock {

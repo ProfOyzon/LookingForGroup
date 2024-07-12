@@ -10,7 +10,19 @@ import { ProfileProjects } from "../Profile/ProfileProjects";
 import { useState } from "react";
 
 const Profile = (props) => {
-  const [UID, setUID] = useState(profiles[0]._id);
+  //Get profile id from search query
+  let urlParams = new URLSearchParams(window.location.search);
+  let profileID = urlParams.get('profID');
+
+  //If nothing is found, use a default id
+  if (profileID === null) {
+    profileID = '0';
+  }
+
+  //Find profile data using id & assign it to a value to use
+  const profileData = profiles.find(p => p._id === Number(profileID)) || profiles[0];
+  
+  const [UID, setUID] = useState(profileData._id);
   const user = profiles[UID];
 
   window.scrollTo(0,0);

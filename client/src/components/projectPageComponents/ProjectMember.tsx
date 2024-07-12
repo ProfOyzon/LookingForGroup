@@ -1,6 +1,7 @@
 import "../styles.css"
 import profilePlaceholder from "../../img/profile-user.png";
 import { useNavigate } from 'react-router-dom';
+import { profiles } from '../../constants/fakeData'
 import * as paths from "../../constants/routes";
 
 //This component is used in the project page of the site
@@ -12,10 +13,15 @@ import * as paths from "../../constants/routes";
 
 export const ProjectMember = (props) => {
   const navigate = useNavigate();
+  let profile = profiles.find(p => p._id === props.memberId);
+  if (profile === undefined) {
+    profile = profiles[0];
+  }
+  const pathQuery = `?profID=${profile._id}`;
   return (
-    <div className='project-member' onClick={() => navigate(paths.routes.PROFILE)}>
+    <div className='project-member' onClick={() => navigate(paths.routes.PROFILE + pathQuery)}>
       <img src={profilePlaceholder} alt=''/>
-      <h2 className='member-name' onClick={() => window.location.href="profile"}>{props.name}</h2>
+      <h2 className='member-name' onClick={() => window.location.href="profile"}>{profile.name}</h2>
       <div className='member-role'>{props.role}</div>
     </div>
   )

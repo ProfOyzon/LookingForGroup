@@ -153,7 +153,9 @@
     Hats
   */
 
-#avatar-hat-container {
+#avatar-hat-container,
+#avatar-outfit-container,
+#avatar-accessory-container {
   /* border: 1px solid black; */
   position: fixed;
   width: 220px;
@@ -164,7 +166,9 @@
   align-items: end;
 }
 
-.avatar-hat {
+.avatar-hat,
+.avatar-clothes,
+.avatar-accessories {
   width: 100%;
 }
 
@@ -207,7 +211,9 @@
   gap: 10px;
 }
 
-#avatar-hats {
+#avatar-hats,
+#avatar-clothes,
+#avatar-accessories {
   gap: 10px;
 }
 
@@ -221,16 +227,22 @@
 }
 
 .avatar-color-option:hover,
-.avatar-hat-option:hover {
+.avatar-hat-option:hover,
+.avatar-clothes-option:hover,
+.avatar-accessory-option:hover {
   cursor: pointer;
 }
 
 .avatar-color-option:active,
-.avatar-hat-option:active {
+.avatar-hat-option:active,
+.avatar-clothes-option:active,
+.avatar-accessory-option:active {
   transform: scale(0.9);
 }
 
-.avatar-hat-option {
+.avatar-hat-option,
+.avatar-clothes-option,
+.avatar-accessory-option {
   width: 80px;
   height: 80px;
   border: 2px solid var(--medGray);
@@ -244,11 +256,13 @@
   /* object-fit: contain; */
 }
 
-.avatar-hat-option img {
+.avatar-hat-option img,
+.avatar-clothes-option img,
+.avatar-accessory-option img {
   width: 250px;
   object-fit: contain;
   /* margin: auto; */
-  border: 1px solid palevioletred;
+  /* border: 1px solid palevioletred; */
 }
 
 /* 
@@ -342,7 +356,7 @@
   transform: scale(0.95);
 }
 
-@media screen and (max-width: 1020px){
+@media screen and (max-width: 1020px) {
   .MakeAvatar {
     width: 800px;
   }

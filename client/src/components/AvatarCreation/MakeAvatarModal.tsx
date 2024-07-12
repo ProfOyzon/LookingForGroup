@@ -15,7 +15,7 @@ const avatars = {
 // ex. if you place these images directly on top of the cat avatar, they will be positioned correctly
 // in the case of the frog, since it's head is a bit lower, it uses it's own className and just lowers the hat position
 const displayHats = [
-    { src: "images/icons/hats/noHat.png", alt: "none" },
+    { src: "images/icons/noItem.png", alt: "none" },
     { src: "images/hats/pinkBow.png", alt: "pink bow" },
     { src: "images/hats/flowerCrown.png", alt: "flower crown" },
     { src: "images/hats/plant.png", alt: "plant" },
@@ -29,7 +29,7 @@ const displayHats = [
 // array of hat images and alt text for the hat option boxes
 // these images are different, the hats are centered in the image
 const hatIcons = [
-    { src: "images/icons/hats/noHat.png", alt: "none" },
+    { src: "images/icons/noItem.png", alt: "none" },
     { src: "images/icons/hats/pinkBowCenter.png", alt: "pink bow" },
     { src: "images/icons/hats/flowerCrownCenter.png", alt: "flower crown" },
     { src: "images/icons/hats/plantCenter.png", alt: "plant" },
@@ -38,6 +38,38 @@ const hatIcons = [
     { src: "images/icons/hats/wizardHatCenter.png", alt: "wizard hat" },
     { src: "images/icons/hats/chefsHatCenter.png", alt: "chef's hat" },
     { src: "images/icons/hats/topHatCenter.png", alt: "top hat" },
+];
+
+// array of clothes images and alt text
+const displayClothes = [
+    { src: "images/icons/noItem.png", alt: "none" },
+    { src: "images/clothes/tutu.png", alt: "tutu" },
+    { src: "images/clothes/overalls.png", alt: "overalls" },
+    { src: "images/clothes/cowboyVest.png", alt: "cowboy vest eith sherrif's badge" },
+    { src: "images/clothes/darkJacket.png", alt: "dark jacket" },
+];
+
+// array of clothes images and alt text for the clothes option boxes
+const clothesIcons = [
+    { src: "images/icons/noItem.png", alt: "none" },
+    { src: "images/clothes/tutu.png", alt: "tutu" },
+    { src: "images/clothes/overalls.png", alt: "overalls" },
+    { src: "images/clothes/cowboyVest.png", alt: "cowboy vest eith sherrif's badge" },
+    { src: "images/clothes/darkJacket.png", alt: "dark jacket" },
+];
+
+// array of accessory images and alt text
+const displayAccessories = [
+    { src: "images/icons/noItem.png", alt: "none" },
+    { src: "images/accessories/cyberGlasses.png", alt: "cyber glasses" },
+    { src: "images/accessories/wand.png", alt: "wand" },
+];
+
+// array of accessory images and alt text for the accessory option boxes
+const accessoryIcons = [
+    { src: "images/icons/noItem.png", alt: "none" },
+    { src: "images/accessories/cyberGlasses.png", alt: "cyber glasses" },
+    { src: "images/accessories/wand.png", alt: "wand" },
 ];
 
 const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
@@ -58,8 +90,22 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
         frog: avatars.frog[0],
         fox: avatars.fox[0],
     });
-    // current hats for the selected avatar
+    // current hats for each avatar when selected
     const [currentHats, setCurrentHats] = useState({
+        cat: "",
+        dog: "",
+        frog: "",
+        fox: "",
+    });
+    // current clothes for each avatar when selected
+    const [currentClothes, setCurrentClothes] = useState({
+        cat: "",
+        dog: "",
+        frog: "",
+        fox: "",
+    });
+    // current accessories for each avatar when selected
+    const [currentAccessories, setCurrentAccessories] = useState({
         cat: "",
         dog: "",
         frog: "",
@@ -87,14 +133,28 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
         setSelectedAvatar(Object.keys(avatars)[n - 1]);
     };
 
-    // change the selected hat
-    const changeHat = (index) => {
-        const hat = displayHats[index].src;
+    // change the selected item (hat, clothes, accessory)
+    const changeItems = (index, type) => {
+        const items = {
+            hat: displayHats[index] ? displayHats[index].src : null,
+            clothes: displayClothes[index] ? displayClothes[index].src : null,
+            accessory: displayAccessories[index] ? displayAccessories[index].src : null,
+        };
 
-        setCurrentHats((prevHats) => ({
-            ...prevHats,
-            // if the hat is the cancel icon, remove the hat
-            [selectedAvatar]: hat === "images/icons/hats/noHat.png" ? "" : hat,
+        const currentItem = items[type];
+        const noItem = "images/icons/noItem.png";
+
+        if (!currentItem) return;
+
+        const currentItemState = {
+            hat: setCurrentHats,
+            clothes: setCurrentClothes,
+            accessory: setCurrentAccessories,
+        };
+        
+        currentItemState[type]((prevItems) => ({
+            ...prevItems,
+            [selectedAvatar]: currentItem === noItem ? "" : currentItem,
         }));
     };
 
@@ -111,14 +171,8 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
     // based on the selected avatar to display the hat correctly (location)
     const getHatClass = (avatar) => {
         switch (avatar) {
-            // case "cat":
-            //     return "hat cat-hat";
-            // case "dog":
-            //     return "hat dog-hat";
             case "frog":
                 return "avatar-hat avatar-frog-hat";
-            // case "fox":
-            //     return "hat fox-hat";
             default:
                 return "avatar-hat";
         }
@@ -131,16 +185,15 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
 
     // save and update the avatar
     const updateAvatar = () => {
-        // placeholder
-        // alert("Avatar updated!");
-
         // get the images in the displayed avatar
         const avatar = document.getElementById(`currentAvatar-${selectedAvatar}`) as HTMLImageElement;
         const hat = document.getElementById(`currentHat-${selectedAvatar}`) as HTMLImageElement;
+        const outfit = document.getElementById(`currentClothes-${selectedAvatar}`) as HTMLImageElement;
+        const accessory = document.getElementById(`currentAccessory-${selectedAvatar}`) as HTMLImageElement;
 
-        // check if the avatar and hat exist (they always should but just in case)
-        if (!avatar || !hat) return;
-        
+        // check if the avatar, hat, and outfit exist (they always should but just in case)
+        if (!avatar || !hat || !outfit || !accessory) return;
+
         // create a canvas to draw the images on
         const canvas = document.createElement("canvas");
         canvas.width = avatar.width;
@@ -150,15 +203,23 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
         if (!ctx) return;
 
         // draw the images on the canvas
+        // draw the avatar
         ctx.drawImage(avatar, 0, 0, avatar.width, avatar.height);
 
+        // draw the hat
         // adjust the hat position based on the avatar
         if (selectedAvatar === "frog") {
             ctx.drawImage(hat, 0, 10, hat.width, hat.height);
-        } 
+        }
         else {
             ctx.drawImage(hat, 0, 0, hat.width, hat.height);
         }
+
+        // draw the outfit
+        ctx.drawImage(outfit, 0, 0, outfit.width, outfit.height);
+
+        // draw the accessory
+        ctx.drawImage(accessory, 0, 0, accessory.width, accessory.height);
 
         // save the canvas as a new image and display in sidebar
         const newAvatar = canvas.toDataURL("image/png");
@@ -202,6 +263,14 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
                                         </div>
 
                                         <img src={currentColors[key]} alt={key} className="avatar-animals" id={`currentAvatar-${key}`} />
+
+                                        <div id="avatar-outfit-container">
+                                            <img src={currentClothes[key]} alt="" className="avatar-clothes" id={`currentClothes-${key}`} />
+                                        </div>
+
+                                        <div id="avatar-accessory-container">
+                                            <img src={currentAccessories[key]} alt="" className="avatar-accessories" id={`currentAccessory-${key}`} />
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -232,10 +301,16 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
                         {/* tab links */}
                         <div className="avatar-tabs">
                             <div className={`avatar-tab-links ${activeTab === "avatar-color" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-color")}>
-                                <img src="images/icons/paint-bucket.png" alt="palette" className="avatar-icon" />
+                                <img src="images/icons/paint-bucket.png" alt="paint bucket" className="avatar-icon" />
                             </div>
                             <div className={`avatar-tab-links ${activeTab === "avatar-hats" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-hats")}>
-                                <img src="images/icons/cowboy-hat.png" alt="palette" className="avatar-icon" />
+                                <img src="images/icons/cowboy-hat.png" alt="hat" className="avatar-icon" />
+                            </div>
+                            <div className={`avatar-tab-links ${activeTab === "avatar-clothes" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-clothes")}>
+                                <img src="images/icons/clothes-hanger.png" alt="clothes hanger" className="avatar-icon" />
+                            </div>
+                            <div className={`avatar-tab-links ${activeTab === "avatar-accessories" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-accessories")}>
+                                <img src="images/icons/sunglasses.png" alt="sunglasses" className="avatar-icon" />
                             </div>
                         </div>
 
@@ -254,8 +329,30 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
                         <div className={`avatar-tab-contents ${activeTab === "avatar-hats" ? "avatar-active-tab" : ""}`} id="avatar-hats">
                             <div className="avatar-options">
                                 {hatIcons.map((hat, index) => (
-                                    <div key={index} className="avatar-hat-option" onClick={() => changeHat(index)}>
+                                    <div key={index} className="avatar-hat-option" onClick={() => changeItems(index, 'hat')}>
                                         <img src={hat.src} alt={hat.alt} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* clothes options */}
+                        <div className={`avatar-tab-contents ${activeTab === "avatar-clothes" ? "avatar-active-tab" : ""}`} id="avatar-clothes">
+                            <div className="avatar-options">
+                                {clothesIcons.map((clothes, index) => (
+                                    <div key={index} className="avatar-clothes-option" onClick={() => changeItems(index, 'clothes')}>
+                                        <img src={clothes.src} alt={clothes.alt} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* accessories options */}
+                        <div className={`avatar-tab-contents ${activeTab === "avatar-accessories" ? "avatar-active-tab" : ""}`} id="avatar-accessories">
+                            <div className="avatar-options">
+                                {accessoryIcons.map((accessory, index) => (
+                                    <div key={index} className="avatar-accessory-option" onClick={() => changeItems(index, 'accessory')}>
+                                        <img src={accessory.src} alt={accessory.alt} />
                                     </div>
                                 ))}
                             </div>

@@ -1,7 +1,7 @@
 import "../styles.css";
 import { MemberListing } from "./MemberListing";
 import { SearchBar } from "../SearchBar";
-import { projects } from "../../constants/fakeData";
+import { projects, profiles } from "../../constants/fakeData";
 import { useState } from 'react';
 
 //This component is used in the project member view of the Project page
@@ -20,7 +20,16 @@ export const MemberSettings = (props) => {
   let i = 0;
   const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
 
-  const [memberData, setMemberData] = useState(projectData.members);
+  let members = projectData.members.map(member => {
+    let profile = profiles.find(p => p._id === Number(member.userID));
+    if (profile !== undefined) {
+      return (
+        {name: profile.name, username: profile.username, role: member.role}
+      );
+    }
+  })
+
+  const [memberData, setMemberData] = useState(members);
 
   //Called when searchbar is used to remake member list
   const updateMembers = (members) => {
@@ -30,19 +39,21 @@ export const MemberSettings = (props) => {
   return(
     <div id='member-settings'>
       <div id='member-settings-header'>
-      <SearchBar dataSets={[{data: projectData.members}]} onSearch={updateMembers}/>
+      <SearchBar dataSets={[{data: members}]} onSearch={updateMembers}/>
       <button className='white-button'>Invite</button>
       </div>
       <div id='member-settings-list'>
         <hr/>
         {memberData.map(member => {
-          i++;
-          return(
-            <>
-            <MemberListing id={member.userID} role={member.role} num={i}/>
-            <hr/>
-            </>
-          )
+          if (member !== undefined){
+            i++;
+            return(
+              <>
+              <MemberListing name={member.name} role={member.role} num={i}/>
+              <hr/>
+              </>
+            )
+          } 
         })
         }
       </div>

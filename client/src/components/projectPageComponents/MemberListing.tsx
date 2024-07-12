@@ -21,14 +21,14 @@ const moreSettingsToggle = (i) => {
   document.getElementById(currentId).classList.toggle("settings-show");
 }
 
-//Takes in a user id, their project role, and an id number for the dropdown menu as props
-//  The user id is used to find a name within profiles, role contains a string showing what their role is,
+//Takes in a user's name, their project role, and an id number for the dropdown menu as props
+//  The user name is used as the rendered name, role contains a string showing what their role is,
 //  and the id number is used to ensure correct functionality when opening/closing menus
 export const MemberListing = (props) => {
   return(
     <div className='member-settings-listing'>
     <img className='member-settings-profile' src={profilePlaceholder} alt=''/>
-    <span className='member-settings-name'>{profiles[props.id].name}</span>
+    <span className='member-settings-name'>{props.name}</span>
     <span className='member-settings-role'>{props.role}</span>
     <button className='member-settings-edit'><img src=''/></button>
     <button className='member-settings-more' onClick={() => moreSettingsToggle(props.num)}>

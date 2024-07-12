@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import * as paths from "./constants/routes";
 import React, { useState } from 'react';
 import Login from './components/pages/Login';
-import Signup from './components/pages/Signup';
+import SignUp from './components/pages/SignUp';
 import Home from "./components/pages/Home";
 import Messages from "./components/pages/Messages";
 import MyFeed from "./components/pages/MyFeed";
@@ -27,7 +27,7 @@ function App() {
         <Routes>
           <Route path={paths.routes.DEFAULT} element={<Home />} />
           <Route path={paths.routes.LOGIN} element={<Login />} />
-          <Route path={paths.routes.SIGNUP} element={<Signup />} />
+          <Route path={paths.routes.SIGNUP} element={<SignUp />} />
           <Route path={paths.routes.HOME} element={<Home />} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />
           <Route path={paths.routes.MYFEED} element={<MyFeed />} />

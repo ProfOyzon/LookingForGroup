@@ -1,38 +1,58 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from 'react';
 
 import { ProjectCard } from "./ProjectCard";
 import { projects } from "../constants/fakeData";
 
-export const SearchBar = ({data, HandleChange}) => {
+export const SearchBar = ({ dataSets, onSearch }) => {
 
     let result;
     let placeholderText = "Search ";
-    /* result = placeholderText.concat(data); */
-    const [query, setQuery] = useState('');
+    result = `Search`;
 
+    // --- Searching ---
+    /*const [query, setQuery] = useState('');
 
-    const HandleSearch = (data) => {
-        setQuery(data.target.value);
-    }
+    useEffect(() => {
+      const filteredResults = dataSets.map(dataSet =>
+        dataSet.data.filter(item =>
+          Object.values(item).some(value =>
+            String(value).toLowerCase().includes(query.toLowerCase())
+          )
+        )
+      );
+      onSearch(filteredResults);
+    }, [query, dataSets, onSearch]);
 
-    const filteredSearch = projects.filter(item =>
-        item.name.toLowerCase().includes(query.toLowerCase())
-    )
+    const HandleChange = (event) => {
+        setQuery(event.target.value);
+    }*/
 
-    return (
-        <>
-            <div className="search-wrapper">
-                <form className="search-bar">
-                    <button type="submit" className="search-button"><i className="fa fa-search"></i></button>
-                    <input className="search-input" type="text" placeholder={result} onChange={HandleChange}></input>
-                </form>
-                 {/* {filteredSearch.map((project) => (
-                    <ProjectCard project={project}></ProjectCard>
-                ))} 
- */}
-                
-            </div>
-        </>
-    )
+        const [query, setQuery] = useState('');
+
+        const HandleChange = (event) => {
+          const newQuery = event.target.value;
+          setQuery(newQuery);
+      
+          const filteredResults = dataSets.map(dataSet =>
+            dataSet.data.filter(item =>
+              Object.values(item).some(value =>
+                String(value).toLowerCase().includes(newQuery.toLowerCase())
+              )
+            )
+          );
+          onSearch(filteredResults);
+        };
+
+return (
+    <>
+        <div className="search-wrapper">
+            <form className="search-bar">
+                <button type="submit" className="search-button"><i className="fa fa-search"></i></button>
+                <input className="search-input" type="text" placeholder={result} onChange={HandleChange}></input>
+            </form>
+             
+        </div>
+    </>
+)
 }

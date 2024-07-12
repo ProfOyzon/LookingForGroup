@@ -29,7 +29,7 @@ export const softSkills = [
 
 export const hardSkills = [
     "Full-stack Development",
-    "Backend Development",
+    "Back-end Development",
     "Front-end Development",
     "Software Development",
     "Cloud Development",

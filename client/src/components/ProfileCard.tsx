@@ -1,5 +1,7 @@
 import React from "react";
 import { Tags } from "./Tags";
+import { useNavigate } from 'react-router-dom';
+import * as paths from "../constants/routes";
 
 import profilePicture from "../images/blue_frog.png";
 import followPicture from "../images/heart.png";
@@ -7,11 +9,13 @@ import followPicture from "../images/heart.png";
 import { projects } from "../constants/fakeData";
 
 export const ProfileCard = ({profile}) => {
+    const navigate = useNavigate();
+    const pathQuery = `?profID=${profile._id}`;
     return (
         <div className="discover-card">
             <img id="discover-card-profile-picture" src={profilePicture} alt={profile.name}/>
             <div id="discover-card-body">
-                <span><h2 id="discover-card-name" onClick={() => window.location.href="profile"}>{profile.name}</h2>
+                <span><h2 id="discover-card-name" onClick={() => navigate(paths.routes.PROFILE + pathQuery)}>{profile.name}</h2>
                 <p id="discover-card-pronouns">{profile.pronouns.map(p => `${p}`).join("/")}</p></span>
                 <p id="discover-card-description">{profile.bio}</p>
                 <div id="discover-card-tag-wrapper">

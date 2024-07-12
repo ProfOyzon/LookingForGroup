@@ -6,16 +6,12 @@
     left: 220px;
 }
 
-#profileHeader {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
 .header {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 24px;
+    justify-content: space-around;
+    gap: 64px;
     padding: 2px 8px;
 }
 
@@ -23,16 +19,8 @@ section {
     margin: 10px;
     padding: 4px 8px 4px 8px;
     border-style: solid;
-    border-color: black;
-    border-radius: 3px;
-}
-
-.list {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: center;
-
+    border: 2px solid black;
+    box-shadow: 10px 10px 5px lightblue;
 }
 
 @media only screen and (max-width: 800px) {

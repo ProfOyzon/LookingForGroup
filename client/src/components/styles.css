@@ -1,6 +1,14 @@
 :root {
-    --orange: #F76902;
-    --orange-hover: #DE6B17;
+    --orange: #F35835;
+    --orange-hover: #d83410;
+    --green: #97E5AB;
+    --blue: #99E6EA;
+    --purple: #B1A2DB;
+    --medGray: #E3E3E3;
+    --lightGray: #EEEEEE;
+    --gray: #969696;
+    --darkGray: #414141;
+    --white: #FBFBFB;
 }
 
 #notif-popup {
@@ -28,8 +36,9 @@
 }
 
 .notif-button-icon {
-    width: 4vw;
+    width: 40px;
     height: auto;
+    margin: 10px;
 }
 
 .notif-header {
@@ -45,8 +54,8 @@
 }
 
 .discover-card,
-.endorsement {
-    width: 60%;
+.endorsement, .profile-project-card {
+    width: 70%;
     max-width: 765px;
     max-height: 265px;
     border: 2px solid black;
@@ -54,7 +63,7 @@
     display: grid;
     grid-template-columns: 30% 70%;
     text-align: left;
-    padding: 2%;
+    padding: 3%;
     margin: 2.5% auto;
     transition: 1s;
     opacity: 0;
@@ -82,17 +91,24 @@
     }
 }
 
-.discover-card:hover .endorsement:hover {
+.discover-card:hover .endorsement:hover, .profile-project-card:hover{
     transform: scale(1.05);
 }
 
-#discover-card-body {
+#discover-card-body{
     margin-left: 10%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     grid-template-rows: 10% 50% 30% 10%;
     font-size: 0.8rem;
+}
+
+#profile-project-body{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
 }
 
 #message-card #discover-card-body {
@@ -104,10 +120,14 @@
     flex: 1;
 }
 
-#discover-card-profile-picture {
+#discover-card-profile-picture, #profile-project-profile-picture {
     width: 100%;
     border: 2px solid black;
     border-radius: 100%;
+}
+
+#profile-project-profile-picture{
+    width: 80%;
 }
 
 #message-card #discover-card-profile-picture {
@@ -124,7 +144,7 @@
     text-align: left;
 }
 
-#discover-card-name:hover {
+#discover-card-name:hover, #profile-project-name:hover {
     text-decoration: underline;
 }
 
@@ -136,7 +156,8 @@
 #discover-card-tag-wrapper {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
+    gap: 4px;
     max-width: 450px;
 }
 
@@ -193,7 +214,7 @@
     font-size: 30px;
 }
 
-.discover-button {
+.discover-button{
     border-radius: 10px;
     border: 2px solid var(--orange);
     font-size: 1.5vw;
@@ -201,6 +222,23 @@
     padding: 0.6vw;
     margin: 1vw;
     cursor: pointer;
+}
+
+.tab-button{
+    border: 2px solid lightseagreen;
+    border-radius: 5px;
+    text-align: center;
+    padding: .5vw;
+    margin-left: .5vw;
+    margin-right: .5vw;
+    background-color: white;
+}
+
+.active{
+    background-color: lightblue;
+}
+
+.tab-header{
 }
 
 .discover-main-content {
@@ -236,18 +274,17 @@
     grid-template-columns: 14% 14% 72%;
 }
 
+#discover-button-wrapper>* {
+    max-height: 50px;
+}
+
 .search-wrapper {
     display: flex;
     flex-direction: row;
     align-content: right;
     justify-self: end;
     height: auto;
-    /* width: 40%; */
     margin: 1vw 50px;
-}
-
-#discover-button-wrapper>* {
-    max-height: 50px;
 }
 
 .search-bar {
@@ -258,7 +295,9 @@
     text-align: left;
     display: flex;
     flex-direction: row;
+    float: right;
     align-content: center;
+    margin: auto;
 }
 
 .search-input {
@@ -296,12 +335,14 @@
     top: 0px;
     left: 0px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+    z-index: 1;
+    background-color: white;
 }
 
 .SideBarContainer h1 {
     width: 220px;
     height: 5vh;
-    font-size: 2vw;
+    font-size: 24px;
 }
 
 .ProfileContainer {
@@ -342,29 +383,46 @@
 .containerButtonSideBar button:hover {
     /* transform: scale(1.1); */
     transition-duration: 0.25s;
-    background-color: #eeeeee;
+    background-color: #e3e3e3;
 }
 
-.dot {
-    height: 125px;
-    width: 125px;
-    background-color: white;
-    border-radius: 50%;
-    display: inline-block;
-    border: solid black 1px;
+.containerButtonSideBar button.active {
+    background-color: #eeeeee;
+    transition: 0.25s;
+}
 
+/* Profile picture or avatar */
+.displayProfilePic {
+    height: 140px;
+    width: 140px;
+    background-color: white;
+    border-radius: 4px;
+    display: flex;
+    border: 1px solid rgba(0, 0, 0, 0);
+    box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25);
+    margin-bottom: 14px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.displayProfilePic img{
+    scale: 1.1;
+}
+
+.displayProfilePic:hover {
+    cursor: pointer;
+    border: 1px solid var(--orange);
 }
 
 .Logout {
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 .Logout button {
-    background-color: var(--orange);
-    color: white;
+    background-color: white;
+    color: var(--orange);
     position: absolute;
     bottom: 0;
     margin-bottom: 40px;
@@ -372,7 +430,7 @@
     height: 40px;
     font-size: 18px;
     border: none;
-    border-radius: 50px;
+    border-radius: 10px;
     outline: solid var(--orange) 2px;
     font-weight: 900;
 }
@@ -380,8 +438,8 @@
 .Logout button:hover {
     /* transform: scale(1.1); */
     transition-duration: 0.25s;
-    background-color: white;
-    color: var(--orange);
+    background-color: var(--orange);
+    color: white;
     outline: solid var(--orange) 2px;
     cursor: pointer;
 }
@@ -390,6 +448,11 @@
     width: 80%;
     margin: 2% auto;
     text-align: left;
+}
+
+#profile-banner{
+    width: 80%;
+    height: 20vh;
 }
 
 #profile-header {
@@ -508,6 +571,53 @@ Project page style rules
     flex-direction: column;
     justify-content: space-around;
     margin: 15px 20px;
+}
+
+#create-project-desc{
+    width: 80%;
+    height: 30vh;
+}
+
+#create-project-button-list{
+    position: absolute;
+    bottom: 1vh;
+    right: 1vw;
+}
+
+#create-page-1{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 64px;
+    padding: 2px 8px;
+    width: 80%;
+    margin: auto;
+}
+
+#create-page-2{
+    text-align: left;
+    margin-left: 3%;
+}
+
+#create-page-2 h2{
+    text-align: center;
+}
+
+#create-dates{
+    display: flex;
+    flex-direction: column;
+}
+
+#create-project-name{
+    width: 100%;
+}
+
+#create-project-roles{
+    background-color: #D0D0D0;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
 }
 
 @media only screen and (max-width: 800px) {
@@ -683,6 +793,11 @@ Project page style rules
 .project-member {
     width: 200px;
     min-width: 200px;
+    cursor: pointer;
+}
+
+.project-member:hover {
+    background-color:#dfdfdf;
 }
 
 .project-member img {
@@ -704,16 +819,31 @@ Project page style rules
 .project-post {
     box-shadow: 5px 5px 10px grey;
     width: 95%;
+    max-width: 260px;
+    height: 310px;
+    /* larger-size rules
     max-width: 440px;
     height: 520px;
+    */
     padding: 10px;
+    cursor: pointer;
+}
+
+.project-post:hover {
+    background-color: #dfdfdf;
 }
 
 .project-post img {
+    width: 50vw;
+    height: 50vw;
+    max-width: 220px;
+    max-height: 220px;
+    /* larger-size rules
     width: 85vw;
     height: 85vw;
     max-width: 420px;
     max-height: 420px;
+    */
 }
 
 .post-content {
@@ -783,6 +913,32 @@ Project page style rules
     margin-left: auto;
     color: red;
     border: 2px solid red;
+}
+
+#project-delete-check{
+    padding: 10px 0;
+}
+
+#project-delete-cancel{
+    position:absolute;
+    bottom:10px;
+    left:10px;
+    height:30px;
+}
+
+#project-delete-final{
+    position:absolute;
+    bottom:10px;
+    right:10px;
+    background-color:red;
+    color:white;
+    height:30px;
+    border:none;
+}
+
+#project-delete-final:hover{
+    background-color:#af0000;
+    color:#a0a0a0
 }
 
 #settings-content {
@@ -856,6 +1012,11 @@ project page member settings rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 */
 
+#member-settings-header {
+    display:flex;
+    justify-content: center;
+}
+
 #member-settings-list {
     height: 50vh;
     overflow-y: auto;
@@ -900,10 +1061,6 @@ project page member settings rules
     width: 90%;
     height: 40%;
     margin: 2.5% auto;
-}
-
-.active {
-    background-color: lightblue;
 }
 
 #create-proj-btn {
@@ -1008,6 +1165,11 @@ Project Post Page style rules
 
 #post-author {
     font-weight: 600;
+    cursor: pointer;
+}
+
+#post-author:hover {
+    text-decoration-line:underline;
 }
 
 #author-role {
@@ -1058,6 +1220,14 @@ Project Post Page style rules
     text-align: left;
 }
 
+.comment-author {
+    cursor:pointer;
+}
+
+.comment-author:hover{
+    text-decoration-line:underline;
+}
+
 .comment-date {
     color: var(--orange);
 }
@@ -1095,12 +1265,16 @@ Project Post Page style rules
 }
 
 #reply-prompt {
+    display: flex;
     grid-area: prompt;
-    text-align: left;
+    flex-direction:row;
+    gap:10px;
 }
 
 #reply-input {
     grid-area: input;
+    resize: none;
+    width: 100%;
 }
 
 #reply-attach-buttons {
@@ -1143,18 +1317,29 @@ Page Popup style rules
     display:block;
     position: fixed;
     background-color: white;
+    border-radius: 4px;
     max-width: 95vw;
     max-height: 95vh;
     opacity: 100%;
     /*top: 10vh;
     left: 10vw;*/
-    z-index: 1;
 }
 
-#popup-close{
-    position:absolute;
-    top: 20px;
-    right: 20px;
+#popup-close {
+    position: absolute;
+    border-radius: 4px;
+    top: 10px;
+    right: 10px;
+}
+
+#popup-close img {
+    width:40px;
+    height:40px;
+}
+
+.page-scroll-lock {
+    position:fixed;
+    padding-right:15px;
 }
 
 /* 
@@ -1184,7 +1369,7 @@ button {
 .text {
     width: 180px;
     text-align: left;
-    margin-left: 30px;
+    /* margin-left: 30px; */
 }
 
 #language-select {
@@ -1197,10 +1382,20 @@ button {
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
+    /* border: 1px solid lightsalmon; */
     height: auto;
     margin-bottom: 200px;
-    overflow: visible;
+    /* https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#settings-page::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera*/
 }
 
 .settings-page-tabs {
@@ -1208,7 +1403,7 @@ button {
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
-
+    /* border: 1px solid lightgreen; */
     width: 80%;
     border-bottom: 2px solid black;
     margin: 20px 0;
@@ -1232,13 +1427,16 @@ button {
     flex-direction: column;
     width: 80%;
     gap: 18px;
+    /* border: 1px solid lightcoral; */
 }
 
 .setting-in-page {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    flex-wrap: wrap;
+    /* align-items: center; */
     width: 100%;
+    /* border: 1px solid lightblue; */
 }
 
 .settings-page-active-tab {
@@ -1246,9 +1444,23 @@ button {
 }
 
 .setting-in-page h3 {
-    margin-right: 10px;
-    width: 140px;
+    margin-right: 20px;
+    width: 200px;
     text-align: left;
+    /* border: 1px solid lightseagreen; */
+}
+
+.setting-in-page h3 span {
+    font-size: 14px;
+    font-weight: 400;
+    text-wrap: balance;
+}
+
+.setting-content {
+    margin: auto 0px;
+    padding: 5px;
+    /* border: 1px solid lightcoral; */
+
 }
 
 #editAvatarBtn {
@@ -1257,7 +1469,7 @@ button {
     background-color: white;
     color: var(--orange);
     border: 2px solid var(--orange);
-    border-radius: 50px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
@@ -1277,7 +1489,7 @@ button {
     width: 55px;
     height: 28px;
 
-    margin-left: 10px;
+    /* margin-left: 10px; */
 }
 
 /* Hide default HTML checkbox */
@@ -1304,7 +1516,7 @@ button {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #D0D0D0;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -1326,11 +1538,159 @@ input:checked+.slider {
 }
 
 input:focus+.slider {
-    box-shadow: 0 0 1px #efefef;
+    box-shadow: 0 0 1px #D0D0D0;
 }
 
 input:checked+.slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
+}
+
+.volumeSlider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 350px;
+    height: 10px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline: 2px solid white;
+    background: var(--orange);
+    cursor: pointer;
+}
+
+.volumeSlider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline: 2px solid white;
+    background: var(--orange);
+    cursor: pointer;
+}
+
+#setting-spacer {
+    height: 100px;
+}
+
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+Login and Signup Pages style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.error {
+    color: var(--orange);
+    font-weight: 500;
+    height: 24px;
+    font-size: 14px;
+}
+
+.background-cover{
+    position: fixed;
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-signup-container {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 540px;
+    width: 800px;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgb(0, 0, 0, 0.25);
+    border-radius: 4px;
+}
+
+.login-form, .signup-form{
+    width: 360px;
+    height: 500px;
+    text-align: center;
+    /* border: 1px solid black; */
+    background-color: white;
+    padding: 20px;  
+    border-radius: 0 4px 4px 0;
+}
+
+.directory {
+    width: 360px;
+    height: 500px;
+    text-align: center;
+    /* border: 1px solid black; */
+    background-color: var(--orange);
+    color: white;
+    padding: 20px;
+    border-radius: 4px 0 0 4px;
+}
+
+.directory h1 {
+    font-size: 45px;
+    margin: 100px 0 0 0;
+}
+
+.directory h4 {
+    /* font-size: 20px; */
+    margin-bottom: 80px;
+}
+
+.signup-name-input {
+    width: 120px;
+    height: 40px;
+    margin: 10px;
+    padding: 5px 20px;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+}
+
+.signup-input, .login-input {
+    width: 300px;
+    height: 40px;
+    margin: 10px;
+    padding: 5px 20px;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+}
+
+.signup-form button, .login-form button {
+    width: 120px;
+    height: 50px;
+    margin: 20px auto 0px auto;
+    padding: 5px 20px;
+    font-size: 18px;;
+    border: 1px solid #E3E3E3;
+    border-radius: 10px;
+    background-color: var(--orange);
+    color: white;
+    font-weight: 600;
+}
+
+.directory button {
+    width: 120px;
+    height: 50px;
+    margin: 20px auto 0px auto;
+    padding: 5px 20px;
+    font-size: 18px;;
+    border: 1px solid #E3E3E3;
+    border-radius: 10px;
+    background-color: white;
+    color: var(--orange);
+    font-weight: 600;
 }

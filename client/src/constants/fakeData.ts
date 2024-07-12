@@ -33,7 +33,7 @@ export const projects = [
             },
         ],
         description: "The bestest project yet!  I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! I LOVE BEES! ",
-        tags: ["Game Development", "Rouguelike", "FPS", "So Retro"],
+        tags: ["Game Development", "Roguelike", "FPS", "So Retro"],
         neededRoles: [
             {
                 Role: "Game Developer",
@@ -79,7 +79,7 @@ export const projects = [
                 description: "We are looking for artists who know how to draw rocks",
             }
         ],
-        posts: [0, 1, 2]
+        posts: [0]
     },
     {
         _id: 2,
@@ -89,13 +89,13 @@ export const projects = [
                 userID: 0,
                 admin: true,
                 owner: true,
-                role: "Project Lead"
+                role: "Coder"
             },
             {
                 userID: 2,
                 admin: true,
                 owner: false,
-                role: "Team Lead"
+                role: "Project Lead"
             },
             {
                 userID: 3,
@@ -118,7 +118,7 @@ export const projects = [
                 description: "We are looking for artists who know how to model creepers",
             }
         ],
-        posts: [0, 1, 2]
+        posts: [0, 2]
     },
     {
         _id: 3,
@@ -145,7 +145,7 @@ export const projects = [
                 description: "We need more garlic",
             }
         ],
-        posts: [0, 1, 2]
+        posts: [0, 1]
     },
     {
         _id: 4,
@@ -159,7 +159,7 @@ export const projects = [
             }
         ],
         description: "Blah Blah Blah",
-        tags: ["Wah", "Waah", "Waaah", "Waaaah"],
+        tags: ["Boring", "BlahBlahBlah", "abc", "12345"],
         neededRoles: [
             {
                 Role: "Data Analyst",
@@ -177,7 +177,7 @@ export const projects = [
                 description: "Blah Blah Blah",
             }
         ],
-        posts: [0, 1, 2]
+        posts: [1, 2]
     },
     {
         _id: 5,
@@ -190,8 +190,8 @@ export const projects = [
                 role: "Project Lead"
             }
         ],
-        description: "Hey guys I need help on my class project I want an A",
-        tags: ["Class Project"],
+        description: "Hey guys I need help on my class project I'm gonna fail",
+        tags: ["Class Project", "pls help", "idk"],
         neededRoles: [
             {
                 Role: "Game Developer",
@@ -204,7 +204,7 @@ export const projects = [
                 description: "We are looking for artists who know how to draw my classmates",
             }
         ],
-        posts: [0, 1, 2]
+        posts: []
     },
 ]
 

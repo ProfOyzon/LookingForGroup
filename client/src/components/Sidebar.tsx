@@ -18,7 +18,7 @@ import MakeAvatarModal from './AvatarCreation/MakeAvatarModal';
 // Have profile pic displayed if a user is logged in
 
 
-const SideBar = () => {
+const SideBar = ({avatarImage, setAvatarImage}) => {
   const [width, setWidth] = React.useState(window.innerWidth);
   const breakpoint = useSelector((state: any) => state.page.MOBILE_BREAKPOINT);
 
@@ -27,7 +27,7 @@ const SideBar = () => {
 
   const [activePage, setActivePage] = useState('Group'); // State to manage the active page [Home, My Projects, Messages, Profile, Settings]
 
-  const [avatarImage, setAvatarImage] = useState('images/tempProfilePic.png'); // State to manage the avatar image
+  // const [avatarImage, setAvatarImage] = useState('images/tempProfilePic.png'); // State to manage the avatar image
   const [showAvatarModal, setShowAvatarModal] = useState(false); // State to manage the avatar modal
 
   // Function to update the avatar image
@@ -86,7 +86,8 @@ const SideBar = () => {
       <MakeAvatarModal
         show={showAvatarModal}
         onClose={() => { setShowAvatarModal(false); }}
-        onConfirm={updateAvatarImage}
+        setAvatarImage={setAvatarImage}
+        // onConfirm={updateAvatarImage}
       />
 
       <h1>UserName</h1>

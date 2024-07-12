@@ -40,7 +40,7 @@ const hatIcons = [
     { src: "images/icons/hats/topHatCenter.png", alt: "top hat" },
 ];
 
-const MakeAvatarModal = ({ show, onClose, onConfirm }) => {
+const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
     // initialize state variables
     // current slide index
     const [slideIndex, setSlideIndex] = useState(1);
@@ -160,17 +160,13 @@ const MakeAvatarModal = ({ show, onClose, onConfirm }) => {
             ctx.drawImage(hat, 0, 0, hat.width, hat.height);
         }
 
-        // save the canvas as a new image
+        // save the canvas as a new image and display in sidebar
         const newAvatar = canvas.toDataURL("image/png");
+        setAvatarImage(newAvatar);
 
-        onConfirm(newAvatar);
         onClose();
-        // // update the user's avatar in the database
-        // // for now just open the image in a new tab
-        // const newTab = window.open();
-        // if (!newTab) return;
 
-        // newTab.document.write(`<img src="${updateAvatar}" />`);
+        // // update the user's avatar in the database
     };
 
     // render the page

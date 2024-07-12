@@ -9,8 +9,8 @@ import { ProjectMember } from "../projectPageComponents/ProjectMember";
 import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { PagePopup, openClosePopup } from "../PagePopup";
-import { projects, profiles, posts } from "../../constants/fakeData";
-import { createRoot } from "react-dom/client";
+import { projects, posts } from "../../constants/fakeData";
+// import { createRoot } from "react-dom/client";
 
 //This is the Project page component, which contains a layout that allows for displaying project info
 //More info and comments on individual parts are found above their respective parts
@@ -27,8 +27,9 @@ let projectId;
 
 // Variables to hold the element with id 'settings-content'
 // Used with ReactDOM to render different settings tabs within the element
-let settingsContainer;
-let settingsRoot;
+// No longer needed due to useState implementation
+//let settingsContainer;
+//let settingsRoot;
 
 //Closes dropdown menus when clicking outside of them
 /// !! Commented out due to it causing errors when clicking on other pages !!
@@ -113,10 +114,12 @@ const reportProject = () => {
 
 //Initializes and sets up the 'settings-content' element to allow for re-rendering its content when swapping tabs
 //This is necessary for the page to run with the current version of react (v18.0)
-const initSettings = () => {
+
+// No longer needed due to new useState implementation
+/*const initSettings = () => {
   settingsContainer = document.getElementById('settings-content');
   settingsRoot = createRoot(settingsContainer!);
-}
+}*/
 
 //Closes settings window and saves changed settings
 //Will require code to take the input from settings and write to the database
@@ -150,12 +153,13 @@ const toggleOptionDisplay = () => {
 //  Currently, inputs given on one tab will revert to current default when swapping
 //  This may need to be changed in the future
 
-//  Could potentially be reworked using react's 'useState' functionality
-
 // Utilizes the 'GeneralSettings' and 'MemberSettings' components for the separate tab renders
 // Error is occuring regarding the initSettings call- loading the project page more than once will cause
 // it not to be called, therefore not creating a 'settingsContainer' or 'settingsRoot' to use
-const changeTabs = (tab) => {
+
+// No longer needed due to useState implementation
+
+/*const changeTabs = (tab) => {
   if (settingsContainer === undefined){
 
     initSettings();
@@ -170,7 +174,7 @@ const changeTabs = (tab) => {
     document.getElementById('member-tab').className = 'tab-selected';
     document.getElementById('general-tab').className = 'tab';
   }
-}
+}*/
 
 //Removes project from database and redirects user
 //Ensure that all other functions come before the redirect function, as changing pages may stop the funciton
@@ -240,7 +244,29 @@ const ProjectInfo = (props) => {
 // All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
 const ProjectInfoMember = (props) => {
   const navigate = useNavigate(); // Hook for navigation
-  settingsContainer = undefined; // Resets the settingsContainer to ensure settings content loads correctly
+  //settingsContainer = undefined; // Resets the settingsContainer to ensure settings content loads correctly
+
+  //Store settings tab components for switching between tabs
+  let generalTab = <GeneralSettings projectId={projectId}/>
+  let membersTab = <MemberSettings projectId={projectId}/>
+
+  //useState is used here as part of the settings window
+  let [tabContent, setTabContent] = useState(generalTab);
+
+  //Called when a tab is changed in the settings window
+  //tab - a string value denoting which tab is being switched to.
+  const changeTabs = (tab) => {
+    if (tab === 'general') {
+      setTabContent(generalTab);
+      document.getElementById('general-tab').className = 'tab-selected';
+      document.getElementById('member-tab').className = 'tab';
+    } else if (tab === 'members') {
+      setTabContent(membersTab);
+      document.getElementById('member-tab').className = 'tab-selected';
+      document.getElementById('general-tab').className = 'tab';
+    }
+  }
+
   return (
     <div id='project-info-member'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
@@ -292,7 +318,7 @@ const ProjectInfoMember = (props) => {
             </div>
             <hr/>
             <div id='settings-content'>
-            <GeneralSettings projectId={projectId}/>
+            {tabContent}
             </div>
             <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(0)}>Cancel</button>
             <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>

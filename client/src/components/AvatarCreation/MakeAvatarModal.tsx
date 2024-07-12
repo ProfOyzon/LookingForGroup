@@ -134,6 +134,8 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
     };
 
     // change the selected item (hat, clothes, accessory)
+    // index: index of the customization item
+    // type: type of customization item (hat, clothes, accessory)
     const changeItems = (index, type) => {
         const items = {
             hat: displayHats[index] ? displayHats[index].src : null,

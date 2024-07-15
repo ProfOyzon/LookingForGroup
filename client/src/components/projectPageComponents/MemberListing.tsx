@@ -18,7 +18,8 @@ import { profiles } from "../../constants/fakeData";
 const moreSettingsToggle = (i) => {
   let currentId = 'member-settings-dropdown-' + i;
   //This is a typescript error and still runs correctly, it is safe to ignore for now
-  document.getElementById(currentId).classList.toggle("settings-show");
+  let dropdown = document.getElementById(currentId);
+  dropdown ? dropdown.classList.toggle("settings-show") : console.log('element not found');
 }
 
 //Takes in a user's name, their project role, and an id number for the dropdown menu as props

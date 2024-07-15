@@ -23,8 +23,6 @@ let replyingToPost = true;
 //If not replying directly to the post, replyTarget indicates which comment it is replying to, identified by id
 let replyTarget = 0;
 
-//'promptButton' and 'replyPrompt' errors are due to typescript - they still function correctly and are safe to ignore for now
-
 //Changes the current target of any reply inputs
 //targetId - the id of the new comment that the user will reply to
 //Called whenever a 'reply' button is clicked in the comment section
@@ -34,13 +32,14 @@ const changeReplyTarget = (targetId) => {
     replyingToPost = false;
     let promptButton = document.getElementById('reply-prompt-reset');
     //shows a button to cancel and change reply target back to the post itself
-    promptButton.classList.toggle('show');
+    promptButton ? promptButton.classList.toggle('show') : console.log('element not found');
   }
   //Change value of replyTarget to indicate which comment to reply to
   replyTarget = targetId;
   //Change display to show the owner of the comment being replied to
   let replyPrompt = document.getElementById('reply-prompt-display');
-  replyPrompt.innerHTML = "Replying to " + profiles[comments[targetId].author].username;
+  replyPrompt ? replyPrompt.innerHTML = "Replying to " + profiles[comments[targetId].author].username :
+    console.log('element not found');
 }
 
 //Resets the target of any reply inputs back to the post itself
@@ -52,9 +51,9 @@ const resetReplyTarget = () => {
     replyingToPost = true;
     //Reset displays to default
     let replyPrompt = document.getElementById('reply-prompt-display');
-    replyPrompt.innerHTML = "Replying to Post";
+    replyPrompt ? replyPrompt.innerHTML = "Replying to Post" : console.log('element not found');
     let promptButton = document.getElementById('reply-prompt-reset');
-    promptButton.classList.toggle('show');
+    promptButton ? promptButton.classList.toggle('show') : console.log('element not found');
   }
 }
 

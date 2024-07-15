@@ -1,7 +1,7 @@
 import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import * as paths from "../../constants/routes";
 import { ProjectPost } from "../projectPageComponents/ProjectPost";
@@ -10,19 +10,11 @@ import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts } from "../../constants/fakeData";
-// import { createRoot } from "react-dom/client";
 
 //This is the Project page component, which contains a layout that allows for displaying project info
 //More info and comments on individual parts are found above their respective parts
 
-// To-do:
-// Figure out image displays once images are added to site
-// Program onClick functions for buttons
-// Create alternate version of page for project members
-
-// Placeholder ID for the page to use
-// Final product should be able of pull the data of any project with an id number passed in when the page loads
-//const { p } = useParams();
+// holds the id number of the current project being displayed. Used to reference the database.
 let projectId;
 
 // Variables to hold the element with id 'settings-content'
@@ -113,7 +105,7 @@ const reportProject = () => {
 }
 
 //Initializes and sets up the 'settings-content' element to allow for re-rendering its content when swapping tabs
-//This is necessary for the page to run with the current version of react (v18.0)
+//This is necessary for the page to run with the current version of react (v18.0) while using react rendering
 
 // No longer needed due to new useState implementation
 /*const initSettings = () => {
@@ -140,12 +132,10 @@ const leaveProject = () => {
 
 //Opens/closes the additional project options dropdown menu
 //Works for both the project member and non-project member views
-//  Errors caused by 'document.getElementById()' functions are errors highlighted by typescript
-//  This is only a warning, the code still functions correctly
-//  The warning is due to the elements being called *potentially* not existing
-//  Ideally, this should never be the case with how the code is currently organized
 const toggleOptionDisplay = () => {
-  document.getElementById("more-options-popup").classList.toggle("show");
+  //document.getElementById("more-options-popup").classList.toggle("show");
+  let popup = document.getElementById("more-options-popup");
+  popup ? popup.classList.toggle("show") : console.log('element not found');
 }
 
 //Re-renders settings content based on clicked tab, and highlights selected tab
@@ -244,7 +234,9 @@ const ProjectInfo = (props) => {
 // All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
 const ProjectInfoMember = (props) => {
   const navigate = useNavigate(); // Hook for navigation
-  //settingsContainer = undefined; // Resets the settingsContainer to ensure settings content loads correctly
+  // Resets the settingsContainer to ensure settings content loads correctly
+  // No longer needed with new useState implementation
+  //settingsContainer = undefined; 
 
   //Store settings tab components for switching between tabs
   let generalTab = <GeneralSettings projectId={projectId}/>
@@ -258,12 +250,20 @@ const ProjectInfoMember = (props) => {
   const changeTabs = (tab) => {
     if (tab === 'general') {
       setTabContent(generalTab);
-      document.getElementById('general-tab').className = 'tab-selected';
-      document.getElementById('member-tab').className = 'tab';
+      let generalTabElement = document.getElementById('general-tab');
+      let memberTabElement = document.getElementById('member-tab');
+      if (generalTabElement && memberTabElement){
+        generalTabElement.className = 'tab-selected';
+        memberTabElement.className = 'tab';
+      }
     } else if (tab === 'members') {
       setTabContent(membersTab);
-      document.getElementById('member-tab').className = 'tab-selected';
-      document.getElementById('general-tab').className = 'tab';
+      let generalTabElement = document.getElementById('general-tab');
+      let memberTabElement = document.getElementById('member-tab');
+      if (generalTabElement && memberTabElement){
+        generalTabElement.className = 'tab';
+        memberTabElement.className = 'tab-selected';
+      }
     }
   }
 

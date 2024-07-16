@@ -91,26 +91,11 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
         fox: avatars.fox[0],
     });
     // current hats for each avatar when selected
-    const [currentHats, setCurrentHats] = useState({
-        cat: "",
-        dog: "",
-        frog: "",
-        fox: "",
-    });
+    const [currentHats, setCurrentHats] = useState("");
     // current clothes for each avatar when selected
-    const [currentClothes, setCurrentClothes] = useState({
-        cat: "",
-        dog: "",
-        frog: "",
-        fox: "",
-    });
+    const [currentClothes, setCurrentClothes] = useState("");
     // current accessories for each avatar when selected
-    const [currentAccessories, setCurrentAccessories] = useState({
-        cat: "",
-        dog: "",
-        frog: "",
-        fox: "",
-    });
+    const [currentAccessories, setCurrentAccessories] = useState("");
 
     // update color options when selected avatar changes
     useEffect(() => {
@@ -118,6 +103,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
     }, [selectedAvatar]);
 
     // change the slide index and update the selected avatar
+    // scroll through each type of animal avatar
     const plusSlides = (n) => {
         let newSlideIndex = slideIndex + n;
         const totalAvatars = Object.keys(avatars).length;
@@ -137,27 +123,36 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
     // index: index of the customization item
     // type: type of customization item (hat, clothes, accessory)
     const changeItems = (index, type) => {
+        // get the item based on the index and type
         const items = {
-            hat: displayHats[index] ? displayHats[index].src : null,
+            hat: displayHats[index] ? displayHats[index].src : null, // if the item doesn't exist, set to null
             clothes: displayClothes[index] ? displayClothes[index].src : null,
             accessory: displayAccessories[index] ? displayAccessories[index].src : null,
         };
 
+        // get the current item for the selected avatar
         const currentItem = items[type];
-        const noItem = "images/icons/noItem.png";
+        const noItem = "images/icons/noItem.png"; // default no item image
 
+        // if the item doesn't exist, return
+        // image should always exist, but just in case
         if (!currentItem) return;
 
+        // set the current item
         const currentItemState = {
             hat: setCurrentHats,
             clothes: setCurrentClothes,
             accessory: setCurrentAccessories,
         };
         
-        currentItemState[type]((prevItems) => ({
-            ...prevItems,
-            [selectedAvatar]: currentItem === noItem ? "" : currentItem,
-        }));
+        // update the current item for all avatars
+        // this is done to display the selected item on all avatars
+        Object.keys(avatars).forEach((avatar) => {
+            currentItemState[type]((prevItems) => ({
+                ...prevItems,
+                [avatar]: currentItem === noItem ? "" : currentItem,
+            }));
+        });
     };
 
     // change the color of the avatar

@@ -186,6 +186,7 @@ const deleteProject = (callback) => {
 // projectName, projectDescription, and neededRoles are passed in through props
 // All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
 const ProjectInfo = (props) => {
+  let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
   return (
     <div id='project-info'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
@@ -213,7 +214,7 @@ const ProjectInfo = (props) => {
         {
           props.neededRoles.map(role => {
             return(
-              <div>{role.Role} &#40;{role.amount}&#41;</div>
+              <div key={key++}>{role.Role} &#40;{role.amount}&#41;</div>
             );
           })
         }
@@ -237,6 +238,8 @@ const ProjectInfoMember = (props) => {
   // Resets the settingsContainer to ensure settings content loads correctly
   // No longer needed with new useState implementation
   //settingsContainer = undefined; 
+
+  let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
 
   //Store settings tab components for switching between tabs
   let generalTab = <GeneralSettings projectId={projectId}/>
@@ -300,7 +303,7 @@ const ProjectInfoMember = (props) => {
         {
           props.neededRoles.map(role => {
             return(
-              <div>{role.Role} &#40;{role.amount}&#41;</div>
+              <div key={key++}>{role.Role} &#40;{role.amount}&#41;</div>
             );
           })
         }
@@ -348,6 +351,8 @@ const ProjectInfoMember = (props) => {
 const Project = (props) => {
   window.scrollTo(0,0);
 
+  let keys = [0, 0, 0]; //keys are not required for functionality, but react will give an error without it when using .map functions later
+
   //Pulls project ID number from search query (should be stored as 'p')
   //(ex. [site path]/project?p=x , where x = the project ID number)
   let urlParams = new URLSearchParams(window.location.search);
@@ -372,7 +377,7 @@ const Project = (props) => {
         {
           projects.map(project => {
             return(
-              <option value={project._id}>{project.name}</option>
+              <option value={project._id} key={keys[0]++}>{project.name}</option>
             )
           })
         }
@@ -395,7 +400,7 @@ const Project = (props) => {
         {
           projectData.members.map(member => {
             return (
-              <ProjectMember onClick={() => window.location.href="profile"} memberId={member.userID} role={member.role} />
+              <ProjectMember onClick={() => window.location.href="profile"} memberId={member.userID} role={member.role}  key={keys[1]++}/>
             );
           })
         }
@@ -406,7 +411,7 @@ const Project = (props) => {
         {
           projectData.posts.map(postNum => {
             return(
-              <ProjectPost postID={posts[postNum]._id} />
+              <ProjectPost postID={posts[postNum]._id} key={keys[2]++}/>
             );
           })
         }

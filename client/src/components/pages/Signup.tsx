@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 
-const Signup = (props) => {
+const SignUp = (props) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
@@ -99,4 +99,4 @@ const Signup = (props) => {
     );
 };
 
-export default Signup;
+export default SignUp;

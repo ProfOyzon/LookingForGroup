@@ -1,5 +1,7 @@
 export const routes = {
     "DEFAULT": "/",
+    "LOGIN": "/login",
+    "SIGNUP": "/signup",
     "HOME": "/home",
     "MESSAGES": "/messages",
     "MYFEED": "/myFeed",

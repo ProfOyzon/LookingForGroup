@@ -1,6 +1,14 @@
 :root {
-    --orange: #efefef;
-    --orange-hover: #DE6B17;
+    --orange: #F35835;
+    --orange-hover: #d83410;
+    --green: #97E5AB;
+    --blue: #99E6EA;
+    --purple: #B1A2DB;
+    --medGray: #E3E3E3;
+    --lightGray: #EEEEEE;
+    --gray: #969696;
+    --darkGray: #414141;
+    --white: #FBFBFB;
 }
 
 #notif-popup {
@@ -46,8 +54,9 @@
 }
 
 .discover-card,
-.endorsement {
-    width: 60%;
+.endorsement,
+.profile-project-card {
+    width: 70%;
     max-width: 765px;
     max-height: 265px;
     border: 2px solid black;
@@ -55,7 +64,7 @@
     display: grid;
     grid-template-columns: 30% 70%;
     text-align: left;
-    padding: 2%;
+    padding: 3%;
     margin: 2.5% auto;
     transition: 1s;
     opacity: 0;
@@ -83,7 +92,8 @@
     }
 }
 
-.discover-card:hover .endorsement:hover {
+.discover-card:hover .endorsement:hover,
+.profile-project-card:hover {
     transform: scale(1.05);
 }
 
@@ -96,6 +106,13 @@
     font-size: 0.8rem;
 }
 
+#profile-project-body {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
 #message-card #discover-card-body {
     margin-top: 0%;
     padding-bottom: 5%;
@@ -105,10 +122,15 @@
     flex: 1;
 }
 
-#discover-card-profile-picture {
+#discover-card-profile-picture,
+#profile-project-profile-picture {
     width: 100%;
     border: 2px solid black;
     border-radius: 100%;
+}
+
+#profile-project-profile-picture {
+    width: 80%;
 }
 
 #message-card #discover-card-profile-picture {
@@ -125,7 +147,8 @@
     text-align: left;
 }
 
-#discover-card-name:hover {
+#discover-card-name:hover,
+#profile-project-name:hover {
     text-decoration: underline;
 }
 
@@ -137,7 +160,8 @@
 #discover-card-tag-wrapper {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
+    gap: 4px;
     max-width: 450px;
 }
 
@@ -194,7 +218,7 @@
     font-size: 30px;
 }
 
-.discover-button{
+.discover-button {
     border-radius: 10px;
     border: 2px solid var(--orange);
     font-size: 1.5vw;
@@ -204,17 +228,21 @@
     cursor: pointer;
 }
 
-.tab-button{
+.tab-button {
     border: 2px solid lightseagreen;
     border-radius: 5px;
     text-align: center;
     padding: .5vw;
+    margin-left: .5vw;
+    margin-right: .5vw;
     background-color: white;
 }
 
-.active{
+.active {
     background-color: lightblue;
 }
+
+.tab-header {}
 
 .discover-main-content {
     margin-left: 40px;
@@ -249,18 +277,17 @@
     grid-template-columns: 14% 14% 72%;
 }
 
+#discover-button-wrapper>* {
+    max-height: 50px;
+}
+
 .search-wrapper {
     display: flex;
     flex-direction: row;
     align-content: right;
     justify-self: end;
     height: auto;
-    /* width: 40%; */
     margin: 1vw 50px;
-}
-
-#discover-button-wrapper>* {
-    max-height: 50px;
 }
 
 .search-bar {
@@ -271,7 +298,9 @@
     text-align: left;
     display: flex;
     flex-direction: row;
+    float: right;
     align-content: center;
+    margin: auto;
 }
 
 .search-input {
@@ -309,6 +338,8 @@
     top: 0px;
     left: 0px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+    z-index: 1;
+    background-color: white;
 }
 
 .SideBarContainer h1 {
@@ -355,29 +386,46 @@
 .containerButtonSideBar button:hover {
     /* transform: scale(1.1); */
     transition-duration: 0.25s;
-    background-color: #eeeeee;
+    background-color: #e3e3e3;
 }
 
-.dot {
-    height: 125px;
-    width: 125px;
-    background-color: white;
-    border-radius: 50%;
-    display: inline-block;
-    border: solid black 1px;
+.containerButtonSideBar button.active {
+    background-color: #eeeeee;
+    transition: 0.25s;
+}
 
+/* Profile picture or avatar */
+.displayProfilePic {
+    height: 140px;
+    width: 140px;
+    background-color: white;
+    border-radius: 4px;
+    display: flex;
+    border: 1px solid rgba(0, 0, 0, 0);
+    box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25);
+    margin-bottom: 14px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.displayProfilePic img {
+    scale: 1.1;
+}
+
+.displayProfilePic:hover {
+    cursor: pointer;
+    border: 1px solid var(--orange);
 }
 
 .Logout {
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 .Logout button {
-    background-color: var(--orange);
-    color: white;
+    background-color: white;
+    color: var(--orange);
     position: absolute;
     bottom: 0;
     margin-bottom: 40px;
@@ -385,7 +433,7 @@
     height: 40px;
     font-size: 18px;
     border: none;
-    border-radius: 50px;
+    border-radius: 10px;
     outline: solid var(--orange) 2px;
     font-weight: 900;
 }
@@ -393,8 +441,8 @@
 .Logout button:hover {
     /* transform: scale(1.1); */
     transition-duration: 0.25s;
-    background-color: white;
-    color: var(--orange);
+    background-color: var(--orange);
+    color: white;
     outline: solid var(--orange) 2px;
     cursor: pointer;
 }
@@ -403,6 +451,11 @@
     width: 80%;
     margin: 2% auto;
     text-align: left;
+}
+
+#profile-banner {
+    width: 80%;
+    height: 20vh;
 }
 
 #profile-header {
@@ -521,6 +574,53 @@ Project page style rules
     flex-direction: column;
     justify-content: space-around;
     margin: 15px 20px;
+}
+
+#create-project-desc {
+    width: 80%;
+    height: 30vh;
+}
+
+#create-project-button-list {
+    position: absolute;
+    bottom: 1vh;
+    right: 1vw;
+}
+
+#create-page-1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 64px;
+    padding: 2px 8px;
+    width: 80%;
+    margin: auto;
+}
+
+#create-page-2 {
+    text-align: left;
+    margin-left: 3%;
+}
+
+#create-page-2 h2 {
+    text-align: center;
+}
+
+#create-dates {
+    display: flex;
+    flex-direction: column;
+}
+
+#create-project-name {
+    width: 100%;
+}
+
+#create-project-roles {
+    background-color: #D0D0D0;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
 }
 
 @media only screen and (max-width: 800px) {
@@ -700,7 +800,7 @@ Project page style rules
 }
 
 .project-member:hover {
-    background-color:#dfdfdf;
+    background-color: #dfdfdf;
 }
 
 .project-member img {
@@ -818,30 +918,30 @@ Project page style rules
     border: 2px solid red;
 }
 
-#project-delete-check{
+#project-delete-check {
     padding: 10px 0;
 }
 
-#project-delete-cancel{
-    position:absolute;
-    bottom:10px;
-    left:10px;
-    height:30px;
+#project-delete-cancel {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    height: 30px;
 }
 
-#project-delete-final{
-    position:absolute;
-    bottom:10px;
-    right:10px;
-    background-color:red;
-    color:white;
-    height:30px;
-    border:none;
+#project-delete-final {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    height: 30px;
+    border: none;
 }
 
-#project-delete-final:hover{
-    background-color:#af0000;
-    color:#a0a0a0
+#project-delete-final:hover {
+    background-color: #af0000;
+    color: #a0a0a0
 }
 
 #settings-content {
@@ -914,6 +1014,11 @@ project page member settings rules
 -------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 */
+
+#member-settings-header {
+    display: flex;
+    justify-content: center;
+}
 
 #member-settings-list {
     height: 50vh;
@@ -1067,7 +1172,7 @@ Project Post Page style rules
 }
 
 #post-author:hover {
-    text-decoration-line:underline;
+    text-decoration-line: underline;
 }
 
 #author-role {
@@ -1119,11 +1224,11 @@ Project Post Page style rules
 }
 
 .comment-author {
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.comment-author:hover{
-    text-decoration-line:underline;
+.comment-author:hover {
+    text-decoration-line: underline;
 }
 
 .comment-date {
@@ -1165,8 +1270,8 @@ Project Post Page style rules
 #reply-prompt {
     display: flex;
     grid-area: prompt;
-    flex-direction:row;
-    gap:10px;
+    flex-direction: row;
+    gap: 10px;
 }
 
 #reply-input {
@@ -1192,16 +1297,16 @@ Page Popup style rules
 \/\/\/\/\/\/\/\/\/\/\/
 */
 
-.popup-cover-hide{
-    display:none;
+.popup-cover-hide {
+    display: none;
 }
 
-.popup-hide{
-    display:none;
+.popup-hide {
+    display: none;
 }
 
-.popup-cover-show{
-    display:block;
+.popup-cover-show {
+    display: block;
     position: fixed;
     background-color: black;
     opacity: 50%;
@@ -1211,10 +1316,11 @@ Page Popup style rules
     height: 100%;
 }
 
-.popup-show{
-    display:block;
+.popup-show {
+    display: block;
     position: fixed;
     background-color: white;
+    border-radius: 4px;
     max-width: 95vw;
     max-height: 95vh;
     opacity: 100%;
@@ -1224,8 +1330,19 @@ Page Popup style rules
 
 #popup-close {
     position: absolute;
+    border-radius: 4px;
     top: 10px;
     right: 10px;
+}
+
+#popup-close img {
+    width: 40px;
+    height: 40px;
+}
+
+.page-scroll-lock {
+    position: fixed;
+    padding-right: 15px;
 }
 
 /* 
@@ -1355,7 +1472,7 @@ button {
     background-color: white;
     color: var(--orange);
     border: 2px solid var(--orange);
-    border-radius: 50px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
@@ -1464,4 +1581,276 @@ input:checked+.slider:before {
 
 #setting-spacer {
     height: 100px;
+}
+
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+Login and Signup Pages style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.error {
+    color: var(--orange);
+    font-weight: 500;
+    height: 24px;
+    font-size: 14px;
+}
+
+.background-cover {
+    position: fixed;
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-signup-container {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 540px;
+    width: 800px;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgb(0, 0, 0, 0.25);
+    border-radius: 4px;
+}
+
+.login-form,
+.signup-form {
+    width: 360px;
+    height: 500px;
+    text-align: center;
+    /* border: 1px solid black; */
+    background-color: white;
+    padding: 20px;
+    border-radius: 0 4px 4px 0;
+}
+
+.directory {
+    width: 360px;
+    height: 500px;
+    text-align: center;
+    /* border: 1px solid black; */
+    background-color: var(--orange);
+    color: white;
+    padding: 20px;
+    border-radius: 4px 0 0 4px;
+}
+
+.directory h1 {
+    font-size: 45px;
+    margin: 100px 0 0 0;
+}
+
+.directory h4 {
+    /* font-size: 20px; */
+    margin-bottom: 80px;
+}
+
+.signup-name-input {
+    width: 120px;
+    height: 40px;
+    margin: 10px;
+    padding: 5px 20px;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+}
+
+.signup-input,
+.login-input {
+    width: 300px;
+    height: 40px;
+    margin: 10px;
+    padding: 5px 20px;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+}
+
+.signup-form button,
+.login-form button {
+    width: 120px;
+    height: 50px;
+    margin: 20px auto 0px auto;
+    padding: 5px 20px;
+    font-size: 18px;
+    ;
+    border: 1px solid #E3E3E3;
+    border-radius: 10px;
+    background-color: var(--orange);
+    color: white;
+    font-weight: 600;
+}
+
+.directory button {
+    width: 120px;
+    height: 50px;
+    margin: 20px auto 0px auto;
+    padding: 5px 20px;
+    font-size: 18px;
+    ;
+    border: 1px solid #E3E3E3;
+    border-radius: 10px;
+    background-color: white;
+    color: var(--orange);
+    font-weight: 600;
+}
+
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+Signup Process Modal style rules
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.signupProcess-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+.ChooseSkills {
+    background-color: white;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 820px;
+    width: 1000px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+    z-index: 1;
+}
+
+#signupProcess-title {
+    font-size: 28px;
+    color: var(--orange);
+    width: 400px;
+}
+
+/* buttons */
+#signup-nextBtn {
+    border: none;
+    border-radius: 14px;
+    height: 45px;
+    width: 100px;
+    font-size: 18px;
+    font-weight: 800;
+    background-color: white;
+    color: var(--orange);
+    border: 2px solid var(--orange);
+}
+
+#signup-nextBtn:hover {
+    color: white;
+    background-color: var(--orange);
+}
+
+#signup-nextBtn:active {
+    transform: scale(0.95);
+}
+
+#signup-backBtn {
+    border: none;
+    border-radius: 14px;
+    height: 45px;
+    width: 100px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: var(--lightGray);
+    color: black;
+    border: 2px solid var(--lightGray);
+}
+
+#signup-backBtn:hover {
+    background-color: var(--medGray);
+    border: 2px solid var(--medGray);
+}
+
+#signup-backBtn:active {
+    transform: scale(0.95);
+}
+
+.signupProcess-btns {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#skill-select {
+    height: 480px;
+}
+
+#skill-select button {
+    /* width: 200px; */
+    height: 40px;
+    margin: 10px;
+    padding: 5px 20px;
+    font-size: 18px;
+    border: 2px solid var(--lightGray);
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+    font-weight: 400;
+}
+
+#skill-select button.active {
+    border: 2px solid var(--orange);
+}
+
+@media screen and (max-width: 1020px) {
+    .ChooseSkills {
+        width: 800px;
+    }
+}
+
+@media screen and (max-width: 820px) {
+    .ChooseSkills {
+        width: 550px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    body {
+        padding: 0px;
+    }
+
+    .ChooseSkills {
+        box-shadow: none;
+        width: 100%;
+        /* height: 100%; */
+    }
+}
+
+@media screen and (max-width: 400px) {
+    body {
+        padding: 0px;
+    }
+
+    .ChooseSkills {
+        box-shadow: none;
+        width: 100%;
+        /* height: 100%; */
+    }
+
+    #signupProcess-title {
+        font-size: 24px;
+    }
 }

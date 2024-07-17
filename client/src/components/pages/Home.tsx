@@ -7,8 +7,8 @@ import { SearchBar } from "../SearchBar";
 import "../styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
-import { Children } from "react";
-import {useState} from 'react';
+import { Children, useCallback } from "react";
+import { useState } from 'react';
 
 const Home = (props) => {
 
@@ -24,30 +24,34 @@ const Home = (props) => {
 
     // --- Searching ---
 
-    const [filteredData, setFilteredData] = useState(projects);
+    const [filteredProjects, setFilteredProjects] = useState(projects);
+    const [filteredProfiles, setFilteredProfiles] = useState(profiles);
 
     const HandleSearch = (results) => {
-        setFilteredData(results);
+        setFilteredProjects(results[0]);
+        setFilteredProfiles(results[1]);
     }
+
+    //--------------------------
 
     let projectContent = <>{
         projects ?
             projects.length > 0 ?
-            filteredData.map((project) => (
+                filteredProjects.map((project) => (
                     <ProjectCard project={project}></ProjectCard>
                 ))
-                :null
-                    :null
+                : null
+            : null
     }</>;
 
     let profileContent = <>{
         profiles ?
             profiles.length > 0 ?
-                profiles.map((profile) => (
+                filteredProfiles.map((profile) => (
                     <ProfileCard profile={profile}></ProfileCard>
                 ))
-                :null
-                    :null
+                : null
+            : null
     }</>;
 
     let discoverContent = selectedTab === 'Projects' ? projectContent : profileContent;
@@ -56,22 +60,22 @@ const Home = (props) => {
         setSelectedTab(selectedButton);
     }
 
-    
+
     return (
         <div className="page">
             <div id="containerId"><NotifButton></NotifButton></div>
-            
+
             <h1 className="page-title">Discover</h1>
-            
-            <div id="discover-button-wrapper">                
+
+            <div id="discover-button-wrapper">
                 <DiscoverButton isActive={selectedTab === 'Projects'} onClick={() => handleButtonClick('Projects')}>Projects</DiscoverButton>
                 <DiscoverButton isActive={selectedTab === 'People'} onClick={() => handleButtonClick('People')}>People</DiscoverButton>
-                <SearchBar data={projects} onSearch={HandleSearch}></SearchBar>
-                
+                <SearchBar dataSets={[{ data: projects }, { data: profiles }]} onSearch={HandleSearch}></SearchBar>
+
             </div>
 
             {/* Prints all projects in the fake dataset on screen */}
-            { discoverContent }
+            {discoverContent}
             {/* <ProfileCard profile={profiles[0]}></ProfileCard> */}
 
         </div>

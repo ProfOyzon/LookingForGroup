@@ -1,6 +1,9 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import * as paths from "./constants/routes";
+import React, { useState } from 'react';
+import Login from './components/pages/Login';
+import Signup from './components/pages/Signup';
 import Home from "./components/pages/Home";
 import Messages from "./components/pages/Messages";
 import MyFeed from "./components/pages/MyFeed";
@@ -16,23 +19,27 @@ import CreateProject from './components/pages/CreateProject';
 
 
 function App() {
+  const [avatarImage, setAvatarImage] = useState('images/tempProfilePic.png');
+
   return (
     <BrowserRouter>
       <div className="App">
-        <SideBar />
+        <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} />
         <Routes>
           <Route path={paths.routes.DEFAULT} element={<Home />} />
+          <Route path={paths.routes.LOGIN} element={<Login />} />
+          <Route path={paths.routes.SIGNUP} element={<Signup setAvatarImage={setAvatarImage}/>} />
           <Route path={paths.routes.HOME} element={<Home />} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />
           <Route path={paths.routes.MYFEED} element={<MyFeed />} />
           <Route path={paths.routes.MYPROJECTS} element={<MyProjects />} />
           <Route path={paths.routes.PROFILE} element={<Profile />} />
           <Route path={paths.routes.PROJECT} element={<Project />}/>
-          <Route path={paths.routes.PROJECTPOST} element={<ProjectPostPage />}/>
           <Route path={paths.routes.CREATEPROJECT} element={<CreateProject />}/>
-          <Route path={paths.routes.SETTINGS} element={<Settings />} />
+          <Route path={paths.routes.PROJECTPOST} element={<ProjectPostPage />} />
+          <Route path={paths.routes.SETTINGS} element={<Settings setAvatarImage={setAvatarImage} />} />
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
-          <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />}/>
+          <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
         </Routes>
       </div>
     </BrowserRouter>

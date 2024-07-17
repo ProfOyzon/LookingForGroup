@@ -1,0 +1,850 @@
+/* || General styles */
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+}
+
+/* || Typography */
+
+/* || Buttons */
+.button-77 {
+  align-items: center;
+  appearance: none;
+  background-clip: padding-box;
+  background-color: initial;
+  background-image: none;
+  border-style: none;
+  box-sizing: border-box;
+  color: #4B0082;
+  cursor: pointer;
+  display: inline-block;
+  flex-direction: row;
+  flex-shrink: 0;
+  font-family: Eina01, sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  justify-content: center;
+  line-height: 24px;
+  margin: 0;
+  min-height: 64px;
+  outline: none;
+  overflow: visible;
+  padding: 19px 26px;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: auto;
+  word-break: keep-all;
+  z-index: 0;
+}
+
+@media (min-width: 768px) {
+  .button-77 {
+    padding: 19px 32px;
+  }
+}
+
+.button-77:before,
+.button-77:after {
+  border-radius: 80px;
+}
+
+.button-77:before {
+  background-color: rgba(255, 248, 220, 0.32);
+  /* Light cream background color */
+  content: "";
+  display: block;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -2;
+}
+
+.button-77:after {
+  background-color: initial;
+  background-image: linear-gradient(92.83deg, #FFFDD0 0%, #F5DEB3 100%);
+  bottom: 0;
+  content: "";
+  display: block;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: all 100ms ease-in;
+  z-index: -1;
+}
+
+.button-77:hover:not(:disabled):after {
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  top: 4px;
+  transition-timing-function: ease-out;
+}
+
+.button-77:active:not(:disabled) {
+  color: #CCCCCC;
+}
+
+.button-77:active:not(:disabled):after {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(92.83deg, #FFFDD0 0%, #F5DEB3 100%);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.button-77:disabled {
+  cursor: default;
+  opacity: 0.24;
+}
+
+.button {
+  padding: 17px 40px;
+  border-radius: 25px;
+  cursor: pointer;
+  border: 2px solid black;
+  background-color: white;
+  color: black;
+  box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 10px;
+  transition: all 0.5s ease;
+}
+
+.button:hover {
+  letter-spacing: 3px;
+  background-color: #4D9DE0;
+  color: white;
+  border: none;
+}
+
+.button:active {
+  letter-spacing: 3px;
+  background-color: #4D9DE0;
+  color: white;
+  border: none;
+  transform: scale(1.1);
+  transition: 100ms;
+}
+
+.button-1 {
+  padding: 17px 50px;
+  cursor: pointer;
+  border: 0;
+  background-color: hsl(48, 100%, 50%);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 15px;
+  transition: all 0.5s ease;
+  color: hsl(0, 0%, 20%);
+}
+
+.button-1:hover {
+  letter-spacing: 3px;
+  background-color: hsl(48, 100%, 40%);
+  color: hsl(0, 0%, 100%);
+  box-shadow: rgba(255, 165, 0, 0.7) 0px 7px 29px 0px;
+}
+
+.button-1:active {
+  letter-spacing: 3px;
+  background-color: hsl(48, 100%, 40%);
+  color: hsl(0, 0%, 100%);
+  box-shadow: rgba(255, 165, 0, 0) 0px 0px 0px 0px;
+  transform: translateY(10px);
+  transition: 100ms;
+}
+
+.developer-buttons .row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.dev-button {
+  border: 2px solid orange;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dev-button.active {
+  background-color: orange;
+  color: white;
+}
+
+.des-button {
+  border: 2px solid yellow;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.skill-button {
+  border: 2px solid yellow;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: 10vw;
+}
+
+.project-button {
+  border: 2px solid yellow;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 5px;
+  width: 10vw;
+  height: auto;
+}
+
+.des-button.active {
+  background-color: yellow;
+  color: white;
+}
+
+.other-buttons .row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.oth-button {
+  border: 2px solid grey;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.oth-button.active {
+  background-color: grey;
+  color: white;
+}
+
+.softSkill-button {
+  border: 2px solid yellow;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.softSkill-button.active {
+  background-color: yellow;
+  color: white;
+}
+
+/* || Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.flexDescripRow h1 {
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.flexDescripRow h1:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.flexDescripRow h1:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.flexDescripRow h1:nth-child(3) {
+  animation-delay: 1s;
+}
+
+.flexImgRow img {
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.flexImgRow img:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.flexImgRow img:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.flexImgRow img:nth-child(3) {
+  animation-delay: 1s;
+}
+
+
+/* || Header and Main Navigation */
+
+
+/* || HomePage */
+.flexColumn {
+  display: flex;
+  flex-flow: column;
+}
+
+.flexRow {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  background-color: #3BB273;
+  justify-content: space-between;
+}
+
+.flexRow .button-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+}
+
+.flexRow img {
+  margin-left: 10px;
+}
+
+.flexDescripRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.flexImgRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.footerColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footerRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.footerRow h2 {
+  flex: 1;
+  text-align: center;
+}
+
+.flexLookFor {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap; 
+  justify-content: center; 
+}
+
+.flexLookFor h1 {
+  white-space: nowrap; 
+  margin-right: 10%;
+}
+
+.nav-list {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-list li {
+  margin-right: 20px;
+  position: relative; /* Ensure dropdown is positioned relative to its parent */
+}
+
+.nav-list a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px 20px;
+  display: block;
+}
+
+.nav-list a:hover {
+  background-color: #575757;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: lightgray;
+  width: 100vw;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #575757;
+}
+
+.nav-list li:hover .dropdown-content {
+  display: block;
+}
+
+/* || End of HomePage */
+
+/* Container for the flex rows */
+.centerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.flexRowContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* || SignUp/Login Pages */
+.flexRow3,
+.flexRow4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 25vw;
+  height: 75vh;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+}
+
+.flexRow3 {
+  background-color: white;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
+
+.flexRow3 .Name {
+  display: flex;
+  flex-direction: row;
+  padding-right: 10px;
+}
+
+.flexRow3 .Name input {
+  border-radius: 10px;
+  padding: 10px;
+  width: 10vw;
+  height: 2.5vh;
+  border: 1px solid grey;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.flexRow4 {
+  background-color: plum;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+}
+
+.flexRow3 h4 {
+  margin-bottom: 5px;
+}
+
+.flexRow3 ul {
+  margin-top: 0;
+  padding-left: 20px;
+}
+
+.flexRow3 h1,
+.flexRow4 h1 {
+  margin: 0;
+  text-align: center;
+}
+
+.flexRow3 h1 {
+  margin-bottom: 20px;
+}
+
+.flexRow4 h1 {
+  margin-bottom: 10px;
+}
+
+.flexRow4 h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.flexcolumn4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+
+.flexRow5 {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  background-color: lightgray;
+  justify-content: space-between;
+  width: 75%;
+}
+
+.flexRow5 h1 {
+  font-weight: bold;
+  font-size: 3vh;
+}
+
+.flexColumn2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*|| Soft Skills section */
+.flexcolumn5 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flexRow6 {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+  width: 75%;
+  height: auto;
+}
+
+.flexRow7 {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  background-color: grey;
+  width: 75%;
+  height: 50vh;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+  border-bottom: solid black 5px;
+  border-right: solid black 5px;
+  border-left: solid black 5px;
+}
+
+.flexRow8 {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+}
+
+.flexRowContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+
+.flexColumnProfic {
+  display: flex;
+  align-items: center;
+  background-color: yellow;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  width: 100%
+}
+
+.flexColumnProfic h1 {
+  flex: 1;
+  text-align: center;
+}
+
+.flexRowProfic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 25px;
+  padding: 20px;
+  height: auto;
+}
+
+.flexRowButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: white;
+  border-bottom: solid black 2px;
+  border-left: solid black 2px;
+  border-right: solid black 2px;
+  width: 100%;
+}
+
+.flexColumn9 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flexRow11 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  background-color: orange;
+  border-top: solid black 2px;
+  border-left: solid black 2px;
+  border-right: solid black 2px;
+  width: 75vw;
+  height: 10vh;
+}
+
+.flexRow11 h1 {
+  font-size: 2vw;
+  flex: 1;
+  text-align: center;
+
+}
+
+.flexRow12 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: white;
+  border-bottom: solid black 2px;
+  border-left: solid black 2px;
+  border-right: solid black 2px;
+  width: 75vw;
+  min-height: 75vh;
+  height: auto;
+  justify-content: center;
+}
+
+.flexFixedSection {
+  position: relative;
+  width: 100%;
+}
+
+.stickySection {
+  position: fixed;
+  flex-direction: row;
+  bottom: 0;
+  left: 0;
+  background-color: lightgrey;
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stickySection p {
+  margin: 0;
+}
+
+.button-sticky {
+  padding: 10px 20px;
+  background-color: Grey;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  border-radius: 10px;
+  padding: 10px;
+  width: 20vw;
+  height: 2.5vh;
+  border: 1px solid grey;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+/*||ForgotPassword Page */
+
+.centerContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.flexColumn10 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  padding: 20px;
+  height: auto;
+  min-height: 75vh;
+  border: solid black 2px;
+  width: 75vh;
+}
+
+.flexRow13,
+.flexRow14,
+.flexRowEmail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 10px;
+  /* Add some spacing between rows */
+}
+
+.flexRow14 h1,
+p {
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+
+h2 {
+  font-size: 1.2em;
+}
+
+input::placeholder {
+  color: grey;
+  opacity: 0.6;
+}
+
+/*The headers*/
+h1 {
+  font-weight: bold;
+}
+
+.flexColumn2 h1 {
+  font-size: 24px;
+}
+
+.flexLookFor h1 {
+  font-weight: bold;
+  font-size: 50px;
+}
+
+
+.softSkill-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.padded-left {
+  padding-left: 30px;
+}
+
+.padded-right {
+  padding-right: 30px;
+}
+
+/* Link styles */
+a:link {
+  color: black;
+}
+
+a:visited {
+  color: green;
+}
+
+a:hover {
+  color: blue;
+}
+
+a:active {
+  color: red;
+}
+
+.search-bar {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

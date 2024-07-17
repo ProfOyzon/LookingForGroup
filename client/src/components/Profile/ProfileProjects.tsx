@@ -1,5 +1,6 @@
 import { ProjectCard } from "../ProjectCard";
 import{projects} from "../../constants/fakeData";
+import { ProfileProjectCard } from "../ProfileProjectCard";
 
 export const ProfileProjects = ({user}) => {
     return (
@@ -7,7 +8,7 @@ export const ProfileProjects = ({user}) => {
             <h2>Projects</h2>
             <div className = "profile-list">
             {user.projects.map(proj => (
-                <ProjectCard project={projects[proj]}></ProjectCard>
+                <ProfileProjectCard projectID={proj} userID={user._id}></ProfileProjectCard>
             ))}
             </div>
         </section>

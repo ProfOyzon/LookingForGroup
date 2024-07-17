@@ -6,16 +6,10 @@ import VolumeSettings from "../SettingsPageComponents/VolumeSetting";
 import NotificationSettings from "../SettingsPageComponents/NotificationSetting";
 
 
-const Settings = (props) => {
+const Settings = ({ setAvatarImage }) => {
   // state variables
   const [activeTab, setActiveTab] = useState("general");
   const [showAvatarModal, setShowAvatarModal] = useState(false);
-
-  // update the avatar
-  const updateAvatar = () => {
-    // placeholder
-    alert("Avatar updated!");
-  };
 
   return (
     <div className="page">
@@ -50,15 +44,15 @@ const Settings = (props) => {
           *************************************************************/}
         <div className={`settings-page-tab-contents ${activeTab === "general" ? "settings-page-active-tab" : ""}`} id="general">
           <div className="setting-in-page">
-            <h3></h3>
+            <h3>My Avatar</h3>
             <button id="editAvatarBtn" onClick={() => { setShowAvatarModal(true); }}>Edit Avatar</button>
             <MakeAvatarModal
               show={showAvatarModal}
               onClose={() => { setShowAvatarModal(false); }}
-              onConfirm={() => {
-                setShowAvatarModal(false);
-                updateAvatar();
-              }}
+              setAvatarImage={setAvatarImage}
+              mode="edit"
+              onBack
+              onNext
             />
           </div>
 
@@ -75,10 +69,7 @@ const Settings = (props) => {
             </div>
           </div>
 
-          <div className="setting-in-page">
-            <h3>Notifications</h3>
-            <NotificationSettings />
-          </div>
+          <NotificationSettings />
 
           <div className="setting-in-page">
             <h3>Dark Mode
@@ -106,10 +97,7 @@ const Settings = (props) => {
             </div>
           </div>
 
-          <div className="setting-in-page column">
-            <h3>Volume</h3>
-            <VolumeSettings />
-          </div>
+          <VolumeSettings />
 
           <div id="setting-spacer" ></div>
 

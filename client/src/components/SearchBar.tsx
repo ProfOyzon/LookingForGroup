@@ -4,31 +4,45 @@ import { useState } from 'react';
 import { ProjectCard } from "./ProjectCard";
 import { projects } from "../constants/fakeData";
 
-export const SearchBar = ({ data, onSearch }) => {
+export const SearchBar = ({ dataSets, onSearch }) => {
 
     let result;
     let placeholderText = "Search ";
-    /* result = placeholderText.concat(data); */
+    result = `Search`;
 
     // --- Searching ---
-    const [query, setQuery] = useState('');
+    /*const [query, setQuery] = useState('');
 
     useEffect(() => {
-        const filteredData = data.filter(item =>
+      const filteredResults = dataSets.map(dataSet =>
+        dataSet.data.filter(item =>
           Object.values(item).some(value =>
             String(value).toLowerCase().includes(query.toLowerCase())
           )
-        );
-        onSearch(filteredData);
-      }, [query, data, onSearch]);
+        )
+      );
+      onSearch(filteredResults);
+    }, [query, dataSets, onSearch]);
 
     const HandleChange = (event) => {
         setQuery(event.target.value);
-    }
+    }*/
 
-    /* let filteredSearch = data.filter(item =>
-        item.name.toLowerCase().includes(query.toLowerCase())
-    ) */
+        const [query, setQuery] = useState('');
+
+        const HandleChange = (event) => {
+          const newQuery = event.target.value;
+          setQuery(newQuery);
+      
+          const filteredResults = dataSets.map(dataSet =>
+            dataSet.data.filter(item =>
+              Object.values(item).some(value =>
+                String(value).toLowerCase().includes(newQuery.toLowerCase())
+              )
+            )
+          );
+          onSearch(filteredResults);
+        };
 
 return (
     <>

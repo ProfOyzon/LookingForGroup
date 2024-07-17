@@ -72,7 +72,10 @@ const accessoryIcons = [
     { src: "images/accessories/wand.png", alt: "wand" },
 ];
 
-const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
+//
+// MakeAvatarModal component
+//
+const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }) => {
     // initialize state variables
     // current slide index
     const [slideIndex, setSlideIndex] = useState(1);
@@ -144,7 +147,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
             clothes: setCurrentClothes,
             accessory: setCurrentAccessories,
         };
-        
+
         // update the current item for all avatars
         // this is done to display the selected item on all avatars
         Object.keys(avatars).forEach((avatar) => {
@@ -231,15 +234,22 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
     return (
         <div className="avatar-modal">
             <div className="MakeAvatar">
-                <div className="avatar-close-btn" onClick={onClose}>
+                {mode === "signup" ? (
+                    <></>
+                ) : (
+                    <div className="avatar-close-btn" onClick={onClose}>
+                        <img src="images/icons/cancel.png" alt="close" />
+                    </div>
+                )}
+                {/* <div className="avatar-close-btn" onClick={onClose}>
                     <img src="images/icons/cancel.png" alt="close" />
-                </div>
+                </div> */}
 
                 <h1 id="avatar-customize-title">Customize Avatar</h1>
 
                 <div id="avatar-select">
                     {/* previous button */}
-                    <button className="avatar-arrowBtn" onClick={() => plusSlides(-1)}>
+                    <button id="avatar-arrowBtn" onClick={() => plusSlides(-1)}>
                         <img src="images/icons/arrow-right.png" alt="left arrow" className="avatar-left-btn avatar-btn-icon" />
                     </button>
 
@@ -286,7 +296,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
                     </div>
 
                     {/* next button */}
-                    <button className="avatar-arrowBtn" onClick={() => plusSlides(1)}>
+                    <button id="avatar-arrowBtn" onClick={() => plusSlides(1)}>
                         <img src="images/icons/arrow-right.png" alt="right arrow" className="avatar-btn-icon" />
                     </button>
                 </div>
@@ -357,12 +367,26 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage }) => {
                     </div>
                 </div>
 
-                {/* create button */}
-                <div id="avatar-create">
-                    <button id="avatar-createBtn" onClick={updateAvatar}>
+                {/* 
+                    determine buttons based on the set mode
+                    one for signup with next and back buttons
+                    other for in the app to edit the avatar
+                */}
+                {mode === "signup" ? (
+                    <div id="avatar-create">
+                        <button id="avatar-backBtn" onClick={onBack}>
+                            Back
+                        </button>
+                        <button id="avatar-createBtn" onClick={onNext}>
+                            Next
+                        </button>
+                    </div>
+                ) : (
+                    <button id="avatar-editBtn" onClick={updateAvatar}>
                         Save
                     </button>
-                </div>
+                )}
+
             </div>
         </div>
     );

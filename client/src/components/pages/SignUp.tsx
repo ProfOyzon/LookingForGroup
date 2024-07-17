@@ -2,8 +2,10 @@ import "./pages.css";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
+import MakeAvatarModal from "../AvatarCreation/MakeAvatarModal";
+import ChooseSkills from "../SignupProcess/ChooseSkills";
 
-const SignUp = (props) => {
+const SignUp = ({ setAvatarImage }) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
@@ -14,6 +16,8 @@ const SignUp = (props) => {
     const [password, setPassword] = useState('');
     const [checkPassword, setCheckPassword] = useState('');
     const [error, setError] = useState('');
+    const [showAvatarModal, setShowAvatarModal] = useState(false);
+    const [showSkillsModal, setShowSkillsModal] = useState(false);
 
     // Function to handle the login button click
     const handleSignup = () => {
@@ -29,8 +33,16 @@ const SignUp = (props) => {
             if (password !== checkPassword) {
                 setError('Passwords do not match');
             } else {
+                //
+                setShowSkillsModal(true);
+
+                //
+
+                // Create Avatar
+                // setShowAvatarModal(true);
+
                 // Navigate to the home page
-                navigate(paths.routes.HOME);
+                // navigate(paths.routes.HOME);
             }
         }
     };
@@ -93,6 +105,24 @@ const SignUp = (props) => {
                     />
                     <button onClick={handleSignup}>Sign Up</button>
 
+                    {/* Modals */}
+
+                    <ChooseSkills
+                        onNext={() => { setShowSkillsModal(false); setShowAvatarModal(true); }}
+                        onBack={() => { setShowSkillsModal(false); }}
+                        show={showSkillsModal}
+                        // onClose={() => { setShowSkillsModal(false); }}
+                    />
+
+                    <MakeAvatarModal
+                        mode="signup"
+                        // back button closes the avatar modal and opens the skills modal
+                        onBack={() => { setShowAvatarModal(false); setShowSkillsModal(true); }}
+                        onNext={() => { setShowAvatarModal(false); }}
+                        show={showAvatarModal}
+                        onClose={() => { setShowAvatarModal(false); }}
+                        setAvatarImage={setAvatarImage}
+                    />
                 </div>
             </div>
         </div>

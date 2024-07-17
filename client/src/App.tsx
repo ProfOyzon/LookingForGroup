@@ -12,6 +12,7 @@ import Settings from "./components/pages/Settings";
 import NotFound from "./components/pages/NotFound";
 import SideBar from "./components/Sidebar";
 import MessageHistory from './components/pages/MessageHistory';
+import CreateProject from './components/pages/CreateProject';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path={paths.routes.PROFILE} element={<Profile />} />
           <Route path={paths.routes.PROJECT} element={<Project />}/>
           <Route path={paths.routes.PROJECTPOST} element={<ProjectPostPage />}/>
+          <Route path={paths.routes.CREATEPROJECT} element={<CreateProject />}/>
           <Route path={paths.routes.SETTINGS} element={<Settings />} />
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />}/>

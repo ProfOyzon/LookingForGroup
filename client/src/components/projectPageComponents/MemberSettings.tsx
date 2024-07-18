@@ -18,6 +18,7 @@ import { useState } from 'react';
 //Used for the members tab of the project settings
 export const MemberSettings = (props) => {
   let i = 0;
+  let key = 0; //Not needed, but react will give an error if not used
   const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
 
   let members = projectData.members.map(member => {
@@ -48,10 +49,10 @@ export const MemberSettings = (props) => {
           if (member !== undefined){
             i++;
             return(
-              <>
+              <div key={key++}>
               <MemberListing name={member.name} role={member.role} num={i}/>
               <hr/>
-              </>
+              </div>
             )
           } 
         })

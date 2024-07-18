@@ -12,18 +12,16 @@ import { projects } from "../../constants/fakeData";
 //There is currently an issue where swapping between the tabs of the settings window will reset any inputs
 //  made within this tab if they weren't saved. Ideally, this shouldn't happen unless the entire settings
 //  window is closed without saving.
-/// Note: project data is currently hardcoded to only render the first project in the database
-/// Should try to pass in a project id number later to allow for rendering relevant project data
 
 // projectId is passed through props, which is used to ensure correct data is pulled
 
 export const GeneralSettings = (props) => {
-  const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
+  //const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
   return(
     <div id='general-settings'>
       <img id='picture-edit' src={profilePlaceholder} alt='project'/>
       <button id='edit-button' className='white-button'>Edit Picture</button>
-      <input id='name-edit' name='project-name' type='text' defaultValue={projectData.name}></input>
+      <input id='name-edit' name='project-name' type='text' defaultValue={props.tempSettings.projectName}></input>
       <select id='theme-select'>
         <option value='classic'>Classic</option>
         <option value='cute'>Cute</option>

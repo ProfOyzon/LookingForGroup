@@ -1087,12 +1087,14 @@ Project Post Page style rules
     text-align: left;
     margin: 0 10px;
     width: 80px;
+    height:40px;
 }
 
 #post-header {
     display: flex;
     justify-content: center;
     gap: 30px;
+    height: 80px;
     align-items: center;
 }
 
@@ -1164,6 +1166,7 @@ Project Post Page style rules
 #post-info {
     grid-area: info;
     text-align: left;
+    height:60px;
 }
 
 #post-author {
@@ -1186,9 +1189,9 @@ Project Post Page style rules
 
 #comments-content {
     border: 1px solid grey;
-    height: 100%;
+    height: calc(100vh - 300px);
     padding: 10px;
-    overflow-y: auto;
+    overflow-y:auto;
 }
 
 .post-comment {
@@ -1261,6 +1264,7 @@ Project Post Page style rules
 
 #reply-content {
     display: grid;
+    height: 100px;
     grid-template: 1fr 2fr 1fr / 3fr 1fr;
     grid-template-areas: 'prompt prompt'
         'input input'

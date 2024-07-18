@@ -28,7 +28,7 @@ function App() {
         <Routes>
           <Route path={paths.routes.DEFAULT} element={<Home />} />
           <Route path={paths.routes.LOGIN} element={<Login />} />
-          <Route path={paths.routes.SIGNUP} element={<Signup setAvatarImage={setAvatarImage}/>} />
+          <Route path={paths.routes.SIGNUP} element={<Signup avatarImage={avatarImage} setAvatarImage={setAvatarImage}/>} />
           <Route path={paths.routes.HOME} element={<Home />} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />
           <Route path={paths.routes.MYFEED} element={<MyFeed />} />

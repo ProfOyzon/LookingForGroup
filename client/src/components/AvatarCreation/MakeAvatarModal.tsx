@@ -225,7 +225,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
         const newAvatar = canvas.toDataURL("image/png");
         setAvatarImage(newAvatar);
 
-        onClose();
+        // onClose();
 
         // // update the user's avatar in the database
     };
@@ -241,11 +241,13 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                         <img src="images/icons/cancel.png" alt="close" />
                     </div>
                 )}
-                {/* <div className="avatar-close-btn" onClick={onClose}>
-                    <img src="images/icons/cancel.png" alt="close" />
-                </div> */}
 
-                <h1 id="avatar-customize-title">Customize Avatar</h1>
+
+               {mode === "signup" ? (
+                     <h1 id="avatar-customize-title">Create Your Avatar</h1>
+                ) : (
+                    <h1 id="avatar-customize-title">Edit Avatar</h1>
+                )}
 
                 <div id="avatar-select">
                     {/* previous button */}
@@ -377,12 +379,12 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                         <button id="avatar-backBtn" onClick={onBack}>
                             Back
                         </button>
-                        <button id="avatar-createBtn" onClick={onNext}>
+                        <button id="avatar-createBtn" onClick={() => {updateAvatar(); onNext();}}>
                             Next
                         </button>
                     </div>
                 ) : (
-                    <button id="avatar-editBtn" onClick={updateAvatar}>
+                    <button id="avatar-editBtn" onClick={() => {updateAvatar(); onClose();}}>
                         Save
                     </button>
                 )}

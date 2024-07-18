@@ -14,8 +14,6 @@
 .avatar-modal {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -30,6 +28,8 @@
   cursor: pointer;
   border: none;
   background-color: transparent;
+  position: fixed;
+  top: 80px;
 }
 
 .avatar-close-btn img {

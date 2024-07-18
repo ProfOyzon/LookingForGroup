@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 import MakeAvatarModal from "../AvatarCreation/MakeAvatarModal";
 import ChooseSkills from "../SignupProcess/ChooseSkills";
+import ChooseProficiencies from "../SignupProcess/ChooseProficiencies";
+import ChooseInterests from "../SignupProcess/ChooseInterests";
+import CompleteProfile from "../SignupProcess/CompleteProfile";
 
-const SignUp = ({ setAvatarImage }) => {
+const SignUp = ({ setAvatarImage, avatarImage }) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
@@ -18,33 +21,32 @@ const SignUp = ({ setAvatarImage }) => {
     const [error, setError] = useState('');
     const [showAvatarModal, setShowAvatarModal] = useState(false);
     const [showSkillsModal, setShowSkillsModal] = useState(false);
+    const [showProficienciesModal, setShowProficienciesModal] = useState(false);
+    const [showInterestsModal, setShowInterestsModal] = useState(false);
+    const [showCompleteProfileModal, setShowCompleteProfileModal] = useState(false);
 
     // Function to handle the login button click
     const handleSignup = () => {
         // Check if the email and password are not empty
-        if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
-            setError('Please fill in all information');
-        } else {
-            // check if email is valid
+        // if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
+        //     setError('Please fill in all information');
+        // } else {
+        //     // check if email is valid
 
-            // check if username is unique (??? depends on if we want unique usernames)
+        //     // check if username is unique (??? depends on if we want unique usernames)
 
-            // check if the passwords match
-            if (password !== checkPassword) {
-                setError('Passwords do not match');
-            } else {
-                //
-                setShowSkillsModal(true);
+        //     // check if the passwords match
+        //     if (password !== checkPassword) {
+        //         setError('Passwords do not match');
+        //     } else {
+        //         // show the proficiencies modal
+        //         // from the modal links through the process
+        //         // profficiencies -> skills -> interests -> avatar -> complete profile --> home
+        //         setShowProficienciesModal(true);
+        //     }
+        // }
 
-                //
-
-                // Create Avatar
-                // setShowAvatarModal(true);
-
-                // Navigate to the home page
-                // navigate(paths.routes.HOME);
-            }
-        }
+        setShowProficienciesModal(true);
     };
 
     return (
@@ -107,21 +109,38 @@ const SignUp = ({ setAvatarImage }) => {
 
                     {/* Modals */}
 
+                    <ChooseProficiencies
+                        onNext={() => { setShowProficienciesModal(false); setShowSkillsModal(true); }}
+                        onBack={() => { setShowProficienciesModal(false); }}
+                        show={showProficienciesModal}
+                    />
+
                     <ChooseSkills
-                        onNext={() => { setShowSkillsModal(false); setShowAvatarModal(true); }}
-                        onBack={() => { setShowSkillsModal(false); }}
+                        onNext={() => { setShowSkillsModal(false); setShowInterestsModal(true); }}
+                        onBack={() => { setShowSkillsModal(false); setShowProficienciesModal(true); }}
                         show={showSkillsModal}
-                        // onClose={() => { setShowSkillsModal(false); }}
+                    />
+
+                    <ChooseInterests
+                        onNext={() => { setShowInterestsModal(false); setShowAvatarModal(true); }}
+                        onBack={() => { setShowInterestsModal(false); setShowSkillsModal(true); }}
+                        show={showInterestsModal}
                     />
 
                     <MakeAvatarModal
                         mode="signup"
-                        // back button closes the avatar modal and opens the skills modal
                         onBack={() => { setShowAvatarModal(false); setShowSkillsModal(true); }}
-                        onNext={() => { setShowAvatarModal(false); }}
+                        onNext={() => { setShowAvatarModal(false); setShowCompleteProfileModal(true); }}
                         show={showAvatarModal}
                         onClose={() => { setShowAvatarModal(false); }}
                         setAvatarImage={setAvatarImage}
+                    />
+
+                    <CompleteProfile
+                        onNext={() => { setShowCompleteProfileModal(false); navigate(paths.routes.HOME); }}
+                        onBack={() => { setShowCompleteProfileModal(false); setShowAvatarModal(true); }}
+                        show={showCompleteProfileModal}
+                        avatarImage={avatarImage}
                     />
                 </div>
             </div>

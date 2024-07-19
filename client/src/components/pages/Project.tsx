@@ -18,6 +18,7 @@ import { wait } from "@testing-library/user-event/dist/utils";
 // holds the id number of the current project being displayed. Used to reference the database.
 let projectId;
 
+// Data for a dummy project, used when re-rendering the page after saving settings
 const dummyProject = {
   _id: -1,
         name: "dummy project",
@@ -44,6 +45,7 @@ const dummyProject = {
 // default settings for the project being loaded, used when loading default data for settings
 let defaultSettings = {
   projectName: '',
+  projectMembers: []
 }
 
 // object containing the current inputs of settings, used when changing and updating project settings
@@ -232,6 +234,42 @@ const ProjectInfoMember = (props) => {
   //useState is used here as part of the settings window
   let [tabContent, setTabContent] = useState(generalTab);
 
+  //Function used to update a specific member's setting
+  //'setting' indicates what setting is being modified
+  // 0 - member role; 1 - toggle admin; 2 - toggle mentor(?); 3 - remove member; 4 - undo remove member;
+  //'memberId' indicates which member to change via their id
+  //'roleName' holds whatever new role name will be used if 'setting' is 0
+  //nothing needs to be passed into 'rolename' if 'setting' is anything other than 0
+  const updateMemberSettings = (setting, memberId, roleName = undefined) => {
+    let editingMember = tempSettings.projectMembers.find(member => member._id === memberId);
+    if (editingMember === undefined){
+      console.log('member not found');
+    }
+    switch(setting){
+      case 0:
+        if (roleName !== undefined) {
+          editingMember.role = roleName;
+        }
+        break;
+      case 1:
+        editingMember.admin ? editingMember.admin = false : editingMember.admin = true;
+        break;
+      case 2:
+        //Meant to toggle mentor role, but no such thing appears in data at the moment
+        console.log('mentor toggle');
+        break;
+      case 3:
+        tempSettings.projectMembers.splice(tempSettings.projectMembers.indexOf(editingMember), 1);
+        break;
+      case 4:
+        let deletedMember = defaultSettings.projectMembers.find(member => member._id === memberId);
+        //Need to find way to insert deleted member into the same index it was originally in
+        break;
+      default:
+        return;
+    }
+  }
+
   //Opens settings and resets any setting inputs from previous opening
   const openSettings = () => {
     tempSettings = JSON.parse(JSON.stringify(defaultSettings)); //Json manipulation here is to help create a deep copy of the settings object
@@ -394,11 +432,18 @@ const Project = (props) => {
     projectId = '0';
   }
 
+  //Find project using project ID
   const currentProject = projects.find(p => p._id === Number(projectId)) || projects[0];
 
+  //Pass project settings into variables for use in settings tabs
   defaultSettings.projectName = currentProject.name;
+  currentProject.members.forEach(member => {
+    defaultSettings.projectMembers.push(member);
+  });
   tempSettings = JSON.parse(JSON.stringify(defaultSettings));
+  console.log(defaultSettings.projectMembers);
 
+  //Pass project data for rendering purposes
   const [projectData, setProjectData] = useState(currentProject);
 
   //Workaround function to update data on a project save

@@ -30,7 +30,7 @@ export const MemberListing = (props) => {
     <img className='member-settings-profile' src={profilePlaceholder} alt=''/>
     <span className='member-settings-name'>{props.name}</span>
     <span className='member-settings-role'>{props.role}</span>
-    <button className='member-settings-edit'><img src=''/></button>
+    <button className='member-settings-edit'><img src='' alt='edit'/></button>
     <button className='member-settings-more' onClick={() => moreSettingsToggle(props.num)}>
       <img className='member-settings-more-img' src='' alt='...'/></button>
     <div id={'member-settings-dropdown-' + props.num} className='settings-hide'>

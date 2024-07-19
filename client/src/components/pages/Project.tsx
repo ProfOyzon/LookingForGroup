@@ -2,7 +2,7 @@ import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as paths from "../../constants/routes";
 import { ProjectPost } from "../projectPageComponents/ProjectPost";
 import { ProjectMember } from "../projectPageComponents/ProjectMember";
@@ -10,12 +10,36 @@ import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts } from "../../constants/fakeData";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 //This is the Project page component, which contains a layout that allows for displaying project info
 //More info and comments on individual parts are found above their respective parts
 
 // holds the id number of the current project being displayed. Used to reference the database.
 let projectId;
+
+const dummyProject = {
+  _id: -1,
+        name: "dummy project",
+        members: [
+            {
+                userID: 0,
+                admin: true,
+                owner: true,
+                role: "Project Lead"
+            },
+        ],
+        description: "dummy project",
+        tags: ["dummy", "project"],
+        neededRoles: [
+            {
+                Role: "dummy",
+                amount: 2,
+                description: "dummy project",
+            },
+        ],
+        posts: []
+}
 
 // default settings for the project being loaded, used when loading default data for settings
 let defaultSettings = {
@@ -377,8 +401,16 @@ const Project = (props) => {
 
   const [projectData, setProjectData] = useState(currentProject);
 
-  const setParentProjectData = () => {
-    setProjectData(projects.find(p => p._id === Number(projectId)) || projects[0]);
+  //Workaround function to update data on a project save
+  //Necessary due to how setting useState variables works
+  //If there's a better solution for this, please use it.
+  const resetProjectData = () => {
+    //First line is to change state to something other than what's being used
+    //If it were set to the same project as before, it wouldn't recognize it as a change & wouldn't do anything
+    setProjectData(dummyProject);
+    //Second line delays the resetting of the project data
+    //This is due to the set state function being partly asynchronous, and this allows the first line to finish before continuing
+    setTimeout(() => {setProjectData(projects.find(p => p._id === Number(projectId)) || projects[0])}, 1);
   }
 
   return (
@@ -401,7 +433,7 @@ const Project = (props) => {
       </div>
 
       <ProjectInfoMember projectName={projectData.name} projectDescription={projectData.description} 
-        neededRoles={projectData.neededRoles} callback={setParentProjectData} projectData={projectData}/>
+        neededRoles={projectData.neededRoles} callback={resetProjectData} projectData={projectData}/>
 
       <div id='member-divider'>
         <hr/>

@@ -23,7 +23,7 @@ const MyProjects = () => {
             </select>
             <button id="create-proj-btn" className="orange-button" onClick={
                 () => {
-                    openClosePopup(0)
+                    window.location.href="createProject"
                 }
             }>Create</button>
             <MyProjectsDisplay userID={UID} />

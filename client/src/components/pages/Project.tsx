@@ -17,11 +17,17 @@ import { projects, posts } from "../../constants/fakeData";
 // holds the id number of the current project being displayed. Used to reference the database.
 let projectId;
 
-// Variables to hold the element with id 'settings-content'
-// Used with ReactDOM to render different settings tabs within the element
-// No longer needed due to useState implementation
-//let settingsContainer;
-//let settingsRoot;
+// default settings for the project being loaded, used when loading default data for settings
+let defaultSettings = {
+  projectName: '',
+}
+
+// object containing the current inputs of settings, used when changing and updating project settings
+// If settings window is closed, this should be reset using defaultSettings
+let tempSettings;
+
+// used with settings, identifies which tab user is currently on
+let currentTab = 'general';
 
 //Closes dropdown menus when clicking outside of them
 /// !! Commented out due to it causing errors when clicking on other pages !!
@@ -104,24 +110,6 @@ const reportProject = () => {
   //Send a report for admins to review filled with relevant info (need location for reports)
 }
 
-//Initializes and sets up the 'settings-content' element to allow for re-rendering its content when swapping tabs
-//This is necessary for the page to run with the current version of react (v18.0) while using react rendering
-
-// No longer needed due to new useState implementation
-/*const initSettings = () => {
-  settingsContainer = document.getElementById('settings-content');
-  settingsRoot = createRoot(settingsContainer!);
-}*/
-
-//Closes settings window and saves changed settings
-//Will require code to take the input from settings and write to the database
-const saveSettings = () => {
-  console.log('Will also save current inputs to project data');
-
-  //Closes the settings popup
-  openClosePopup(0);
-}
-
 //Lets the user leave the project
 //Should only be accessible to project members
 const leaveProject = () => {
@@ -137,34 +125,6 @@ const toggleOptionDisplay = () => {
   let popup = document.getElementById("more-options-popup");
   popup ? popup.classList.toggle("show") : console.log('element not found');
 }
-
-//Re-renders settings content based on clicked tab, and highlights selected tab
-//tab = the identifier for which settings component to render
-//  Currently, inputs given on one tab will revert to current default when swapping
-//  This may need to be changed in the future
-
-// Utilizes the 'GeneralSettings' and 'MemberSettings' components for the separate tab renders
-// Error is occuring regarding the initSettings call- loading the project page more than once will cause
-// it not to be called, therefore not creating a 'settingsContainer' or 'settingsRoot' to use
-
-// No longer needed due to useState implementation
-
-/*const changeTabs = (tab) => {
-  if (settingsContainer === undefined){
-
-    initSettings();
-  }
-
-  if (tab === 'general'){
-    settingsRoot.render(<GeneralSettings projectId={projectId}/>);
-    document.getElementById('general-tab').className = 'tab-selected';
-    document.getElementById('member-tab').className = 'tab';
-  } else if (tab === 'members'){
-    settingsRoot.render(<MemberSettings projectId={projectId}/>);
-    document.getElementById('member-tab').className = 'tab-selected';
-    document.getElementById('general-tab').className = 'tab';
-  }
-}*/
 
 //Removes project from database and redirects user
 //Ensure that all other functions come before the redirect function, as changing pages may stop the funciton
@@ -242,16 +202,60 @@ const ProjectInfoMember = (props) => {
   let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
 
   //Store settings tab components for switching between tabs
-  let generalTab = <GeneralSettings projectId={projectId}/>
-  let membersTab = <MemberSettings projectId={projectId}/>
+  let generalTab = <GeneralSettings projectId={projectId} tempSettings={tempSettings}/>
+  let membersTab = <MemberSettings projectId={projectId} tempSettings={tempSettings}/>
 
   //useState is used here as part of the settings window
   let [tabContent, setTabContent] = useState(generalTab);
+
+  //Opens settings and resets any setting inputs from previous opening
+  const openSettings = () => {
+    tempSettings = JSON.parse(JSON.stringify(defaultSettings)); //Json manipulation here is to help create a deep copy of the settings object
+    if (currentTab === 'general') {
+      let nameInput = document.getElementById('name-edit');
+      nameInput ? nameInput.value = defaultSettings.projectName : console.log('error');
+    } else if (currentTab === 'members') {
+      //Next 4 lines are a very roundabout way to reset the input in general tab
+      //If you find a cleaner solution, *please* implement it
+      setTabContent(generalTab);
+      let nameInput = document.getElementById('name-edit');
+      nameInput ? nameInput.value = defaultSettings.projectName : console.log('error');
+      setTabContent(membersTab);
+    }
+    openClosePopup(0)
+  }
+
+  //Updates tempSettings with any inputted setting changes, called when switching tabs or when saving settings
+  const updateSettings = () => {
+    if (currentTab === 'general') {
+      let nameInput = document.getElementById('name-edit');
+      nameInput ? tempSettings.projectName = nameInput.value : console.log('error');
+    } else if (currentTab === 'members') {
+
+    }
+  }
+
+  //Closes settings window and saves changed settings
+  //Will require code to take the input from settings and write to the database
+  //Maybe have save button send a signal to parent component?
+  const saveSettings = () => {
+    updateSettings();
+    let currentProject = projects.find(p => p._id === Number(projectId));
+    currentProject ? currentProject.name = tempSettings.projectName : console.log('error');
+    defaultSettings = tempSettings;
+
+    props.callback();
+    //State IS being set here, but dislpay isn't updating
+    
+    //Closes the settings popup
+    openClosePopup(0);
+  }
 
   //Called when a tab is changed in the settings window
   //tab - a string value denoting which tab is being switched to.
   const changeTabs = (tab) => {
     if (tab === 'general') {
+      currentTab = 'general';
       setTabContent(generalTab);
       let generalTabElement = document.getElementById('general-tab');
       let memberTabElement = document.getElementById('member-tab');
@@ -260,6 +264,8 @@ const ProjectInfoMember = (props) => {
         memberTabElement.className = 'tab';
       }
     } else if (tab === 'members') {
+      updateSettings();
+      currentTab = 'members';
       setTabContent(membersTab);
       let generalTabElement = document.getElementById('general-tab');
       let memberTabElement = document.getElementById('member-tab');
@@ -282,7 +288,7 @@ const ProjectInfoMember = (props) => {
             <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
               <img id='more-options-button-img' src='elipses.png' alt="..."/></button>
             <div id='more-options-popup' className='hide'>
-              <button className='white-button' onClick={() => openClosePopup(0)}>Project Settings</button>
+              <button className='white-button' onClick={openSettings}>Project Settings</button>
               <button className='white-button' onClick={leaveProject}>Leave Project</button>
             </div>
           </div>
@@ -366,7 +372,14 @@ const Project = (props) => {
 
   const currentProject = projects.find(p => p._id === Number(projectId)) || projects[0];
 
+  defaultSettings.projectName = currentProject.name;
+  tempSettings = JSON.parse(JSON.stringify(defaultSettings));
+
   const [projectData, setProjectData] = useState(currentProject);
+
+  const setParentProjectData = () => {
+    setProjectData(projects.find(p => p._id === Number(projectId)) || projects[0]);
+  }
 
   return (
     <div id='project-page' className='page'>
@@ -387,7 +400,8 @@ const Project = (props) => {
       <button id='return-button' className='white-button' onClick={() => window.history.back()}>&lt; return</button>
       </div>
 
-      <ProjectInfoMember projectName={projectData.name} projectDescription={projectData.description} neededRoles={projectData.neededRoles}/>
+      <ProjectInfoMember projectName={projectData.name} projectDescription={projectData.description} 
+        neededRoles={projectData.neededRoles} callback={setParentProjectData} projectData={projectData}/>
 
       <div id='member-divider'>
         <hr/>

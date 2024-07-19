@@ -6,7 +6,7 @@ import VolumeSettings from "../SettingsPageComponents/VolumeSetting";
 import NotificationSettings from "../SettingsPageComponents/NotificationSetting";
 
 
-const Settings = ({setAvatarImage}) => {
+const Settings = ({ setAvatarImage }) => {
   // state variables
   const [activeTab, setActiveTab] = useState("general");
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -50,9 +50,9 @@ const Settings = ({setAvatarImage}) => {
               show={showAvatarModal}
               onClose={() => { setShowAvatarModal(false); }}
               setAvatarImage={setAvatarImage}
-              // onConfirm={() => {
-              //   setShowAvatarModal(false);
-              // }}
+              mode="edit"
+              onBack
+              onNext
             />
           </div>
 

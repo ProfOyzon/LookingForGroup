@@ -14,8 +14,6 @@
 .avatar-modal {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -30,6 +28,8 @@
   cursor: pointer;
   border: none;
   background-color: transparent;
+  position: fixed;
+  top: 80px;
 }
 
 .avatar-close-btn img {
@@ -122,12 +122,13 @@
   transform: scaleX(-1);
 }
 
-.avatar-arrowBtn {
+#avatar-arrowBtn {
   cursor: pointer;
   border: none;
   height: 45px;
   width: 45px;
   background: none;
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -331,11 +332,9 @@
 }
 
 /* 
-    Create button
-  */
-#avatar-createBtn {
-  /* margin-top: 20px; */
-  cursor: pointer;
+    Save button
+*/
+#avatar-editBtn, #avatar-createBtn {
   border: none;
   border-radius: 14px;
   height: 45px;
@@ -347,14 +346,42 @@
   border: 2px solid var(--orange);
 }
 
-#avatar-createBtn:hover {
+#avatar-editBtn:hover, #avatar-createBtn:hover {
   color: white;
   background-color: var(--orange);
 }
 
-#avatar-createBtn:active {
+#avatar-editBtn:active, #avatar-createBtn:active {
   transform: scale(0.95);
 }
+
+#avatar-backBtn {
+  border: none;
+  border-radius: 14px;
+  height: 45px;
+  width: 100px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: var(--lightGray);
+  color: black;
+  border: 2px solid var(--lightGray);
+}
+
+#avatar-backBtn:hover {
+  background-color: var(--medGray);
+  border: 2px solid var(--medGray);
+}
+
+#avatar-backBtn:active {
+  transform: scale(0.95);
+}
+
+#avatar-create {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 
 @media screen and (max-width: 1020px) {
   .MakeAvatar {

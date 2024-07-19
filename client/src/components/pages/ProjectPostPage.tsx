@@ -11,6 +11,7 @@ import e from "express";
 //To-do
 // - encode reply inputs to prevent code injection (if data upload doesn't automatically do that)
 // - update data writing when database if fully introduced
+// - work on page styling for window resizing
 
 //This is the Project Post Page component, which contains a layout that allows for displaying info regarding a project post
 //  Info displayed includes the post itself, as well as comments
@@ -139,6 +140,10 @@ const ProjectPostPage = (props) => {
     //create a randomized comment id for the new reply
     //May be a temporary solution, id generation may require different method
     let newId = Math.trunc(Math.random() * 100000000);
+    while (comments.find(comment => comment._id === newId) !== undefined) {
+      let newId = Math.trunc(Math.random() * 100000000)
+    }
+    console.log(newId);
     let date = new Date();
     //construct new reply
     let newReplyObject = {

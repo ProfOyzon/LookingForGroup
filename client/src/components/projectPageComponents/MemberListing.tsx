@@ -25,16 +25,33 @@ const moreSettingsToggle = (i) => {
 //  The user name is used as the rendered name, role contains a string showing what their role is,
 //  and the id number is used to ensure correct functionality when opening/closing menus
 export const MemberListing = (props) => {
+  const openCloseInput = () => {
+    document.getElementsByClassName('member-settings-role')[props.num].classList.toggle('hide');
+    document.getElementsByClassName('member-settings-edit')[props.num].classList.toggle('hide');
+    document.getElementsByClassName('member-settings-role-input')[props.num].classList.toggle('member-settings-show');
+    document.getElementsByClassName('member-settings-edit-done')[props.num].classList.toggle('member-settings-show');
+  }
+
+  const saveRoleName = () => {
+    openCloseInput();
+    let roleNameInput = document.getElementsByClassName('member-settings-role-input')[props.num];
+    let roleNameDisplay = document.getElementsByClassName('member-settings-role')[props.num];
+    roleNameDisplay.innerHTML = roleNameInput.value;
+    props.updateMemberSettings(0, props.idNum, roleNameInput.value);
+  }
+
   return(
     <div className='member-settings-listing'>
     <img className='member-settings-profile' src={profilePlaceholder} alt=''/>
     <span className='member-settings-name'>{props.name}</span>
     <span className='member-settings-role'>{props.role}</span>
-    <button className='member-settings-edit'><img src='' alt='edit'/></button>
-    <button className='member-settings-more' onClick={() => moreSettingsToggle(props.num)}>
+    <input className='member-settings-role-input' type='text' defaultValue={props.role}></input>
+    <button className='member-settings-edit' onClick={openCloseInput}><img src='' alt='edit'/></button>
+    <button className='member-settings-edit-done' onClick={saveRoleName}>done</button>
+    <button className='member-settings-more' onClick={() => moreSettingsToggle(props.idNum)}>
       <img className='member-settings-more-img' src='' alt='...'/></button>
-    <div id={'member-settings-dropdown-' + props.num} className='settings-hide'>
-      <button className='white-button'>Add/Remove Admin Role</button>
+    <div id={'member-settings-dropdown-' + props.idNum} className='settings-hide'>
+      <button className='white-button' onClick={() => props.updateMemberSettings(1, props.idNum)}>Add/Remove Admin Role</button>
       <button className='white-button'>Add/Remove Mentor Role</button>
       <button className='white-button'>Remove Member</button>
     </div>

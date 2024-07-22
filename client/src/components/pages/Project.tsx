@@ -221,29 +221,21 @@ const ProjectInfo = (props) => {
 // All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
 const ProjectInfoMember = (props) => {
   const navigate = useNavigate(); // Hook for navigation
-  // Resets the settingsContainer to ensure settings content loads correctly
-  // No longer needed with new useState implementation
-  //settingsContainer = undefined; 
 
   let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
 
-  //Store settings tab components for switching between tabs
-  let generalTab = <GeneralSettings projectId={projectId} tempSettings={tempSettings}/>
-  let membersTab = <MemberSettings projectId={projectId} tempSettings={tempSettings}/>
-
-  //useState is used here as part of the settings window
-  let [tabContent, setTabContent] = useState(generalTab);
-
   //Function used to update a specific member's setting
+  //It is placed before other variables so that it can be used for one
   //'setting' indicates what setting is being modified
   // 0 - member role; 1 - toggle admin; 2 - toggle mentor(?); 3 - remove member; 4 - undo remove member;
   //'memberId' indicates which member to change via their id
   //'roleName' holds whatever new role name will be used if 'setting' is 0
   //nothing needs to be passed into 'rolename' if 'setting' is anything other than 0
   const updateMemberSettings = (setting, memberId, roleName = undefined) => {
-    let editingMember = tempSettings.projectMembers.find(member => member._id === memberId);
+    let editingMember = tempSettings.projectMembers.find(member => member.userID === Number(memberId));
     if (editingMember === undefined){
       console.log('member not found');
+      return;
     }
     switch(setting){
       case 0:
@@ -253,6 +245,7 @@ const ProjectInfoMember = (props) => {
         break;
       case 1:
         editingMember.admin ? editingMember.admin = false : editingMember.admin = true;
+        console.log('admin status updated');
         break;
       case 2:
         //Meant to toggle mentor role, but no such thing appears in data at the moment
@@ -263,26 +256,45 @@ const ProjectInfoMember = (props) => {
         break;
       case 4:
         let deletedMember = defaultSettings.projectMembers.find(member => member._id === memberId);
-        //Need to find way to insert deleted member into the same index it was originally in
+        if (deletedMember === undefined){
+          console.log('deleted member not found');
+          return;
+        }
+        let deletedMemberIndex = defaultSettings.projectMembers.indexOf(deletedMember);
+        for (let i = 0; i++; i < deletedMemberIndexList.length) {
+          if (deletedMemberIndex > i){
+            deletedMemberIndex--;
+          }
+        }
+        tempSettings.projectMembers.splice(deletedMemberIndex, 0, deletedMember);
         break;
       default:
         return;
     }
+    console.log(tempSettings);
   }
 
+  //Store settings tab components for switching between tabs
+  let generalTab = <GeneralSettings projectId={projectId} tempSettings={tempSettings}/>
+  let membersTab = <MemberSettings projectId={projectId} tempSettings={tempSettings} updateMemberSettings={updateMemberSettings}/>
+
+  //useState is used here as part of the settings window
+  let [tabContent, setTabContent] = useState(generalTab);
+
+  //Used to track which members have been deleted
+  let deletedMemberIndexList = [];
+
   //Opens settings and resets any setting inputs from previous opening
+  //Need to figure out member settings open/close/save display stuff
   const openSettings = () => {
     tempSettings = JSON.parse(JSON.stringify(defaultSettings)); //Json manipulation here is to help create a deep copy of the settings object
     if (currentTab === 'general') {
       let nameInput = document.getElementById('name-edit');
       nameInput ? nameInput.value = defaultSettings.projectName : console.log('error');
     } else if (currentTab === 'members') {
-      //Next 4 lines are a very roundabout way to reset the input in general tab
-      //If you find a cleaner solution, *please* implement it
+      //Next 2 lines are a very roundabout way to reset the input in general tab
       setTabContent(generalTab);
-      let nameInput = document.getElementById('name-edit');
-      nameInput ? nameInput.value = defaultSettings.projectName : console.log('error');
-      setTabContent(membersTab);
+      setTimeout(() => setTabContent(<MemberSettings projectId={projectId} tempSettings={tempSettings} updateMemberSettings={updateMemberSettings}/>), 1);
     }
     openClosePopup(0)
   }
@@ -292,8 +304,6 @@ const ProjectInfoMember = (props) => {
     if (currentTab === 'general') {
       let nameInput = document.getElementById('name-edit');
       nameInput ? tempSettings.projectName = nameInput.value : console.log('error');
-    } else if (currentTab === 'members') {
-
     }
   }
 
@@ -382,6 +392,7 @@ const ProjectInfoMember = (props) => {
       <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3}>
         <div id='settings-window-test'>
             <h1>Project Settings</h1>
+            <button onClick={() => {console.log(tempSettings)}}>Show tempsettings</button>
             <div id='settings-tabs'>
               <button id='general-tab' className='tab-selected' onClick={() => {changeTabs('general')}}>General</button>
               <button id='member-tab' className='tab' onClick={() => {changeTabs('members')}}>Members</button>
@@ -441,7 +452,6 @@ const Project = (props) => {
     defaultSettings.projectMembers.push(member);
   });
   tempSettings = JSON.parse(JSON.stringify(defaultSettings));
-  console.log(defaultSettings.projectMembers);
 
   //Pass project data for rendering purposes
   const [projectData, setProjectData] = useState(currentProject);

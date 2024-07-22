@@ -14,18 +14,20 @@ import { useState } from 'react';
 //    'true' and 'false' also manage to return results despite there being no indicators present within the display due to boolean values used in the data
 
 //A projectId value is passed in to load members of the corresponding project
+//A function for updating members is also passed in to be used in individual member listings
 
 //Used for the members tab of the project settings
 export const MemberSettings = (props) => {
-  let i = 0;
+  let i = -1;
   let key = 0; //Not needed, but react will give an error if not used
   const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
 
+  //Creates an array of objects containin data to use for the search function
   let members = projectData.members.map(member => {
     let profile = profiles.find(p => p._id === Number(member.userID));
     if (profile !== undefined) {
       return (
-        {name: profile.name, username: profile.username, role: member.role}
+        {name: profile.name, username: profile.username, role: member.role, id:member.userID}
       );
     }
   })
@@ -34,6 +36,7 @@ export const MemberSettings = (props) => {
 
   //Called when searchbar is used to remake member list
   const updateMembers = (members) => {
+    //members requires the index identified here due to how the data returned from the search function is structured
     setMemberData(members[0]);
   }
 
@@ -50,7 +53,7 @@ export const MemberSettings = (props) => {
             i++;
             return(
               <div key={key++}>
-              <MemberListing name={member.name} role={member.role} num={i}/>
+              <MemberListing name={member.name} role={props.tempSettings.projectMembers[i].role} num={i} idNum={member.id} updateMemberSettings={props.updateMemberSettings}/>
               <hr/>
               </div>
             )

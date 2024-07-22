@@ -1042,6 +1042,18 @@ project page member settings rules
     height: 50%;
 }
 
+.member-settings-role-input {
+    display:none;
+}
+
+.member-settings-edit-done {
+    display:none;
+}
+
+.member-settings-show {
+    display:block;
+}
+
 .member-settings-more {
     margin-left: auto;
 }

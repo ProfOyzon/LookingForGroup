@@ -230,165 +230,177 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
         // // update the user's avatar in the database
     };
 
+    let backgroundClassName = ""
+    if (mode === "signup") {
+        // if the mode is signup, set the page background to the colorful image
+        // else just have the transparent background
+        backgroundClassName = "signupProcess-background";
+    }
+    else {
+        backgroundClassName = "no-background";
+    }
+
     // render the page
     return (
-        <div className="avatar-modal">
-            <div className="MakeAvatar">
-                {mode === "signup" ? (
-                    <></>
-                ) : (
-                    <div className="avatar-close-btn" onClick={onClose}>
-                        <img src="images/icons/cancel.png" alt="close" />
-                    </div>
-                )}
+        <div className={backgroundClassName}>
+            <div className="avatar-modal">
+                <div className="MakeAvatar">
+                    {mode === "signup" ? (
+                        <></>
+                    ) : (
+                        <div className="avatar-close-btn" onClick={onClose}>
+                            <img src="images/icons/cancel.png" alt="close" />
+                        </div>
+                    )}
 
 
-               {mode === "signup" ? (
-                     <h1 id="avatar-customize-title">Create Your Avatar</h1>
-                ) : (
-                    <h1 id="avatar-customize-title">Edit Avatar</h1>
-                )}
+                    {mode === "signup" ? (
+                        <h1 id="avatar-customize-title">Create Your Avatar</h1>
+                    ) : (
+                        <h1 id="avatar-customize-title">Edit Avatar</h1>
+                    )}
 
-                <div id="avatar-select">
-                    {/* previous button */}
-                    <button id="avatar-arrowBtn" onClick={() => plusSlides(-1)}>
-                        <img src="images/icons/arrow-right.png" alt="left arrow" className="avatar-left-btn avatar-btn-icon" />
-                    </button>
+                    <div id="avatar-select">
+                        {/* previous button */}
+                        <button id="avatar-arrowBtn" onClick={() => plusSlides(-1)}>
+                            <img src="images/icons/arrow-right.png" alt="left arrow" className="avatar-left-btn avatar-btn-icon" />
+                        </button>
 
-                    {/* displayed avatar */}
-                    <div id="avatar">
-                        {/* avatar container */}
-                        <div className="avatar-slideshow">
-                            {Object.keys(avatars).map((key, index) => (
-                                <div
-                                    className="avatar-slide"
-                                    key={key}
-                                    style={{ display: slideIndex === index + 1 ? "flex" : "none" }}
-                                >
-                                    {/* avatar */}
-                                    <div className="myAvatar" id={key} >
-                                        <div id="avatar-hat-container">
-                                            <img src={currentHats[key]} alt="" className={getHatClass(key)} id={`currentHat-${key}`} />
-                                        </div>
+                        {/* displayed avatar */}
+                        <div id="avatar">
+                            {/* avatar container */}
+                            <div className="avatar-slideshow">
+                                {Object.keys(avatars).map((key, index) => (
+                                    <div
+                                        className="avatar-slide"
+                                        key={key}
+                                        style={{ display: slideIndex === index + 1 ? "flex" : "none" }}
+                                    >
+                                        {/* avatar */}
+                                        <div className="myAvatar" id={key} >
+                                            <div id="avatar-hat-container">
+                                                <img src={currentHats[key]} alt="" className={getHatClass(key)} id={`currentHat-${key}`} />
+                                            </div>
 
-                                        <img src={currentColors[key]} alt={key} className="avatar-animals" id={`currentAvatar-${key}`} />
+                                            <img src={currentColors[key]} alt={key} className="avatar-animals" id={`currentAvatar-${key}`} />
 
-                                        <div id="avatar-outfit-container">
-                                            <img src={currentClothes[key]} alt="" className="avatar-clothes" id={`currentClothes-${key}`} />
-                                        </div>
+                                            <div id="avatar-outfit-container">
+                                                <img src={currentClothes[key]} alt="" className="avatar-clothes" id={`currentClothes-${key}`} />
+                                            </div>
 
-                                        <div id="avatar-accessory-container">
-                                            <img src={currentAccessories[key]} alt="" className="avatar-accessories" id={`currentAccessory-${key}`} />
+                                            <div id="avatar-accessory-container">
+                                                <img src={currentAccessories[key]} alt="" className="avatar-accessories" id={`currentAccessory-${key}`} />
+                                            </div>
                                         </div>
                                     </div>
+                                ))}
+                            </div>
+
+                            {/* dot indicators */}
+                            <div style={{ textAlign: "center" }}>
+                                {Object.keys(avatars).map((_, index) => (
+                                    <span
+                                        className={`avatar-slide-dot ${slideIndex === index + 1 ? "active-avatar" : ""}`}
+                                        key={index}
+                                        onClick={() => currentSlide(index + 1)}
+                                    ></span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* next button */}
+                        <button id="avatar-arrowBtn" onClick={() => plusSlides(1)}>
+                            <img src="images/icons/arrow-right.png" alt="right arrow" className="avatar-btn-icon" />
+                        </button>
+                    </div>
+
+                    {/* avatar customization options */}
+                    <div id="avatar-customization">
+                        <div id="avatar-customize-options">
+
+                            {/* tab links */}
+                            <div className="avatar-tabs">
+                                <div className={`avatar-tab-links ${activeTab === "avatar-color" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-color")}>
+                                    <img src="images/icons/paint-bucket.png" alt="paint bucket" className="avatar-icon" />
                                 </div>
-                            ))}
-                        </div>
-
-                        {/* dot indicators */}
-                        <div style={{ textAlign: "center" }}>
-                            {Object.keys(avatars).map((_, index) => (
-                                <span
-                                    className={`avatar-slide-dot ${slideIndex === index + 1 ? "active-avatar" : ""}`}
-                                    key={index}
-                                    onClick={() => currentSlide(index + 1)}
-                                ></span>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* next button */}
-                    <button id="avatar-arrowBtn" onClick={() => plusSlides(1)}>
-                        <img src="images/icons/arrow-right.png" alt="right arrow" className="avatar-btn-icon" />
-                    </button>
-                </div>
-
-                {/* avatar customization options */}
-                <div id="avatar-customization">
-                    <div id="avatar-customize-options">
-
-                        {/* tab links */}
-                        <div className="avatar-tabs">
-                            <div className={`avatar-tab-links ${activeTab === "avatar-color" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-color")}>
-                                <img src="images/icons/paint-bucket.png" alt="paint bucket" className="avatar-icon" />
+                                <div className={`avatar-tab-links ${activeTab === "avatar-hats" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-hats")}>
+                                    <img src="images/icons/cowboy-hat.png" alt="hat" className="avatar-icon" />
+                                </div>
+                                <div className={`avatar-tab-links ${activeTab === "avatar-clothes" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-clothes")}>
+                                    <img src="images/icons/clothes-hanger.png" alt="clothes hanger" className="avatar-icon" />
+                                </div>
+                                <div className={`avatar-tab-links ${activeTab === "avatar-accessories" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-accessories")}>
+                                    <img src="images/icons/sunglasses.png" alt="sunglasses" className="avatar-icon" />
+                                </div>
                             </div>
-                            <div className={`avatar-tab-links ${activeTab === "avatar-hats" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-hats")}>
-                                <img src="images/icons/cowboy-hat.png" alt="hat" className="avatar-icon" />
-                            </div>
-                            <div className={`avatar-tab-links ${activeTab === "avatar-clothes" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-clothes")}>
-                                <img src="images/icons/clothes-hanger.png" alt="clothes hanger" className="avatar-icon" />
-                            </div>
-                            <div className={`avatar-tab-links ${activeTab === "avatar-accessories" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-accessories")}>
-                                <img src="images/icons/sunglasses.png" alt="sunglasses" className="avatar-icon" />
-                            </div>
-                        </div>
 
-                        {/* color options */}
-                        <div className={`avatar-tab-contents ${activeTab === "avatar-color" ? "avatar-active-tab" : ""}`} id="avatar-color">
-                            <div className="avatar-options">
-                                {colorOptions.map((color, index) => (
-                                    <div key={index} className="avatar-color-option">
-                                        <img src={color} alt={`avatar-color-option-${index}`} onClick={() => changeColor(color)} />
-                                    </div>
-                                ))}
+                            {/* color options */}
+                            <div className={`avatar-tab-contents ${activeTab === "avatar-color" ? "avatar-active-tab" : ""}`} id="avatar-color">
+                                <div className="avatar-options">
+                                    {colorOptions.map((color, index) => (
+                                        <div key={index} className="avatar-color-option">
+                                            <img src={color} alt={`avatar-color-option-${index}`} onClick={() => changeColor(color)} />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
 
-                        {/* hat options */}
-                        <div className={`avatar-tab-contents ${activeTab === "avatar-hats" ? "avatar-active-tab" : ""}`} id="avatar-hats">
-                            <div className="avatar-options">
-                                {hatIcons.map((hat, index) => (
-                                    <div key={index} className="avatar-hat-option" onClick={() => changeItems(index, 'hat')}>
-                                        <img src={hat.src} alt={hat.alt} />
-                                    </div>
-                                ))}
+                            {/* hat options */}
+                            <div className={`avatar-tab-contents ${activeTab === "avatar-hats" ? "avatar-active-tab" : ""}`} id="avatar-hats">
+                                <div className="avatar-options">
+                                    {hatIcons.map((hat, index) => (
+                                        <div key={index} className="avatar-hat-option" onClick={() => changeItems(index, 'hat')}>
+                                            <img src={hat.src} alt={hat.alt} />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
 
-                        {/* clothes options */}
-                        <div className={`avatar-tab-contents ${activeTab === "avatar-clothes" ? "avatar-active-tab" : ""}`} id="avatar-clothes">
-                            <div className="avatar-options">
-                                {clothesIcons.map((clothes, index) => (
-                                    <div key={index} className="avatar-clothes-option" onClick={() => changeItems(index, 'clothes')}>
-                                        <img src={clothes.src} alt={clothes.alt} />
-                                    </div>
-                                ))}
+                            {/* clothes options */}
+                            <div className={`avatar-tab-contents ${activeTab === "avatar-clothes" ? "avatar-active-tab" : ""}`} id="avatar-clothes">
+                                <div className="avatar-options">
+                                    {clothesIcons.map((clothes, index) => (
+                                        <div key={index} className="avatar-clothes-option" onClick={() => changeItems(index, 'clothes')}>
+                                            <img src={clothes.src} alt={clothes.alt} />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
 
-                        {/* accessories options */}
-                        <div className={`avatar-tab-contents ${activeTab === "avatar-accessories" ? "avatar-active-tab" : ""}`} id="avatar-accessories">
-                            <div className="avatar-options">
-                                {accessoryIcons.map((accessory, index) => (
-                                    <div key={index} className="avatar-accessory-option" onClick={() => changeItems(index, 'accessory')}>
-                                        <img src={accessory.src} alt={accessory.alt} />
-                                    </div>
-                                ))}
+                            {/* accessories options */}
+                            <div className={`avatar-tab-contents ${activeTab === "avatar-accessories" ? "avatar-active-tab" : ""}`} id="avatar-accessories">
+                                <div className="avatar-options">
+                                    {accessoryIcons.map((accessory, index) => (
+                                        <div key={index} className="avatar-accessory-option" onClick={() => changeItems(index, 'accessory')}>
+                                            <img src={accessory.src} alt={accessory.alt} />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {/* 
+                    {/* 
                     determine buttons based on the set mode
                     one for signup with next and back buttons
                     other for in the app to edit the avatar
                 */}
-                {mode === "signup" ? (
-                    <div id="avatar-create">
-                        <button id="avatar-backBtn" onClick={onBack}>
-                            Back
+                    {mode === "signup" ? (
+                        <div id="signupProcess-btns">
+                            <button id="avatar-backBtn" onClick={onBack}>
+                                Back
+                            </button>
+                            <button id="avatar-createBtn" onClick={() => { updateAvatar(); onNext(); }}>
+                                Next
+                            </button>
+                        </div>
+                    ) : (
+                        <button id="avatar-editBtn" onClick={() => { updateAvatar(); onClose(); }}>
+                            Save
                         </button>
-                        <button id="avatar-createBtn" onClick={() => {updateAvatar(); onNext();}}>
-                            Next
-                        </button>
-                    </div>
-                ) : (
-                    <button id="avatar-editBtn" onClick={() => {updateAvatar(); onClose();}}>
-                        Save
-                    </button>
-                )}
+                    )}
 
+                </div>
             </div>
         </div>
     );

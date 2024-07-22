@@ -23,28 +23,30 @@ const ChooseProficiencies = ({ show, onNext, onBack }) => {
 
     // render the page
     return (
-        <div className="signupProcess-modal">
-            <div className="ChooseProficiencies">
+        <div className="signupProcess-background">
+            <div className="signupProcess-modal">
+                <div className="ChooseProficiencies">
 
-                <h1 id="signupProcess-title">Choose Your Top 3 Proficiencies</h1>
-                <p>You can add more and edit later</p>
+                    <h1 id="signupProcess-title">Choose Your Top 3 Proficiencies</h1>
+                    <p>You can add more and edit later</p>
 
-                <div id="proficiency-select">
-                    {proficiencies.map((proficiency, index) => (
-                        <button key={index} onClick={handleProficienciesSelect} className='proficiencyBtn'>{proficiency}</button>
-                    ))}
+                    <div id="proficiency-select">
+                        {proficiencies.map((proficiency, index) => (
+                            <button key={index} onClick={handleProficienciesSelect} className='proficiencyBtn'>{proficiency}</button>
+                        ))}
 
+
+                    </div>
+                    <div id='signupProcess-btns'>
+                        <button id="signup-backBtn" onClick={onBack}>
+                            Back
+                        </button>
+                        <button id="signup-nextBtn" onClick={onNext} >
+                            Next
+                        </button>
+                    </div>
 
                 </div>
-                <div className='signupProcess-btns'>
-                    <button id="signup-backBtn" onClick={onBack}>
-                        Back
-                    </button>
-                    <button id="signup-nextBtn" onClick={onNext} >
-                        Next
-                    </button>
-                </div>
-
             </div>
         </div>
     );

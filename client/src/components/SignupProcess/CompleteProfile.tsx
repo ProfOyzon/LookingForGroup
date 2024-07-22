@@ -22,55 +22,56 @@ const CompleteProfile = ({ show, onNext, onBack, avatarImage }) => {
 
     // render the page
     return (
-        <div className="signupProcess-modal">
-            <div className="CompleteProfile">
+        <div className="signupProcess-background">
+            <div className="signupProcess-modal">
+                <div className="CompleteProfile">
 
-                <h1 id="signupProcess-title">Complete Your Profile</h1>
-                <p>You can add more and edit later</p>
+                    <h1 id="signupProcess-title">Complete Your Profile</h1>
+                    <p>You can add more and edit later</p>
 
-                <div id="profile-details" >
-                    <div className="row">
-                        {/* Profile picture container */}
-                        <div id="profile-pic">
-                            <img src={avatarImage} alt="profile-pic" />
-                        </div>
+                    <div id="profile-details" >
+                        <div className="row">
+                            {/* Profile picture container */}
+                            <div id="profile-pic">
+                                <img src={avatarImage} alt="profile-pic" />
+                            </div>
 
-                        <div className="column">
-                            <div className="row">
-                                <div className="column">
-                                    {/* First and Last Name */}
-                                    <h2>{info.firstName} {info.lastName} </h2>
+                            <div className="column">
+                                <div className="row">
+                                    <div className="signup-fullname">
+                                        {/* First and Last Name */}
+                                        <h2>{info.firstName} {info.lastName} </h2>
 
-                                    {/* Username */}
-                                    <p>{info.username}</p>
+                                        {/* Username */}
+                                        <p>{info.username}</p>
+                                    </div>
+
+                                    {/* Pronouns */}
+                                    <input id="pronouns-input" type="text" placeholder="Add Pronouns" />
                                 </div>
 
-                                {/* Pronouns */}
-                                <input id="pronouns-input" type="text" placeholder="Add Pronouns" />
-                            </div>
-
-                            {/* Skills */}
-                            <div id="display-skills">
-                                {/* {info.skills.map((skill, index) => (
-                                    <button key={index} className='skillBtn'>{skill}</button>
-                                ))} */}
+                                {/* Skills */}
+                                <div id="signup-profile-skill" >
+                                    {info.skills.map((skill, index) => (
+                                        <div key={index} className='tag'>{skill}</div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
+
+                        {/* Input Box for Bio */}
+                        <textarea id="bio-input" placeholder="Add A Bio"></textarea>
+
                     </div>
-
-                    {/* Input Box for Bio */}
-                    <textarea id="bio-input" placeholder="Add A Bio"></textarea>
-
+                    <div id='signupProcess-btns'>
+                        <button id="signup-backBtn" onClick={onBack}>
+                            Back
+                        </button>
+                        <button id="signup-nextBtn" onClick={onNext} >
+                            Finish
+                        </button>
+                    </div>
                 </div>
-                <div className='signupProcess-btns'>
-                    <button id="signup-backBtn" onClick={onBack}>
-                        Back
-                    </button>
-                    <button id="signup-nextBtn" onClick={onNext} >
-                        Finish
-                    </button>
-                </div>
-
             </div>
         </div>
     );

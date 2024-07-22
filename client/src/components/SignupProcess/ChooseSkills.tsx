@@ -89,28 +89,30 @@ const ChooseSkills = ({ show, onNext, onBack }) => {
 
     // render the page
     return (
-        <div className="signupProcess-modal">
-            <div className="ChooseSkills">
+        <div className="signupProcess-background">
+            <div className="signupProcess-modal">
+                <div className="ChooseSkills">
 
-                <h1 id="signupProcess-title">Choose Your Top 5 Skills</h1>
-                <p>You can add more and edit later</p>
+                    <h1 id="signupProcess-title">Choose Your Top 5 Skills</h1>
+                    <p>You can add more and edit later</p>
 
-                <div id="skill-select">
-                    {skills.map((skill, index) => (
-                        <button key={index} onClick={handleSkillSelect} className='skillBtn'>{skill}</button>
-                    ))}
+                    <div id="skill-select">
+                        {skills.map((skill, index) => (
+                            <button key={index} onClick={handleSkillSelect} className='skillBtn'>{skill}</button>
+                        ))}
 
+
+                    </div>
+                    <div id='signupProcess-btns'>
+                        <button id="signup-backBtn" onClick={onBack}>
+                            Back
+                        </button>
+                        <button id="signup-nextBtn" onClick={onNext} >
+                            Next
+                        </button>
+                    </div>
 
                 </div>
-                <div className='signupProcess-btns'>
-                    <button id="signup-backBtn" onClick={onBack}>
-                        Back
-                    </button>
-                    <button id="signup-nextBtn" onClick={onNext} >
-                        Next
-                    </button>
-                </div>
-
             </div>
         </div>
     );

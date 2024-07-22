@@ -27,29 +27,35 @@ const Login = (props) => {
             <div className="login-signup-container">
                 <div className="directory column">
                     <h1>Welcome!</h1>
-                    <h4>Don't have an account?</h4>
+                    <p>Don't have an account?</p>
                     <button onClick={() => navigate(paths.routes.SIGNUP)}>Sign Up</button>
-
-                    <p>testing for now just type something in each field to return to home page</p>
                 </div>
                 <div className="login-form column">
                     <h2>Log In</h2>
+                    <div className="login-form-inputs">
                     <div className="error">{error}</div>
-                    <input
-                        className="login-input"
-                        type="text"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <input
-                        className="login-input"
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <button onClick={handleLogin}>Log In</button>
+                        <input
+                            className="login-input"
+                            type="text"
+                            placeholder="School Email or Username"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <input
+                            className="login-input"
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <button id="forgot-password">Forgot Password</button>
+                        
+                        <div className="mobile-signup">
+                            <p>No account? </p>
+                            <p id="signup-btn-mobile" onClick={() => navigate(paths.routes.SIGNUP)}>Sign Up</p>
+                        </div>
+                    </div>
+                    <button id="main-loginsignup-btn" onClick={handleLogin}>Log In</button>
                 </div>
             </div>
         </div>

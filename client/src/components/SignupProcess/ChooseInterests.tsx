@@ -23,28 +23,30 @@ const ChooseInterests = ({ show, onNext, onBack }) => {
 
     // render the page
     return (
-        <div className="signupProcess-modal">
-            <div className="ChooseInterests">
+        <div className="signupProcess-background">
+            <div className="signupProcess-modal">
+                <div className="ChooseInterests">
 
-                <h1 id="signupProcess-title">Choose At Least 3 Project Interests</h1>
-                <p>You can add more and edit later</p>
+                    <h1 id="signupProcess-title">Choose At Least 3 Project Interests</h1>
+                    <p>You can add more and edit later</p>
 
-                <div id="interest-select">
-                    {interests.map((interest, index) => (
-                        <button key={index} onClick={handleInterestSelect} className='interestBtn'>{interest}</button>
-                    ))}
+                    <div id="interest-select">
+                        {interests.map((interest, index) => (
+                            <button key={index} onClick={handleInterestSelect} className='interestBtn'>{interest}</button>
+                        ))}
 
+
+                    </div>
+                    <div id='signupProcess-btns'>
+                        <button id="signup-backBtn" onClick={onBack}>
+                            Back
+                        </button>
+                        <button id="signup-nextBtn" onClick={onNext} >
+                            Next
+                        </button>
+                    </div>
 
                 </div>
-                <div className='signupProcess-btns'>
-                    <button id="signup-backBtn" onClick={onBack}>
-                        Back
-                    </button>
-                    <button id="signup-nextBtn" onClick={onNext} >
-                        Next
-                    </button>
-                </div>
-
             </div>
         </div>
     );

@@ -28,25 +28,25 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
     // Function to handle the login button click
     const handleSignup = () => {
         // Check if the email and password are not empty
-        // if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
-        //     setError('Please fill in all information');
-        // } else {
-        //     // check if email is valid
+        if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
+            setError('Please fill in all information');
+        } else {
+            // check if email is valid
 
-        //     // check if username is unique (??? depends on if we want unique usernames)
+            // check if username is unique (??? depends on if we want unique usernames)
 
-        //     // check if the passwords match
-        //     if (password !== checkPassword) {
-        //         setError('Passwords do not match');
-        //     } else {
-        //         // show the proficiencies modal
-        //         // from the modal links through the process
-        //         // profficiencies -> skills -> interests -> avatar -> complete profile --> home
-        //         setShowProficienciesModal(true);
-        //     }
-        // }
+            // check if the passwords match
+            if (password !== checkPassword) {
+                setError('Passwords do not match');
+            } else {
+                // show the proficiencies modal
+                // from the modal links through the process
+                // profficiencies -> skills -> interests -> avatar -> complete profile --> home
+                setShowProficienciesModal(true);
+            }
+        }
 
-        setShowProficienciesModal(true);
+        // setShowProficienciesModal(true);
     };
 
     return (
@@ -54,58 +54,70 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
             <div className="login-signup-container">
                 <div className="directory column">
                     <h1>Welcome!</h1>
-                    <h4>Already have an account?</h4>
+                    <p>Already have an account?</p>
                     <button onClick={() => navigate(paths.routes.LOGIN)}>Log In</button>
                 </div>
                 <div className="signup-form column">
                     <h2>Sign Up</h2>
 
+                    <div className="signup-form-inputs">
                     <div className="error">{error}</div>
-                    <div className="row">
+                        <div className="row">
+                            <input
+                                className="signup-name-input"
+                                type="text"
+                                placeholder="First Name"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                            />
+                            <input
+                                className="signup-name-input"
+                                type="text"
+                                placeholder="Last Name"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                            />
+                        </div>
                         <input
-                            className="signup-name-input"
+                            className="signup-input"
                             type="text"
-                            placeholder="First Name"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+
+                        <span className="spacer"> </span>
+
+                        <input
+                            className="signup-input"
+                            type="text"
+                            placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                         <input
-                            className="signup-name-input"
-                            type="text"
-                            placeholder="Last Name"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            className="signup-input"
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
+                        <input
+                            className="signup-input"
+                            type="password"
+                            placeholder="Confirm Password"
+                            value={checkPassword}
+                            onChange={(e) => setCheckPassword(e.target.value)}
+                        />
+                        <div className="mobile-login">
+                            <p>Already have an account? </p>
+                            <p id="login-btn-mobile" onClick={() => navigate(paths.routes.LOGIN)}>Log In</p>
+                        </div>
+
                     </div>
-                    <input
-                        className="signup-input"
-                        type="text"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <input
-                        className="signup-input"
-                        type="text"
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <input
-                        className="signup-input"
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <input
-                        className="signup-input"
-                        type="password"
-                        placeholder="Confirm Password"
-                        value={checkPassword}
-                        onChange={(e) => setCheckPassword(e.target.value)}
-                    />
-                    <button onClick={handleSignup}>Sign Up</button>
+
+
+                    <button id="main-loginsignup-btn" onClick={handleSignup}>Sign Up</button>
 
                     {/* Modals */}
 
@@ -129,7 +141,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
 
                     <MakeAvatarModal
                         mode="signup"
-                        onBack={() => { setShowAvatarModal(false); setShowSkillsModal(true); }}
+                        onBack={() => { setShowAvatarModal(false); setShowInterestsModal(true); }}
                         onNext={() => { setShowAvatarModal(false); setShowCompleteProfileModal(true); }}
                         show={showAvatarModal}
                         onClose={() => { setShowAvatarModal(false); }}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="functions.js" type="text/javascript"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="flexRowProfic">
+        <h1>
+            Proficiencies
+        </h1>
+    </div>
+
+    <div class="flexColumnProfic">
+
+        <div class="button-group">
+            <a href="#Designer">
+                <button class="button-1" role="button">Designers</button>
+            </a>
+            <a href="#Developers">
+                <button class="button-1" role="button">Developers</button>
+            </a>
+            <a href="#Other">
+                <button class="button-1" role="button">Other</button>
+            </a>
+        </div>
+
+        <div id="Designers" class="designer-buttons">
+            <div class="row">
+                <button class="des-button" onclick="toggleButton(this)">Button 1</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 2</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 3</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 4</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 5</button>
+            </div>
+            <div class="row">
+                <button class="des-button" onclick="toggleButton(this)">Button 6</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 7</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 8</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 9</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 10</button>
+            </div>
+            <div class="row">
+                <button class="des-button" onclick="toggleButton(this)">Button 11</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 12</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 13</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 14</button>
+                <button class="des-button" onclick="toggleButton(this)">Button 15</button>
+            </div>
+
+        </div>
+
+        <div id="Developers" class="developer-buttons">
+            <div class="row">
+                <button class="dev-button" onclick="toggleButton(this)">Button 1</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 2</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 3</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 4</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 5</button>
+            </div>
+            <div class="row">
+                <button class="dev-button" onclick="toggleButton(this)">Button 6</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 7</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 8</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 9</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 10</button>
+            </div>
+            <div class="row">
+                <button class="dev-button" onclick="toggleButton(this)">Button 11</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 12</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 13</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 14</button>
+                <button class="dev-button" onclick="toggleButton(this)">Button 15</button>
+            </div>
+        </div>
+
+        <div id="Other" class="other-buttons">
+            <div class="row">
+                <button class="oth-button" onclick="toggleButton(this)">Button 1</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 2</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 3</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 4</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 5</button>
+            </div>
+            <div class="row">
+                <button class="oth-button" onclick="toggleButton(this)">Button 6</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 7</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 8</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 9</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 10</button>
+            </div>
+            <div class="row">
+                <button class="oth-button" onclick="toggleButton(this)">Button 11</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 12</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 13</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 14</button>
+                <button class="oth-button" onclick="toggleButton(this)">Button 15</button>
+            </div>
+        
+        </div>
+
+        <div class="flexFixedSection">
+            <form class="stickySection" action="alignment.html">
+                <p>Click on Three Proficiencies that interest you</p>
+                <button class="button-sticky" role="button" onclick="navigateToAlignment()">Skip for now</button>
+                <button class="button-sticky" role="button" onclick="navigateToAlignment()">Next</button>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400&display=swap');
+
+.buttonOne {
+    font-family: 'Source Sans 3', sans-serif;
+    border: 3px solid #99E6EA;
+    border-radius: 8px; 
+    padding: 10px 25px;
+    background-color: transparent;
+    color: #99E6EA;
+    font-size: 20px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buttonOne:hover {
+    background-color: #99E6EA;
+    color: #fff;
+}

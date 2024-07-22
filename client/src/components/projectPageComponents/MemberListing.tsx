@@ -17,7 +17,6 @@ import { profiles } from "../../constants/fakeData";
 //i - the number id for the relevant menu. Allows the function to correctly open specific menus
 const moreSettingsToggle = (i) => {
   let currentId = 'member-settings-dropdown-' + i;
-  //This is a typescript error and still runs correctly, it is safe to ignore for now
   let dropdown = document.getElementById(currentId);
   dropdown ? dropdown.classList.toggle("settings-show") : console.log('element not found');
 }
@@ -31,7 +30,7 @@ export const MemberListing = (props) => {
     <img className='member-settings-profile' src={profilePlaceholder} alt=''/>
     <span className='member-settings-name'>{props.name}</span>
     <span className='member-settings-role'>{props.role}</span>
-    <button className='member-settings-edit'><img src=''/></button>
+    <button className='member-settings-edit'><img src='' alt='edit'/></button>
     <button className='member-settings-more' onClick={() => moreSettingsToggle(props.num)}>
       <img className='member-settings-more-img' src='' alt='...'/></button>
     <div id={'member-settings-dropdown-' + props.num} className='settings-hide'>

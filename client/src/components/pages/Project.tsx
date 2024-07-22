@@ -2,7 +2,7 @@ import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as paths from "../../constants/routes";
 import { ProjectPost } from "../projectPageComponents/ProjectPost";
 import { ProjectMember } from "../projectPageComponents/ProjectMember";
@@ -10,6 +10,7 @@ import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts } from "../../constants/fakeData";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 //This is the Project page component, which contains a layout that allows for displaying project info
 //More info and comments on individual parts are found above their respective parts
@@ -17,11 +18,42 @@ import { projects, posts } from "../../constants/fakeData";
 // holds the id number of the current project being displayed. Used to reference the database.
 let projectId;
 
-// Variables to hold the element with id 'settings-content'
-// Used with ReactDOM to render different settings tabs within the element
-// No longer needed due to useState implementation
-//let settingsContainer;
-//let settingsRoot;
+// Data for a dummy project, used when re-rendering the page after saving settings
+const dummyProject = {
+  _id: -1,
+        name: "dummy project",
+        members: [
+            {
+                userID: 0,
+                admin: true,
+                owner: true,
+                role: "Project Lead"
+            },
+        ],
+        description: "dummy project",
+        tags: ["dummy", "project"],
+        neededRoles: [
+            {
+                Role: "dummy",
+                amount: 2,
+                description: "dummy project",
+            },
+        ],
+        posts: []
+}
+
+// default settings for the project being loaded, used when loading default data for settings
+let defaultSettings = {
+  projectName: '',
+  projectMembers: []
+}
+
+// object containing the current inputs of settings, used when changing and updating project settings
+// If settings window is closed, this should be reset using defaultSettings
+let tempSettings;
+
+// used with settings, identifies which tab user is currently on
+let currentTab = 'general';
 
 //Closes dropdown menus when clicking outside of them
 /// !! Commented out due to it causing errors when clicking on other pages !!
@@ -104,24 +136,6 @@ const reportProject = () => {
   //Send a report for admins to review filled with relevant info (need location for reports)
 }
 
-//Initializes and sets up the 'settings-content' element to allow for re-rendering its content when swapping tabs
-//This is necessary for the page to run with the current version of react (v18.0) while using react rendering
-
-// No longer needed due to new useState implementation
-/*const initSettings = () => {
-  settingsContainer = document.getElementById('settings-content');
-  settingsRoot = createRoot(settingsContainer!);
-}*/
-
-//Closes settings window and saves changed settings
-//Will require code to take the input from settings and write to the database
-const saveSettings = () => {
-  console.log('Will also save current inputs to project data');
-
-  //Closes the settings popup
-  openClosePopup(0);
-}
-
 //Lets the user leave the project
 //Should only be accessible to project members
 const leaveProject = () => {
@@ -137,34 +151,6 @@ const toggleOptionDisplay = () => {
   let popup = document.getElementById("more-options-popup");
   popup ? popup.classList.toggle("show") : console.log('element not found');
 }
-
-//Re-renders settings content based on clicked tab, and highlights selected tab
-//tab = the identifier for which settings component to render
-//  Currently, inputs given on one tab will revert to current default when swapping
-//  This may need to be changed in the future
-
-// Utilizes the 'GeneralSettings' and 'MemberSettings' components for the separate tab renders
-// Error is occuring regarding the initSettings call- loading the project page more than once will cause
-// it not to be called, therefore not creating a 'settingsContainer' or 'settingsRoot' to use
-
-// No longer needed due to useState implementation
-
-/*const changeTabs = (tab) => {
-  if (settingsContainer === undefined){
-
-    initSettings();
-  }
-
-  if (tab === 'general'){
-    settingsRoot.render(<GeneralSettings projectId={projectId}/>);
-    document.getElementById('general-tab').className = 'tab-selected';
-    document.getElementById('member-tab').className = 'tab';
-  } else if (tab === 'members'){
-    settingsRoot.render(<MemberSettings projectId={projectId}/>);
-    document.getElementById('member-tab').className = 'tab-selected';
-    document.getElementById('general-tab').className = 'tab';
-  }
-}*/
 
 //Removes project from database and redirects user
 //Ensure that all other functions come before the redirect function, as changing pages may stop the funciton
@@ -186,6 +172,7 @@ const deleteProject = (callback) => {
 // projectName, projectDescription, and neededRoles are passed in through props
 // All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
 const ProjectInfo = (props) => {
+  let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
   return (
     <div id='project-info'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
@@ -213,7 +200,7 @@ const ProjectInfo = (props) => {
         {
           props.neededRoles.map(role => {
             return(
-              <div>{role.Role} &#40;{role.amount}&#41;</div>
+              <div key={key++}>{role.Role} &#40;{role.amount}&#41;</div>
             );
           })
         }
@@ -238,17 +225,99 @@ const ProjectInfoMember = (props) => {
   // No longer needed with new useState implementation
   //settingsContainer = undefined; 
 
+  let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
+
   //Store settings tab components for switching between tabs
-  let generalTab = <GeneralSettings projectId={projectId}/>
-  let membersTab = <MemberSettings projectId={projectId}/>
+  let generalTab = <GeneralSettings projectId={projectId} tempSettings={tempSettings}/>
+  let membersTab = <MemberSettings projectId={projectId} tempSettings={tempSettings}/>
 
   //useState is used here as part of the settings window
   let [tabContent, setTabContent] = useState(generalTab);
+
+  //Function used to update a specific member's setting
+  //'setting' indicates what setting is being modified
+  // 0 - member role; 1 - toggle admin; 2 - toggle mentor(?); 3 - remove member; 4 - undo remove member;
+  //'memberId' indicates which member to change via their id
+  //'roleName' holds whatever new role name will be used if 'setting' is 0
+  //nothing needs to be passed into 'rolename' if 'setting' is anything other than 0
+  const updateMemberSettings = (setting, memberId, roleName = undefined) => {
+    let editingMember = tempSettings.projectMembers.find(member => member._id === memberId);
+    if (editingMember === undefined){
+      console.log('member not found');
+    }
+    switch(setting){
+      case 0:
+        if (roleName !== undefined) {
+          editingMember.role = roleName;
+        }
+        break;
+      case 1:
+        editingMember.admin ? editingMember.admin = false : editingMember.admin = true;
+        break;
+      case 2:
+        //Meant to toggle mentor role, but no such thing appears in data at the moment
+        console.log('mentor toggle');
+        break;
+      case 3:
+        tempSettings.projectMembers.splice(tempSettings.projectMembers.indexOf(editingMember), 1);
+        break;
+      case 4:
+        let deletedMember = defaultSettings.projectMembers.find(member => member._id === memberId);
+        //Need to find way to insert deleted member into the same index it was originally in
+        break;
+      default:
+        return;
+    }
+  }
+
+  //Opens settings and resets any setting inputs from previous opening
+  const openSettings = () => {
+    tempSettings = JSON.parse(JSON.stringify(defaultSettings)); //Json manipulation here is to help create a deep copy of the settings object
+    if (currentTab === 'general') {
+      let nameInput = document.getElementById('name-edit');
+      nameInput ? nameInput.value = defaultSettings.projectName : console.log('error');
+    } else if (currentTab === 'members') {
+      //Next 4 lines are a very roundabout way to reset the input in general tab
+      //If you find a cleaner solution, *please* implement it
+      setTabContent(generalTab);
+      let nameInput = document.getElementById('name-edit');
+      nameInput ? nameInput.value = defaultSettings.projectName : console.log('error');
+      setTabContent(membersTab);
+    }
+    openClosePopup(0)
+  }
+
+  //Updates tempSettings with any inputted setting changes, called when switching tabs or when saving settings
+  const updateSettings = () => {
+    if (currentTab === 'general') {
+      let nameInput = document.getElementById('name-edit');
+      nameInput ? tempSettings.projectName = nameInput.value : console.log('error');
+    } else if (currentTab === 'members') {
+
+    }
+  }
+
+  //Closes settings window and saves changed settings
+  //Will require code to take the input from settings and write to the database
+  //Maybe have save button send a signal to parent component?
+  const saveSettings = () => {
+    updateSettings();
+    let currentProject = projects.find(p => p._id === Number(projectId));
+    currentProject ? currentProject.name = tempSettings.projectName : console.log('error');
+    defaultSettings = tempSettings;
+
+    props.callback();
+    //State IS being set here, but dislpay isn't updating
+    
+    //Closes the settings popup
+    openClosePopup(0);
+  }
 
   //Called when a tab is changed in the settings window
   //tab - a string value denoting which tab is being switched to.
   const changeTabs = (tab) => {
     if (tab === 'general') {
+      currentTab = 'general';
       setTabContent(generalTab);
       let generalTabElement = document.getElementById('general-tab');
       let memberTabElement = document.getElementById('member-tab');
@@ -257,6 +326,8 @@ const ProjectInfoMember = (props) => {
         memberTabElement.className = 'tab';
       }
     } else if (tab === 'members') {
+      updateSettings();
+      currentTab = 'members';
       setTabContent(membersTab);
       let generalTabElement = document.getElementById('general-tab');
       let memberTabElement = document.getElementById('member-tab');
@@ -279,7 +350,7 @@ const ProjectInfoMember = (props) => {
             <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
               <img id='more-options-button-img' src='elipses.png' alt="..."/></button>
             <div id='more-options-popup' className='hide'>
-              <button className='white-button' onClick={() => openClosePopup(0)}>Project Settings</button>
+              <button className='white-button' onClick={openSettings}>Project Settings</button>
               <button className='white-button' onClick={leaveProject}>Leave Project</button>
             </div>
           </div>
@@ -300,7 +371,7 @@ const ProjectInfoMember = (props) => {
         {
           props.neededRoles.map(role => {
             return(
-              <div>{role.Role} &#40;{role.amount}&#41;</div>
+              <div key={key++}>{role.Role} &#40;{role.amount}&#41;</div>
             );
           })
         }
@@ -348,6 +419,8 @@ const ProjectInfoMember = (props) => {
 const Project = (props) => {
   window.scrollTo(0,0);
 
+  let keys = [0, 0, 0]; //keys are not required for functionality, but react will give an error without it when using .map functions later
+
   //Pulls project ID number from search query (should be stored as 'p')
   //(ex. [site path]/project?p=x , where x = the project ID number)
   let urlParams = new URLSearchParams(window.location.search);
@@ -359,9 +432,31 @@ const Project = (props) => {
     projectId = '0';
   }
 
+  //Find project using project ID
   const currentProject = projects.find(p => p._id === Number(projectId)) || projects[0];
 
+  //Pass project settings into variables for use in settings tabs
+  defaultSettings.projectName = currentProject.name;
+  currentProject.members.forEach(member => {
+    defaultSettings.projectMembers.push(member);
+  });
+  tempSettings = JSON.parse(JSON.stringify(defaultSettings));
+  console.log(defaultSettings.projectMembers);
+
+  //Pass project data for rendering purposes
   const [projectData, setProjectData] = useState(currentProject);
+
+  //Workaround function to update data on a project save
+  //Necessary due to how setting useState variables works
+  //If there's a better solution for this, please use it.
+  const resetProjectData = () => {
+    //First line is to change state to something other than what's being used
+    //If it were set to the same project as before, it wouldn't recognize it as a change & wouldn't do anything
+    setProjectData(dummyProject);
+    //Second line delays the resetting of the project data
+    //This is due to the set state function being partly asynchronous, and this allows the first line to finish before continuing
+    setTimeout(() => {setProjectData(projects.find(p => p._id === Number(projectId)) || projects[0])}, 1);
+  }
 
   return (
     <div id='project-page' className='page'>
@@ -372,7 +467,7 @@ const Project = (props) => {
         {
           projects.map(project => {
             return(
-              <option value={project._id}>{project.name}</option>
+              <option value={project._id} key={keys[0]++}>{project.name}</option>
             )
           })
         }
@@ -382,7 +477,8 @@ const Project = (props) => {
       <button id='return-button' className='white-button' onClick={() => window.history.back()}>&lt; return</button>
       </div>
 
-      <ProjectInfoMember projectName={projectData.name} projectDescription={projectData.description} neededRoles={projectData.neededRoles}/>
+      <ProjectInfoMember projectName={projectData.name} projectDescription={projectData.description} 
+        neededRoles={projectData.neededRoles} callback={resetProjectData} projectData={projectData}/>
 
       <div id='member-divider'>
         <hr/>
@@ -395,7 +491,7 @@ const Project = (props) => {
         {
           projectData.members.map(member => {
             return (
-              <ProjectMember onClick={() => window.location.href="profile"} memberId={member.userID} role={member.role} />
+              <ProjectMember onClick={() => window.location.href="profile"} memberId={member.userID} role={member.role}  key={keys[1]++}/>
             );
           })
         }
@@ -406,7 +502,7 @@ const Project = (props) => {
         {
           projectData.posts.map(postNum => {
             return(
-              <ProjectPost postID={posts[postNum]._id} />
+              <ProjectPost postID={posts[postNum]._id} key={keys[2]++}/>
             );
           })
         }

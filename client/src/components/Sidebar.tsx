@@ -18,7 +18,7 @@ import MakeAvatarModal from './AvatarCreation/MakeAvatarModal';
 // Have profile pic displayed if a user is logged in
 
 
-const SideBar = ({avatarImage, setAvatarImage}) => {
+const SideBar = ({ avatarImage, setAvatarImage }) => {
   const [width, setWidth] = React.useState(window.innerWidth);
   const breakpoint = useSelector((state: any) => state.page.MOBILE_BREAKPOINT);
 
@@ -29,11 +29,6 @@ const SideBar = ({avatarImage, setAvatarImage}) => {
 
   // const [avatarImage, setAvatarImage] = useState('images/tempProfilePic.png'); // State to manage the avatar image
   const [showAvatarModal, setShowAvatarModal] = useState(false); // State to manage the avatar modal
-
-  // Function to update the avatar image
-  const updateAvatarImage = (newAvatarImage) => {
-    setAvatarImage(newAvatarImage);
-  };
 
   // Function to handle the button clicks and update the h1 text
   const handleTextChange = (text, path) => {
@@ -87,7 +82,9 @@ const SideBar = ({avatarImage, setAvatarImage}) => {
         show={showAvatarModal}
         onClose={() => { setShowAvatarModal(false); }}
         setAvatarImage={setAvatarImage}
-        // onConfirm={updateAvatarImage}
+        mode="edit"
+        onBack
+        onNext
       />
 
       <h1>UserName</h1>
@@ -111,7 +108,7 @@ const SideBar = ({avatarImage, setAvatarImage}) => {
       </div>
 
       <div className='Logout'>
-        <button onClick={() => {navigate(paths.routes.LOGIN)}}>Logout</button>
+        <button onClick={() => { navigate(paths.routes.LOGIN) }}>Logout</button>
       </div>
     </div>
   );

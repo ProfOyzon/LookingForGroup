@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 
 // list of interests to choose from
-const interests = ["Website", "UI/UX", "Video Game", "3D Game", "2D Game", "Mobile App", "Web App", "Animation", "3D Modeling", "Database", "Social Media"];
+// types of projects the user is interested in
+const interests = ["Website", "UI/UX", "Video Game", "3D Game", "2D Game", "Mobile App", "Web App", "Animation", "3D Modeling", "Database", "Social Media", "AI", "Machine Learnine", "Cybersecurity", "Virtual Reality", "Augmented Reality", "Small Team", "Medium Team", "Large Team", "Flexible Times", "Beginner Friendly", "Advanced Skills", "Fast-paced", "Casual", "Non-profit", "For-profit", "Local", "Global", "Short-term", "Long-term", "Mentorship"];
 
 //
 // Choose at least 3 interests component
@@ -13,7 +14,18 @@ const ChooseInterests = ({ show, onNext, onBack }) => {
 
     // Function to handle the interest selection
     const handleInterestSelect = (interest) => {
-
+        // check if the interest is already selected
+        // if it is, remove it from the selectedInterests array and remove the 'active' class from the button
+        if (selectedInterests.includes(interest.target.innerHTML)) {
+            interest.target.classList.remove('active');
+            setSelectedInterests(selectedInterests.filter((prof) => prof !== interest.target.innerHTML));
+        }
+        // else add the interest to the selectedInterests array and highlight the button by adding the 'active' class
+        else {
+            interest.target.classList.add('active');
+            const newInterests = [...selectedInterests, interest.target.innerHTML];
+            setSelectedInterests(newInterests);
+        }
     };
 
     // if the modal is not shown, return null
@@ -41,7 +53,7 @@ const ChooseInterests = ({ show, onNext, onBack }) => {
                         <button id="signup-backBtn" onClick={onBack}>
                             Back
                         </button>
-                        <button id="signup-nextBtn" onClick={onNext} >
+                        <button id="signup-nextBtn" onClick={onNext} disabled={selectedInterests.length < 3} >
                             Next
                         </button>
                     </div>

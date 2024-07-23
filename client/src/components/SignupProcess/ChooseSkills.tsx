@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 // list of skills to choose from
-const skills = ["UI/UX", "Figma", "JavaScript", "Photoshop", "Illustrator", "HTML", "CSS", "Java", "React", "Web Development", "Game Development", "Graphic Design", "Machine Learning", "Artificial Intelligence", "Cybersecurity", "Virtual Reality", "Augmented Reality", "Game Design", "Front End", "Back End", "Design"];
+// technologies, arts, tools, and soft skills
+const skills = ["UI/UX", "Figma", "JavaScript", "Photoshop", "Illustrator", "HTML", "CSS", "Java", "React", "Web Development", "Game Development", "Graphic Design", "3D Design", "2D Design", , "Video Editing", "C#", "Python", "Unity", "Machine Learning", "Artificial Intelligence", "Cybersecurity", "Virtual Reality", "Augmented Reality", "Game Design", "Front End", "Back End", "Design", "Database", "Adaptable", "Dependable", "Creative", "Organized", "Communication", "Teamwork", "Leadership", "Passionate", "Problem Solving", "Critical Thinking", "Time Management", "Detail Oriented", "Self Motivated", "Collaboration", "Innovative", "Resourceful", "Analytical", "Adaptable", "Dependable", "Creative", "Organized", "Communication", "Teamwork", "Leadership", "Passionate", "Problem Solving", "Critical Thinking", "Time Management", "Detail Oriented", "Self Motivated", "Collaboration", "Innovative", "Resourceful", "Analytical"];
 
 //
 // Choose top 5 skills component
@@ -12,74 +13,34 @@ const ChooseSkills = ({ show, onNext, onBack }) => {
 
     // Function to handle the skill selection
     const handleSkillSelect = (skill) => {
-        // // Check if the skill is already selected
-        // if (selectedSkills.includes(skill)) {
-        //     // Remove the skill from the selected skills
-        //     setSelectedSkills(selectedSkills.filter(s => s !== skill));
-        //     // remove active class
-        //     skill.target.classList.remove('active');
-        // } else {
-        //     // Check if the user has already selected 5 skills
-        //     // if not add the skill to the selected skills
-        //     if (selectedSkills.length < 5) {
-        //         // Add the skill to the selected skills
-        //         setSelectedSkills([...selectedSkills, skill]);
-        //         // add active class
-        //         skill.target.classList.add('active');
+        // Check if selectedSkills has a length of 5
+        // if it doesn't, highlight the button by adding the 'active' class, and add the skill to the selectedSkills array
+        if (selectedSkills.length < 5) {
+            if (!selectedSkills.includes(skill.target.innerHTML)) {
+                skill.target.classList.add('active');
 
-        //         // check if 5 skills are selected
-        //         const activeSkills = document.querySelectorAll('.active');
-        //         if (activeSkills.length === 5) {
-        //             const signupNextBtn = document.getElementById('signup-nextBtn') as HTMLButtonElement | null;
-        //             if (signupNextBtn) { // Check if the element exists
-        //                 signupNextBtn.disabled = false;
-        //             }
-        //         }
-
-        //         // enable the next button if 5 skills are selected
-        //         // if 5 skills are not selected, disable the next button
-        //         const signupNextBtn = document.getElementById('signup-nextBtn') as HTMLButtonElement | null; 
-        //         if (signupNextBtn) { // Check if the element exists
-        //             signupNextBtn.disabled = activeSkills.length !== 5;
-        //         }
-
-        //         // if 5 skills are selected, disable the other skills
-        //         // when a skill is unselected, remove the 'active' class and enable the other skills
-        //         document.querySelectorAll('skillBtn').forEach((button) => {
-        //             const skillButton = button as HTMLButtonElement; // Type assertion
-        //             if (activeSkills.length === 5) {
-        //                 skillButton.disabled = !skillButton.classList.contains('active');
-        //             } else {
-        //                 skillButton.disabled = false;
-        //             }
-        //         });
-        //     }
-        // }
-
-        // enable the next button if 5 skills are selected
-        // if 5 skills are not selected, disable the next button
-        // if (document.querySelectorAll('.active').length === 5) {
-        //     document.getElementById('signup-nextBtn').disabled = false;
-        // }
-        // else {
-        //     document.getElementById('signup-nextBtn').disabled = true;
-        // }
-
-        // if 5 skills are selected, disable the other skills
-        // when a skill is unselected, remove the 'active' class and enable the other skills
-        // if (document.querySelectorAll('.active').length === 5) {
-        //     document.querySelectorAll('button').forEach((button) => {
-        //         if (!button.classList.contains('active')) {
-        //             button.disabled = true;
-        //         }
-        //     });
-        // }
-        // else {
-        //     document.querySelectorAll('button').forEach((button) => {
-        //         button.disabled = false;
-        //     });
-        // }
-
+                // creating a new array to both update the state and check the length 
+                // of selectedSkills after the addition of a new skill
+                const newSkills = [...selectedSkills, skill.target.innerHTML];
+                setSelectedSkills(newSkills);
+            }
+            // else remove the skill from the selectedSkills array and remove the 'active' class from the button
+            else {
+                skill.target.classList.remove('active');
+                setSelectedSkills(selectedSkills.filter((prof) => prof !== skill.target.innerHTML));
+            }
+        }
+        // if selectedSkills has a length of 5
+        else {
+            // if the skill is already selected, remove it from the selectedSkills array and remove the 'active' class from the button
+            if (selectedSkills.includes(skill.target.innerHTML)) {
+                skill.target.classList.remove('active');
+                setSelectedSkills(selectedSkills.filter((prof) => prof !== skill.target.innerHTML));
+            }
+            else {
+                return;
+            }
+        }
     };
 
     // if the modal is not shown, return null
@@ -107,7 +68,7 @@ const ChooseSkills = ({ show, onNext, onBack }) => {
                         <button id="signup-backBtn" onClick={onBack}>
                             Back
                         </button>
-                        <button id="signup-nextBtn" onClick={onNext} >
+                        <button id="signup-nextBtn" onClick={onNext} disabled={selectedSkills.length !== 5} >
                             Next
                         </button>
                     </div>

@@ -1043,15 +1043,15 @@ project page member settings rules
 }
 
 .member-settings-role-input {
-    display:none;
+    display: none;
 }
 
 .member-settings-edit-done {
-    display:none;
+    display: none;
 }
 
 .member-settings-show {
-    display:block;
+    display: block;
 }
 
 .member-settings-more {
@@ -1614,7 +1614,7 @@ Login and Signup Pages style rules
     font-weight: 500;
     height: 24px;
     font-size: 14px;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
 }
 
 .background-cover {
@@ -1689,7 +1689,7 @@ Login and Signup Pages style rules
 .login-form h2,
 .signup-form h2 {
     font-size: 48px;
-    margin: 10px;
+    margin: 18px;
 }
 
 .signup-name-input {
@@ -1881,7 +1881,7 @@ Signup Process Modal style rules
     width: 1000px;
     border-radius: 4px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-    
+
     flex-direction: column;
     z-index: 1;
 }
@@ -1897,6 +1897,25 @@ Signup Process Modal style rules
     width: 900px;
     display: flex;
     justify-content: space-between;
+}
+
+#signup-nextBtn:disabled {
+    border: none;
+    border-radius: 14px;
+    height: 45px;
+    width: 100px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: var(--lightGray);
+    color: black;
+    border: 2px solid var(--lightGray);
+    cursor: not-allowed;
+}
+
+#signup-nextBtn:disabled:hover {
+    background-color: var(--lightGray);
+    border: 2px solid var(--lightGray);
+    color: black;
 }
 
 #signup-nextBtn {
@@ -1916,9 +1935,9 @@ Signup Process Modal style rules
     background-color: var(--orange);
 }
 
-#signup-nextBtn:active {
+/* #signup-nextBtn:active {
     transform: scale(0.95);
-}
+} */
 
 #signup-backBtn {
     border: none;
@@ -1937,25 +1956,27 @@ Signup Process Modal style rules
     border: 2px solid var(--medGray);
 }
 
-#signup-backBtn:active {
+/* #signup-backBtn:active {
     transform: scale(0.95);
-}
+} */
 
 #skill-select,
 #interest-select,
 #proficiency-select {
-    height: 555px;
+    height: 515px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     overflow-y: auto;
+    margin: 20px;
     /* border: 1px solid hotpink; */
 }
 
 #profile-details {
-    height: 555px;
+    height: 515px;
+    margin: 20px;
     /* border: 1px solid hotpink; */
     display: flex;
     flex-direction: column;
@@ -2001,7 +2022,8 @@ Signup Process Modal style rules
 #proficiency-select button,
 #profile-details button {
     width: 150px;
-    margin: 0 10px;
+    height: 50px;
+    margin: 10px;
     padding: 5px 20px;
     font-size: 16px;
     border: 2px solid var(--lightGray);
@@ -2122,4 +2144,34 @@ Signup Process Modal style rules
     #signupProcess-title {
         font-size: 24px;
     }
+}
+
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+-------------------------------------------------------
+Scrollbar style rules
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border: 2px solid var(--lightGray);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--medGray);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
 }

@@ -4,6 +4,9 @@
     height: 100%;
     top: 0px;
     left: 220px;
+
+    /* hide horizontal scrollbar, looses scroll functionality */
+    overflow-x: hidden;
 }
 
 .header {

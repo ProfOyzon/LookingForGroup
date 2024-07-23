@@ -13,18 +13,20 @@ import { profiles } from "../../constants/fakeData";
 //  where the listing was originally located. This means that some menus may only render off-screen, making them inaccessible
 //Funcitonality also needs to be added to the dropdown menu options
 
-//Opens/closes the relevant 'more options' dropdown menu
-//i - the number id for the relevant menu. Allows the function to correctly open specific menus
-const moreSettingsToggle = (i) => {
-  let currentId = 'member-settings-dropdown-' + i;
-  let dropdown = document.getElementById(currentId);
-  dropdown ? dropdown.classList.toggle("settings-show") : console.log('element not found');
-}
-
 //Takes in a user's name, their project role, and an id number for the dropdown menu as props
 //  The user name is used as the rendered name, role contains a string showing what their role is,
 //  and the id number is used to ensure correct functionality when opening/closing menus
 export const MemberListing = (props) => {
+  
+  //Opens/closes the relevant 'more options' dropdown menu
+  //i - the number id for the relevant menu. Allows the function to correctly open specific menus
+  const moreSettingsToggle = (i) => {
+    let currentId = 'member-settings-dropdown-' + i;
+    let dropdown = document.getElementById(currentId);
+    dropdown ? dropdown.classList.toggle("settings-show") : console.log('element not found');
+  }
+
+  //Toggles whether or not the role editing input is displayed or not
   const openCloseInput = () => {
     document.getElementsByClassName('member-settings-role')[props.num].classList.toggle('hide');
     document.getElementsByClassName('member-settings-edit')[props.num].classList.toggle('hide');
@@ -32,6 +34,8 @@ export const MemberListing = (props) => {
     document.getElementsByClassName('member-settings-edit-done')[props.num].classList.toggle('member-settings-show');
   }
 
+  //When closing the role edit input, saves the current changes
+  //Changes will still be lost if the user doesn't click 'save' in the bottom right
   const saveRoleName = () => {
     openCloseInput();
     let roleNameInput = document.getElementsByClassName('member-settings-role-input')[props.num];
@@ -40,8 +44,26 @@ export const MemberListing = (props) => {
     props.updateMemberSettings(0, props.idNum, roleNameInput.value);
   }
 
+  //Removes selected member from the project & covers the listing
+  //Not finalized until 'save' is clicked
+  const tempRemoveMember = () => {
+    moreSettingsToggle(props.idNum);
+    props.updateMemberSettings(3, props.idNum)
+    document.getElementsByClassName('member-settings-cover')[props.num].classList.toggle('member-settings-cover-show');
+  }
+
+  //Undoes the removal of a member & uncovers their listing
+  const undoRemoveMember = () => {
+    props.updateMemberSettings(4, props.idNum);
+    document.getElementsByClassName('member-settings-cover')[props.num].classList.toggle('member-settings-cover-show');
+  }
+
   return(
     <div className='member-settings-listing'>
+    <div className='member-settings-cover'>
+      Member Removed. Saving changes will finalize this.
+      <button onClick={undoRemoveMember}>undo</button>
+    </div>
     <img className='member-settings-profile' src={profilePlaceholder} alt=''/>
     <span className='member-settings-name'>{props.name}</span>
     <span className='member-settings-role'>{props.role}</span>
@@ -52,8 +74,8 @@ export const MemberListing = (props) => {
       <img className='member-settings-more-img' src='' alt='...'/></button>
     <div id={'member-settings-dropdown-' + props.idNum} className='settings-hide'>
       <button className='white-button' onClick={() => props.updateMemberSettings(1, props.idNum)}>Add/Remove Admin Role</button>
-      <button className='white-button'>Add/Remove Mentor Role</button>
-      <button className='white-button'>Remove Member</button>
+      <button className='white-button' onClick={() => props.updateMemberSettings(2, props.idNum)}>Add/Remove Mentor Role</button>
+      <button className='white-button' onClick={tempRemoveMember}>Remove Member</button>
     </div>
     </div>
   )

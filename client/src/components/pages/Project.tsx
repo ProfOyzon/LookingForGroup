@@ -233,7 +233,7 @@ const ProjectInfoMember = (props) => {
   //nothing needs to be passed into 'rolename' if 'setting' is anything other than 0
   const updateMemberSettings = (setting, memberId, roleName = undefined) => {
     let editingMember = tempSettings.projectMembers.find(member => member.userID === Number(memberId));
-    if (editingMember === undefined){
+    if (editingMember === undefined && setting !== 4){
       console.log('member not found');
       return;
     }
@@ -252,20 +252,24 @@ const ProjectInfoMember = (props) => {
         console.log('mentor toggle');
         break;
       case 3:
+        //Need to add code that adds deleted indexes to the deletedMemberIndexList array
         tempSettings.projectMembers.splice(tempSettings.projectMembers.indexOf(editingMember), 1);
+        console.log(deletedMemberIndexList);
         break;
       case 4:
-        let deletedMember = defaultSettings.projectMembers.find(member => member._id === memberId);
+        let deletedMember = defaultSettings.projectMembers.find(member => member.userID === memberId);
         if (deletedMember === undefined){
           console.log('deleted member not found');
           return;
         }
         let deletedMemberIndex = defaultSettings.projectMembers.indexOf(deletedMember);
-        for (let i = 0; i++; i < deletedMemberIndexList.length) {
-          if (deletedMemberIndex > i){
+        for (let i = 0; i++; i <= deletedMemberIndexList.length) {
+          if (deletedMemberIndex > deletedMemberIndexList[i]){
             deletedMemberIndex--;
+            console.log('index decreased');
           }
         }
+        console.log(deletedMemberIndex);
         tempSettings.projectMembers.splice(deletedMemberIndex, 0, deletedMember);
         break;
       default:
@@ -285,12 +289,14 @@ const ProjectInfoMember = (props) => {
   let deletedMemberIndexList = [];
 
   //Opens settings and resets any setting inputs from previous opening
-  //Need to figure out member settings open/close/save display stuff
   const openSettings = () => {
     tempSettings = JSON.parse(JSON.stringify(defaultSettings)); //Json manipulation here is to help create a deep copy of the settings object
     if (currentTab === 'general') {
-      let nameInput = document.getElementById('name-edit');
-      nameInput ? nameInput.value = defaultSettings.projectName : console.log('error');
+      //let nameInput = document.getElementById('name-edit');
+      //nameInput ? nameInput.value = defaultSettings.projectName : console.log('error');
+      //Need to implement project image/virtual room theme corrections
+      setTabContent(membersTab);
+      setTimeout(() => setTabContent(<GeneralSettings projectId={projectId} tempSettings={tempSettings}/>), 1);
     } else if (currentTab === 'members') {
       //Next 2 lines are a very roundabout way to reset the input in general tab
       setTabContent(generalTab);
@@ -313,7 +319,10 @@ const ProjectInfoMember = (props) => {
   const saveSettings = () => {
     updateSettings();
     let currentProject = projects.find(p => p._id === Number(projectId));
-    currentProject ? currentProject.name = tempSettings.projectName : console.log('error');
+    if (currentProject !== undefined) {
+      currentProject.name = tempSettings.projectName;
+      currentProject.members = tempSettings.projectMembers;
+    }
     defaultSettings = tempSettings;
 
     props.callback();
@@ -321,6 +330,8 @@ const ProjectInfoMember = (props) => {
     
     //Closes the settings popup
     openClosePopup(0);
+
+    console.log(currentProject.members);
   }
 
   //Called when a tab is changed in the settings window
@@ -448,6 +459,7 @@ const Project = (props) => {
 
   //Pass project settings into variables for use in settings tabs
   defaultSettings.projectName = currentProject.name;
+  defaultSettings.projectMembers = [];
   currentProject.members.forEach(member => {
     defaultSettings.projectMembers.push(member);
   });

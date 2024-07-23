@@ -1058,6 +1058,22 @@ project page member settings rules
     margin-left: auto;
 }
 
+.member-settings-cover {
+    display:none;
+}
+
+.member-settings-cover-show {
+    display:flex;
+    position:absolute;
+    justify-content:center;
+    gap:10px;
+    align-items:center;
+    height: 50px;
+    width:70%;
+    background-color:white;
+    opacity:95%;
+}
+
 .settings-hide {
     display: none;
 }

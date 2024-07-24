@@ -364,21 +364,20 @@
 .containerButtonSideBar {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    cursor: pointer;
 }
 
 .containerButtonSideBar button {
-    width: 200px;
-    height: 60px;
+    width: 220px;
+    height: 6vh;
     background-color: white;
     border: none;
-    /* outline: solid lightgrey 1px; */
+    outline: solid lightgrey 1px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: larger;
     text-align: left;
-    padding-left: 30px;
-    border-radius: 8px;
+    padding-left: 34px;
+    padding-right: auto;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -403,8 +402,8 @@
     background-color: white;
     border-radius: 4px;
     display: flex;
-    border: 2px solid var(--medGray);
-    /* box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25); */
+    border: 1px solid rgba(0, 0, 0, 0);
+    box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25);
     margin-bottom: 14px;
     object-fit: cover;
     overflow: hidden;
@@ -415,10 +414,10 @@
     scale: 1.1;
 }
 
-/* .displayProfilePic:hover {
+.displayProfilePic:hover {
     cursor: pointer;
     border: 1px solid var(--orange);
-} */
+}
 
 .Logout {
     display: flex;
@@ -432,13 +431,13 @@
     position: absolute;
     bottom: 0;
     margin-bottom: 40px;
-    width: 110px;
+    width: 100px;
     height: 40px;
     font-size: 18px;
     border: none;
     border-radius: 10px;
     outline: solid var(--orange) 2px;
-    font-weight: 600;
+    font-weight: 900;
 }
 
 .Logout button:hover {
@@ -462,9 +461,9 @@
 }
 
 #profile-header {
-    /* width: 100%; */
+    width: 100%;
     border: none;
-    /* border-bottom: 2px solid black; */
+    border-bottom: 2px solid black;
     text-align: left;
 }
 
@@ -547,12 +546,16 @@ Project page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/
 */
 
+/* some rules before the @media query are placed here to
+allow them to be reformatted when the mobile view is used */
 
+/*rules for the full page itself*/
 #project-page {
     padding: 0px 15px;
     width: calc(100% - 250px);
 }
 
+/*used for the header section of the page (with the project title, description & other options)*/
 #project-info {
     display: grid;
     grid-template: 1fr 1fr / .2fr 1.5fr 400px;
@@ -560,6 +563,7 @@ Project page style rules
         'blank desc listing'
 }
 
+/*rules for the header used when a project member is viewing the page*/
 #project-info-member {
     display: grid;
     grid-template: 1fr 1fr / .2fr 1fr 200px 400px;
@@ -567,10 +571,7 @@ Project page style rules
         'blank desc buttons listing';
 }
 
-.member-name:hover {
-    text-decoration: underline;
-}
-
+/*rules for the 'enter virtual space' and 'new post' buttons on the header view for members*/
 #member-buttons {
     grid-area: buttons;
     display: flex;
@@ -579,6 +580,9 @@ Project page style rules
     margin: 15px 20px;
 }
 
+/* --- all 8 'create' rules direclty below are technically not a part of the project page --- */
+/* Shouldn't they be categorized as part of the myProjects page or as its own separate category? */
+/* These aren't my rules, so I will refrain from moving them myself for now -Joseph Dunne*/
 #create-project-desc {
     width: 80%;
     height: 30vh;
@@ -652,19 +656,24 @@ Project page style rules
         align-items: center;
     }
 
+    /*re-sizes 'enter virtual space' button to fit with narrower width*/
     #virtual-space-entrance {
         width: 40vw;
         max-width: 200px;
     }
 
+    /*shifts the options dropdown on the header view for members so that it doesn't go offscreen*/
     #more-options-popup {
         right: 16px;
     }
 }
 
+/*general rules for buttons
+orange-button class makes the button orange, white-button class makes the button white
+may need to be change when re-styling according to new wireframes in the future*/
 .orange-button {
     background-color: var(--orange);
-    color: white;
+    color: var(--white);
     font-size: large;
     border: none;
     cursor: pointer;
@@ -676,7 +685,7 @@ Project page style rules
 }
 
 .white-button {
-    background-color: white;
+    background-color: var(--white);
     color: black;
     border: none;
     cursor: pointer;
@@ -686,6 +695,7 @@ Project page style rules
     background-color: #D0D0D0;
 }
 
+/*rules for the 'return' button*/
 #return-button-container {
     text-align: left;
 }
@@ -697,12 +707,14 @@ Project page style rules
     margin-bottom: 10px;
 }
 
+/*rules for the picture in the top left of the page, used as a profile for the project itself*/
 #project-picture {
     width: 96px;
     height: 96px;
     grid-area: picture;
 }
 
+/*rules for the title of the project & for nearby buttons*/
 #project-header {
     grid-area: header;
     display: flex;
@@ -715,18 +727,12 @@ Project page style rules
     align-items: center;
 }
 
-#member-buttons button {
-    border: 1px solid #D0D0D0;
+#follow-project {
+    width: 100px;
+    height: 40px;
 }
 
-#virtual-space-entrance {
-    height: 80px;
-}
-
-#make-post-button {
-    height: 60px;
-}
-
+/*rules for the more options dropdown menu*/
 #more-options-popup {
     position: absolute;
     background-color: white;
@@ -744,6 +750,10 @@ Project page style rules
     margin: 2.5% auto;
 }
 
+/*basic rules for hiding/showing certain elements
+used for the more options dropdown menu, but might be used in other pages as well
+be careful if changing these
+Might be safe to move to the top of styles.css due to their general use*/
 .hide {
     display: none;
 }
@@ -752,27 +762,38 @@ Project page style rules
     display: block;
 }
 
-#follow-project {
-    width: 100px;
-    height: 40px;
+/*rules for buttons only visible on the project member view
+includes 'enter virtual space' and 'make post' buttons*/
+#member-buttons button {
+    border: 1px solid var(--lightGray);
 }
 
+#virtual-space-entrance {
+    height: 80px;
+}
+
+#make-post-button {
+    height: 60px;
+}
+
+/*rules for the project description*/
 #project-desc {
     grid-area: desc;
     text-align: left;
 }
 
+/*rules for the 'looking for roles' window on the right of the header*/
 #project-listings {
     grid-area: listing;
-    box-shadow: 0px 4px 10px grey;
+    box-shadow: 0px 4px 10px var(--gray);
     margin: 20px 60px;
     padding: 0px 10px;
 }
 
 #interested-button {
-    background-color: white;
+    background-color: var(--white);
     color: black;
-    border: 2px solid grey;
+    border: 2px solid var(--gray);
     border-radius: 3px;
     width: 50%;
     margin: 10px;
@@ -782,6 +803,8 @@ Project page style rules
     background-color: #D0D0D0;
 }
 
+/*rules for the divider between the header and members
+used to help wrap the lines around the word 'Members'*/
 #member-divider hr {
     display: inline-block;
     width: calc((100% - 140px)/2);
@@ -791,11 +814,13 @@ Project page style rules
     margin: 0px 24px;
 }
 
+/*rules for the element containing the project members*/
 #project-members {
     display: flex;
     overflow-x: auto;
 }
 
+/*rules for the individual member items*/
 .project-member {
     width: 200px;
     min-width: 200px;
@@ -810,10 +835,15 @@ Project page style rules
     width: 64px;
 }
 
+.member-name:hover {
+    text-decoration: underline;
+}
+
 .member-role {
     color: #F76902;
 }
 
+/*rules for the element containing posts for the project*/
 #project-posts {
     display: flex;
     flex-wrap: wrap;
@@ -822,12 +852,13 @@ Project page style rules
     justify-content: space-around;
 }
 
+/*rules for the individual post items*/
 .project-post {
     box-shadow: 5px 5px 10px grey;
     width: 95%;
     max-width: 260px;
     height: 310px;
-    /* larger-size rules
+    /* old rules for larger-sized posts
     max-width: 440px;
     height: 520px;
     */
@@ -844,7 +875,7 @@ Project page style rules
     height: 50vw;
     max-width: 220px;
     max-height: 220px;
-    /* larger-size rules
+    /* old rules for larger-sized posts
     width: 85vw;
     height: 85vw;
     max-width: 420px;
@@ -873,6 +904,7 @@ Project page style rules
     height: 32px;
 }
 
+/*rules used for the settings window, accessible on the member header view*/
 #settings-cover {
     position: fixed;
     background-color: black;
@@ -1498,22 +1530,11 @@ button {
     margin: auto 0px;
     padding: 5px;
     /* border: 1px solid lightcoral; */
+
 }
 
-.textInput {
-    width: 200px;
-    height: 30px;
-    font-size: 15px;
-    padding: 5px 20px;
-    border: 2px solid var(--medGray);
-    background-color: white;
-    border-radius: 12px;
-    margin: 14px 0;
-}
-
-.settingsBtns {
-    width: fit-content;
-    padding: 5px 20px;
+#editAvatarBtn {
+    width: 130px;
     height: 40px;
     background-color: white;
     color: var(--orange);
@@ -1524,7 +1545,7 @@ button {
     font-weight: 600;
 }
 
-.settingsBtns:hover {
+#editAvatarBtn:hover {
     background-color: var(--orange);
     color: white;
     transition: .2s;
@@ -2004,7 +2025,6 @@ Signup Process Modal style rules
 
 #profile-details {
     height: 515px;
-    width: 700px;
     margin: 20px;
     /* border: 1px solid hotpink; */
     display: flex;
@@ -2015,48 +2035,35 @@ Signup Process Modal style rules
 }
 
 .signup-fullname {
-    margin-left: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    width: 150px;
-    /* border: 1px solid hotpink; */
-    text-align: left;
+    margin: 0 20px;
 }
 
 .signup-fullname h2 {
-    font-size: 28px;
+    font-size: 24px;
     margin: 0;
 }
 
 .signup-fullname p {
     margin: 0;
-    font-size: 18px;
 }
 
 #signup-profile-skill {
+    font-size: 14px;
+    margin: 0 20px;
+
     display: flex;
     flex-direction: row;
+    justify-content: center;
     align-items: center;
-    width: 300px;
+    width: 250px;
     height: 80px;
 
-    /* border: 1px solid hotpink; */
-
     margin: 4px 25px;
-    padding: 10px;
     flex-wrap: wrap;
 }
 
 #signup-profile-skill div {
-    margin: 5px;
-    padding: 8px;
-    border: 2px solid var(--orange);
-    border-radius: 8px;
-    background-color: white;
-    color: black;
-    font-size: 16px;
-    font-weight: 600;
+    margin: 0 4px;
 }
 
 #skill-select button,
@@ -2088,10 +2095,9 @@ Signup Process Modal style rules
     flex-wrap: wrap;
     gap: 10px;
     margin: 10px;
-    /* border: 1px solid hotpink; */
 }
 
-#display-skills button {
+#display-skills button.design {
     border: 2px solid var(--blue);
     background-color: white;
     color: black;
@@ -2101,9 +2107,9 @@ Signup Process Modal style rules
 }
 
 #pronouns-input {
-    width: 150px;
+    width: 100px;
     height: 30px;
-    margin: 30px 0px 10px 40px;
+    margin: 10px 0px 10px 10px;
     padding: 5px 20px;
     font-size: 15px;
     border: 2px solid var(--lightGray);
@@ -2115,18 +2121,14 @@ Signup Process Modal style rules
 }
 
 #bio-input {
-    width: 400px;
-    height: 140px;
-    margin: 10px 0 0 0;
+    width: 420px;
+    height: 100px;
+    margin: 20px;
     padding: 10px;
     border: 2px solid var(--lightGray);
     border-radius: 4px;
     resize: none;
     font-size: 16px;
-}
-
-#bio-input.required, #pronouns-input.required {
-    border: 2px solid var(--orange);
 }
 
 @media screen and (max-width: 1020px) {

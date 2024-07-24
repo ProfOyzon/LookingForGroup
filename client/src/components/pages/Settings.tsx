@@ -1,15 +1,19 @@
 import "./pages.css";
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import * as paths from "../../constants/routes";
 import MakeAvatarModal from "../AvatarCreation/MakeAvatarModal";
 import VolumeSettings from "../SettingsPageComponents/VolumeSetting";
 import NotificationSettings from "../SettingsPageComponents/NotificationSetting";
+import ProfileVisibilitySetting from "../SettingsPageComponents/ProfileVisibilitySetting";
 
 
-const Settings = ({ setAvatarImage }) => {
+const Settings = ({ avatarImage, setAvatarImage }) => {
   // state variables
   const [activeTab, setActiveTab] = useState("general");
   const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const navigate = useNavigate(); // Hook for navigation
 
   return (
     <div className="page">
@@ -45,20 +49,24 @@ const Settings = ({ setAvatarImage }) => {
         <div className={`settings-page-tab-contents ${activeTab === "general" ? "settings-page-active-tab" : ""}`} id="general">
           <div className="setting-in-page">
             <h3>My Avatar</h3>
-            <button id="editAvatarBtn" onClick={() => { setShowAvatarModal(true); }}>Edit Avatar</button>
-            <MakeAvatarModal
-              show={showAvatarModal}
-              onClose={() => { setShowAvatarModal(false); }}
-              setAvatarImage={setAvatarImage}
-              mode="edit"
-              onBack
-              onNext
-            />
+            <div className="setting-content">
+              <div className="displayProfilePic">
+                <img src={avatarImage} alt="Profile Pic" />
+              </div>
+              <button className="settingsBtns" onClick={() => { setShowAvatarModal(true); }}>Edit Avatar</button>
+              <MakeAvatarModal
+                show={showAvatarModal}
+                onClose={() => { setShowAvatarModal(false); }}
+                setAvatarImage={setAvatarImage}
+                mode="edit"
+                onBack
+                onNext
+              />
+            </div>
           </div>
 
           <div className="setting-in-page">
-            <h3>Language
-            </h3>
+            <h3>Language</h3>
             <div className="setting-content">
               <select id="language-select">
                 <option value="english">English</option>
@@ -110,34 +118,30 @@ const Settings = ({ setAvatarImage }) => {
           *************************************************************/}
         <div className={`settings-page-tab-contents ${activeTab === "privacy" ? "settings-page-active-tab" : ""}`} id="privacy">
           <div>privacy settings go here</div>
-          <div className="setting-in-page">
-            <h3>Profile View
-              <br></br>
-              <span>Who can view your profile</span>
-            </h3>
-            <div className="setting-content"></div>
-          </div>
 
-          <div className="setting-in-page">
-            <h3>Followers
-              <br></br>
-              <span>Who can follow your profile</span>
-            </h3>
-            <div className="setting-content"></div>
-          </div>
+          <ProfileVisibilitySetting />
 
-          <div className="setting-in-page">
-            <h3>Messages
-              <br></br>
-              <span>Who can message you or messages you want to see</span>
-            </h3>
-            <div className="setting-content"></div>
-          </div>
 
           <div className="setting-in-page">
             <h3>Data
               <br></br>
               <span>What data can be collected</span>
+            </h3>
+            <div className="setting-content">
+              <div className="row">
+                <p className='text'>Data Collection</p>
+                <label className="switch">
+                  <input type="checkbox" />
+                  <span className="slider round"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="setting-in-page">
+            <h3>Blocked Accounts
+              <br></br>
+              <span></span>
             </h3>
             <div className="setting-content"></div>
           </div>
@@ -167,20 +171,46 @@ const Settings = ({ setAvatarImage }) => {
           *************************************************************/}
         <div className={`settings-page-tab-contents ${activeTab === "account" ? "settings-page-active-tab" : ""}`} id="account">
           <div>account settings go here</div>
+
+          {/* logout */}
           <div className="setting-in-page">
-            <h3>Password
+            <h3>Logout
               <br></br>
-              <span>Change your password</span>
+              <span>Are you sure you want to logout?</span>
             </h3>
-            <div className="setting-content"></div>
+            <div className="setting-content">
+            <button className='settingsBtns' onClick={() => { navigate(paths.routes.LOGIN) }}>Log Out</button>
+            </div>
           </div>
 
           <div className="setting-in-page">
-            <h3>Email
-              <br></br>
-              <span>Change your email</span>
-            </h3>
-            <div className="setting-content"></div>
+            <h3>Username</h3>
+            <div className="setting-content">
+              <div className="column">
+                <input className="textInput" type="text" value="myusername" disabled />
+                <button className="settingsBtns" >Change</button>
+              </div>
+            </div>
+          </div>
+
+          <div className="setting-in-page">
+            <h3>Email</h3>
+            <div className="setting-content">
+              <div className="column">
+                <input className="textInput" type="email" value="myemail@gmail.com" disabled />
+                <button className="settingsBtns" >Change</button>
+              </div>
+            </div>
+          </div>
+
+          <div className="setting-in-page">
+            <h3>Change Password</h3>
+            <div className="setting-content">
+              <div className="column">
+                <input className="textInput" type="password" value="userpassword123" disabled />
+                <button className="settingsBtns" >Change</button>
+              </div>
+            </div>
           </div>
 
           <div className="setting-in-page">
@@ -188,7 +218,9 @@ const Settings = ({ setAvatarImage }) => {
               <br></br>
               <span>Permanently delete your account</span>
             </h3>
-            <div className="setting-content"></div>
+            <div className="setting-content">
+              <button className="settingsBtns" >Delete Account</button>
+            </div>
           </div>
 
           <div id="setting-spacer" ></div>

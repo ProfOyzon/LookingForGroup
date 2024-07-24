@@ -75,7 +75,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
 
       <div className='ProfileContainer'>
         <div className="displayProfilePic">
-          <img src={avatarImage} alt="Profile Pic" onClick={() => { setShowAvatarModal(true); }} />
+          <img src={avatarImage} alt="Profile Pic" />
         </div>
       </div>
       <MakeAvatarModal
@@ -108,7 +108,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
       </div>
 
       <div className='Logout'>
-        <button onClick={() => { navigate(paths.routes.LOGIN) }}>Logout</button>
+        <button onClick={() => { navigate(paths.routes.LOGIN) }}>Log Out</button>
       </div>
     </div>
   );

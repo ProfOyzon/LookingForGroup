@@ -364,20 +364,21 @@
 .containerButtonSideBar {
     display: flex;
     flex-direction: column;
-    cursor: pointer;
+    align-items: center;
+    gap: 8px;
 }
 
 .containerButtonSideBar button {
-    width: 220px;
-    height: 6vh;
+    width: 200px;
+    height: 60px;
     background-color: white;
     border: none;
-    outline: solid lightgrey 1px;
+    /* outline: solid lightgrey 1px; */
     cursor: pointer;
-    font-size: larger;
+    font-size: 18px;
     text-align: left;
-    padding-left: 34px;
-    padding-right: auto;
+    padding-left: 30px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -402,8 +403,8 @@
     background-color: white;
     border-radius: 4px;
     display: flex;
-    border: 1px solid rgba(0, 0, 0, 0);
-    box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25);
+    border: 2px solid var(--medGray);
+    /* box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25); */
     margin-bottom: 14px;
     object-fit: cover;
     overflow: hidden;
@@ -414,10 +415,10 @@
     scale: 1.1;
 }
 
-.displayProfilePic:hover {
+/* .displayProfilePic:hover {
     cursor: pointer;
     border: 1px solid var(--orange);
-}
+} */
 
 .Logout {
     display: flex;
@@ -431,13 +432,13 @@
     position: absolute;
     bottom: 0;
     margin-bottom: 40px;
-    width: 100px;
+    width: 110px;
     height: 40px;
     font-size: 18px;
     border: none;
     border-radius: 10px;
     outline: solid var(--orange) 2px;
-    font-weight: 900;
+    font-weight: 600;
 }
 
 .Logout button:hover {
@@ -1058,6 +1059,22 @@ project page member settings rules
     margin-left: auto;
 }
 
+.member-settings-cover {
+    display:none;
+}
+
+.member-settings-cover-show {
+    display:flex;
+    position:absolute;
+    justify-content:center;
+    gap:10px;
+    align-items:center;
+    height: 50px;
+    width:70%;
+    background-color:white;
+    opacity:95%;
+}
+
 .settings-hide {
     display: none;
 }
@@ -1481,11 +1498,22 @@ button {
     margin: auto 0px;
     padding: 5px;
     /* border: 1px solid lightcoral; */
-
 }
 
-#editAvatarBtn {
-    width: 130px;
+.textInput {
+    width: 200px;
+    height: 30px;
+    font-size: 15px;
+    padding: 5px 20px;
+    border: 2px solid var(--medGray);
+    background-color: white;
+    border-radius: 12px;
+    margin: 14px 0;
+}
+
+.settingsBtns {
+    width: fit-content;
+    padding: 5px 20px;
     height: 40px;
     background-color: white;
     color: var(--orange);
@@ -1496,7 +1524,7 @@ button {
     font-weight: 600;
 }
 
-#editAvatarBtn:hover {
+.settingsBtns:hover {
     background-color: var(--orange);
     color: white;
     transition: .2s;
@@ -1976,6 +2004,7 @@ Signup Process Modal style rules
 
 #profile-details {
     height: 515px;
+    width: 700px;
     margin: 20px;
     /* border: 1px solid hotpink; */
     display: flex;
@@ -1986,35 +2015,48 @@ Signup Process Modal style rules
 }
 
 .signup-fullname {
-    margin: 0 20px;
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 150px;
+    /* border: 1px solid hotpink; */
+    text-align: left;
 }
 
 .signup-fullname h2 {
-    font-size: 24px;
+    font-size: 28px;
     margin: 0;
 }
 
 .signup-fullname p {
     margin: 0;
+    font-size: 18px;
 }
 
 #signup-profile-skill {
-    font-size: 14px;
-    margin: 0 20px;
-
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
-    width: 250px;
+    width: 300px;
     height: 80px;
 
+    /* border: 1px solid hotpink; */
+
     margin: 4px 25px;
+    padding: 10px;
     flex-wrap: wrap;
 }
 
 #signup-profile-skill div {
-    margin: 0 4px;
+    margin: 5px;
+    padding: 8px;
+    border: 2px solid var(--orange);
+    border-radius: 8px;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 #skill-select button,
@@ -2046,9 +2088,10 @@ Signup Process Modal style rules
     flex-wrap: wrap;
     gap: 10px;
     margin: 10px;
+    /* border: 1px solid hotpink; */
 }
 
-#display-skills button.design {
+#display-skills button {
     border: 2px solid var(--blue);
     background-color: white;
     color: black;
@@ -2058,9 +2101,9 @@ Signup Process Modal style rules
 }
 
 #pronouns-input {
-    width: 100px;
+    width: 150px;
     height: 30px;
-    margin: 10px 0px 10px 10px;
+    margin: 30px 0px 10px 40px;
     padding: 5px 20px;
     font-size: 15px;
     border: 2px solid var(--lightGray);
@@ -2072,14 +2115,18 @@ Signup Process Modal style rules
 }
 
 #bio-input {
-    width: 420px;
-    height: 100px;
-    margin: 20px;
+    width: 400px;
+    height: 140px;
+    margin: 10px 0 0 0;
     padding: 10px;
     border: 2px solid var(--lightGray);
     border-radius: 4px;
     resize: none;
     font-size: 16px;
+}
+
+#bio-input.required, #pronouns-input.required {
+    border: 2px solid var(--orange);
 }
 
 @media screen and (max-width: 1020px) {

@@ -32,35 +32,36 @@ const CompleteProfile = ({ show, onNext, onBack, avatarImage }) => {
                     <div id="profile-details" >
                         <div className="row">
                             {/* Profile picture container */}
-                            <div id="profile-pic">
+                            <div id="profile-pic" style={{ width: 180, height: 180 }}>
                                 <img src={avatarImage} alt="profile-pic" />
                             </div>
 
                             <div className="column">
-                                <div className="row">
-                                    <div className="signup-fullname">
-                                        {/* First and Last Name */}
-                                        <h2>{info.firstName} {info.lastName} </h2>
+                                <div className="signup-fullname">
+                                    {/* First and Last Name */}
+                                    <h2>{info.firstName} {info.lastName} </h2>
 
-                                        {/* Username */}
-                                        <p>{info.username}</p>
-                                    </div>
-
-                                    {/* Pronouns */}
-                                    <input id="pronouns-input" type="text" placeholder="Add Pronouns" />
+                                    {/* Username */}
+                                    <p>{info.username}</p>
                                 </div>
 
-                                {/* Skills */}
-                                <div id="signup-profile-skill" >
-                                    {info.skills.map((skill, index) => (
-                                        <div key={index} className='tag'>{skill}</div>
-                                    ))}
-                                </div>
+                                {/* Pronouns */}
+                                <input id="pronouns-input" type="text" placeholder="Add Pronouns" />
                             </div>
                         </div>
 
                         {/* Input Box for Bio */}
                         <textarea id="bio-input" placeholder="Add A Bio"></textarea>
+
+                        {/* Skills */}
+                        <div className="row">
+                            <h3> Skills:</h3>
+                            <div id="signup-profile-skill" >
+                                {info.skills.map((skill, index) => (
+                                    <div key={index} >{skill}</div>
+                                ))}
+                            </div>
+                        </div>
 
                     </div>
                     <div id='signupProcess-btns'>

@@ -43,7 +43,7 @@ const dummyProject = {
 }
 
 // default settings for the project being loaded, used when loading default data for settings
-let defaultSettings = {
+let defaultSettings: {projectName: string, projectMembers: {userID: number, admin: boolean, owner: boolean, role: string}[]} = {
   projectName: '',
   projectMembers: []
 }
@@ -232,8 +232,9 @@ const ProjectInfoMember = (props) => {
   //'roleName' holds whatever new role name will be used if 'setting' is 0
   //nothing needs to be passed into 'rolename' if 'setting' is anything other than 0
   const updateMemberSettings = (setting, memberId, roleName = undefined) => {
-    let editingMember = tempSettings.projectMembers.find(member => member.userID === Number(memberId));
-    if (editingMember === undefined){
+    let editingMember: {userID: number, admin: boolean, owner: boolean, role: string} = 
+      tempSettings.projectMembers.find(member => member.userID === Number(memberId));
+    if (editingMember === undefined && setting !== 4){
       console.log('member not found');
       return;
     }
@@ -252,26 +253,40 @@ const ProjectInfoMember = (props) => {
         console.log('mentor toggle');
         break;
       case 3:
+        //Get the array index of the member being deleted
+        //References defaultSettings instead of tempSettings due to potential index changes caused by other member removals
+        let deletedItem = defaultSettings.projectMembers.find(member => member.userID === memberId);
+        let deletedItemIndex;
+        deletedItem ? deletedItemIndex = defaultSettings.projectMembers.indexOf(deletedItem) : 
+          console.log('error getting item index');
+        //Add index of deleted member to deletedMemberIndexList
+        deletedMemberIndexList.push(deletedItemIndex);
+        //Remove the relevant member from tempSettings
         tempSettings.projectMembers.splice(tempSettings.projectMembers.indexOf(editingMember), 1);
         break;
       case 4:
-        let deletedMember = defaultSettings.projectMembers.find(member => member._id === memberId);
+        //Get the original array index of the member being restored
+        //Gets data on the member using memberId, then finds the index of that data in defaultSettings
+        let deletedMember = defaultSettings.projectMembers.find(member => member.userID === memberId);
         if (deletedMember === undefined){
           console.log('deleted member not found');
           return;
         }
         let deletedMemberIndex = defaultSettings.projectMembers.indexOf(deletedMember);
-        for (let i = 0; i++; i < deletedMemberIndexList.length) {
-          if (deletedMemberIndex > i){
+        //Also assign an originalIndex value as a reference to the original index value
+        //original index is used for comparison, while deletedMemberIndex is changed depending on the comparison
+        let originalIndex = defaultSettings.projectMembers.indexOf(deletedMember);
+        for (let i = 0; i < deletedMemberIndexList.length; i++) {
+          if (originalIndex > deletedMemberIndexList[i]){
             deletedMemberIndex--;
           }
         }
+        //Insert member data back into tempSettings
         tempSettings.projectMembers.splice(deletedMemberIndex, 0, deletedMember);
         break;
       default:
         return;
     }
-    console.log(tempSettings);
   }
 
   //Store settings tab components for switching between tabs
@@ -282,28 +297,29 @@ const ProjectInfoMember = (props) => {
   let [tabContent, setTabContent] = useState(generalTab);
 
   //Used to track which members have been deleted
-  let deletedMemberIndexList = [];
+  let deletedMemberIndexList: number[] = [];
 
   //Opens settings and resets any setting inputs from previous opening
-  //Need to figure out member settings open/close/save display stuff
   const openSettings = () => {
     tempSettings = JSON.parse(JSON.stringify(defaultSettings)); //Json manipulation here is to help create a deep copy of the settings object
     if (currentTab === 'general') {
-      let nameInput = document.getElementById('name-edit');
-      nameInput ? nameInput.value = defaultSettings.projectName : console.log('error');
+      //The 2 lines of code in these 2 if/else if statements are roundabout ways to reset the content
+      //On the tabs. A better solution to accomplish such may be possible.
+      setTabContent(membersTab);
+      setTimeout(() => setTabContent(<GeneralSettings projectId={projectId} tempSettings={tempSettings}/>), 1);
     } else if (currentTab === 'members') {
-      //Next 2 lines are a very roundabout way to reset the input in general tab
       setTabContent(generalTab);
       setTimeout(() => setTabContent(<MemberSettings projectId={projectId} tempSettings={tempSettings} updateMemberSettings={updateMemberSettings}/>), 1);
     }
-    openClosePopup(0)
+    //Timeout is set here to prevent asynchronous tab changes from the 'setTabContent' functions above from being visible
+    setTimeout(() => openClosePopup(0), 20);
   }
 
   //Updates tempSettings with any inputted setting changes, called when switching tabs or when saving settings
   const updateSettings = () => {
     if (currentTab === 'general') {
       let nameInput = document.getElementById('name-edit');
-      nameInput ? tempSettings.projectName = nameInput.value : console.log('error');
+      nameInput ? tempSettings.projectName = nameInput.value : console.log('error'); //error on 'value' is due to typescript, code still functions correclty
     }
   }
 
@@ -313,11 +329,13 @@ const ProjectInfoMember = (props) => {
   const saveSettings = () => {
     updateSettings();
     let currentProject = projects.find(p => p._id === Number(projectId));
-    currentProject ? currentProject.name = tempSettings.projectName : console.log('error');
+    if (currentProject !== undefined) {
+      currentProject.name = tempSettings.projectName;
+      currentProject.members = tempSettings.projectMembers;
+    }
     defaultSettings = tempSettings;
 
     props.callback();
-    //State IS being set here, but dislpay isn't updating
     
     //Closes the settings popup
     openClosePopup(0);
@@ -326,6 +344,8 @@ const ProjectInfoMember = (props) => {
   //Called when a tab is changed in the settings window
   //tab - a string value denoting which tab is being switched to.
   const changeTabs = (tab) => {
+    //Depending on tab selected, switches settings content to that tab, while also applying styling rules to 
+    //the relevant tabs themselves
     if (tab === 'general') {
       currentTab = 'general';
       setTabContent(generalTab);
@@ -392,7 +412,6 @@ const ProjectInfoMember = (props) => {
       <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3}>
         <div id='settings-window-test'>
             <h1>Project Settings</h1>
-            <button onClick={() => {console.log(tempSettings)}}>Show tempsettings</button>
             <div id='settings-tabs'>
               <button id='general-tab' className='tab-selected' onClick={() => {changeTabs('general')}}>General</button>
               <button id='member-tab' className='tab' onClick={() => {changeTabs('members')}}>Members</button>
@@ -448,6 +467,7 @@ const Project = (props) => {
 
   //Pass project settings into variables for use in settings tabs
   defaultSettings.projectName = currentProject.name;
+  defaultSettings.projectMembers = [];
   currentProject.members.forEach(member => {
     defaultSettings.projectMembers.push(member);
   });

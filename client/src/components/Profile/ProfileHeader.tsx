@@ -5,8 +5,8 @@ import { Tags } from "../Tags";
 export const ProfileHeader = ({user}) => {
     return(
         <section className='profile-section' id = "profile-header">
-          <img id = "profile-banner" src = {banner} alt = "profile banner"></img>
-        <div className='header'>
+          {/* <img id = "profile-banner" src = {banner} alt = "profile banner"></img> */}
+        <div>
           <img id = "profile-pfp" src={pfp} width="100" height="100"></img>
           <div id = "profile-info">
             <h2 id="profile-name">{user.name}</h2>

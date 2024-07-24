@@ -461,9 +461,9 @@
 }
 
 #profile-header {
-    width: 100%;
+    /* width: 100%; */
     border: none;
-    border-bottom: 2px solid black;
+    /* border-bottom: 2px solid black; */
     text-align: left;
 }
 

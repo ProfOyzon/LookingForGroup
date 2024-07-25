@@ -414,11 +414,6 @@
     scale: 1.1;
 }
 
-.displayProfilePic:hover {
-    cursor: pointer;
-    border: 1px solid var(--orange);
-}
-
 .Logout {
     display: flex;
     align-items: center;
@@ -1533,22 +1528,35 @@ button {
 
 }
 
-#editAvatarBtn {
-    width: 130px;
-    height: 40px;
+.settingsBtns {
     background-color: white;
     color: var(--orange);
-    border: 2px solid var(--orange);
-    border-radius: 10px;
-    cursor: pointer;
+    width: fit-content;
+    height: 40px;
+    padding: 5px 20px;
     font-size: 16px;
-    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    outline: solid var(--orange) 2px;
+    font-weight: 900;
 }
 
-#editAvatarBtn:hover {
+.settingsBtns:hover {
     background-color: var(--orange);
     color: white;
     transition: .2s;
+}
+
+.textInput {
+    width: 200px;
+    height: 30px;
+    padding: 5px 20px;
+    border: 1px solid var(--medGray);
+    background-color: white;
+    border-radius:12px;
+    font-size: 15px;
+    text-align: left;
+    margin: 14px 0;
 }
 
 /* From: https://www.w3schools.com/howto/howto_css_switch.asp */

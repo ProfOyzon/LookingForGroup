@@ -78,14 +78,6 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
           <img src={avatarImage} alt="Profile Pic" />
         </div>
       </div>
-      <MakeAvatarModal
-        show={showAvatarModal}
-        onClose={() => { setShowAvatarModal(false); }}
-        setAvatarImage={setAvatarImage}
-        mode="edit"
-        onBack
-        onNext
-      />
 
       <h1>UserName</h1>
 

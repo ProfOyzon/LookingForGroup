@@ -900,27 +900,7 @@ used to help wrap the lines around the word 'Members'*/
 }
 
 /*rules used for the settings window, accessible on the member header view*/
-#settings-cover {
-    position: fixed;
-    background-color: black;
-    opacity: 50%;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-#settings-window {
-    position: fixed;
-    background-color: white;
-    width: 80vw;
-    height: 80vh;
-    opacity: 100%;
-    top: 10vh;
-    left: 10vw;
-    z-index: 1;
-}
-
+/*rules used for the tabs in the settings window*/
 #settings-tabs {
     display: flex;
     margin: 0 50px;
@@ -942,6 +922,7 @@ used to help wrap the lines around the word 'Members'*/
     font-weight: bolder;
 }
 
+/*rules used for the delete button & its relevant popup*/
 #delete-project {
     margin-left: auto;
     color: red;
@@ -974,16 +955,12 @@ used to help wrap the lines around the word 'Members'*/
     color: #a0a0a0
 }
 
+/*rules for the area containing actual settings*/
 #settings-content {
     margin: 0 15%;
 }
 
-#settings-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-
+/*rules used for the 'cancel' and 'save' buttons*/
 #settings-cancel {
     position: absolute;
     bottom: 50px;
@@ -1004,6 +981,7 @@ project page general settings rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
+/*rules  for the whole 'general settings' tab*/
 #general-settings {
     display: grid;
     grid-template: 1fr 1fr 1fr / 1fr 3fr;
@@ -1014,6 +992,7 @@ project page general settings rules
     height: 200px;
 }
 
+/*rules for the various elements of the general settings*/
 #picture-edit {
     grid-area: image;
     width: 64px;
@@ -1045,16 +1024,19 @@ project page member settings rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 */
 
+/*rules for the top section of the 'member settings' tab*/
 #member-settings-header {
     display: flex;
     justify-content: center;
 }
 
+/*rules for the whole list of members*/
 #member-settings-list {
     height: 50vh;
     overflow-y: auto;
 }
 
+/*rules for individual member listings*/
 .member-settings-listing {
     display: flex;
     margin: 10px 0;
@@ -1086,6 +1068,7 @@ project page member settings rules
     margin-left: auto;
 }
 
+/*rules used for a cover over a member listing when they are going to be removed*/
 .member-settings-cover {
     display:none;
 }
@@ -1102,6 +1085,7 @@ project page member settings rules
     opacity:95%;
 }
 
+/*used for the dropdown menus for each individual member*/
 .settings-hide {
     display: none;
 }
@@ -1124,6 +1108,8 @@ project page member settings rules
     margin: 2.5% auto;
 }
 
+/* !!! This rule is not a part of project member settings, and should be moved somewhere else !!!*/
+/* As it is not my own, I will refrain from doing so for now -Joseph Dunne */
 #create-proj-btn {
     padding: 10px 50px;
     font-weight: bold;
@@ -1141,6 +1127,7 @@ Project Post Page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
+/*rules for the 'return' and 'to project' buttons*/
 #post-page-nav-buttons {
     text-align: left;
     margin: 0 10px;
@@ -1148,6 +1135,8 @@ Project Post Page style rules
     height: 40px;
 }
 
+/*rules for the header of the post project page, containing a picture and the project's name,
+plus a follow button & a more options button*/
 #post-header {
     display: flex;
     justify-content: center;
@@ -1165,7 +1154,7 @@ Project Post Page style rules
     height: 64px;
 }
 
-/* Need to re-adjust height */
+/*Rules for the entirety of the post page below the header*/
 #post-page-content {
     display: flex;
     justify-content: space-evenly;
@@ -1173,6 +1162,8 @@ Project Post Page style rules
     height: 80%;
 }
 
+/*rules for the 'post' half of the page*/
+/* Need to re-adjust height, some content goes offscreen if window height is low */
 #post {
     display: grid;
     width: 45%;
@@ -1183,6 +1174,7 @@ Project Post Page style rules
         'info share';
 }
 
+/*rules for the 'comments & replies' half of the page*/
 #comments {
     display: flex;
     flex-direction: column;
@@ -1206,6 +1198,7 @@ Project Post Page style rules
     }
 }
 
+/*rules for the heading of the post, with its name and a more options button*/
 #post-name {
     grid-area: name;
     text-align: left;
@@ -1215,12 +1208,14 @@ Project Post Page style rules
     grid-area: options;
 }
 
+/*rules for the area containing the main content of the post*/
 #post-content {
     grid-area: post;
     border: 1px solid grey;
     margin: 10px;
 }
 
+/*rules for the information section below the post*/
 #post-info {
     grid-area: info;
     text-align: left;
@@ -1245,6 +1240,7 @@ Project Post Page style rules
     grid-area: share;
 }
 
+/*rules for the area containing comments and replies*/
 #comments-content {
     border: 1px solid grey;
     height: calc(100vh - 300px);
@@ -1252,6 +1248,7 @@ Project Post Page style rules
     overflow-y: auto;
 }
 
+/*rules for individual comments*/
 .post-comment {
     display: grid;
     grid-template: 20px auto 20px auto / 50px auto 25px;
@@ -1320,6 +1317,7 @@ Project Post Page style rules
     text-align: left;
 }
 
+/*rules for the reply input elements below the comments area*/
 #reply-content {
     display: grid;
     height: 100px;
@@ -1359,11 +1357,8 @@ Page Popup style rules
 \/\/\/\/\/\/\/\/\/\/\/
 */
 
+/*rules for the cover a popup uses*/
 .popup-cover-hide {
-    display: none;
-}
-
-.popup-hide {
     display: none;
 }
 
@@ -1378,6 +1373,11 @@ Page Popup style rules
     height: 100%;
 }
 
+/*rules for the popup itself*/
+.popup-hide {
+    display: none;
+}
+
 .popup-show {
     display: block;
     position: fixed;
@@ -1386,8 +1386,6 @@ Page Popup style rules
     max-width: 95vw;
     max-height: 95vh;
     opacity: 100%;
-    /*top: 10vh;
-    left: 10vw;*/
 }
 
 #popup-close {
@@ -1402,6 +1400,7 @@ Page Popup style rules
     height: 40px;
 }
 
+/*rules used to prevent page scrolling while a popup is open*/
 .page-scroll-lock {
     position: fixed;
     padding-right: 15px;

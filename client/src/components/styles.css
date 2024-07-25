@@ -798,6 +798,41 @@ includes 'enter virtual space' and 'make post' buttons*/
     background-color: #D0D0D0;
 }
 
+/*rules for the editing roles popup*/
+#edit-roles-options {
+    display:grid;
+    gap:10px;
+    padding:10px;
+    text-align:left;
+    grid-template: 1fr 5fr / 100px 100px auto;
+    grid-template-areas: 'name number list'
+                         'desc desc list'
+}
+
+#role-name-input {
+    grid-area: name;
+}
+
+#role-spots-input {
+    grid-area: number;
+}
+
+#role-desc-input {
+    width:100%;
+    grid-area: desc;
+}
+
+#role-desc-input textarea {
+    width:97%;
+    height:60%;
+    resize:none;
+}
+
+#roles-list {
+    grid-area: list;
+    background-color:grey;
+}
+
 /*rules for the divider between the header and members
 used to help wrap the lines around the word 'Members'*/
 #member-divider hr {

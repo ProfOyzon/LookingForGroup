@@ -406,7 +406,7 @@ const ProjectInfoMember = (props) => {
           })
         }
 
-        <button id='edit-roles-button' className='white-button' onClick={editRoles}>Edit Roles</button>
+        <button id='edit-roles-button' className='white-button' onClick={() => openClosePopup(2)}>Edit Roles</button>
       </div>
 
       <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3}>
@@ -423,6 +423,29 @@ const ProjectInfoMember = (props) => {
             </div>
             <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(0)}>Cancel</button>
             <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>
+        </div>
+      </PagePopup>
+
+      <PagePopup width={'600px'} height={'400px'} popupId={2} zIndex={3}>
+        <div id='edit-roles-window'>
+          <h1>Edit Roles</h1>
+          <div id='edit-roles-options'>
+            <div id='role-name-input'>
+              <div>role name</div>
+              <input type='text'></input>
+            </div>
+            <div id='role-spots-input'>
+              <div>open spots</div>
+              <input type='number'></input>
+            </div>
+            <div id='role-desc-input'>
+              <div>role description</div>
+              <textarea></textarea>
+            </div>
+            <div id='roles-list'>
+
+            </div>
+          </div>
         </div>
       </PagePopup>
 

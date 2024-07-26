@@ -804,7 +804,7 @@ includes 'enter virtual space' and 'make post' buttons*/
     gap:10px;
     padding:10px;
     text-align:left;
-    grid-template: 1fr 5fr / 100px 100px auto;
+    grid-template: 1fr 4fr / 120px 80px auto;
     grid-template-areas: 'name number list'
                          'desc desc list'
 }
@@ -813,8 +813,17 @@ includes 'enter virtual space' and 'make post' buttons*/
     grid-area: name;
 }
 
+#role-name-input input {
+    width: 120px;
+}
+
 #role-spots-input {
     grid-area: number;
+    text-align:right;
+}
+
+#role-spots-input input {
+    width: 50px;
 }
 
 #role-desc-input {
@@ -824,13 +833,55 @@ includes 'enter virtual space' and 'make post' buttons*/
 
 #role-desc-input textarea {
     width:97%;
-    height:60%;
+    height:83%;
     resize:none;
 }
 
 #roles-list {
     grid-area: list;
-    background-color:grey;
+}
+
+.role-list-info {
+    display:flex;
+    border-bottom: 1px solid var(--gray);
+}
+
+.role-list-name {
+    padding-right: 10px;
+}
+
+.role-list-name-edit-hide {
+    display:none;
+}
+
+.role-list-num {
+    padding-right: 10px;
+}
+
+.role-list-num-edit-hide {
+    display:none;
+}
+
+.role-list-edit {
+    margin-left: auto;
+}
+
+.role-list-done-hide {
+    display:none;
+}
+
+.role-show {
+    display:block;
+}
+
+.role-list-delete {
+    margin-left: 10px;
+}
+
+.role-list-description {
+    display:block;
+    border-bottom: 1px solid var(--gray);
+    background-color: var(--lightGray);
 }
 
 /*rules for the divider between the header and members

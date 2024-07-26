@@ -8,6 +8,7 @@ import { ProjectPost } from "../projectPageComponents/ProjectPost";
 import { ProjectMember } from "../projectPageComponents/ProjectMember";
 import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
+import { RoleListing } from "../projectPageComponents/RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts } from "../../constants/fakeData";
 import { wait } from "@testing-library/user-event/dist/utils";
@@ -223,6 +224,7 @@ const ProjectInfoMember = (props) => {
   const navigate = useNavigate(); // Hook for navigation
 
   let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
+  let key2 = 0;
 
   //Function used to update a specific member's setting
   //It is placed before other variables so that it can be used for one
@@ -443,9 +445,16 @@ const ProjectInfoMember = (props) => {
               <textarea></textarea>
             </div>
             <div id='roles-list'>
-
+              {
+                props.neededRoles.map(currentRole => {
+                  return(
+                    <RoleListing role={currentRole} num={key2} key={key2++}/>
+                  )
+                })
+              }
             </div>
           </div>
+          <button className='orange-button'>Save Changes</button>
         </div>
       </PagePopup>
 

@@ -6,10 +6,11 @@ import folder from '../img/folder.png';
 import message from '../img/message.png';
 import profile from '../img/profile-user.png';
 import setting from '../img/setting.png';
+import bell from '../img/bell.png';
 import * as paths from "../constants/routes";
 import { useSelector } from 'react-redux';
 
-import MakeAvatarModal from './AvatarCreation/MakeAvatarModal';
+import Notifications from './pages/Notifications';
 
 // To Do:
 // Make mobile friendly version stay at bottom of screen
@@ -27,8 +28,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
 
   const [activePage, setActivePage] = useState('Group'); // State to manage the active page [Home, My Projects, Messages, Profile, Settings]
 
-  // const [avatarImage, setAvatarImage] = useState('images/tempProfilePic.png'); // State to manage the avatar image
-  const [showAvatarModal, setShowAvatarModal] = useState(false); // State to manage the avatar modal
+  const [showNotifications, setShowNotifications] = useState(false); // State to manage the notifications modal
 
   // Function to handle the button clicks and update the h1 text
   const handleTextChange = (text, path) => {
@@ -44,7 +44,8 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
   // Mobile layout
   if (width < breakpoint) {
     return (
-      <div className='sideBarContainer'>
+      <div>
+        <div className="sideBarContainer">
         <div className='containerButtonSideBar'>
           <button className={activePage === 'Group' ? 'active' : ''} onClick={() => handleTextChange('Group', paths.routes.HOME)}>
             <img src={homeIcon} className="navIcon" alt="Home" />
@@ -52,6 +53,11 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
           <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
             <img src={folder} className="navIcon" alt="Projects" />
           </button>
+
+          <button onClick={() => { setShowNotifications(!showNotifications); }}>
+            <img src={bell} className="navIcon" alt="Notifications" />
+          </button>
+
           <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
             <img src={message} className="navIcon" alt="Messages" />
           </button>
@@ -62,13 +68,17 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
             <img src={setting} className="navIcon" alt="Setting" />
           </button>
         </div>
+        </div>
+
+        <Notifications show={showNotifications} onClose={() => { setShowNotifications(!showNotifications); }} />
       </div>
     );
   }
 
   // Desktop layout
   return (
-    <div className='SideBarContainer'>
+    <div>
+      <div className="SideBarContainer">
       <div className='headerContainer'>
         <h1>Looking For {headerText}</h1>
       </div>
@@ -88,6 +98,11 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
         <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
           <img src={folder} className="navIcon" alt="Projects" /> My Projects
         </button>
+
+        <button onClick={() => { setShowNotifications(!showNotifications); }}>
+          <img src={bell} className="navIcon" alt="Notifications" /> Notifications
+        </button>
+
         <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
           <img src={message} className="navIcon" alt="Messages" /> Messages
         </button>
@@ -102,6 +117,9 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
       <div className='Logout'>
         <button onClick={() => { navigate(paths.routes.LOGIN) }}>Log Out</button>
       </div>
+      </div>
+
+      <Notifications show={showNotifications} onClose={() => { setShowNotifications(false); }} />
     </div>
   );
 };

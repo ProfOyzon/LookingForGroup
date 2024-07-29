@@ -48,10 +48,12 @@ let defaultSettings: {projectName: string, projectMembers: {userID: number, admi
   projectName: '',
   projectMembers: []
 }
+let defaultRoleSettings: {Role: string, amount: number, description: string}[];
 
 // object containing the current inputs of settings, used when changing and updating project settings
 // If settings window is closed, this should be reset using defaultSettings
 let tempSettings;
+let tempRoleSettings;
 
 // used with settings, identifies which tab user is currently on
 let currentTab = 'general';
@@ -218,8 +220,8 @@ const ProjectInfo = (props) => {
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
 
 // Utilizes the 'PagePopup' component for project settings, and 'GeneralSettings' as the first rendered tab within it
-// projectName, projectDescription, and neededRoles are passed in through props
-// All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
+// projectData and a callback for resetProjectData are passed in through props
+// projectData is a reference to the current project's info
 const ProjectInfoMember = (props) => {
   const navigate = useNavigate(); // Hook for navigation
 
@@ -298,6 +300,9 @@ const ProjectInfoMember = (props) => {
   //useState is used here as part of the settings window
   let [tabContent, setTabContent] = useState(generalTab);
 
+  //useState is also used here to add functionality to the edit roles interface
+  let [currentlyNeededRoles, setCurrentlyNeededRoles] = useState(tempRoleSettings);
+
   //Used to track which members have been deleted
   let deletedMemberIndexList: number[] = [];
 
@@ -370,13 +375,43 @@ const ProjectInfoMember = (props) => {
     }
   }
 
+  //Called when 'add role' is pressed in edit roles interface
+  //Adds a role to tempRoleSettings
+  const addRole = () => {
+    //get input values
+    let nameInput = document.getElementById('role-name-input-box').value;
+    let numInput = document.getElementById('role-num-input-box').value;
+    let descInput = document.getElementById('role-desc-input-box').value;
+    //create new role
+    let newRole: {Role: string, amount: number, description: string} = 
+      {Role: nameInput, amount: numInput, description: descInput};
+    //add new role to project
+    tempRoleSettings.push(newRole);
+    //update currentlyNeededRoles usestate
+    setCurrentlyNeededRoles(defaultRoleSettings);
+    setTimeout(() => setCurrentlyNeededRoles(tempRoleSettings), 1);
+  }
+
+  //Called when 'save changes' is pressed in edit roles interface
+  //Takes data in tempRoleSettings and updates project data with it
+  const saveRoleSettings = () => {
+    let currentProject = projects.find(p => p._id === Number(projectId));
+    if (currentProject !== undefined) {
+      currentProject.neededRoles = tempRoleSettings;
+    }
+    defaultRoleSettings = tempRoleSettings;
+
+    props.callback();
+    openClosePopup(2);
+  }
+
   return (
     <div id='project-info-member'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
 
 
       <div id='project-header'>
-        <h1 id='project-title'>{props.projectName}</h1>
+        <h1 id='project-title'>{props.projectData.name}</h1>
         <div id='header-buttons'>
           <div id='more-options'>
             <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
@@ -389,7 +424,7 @@ const ProjectInfoMember = (props) => {
         </div>
       </div>
 
-      <p id='project-desc'>{props.projectDescription}
+      <p id='project-desc'>{props.projectData.description}
       </p>
 
       <div id='member-buttons'>
@@ -401,7 +436,7 @@ const ProjectInfoMember = (props) => {
         <h3>Looking for</h3>
         <hr/>
         {
-          props.neededRoles.map(role => {
+          props.projectData.neededRoles.map(role => {
             return(
               <div key={key++}>{role.Role} &#40;{role.amount}&#41;</div>
             );
@@ -434,19 +469,20 @@ const ProjectInfoMember = (props) => {
           <div id='edit-roles-options'>
             <div id='role-name-input'>
               <div>role name</div>
-              <input type='text'></input>
+              <input id='role-name-input-box' type='text'></input>
             </div>
             <div id='role-spots-input'>
               <div>open spots</div>
-              <input type='number'></input>
+              <input id='role-num-input-box' type='number'></input>
             </div>
             <div id='role-desc-input'>
               <div>role description</div>
-              <textarea></textarea>
+              <textarea id='role-desc-input-box'></textarea>
             </div>
+            <button id='role-add-button' onClick={addRole}>Add role</button>
             <div id='roles-list'>
               {
-                props.neededRoles.map(currentRole => {
+                currentlyNeededRoles.map(currentRole => {
                   return(
                     <RoleListing role={currentRole} num={key2} key={key2++}/>
                   )
@@ -454,7 +490,7 @@ const ProjectInfoMember = (props) => {
               }
             </div>
           </div>
-          <button className='orange-button'>Save Changes</button>
+          <button className='orange-button' onClick={saveRoleSettings}>Save Changes</button>
         </div>
       </PagePopup>
 
@@ -500,10 +536,12 @@ const Project = (props) => {
   //Pass project settings into variables for use in settings tabs
   defaultSettings.projectName = currentProject.name;
   defaultSettings.projectMembers = [];
+  defaultRoleSettings = currentProject.neededRoles;
   currentProject.members.forEach(member => {
     defaultSettings.projectMembers.push(member);
   });
   tempSettings = JSON.parse(JSON.stringify(defaultSettings));
+  tempRoleSettings = JSON.parse(JSON.stringify(defaultRoleSettings));
 
   //Pass project data for rendering purposes
   const [projectData, setProjectData] = useState(currentProject);
@@ -539,8 +577,7 @@ const Project = (props) => {
       <button id='return-button' className='white-button' onClick={() => window.history.back()}>&lt; return</button>
       </div>
 
-      <ProjectInfoMember projectName={projectData.name} projectDescription={projectData.description} 
-        neededRoles={projectData.neededRoles} callback={resetProjectData} projectData={projectData}/>
+      <ProjectInfoMember callback={resetProjectData} projectData={projectData}/>
 
       <div id='member-divider'>
         <hr/>

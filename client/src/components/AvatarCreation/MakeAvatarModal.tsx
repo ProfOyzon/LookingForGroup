@@ -225,8 +225,6 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
         const newAvatar = canvas.toDataURL("image/png");
         setAvatarImage(newAvatar);
 
-        // onClose();
-
         // // update the user's avatar in the database
     };
 

@@ -8,23 +8,19 @@ const interests = ["Website", "UI/UX", "Video Game", "3D Game", "2D Game", "Mobi
 //
 // Choose at least 3 interests component
 //
-const ChooseInterests = ({ show, onNext, onBack }) => {
-    // State variables
-    const [selectedInterests, setSelectedInterests] = useState<string[]>([]); // State variable for the selected interests
-
+const ChooseInterests = ({ show, onNext, onBack, selectedInterests, setSelectedInterests }) => {
     // Function to handle the interest selection
     const handleInterestSelect = (interest) => {
-        // check if the interest is already selected
-        // if it is, remove it from the selectedInterests array and remove the 'active' class from the button
-        if (selectedInterests.includes(interest.target.innerHTML)) {
-            interest.target.classList.remove('active');
-            setSelectedInterests(selectedInterests.filter((prof) => prof !== interest.target.innerHTML));
+        // get the interest that was selected
+        const selected = interest.target.innerHTML;
+
+        // if the interest is already selected, remove it from the selectedInterests array
+        if (selectedInterests.includes(selected)) {
+            setSelectedInterests(selectedInterests.filter((prof) => prof !== selected));
         }
-        // else add the interest to the selectedInterests array and highlight the button by adding the 'active' class
+        // else add the skill to the selectedSkills array 
         else {
-            interest.target.classList.add('active');
-            const newInterests = [...selectedInterests, interest.target.innerHTML];
-            setSelectedInterests(newInterests);
+            setSelectedInterests([...selectedInterests, selected]);
         }
     };
 
@@ -44,7 +40,13 @@ const ChooseInterests = ({ show, onNext, onBack }) => {
 
                     <div id="interest-select">
                         {interests.map((interest, index) => (
-                            <button key={index} onClick={handleInterestSelect} className='interestBtn'>{interest}</button>
+                            <button
+                                key={index}
+                                onClick={handleInterestSelect}
+                                // add the 'active' class to the buttons that were selected
+                                // doing this inside className so that it's remembered when the user goes back and forth between modals
+                                className={`interestBtn ${selectedInterests.includes(interest) ? 'active' : ''}`}
+                            >{interest}</button>
                         ))}
 
 
@@ -53,7 +55,14 @@ const ChooseInterests = ({ show, onNext, onBack }) => {
                         <button id="signup-backBtn" onClick={onBack}>
                             Back
                         </button>
-                        <button id="signup-nextBtn" onClick={onNext} disabled={selectedInterests.length < 3} >
+                        <button
+                            id="signup-nextBtn"
+                            onClick={onNext}
+                            // disable the next button if the user has not selected at least 3 interests
+                            // this is to prevent the user from moving to the next modal without selecting the required number of interests
+                            // the user can only move to the next modal when they have selected at least 3 interests
+                            disabled={selectedInterests.length < 3}
+                        >
                             Next
                         </button>
                     </div>

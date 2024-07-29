@@ -18,12 +18,20 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [checkPassword, setCheckPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(''); // State variable for error messages
+
+    // State variables for modals
     const [showAvatarModal, setShowAvatarModal] = useState(false);
     const [showSkillsModal, setShowSkillsModal] = useState(false);
     const [showProficienciesModal, setShowProficienciesModal] = useState(false);
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [showCompleteProfileModal, setShowCompleteProfileModal] = useState(false);
+
+    // State variables for selected buttons
+    // to remeber the user's choices when they go back and forth between modals
+    const [selectedProficiencies, setSelectedProficiencies] = useState<string[]>([]); // State variable for the selected proficiencies
+    const [selectedSkills, setSelectedSkills] = useState<string[]>([]); // State variable for the selected skills
+    const [selectedInterests, setSelectedInterests] = useState<string[]>([]); // State variable for the selected interests
 
     // Function to handle the login button click
     const handleSignup = () => {
@@ -46,6 +54,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
             }
         }
 
+        // for testing, skips the above checks
         // setShowProficienciesModal(true);
     };
 
@@ -61,10 +70,11 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                     <h2>Sign Up</h2>
 
                     <div className="signup-form-inputs">
-                    <div className="error">{error}</div>
+                        <div className="error">{error}</div>
                         <div className="row">
                             <input
                                 className="signup-name-input"
+                                autoComplete="off"
                                 type="text"
                                 placeholder="First Name"
                                 value={firstName}
@@ -72,6 +82,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                             />
                             <input
                                 className="signup-name-input"
+                                autoComplete="off"
                                 type="text"
                                 placeholder="Last Name"
                                 value={lastName}
@@ -80,6 +91,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                         </div>
                         <input
                             className="signup-input"
+                            autoComplete="off"
                             type="text"
                             placeholder="Email"
                             value={email}
@@ -90,6 +102,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
 
                         <input
                             className="signup-input"
+                            autoComplete="off"
                             type="text"
                             placeholder="Username"
                             value={username}
@@ -97,6 +110,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                         />
                         <input
                             className="signup-input"
+                            autoComplete="off"
                             type="password"
                             placeholder="Password"
                             value={password}
@@ -104,6 +118,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                         />
                         <input
                             className="signup-input"
+                            autoComplete="off"
                             type="password"
                             placeholder="Confirm Password"
                             value={checkPassword}
@@ -125,18 +140,24 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                         onNext={() => { setShowProficienciesModal(false); setShowSkillsModal(true); }}
                         onBack={() => { setShowProficienciesModal(false); }}
                         show={showProficienciesModal}
+                        selectedProficiencies={selectedProficiencies}
+                        setSelectedProficiencies={setSelectedProficiencies}
                     />
 
                     <ChooseSkills
                         onNext={() => { setShowSkillsModal(false); setShowInterestsModal(true); }}
                         onBack={() => { setShowSkillsModal(false); setShowProficienciesModal(true); }}
                         show={showSkillsModal}
+                        selectedSkills={selectedSkills}
+                        setSelectedSkills={setSelectedSkills}
                     />
 
                     <ChooseInterests
                         onNext={() => { setShowInterestsModal(false); setShowAvatarModal(true); }}
                         onBack={() => { setShowInterestsModal(false); setShowSkillsModal(true); }}
                         show={showInterestsModal}
+                        selectedInterests={selectedInterests}
+                        setSelectedInterests={setSelectedInterests}
                     />
 
                     <MakeAvatarModal

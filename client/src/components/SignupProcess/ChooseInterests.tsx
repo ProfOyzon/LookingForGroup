@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
 // list of interests to choose from
 // types of projects the user is interested in
 const interests = ["Website", "UI/UX", "Video Game", "3D Game", "2D Game", "Mobile App", "Web App", "Animation", "3D Modeling", "Database", "Social Media", "AI", "Machine Learnine", "Cybersecurity", "Virtual Reality", "Augmented Reality", "Small Team", "Medium Team", "Large Team", "Flexible Times", "Beginner Friendly", "Advanced Skills", "Fast-paced", "Casual", "Non-profit", "For-profit", "Local", "Global", "Short-term", "Long-term", "Mentorship"];

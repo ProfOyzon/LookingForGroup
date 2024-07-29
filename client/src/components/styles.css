@@ -329,16 +329,22 @@
     height: 32px;
 }
 
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\
+-------------------------------------------------------
+Sidebar Nav style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/
+*/
 
 .SideBarContainer {
     width: 220px;
     height: 100vh;
-    /* border: solid black 2px; */
     position: fixed;
     top: 0px;
     left: 0px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
-    z-index: 1;
+    z-index: 2;
     background-color: white;
 }
 
@@ -384,7 +390,6 @@
 }
 
 .containerButtonSideBar button:hover {
-    /* transform: scale(1.1); */
     transition-duration: 0.25s;
     background-color: #e3e3e3;
 }
@@ -436,13 +441,61 @@
 }
 
 .Logout button:hover {
-    /* transform: scale(1.1); */
     transition-duration: 0.25s;
     background-color: var(--orange);
     color: white;
     outline: solid var(--orange) 2px;
     cursor: pointer;
 }
+
+/* 
+/\/\/\/\/\/\/\/\/\/\/\/\
+-------------------------------------------------------
+Notifications Modal style rules 
+-------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+.notifications-container {
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: -100px; /* Hidden by default */
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+    z-index: 1;
+    background-color: white;
+    transition: left 0.4s ease;
+    overflow-y: auto; /* Add scroll bar */
+}
+
+.notifications-container.show {
+    left: 220px; /* Slide in when show class is added */
+}
+
+.notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+.notifications-header button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-image: url('../../public/images/icons/arrow-right.png');
+    background-size: cover;
+    background-color: transparent;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.notifications-body {
+    padding: 15px;
+}
+
+/*  */
 
 #profile-page {
     width: 80%;
@@ -800,13 +853,13 @@ includes 'enter virtual space' and 'make post' buttons*/
 
 /*rules for the editing roles popup*/
 #edit-roles-options {
-    display:grid;
-    gap:10px;
-    padding:10px;
-    text-align:left;
+    display: grid;
+    gap: 10px;
+    padding: 10px;
+    text-align: left;
     grid-template: 1fr 4fr / 120px 80px auto;
     grid-template-areas: 'name number list'
-                         'desc desc list'
+        'desc desc list'
 }
 
 #role-name-input {
@@ -819,7 +872,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 
 #role-spots-input {
     grid-area: number;
-    text-align:right;
+    text-align: right;
 }
 
 #role-spots-input input {
@@ -827,14 +880,14 @@ includes 'enter virtual space' and 'make post' buttons*/
 }
 
 #role-desc-input {
-    width:100%;
+    width: 100%;
     grid-area: desc;
 }
 
 #role-desc-input textarea {
-    width:97%;
-    height:83%;
-    resize:none;
+    width: 97%;
+    height: 83%;
+    resize: none;
 }
 
 #roles-list {
@@ -842,7 +895,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 }
 
 .role-list-info {
-    display:flex;
+    display: flex;
     border-bottom: 1px solid var(--gray);
 }
 
@@ -851,7 +904,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 }
 
 .role-list-name-edit-hide {
-    display:none;
+    display: none;
 }
 
 .role-list-num {
@@ -859,7 +912,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 }
 
 .role-list-num-edit-hide {
-    display:none;
+    display: none;
 }
 
 .role-list-edit {
@@ -867,11 +920,11 @@ includes 'enter virtual space' and 'make post' buttons*/
 }
 
 .role-list-done-hide {
-    display:none;
+    display: none;
 }
 
 .role-show {
-    display:block;
+    display: block;
 }
 
 .role-list-delete {
@@ -879,7 +932,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 }
 
 .role-list-description {
-    display:block;
+    display: block;
     border-bottom: 1px solid var(--gray);
     background-color: var(--lightGray);
 }
@@ -1156,19 +1209,19 @@ project page member settings rules
 
 /*rules used for a cover over a member listing when they are going to be removed*/
 .member-settings-cover {
-    display:none;
+    display: none;
 }
 
 .member-settings-cover-show {
-    display:flex;
-    position:absolute;
-    justify-content:center;
-    gap:10px;
-    align-items:center;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
     height: 50px;
-    width:70%;
-    background-color:white;
-    opacity:95%;
+    width: 70%;
+    background-color: white;
+    opacity: 95%;
 }
 
 /*used for the dropdown menus for each individual member*/
@@ -1638,7 +1691,7 @@ button {
     padding: 5px 20px;
     border: 1px solid var(--medGray);
     background-color: white;
-    border-radius:12px;
+    border-radius: 12px;
     font-size: 15px;
     text-align: left;
     margin: 14px 0;

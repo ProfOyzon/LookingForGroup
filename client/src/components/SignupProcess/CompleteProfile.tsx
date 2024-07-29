@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 // Complete profile component
 //
 const CompleteProfile = ({ show, onNext, onBack, avatarImage }) => {
-    // State variables
-
     // placeholder data
     // will be replaced with actual data from the previous steps
     const info = {

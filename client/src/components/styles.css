@@ -1,3 +1,4 @@
+/*default color scheme goes here*/
 :root {
     --orange: #F35835;
     --orange-hover: #d83410;
@@ -10,6 +11,14 @@
     --darkGray: #414141;
     --white: #FBFBFB;
 }
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+notification rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
 
 #notif-popup {
     position: absolute;
@@ -53,6 +62,18 @@
     display: none;
 }
 
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+box component settings rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/*style rules for the boxes with drop shadows (see wireframes)*/
+/*discover card: used on the discover page for projects and profiles*/
+/*endorsement: used on the profile page to show endorsements user has recieved*/
+/*profile-project-card: used on the profile page to show projects the user is a part of*/
 .discover-card,
 .endorsement,
 .profile-project-card {
@@ -71,17 +92,13 @@
     animation: fadeIn 1s forwards;
 }
 
-#message-card {
-    max-height: 45px;
-    grid-template-columns: 10% 90%;
-    padding-top: 0;
-    padding-bottom: 3.5%;
+/*makes them bigger when hovered over */
+.discover-card:hover .endorsement:hover,
+.profile-project-card:hover {
+    transform: scale(1.05);
 }
 
-.endorsement{
-    flex-direction: row;
-}
-
+/*the animation that plays when the card is loaded*/
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -96,9 +113,18 @@
     }
 }
 
-.discover-card:hover .endorsement:hover,
-.profile-project-card:hover {
-    transform: scale(1.05);
+/*
+------------------------------------------------------------------------------------------------
+body rules
+------------------------------------------------------------------------------------------------
+*/
+.page-title {
+    margin-bottom: 0;
+    font-size: 30px;
+}
+
+.discover-main-content {
+    margin-left: 40px;
 }
 
 #discover-card-body {
@@ -110,6 +136,17 @@
     font-size: 0.8rem;
 }
 
+/*make them grow and shrink with the window */
+#discover-card-body>* {
+    flex: 1;
+}
+
+/*message-card: used on the messages page for each user message*/
+#message-card #discover-card-body {
+    margin-top: 0%;
+    padding-bottom: 5%;
+}
+
 #profile-project-body {
     display: flex;
     flex-flow: row wrap;
@@ -117,15 +154,22 @@
     align-items: center;
 }
 
-#message-card #discover-card-body {
-    margin-top: 0%;
-    padding-bottom: 5%;
+.endorsement{
+    flex-direction: row;
 }
 
-#discover-card-body>* {
-    flex: 1;
+#message-card {
+    max-height: 45px;
+    grid-template-columns: 10% 90%;
+    padding-top: 0;
+    padding-bottom: 3.5%;
 }
 
+/*
+------------------------------------------------------------------------------------------------
+profile picture rules
+------------------------------------------------------------------------------------------------
+*/
 #discover-card-profile-picture,
 #profile-project-profile-picture {
     width: 100%;
@@ -141,7 +185,11 @@
     width: 110%;
     margin-top: 15%;
 }
-
+/*
+------------------------------------------------------------------------------------------------
+text rules
+------------------------------------------------------------------------------------------------
+*/
 #discover-card-name {
     text-align: center;
     margin-bottom: 0;
@@ -173,7 +221,11 @@
     margin-top: 0%;
     text-align: center;
 }
-
+/*
+------------------------------------------------------------------------------------------------
+message rules
+------------------------------------------------------------------------------------------------
+*/
 .sent-msg {
     text-align: right;
     padding-right: 35%;
@@ -202,6 +254,16 @@
     color: rgb(126, 124, 124);
 }
 
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+tag component rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/*used in Tags component */
+/*used for things like project tags or user skills */
 .tag {
     display: flex;
     align-items: center;
@@ -217,11 +279,53 @@
     font-size: 0.8rem;
 }
 
-.page-title {
-    margin-bottom: 0;
-    font-size: 30px;
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+button rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/*general rules for buttons
+orange-button class makes the button orange, white-button class makes the button white*/
+.orange-button {
+    background-color: var(--orange);
+    color: var(--white);
+    font-size: large;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
 }
 
+.orange-button:hover {
+    background-color: var(--orange-hover);
+}
+
+.white-button {
+    background-color: var(--white);
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+
+.white-button:hover {
+    background-color: #D0D0D0;
+}
+
+/*rules for the 'return' button*/
+#return-button {
+    font-weight: bold;
+    font-size: larger;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+#return-button-container {
+    text-align: left;
+}
+
+/*discover button is used for Projects/People selection on the discover page*/
 .discover-button {
     border-radius: 10px;
     border: 2px solid var(--orange);
@@ -230,26 +334,6 @@
     padding: 0.6vw;
     margin: 1vw;
     cursor: pointer;
-}
-
-.tab-button {
-    border: 2px solid lightseagreen;
-    border-radius: 5px;
-    text-align: center;
-    padding: .5vw;
-    margin-left: .5vw;
-    margin-right: .5vw;
-    background-color: white;
-}
-
-.active {
-    background-color: lightblue;
-}
-
-.tab-header {}
-
-.discover-main-content {
-    margin-left: 40px;
 }
 
 .discover-button-inactive {
@@ -284,6 +368,30 @@
 #discover-button-wrapper>* {
     max-height: 50px;
 }
+
+/*the tab buttons in the Tabs component*/
+.tab-button {
+    border: 2px solid lightseagreen;
+    border-radius: 5px;
+    text-align: center;
+    padding: .5vw;
+    margin-left: .5vw;
+    margin-right: .5vw;
+    background-color: white;
+}
+
+/*selected tab button*/
+.active {
+    background-color: lightblue;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+search rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
 
 .search-wrapper {
     display: flex;
@@ -665,45 +773,6 @@ allow them to be reformatted when the mobile view is used */
     #more-options-popup {
         right: 16px;
     }
-}
-
-/*general rules for buttons
-orange-button class makes the button orange, white-button class makes the button white
-may need to be change when re-styling according to new wireframes in the future*/
-.orange-button {
-    background-color: var(--orange);
-    color: var(--white);
-    font-size: large;
-    border: none;
-    cursor: pointer;
-    margin: 10px;
-}
-
-.orange-button:hover {
-    background-color: var(--orange-hover);
-}
-
-.white-button {
-    background-color: var(--white);
-    color: black;
-    border: none;
-    cursor: pointer;
-}
-
-.white-button:hover {
-    background-color: #D0D0D0;
-}
-
-/*rules for the 'return' button*/
-#return-button-container {
-    text-align: left;
-}
-
-#return-button {
-    font-weight: bold;
-    font-size: larger;
-    height: 40px;
-    margin-bottom: 10px;
 }
 
 /*rules for the picture in the top left of the page, used as a profile for the project itself*/
@@ -1107,11 +1176,11 @@ project page general settings rules
 }
 
 /*
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
--------------------------------------------------------
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
 project page member settings rules
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 /*rules for the top section of the 'member settings' tab*/

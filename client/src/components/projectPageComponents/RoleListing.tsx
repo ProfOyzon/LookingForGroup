@@ -3,14 +3,25 @@ import '../styles.css';
 //Will return name, positions, & 3 buttons on a single line
 //Will also return description accessable via a dropdown menu (accessed via 1 of the buttons)
 export const RoleListing = (props) => {
+  let editMode = false;
+  let descHidden = true;
   const toggleDescription = (i) => {
-    let roleListing = document.getElementById('role-' + i);
-    roleListing ? roleListing.classList.toggle('role-list-description') : console.log('cannot find listing');
+    descHidden = !descHidden;
+    if (!editMode) {
+      let roleListing = document.getElementById('role-desc-' + i);
+      roleListing ? roleListing.classList.toggle('role-list-description') : console.log('cannot find listing');
+    } else {
+      let roleInput = document.getElementById('role-desc-edit-' + i);
+      roleInput ? roleInput.classList.toggle('role-list-desc-input') : console.log('cannot find listing');
+    }
   }
 
   const toggleEdit = (i) => {
+    editMode = !editMode;
+
     let listParent = document.getElementById('role-list-' + i);
-    let descParent = document.getElementById('role-desc-' + i);
+    let desc = document.getElementById('role-desc-' + i);
+    let descInput = document.getElementById('role-desc-edit-' + i);
 
     //The below errors are due to typescript. It would take so many different checks to make sure they're not 'undefined', so I'm not doing them.
     listParent.querySelector('.role-list-name').classList.toggle('hide');
@@ -20,12 +31,16 @@ export const RoleListing = (props) => {
     listParent.querySelector('.role-list-num-edit-hide').classList.toggle('role-show');
     listParent.querySelector('.role-list-done-hide').classList.toggle('role-show');
 
+    if (!descHidden) {
+      desc ? desc.classList.toggle('role-list-description') : console.log('cannot find listing');
+      descInput ? descInput.classList.toggle('role-list-desc-input') : console.log('cannot find listing');
+    }
   }
   
   let currentRole: {Role: string, amount: number, description: string} = props.role
   return(
     <>
-    <div id={'role-list-' + props.num}className='role-list-info'>
+    <div id={'role-list-' + props.num} className='role-list-info'>
       <span className='role-list-name'>{currentRole.Role}</span>
       <input type='text' className='role-list-name-edit-hide' defaultValue={currentRole.Role}/>
       <span className='role-list-num'>{currentRole.amount}</span>

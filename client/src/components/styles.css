@@ -78,6 +78,10 @@
     padding-bottom: 3.5%;
 }
 
+.endorsement{
+    flex-direction: row;
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;

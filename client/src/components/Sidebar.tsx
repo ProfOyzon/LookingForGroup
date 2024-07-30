@@ -54,9 +54,9 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
             <img src={folder} className="navIcon" alt="Projects" />
           </button>
 
-          <button onClick={() => { setShowNotifications(!showNotifications); }}>
+          {/* <button onClick={() => { setShowNotifications(!showNotifications); }}>
             <img src={bell} className="navIcon" alt="Notifications" />
-          </button>
+          </button> */}
 
           <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
             <img src={message} className="navIcon" alt="Messages" />
@@ -70,7 +70,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
         </div>
         </div>
 
-        <Notifications show={showNotifications} onClose={() => { setShowNotifications(!showNotifications); }} />
+        {/* <Notifications show={showNotifications} onClose={() => { setShowNotifications(!showNotifications); }} /> */}
       </div>
     );
   }

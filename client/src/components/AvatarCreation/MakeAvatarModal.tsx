@@ -126,10 +126,14 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
     // change the slide index and update the selected avatar
     // scroll through each type of animal avatar
     const plusSlides = (n) => {
+        // get the new slide index
         let newSlideIndex = slideIndex + n;
+        // if the new slide index is greater than the total number of avatars, set it to 1
         const totalAvatars = Object.keys(avatars).length;
         if (newSlideIndex > totalAvatars) newSlideIndex = 1;
+        // if the new slide index is less than 1, set it to the total number
         if (newSlideIndex < 1) newSlideIndex = totalAvatars;
+        // set the new slide index and update the selected avatar
         setSlideIndex(newSlideIndex);
         setSelectedAvatar(Object.keys(avatars)[newSlideIndex - 1]);
     };
@@ -183,11 +187,13 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
 
     // change the color of the avatar
     const changeColor = (color, index) => {
+        // update the color for the selected avatar
         setCurrentColors((prevColors) => ({
             ...prevColors,
             [selectedAvatar]: color,
         }));
 
+        // update the active color based on the index
         setActiveColor((prevColors) => ({
             ...prevColors,
             [selectedAvatar]: index,
@@ -199,6 +205,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
     // based on the selected avatar to display the hat correctly (location)
     const getHatClass = (avatar) => {
         switch (avatar) {
+            // frog avatar has a different hat position (slightly lower)
             case "frog":
                 return "avatar-hat avatar-frog-hat";
             default:
@@ -271,6 +278,10 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
         <div className={backgroundClassName}>
             <div className="avatar-modal">
                 <div className="MakeAvatar">
+                    {/* 
+                        signup mode is a slightly different version, 
+                        instead of a close button and save button, it has a back and next button
+                    */}
                     {mode === "signup" ? (
                         <></>
                     ) : (
@@ -279,7 +290,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                         </div>
                     )}
 
-
+                    {/* different titles based on the mode */}
                     {mode === "signup" ? (
                         <h1 id="avatar-customize-title">Create Your Avatar</h1>
                     ) : (

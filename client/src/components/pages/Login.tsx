@@ -9,14 +9,20 @@ const Login = (props) => {
     // State variables
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(''); // Error message for missing or incorrect information
 
     // Function to handle the login button click
     const handleLogin = () => {
         // Check if the email and password are not empty
         if (email === '' || password === '') {
             setError('Please fill in all information');
-        } else {
+        } 
+        // Check if the email is a valid email
+        // else if (!email.includes('@')) {
+        //     setError('Please enter a valid email');
+        // }
+        
+        else {
             // Navigate to the home page
             navigate(paths.routes.HOME);
         }

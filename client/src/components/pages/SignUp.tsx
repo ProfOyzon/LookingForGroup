@@ -43,10 +43,17 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
 
             // check if username is unique (??? depends on if we want unique usernames)
 
+            // Check if the password is:
+            // at least 6 characters long?
+            // has a number? 
+            // has a special character
+            
             // check if the passwords match
             if (password !== checkPassword) {
                 setError('Passwords do not match');
-            } else {
+            }
+
+            else {
                 // show the proficiencies modal
                 // from the modal links through the process
                 // profficiencies -> skills -> interests -> avatar -> complete profile --> home

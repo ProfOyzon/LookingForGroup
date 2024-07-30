@@ -1,3 +1,5 @@
+/*rules that format the page to work with the sidebar*/
+
 .page {
     position: absolute;
     width: calc(100% - 220px);
@@ -7,23 +9,6 @@
 
     /* hide horizontal scrollbar, looses scroll functionality */
     overflow-x: hidden;
-}
-
-.header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    gap: 64px;
-    padding: 2px 8px;
-}
-
-section {
-    margin: 10px;
-    padding: 4px 8px 4px 8px;
-    border-style: solid;
-    border: 2px solid black;
-    box-shadow: 10px 10px 5px lightblue;
 }
 
 @media only screen and (max-width: 800px) {

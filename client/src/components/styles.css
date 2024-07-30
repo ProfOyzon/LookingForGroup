@@ -1,4 +1,39 @@
-/*default color scheme goes here*/
+/*
+Table of Contents
+General Style rules
+Component Style rules
+    -Card components
+    -Tags
+    -Button components
+    -Sidebar
+    -Notifications
+    -Page popup
+    -Search
+    -Scrollbar
+Page specific style rules
+    -Discover page
+    -Profile page
+    -Project page
+        -Project general settings
+        -Project member settings
+        -Project post page
+    -My projects page
+    -Messages
+    -Settings
+    -Login/signup
+        -Signup settings
+
+see pages.css for the rules that format the page itself
+*/
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+General style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+/*color scheme*/
 :root {
     --orange: #F35835;
     --orange-hover: #d83410;
@@ -11,69 +46,44 @@
     --darkGray: #414141;
     --white: #FBFBFB;
 }
-
-/*
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-------------------------------------------------------------------------------------------------
-notification rules
-------------------------------------------------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+/*basic rules for hiding/showing certain elements
+used for the more options dropdown menu and notifications
 */
-
-#notif-popup {
-    position: absolute;
-    width: 30vw;
-    height: 15vw;
-    background-color: #D0D0D0;
-    z-index: 5;
-    padding: 10px;
-
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    right: 30px;
-}
-
-.notif-popup-boxes {
-    border: 2px dashed black;
-    margin: 5px 0;
-}
-
-.notif-button-wrapper {
-    position: relative;
-    float: right;
-}
-
-.notif-button-icon {
-    width: 40px;
-    height: auto;
-    margin: 10px;
-}
-
-.notif-header {
-    font-weight: 700;
-}
-
-.date-sent-header {
-    background-color: rgb(238, 238, 238);
-}
-
-.hidden {
+.hide {
     display: none;
 }
 
+.show {
+    display: block;
+}
+
+.page-title {
+    margin-bottom: 0;
+    font-size: 30px;
+}
+
+/*give sections of the page a drop shadow*/
+section {
+    margin: 10px;
+    padding: 4px 8px 4px 8px;
+    border-style: solid;
+    border: 2px solid black;
+    box-shadow: 10px 10px 5px lightblue;
+}
+
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
-box component settings rules
+Card component style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-/*style rules for the boxes with drop shadows (see wireframes)*/
+/*style rules for the cards with drop shadows (see wireframes)*/
 /*discover card: used on the discover page for projects and profiles*/
 /*endorsement: used on the profile page to show endorsements user has recieved*/
 /*profile-project-card: used on the profile page to show projects the user is a part of*/
+/*message-card: used on the messages page for each user message*/
 .discover-card,
 .endorsement,
 .profile-project-card {
@@ -113,20 +123,6 @@ box component settings rules
     }
 }
 
-/*
-------------------------------------------------------------------------------------------------
-body rules
-------------------------------------------------------------------------------------------------
-*/
-.page-title {
-    margin-bottom: 0;
-    font-size: 30px;
-}
-
-.discover-main-content {
-    margin-left: 40px;
-}
-
 #discover-card-body {
     margin-left: 10%;
     display: flex;
@@ -141,7 +137,6 @@ body rules
     flex: 1;
 }
 
-/*message-card: used on the messages page for each user message*/
 #message-card #discover-card-body {
     margin-top: 0%;
     padding-bottom: 5%;
@@ -165,11 +160,14 @@ body rules
     padding-bottom: 3.5%;
 }
 
-/*
-------------------------------------------------------------------------------------------------
-profile picture rules
-------------------------------------------------------------------------------------------------
-*/
+@media only screen and (max-width: 800px) {
+    .discover-card {
+        width: 90%;
+        max-width: 90%;
+    }
+}
+
+/*profile picture rules*/
 #discover-card-profile-picture,
 #profile-project-profile-picture {
     width: 100%;
@@ -185,11 +183,7 @@ profile picture rules
     width: 110%;
     margin-top: 15%;
 }
-/*
-------------------------------------------------------------------------------------------------
-text rules
-------------------------------------------------------------------------------------------------
-*/
+/*text rules*/
 #discover-card-name {
     text-align: center;
     margin-bottom: 0;
@@ -221,43 +215,11 @@ text rules
     margin-top: 0%;
     text-align: center;
 }
-/*
-------------------------------------------------------------------------------------------------
-message rules
-------------------------------------------------------------------------------------------------
-*/
-.sent-msg {
-    text-align: right;
-    padding-right: 35%;
-}
-
-.recieved-msg {
-    text-align: left;
-    padding-left: 40%;
-}
-
-.sent-msg b,
-.recieved-msg b {
-    font-size: 16pt;
-}
-
-.sent-msg p,
-.recieved-msg p {
-    margin-bottom: 0;
-    margin-top: 5px;
-}
-
-.date-stamp {
-    font-size: 8pt;
-    padding-top: 0;
-    margin-top: 0;
-    color: rgb(126, 124, 124);
-}
 
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
-tag component rules
+Tag component style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
@@ -279,10 +241,16 @@ tag component rules
     font-size: 0.8rem;
 }
 
+@media only screen and (max-width: 800px) {
+    .tag-name {
+        font-size: 2vw;
+    }
+}
+
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
-button rules
+Button style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
@@ -325,50 +293,6 @@ orange-button class makes the button orange, white-button class makes the button
     text-align: left;
 }
 
-/*discover button is used for Projects/People selection on the discover page*/
-.discover-button {
-    border-radius: 10px;
-    border: 2px solid var(--orange);
-    font-size: 1.5vw;
-    font-weight: bold;
-    padding: 0.6vw;
-    margin: 1vw;
-    cursor: pointer;
-}
-
-.discover-button-inactive {
-    background-color: white;
-    color: var(--orange);
-}
-
-.discover-button-inactive:hover {
-    background-color: rgb(126, 124, 124);
-}
-
-.discover-button-active {
-    background-color: var(--orange);
-    color: white;
-}
-
-.discover-button-active:hover {
-    background-color: var(--orange-hover);
-    border-color: var(--orange-hover);
-}
-
-#discover-button-wrapper {
-    display: grid;
-    flex-direction: row;
-    justify-self: center;
-    text-align: left;
-    margin-left: 2vw;
-    width: 100%;
-    grid-template-columns: 14% 14% 72%;
-}
-
-#discover-button-wrapper>* {
-    max-height: 50px;
-}
-
 /*the tab buttons in the Tabs component*/
 .tab-button {
     border: 2px solid lightseagreen;
@@ -388,65 +312,9 @@ orange-button class makes the button orange, white-button class makes the button
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
-search rules
+Sidebar Nav style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-*/
-
-.search-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-content: right;
-    justify-self: end;
-    height: auto;
-    margin: 1vw 50px;
-}
-
-.search-bar {
-    padding: 2px;
-    border: 3px solid gray;
-    border-radius: 10px;
-    font-size: 1vw;
-    text-align: left;
-    display: flex;
-    flex-direction: row;
-    float: right;
-    align-content: center;
-    margin: auto;
-}
-
-.search-input {
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 4px;
-    font: inherit;
-    cursor: text;
-    outline: inherit;
-}
-
-.search-button,
-#notif-button {
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 4px;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-}
-
-.navIcon {
-    width: 32px;
-    height: 32px;
-}
-
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\
--------------------------------------------------------
-Sidebar Nav style rules 
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/
 */
 
 .SideBarContainer {
@@ -560,12 +428,92 @@ Sidebar Nav style rules
     cursor: pointer;
 }
 
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\
--------------------------------------------------------
-Notifications Modal style rules 
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/
+@media only screen and (max-width: 800px) {
+    .sideBarContainer {
+        width: 100vw;
+        height: 50px;
+        /*border: solid black 2px;*/
+        position: fixed;
+        bottom: 0;
+        background-color: white;
+        z-index: 1;
+        /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
+    }
+
+    .ProfileContainer {
+        width: 15vw;
+    }
+
+    .containerButtonSideBar {
+        display: flex;
+        flex-direction: row;
+        cursor: pointer;
+    }
+
+    .containerButtonSideBar button {
+        width: 20vw;
+        height: 50px;
+        padding-left: calc((100vw - 160px) / 10);
+        padding-right: auto;
+    }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Notification style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+#notif-popup {
+    position: absolute;
+    width: 30vw;
+    height: 15vw;
+    background-color: #D0D0D0;
+    z-index: 5;
+    padding: 10px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    right: 30px;
+}
+
+.notif-popup-boxes {
+    border: 2px dashed black;
+    margin: 5px 0;
+}
+
+.notif-button-wrapper {
+    position: relative;
+    float: right;
+}
+
+.notif-button-icon {
+    width: 40px;
+    height: auto;
+    margin: 10px;
+}
+
+.notif-header {
+    font-weight: 700;
+}
+
+.date-sent-header {
+    background-color: rgb(238, 238, 238);
+}
+
+.hidden {
+    display: none;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Notification modal style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 .notifications-container {
@@ -607,7 +555,236 @@ Notifications Modal style rules
     padding: 15px;
 }
 
-/*  */
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Page popup style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/*rules for the cover a popup uses*/
+.popup-cover-hide {
+    display: none;
+}
+
+.popup-cover-show {
+    display: block;
+    position: fixed;
+    background-color: black;
+    opacity: 50%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/*rules for the popup itself*/
+.popup-hide {
+    display: none;
+}
+
+.popup-show {
+    display: block;
+    position: fixed;
+    background-color: white;
+    border-radius: 4px;
+    max-width: 95vw;
+    max-height: 95vh;
+    opacity: 100%;
+}
+
+#popup-close {
+    position: absolute;
+    border-radius: 4px;
+    top: 10px;
+    right: 10px;
+}
+
+#popup-close img {
+    width: 40px;
+    height: 40px;
+}
+
+/*rules used to prevent page scrolling while a popup is open*/
+.page-scroll-lock {
+    position: fixed;
+    padding-right: 15px;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Search style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.search-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-content: right;
+    justify-self: end;
+    height: auto;
+    margin: 1vw 50px;
+}
+
+.search-bar {
+    padding: 2px;
+    border: 3px solid gray;
+    border-radius: 10px;
+    font-size: 1vw;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    float: right;
+    align-content: center;
+    margin: auto;
+}
+
+.search-input {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 4px;
+    font: inherit;
+    cursor: text;
+    outline: inherit;
+}
+
+.search-button,
+#notif-button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 4px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+.navIcon {
+    width: 32px;
+    height: 32px;
+}
+
+@media only screen and (max-width: 800px) {
+    .search-bar {
+        font-size: 0.5rem;
+    }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Scrollbar style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border: 2px solid var(--lightGray);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--medGray);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Discover page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.discover-main-content {
+    margin-left: 40px;
+}
+
+/*discover button is used for Projects/People selection*/
+.discover-button {
+    border-radius: 10px;
+    border: 2px solid var(--orange);
+    font-size: 1.5vw;
+    font-weight: bold;
+    padding: 0.6vw;
+    margin: 1vw;
+    cursor: pointer;
+}
+
+.discover-button-inactive {
+    background-color: white;
+    color: var(--orange);
+}
+
+.discover-button-inactive:hover {
+    background-color: rgb(126, 124, 124);
+}
+
+.discover-button-active {
+    background-color: var(--orange);
+    color: white;
+}
+
+.discover-button-active:hover {
+    background-color: var(--orange-hover);
+    border-color: var(--orange-hover);
+}
+
+#discover-button-wrapper {
+    display: grid;
+    flex-direction: row;
+    justify-self: center;
+    text-align: left;
+    margin-left: 2vw;
+    width: 100%;
+    grid-template-columns: 14% 14% 72%;
+}
+
+#discover-button-wrapper>* {
+    max-height: 50px;
+}
+
+@media only screen and (max-width: 800px) {
+
+    #discover-button-wrapper {
+        grid-template-columns: 20% 20% 60%;
+    }
+    .discover-button {
+        font-size: 0.8rem;
+    }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Profile page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 64px;
+    padding: 2px 8px;
+}
 
 #profile-page {
     width: 80%;
@@ -636,61 +813,6 @@ Notifications Modal style rules
     grid-template-columns: 50% 50%;
 }
 
-
-
-
-@media only screen and (max-width: 800px) {
-
-    #discover-button-wrapper {
-        grid-template-columns: 20% 20% 60%;
-    }
-
-    .search-bar {
-        font-size: 0.5rem;
-    }
-
-    .discover-button {
-        font-size: 0.8rem;
-    }
-
-    .tag-name {
-        font-size: 2vw;
-    }
-
-    .discover-card {
-        width: 90%;
-        max-width: 90%;
-    }
-
-    .sideBarContainer {
-        width: 100vw;
-        height: 50px;
-        /*border: solid black 2px;*/
-        position: fixed;
-        bottom: 0;
-        background-color: white;
-        z-index: 1;
-        /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
-    }
-
-    .ProfileContainer {
-        width: 15vw;
-    }
-
-    .containerButtonSideBar {
-        display: flex;
-        flex-direction: row;
-        cursor: pointer;
-    }
-
-    .containerButtonSideBar button {
-        width: 20vw;
-        height: 50px;
-        padding-left: calc((100vw - 160px) / 10);
-        padding-right: auto;
-    }
-}
-
 .profile-list {
     display: flex;
     flex-flow: row wrap;
@@ -698,12 +820,16 @@ Notifications Modal style rules
     align-items: center;
 }
 
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\
--------------------------------------------------------
-Project page style rules 
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/
+@media only screen and (max-width: 800px) {
+    /*responsiveness for profile page goes here*/
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 /* some rules before the @media query are placed here to
@@ -790,44 +916,6 @@ allow them to be reformatted when the mobile view is used */
     width: fit-content;
 }
 
-@media only screen and (max-width: 800px) {
-    #project-page {
-        width: calc(100% - 30px);
-    }
-
-    #project-info {
-        display: grid;
-        grid-template: 1fr .5fr 1fr / .2fr 2fr;
-        grid-template-areas: 'picture header'
-            'desc desc'
-            'listing listing';
-    }
-
-    #project-info-member {
-        grid-template: 1fr .5fr 1fr / .2fr 2fr;
-        grid-template-areas: 'picture header'
-            'buttons buttons'
-            'desc desc'
-            'listing listing';
-    }
-
-    #member-buttons {
-        flex-direction: row;
-        align-items: center;
-    }
-
-    /*re-sizes 'enter virtual space' button to fit with narrower width*/
-    #virtual-space-entrance {
-        width: 40vw;
-        max-width: 200px;
-    }
-
-    /*shifts the options dropdown on the header view for members so that it doesn't go offscreen*/
-    #more-options-popup {
-        right: 16px;
-    }
-}
-
 /*rules for the picture in the top left of the page, used as a profile for the project itself*/
 #project-picture {
     width: 96px;
@@ -869,18 +957,6 @@ allow them to be reformatted when the mobile view is used */
     width: 90%;
     height: 40%;
     margin: 2.5% auto;
-}
-
-/*basic rules for hiding/showing certain elements
-used for the more options dropdown menu, but might be used in other pages as well
-be careful if changing these
-Might be safe to move to the top of styles.css due to their general use*/
-.hide {
-    display: none;
-}
-
-.show {
-    display: block;
 }
 
 /*rules for buttons only visible on the project member view
@@ -1203,12 +1279,50 @@ used to help wrap the lines around the word 'Members'*/
     right: 50px;
 }
 
+@media only screen and (max-width: 800px) {
+    #project-page {
+        width: calc(100% - 30px);
+    }
+
+    #project-info {
+        display: grid;
+        grid-template: 1fr .5fr 1fr / .2fr 2fr;
+        grid-template-areas: 'picture header'
+            'desc desc'
+            'listing listing';
+    }
+
+    #project-info-member {
+        grid-template: 1fr .5fr 1fr / .2fr 2fr;
+        grid-template-areas: 'picture header'
+            'buttons buttons'
+            'desc desc'
+            'listing listing';
+    }
+
+    #member-buttons {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    /*re-sizes 'enter virtual space' button to fit with narrower width*/
+    #virtual-space-entrance {
+        width: 40vw;
+        max-width: 200px;
+    }
+
+    /*shifts the options dropdown on the header view for members so that it doesn't go offscreen*/
+    #more-options-popup {
+        right: 16px;
+    }
+}
+
 /*
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-project page general settings rules
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project page general settings style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 /*rules  for the whole 'general settings' tab*/
@@ -1249,7 +1363,7 @@ project page general settings rules
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
-project page member settings rules
+Project page member settings style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
@@ -1338,23 +1452,12 @@ project page member settings rules
     margin: 2.5% auto;
 }
 
-/* !!! This rule is not a part of project member settings, and should be moved somewhere else !!!*/
-/* As it is not my own, I will refrain from doing so for now -Joseph Dunne */
-#create-proj-btn {
-    padding: 10px 50px;
-    font-weight: bold;
-    font-size: larger;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-}
-
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-Project Post Page style rules 
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project page post style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 /*rules for the 'return' and 'to project' buttons*/
@@ -1410,22 +1513,6 @@ plus a follow button & a more options button*/
     flex-direction: column;
     width: 45%;
     min-width: 500px;
-}
-
-@media only screen and (max-width: 800px) {
-
-    #post {
-        min-width: 0;
-        max-width: 500px;
-        width: 95%;
-    }
-
-    #comments {
-        min-width: 0;
-        max-width: 500px;
-        width: 95%;
-        padding-bottom: 60px;
-    }
 }
 
 /*rules for the heading of the post, with its name and a more options button*/
@@ -1579,69 +1666,91 @@ plus a follow button & a more options button*/
     grid-area: submit;
 }
 
+@media only screen and (max-width: 800px) {
+
+    #post {
+        min-width: 0;
+        max-width: 500px;
+        width: 95%;
+    }
+
+    #comments {
+        min-width: 0;
+        max-width: 500px;
+        width: 95%;
+        padding-bottom: 60px;
+    }
+}
+
 /*
-/\/\/\/\/\/\/\/\/\/\/\
--------------------------------------------------------
-Page Popup style rules
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+My projects page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-/*rules for the cover a popup uses*/
-.popup-cover-hide {
-    display: none;
-}
-
-.popup-cover-show {
-    display: block;
+/* !!! This rule is not a part of project member settings, and should be moved somewhere else !!!*/
+/* As it is not my own, I will refrain from doing so for now -Joseph Dunne */
+#create-proj-btn {
+    padding: 10px 50px;
+    font-weight: bold;
+    font-size: larger;
     position: fixed;
-    background-color: black;
-    opacity: 50%;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    bottom: 20px;
+    right: 20px;
 }
 
-/*rules for the popup itself*/
-.popup-hide {
-    display: none;
+@media only screen and (max-width: 800px) {
+
+    /* responsiveness goes here*/
 }
 
-.popup-show {
-    display: block;
-    position: fixed;
-    background-color: white;
-    border-radius: 4px;
-    max-width: 95vw;
-    max-height: 95vh;
-    opacity: 100%;
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Messages page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+.sent-msg {
+    text-align: right;
+    padding-right: 35%;
 }
 
-#popup-close {
-    position: absolute;
-    border-radius: 4px;
-    top: 10px;
-    right: 10px;
+.recieved-msg {
+    text-align: left;
+    padding-left: 40%;
 }
 
-#popup-close img {
-    width: 40px;
-    height: 40px;
+.sent-msg b,
+.recieved-msg b {
+    font-size: 16pt;
 }
 
-/*rules used to prevent page scrolling while a popup is open*/
-.page-scroll-lock {
-    position: fixed;
-    padding-right: 15px;
+.sent-msg p,
+.recieved-msg p {
+    margin-bottom: 0;
+    margin-top: 5px;
 }
 
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-Settings Page style rules 
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+.date-stamp {
+    font-size: 8pt;
+    padding-top: 0;
+    margin-top: 0;
+    color: rgb(126, 124, 124);
+}
+
+@media only screen and (max-width: 800px) {
+    /*responsiveness goes here*/
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Settings page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 button {
@@ -1887,12 +1996,17 @@ input:checked+.slider:before {
     height: 100px;
 }
 
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-Login and Signup Pages style rules 
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+@media only screen and (max-width: 800px) {
+
+    /*responsiveness goes here*/
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Login and Signup page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 .error {
@@ -2116,15 +2230,14 @@ Login and Signup Pages style rules
     #login-btn-mobile:hover {
         cursor: pointer;
     }
-
 }
 
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-Signup Process Modal style rules
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Signup process modal style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 .signupProcess-background {
@@ -2430,34 +2543,4 @@ Signup Process Modal style rules
     #signupProcess-title {
         font-size: 24px;
     }
-}
-
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-Scrollbar style rules
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-*/
-
-/* width */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    border: 2px solid var(--lightGray);
-    border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: var(--medGray);
-    border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    cursor: pointer;
 }

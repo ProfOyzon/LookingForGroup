@@ -12,6 +12,7 @@ import { RoleListing } from "../projectPageComponents/RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts } from "../../constants/fakeData";
 import { wait } from "@testing-library/user-event/dist/utils";
+import { each } from "immer/dist/internal";
 
 //This is the Project page component, which contains a layout that allows for displaying project info
 //More info and comments on individual parts are found above their respective parts
@@ -305,6 +306,8 @@ const ProjectInfoMember = (props) => {
 
   //Used to track which members have been deleted
   let deletedMemberIndexList: number[] = [];
+  //Used to track the indexes of deleted members
+  let deletedRoleIndexList: number[] = [];
 
   //Opens settings and resets any setting inputs from previous opening
   const openSettings = () => {
@@ -390,6 +393,31 @@ const ProjectInfoMember = (props) => {
     //update currentlyNeededRoles usestate
     setCurrentlyNeededRoles(defaultRoleSettings);
     setTimeout(() => setCurrentlyNeededRoles(tempRoleSettings), 1);
+  }
+
+  const removeRole = (roleIndex) => {
+    //Run checks & correct index if others have been deleted already
+    let indexModifier = 0;
+    if (deletedRoleIndexList.length !== 0) {
+      deletedRoleIndexList.forEach(index => {
+        if (roleIndex > index){
+          indexModifier++;
+        }
+      });
+    }
+
+    //delete role from tempRoleSettings
+    tempRoleSettings.splice((roleIndex - indexModifier), 1);
+
+    //Add role index to deleted index list
+    deletedRoleIndexList.push(roleIndex);
+  }
+
+  //Called when done editing a role's details
+  //roleIndex passes in a number to use as an index reference for the role
+  //note: since there is no id number, need to manipulate deleted index numbers to update correct role
+  const updateRoleSettings = (roleIndex, roleObject) => {
+    tempRoleSettings[roleIndex] = roleObject;
   }
 
   //Called when 'save changes' is pressed in edit roles interface
@@ -484,7 +512,8 @@ const ProjectInfoMember = (props) => {
               {
                 currentlyNeededRoles.map(currentRole => {
                   return(
-                    <RoleListing role={currentRole} num={key2} key={key2++}/>
+                    <RoleListing role={currentRole} num={key2} key={key2++} 
+                    updateRoleSettings={updateRoleSettings} removeRole={removeRole}/>
                   )
                 })
               }

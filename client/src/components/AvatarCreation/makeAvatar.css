@@ -1,14 +1,8 @@
 :root {
   --orange: #F35835;
-  --orange-hover: #d83410;
-  --green: #97E5AB;
-  --blue: #99E6EA;
-  --purple: #B1A2DB;
   --medGray: #E3E3E3;
   --lightGray: #EEEEEE;
   --gray: #969696;
-  --darkGray: #414141;
-  --white: #FBFBFB;
 }
 
 .avatar-modal {
@@ -39,7 +33,6 @@
 
 .MakeAvatar {
   background-color: white;
-  /* background-color: var(--purple); */
   margin: auto;
   display: flex;
   justify-content: center;
@@ -135,10 +128,8 @@
 }
 
 .myAvatar {
-  /* center  */
   display: flex;
   justify-content: center;
-  /* align-items: center; */
 }
 
 .avatar-animals {
@@ -157,7 +148,6 @@
 #avatar-hat-container,
 #avatar-outfit-container,
 #avatar-accessory-container {
-  /* border: 1px solid black; */
   position: fixed;
   width: 220px;
   height: 222px;
@@ -234,11 +224,11 @@
   cursor: pointer;
 }
 
-.avatar-color-option:active,
-.avatar-hat-option:active,
-.avatar-clothes-option:active,
-.avatar-accessory-option:active {
-  transform: scale(0.9);
+.avatar-color.active-color,
+.avatar-hat-option.active-hat,
+.avatar-clothes-option.active-clothes,
+.avatar-accessory-option.active-accessory {
+  border: 2px solid var(--orange);
 }
 
 .avatar-hat-option,
@@ -254,7 +244,6 @@
   text-align: center;
   background-color: white;
   overflow: hidden;
-  /* object-fit: contain; */
 }
 
 .avatar-hat-option img,
@@ -334,7 +323,8 @@
 /* 
     Save button
 */
-#avatar-editBtn, #avatar-createBtn {
+#avatar-editBtn,
+#avatar-createBtn {
   border: none;
   border-radius: 14px;
   height: 45px;
@@ -346,12 +336,14 @@
   border: 2px solid var(--orange);
 }
 
-#avatar-editBtn:hover, #avatar-createBtn:hover {
+#avatar-editBtn:hover,
+#avatar-createBtn:hover {
   color: white;
   background-color: var(--orange);
 }
 
-#avatar-editBtn:active, #avatar-createBtn:active {
+#avatar-editBtn:active,
+#avatar-createBtn:active {
   transform: scale(0.95);
 }
 

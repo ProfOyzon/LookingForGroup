@@ -1104,6 +1104,18 @@ includes 'enter virtual space' and 'make post' buttons*/
     width:100%;
 }
 
+.role-cover {
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    height: 22px;
+    width: 370px;
+    background-color: white;
+    opacity: 95%;
+}
+
 /*rules for the divider between the header and members
 used to help wrap the lines around the word 'Members'*/
 #member-divider hr {

@@ -18,6 +18,7 @@ Page specific style rules
         -Project member settings
         -Project post page
     -My projects page
+        -Create project window
     -Messages
     -Settings
     -Login/signup
@@ -46,6 +47,7 @@ General style rules
     --darkGray: #414141;
     --white: #FBFBFB;
 }
+
 /*basic rules for hiding/showing certain elements
 used for the more options dropdown menu and notifications
 */
@@ -167,7 +169,7 @@ Card component style rules
     }
 }
 
-/*profile picture rules*/
+/*profile picture rules-----------------------------------------------------*/
 #discover-card-profile-picture,
 #profile-project-profile-picture {
     width: 100%;
@@ -183,7 +185,8 @@ Card component style rules
     width: 110%;
     margin-top: 15%;
 }
-/*text rules*/
+
+/*text rules---------------------------------------------------------------*/
 #discover-card-name {
     text-align: center;
     margin-bottom: 0;
@@ -864,56 +867,6 @@ allow them to be reformatted when the mobile view is used */
     flex-direction: column;
     justify-content: space-around;
     margin: 15px 20px;
-}
-
-/* --- all 8 'create' rules direclty below are technically not a part of the project page --- */
-/* Shouldn't they be categorized as part of the myProjects page or as its own separate category? */
-/* These aren't my rules, so I will refrain from moving them myself for now -Joseph Dunne*/
-#create-project-desc {
-    width: 80%;
-    height: 30vh;
-}
-
-#create-project-button-list {
-    position: absolute;
-    bottom: 1vh;
-    right: 1vw;
-}
-
-#create-page-1 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    gap: 64px;
-    padding: 2px 8px;
-    width: 80%;
-    margin: auto;
-}
-
-#create-page-2 {
-    text-align: left;
-    margin-left: 3%;
-}
-
-#create-page-2 h2 {
-    text-align: center;
-}
-
-#create-dates {
-    display: flex;
-    flex-direction: column;
-}
-
-#create-project-name {
-    width: 100%;
-}
-
-#create-project-roles {
-    background-color: #D0D0D0;
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
 }
 
 /*rules for the picture in the top left of the page, used as a profile for the project itself*/
@@ -1704,6 +1657,61 @@ My projects page style rules
 @media only screen and (max-width: 800px) {
 
     /* responsiveness goes here*/
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Create project window style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+#create-project-desc {
+    width: 80%;
+    height: 30vh;
+}
+
+#create-project-button-list {
+    position: absolute;
+    bottom: 1vh;
+    right: 1vw;
+}
+
+#create-page-1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 64px;
+    padding: 2px 8px;
+    width: 80%;
+    margin: auto;
+}
+
+#create-page-2 {
+    text-align: left;
+    margin-left: 3%;
+}
+
+#create-page-2 h2 {
+    text-align: center;
+}
+
+#create-dates {
+    display: flex;
+    flex-direction: column;
+}
+
+#create-project-name {
+    width: 100%;
+}
+
+#create-project-roles {
+    background-color: #D0D0D0;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
 }
 
 /*

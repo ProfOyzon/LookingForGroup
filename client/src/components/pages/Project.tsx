@@ -12,6 +12,7 @@ import { RoleListing } from "../projectPageComponents/RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts } from "../../constants/fakeData";
 import { wait } from "@testing-library/user-event/dist/utils";
+import { each } from "immer/dist/internal";
 
 //This is the Project page component, which contains a layout that allows for displaying project info
 //More info and comments on individual parts are found above their respective parts
@@ -305,6 +306,8 @@ const ProjectInfoMember = (props) => {
 
   //Used to track which members have been deleted
   let deletedMemberIndexList: number[] = [];
+  //Used to track the indexes of deleted roles
+  let deletedRoleIndexList: number[] = [];
 
   //Opens settings and resets any setting inputs from previous opening
   const openSettings = () => {
@@ -382,6 +385,11 @@ const ProjectInfoMember = (props) => {
     let nameInput = document.getElementById('role-name-input-box').value;
     let numInput = document.getElementById('role-num-input-box').value;
     let descInput = document.getElementById('role-desc-input-box').value;
+    //check to make sure all values contain data, cancels function if not
+    if (nameInput === '' || numInput === '' || descInput === '') {
+      console.log('all fields must have an appropriate input (display this on interface later)');
+      return;
+    }
     //create new role
     let newRole: {Role: string, amount: number, description: string} = 
       {Role: nameInput, amount: numInput, description: descInput};
@@ -392,16 +400,62 @@ const ProjectInfoMember = (props) => {
     setTimeout(() => setCurrentlyNeededRoles(tempRoleSettings), 1);
   }
 
+  //Called when a delete button is clicked on the role list
+  //Adds the index of the role to an list of indexes that will be deleted upon saving
+  const removeRole = (roleIndex) => {
+    deletedRoleIndexList.push(roleIndex);
+  }
+
+  //Undoes a role deletion
+  //
+  const undoRemoveRole = (roleIndex) => {
+    deletedRoleIndexList.splice(deletedRoleIndexList.indexOf(roleIndex), 1);
+  }
+
+  //Called when done editing a role's details
+  //roleIndex passes in a number to use as an index reference for the role
+  //note: since there is no id number, need to manipulate deleted index numbers to update correct role
+  const updateRoleSettings = (roleIndex, roleObject) => {
+    tempRoleSettings[roleIndex] = roleObject;
+  }
+
   //Called when 'save changes' is pressed in edit roles interface
   //Takes data in tempRoleSettings and updates project data with it
   const saveRoleSettings = () => {
+
+    //Runs through deletedRoleIndexList and removes all items from tempRoleSettings with these indexes
+    //Sorts indexes from greatest to least first to prevent erroneous deletions
+    deletedRoleIndexList.sort(function(a, b){return b-a});
+    //Delete items at specified indexes
+    deletedRoleIndexList.forEach(index => {
+      tempRoleSettings.splice(index, 1);
+    });
+    //Clean out deletedRoleIndexList
+    deletedRoleIndexList = [];
+
+    //Saves new role data to project data
     let currentProject = projects.find(p => p._id === Number(projectId));
     if (currentProject !== undefined) {
       currentProject.neededRoles = tempRoleSettings;
     }
+    //Resets defaultRoleSettings with new info
     defaultRoleSettings = tempRoleSettings;
 
+    //Updates page display & closes interface
     props.callback();
+    openClosePopup(2);
+  }
+
+  //Reloads roles on edit roles interface
+  const resetEditRoles = () => {
+    setCurrentlyNeededRoles([]);
+    setTimeout(() => setCurrentlyNeededRoles(defaultRoleSettings), 1);
+  }
+
+  //uses resetEditRoles & opens edit roles interface
+  //Mainly for using both in a single onClick function
+  const openEditRoles = () => {
+    resetEditRoles();
     openClosePopup(2);
   }
 
@@ -437,13 +491,17 @@ const ProjectInfoMember = (props) => {
         <hr/>
         {
           props.projectData.neededRoles.map(role => {
+            if (role === undefined || role === null){
+              console.log('could not find role')
+              return;
+            }
             return(
               <div key={key++}>{role.Role} &#40;{role.amount}&#41;</div>
             );
           })
         }
 
-        <button id='edit-roles-button' className='white-button' onClick={() => openClosePopup(2)}>Edit Roles</button>
+        <button id='edit-roles-button' className='white-button' onClick={openEditRoles}>Edit Roles</button>
       </div>
 
       <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3}>
@@ -484,7 +542,8 @@ const ProjectInfoMember = (props) => {
               {
                 currentlyNeededRoles.map(currentRole => {
                   return(
-                    <RoleListing role={currentRole} num={key2} key={key2++}/>
+                    <RoleListing role={currentRole} num={key2} key={key2++} 
+                    updateRoleSettings={updateRoleSettings} removeRole={removeRole} undoRemoveRole={undoRemoveRole}/>
                   )
                 })
               }

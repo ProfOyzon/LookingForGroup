@@ -64,6 +64,11 @@ used for the more options dropdown menu and notifications
     font-size: 30px;
 }
 
+button {
+    cursor: pointer;
+    transition: .2s;
+}
+
 /*give sections of the page a drop shadow*/
 section {
     margin: 10px;
@@ -228,7 +233,6 @@ Tag component style rules
 */
 
 /*used in Tags component */
-/*used for things like project tags or user skills */
 .tag {
     display: flex;
     align-items: center;
@@ -331,6 +335,7 @@ Sidebar Nav style rules
     background-color: white;
 }
 
+/* title and username */
 .SideBarContainer h1 {
     width: 220px;
     height: 5vh;
@@ -344,12 +349,14 @@ Sidebar Nav style rules
     justify-content: center;
 }
 
+/* title */
 .headerContainer h1 {
     font-weight: bold;
     font-size: 30px;
     height: 10vh;
 }
 
+/*sidebar options*/
 .containerButtonSideBar {
     display: flex;
     flex-direction: column;
@@ -402,6 +409,7 @@ Sidebar Nav style rules
     scale: 1.1;
 }
 
+/*logout button*/
 .Logout {
     display: flex;
     align-items: center;
@@ -431,6 +439,7 @@ Sidebar Nav style rules
     cursor: pointer;
 }
 
+/*responsive stuff for sidebar*/
 @media only screen and (max-width: 800px) {
     .sideBarContainer {
         width: 100vw;
@@ -507,8 +516,14 @@ Notification style rules
     background-color: rgb(238, 238, 238);
 }
 
-.hidden {
-    display: none;
+#notif-button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 4px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
 }
 
 /*
@@ -623,6 +638,7 @@ Search style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
+/*position on the page*/
 .search-wrapper {
     display: flex;
     flex-direction: row;
@@ -645,6 +661,7 @@ Search style rules
     margin: auto;
 }
 
+/*text in the bar*/
 .search-input {
     background: none;
     color: inherit;
@@ -655,8 +672,8 @@ Search style rules
     outline: inherit;
 }
 
-.search-button,
-#notif-button {
+/*magnifying glass button*/
+.search-button{
     background: none;
     color: inherit;
     border: none;
@@ -1655,8 +1672,6 @@ My projects page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-/* !!! This rule is not a part of project member settings, and should be moved somewhere else !!!*/
-/* As it is not my own, I will refrain from doing so for now -Joseph Dunne */
 #create-proj-btn {
     padding: 10px 50px;
     font-weight: bold;
@@ -1772,11 +1787,6 @@ Settings page style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
-
-button {
-    cursor: pointer;
-    transition: .2s;
-}
 
 .column {
     display: flex;

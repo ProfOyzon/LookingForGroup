@@ -9,7 +9,7 @@ export function NotifButton() {
         <div className="notif-button-wrapper">
             <button id="notif-button" onClick={HandleClick}>
                 <img src={bellIcon} className="notif-button-icon" />
-                <div id="notif-popup" className="hidden">
+                <div id="notif-popup" className="hide"> 
                     {/* <DisplayNotifs></DisplayNotifs> */}
                     <DisplayNotifs2></DisplayNotifs2>
                 </div>
@@ -19,9 +19,7 @@ export function NotifButton() {
     )
 }
 
-
-
 function HandleClick() {
     let notifButton = document.getElementById("notif-popup") as HTMLElement;
-    notifButton.classList.toggle('hidden');
+    notifButton.classList.toggle('hide');
 }

@@ -1,5 +1,7 @@
 import { act } from "react";
 
+//a multi-use tabs component
+
 //add const [activeTab, setActiveTab] = useState(0); to the page then send those into the functions
 
 //send in a list of names, 1 for each tab

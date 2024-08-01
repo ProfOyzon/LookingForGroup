@@ -280,7 +280,8 @@
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 20px;
+  row-gap: 14px;
+  column-gap: 20px;
   width: 540px;
   height: 200px;
 
@@ -288,6 +289,7 @@
   padding: 10px;
   background-color: white;
   outline: 2px solid var(--medGray);
+  overflow-y: auto;
 }
 
 .avatar-tab-links {

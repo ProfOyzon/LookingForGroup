@@ -25,6 +25,17 @@ const displayHats = [
     { src: "images/hats/chefsHat.png", alt: "chef's hat" },
     { src: "images/hats/topHat.png", alt: "top hat" },
     { src: "images/hats/trafficCone.png", alt: "orange traffic cone" },
+    { src: "images/hats/partyHat.png", alt: "party hat" },
+    { src: "images/hats/halo.png", alt: "halo" },
+
+    // More hat ideas:
+    // witch hat
+    // santa hat
+    // crown
+    // baseball cap
+    // graduation cap
+    // astronaut helmet
+
 ]
 
 // array of hat images and alt text for the hat option boxes
@@ -40,6 +51,8 @@ const hatIcons = [
     { src: "images/icons/avatar-options/hats/chefsHatCenter.png", alt: "chef's hat" },
     { src: "images/icons/avatar-options/hats/topHatCenter.png", alt: "top hat" },
     { src: "images/icons/avatar-options/hats/trafficConeCenter.png", alt: "orange traffic cone" },
+    { src: "images/icons/avatar-options/hats/partyHatCenter.png", alt: "party hat" },
+    { src: "images/icons/avatar-options/hats/haloCenter.png", alt: "halo" },
 ];
 
 // array of clothes images and alt text
@@ -50,6 +63,27 @@ const displayClothes = [
     { src: "images/clothes/cowboyVest.png", alt: "cowboy vest eith sherrif's badge" },
     { src: "images/clothes/darkJacket.png", alt: "dark jacket" },
     { src: "images/clothes/safetyVest.png", alt: "orange safety vest" },
+    { src: "images/clothes/sailorDress.png", alt: "sailor dress" },
+    { src: "images/clothes/pinkSweater.png", alt: "pink sweater" },
+
+    // More clothes ideas:
+    // tuxedo
+    // plain t-shirt
+    // hoodie
+    // astronaut suit
+    // underwear
+    // pajamas
+    // lab coat
+
+    // recognizeable outfits from tv shows or movies 
+    // silly idea 
+    // mario, luigi, peach, toad, bowser, yoshi, etc.
+    // pokemon trainer
+    // disney princesses or other characters
+    // phineas and ferb outfits
+    // kim possible
+    // scooby doo's gang outfits
+    // spongebob's squarepants
 ];
 
 // array of clothes images and alt text for the clothes option boxes
@@ -60,12 +94,29 @@ const clothesIcons = [
     { src: "images/icons/avatar-options/clothes/cowboyVestCenter.png", alt: "cowboy vest eith sherrif's badge" },
     { src: "images/icons/avatar-options/clothes/darkJacketCenter.png", alt: "dark jacket" },
     { src: "images/icons/avatar-options/clothes/safetyVestCenter.png", alt: "orange safety vest" },
+    { src: "images/icons/avatar-options/clothes/sailorDressCenter.png", alt: "sailor dress" },
+    { src: "images/icons/avatar-options/clothes/pinkSweaterCenter.png", alt: "pink sweater" },
 ];
 // array of accessory images and alt text
 const displayAccessories = [
     { src: "images/icons/noItem.png", alt: "none" },
     { src: "images/accessories/cyberGlasses.png", alt: "cyber glasses" },
     { src: "images/accessories/wand.png", alt: "wand" },
+    { src: "images/accessories/cane.png", alt: "cane" },
+    { src: "images/accessories/redCape.png", alt: "red cape" },
+    { src: "images/accessories/wings.png", alt: "wings" },
+
+    // More accessory ideas:
+    // necklace
+    // purse
+    // bowtie
+    // tie
+    // scarf
+    // belt
+    // staff
+    // sword
+    // shield
+
 ];
 
 // array of accessory images and alt text for the accessory option boxes
@@ -73,6 +124,9 @@ const accessoryIcons = [
     { src: "images/icons/noItem.png", alt: "none" },
     { src: "images/icons/avatar-options/accessories/cyberGlassesCenter.png", alt: "cyber glasses" },
     { src: "images/icons/avatar-options/accessories/wandCenter.png", alt: "wand" },
+    { src: "images/icons/avatar-options/accessories/caneCenter.png", alt: "cane" },
+    { src: "images/icons/avatar-options/accessories/redCapeCenter.png", alt: "red cape" },
+    { src: "images/icons/avatar-options/accessories/wingsCenter.png", alt: "wings" },
 ];
 
 //

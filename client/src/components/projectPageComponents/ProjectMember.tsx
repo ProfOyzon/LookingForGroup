@@ -13,11 +13,13 @@ import * as paths from "../../constants/routes";
 
 export const ProjectMember = (props) => {
   const navigate = useNavigate();
+
   let profile = profiles.find(p => p._id === props.memberId);
   if (profile === undefined) {
     profile = profiles[0];
   }
   const pathQuery = `?profID=${profile._id}`;
+  
   return (
     <div className='project-member' onClick={() => navigate(paths.routes.PROFILE + pathQuery)}>
       <img src={profilePlaceholder} alt=''/>

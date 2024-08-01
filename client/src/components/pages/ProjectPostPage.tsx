@@ -6,7 +6,6 @@ import { useState } from 'react';
 import * as paths from "../../constants/routes";
 import { PostComment } from "../PostComment";
 import { projects, profiles, posts, comments } from "../../constants/fakeData";
-import e from "express";
 
 //To-do
 // - encode reply inputs to prevent code injection (if data upload doesn't automatically do that)
@@ -141,9 +140,8 @@ const ProjectPostPage = (props) => {
     //May be a temporary solution, id generation may require different method
     let newId = Math.trunc(Math.random() * 100000000);
     while (comments.find(comment => comment._id === newId) !== undefined) {
-      let newId = Math.trunc(Math.random() * 100000000)
+      newId = Math.trunc(Math.random() * 100000000)
     }
-    console.log(newId);
     let date = new Date();
     //construct new reply
     let newReplyObject = {

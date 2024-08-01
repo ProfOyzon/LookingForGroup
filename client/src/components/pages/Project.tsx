@@ -11,8 +11,6 @@ import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { RoleListing } from "../projectPageComponents/RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts } from "../../constants/fakeData";
-import { wait } from "@testing-library/user-event/dist/utils";
-import { each } from "immer/dist/internal";
 
 //This is the Project page component, which contains a layout that allows for displaying project info
 //More info and comments on individual parts are found above their respective parts
@@ -23,25 +21,25 @@ let projectId;
 // Data for a dummy project, used when re-rendering the page after saving settings
 const dummyProject = {
   _id: -1,
-        name: "dummy project",
-        members: [
-            {
-                userID: 0,
-                admin: true,
-                owner: true,
-                role: "Project Lead"
-            },
-        ],
-        description: "dummy project",
-        tags: ["dummy", "project"],
-        neededRoles: [
-            {
-                Role: "dummy",
-                amount: 2,
-                description: "dummy project",
-            },
-        ],
-        posts: []
+  name: "dummy project",
+  members: [
+      {
+          userID: 0,
+          admin: true,
+          owner: true,
+          role: "Project Lead"
+      },
+  ],
+  description: "dummy project",
+  tags: ["dummy", "project"],
+  neededRoles: [
+      {
+          Role: "dummy",
+          amount: 2,
+          description: "dummy project",
+      },
+  ],
+  posts: []
 }
 
 // default settings for the project being loaded, used when loading default data for settings
@@ -103,12 +101,6 @@ const addInterested = () => {
   //Add user to project's list of interested people (need relevant data location)
 }
 
-//Lets the user edit the roles this project is 'looking for'
-//Should only be accessible to admins of a project
-const editRoles = () => {
-  console.log('This will let the member edit roles');
-}
-
 //Sends the user to the project's virtual space
 //Should only be accessible to project members
 const enterVirtualSpace = () => {
@@ -164,7 +156,8 @@ const deleteProject = (callback) => {
   openClosePopup(1);
   openClosePopup(0);
   //Delete project from database
-
+  //Error caused by typescript, code still runs correctly
+  projects.splice(projects.indexOf(projects.find(p => p._id === projectId)), 1);
   //Redirect to the MyProjects page
   callback(paths.routes.MYPROJECTS);
 }
@@ -173,8 +166,7 @@ const deleteProject = (callback) => {
 // Includes options to follow, block, report, or show interest in joining the project
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
 
-// projectName, projectDescription, and neededRoles are passed in through props
-// All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
+// projectData is passed in through props, containing data on the project
 const ProjectInfo = (props) => {
   let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
   return (
@@ -182,11 +174,11 @@ const ProjectInfo = (props) => {
       <img id='project-picture' src={profilePlaceholder} alt=''/>
 
       <div id='project-header'>
-        <h1 id='project-title'>{props.projectName}</h1>
+        <h1 id='project-title'>{props.projectData.name}</h1>
         <div id='header-buttons'>
           <button id='follow-project' className='orange-button' onClick={followProject}>Follow</button>
           <div id='more-options'>
-            <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}><img src='elipses.png' alt="..."/></button>
+            <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>...</button>
             <div id='more-options-popup' className='hide'>
               <button className='white-button' onClick={blockProject}>Block</button>
               <button className='white-button' onClick={reportProject}>Report</button>
@@ -195,14 +187,14 @@ const ProjectInfo = (props) => {
         </div>
       </div>
 
-      <p id='project-desc'>{props.projectDescription}
+      <p id='project-desc'>{props.projectData.description}
       </p>
 
       <div id='project-listings'>
         <h3>Looking for</h3>
         <hr/>
         {
-          props.neededRoles.map(role => {
+          props.projectData.neededRoles.map(role => {
             return(
               <div key={key++}>{role.Role} &#40;{role.amount}&#41;</div>
             );
@@ -406,13 +398,12 @@ const ProjectInfoMember = (props) => {
     deletedRoleIndexList.push(roleIndex);
   }
 
-  //Undoes a role deletion
-  //
+  //Undoes a role deletion & removes its index from deletedRoleIndexList
   const undoRemoveRole = (roleIndex) => {
     deletedRoleIndexList.splice(deletedRoleIndexList.indexOf(roleIndex), 1);
   }
 
-  //Called when done editing a role's details
+  //Called when user is done editing a role's details
   //roleIndex passes in a number to use as an index reference for the role
   //note: since there is no id number, need to manipulate deleted index numbers to update correct role
   const updateRoleSettings = (roleIndex, roleObject) => {
@@ -469,7 +460,7 @@ const ProjectInfoMember = (props) => {
         <div id='header-buttons'>
           <div id='more-options'>
             <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
-              <img id='more-options-button-img' src='elipses.png' alt="..."/></button>
+              ...</button>
             <div id='more-options-popup' className='hide'>
               <button className='white-button' onClick={openSettings}>Project Settings</button>
               <button className='white-button' onClick={leaveProject}>Leave Project</button>
@@ -617,6 +608,7 @@ const Project = (props) => {
     setTimeout(() => {setProjectData(projects.find(p => p._id === Number(projectId)) || projects[0])}, 1);
   }
 
+  //First select element is used for testing/debugging purposes, it should be removed in the final product
   return (
     <div id='project-page' className='page'>
 

@@ -15,12 +15,14 @@ import * as paths from "../../constants/routes";
 
 export const ProjectPost = (props) => {
   const navigate = useNavigate();
+
   let thisPost = posts.find(p => p._id === props.postID);
   if (thisPost === undefined){
     thisPost = posts[0];
   }
 
   const pathQuery = `?postID=${thisPost._id}`
+  
   return (
     <div className='project-post' onClick={() => navigate(paths.routes.PROJECTPOST + pathQuery)}>
       <img src={postImagePlaceholder} alt=''/>
@@ -30,7 +32,7 @@ export const ProjectPost = (props) => {
           <div className='post-date'>{thisPost.createdDate}</div>
         </div>
       
-        <button className='white-button'><img src='' alt=''/></button>
+        <button className='white-button'>share</button>
       </div>
     </div>
   )

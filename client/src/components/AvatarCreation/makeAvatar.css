@@ -107,10 +107,10 @@
 }
 
 .avatar-btn-icon {
-  width: 25px;
+  width: 40px;
 }
 
-.avatar-left-btn {
+.avatar-right-btn {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
 }

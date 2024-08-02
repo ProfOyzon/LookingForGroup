@@ -354,7 +354,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                     <div id="avatar-select">
                         {/* previous button */}
                         <button id="avatar-arrowBtn" onClick={() => plusSlides(-1)}>
-                            <img src="images/icons/arrow-right.png" alt="left arrow" className="avatar-left-btn avatar-btn-icon" />
+                            <img src="images/icons/s-arrow.png" alt="left arrow" className="avatar-left-btn avatar-btn-icon" />
                         </button>
 
                         {/* displayed avatar */}
@@ -401,7 +401,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
 
                         {/* next button */}
                         <button id="avatar-arrowBtn" onClick={() => plusSlides(1)}>
-                            <img src="images/icons/arrow-right.png" alt="right arrow" className="avatar-btn-icon" />
+                            <img src="images/icons/s-arrow.png" alt="right arrow" className=" avatar-right-btn avatar-btn-icon" />
                         </button>
                     </div>
 

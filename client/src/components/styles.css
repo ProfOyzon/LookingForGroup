@@ -156,7 +156,7 @@ Card component style rules
     align-items: center;
 }
 
-.endorsement{
+.endorsement {
     flex-direction: row;
 }
 
@@ -539,16 +539,19 @@ Notification modal style rules
     height: 100vh;
     position: fixed;
     top: 0px;
-    left: -100px; /* Hidden by default */
+    left: -100px;
+    /* Hidden by default */
     box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
     z-index: 1;
     background-color: white;
     transition: left 0.4s ease;
-    overflow-y: auto; /* Add scroll bar */
+    overflow-y: auto;
+    /* Add scroll bar */
 }
 
 .notifications-container.show {
-    left: 220px; /* Slide in when show class is added */
+    left: 220px;
+    /* Slide in when show class is added */
 }
 
 .notifications-header {
@@ -559,14 +562,14 @@ Notification modal style rules
 }
 
 .notifications-header button {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border: none;
-    background-image: url('../../public/images/icons/arrow-right.png');
+    background-image: url('../../public/images/icons/s-arrow.png');
     background-size: cover;
     background-color: transparent;
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
+    /* -webkit-transform: scaleX(-1);
+    transform: scaleX(-1); */
 }
 
 .notifications-body {
@@ -673,7 +676,7 @@ Search style rules
 }
 
 /*magnifying glass button*/
-.search-button{
+.search-button {
     background: none;
     color: inherit;
     border: none;
@@ -785,6 +788,7 @@ Discover page style rules
     #discover-button-wrapper {
         grid-template-columns: 20% 20% 60%;
     }
+
     .discover-button {
         font-size: 0.8rem;
     }
@@ -972,14 +976,14 @@ includes 'enter virtual space' and 'make post' buttons*/
 
 /*rules for the editing roles popup*/
 #edit-roles-options {
-    display:grid;
+    display: grid;
     gap: 10px;
     padding: 10px;
     text-align: left;
     grid-template: 1fr 3fr .5fr / 120px 80px auto;
     grid-template-areas: 'name number list'
-                         'desc desc list'
-                         'button button list'
+        'desc desc list'
+        'button button list'
 }
 
 #role-name-input {
@@ -1067,11 +1071,11 @@ includes 'enter virtual space' and 'make post' buttons*/
 }
 
 .role-list-desc-input {
-    display:block;
+    display: block;
     border-bottom: 1px solid var(--gray);
     background-color: var(--lightGray);
-    resize:none;
-    width:100%;
+    resize: none;
+    width: 100%;
 }
 
 .role-cover {
@@ -2300,7 +2304,8 @@ Signup process modal style rules
 .ChooseSkills,
 .ChooseInterests,
 .ChooseProficiencies,
-.CompleteProfile {
+.CompleteProfile,
+.GetStarted {
     background-color: white;
     margin: auto;
     display: flex;
@@ -2364,10 +2369,6 @@ Signup process modal style rules
     background-color: var(--orange);
 }
 
-/* #signup-nextBtn:active {
-    transform: scale(0.95);
-} */
-
 #signup-backBtn {
     border: none;
     border-radius: 14px;
@@ -2385,13 +2386,10 @@ Signup process modal style rules
     border: 2px solid var(--medGray);
 }
 
-/* #signup-backBtn:active {
-    transform: scale(0.95);
-} */
-
 #skill-select,
 #interest-select,
-#proficiency-select {
+#proficiency-select,
+#getStarted-select {
     height: 515px;
     display: flex;
     flex-direction: row;
@@ -2400,13 +2398,11 @@ Signup process modal style rules
     align-items: center;
     overflow-y: auto;
     margin: 20px;
-    /* border: 1px solid hotpink; */
 }
 
 #profile-details {
     height: 515px;
     margin: 20px;
-    /* border: 1px solid hotpink; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2497,7 +2493,6 @@ Signup process modal style rules
     background-color: white;
     color: black;
     font-weight: 400;
-
 }
 
 #bio-input {
@@ -2511,6 +2506,41 @@ Signup process modal style rules
     font-size: 16px;
 }
 
+#new-project-btn,
+#join-project-btn{
+    width: 240px;
+    height: 200px;
+    margin: 20px 40px;
+    padding: 5px 10px;
+    font-size: 24px;
+    border: 2px solid var(--lightGray);
+    border-radius: 12px;
+    background-color: white;
+    color: black;
+    font-weight: 600;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+#new-project-btn img,
+#join-project-btn img {
+    filter: invert(1);
+}
+
+#new-project-btn:hover,
+#join-project-btn:hover {
+    background-color: var(--orange);
+    color: white;
+    border: 2px solid var(--orange);
+    img {
+        filter: invert(0);
+    }
+}
+
 @media screen and (max-width: 1020px) {
     #signupProcess-btns {
         width: 700px;
@@ -2519,7 +2549,8 @@ Signup process modal style rules
     .ChooseSkills,
     .ChooseInterests,
     .ChooseProficiencies,
-    .CompleteProfile {
+    .CompleteProfile,
+    .GetStarted {
         width: 800px;
     }
 }
@@ -2532,7 +2563,8 @@ Signup process modal style rules
     .ChooseSkills,
     .ChooseInterests,
     .ChooseProficiencies,
-    .CompleteProfile {
+    .CompleteProfile,
+    .GetStarted {
         width: 550px;
     }
 }
@@ -2549,7 +2581,8 @@ Signup process modal style rules
     .ChooseSkills,
     .ChooseInterests,
     .ChooseProficiencies,
-    .CompleteProfile {
+    .CompleteProfile,
+    .GetStarted {
         box-shadow: none;
         width: 100%;
         /* height: 100%; */
@@ -2564,7 +2597,8 @@ Signup process modal style rules
     .ChooseSkills,
     .ChooseInterests,
     .ChooseProficiencies,
-    .CompleteProfile {
+    .CompleteProfile,
+    .GetStarted {
         box-shadow: none;
         width: 100%;
         /* height: 100%; */

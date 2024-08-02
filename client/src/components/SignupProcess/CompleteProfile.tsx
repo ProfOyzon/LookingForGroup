@@ -67,7 +67,7 @@ const CompleteProfile = ({ show, onNext, onBack, avatarImage }) => {
                             Back
                         </button>
                         <button id="signup-nextBtn" onClick={onNext} >
-                            Finish
+                            Next
                         </button>
                     </div>
                 </div>

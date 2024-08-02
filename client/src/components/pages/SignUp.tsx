@@ -7,6 +7,7 @@ import ChooseSkills from "../SignupProcess/ChooseSkills";
 import ChooseProficiencies from "../SignupProcess/ChooseProficiencies";
 import ChooseInterests from "../SignupProcess/ChooseInterests";
 import CompleteProfile from "../SignupProcess/CompleteProfile";
+import GetStarted from "../SignupProcess/GetStarted";
 
 const SignUp = ({ setAvatarImage, avatarImage }) => {
     const navigate = useNavigate(); // Hook for navigation
@@ -26,6 +27,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
     const [showProficienciesModal, setShowProficienciesModal] = useState(false);
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [showCompleteProfileModal, setShowCompleteProfileModal] = useState(false);
+    const [showGetStartedModal, setShowGetStartedModal] = useState(false);
 
     // State variables for selected buttons
     // to remeber the user's choices when they go back and forth between modals
@@ -35,34 +37,34 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
 
     // Function to handle the login button click
     const handleSignup = () => {
-        // Check if the email and password are not empty
-        if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
-            setError('Please fill in all information');
-        } else {
-            // check if email is valid
+        // // Check if the email and password are not empty
+        // if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
+        //     setError('Please fill in all information');
+        // } else {
+        //     // check if email is valid
 
-            // check if username is unique (??? depends on if we want unique usernames)
+        //     // check if username is unique (??? depends on if we want unique usernames)
 
-            // Check if the password is:
-            // at least 6 characters long?
-            // has a number? 
-            // has a special character
+        //     // Check if the password is:
+        //     // at least 6 characters long?
+        //     // has a number? 
+        //     // has a special character
             
-            // check if the passwords match
-            if (password !== checkPassword) {
-                setError('Passwords do not match');
-            }
+        //     // check if the passwords match
+        //     if (password !== checkPassword) {
+        //         setError('Passwords do not match');
+        //     }
 
-            else {
-                // show the proficiencies modal
-                // from the modal links through the process
-                // profficiencies -> skills -> interests -> avatar -> complete profile --> home
-                setShowProficienciesModal(true);
-            }
-        }
+        //     else {
+        //         // show the proficiencies modal
+        //         // from the modal links through the process
+        //         // profficiencies -> skills -> interests -> avatar -> complete profile --> home
+        //         setShowProficienciesModal(true);
+        //     }
+        // }
 
         // for testing, skips the above checks
-        // setShowProficienciesModal(true);
+        setShowGetStartedModal(true);
     };
 
     return (
@@ -177,10 +179,17 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                     />
 
                     <CompleteProfile
-                        onNext={() => { setShowCompleteProfileModal(false); navigate(paths.routes.HOME); }}
+                        onNext={() => { setShowCompleteProfileModal(false); setShowGetStartedModal(true); }}
                         onBack={() => { setShowCompleteProfileModal(false); setShowAvatarModal(true); }}
                         show={showCompleteProfileModal}
                         avatarImage={avatarImage}
+                    />
+
+                    <GetStarted
+                        show={showGetStartedModal}
+                        onBack={() => { setShowGetStartedModal(false); setShowCompleteProfileModal(true); }}
+                        onCreateProject={() => { setShowGetStartedModal(false); navigate(paths.routes.MYPROJECTS); }}
+                        onJoinProject={() => { setShowGetStartedModal(false); navigate(paths.routes.HOME); }}
                     />
                 </div>
             </div>

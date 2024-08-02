@@ -34,37 +34,53 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
     const [selectedProficiencies, setSelectedProficiencies] = useState<string[]>([]); // State variable for the selected proficiencies
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]); // State variable for the selected skills
     const [selectedInterests, setSelectedInterests] = useState<string[]>([]); // State variable for the selected interests
+    const [pronouns, setPronouns] = useState(''); // State variable for the user's pronouns
+    const [bio, setBio] = useState(''); // State variable for the user's bio
+
+    // user info to be sent to the backend
+    const userInfo = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        username: username,
+        password: password,
+        proficiencies: selectedProficiencies,
+        skills: selectedSkills,
+        interests: selectedInterests,
+        pronouns: pronouns,
+        bio: bio,
+    };
 
     // Function to handle the login button click
     const handleSignup = () => {
-        // // Check if the email and password are not empty
-        // if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
-        //     setError('Please fill in all information');
-        // } else {
-        //     // check if email is valid
+        // Check if the email and password are not empty
+        if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
+            setError('Please fill in all information');
+        } else {
+            // check if email is valid
 
-        //     // check if username is unique (??? depends on if we want unique usernames)
+            // check if username is unique (??? depends on if we want unique usernames)
 
-        //     // Check if the password is:
-        //     // at least 6 characters long?
-        //     // has a number? 
-        //     // has a special character
+            // Check if the password is:
+            // at least 6 characters long?
+            // has a number? 
+            // has a special character
             
-        //     // check if the passwords match
-        //     if (password !== checkPassword) {
-        //         setError('Passwords do not match');
-        //     }
+            // check if the passwords match
+            if (password !== checkPassword) {
+                setError('Passwords do not match');
+            }
 
-        //     else {
-        //         // show the proficiencies modal
-        //         // from the modal links through the process
-        //         // profficiencies -> skills -> interests -> avatar -> complete profile --> home
-        //         setShowProficienciesModal(true);
-        //     }
-        // }
+            else {
+                // show the proficiencies modal
+                // from the modal links through the process
+                // profficiencies -> skills -> interests -> avatar -> complete profile --> home
+                setShowProficienciesModal(true);
+            }
+        }
 
         // for testing, skips the above checks
-        setShowGetStartedModal(true);
+        // setShowProficienciesModal(true);
     };
 
     return (
@@ -183,6 +199,11 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                         onBack={() => { setShowCompleteProfileModal(false); setShowAvatarModal(true); }}
                         show={showCompleteProfileModal}
                         avatarImage={avatarImage}
+                        userInfo={userInfo}
+                        bio={bio}
+                        pronouns={pronouns}
+                        setBio={setBio}
+                        setPronouns={setPronouns}
                     />
 
                     <GetStarted

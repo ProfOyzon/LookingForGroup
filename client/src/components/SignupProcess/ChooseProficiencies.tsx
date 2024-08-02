@@ -37,6 +37,7 @@ const ChooseProficiencies = ({ show, onNext, onBack, selectedProficiencies, setS
                     <p>You can add more and edit later</p>
 
                     <div id="proficiency-select">
+                        {/* map through the proficiencies array and create a button for each proficiency */}
                         {proficiencies.map((proficiency, index) => (
                             <button
                                 key={index}

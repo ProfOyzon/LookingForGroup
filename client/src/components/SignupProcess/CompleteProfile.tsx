@@ -3,15 +3,19 @@ import React, { useState, useEffect } from 'react';
 //
 // Complete profile component
 //
-const CompleteProfile = ({ show, onNext, onBack, avatarImage }) => {
-    // placeholder data
-    // will be replaced with actual data from the previous steps
-    const info = {
-        firstName: 'John',
-        lastName: 'Doe',
-        username: '@johndoe',
-        skills: ['UI/UX', 'Figma', 'JavaScript', 'Photoshop', 'Illustrator'],
-    }
+const CompleteProfile = ({ show, onNext, onBack, avatarImage, userInfo, bio, pronouns, setBio, setPronouns }) => {
+    // make each skill tag a different color
+    // matches the colors in the design/background
+    const tagColors = ['#9FACFF', '#97E5AB', '#99E6EA', '#F18067', '#239EF7'];
+
+    // set the bio and pronouns when the user types in the input boxes
+    const handleBioChange = (e) => {
+        setBio(e.target.value);
+    };
+
+    const handlePronounsChange = (e) => {
+        setPronouns(e.target.value);
+    };
 
     // if the modal is not shown, return null
     if (!show) {
@@ -30,35 +34,45 @@ const CompleteProfile = ({ show, onNext, onBack, avatarImage }) => {
                     <div id="profile-details" >
                         <div className="row">
                             {/* Profile picture container */}
-                            <div id="profile-pic" style={{ width: 180, height: 180 }}>
+                            <div id="profile-pic" style={{ width: 160, height: 160 }}>
                                 <img src={avatarImage} alt="profile-pic" />
                             </div>
 
                             <div className="name-username-pronouns-container">
                                 <div className="signup-fullname">
                                     {/* First and Last Name */}
-                                    <h2>{info.firstName} {info.lastName} </h2>
+                                    <h2>{userInfo.firstName} {userInfo.lastName} </h2>
 
                                     {/* Username */}
-                                    <p>{info.username}</p>
+                                    <p>@{userInfo.username}</p>
                                 </div>
 
                                 {/* Pronouns */}
-                                <input id="pronouns-input" type="text" placeholder="Add Pronouns" />
+                                <input
+                                    id="pronouns-input"
+                                    type="text"
+                                    autoComplete='off'
+                                    placeholder="Add Pronouns"
+                                    onChange={handlePronounsChange}
+                                    value={pronouns}
+                                />
                             </div>
                         </div>
 
                         {/* Input Box for Bio */}
-                        <textarea id="bio-input" placeholder="Add A Bio"></textarea>
+                        <textarea
+                            id="bio-input"
+                            autoComplete='off'
+                            placeholder="Add A Bio"
+                            onChange={handleBioChange}
+                            value={bio}
+                        ></textarea>
 
                         {/* Skills */}
-                        <div className="row">
-                            <h3> Skills:</h3>
-                            <div id="signup-profile-skill" >
-                                {info.skills.map((skill, index) => (
-                                    <div key={index} >{skill}</div>
-                                ))}
-                            </div>
+                        <div id="signup-profile-skill" >
+                            {userInfo.skills.map((skill, index) => (
+                                <div key={index} style={{ border: `2px solid ${tagColors[index % 5]}` }} >{skill}</div>
+                            ))}
                         </div>
 
                     </div>

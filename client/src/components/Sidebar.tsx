@@ -77,6 +77,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
         <h1>Logo</h1>
 
         {/* notification bell */}
+        <div id="notif-dot"></div>
         <button onClick={() => { setShowNotifications(!showNotifications); }}>
           <img src="images/icons/nav/notif.png" className="navIcon" alt="Notifications" />
         </button>

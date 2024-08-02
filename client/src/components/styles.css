@@ -36,6 +36,7 @@ General style rules
 */
 /*color scheme*/
 :root {
+    --red: #FF4949;
     --orange: #F35835;
     --orange-hover: #d83410;
     --green: #97E5AB;
@@ -362,6 +363,18 @@ Sidebar Nav style rules
     align-items: center;
     width: 200px;
     margin: 30px 0 60px 0;
+}
+
+#notif-dot {
+    width: 12px;
+    height: 12px;
+    background-color: var(--red);
+    color: white;
+    font-size: 10px;
+    border-radius: 50%;
+    position: absolute;
+    top: 33px;
+    right: 14px;
 }
 
 /* notification bell */

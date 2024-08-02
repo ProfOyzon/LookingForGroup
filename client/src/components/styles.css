@@ -625,11 +625,7 @@ Page popup style rules
 */
 
 /*rules for the cover a popup uses*/
-.popup-cover-hide {
-    display: none;
-}
-
-.popup-cover-show {
+.popup-cover {
     display: block;
     position: fixed;
     background-color: black;
@@ -641,11 +637,7 @@ Page popup style rules
 }
 
 /*rules for the popup itself*/
-.popup-hide {
-    display: none;
-}
-
-.popup-show {
+.popup {
     display: block;
     position: fixed;
     background-color: white;

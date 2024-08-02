@@ -221,6 +221,12 @@ const ProjectInfoMember = (props) => {
   let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
   let key2 = 0;
 
+  const [showPopup1, setShowPopup1] = useState(false);
+  const [showPopup2, setShowPopup2] = useState(false);
+  const [showPopup3, setShowPopup3] = useState(false);
+
+  let openPopups = [showPopup1, showPopup2, showPopup3];
+
   //Function used to update a specific member's setting
   //It is placed before other variables so that it can be used for one
   //'setting' indicates what setting is being modified
@@ -314,7 +320,7 @@ const ProjectInfoMember = (props) => {
       setTimeout(() => setTabContent(<MemberSettings projectId={projectId} tempSettings={tempSettings} updateMemberSettings={updateMemberSettings}/>), 1);
     }
     //Timeout is set here to prevent asynchronous tab changes from the 'setTabContent' functions above from being visible
-    setTimeout(() => openClosePopup(0), 20);
+    setTimeout(() => openClosePopup(showPopup1, setShowPopup1, openPopups), 20);
   }
 
   //Updates tempSettings with any inputted setting changes, called when switching tabs or when saving settings
@@ -340,7 +346,7 @@ const ProjectInfoMember = (props) => {
     props.callback();
     
     //Closes the settings popup
-    openClosePopup(0);
+    openClosePopup(showPopup1, setShowPopup1, openPopups);
   }
 
   //Called when a tab is changed in the settings window
@@ -434,7 +440,7 @@ const ProjectInfoMember = (props) => {
 
     //Updates page display & closes interface
     props.callback();
-    openClosePopup(2);
+    openClosePopup(showPopup3, setShowPopup3, openPopups);
   }
 
   //Reloads roles on edit roles interface
@@ -447,7 +453,7 @@ const ProjectInfoMember = (props) => {
   //Mainly for using both in a single onClick function
   const openEditRoles = () => {
     resetEditRoles();
-    openClosePopup(2);
+    openClosePopup(showPopup3, setShowPopup3, openPopups);
   }
 
   return (
@@ -495,24 +501,24 @@ const ProjectInfoMember = (props) => {
         <button id='edit-roles-button' className='white-button' onClick={openEditRoles}>Edit Roles</button>
       </div>
 
-      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3}>
+      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup1} setShow={setShowPopup1} openPopups={openPopups}>
         <div id='settings-window-test'>
             <h1>Project Settings</h1>
             <div id='settings-tabs'>
               <button id='general-tab' className='tab-selected' onClick={() => {changeTabs('general')}}>General</button>
               <button id='member-tab' className='tab' onClick={() => {changeTabs('members')}}>Members</button>
-              <button id='delete-project' onClick={() => openClosePopup(1)}>Delete Project</button>
+              <button id='delete-project' onClick={() => openClosePopup(showPopup2, setShowPopup2, openPopups)}>Delete Project</button>
             </div>
             <hr/>
             <div id='settings-content'>
             {tabContent}
             </div>
-            <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(0)}>Cancel</button>
+            <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(showPopup1, setShowPopup1, openPopups)}>Cancel</button>
             <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>
         </div>
       </PagePopup>
 
-      <PagePopup width={'600px'} height={'400px'} popupId={2} zIndex={3}>
+      <PagePopup width={'600px'} height={'400px'} popupId={2} zIndex={3} show={showPopup3} setShow={setShowPopup3} openPopups={openPopups}>
         <div id='edit-roles-window'>
           <h1>Edit Roles</h1>
           <div id='edit-roles-options'>
@@ -544,10 +550,10 @@ const ProjectInfoMember = (props) => {
         </div>
       </PagePopup>
 
-      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={4}>
+      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={4} show={showPopup2} setShow={setShowPopup2} openPopups={openPopups}>
         <div id='project-delete-check'>
           <h3>Are you sure you want to delete this project?</h3>
-          <button id='project-delete-cancel' onClick={() => openClosePopup(1)}>Cancel</button>
+          <button id='project-delete-cancel' onClick={() => openClosePopup(showPopup2, setShowPopup2, openPopups)}>Cancel</button>
           <button id='project-delete-final' onClick={() => deleteProject(navigate)}>DELETE</button>
         </div>
       </PagePopup>

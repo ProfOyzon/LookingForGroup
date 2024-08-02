@@ -34,7 +34,7 @@ const CompleteProfile = ({ show, onNext, onBack, avatarImage }) => {
                                 <img src={avatarImage} alt="profile-pic" />
                             </div>
 
-                            <div className="column">
+                            <div className="name-username-pronouns-container">
                                 <div className="signup-fullname">
                                     {/* First and Last Name */}
                                     <h2>{info.firstName} {info.lastName} </h2>

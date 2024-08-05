@@ -2165,6 +2165,7 @@ Login and Signup page style rules
     border: 1px solid #E3E3E3;
     border-radius: 4px;
     text-align: center;
+    font-size: 15px;
 }
 
 .signup-input,
@@ -2176,6 +2177,7 @@ Login and Signup page style rules
     border: 1px solid #E3E3E3;
     border-radius: 4px;
     text-align: center;
+    font-size: 15px;
 }
 
 #main-loginsignup-btn {
@@ -2441,6 +2443,69 @@ Signup process modal style rules
     flex-wrap: wrap;
 }
 
+/* upload picture or use avatar buttons */
+.profile-pic-option {
+    width: 164px;
+    height: 164px;
+    position: fixed;
+    display: hidden;
+    transition: 0.2s;
+
+    button,
+    label {
+        display: none;
+    }
+}
+
+.profile-pic-option:hover {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.20);
+    z-index: 1;
+    border-radius: 4px;
+    transition: 0.2s;
+
+    button {
+        display: block;
+        width: 140px;
+        height: 40px;
+        padding: 5px;
+        font-size: 15px;
+        border: none;
+        border-radius: 8px;
+        background-color: white;
+        color: black;
+        font-weight: 600;
+        text-align: center;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 140px;
+        height: 40px;
+        font-size: 15px;
+        border: none;
+        border-radius: 8px;
+        background-color: white;
+        color: black;
+        font-weight: 700;
+        text-align: center;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        transition: 0.2s;
+    }
+
+    button:hover,
+    label:hover {
+        color: var(--orange);
+        cursor: pointer;
+    }
+}
+
 .signup-fullname {
     margin: 0 20px;
 }
@@ -2480,8 +2545,7 @@ Signup process modal style rules
 
 #skill-select button,
 #interest-select button,
-#proficiency-select button,
-#profile-details button {
+#proficiency-select button {
     width: 150px;
     height: 50px;
     margin: 10px;
@@ -2497,8 +2561,7 @@ Signup process modal style rules
 
 #skill-select button.active,
 #interest-select button.active,
-#proficiency-select button.active,
-#profile-details button.active {
+#proficiency-select button.active {
     border: 2px solid var(--orange);
 }
 
@@ -2521,7 +2584,7 @@ Signup process modal style rules
 #pronouns-input {
     width: 180px;
     height: 35px;
-    margin: 20px 0px 10px 10px;
+    margin: 40px 0px 0px 10px;
     padding: 5px 20px;
     font-size: 15px;
     border: 2px solid var(--lightGray);

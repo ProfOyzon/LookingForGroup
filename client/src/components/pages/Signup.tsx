@@ -9,7 +9,7 @@ import ChooseInterests from "../SignupProcess/ChooseInterests";
 import CompleteProfile from "../SignupProcess/CompleteProfile";
 import GetStarted from "../SignupProcess/GetStarted";
 
-const SignUp = ({ setAvatarImage, avatarImage }) => {
+const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
@@ -49,6 +49,8 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
         interests: selectedInterests,
         pronouns: pronouns,
         bio: bio,
+        avatarImage: avatarImage,
+        profileImage: profileImage,
     };
 
     // Function to handle the login button click
@@ -80,7 +82,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
         }
 
         // for testing, skips the above checks
-        // setShowProficienciesModal(true);
+        // setShowCompleteProfileModal(true);
     };
 
     return (
@@ -204,6 +206,8 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                         pronouns={pronouns}
                         setBio={setBio}
                         setPronouns={setPronouns}
+                        profileImage={profileImage}
+                        setProfileImage={setProfileImage}
                     />
 
                     <GetStarted

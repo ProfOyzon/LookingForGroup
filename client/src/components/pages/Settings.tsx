@@ -9,7 +9,7 @@ import NotificationSettings from "../SettingsPageComponents/NotificationSetting"
 import ProfileVisibilitySetting from "../SettingsPageComponents/ProfileVisibilitySetting";
 
 
-const Settings = ({ avatarImage, setAvatarImage }) => {
+const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }) => {
   // state variables
   const [activeTab, setActiveTab] = useState("general");
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -64,6 +64,16 @@ const Settings = ({ avatarImage, setAvatarImage }) => {
               />
             </div>
           </div>
+
+          {/* <div className="setting-in-page">
+            <h3>Profile Picture</h3>
+            <div className="setting-content">
+              <div className="displayProfilePic">
+                <img src={profileImage ? profileImage : 'images/icons/profile-black.png'} alt="Profile Pic" />
+              </div>
+              <button className="settingsBtns" onClick={() => { setShowAvatarModal(true); }}>Edit Avatar</button>
+            </div>
+          </div> */}
 
           <div className="setting-in-page">
             <h3>Language</h3>

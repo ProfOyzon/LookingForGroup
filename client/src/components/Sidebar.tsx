@@ -17,16 +17,16 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
   const [width, setWidth] = React.useState(window.innerWidth);
   const breakpoint = useSelector((state: any) => state.page.MOBILE_BREAKPOINT);
 
-  const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
+  // const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
   const navigate = useNavigate(); // Hook for navigation
 
-  const [activePage, setActivePage] = useState('Group'); // State to manage the active page [Home, My Projects, Messages, Profile, Settings]
+  const [activePage, setActivePage] = useState('Discover'); // State to manage the active page [Home, My Projects, Messages, Profile, Settings]
 
   const [showNotifications, setShowNotifications] = useState(false); // State to manage the notifications modal
 
   // Function to handle the button clicks and update the h1 text
   const handleTextChange = (text, path) => {
-    setHeaderText(text);
+    // setHeaderText(text);
     setActivePage(text);
     navigate(path); // Navigate to the specified path
   };
@@ -41,7 +41,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
       <div>
         <div className="sideBarContainer">
         <div className='containerButtonSideBar'>
-          <button className={activePage === 'Group' ? 'active' : ''} onClick={() => handleTextChange('Group', paths.routes.HOME)}>
+          <button className={activePage === 'Discover' ? 'active' : ''} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
             <img src="images/icons/nav/discover.png" className="navIcon" alt="Home" />
           </button>
           <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
@@ -92,7 +92,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
       {/* <h1>UserName</h1> */}
 
       <div className='containerButtonSideBar'>
-        <button className={activePage === 'Group' ? 'active' : ''} onClick={() => handleTextChange('Group', paths.routes.HOME)}>
+        <button className={activePage === 'Discover' ? 'active' : ''} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
           <img src="images/icons/nav/discover.png" className="navIcon" alt="Discover" /> Discover
         </button>
         <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>

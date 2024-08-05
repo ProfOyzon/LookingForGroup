@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import * as paths from "./constants/routes";
 import React, { useState } from 'react';
 import Login from './components/pages/Login';
-import SignUp from './components/pages/Signup';
+import SignUp from './components/pages/SignUp';
 import Home from "./components/pages/Home";
 import Messages from "./components/pages/Messages";
 import MyFeed from "./components/pages/MyFeed";
@@ -20,6 +20,7 @@ import CreateProject from './components/pages/CreateProject';
 
 function App() {
   const [avatarImage, setAvatarImage] = useState('images/tempProfilePic.png');
+  const [profileImage, setProfileImage] = useState('');
 
   return (
     <BrowserRouter>
@@ -28,7 +29,7 @@ function App() {
         <Routes>
           <Route path={paths.routes.DEFAULT} element={<Home />} />
           <Route path={paths.routes.LOGIN} element={<Login />} />
-          <Route path={paths.routes.SIGNUP} element={<SignUp avatarImage={avatarImage} setAvatarImage={setAvatarImage}/>} />
+          <Route path={paths.routes.SIGNUP} element={<SignUp avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
           <Route path={paths.routes.HOME} element={<Home />} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />
           <Route path={paths.routes.MYFEED} element={<MyFeed />} />
@@ -37,7 +38,7 @@ function App() {
           <Route path={paths.routes.PROJECT} element={<Project />}/>
           <Route path={paths.routes.CREATEPROJECT} element={<CreateProject />}/>
           <Route path={paths.routes.PROJECTPOST} element={<ProjectPostPage />} />
-          <Route path={paths.routes.SETTINGS} element={<Settings avatarImage={avatarImage} setAvatarImage={setAvatarImage} />} />
+          <Route path={paths.routes.SETTINGS} element={<Settings avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
         </Routes>

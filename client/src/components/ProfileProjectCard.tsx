@@ -17,8 +17,11 @@ export const ProfileProjectCard = ({projectID, userID}) => {
         <div className="profile-project-card">
             <img id="profile-project-profile-picture" src={profilePicture} alt={project.name}/>
             <div id="profile-project-body">
-                <h2 id="profile-project-name" onClick={() => navigate(paths.routes.PROJECT + pathQuery)}>{project.name}</h2>
-                <p>as&nbsp;&nbsp;<b>{project.members.filter(member => member.userID == userID)[0].role}</b></p>
+                <div id = "profile-project-namedate">
+                    <h2 id="profile-project-name" onClick={() => navigate(paths.routes.PROJECT + pathQuery)}>{project.name}</h2>
+                    <p id = "profile-project-date">mm/dd/yy</p>
+                </div>
+                <p id = "profile-project-role">as&nbsp;&nbsp;<b>{project.members.filter(member => member.userID == userID)[0].role}</b></p>
             </div>
         </div>
     );

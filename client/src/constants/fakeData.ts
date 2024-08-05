@@ -215,90 +215,58 @@ export const profiles = [
         username: "The Great Old One",
         pronouns: ["He", "Him"],
         bio: "A Super cool coder!",
-        preferences: {
-            projectPreference: "Anything creative and hardcore",
-            rolePreference: "Something that challenges my skills",
-            availability: "I'm a night owl!"
-        },
+        preferences: [
+            "creative",
+            "hardcore",
+            "challenging",
+            "nighttime"
+        ],
         messages: [0, 1],
         skills: [
             {
                 skill: softSkills[0],
                 type: "softSkill",
-                endorsed: false,
                 higlighted: true,
-                endorsements: []
             },
             {
                 skill: softSkills[1],
                 type: "softSkill",
-                endorsed: true,
                 higlighted: true,
-                endorsements: [ 
-                    {   endorsement: "hes really good at it",
-                        endorserID: "1",
-                        endorseProjectID:"0"
-                    },
-                    {   endorsement: "his greatest skill",
-                        endorserID: "2",
-                        endorseProjectID:"2"
-                    }
-                ]
             },
             {
                 skill: softSkills[2],
                 type: "softSkill",
-                endorsed: false,
                 higlighted: false,
-                endorsements: []
             },
             {
                 skill: softSkills[3],
                 type: "softSkill",
-                endorsed: false,
                 higlighted: false,
-                endorsements: []
             },
             {
                 skill: hardSkills[0],
                 type: "hardSkill",
-                endorsed: false,
                 higlighted: true,
-                endorsements: []
             },
             {
                 skill: hardSkills[1],
                 type: "hardSkill",
-                endorsed: false,
                 higlighted: false,
-                endorsements: []
             },
             {
                 skill: hardSkills[2],
                 type: "hardSkill",
-                endorsed: false,
                 higlighted: false,
-                endorsements: []
             },
             {
                 skill: proficiencies[0],
                 type: "proficiency",
-                endorsed: true,
                 higlighted: false,
-                endorsements: [ 
-                    {
-                        endorsement: "he saved our project",
-                        endorserID: "3",
-                        endorseProjectID:"2"
-                    }
-                ]
             },
             {
                 skill: proficiencies[1],
                 type: "proficiency",
-                endorsed: false,
                 higlighted: false,
-                endorsements: []
             },
         ],
         profilePicture: {
@@ -312,103 +280,84 @@ export const profiles = [
             {text: "twitter", url: "https://www.twitter.com/"},
             {text: "itch.io", url: "https://www.itch.io.com/"}
         ],
+        endorsements:[
+            {   endorsement: "hes really good at it",
+                endorserID: "1",
+                endorseProjectID:"0",
+                skills: [1]
+            },
+            {   endorsement: "his greatest skill",
+                endorserID: "2",
+                endorseProjectID:"2",
+                skills: [2,3]
+            },
+            {
+                endorsement: "he saved our project",
+                endorserID: "3",
+                endorseProjectID:"2",
+                skills: [4,5,6]
+            }
+        ]
     },
     {
         _id: 1,
         name: "Wario Wario",
         username: "Wario",
-        pronouns: ["they", "them", "she", "her"],
+        pronouns: ["they", "she"],
         bio: "The best Wario to grace this land!",
-        preferences: {
-            projectPreference: "WarioWare fangames",
-            rolePreference: "Wario King",
-            availability: "Wah"
-        },
+        preferences: [
+            "wario",
+            "fangames",
+            "wah",
+            "weekends"
+        ],
         messages: [0, 1],
         skills: [
             {
                 skill: softSkills[0],
                 type: "softSkill",
-                endorsed: false,
                 higlighted: true,
-                endorsements: []
             },
             {
                 skill: softSkills[1],
                 type: "softSkill",
-                endorsed: true,
                 higlighted: true,
-                endorsements: [ 
-                    {   endorsement: "The best WAAH-er around",
-                        endorserID: "0",
-                        endorseProjectID:"0"
-                    }
-                ]
+                
             },
             {
                 skill: softSkills[7],
                 type: "softSkill",
-                endorsed: false,
                 higlighted: false,
-                endorsements: [
-                    {   endorsement: "smells like garlic",
-                        endorser: "3",
-                        endorseProject:"1"
-                    }
-                ]
             },
             {
                 skill: softSkills[18],
                 type: "softSkill",
-                endorsed: false,
                 higlighted: false,
-                endorsements: []
             },
             {
                 skill: hardSkills[6],
                 type: "hardSkill",
-                endorsed: false,
                 higlighted: true,
-                endorsements: [
-                    {   endorsement: "she's cool",
-                        endorser: "0",
-                        endorseProject:"3"
-                    }
-                ]
             },
             {
                 skill: hardSkills[4],
                 type: "hardSkill",
-                endorsed: false,
                 higlighted: false,
-                endorsements: []
             },
             {
                 skill: proficiencies[8],
                 type: "proficiency",
-                endorsed: false,
                 higlighted: false,
-                endorsements: []
             },
             {
                 skill: proficiencies[6],
                 type: "proficiency",
-                endorsed: true,
                 higlighted: false,
-                endorsements: [ 
-                    {
-                        endorsement: "waa'd all over thos guys",
-                        endorserID: "2",
-                        endorseProjectID:"0"
-                    }
-                ]
             },
             {
                 skill: proficiencies[15],
                 type: "proficiency",
-                endorsed: false,
                 higlighted: false,
-                endorsements: []
             },
         ],
         profilePicture: {
@@ -422,6 +371,24 @@ export const profiles = [
             {text: "twitter", url: "https://www.twitter.com/"},
             {text: "itch.io", url: "https://www.itch.io.com/"}
         ],
+        endorsements: [ 
+            {   endorsement: "she's cool",
+                endorserID: "0",
+                endorseProjectID:"3",
+                skills:[1,2]
+            },
+            {   endorsement: "The best WAAH-er around",
+                endorserID: "0",
+                endorseProjectID:"0",
+                skills:[2,4]
+            },
+            {
+                endorsement: "waa'd all over those guys",
+                endorserID: "2",
+                endorseProjectID:"0",
+                skills:[3,5]
+            }
+        ]
     },
     {
         _id: 2,
@@ -429,33 +396,29 @@ export const profiles = [
         username: "Princess",
         pronouns: ["She", "Her"],
         bio: "I dont need to be saved!",
-        preferences: {
-            projectPreference: "Artistic and fun games",
-            rolePreference: "Art and animation",
-            availability: "Tuesday and Thursday evenings"
-        },
+        preferences: [
+            "games",
+            "artistic",
+            "gamefeel",
+            "tuesdays",
+            "thursdays"
+        ],
         messages: [],
         skills: [
             {
                 skill: softSkills[0],
                 type: "softSkill",
-                endorsed: false,
                 higlighted: true,
-                endorsements: []
             },
             {
                 skill: hardSkills[1],
                 type: "hardSkill",
-                endorsed: false,
                 higlighted: true,
-                endorsements: []
             },
             {
                 skill: proficiencies[2],
                 type: "proficiency",
-                endorsed: false,
                 higlighted: true,
-                endorsements: []
             },
         ],
         profilePicture: {
@@ -469,6 +432,7 @@ export const profiles = [
             {text: "twitter", url: "https://www.twitter.com/"},
             {text: "itch.io", url: "https://www.itch.io.com/"}
         ],
+        endorsements:[]
     },
     {
         _id: 3,
@@ -476,33 +440,27 @@ export const profiles = [
         username: "ILoveBuilding",
         pronouns: ["He", "They"],
         bio: "Bob the Builder is a British animated children's television series created by Keith Chapman for HIT Entertainment and Hot Animation. The series follows the adventures of Bob, a general contractor, specialising in masonry, along with his colleague Wendy, various neighbours, and friends, and equipment, and their gang of anthropomorphised work-vehicles, Scoop, Muck, Dizzy, Roley, Lofty and many others. The series ran from 12 April 1999 to 31 December 20",
-        preferences: {
-            projectPreference: "Construction Games",
-            rolePreference: "Construction please",
-            availability: "All day"
-        },
+        preferences: [
+            "simulators",
+            "architecture",
+            "low stress"
+        ],
         messages: [],
         skills: [
             {
                 skill: softSkills[7],
                 type: "softSkill",
-                endorsed: false,
                 higlighted: true,
-                endorsements: []
             },
             {
                 skill: hardSkills[3],
                 type: "hardSkill",
-                endorsed: false,
                 higlighted: true,
-                endorsements: []
             },
             {
                 skill: proficiencies[8],
                 type: "proficiency",
-                endorsed: false,
                 higlighted: true,
-                endorsements: []
             },
         ],
         profilePicture: {
@@ -516,6 +474,7 @@ export const profiles = [
             {text: "twitter", url: "https://www.twitter.com/"},
             {text: "itch.io", url: "https://www.itch.io.com/"}
         ],
+        endorsements:[]
     },
 ]
 

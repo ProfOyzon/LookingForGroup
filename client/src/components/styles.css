@@ -164,6 +164,15 @@ Card component style rules
     flex-direction: row;
 }
 
+#endorsement-body{
+
+
+}
+
+#endorsement-text{
+    
+}
+
 #message-card {
     max-height: 45px;
     grid-template-columns: 10% 90%;
@@ -180,7 +189,8 @@ Card component style rules
 
 /*profile picture rules-----------------------------------------------------*/
 #discover-card-profile-picture,
-#profile-project-profile-picture {
+#profile-project-profile-picture,
+#endorsement-profile-picture {
     width: 100%;
     border: 2px solid black;
     border-radius: 100%;
@@ -188,6 +198,10 @@ Card component style rules
 
 #profile-project-profile-picture {
     width: 80%;
+}
+
+#endorsement-profile-picture{
+    width: 60%;
 }
 
 #message-card #discover-card-profile-picture {
@@ -866,6 +880,17 @@ Profile page style rules
 #profile-page {
     display: grid;
     grid-template-columns: 50% 50%;
+}
+
+#profile-project-namedate{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#profile-project-role > b{
+    color: var(--orange);
 }
 
 .profile-list {

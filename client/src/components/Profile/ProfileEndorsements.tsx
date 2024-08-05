@@ -7,17 +7,23 @@ export const ProfileEndorsements = ({user}) => {
 
     return (
         <section className="profile-section" id = "profile-endorsements">
-            <h2>Endorsements</h2>
-            <div id = "tabList" className="list">
+          <h2>Endorsements</h2>
+          <div id = "profile-endorseList">
+          {user.endorsements.map(endorsement => (
+                <Endorsement endorsement={endorsement} endorsedID={user._id}></Endorsement>
+            ))}
+          </div>
+
+            {/*<div id = "tabList" className="list">
             <TabButton names = {getSkillNames(user.skills.filter(skill => skill.endorsed))} activeTab={activeTab} setActiveTab={setActiveTab}></TabButton>
             </div>
             <div id = "textList">
             <TabContent Children={getChildrenList(user.skills.filter(skill => skill.endorsed))} activeTab={activeTab}></TabContent>
-            </div>
+            </div> */}
         </section>
     );
 
-    function getSkillNames(skillList) {
+    /* function getSkillNames(skillList) {
         let names : string[] = [];
         for (let skill of skillList){
           names.push(skill.skill);
@@ -31,5 +37,5 @@ export const ProfileEndorsements = ({user}) => {
           endorsements.push(skill.endorsements.map(endorsement =><Endorsement endorsement={endorsement}></Endorsement>))
         }
         return endorsements;
-      }
+      } */
 }

@@ -1,4 +1,42 @@
+/*
+Table of Contents
+General Style rules
+Component Style rules
+    -Card components
+    -Tags
+    -Button components
+    -Sidebar
+    -Notifications
+    -Page popup
+    -Search
+    -Scrollbar
+Page specific style rules
+    -Discover page
+    -Profile page
+    -Project page
+        -Project general settings
+        -Project member settings
+        -Project post page
+    -My projects page
+        -Create project window
+    -Messages
+    -Settings
+    -Login/signup
+        -Signup settings
+
+see pages.css for the rules that format the page itself
+*/
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+General style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+/*color scheme*/
 :root {
+    --red: #FF4949;
     --orange: #F35835;
     --orange-hover: #d83410;
     --green: #97E5AB;
@@ -9,7 +47,476 @@
     --gray: #969696;
     --darkGray: #414141;
     --white: #FBFBFB;
+    --primary-blue: #239EF7;
+    --hover-blue: #0086E7;
+    --clicked-blue: #0073C6;
 }
+
+/*basic rules for hiding/showing certain elements
+used for the more options dropdown menu and notifications
+*/
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.page-title {
+    margin-bottom: 0;
+    font-size: 30px;
+}
+
+button {
+    cursor: pointer;
+    transition: .2s;
+}
+
+/*give sections of the page a drop shadow*/
+section {
+    margin: 10px;
+    padding: 4px 8px 4px 8px;
+    border-style: solid;
+    border: 2px solid black;
+    box-shadow: 10px 10px 5px lightblue;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Card component style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/*style rules for the cards with drop shadows (see wireframes)*/
+/*discover card: used on the discover page for projects and profiles*/
+/*endorsement: used on the profile page to show endorsements user has recieved*/
+/*profile-project-card: used on the profile page to show projects the user is a part of*/
+/*message-card: used on the messages page for each user message*/
+.discover-card,
+.endorsement,
+.profile-project-card {
+    width: 70%;
+    max-width: 765px;
+    max-height: 265px;
+    border: 2px solid black;
+    box-shadow: 10px 10px 5px lightblue;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    text-align: left;
+    padding: 3%;
+    margin: 2.5% auto;
+    transition: 1s;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+/*makes them bigger when hovered over */
+.discover-card:hover .endorsement:hover,
+.profile-project-card:hover {
+    transform: scale(1.05);
+}
+
+/*the animation that plays when the card is loaded*/
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+#discover-card-body {
+    margin-left: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    grid-template-rows: 10% 50% 30% 10%;
+    font-size: 0.8rem;
+}
+
+/*make them grow and shrink with the window */
+#discover-card-body>* {
+    flex: 1;
+}
+
+#message-card #discover-card-body {
+    margin-top: 0%;
+    padding-bottom: 5%;
+}
+
+#profile-project-body {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.endorsement {
+    flex-direction: row;
+}
+
+#message-card {
+    max-height: 45px;
+    grid-template-columns: 10% 90%;
+    padding-top: 0;
+    padding-bottom: 3.5%;
+}
+
+@media only screen and (max-width: 800px) {
+    .discover-card {
+        width: 90%;
+        max-width: 90%;
+    }
+}
+
+/*profile picture rules-----------------------------------------------------*/
+#discover-card-profile-picture,
+#profile-project-profile-picture {
+    width: 100%;
+    border: 2px solid black;
+    border-radius: 100%;
+}
+
+#profile-project-profile-picture {
+    width: 80%;
+}
+
+#message-card #discover-card-profile-picture {
+    width: 110%;
+    margin-top: 15%;
+}
+
+/*text rules---------------------------------------------------------------*/
+#discover-card-name {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+#message-card #discover-card-name {
+    text-align: left;
+}
+
+#discover-card-name:hover,
+#profile-project-name:hover {
+    text-decoration: underline;
+}
+
+#discover-card-description {
+    margin-top: 0;
+    max-width: 450px;
+}
+
+#discover-card-tag-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 4px;
+    max-width: 450px;
+}
+
+#discover-card-pronouns {
+    margin-top: 0%;
+    text-align: center;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Tag component style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/*used in Tags component */
+.tag {
+    display: flex;
+    align-items: center;
+    border: 2px solid lightseagreen;
+    border-radius: 5px;
+    text-align: center;
+    padding: 0.5vw 1vw;
+    max-height: 25px;
+}
+
+.tag-name {
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+@media only screen and (max-width: 800px) {
+    .tag-name {
+        font-size: 2vw;
+    }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Button style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/*general rules for buttons
+orange-button class makes the button orange, white-button class makes the button white*/
+.orange-button {
+    background-color: var(--orange);
+    color: var(--white);
+    font-size: large;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.orange-button:hover {
+    background-color: var(--orange-hover);
+}
+
+.white-button {
+    background-color: var(--white);
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+
+.white-button:hover {
+    background-color: #D0D0D0;
+}
+
+/*rules for the 'return' button*/
+#return-button {
+    font-weight: bold;
+    font-size: larger;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+#return-button-container {
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    float: right;
+    align-content: center;
+    margin: auto;
+}
+
+/*the tab buttons in the Tabs component*/
+.tab-button {
+    border: 2px solid lightseagreen;
+    border-radius: 5px;
+    text-align: center;
+    padding: .5vw;
+    margin-left: .5vw;
+    margin-right: .5vw;
+    background-color: white;
+}
+
+/*selected tab button*/
+.active {
+    background-color: lightblue;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Sidebar Nav style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.SideBarContainer {
+    width: 220px;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+    z-index: 2;
+    background-color: white;
+    background-image: url("../../public/images/nav-background.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* .ProfileContainer {
+    width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+/* Container for logo and notification bell */
+.headerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 200px;
+    margin: 30px 0 60px 0;
+}
+
+#notif-dot {
+    width: 12px;
+    height: 12px;
+    background-color: var(--red);
+    color: white;
+    font-size: 10px;
+    border-radius: 50%;
+    position: absolute;
+    top: 33px;
+    right: 14px;
+}
+
+/* notification bell */
+.headerContainer button {
+    background: none;
+    border: none;
+    width: 33px;
+    height: 33px;
+}
+
+/* title/logo */
+.headerContainer h1 {
+    font-weight: bold;
+    font-size: 24px;
+    margin: 0px 20px;
+    color: white;
+}
+
+/*sidebar options*/
+.containerButtonSideBar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    gap: 8px;
+    background-color: var(--primary-blue);
+}
+
+.containerButtonSideBar button {
+    width: 200px;
+    height: 60px;
+    background-color: var(--primary-blue);
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    text-align: left;
+    padding-left: 25px;
+    padding-right: auto;
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 20px;
+}
+
+.containerButtonSideBar button:hover {
+    transition-duration: 0.25s;
+    background-color: var(--clicked-blue);
+}
+
+.containerButtonSideBar button.active {
+    background-color: var(--hover-blue);
+    transition: 0.25s;
+}
+
+/* Profile picture or avatar */
+.displayProfilePic,
+#profile-pic {
+    height: 140px;
+    width: 140px;
+    background-color: white;
+    border-radius: 4px;
+    display: flex;
+    border: 2px solid var(--lightGray);
+    /* box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25); */
+    margin-bottom: 14px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.displayProfilePic img,
+#profile-pic img {
+    scale: 1.1;
+}
+
+/*logout button*/
+.Logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Logout button {
+    background-color: white;
+    color: black;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 40px;
+    width: 120px;
+    height: 45px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    /* outline: solid var(--orange) 2px; */
+    font-weight: 600;
+}
+
+/* .Logout button:hover {
+    transition-duration: 0.25s;
+    background-color: var(--orange);
+    color: white;
+    outline: solid var(--orange) 2px;
+    cursor: pointer;
+} */
+
+/*responsive stuff for sidebar*/
+@media only screen and (max-width: 800px) {
+    .sideBarContainer {
+        width: 100vw;
+        height: 50px;
+        /*border: solid black 2px;*/
+        position: fixed;
+        bottom: 0;
+        background-color: white;
+        z-index: 1;
+        /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
+    }
+
+    .ProfileContainer {
+        width: 15vw;
+    }
+
+    .containerButtonSideBar {
+        display: flex;
+        flex-direction: row;
+        cursor: pointer;
+    }
+
+    .containerButtonSideBar button {
+        width: 20vw;
+        height: 50px;
+        padding-left: calc((100vw - 160px) / 10);
+        padding-right: auto;
+    }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Notification style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
 
 #notif-popup {
     position: absolute;
@@ -49,175 +556,221 @@
     background-color: rgb(238, 238, 238);
 }
 
-.hidden {
-    display: none;
+#notif-button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 4px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
 }
 
-.discover-card,
-.endorsement,
-.profile-project-card {
-    width: 70%;
-    max-width: 765px;
-    max-height: 265px;
-    border: 2px solid black;
-    box-shadow: 10px 10px 5px lightblue;
-    display: grid;
-    grid-template-columns: 30% 70%;
-    text-align: left;
-    padding: 3%;
-    margin: 2.5% auto;
-    transition: 1s;
-    opacity: 0;
-    animation: fadeIn 1s forwards;
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Notification modal style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.notifications-container {
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: -100px;
+    /* Hidden by default */
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+    z-index: 1;
+    background-color: white;
+    transition: left 0.4s ease;
+    overflow-y: auto;
+    /* Add scroll bar */
 }
 
-#message-card {
-    max-height: 45px;
-    grid-template-columns: 10% 90%;
-    padding-top: 0;
-    padding-bottom: 3.5%;
+.notifications-container.show {
+    left: 220px;
+    /* Slide in when show class is added */
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-
-    50% {
-        opacity: 0.5;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-.discover-card:hover .endorsement:hover,
-.profile-project-card:hover {
-    transform: scale(1.05);
-}
-
-#discover-card-body {
-    margin-left: 10%;
+.notifications-header {
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    grid-template-rows: 10% 50% 30% 10%;
-    font-size: 0.8rem;
-}
-
-#profile-project-body {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    padding: 15px;
 }
 
-#message-card #discover-card-body {
-    margin-top: 0%;
-    padding-bottom: 5%;
+.notifications-header button {
+    width: 33px;
+    height: 33px;
+    border: none;
+    background-image: url('../../public/images/icons/s-arrow.png');
+    background-size: cover;
+    background-color: transparent;
+    /* -webkit-transform: scaleX(-1);
+    transform: scaleX(-1); */
 }
 
-#discover-card-body>* {
-    flex: 1;
+.notifications-body {
+    padding: 15px;
 }
 
-#discover-card-profile-picture,
-#profile-project-profile-picture {
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Page popup style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/*rules for the cover a popup uses*/
+.popup-cover {
+    display: block;
+    position: fixed;
+    background-color: black;
+    opacity: 50%;
+    top: 0;
+    left: 0;
     width: 100%;
-    border: 2px solid black;
-    border-radius: 100%;
+    height: 100%;
 }
 
-#profile-project-profile-picture {
-    width: 80%;
+/*rules for the popup itself*/
+.popup {
+    display: block;
+    position: fixed;
+    background-color: white;
+    border-radius: 4px;
+    max-width: 95vw;
+    max-height: 95vh;
+    opacity: 100%;
 }
 
-#message-card #discover-card-profile-picture {
-    width: 110%;
-    margin-top: 15%;
+#popup-close {
+    position: absolute;
+    border-radius: 4px;
+    top: 10px;
+    right: 10px;
 }
 
-#discover-card-name {
-    text-align: center;
-    margin-bottom: 0;
+#popup-close img {
+    width: 40px;
+    height: 40px;
 }
 
-#message-card #discover-card-name {
-    text-align: left;
+/*rules used to prevent page scrolling while a popup is open*/
+.page-scroll-lock {
+    position: fixed;
+    padding-right: 15px;
 }
 
-#discover-card-name:hover,
-#profile-project-name:hover {
-    text-decoration: underline;
-}
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Search style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
 
-#discover-card-description {
-    margin-top: 0;
-    max-width: 450px;
-}
-
-#discover-card-tag-wrapper {
+/*position on the page*/
+.search-wrapper {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    gap: 4px;
-    max-width: 450px;
+    align-content: right;
+    justify-self: end;
+    height: auto;
+    margin: 1vw 50px;
 }
 
-#discover-card-pronouns {
-    margin-top: 0%;
-    text-align: center;
-}
-
-.sent-msg {
-    text-align: right;
-    padding-right: 35%;
-}
-
-.recieved-msg {
+.search-bar {
+    padding: 2px;
+    border: 3px solid gray;
+    border-radius: 10px;
+    font-size: 1vw;
     text-align: left;
-    padding-left: 40%;
-}
-
-.sent-msg b,
-.recieved-msg b {
-    font-size: 16pt;
-}
-
-.sent-msg p,
-.recieved-msg p {
-    margin-bottom: 0;
-    margin-top: 5px;
-}
-
-.date-stamp {
-    font-size: 8pt;
-    padding-top: 0;
-    margin-top: 0;
-    color: rgb(126, 124, 124);
-}
-
-.tag {
     display: flex;
-    align-items: center;
-    border: 2px solid lightseagreen;
-    border-radius: 5px;
-    text-align: center;
-    padding: 0.5vw 1vw;
-    max-height: 25px;
+    flex-direction: row;
+    float: right;
+    align-content: center;
+    margin: auto;
 }
 
-.tag-name {
-    margin: 0;
-    font-size: 0.8rem;
+/*text in the bar*/
+.search-input {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 4px;
+    font: inherit;
+    cursor: text;
+    outline: inherit;
 }
 
-.page-title {
-    margin-bottom: 0;
-    font-size: 30px;
+/*magnifying glass button*/
+.search-button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 4px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
 }
 
+.navIcon {
+    width: 33px;
+}
+
+@media only screen and (max-width: 800px) {
+    .search-bar {
+        font-size: 0.5rem;
+    }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Scrollbar style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border: 2px solid var(--lightGray);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--medGray);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Discover page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.discover-main-content {
+    margin-left: 40px;
+}
+
+/*discover button is used for Projects/People selection*/
 .discover-button {
     border-radius: 10px;
     border: 2px solid var(--orange);
@@ -226,26 +779,6 @@
     padding: 0.6vw;
     margin: 1vw;
     cursor: pointer;
-}
-
-.tab-button {
-    border: 2px solid lightseagreen;
-    border-radius: 5px;
-    text-align: center;
-    padding: .5vw;
-    margin-left: .5vw;
-    margin-right: .5vw;
-    background-color: white;
-}
-
-.active {
-    background-color: lightblue;
-}
-
-.tab-header {}
-
-.discover-main-content {
-    margin-left: 40px;
 }
 
 .discover-button-inactive {
@@ -281,167 +814,31 @@
     max-height: 50px;
 }
 
-.search-wrapper {
+@media only screen and (max-width: 800px) {
+
+    #discover-button-wrapper {
+        grid-template-columns: 20% 20% 60%;
+    }
+
+    .discover-button {
+        font-size: 0.8rem;
+    }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Profile page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+.header {
     display: flex;
     flex-direction: row;
-    align-content: right;
-    justify-self: end;
-    height: auto;
-    margin: 1vw 50px;
-}
-
-.search-bar {
-    padding: 2px;
-    border: 3px solid gray;
-    border-radius: 10px;
-    font-size: 1vw;
-    text-align: left;
-    display: flex;
-    flex-direction: row;
-    float: right;
-    align-content: center;
-    margin: auto;
-}
-
-.search-input {
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 4px;
-    font: inherit;
-    cursor: text;
-    outline: inherit;
-}
-
-.search-button,
-#notif-button {
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 4px;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-}
-
-.navIcon {
-    width: 32px;
-    height: 32px;
-}
-
-
-.SideBarContainer {
-    width: 220px;
-    height: 100vh;
-    /* border: solid black 2px; */
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
-    z-index: 1;
-    background-color: white;
-}
-
-.SideBarContainer h1 {
-    width: 220px;
-    height: 5vh;
-    font-size: 24px;
-}
-
-.ProfileContainer {
-    width: 220px;
-    display: flex;
     align-items: center;
-    justify-content: center;
-}
-
-.headerContainer h1 {
-    font-weight: bold;
-    font-size: 30px;
-    height: 10vh;
-}
-
-.containerButtonSideBar {
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-}
-
-.containerButtonSideBar button {
-    width: 220px;
-    height: 6vh;
-    background-color: white;
-    border: none;
-    outline: solid lightgrey 1px;
-    cursor: pointer;
-    font-size: larger;
-    text-align: left;
-    padding-left: 34px;
-    padding-right: auto;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.containerButtonSideBar button:hover {
-    /* transform: scale(1.1); */
-    transition-duration: 0.25s;
-    background-color: #e3e3e3;
-}
-
-.containerButtonSideBar button.active {
-    background-color: #eeeeee;
-    transition: 0.25s;
-}
-
-/* Profile picture or avatar */
-.displayProfilePic,
-#profile-pic {
-    height: 140px;
-    width: 140px;
-    background-color: white;
-    border-radius: 4px;
-    display: flex;
-    border: 1px solid rgba(0, 0, 0, 0);
-    box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25);
-    margin-bottom: 14px;
-    object-fit: cover;
-    overflow: hidden;
-}
-
-.displayProfilePic img,
-#profile-pic img {
-    scale: 1.1;
-}
-
-.Logout {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.Logout button {
-    background-color: white;
-    color: var(--orange);
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 40px;
-    width: 100px;
-    height: 40px;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    outline: solid var(--orange) 2px;
-    font-weight: 900;
-}
-
-.Logout button:hover {
-    /* transform: scale(1.1); */
-    transition-duration: 0.25s;
-    background-color: var(--orange);
-    color: white;
-    outline: solid var(--orange) 2px;
-    cursor: pointer;
+    justify-content: space-around;
+    gap: 64px;
+    padding: 2px 8px;
 }
 
 #profile-page {
@@ -471,61 +868,6 @@
     grid-template-columns: 50% 50%;
 }
 
-
-
-
-@media only screen and (max-width: 800px) {
-
-    #discover-button-wrapper {
-        grid-template-columns: 20% 20% 60%;
-    }
-
-    .search-bar {
-        font-size: 0.5rem;
-    }
-
-    .discover-button {
-        font-size: 0.8rem;
-    }
-
-    .tag-name {
-        font-size: 2vw;
-    }
-
-    .discover-card {
-        width: 90%;
-        max-width: 90%;
-    }
-
-    .sideBarContainer {
-        width: 100vw;
-        height: 50px;
-        /*border: solid black 2px;*/
-        position: fixed;
-        bottom: 0;
-        background-color: white;
-        z-index: 1;
-        /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
-    }
-
-    .ProfileContainer {
-        width: 15vw;
-    }
-
-    .containerButtonSideBar {
-        display: flex;
-        flex-direction: row;
-        cursor: pointer;
-    }
-
-    .containerButtonSideBar button {
-        width: 20vw;
-        height: 50px;
-        padding-left: calc((100vw - 160px) / 10);
-        padding-right: auto;
-    }
-}
-
 .profile-list {
     display: flex;
     flex-flow: row wrap;
@@ -533,12 +875,16 @@
     align-items: center;
 }
 
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\
--------------------------------------------------------
-Project page style rules 
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/
+@media only screen and (max-width: 800px) {
+    /*responsiveness for profile page goes here*/
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 /* some rules before the @media query are placed here to
@@ -573,133 +919,6 @@ allow them to be reformatted when the mobile view is used */
     flex-direction: column;
     justify-content: space-around;
     margin: 15px 20px;
-}
-
-/* --- all 8 'create' rules direclty below are technically not a part of the project page --- */
-/* Shouldn't they be categorized as part of the myProjects page or as its own separate category? */
-/* These aren't my rules, so I will refrain from moving them myself for now -Joseph Dunne*/
-#create-project-desc {
-    width: 80%;
-    height: 30vh;
-}
-
-#create-project-button-list {
-    position: absolute;
-    bottom: 1vh;
-    right: 1vw;
-}
-
-#create-page-1 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    gap: 64px;
-    padding: 2px 8px;
-    width: 80%;
-    margin: auto;
-}
-
-#create-page-2 {
-    text-align: left;
-    margin-left: 3%;
-}
-
-#create-page-2 h2 {
-    text-align: center;
-}
-
-#create-dates {
-    display: flex;
-    flex-direction: column;
-}
-
-#create-project-name {
-    width: 100%;
-}
-
-#create-project-roles {
-    background-color: #D0D0D0;
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-}
-
-@media only screen and (max-width: 800px) {
-    #project-page {
-        width: calc(100% - 30px);
-    }
-
-    #project-info {
-        display: grid;
-        grid-template: 1fr .5fr 1fr / .2fr 2fr;
-        grid-template-areas: 'picture header'
-            'desc desc'
-            'listing listing';
-    }
-
-    #project-info-member {
-        grid-template: 1fr .5fr 1fr / .2fr 2fr;
-        grid-template-areas: 'picture header'
-            'buttons buttons'
-            'desc desc'
-            'listing listing';
-    }
-
-    #member-buttons {
-        flex-direction: row;
-        align-items: center;
-    }
-
-    /*re-sizes 'enter virtual space' button to fit with narrower width*/
-    #virtual-space-entrance {
-        width: 40vw;
-        max-width: 200px;
-    }
-
-    /*shifts the options dropdown on the header view for members so that it doesn't go offscreen*/
-    #more-options-popup {
-        right: 16px;
-    }
-}
-
-/*general rules for buttons
-orange-button class makes the button orange, white-button class makes the button white
-may need to be change when re-styling according to new wireframes in the future*/
-.orange-button {
-    background-color: var(--orange);
-    color: var(--white);
-    font-size: large;
-    border: none;
-    cursor: pointer;
-    margin: 10px;
-}
-
-.orange-button:hover {
-    background-color: var(--orange-hover);
-}
-
-.white-button {
-    background-color: var(--white);
-    color: black;
-    border: none;
-    cursor: pointer;
-}
-
-.white-button:hover {
-    background-color: #D0D0D0;
-}
-
-/*rules for the 'return' button*/
-#return-button-container {
-    text-align: left;
-}
-
-#return-button {
-    font-weight: bold;
-    font-size: larger;
-    height: 40px;
-    margin-bottom: 10px;
 }
 
 /*rules for the picture in the top left of the page, used as a profile for the project itself*/
@@ -745,18 +964,6 @@ may need to be change when re-styling according to new wireframes in the future*
     margin: 2.5% auto;
 }
 
-/*basic rules for hiding/showing certain elements
-used for the more options dropdown menu, but might be used in other pages as well
-be careful if changing these
-Might be safe to move to the top of styles.css due to their general use*/
-.hide {
-    display: none;
-}
-
-.show {
-    display: block;
-}
-
 /*rules for buttons only visible on the project member view
 includes 'enter virtual space' and 'make post' buttons*/
 #member-buttons button {
@@ -800,37 +1007,118 @@ includes 'enter virtual space' and 'make post' buttons*/
 
 /*rules for the editing roles popup*/
 #edit-roles-options {
-    display:grid;
-    gap:10px;
-    padding:10px;
-    text-align:left;
-    grid-template: 1fr 5fr / 100px 100px auto;
+    display: grid;
+    gap: 10px;
+    padding: 10px;
+    text-align: left;
+    grid-template: 1fr 3fr .5fr / 120px 80px auto;
     grid-template-areas: 'name number list'
-                         'desc desc list'
+        'desc desc list'
+        'button button list'
 }
 
 #role-name-input {
     grid-area: name;
 }
 
+#role-name-input input {
+    width: 120px;
+}
+
 #role-spots-input {
     grid-area: number;
+    text-align: right;
+}
+
+#role-spots-input input {
+    width: 50px;
 }
 
 #role-desc-input {
-    width:100%;
+    width: 100%;
     grid-area: desc;
 }
 
 #role-desc-input textarea {
-    width:97%;
-    height:60%;
-    resize:none;
+    width: 97%;
+    height: 73%;
+    resize: none;
+}
+
+#role-add-button {
+    grid-area: button;
 }
 
 #roles-list {
     grid-area: list;
-    background-color:grey;
+}
+
+/*rules for the element containing all the items of a single listing*/
+.role-list-info {
+    display: flex;
+    border-bottom: 1px solid var(--gray);
+}
+
+/*rules for individual parts of a listing*/
+/*This includes the basic display + the input elements while editing*/
+.role-list-name {
+    padding-right: 10px;
+}
+
+.role-list-name-edit-hide {
+    display: none;
+}
+
+.role-list-num {
+    padding-right: 10px;
+}
+
+.role-list-num-edit-hide {
+    display: none;
+    width: 40px;
+}
+
+.role-list-edit {
+    margin-left: auto;
+}
+
+.role-list-done-hide {
+    display: none;
+    margin-left: auto;
+}
+
+.role-show {
+    display: block;
+}
+
+.role-list-delete {
+    margin-left: 10px;
+}
+
+.role-list-description {
+    display: block;
+    border-bottom: 1px solid var(--gray);
+    background-color: var(--lightGray);
+}
+
+.role-list-desc-input {
+    display: block;
+    border-bottom: 1px solid var(--gray);
+    background-color: var(--lightGray);
+    resize: none;
+    width: 100%;
+}
+
+.role-cover {
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    height: 22px;
+    width: 370px;
+    background-color: white;
+    opacity: 95%;
 }
 
 /*rules for the divider between the header and members
@@ -1008,12 +1296,50 @@ used to help wrap the lines around the word 'Members'*/
     right: 50px;
 }
 
+@media only screen and (max-width: 800px) {
+    #project-page {
+        width: calc(100% - 30px);
+    }
+
+    #project-info {
+        display: grid;
+        grid-template: 1fr .5fr 1fr / .2fr 2fr;
+        grid-template-areas: 'picture header'
+            'desc desc'
+            'listing listing';
+    }
+
+    #project-info-member {
+        grid-template: 1fr .5fr 1fr / .2fr 2fr;
+        grid-template-areas: 'picture header'
+            'buttons buttons'
+            'desc desc'
+            'listing listing';
+    }
+
+    #member-buttons {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    /*re-sizes 'enter virtual space' button to fit with narrower width*/
+    #virtual-space-entrance {
+        width: 40vw;
+        max-width: 200px;
+    }
+
+    /*shifts the options dropdown on the header view for members so that it doesn't go offscreen*/
+    #more-options-popup {
+        right: 16px;
+    }
+}
+
 /*
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-project page general settings rules
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project page general settings style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 /*rules  for the whole 'general settings' tab*/
@@ -1052,11 +1378,11 @@ project page general settings rules
 }
 
 /*
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
--------------------------------------------------------
-project page member settings rules
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project page member settings style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 /*rules for the top section of the 'member settings' tab*/
@@ -1105,19 +1431,19 @@ project page member settings rules
 
 /*rules used for a cover over a member listing when they are going to be removed*/
 .member-settings-cover {
-    display:none;
+    display: none;
 }
 
 .member-settings-cover-show {
-    display:flex;
-    position:absolute;
-    justify-content:center;
-    gap:10px;
-    align-items:center;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
     height: 50px;
-    width:70%;
-    background-color:white;
-    opacity:95%;
+    width: 70%;
+    background-color: white;
+    opacity: 95%;
 }
 
 /*used for the dropdown menus for each individual member*/
@@ -1143,23 +1469,12 @@ project page member settings rules
     margin: 2.5% auto;
 }
 
-/* !!! This rule is not a part of project member settings, and should be moved somewhere else !!!*/
-/* As it is not my own, I will refrain from doing so for now -Joseph Dunne */
-#create-proj-btn {
-    padding: 10px 50px;
-    font-weight: bold;
-    font-size: larger;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-}
-
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-Project Post Page style rules 
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project page post style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 /*rules for the 'return' and 'to project' buttons*/
@@ -1215,22 +1530,6 @@ plus a follow button & a more options button*/
     flex-direction: column;
     width: 45%;
     min-width: 500px;
-}
-
-@media only screen and (max-width: 800px) {
-
-    #post {
-        min-width: 0;
-        max-width: 500px;
-        width: 95%;
-    }
-
-    #comments {
-        min-width: 0;
-        max-width: 500px;
-        width: 95%;
-        padding-bottom: 60px;
-    }
 }
 
 /*rules for the heading of the post, with its name and a more options button*/
@@ -1384,75 +1683,145 @@ plus a follow button & a more options button*/
     grid-area: submit;
 }
 
+@media only screen and (max-width: 800px) {
+
+    #post {
+        min-width: 0;
+        max-width: 500px;
+        width: 95%;
+    }
+
+    #comments {
+        min-width: 0;
+        max-width: 500px;
+        width: 95%;
+        padding-bottom: 60px;
+    }
+}
+
 /*
-/\/\/\/\/\/\/\/\/\/\/\
--------------------------------------------------------
-Page Popup style rules
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+My projects page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-/*rules for the cover a popup uses*/
-.popup-cover-hide {
-    display: none;
-}
-
-.popup-cover-show {
-    display: block;
+#create-proj-btn {
+    padding: 10px 50px;
+    font-weight: bold;
+    font-size: larger;
     position: fixed;
-    background-color: black;
-    opacity: 50%;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    bottom: 20px;
+    right: 20px;
 }
 
-/*rules for the popup itself*/
-.popup-hide {
-    display: none;
+@media only screen and (max-width: 800px) {
+
+    /* responsiveness goes here*/
 }
 
-.popup-show {
-    display: block;
-    position: fixed;
-    background-color: white;
-    border-radius: 4px;
-    max-width: 95vw;
-    max-height: 95vh;
-    opacity: 100%;
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Create project window style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+#create-project-desc {
+    width: 80%;
+    height: 30vh;
 }
 
-#popup-close {
+#create-project-button-list {
     position: absolute;
-    border-radius: 4px;
-    top: 10px;
-    right: 10px;
+    bottom: 1vh;
+    right: 1vw;
 }
 
-#popup-close img {
-    width: 40px;
-    height: 40px;
+#create-page-1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 64px;
+    padding: 2px 8px;
+    width: 80%;
+    margin: auto;
 }
 
-/*rules used to prevent page scrolling while a popup is open*/
-.page-scroll-lock {
-    position: fixed;
-    padding-right: 15px;
+#create-page-2 {
+    text-align: left;
+    margin-left: 3%;
 }
 
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-Settings Page style rules 
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+#create-page-2 h2 {
+    text-align: center;
+}
+
+#create-dates {
+    display: flex;
+    flex-direction: column;
+}
+
+#create-project-name {
+    width: 100%;
+}
+
+#create-project-roles {
+    background-color: #D0D0D0;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Messages page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
-
-button {
-    cursor: pointer;
-    transition: .2s;
+.sent-msg {
+    text-align: right;
+    padding-right: 35%;
 }
+
+.recieved-msg {
+    text-align: left;
+    padding-left: 40%;
+}
+
+.sent-msg b,
+.recieved-msg b {
+    font-size: 16pt;
+}
+
+.sent-msg p,
+.recieved-msg p {
+    margin-bottom: 0;
+    margin-top: 5px;
+}
+
+.date-stamp {
+    font-size: 8pt;
+    padding-top: 0;
+    margin-top: 0;
+    color: rgb(126, 124, 124);
+}
+
+@media only screen and (max-width: 800px) {
+    /*responsiveness goes here*/
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Settings page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
 
 .column {
     display: flex;
@@ -1587,7 +1956,7 @@ button {
     padding: 5px 20px;
     border: 1px solid var(--medGray);
     background-color: white;
-    border-radius:12px;
+    border-radius: 12px;
     font-size: 15px;
     text-align: left;
     margin: 14px 0;
@@ -1692,12 +2061,17 @@ input:checked+.slider:before {
     height: 100px;
 }
 
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-Login and Signup Pages style rules 
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+@media only screen and (max-width: 800px) {
+
+    /*responsiveness goes here*/
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Login and Signup page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 .error {
@@ -1921,15 +2295,14 @@ Login and Signup Pages style rules
     #login-btn-mobile:hover {
         cursor: pointer;
     }
-
 }
 
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-Signup Process Modal style rules
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Signup process modal style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
 .signupProcess-background {
@@ -1962,7 +2335,8 @@ Signup Process Modal style rules
 .ChooseSkills,
 .ChooseInterests,
 .ChooseProficiencies,
-.CompleteProfile {
+.CompleteProfile,
+.GetStarted {
     background-color: white;
     margin: auto;
     display: flex;
@@ -2026,10 +2400,6 @@ Signup Process Modal style rules
     background-color: var(--orange);
 }
 
-/* #signup-nextBtn:active {
-    transform: scale(0.95);
-} */
-
 #signup-backBtn {
     border: none;
     border-radius: 14px;
@@ -2047,13 +2417,10 @@ Signup Process Modal style rules
     border: 2px solid var(--medGray);
 }
 
-/* #signup-backBtn:active {
-    transform: scale(0.95);
-} */
-
 #skill-select,
 #interest-select,
-#proficiency-select {
+#proficiency-select,
+#getStarted-select {
     height: 515px;
     display: flex;
     flex-direction: row;
@@ -2062,13 +2429,11 @@ Signup Process Modal style rules
     align-items: center;
     overflow-y: auto;
     margin: 20px;
-    /* border: 1px solid hotpink; */
 }
 
 #profile-details {
     height: 515px;
     margin: 20px;
-    /* border: 1px solid hotpink; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2083,10 +2448,12 @@ Signup Process Modal style rules
 .signup-fullname h2 {
     font-size: 24px;
     margin: 0;
+    text-align: left;
 }
 
 .signup-fullname p {
     margin: 0;
+    text-align: left;
 }
 
 #signup-profile-skill {
@@ -2097,15 +2464,18 @@ Signup Process Modal style rules
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 250px;
+    width: 450px;
     height: 80px;
-
     margin: 4px 25px;
     flex-wrap: wrap;
 }
 
 #signup-profile-skill div {
     margin: 0 4px;
+    padding: 4px 8px;
+    /* border: 2px solid var(--purple); */
+    border-radius: 8px;
+    font-weight: 500;
 }
 
 #skill-select button,
@@ -2149,9 +2519,9 @@ Signup Process Modal style rules
 }
 
 #pronouns-input {
-    width: 100px;
-    height: 30px;
-    margin: 10px 0px 10px 10px;
+    width: 180px;
+    height: 35px;
+    margin: 20px 0px 10px 10px;
     padding: 5px 20px;
     font-size: 15px;
     border: 2px solid var(--lightGray);
@@ -2159,18 +2529,65 @@ Signup Process Modal style rules
     background-color: white;
     color: black;
     font-weight: 400;
-
 }
 
 #bio-input {
-    width: 420px;
-    height: 100px;
+    width: 400px;
+    height: 140px;
     margin: 20px;
     padding: 10px;
     border: 2px solid var(--lightGray);
     border-radius: 4px;
     resize: none;
     font-size: 16px;
+}
+
+.name-username-pronouns-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    margin-left: 20px;
+    gap: 10px;
+    width: 230px;
+    height: 150px;
+    /* border: 1px solid var(--lightGray); */
+}
+
+#new-project-btn,
+#join-project-btn {
+    width: 240px;
+    height: 200px;
+    margin: 20px 40px;
+    padding: 5px 10px;
+    font-size: 24px;
+    border: 2px solid var(--lightGray);
+    border-radius: 12px;
+    background-color: white;
+    color: black;
+    font-weight: 600;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+#new-project-btn img,
+#join-project-btn img {
+    filter: invert(1);
+}
+
+#new-project-btn:hover,
+#join-project-btn:hover {
+    background-color: var(--orange);
+    color: white;
+    border: 2px solid var(--orange);
+
+    img {
+        filter: invert(0);
+    }
 }
 
 @media screen and (max-width: 1020px) {
@@ -2181,7 +2598,8 @@ Signup Process Modal style rules
     .ChooseSkills,
     .ChooseInterests,
     .ChooseProficiencies,
-    .CompleteProfile {
+    .CompleteProfile,
+    .GetStarted {
         width: 800px;
     }
 }
@@ -2194,7 +2612,8 @@ Signup Process Modal style rules
     .ChooseSkills,
     .ChooseInterests,
     .ChooseProficiencies,
-    .CompleteProfile {
+    .CompleteProfile,
+    .GetStarted {
         width: 550px;
     }
 }
@@ -2211,10 +2630,10 @@ Signup Process Modal style rules
     .ChooseSkills,
     .ChooseInterests,
     .ChooseProficiencies,
-    .CompleteProfile {
+    .CompleteProfile,
+    .GetStarted {
         box-shadow: none;
         width: 100%;
-        /* height: 100%; */
     }
 }
 
@@ -2226,43 +2645,13 @@ Signup Process Modal style rules
     .ChooseSkills,
     .ChooseInterests,
     .ChooseProficiencies,
-    .CompleteProfile {
+    .CompleteProfile,
+    .GetStarted {
         box-shadow: none;
         width: 100%;
-        /* height: 100%; */
     }
 
     #signupProcess-title {
         font-size: 24px;
     }
-}
-
-/* 
-/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
--------------------------------------------------------
-Scrollbar style rules
--------------------------------------------------------
-\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-*/
-
-/* width */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    border: 2px solid var(--lightGray);
-    border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: var(--medGray);
-    border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    cursor: pointer;
 }

@@ -1,6 +1,5 @@
 import "../styles.css"
 import profilePlaceholder from "../../img/profile-user.png";
-import { projects } from "../../constants/fakeData";
 
 //This component is used in the project member view of the project page
 //Contains the layout of the 'General' tab of the project settings menu
@@ -16,7 +15,6 @@ import { projects } from "../../constants/fakeData";
 // projectId is passed through props, which is used to ensure correct data is pulled
 
 export const GeneralSettings = (props) => {
-  //const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
   return(
     <div id='general-settings'>
       <img id='picture-edit' src={profilePlaceholder} alt='project'/>

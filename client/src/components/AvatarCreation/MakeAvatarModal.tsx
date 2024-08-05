@@ -24,52 +24,109 @@ const displayHats = [
     { src: "images/hats/wizardHat.png", alt: "wizard hat" },
     { src: "images/hats/chefsHat.png", alt: "chef's hat" },
     { src: "images/hats/topHat.png", alt: "top hat" },
+    { src: "images/hats/trafficCone.png", alt: "orange traffic cone" },
+    { src: "images/hats/partyHat.png", alt: "party hat" },
+    { src: "images/hats/halo.png", alt: "halo" },
+
+    // More hat ideas:
+    // witch hat
+    // santa hat
+    // crown
+    // baseball cap
+    // graduation cap
+    // astronaut helmet
+
 ]
 
 // array of hat images and alt text for the hat option boxes
 // these images are different, the hats are centered in the image
 const hatIcons = [
     { src: "images/icons/noItem.png", alt: "none" },
-    { src: "images/icons/hats/pinkBowCenter.png", alt: "pink bow" },
-    { src: "images/icons/hats/flowerCrownCenter.png", alt: "flower crown" },
-    { src: "images/icons/hats/plantCenter.png", alt: "plant" },
-    { src: "images/icons/hats/mushroomsCenter.png", alt: "mushrooms" },
-    { src: "images/icons/hats/cowboyHatCenter.png", alt: "cowboy hat" },
-    { src: "images/icons/hats/wizardHatCenter.png", alt: "wizard hat" },
-    { src: "images/icons/hats/chefsHatCenter.png", alt: "chef's hat" },
-    { src: "images/icons/hats/topHatCenter.png", alt: "top hat" },
+    { src: "images/icons/avatar-options/hats/pinkBowCenter.png", alt: "pink bow" },
+    { src: "images/icons/avatar-options/hats/flowerCrownCenter.png", alt: "flower crown" },
+    { src: "images/icons/avatar-options/hats/plantCenter.png", alt: "plant" },
+    { src: "images/icons/avatar-options/hats/mushroomsCenter.png", alt: "mushrooms" },
+    { src: "images/icons/avatar-options/hats/cowboyHatCenter.png", alt: "cowboy hat" },
+    { src: "images/icons/avatar-options/hats/wizardHatCenter.png", alt: "wizard hat" },
+    { src: "images/icons/avatar-options/hats/chefsHatCenter.png", alt: "chef's hat" },
+    { src: "images/icons/avatar-options/hats/topHatCenter.png", alt: "top hat" },
+    { src: "images/icons/avatar-options/hats/trafficConeCenter.png", alt: "orange traffic cone" },
+    { src: "images/icons/avatar-options/hats/partyHatCenter.png", alt: "party hat" },
+    { src: "images/icons/avatar-options/hats/haloCenter.png", alt: "halo" },
 ];
 
 // array of clothes images and alt text
 const displayClothes = [
     { src: "images/icons/noItem.png", alt: "none" },
-    { src: "images/clothes/tutu.png", alt: "tutu" },
+    { src: "images/clothes/pinkDress.png", alt: "pink ballerina dress" },
     { src: "images/clothes/overalls.png", alt: "overalls" },
     { src: "images/clothes/cowboyVest.png", alt: "cowboy vest eith sherrif's badge" },
     { src: "images/clothes/darkJacket.png", alt: "dark jacket" },
+    { src: "images/clothes/safetyVest.png", alt: "orange safety vest" },
+    { src: "images/clothes/sailorDress.png", alt: "sailor dress" },
+    { src: "images/clothes/pinkSweater.png", alt: "pink sweater" },
+
+    // More clothes ideas:
+    // tuxedo
+    // plain t-shirt
+    // hoodie
+    // astronaut suit
+    // underwear
+    // pajamas
+    // lab coat
+
+    // recognizeable outfits from tv shows or movies 
+    // silly idea 
+    // mario, luigi, peach, toad, bowser, yoshi, etc.
+    // pokemon trainer
+    // disney princesses or other characters
+    // phineas and ferb outfits
+    // kim possible
+    // scooby doo's gang outfits
+    // spongebob's squarepants
 ];
 
 // array of clothes images and alt text for the clothes option boxes
 const clothesIcons = [
     { src: "images/icons/noItem.png", alt: "none" },
-    { src: "images/clothes/tutu.png", alt: "tutu" },
-    { src: "images/clothes/overalls.png", alt: "overalls" },
-    { src: "images/clothes/cowboyVest.png", alt: "cowboy vest eith sherrif's badge" },
-    { src: "images/clothes/darkJacket.png", alt: "dark jacket" },
+    { src: "images/icons/avatar-options/clothes/pinkDressCenter.png", alt: "pink ballerina dress" },
+    { src: "images/icons/avatar-options/clothes/overallsCenter.png", alt: "overalls" },
+    { src: "images/icons/avatar-options/clothes/cowboyVestCenter.png", alt: "cowboy vest eith sherrif's badge" },
+    { src: "images/icons/avatar-options/clothes/darkJacketCenter.png", alt: "dark jacket" },
+    { src: "images/icons/avatar-options/clothes/safetyVestCenter.png", alt: "orange safety vest" },
+    { src: "images/icons/avatar-options/clothes/sailorDressCenter.png", alt: "sailor dress" },
+    { src: "images/icons/avatar-options/clothes/pinkSweaterCenter.png", alt: "pink sweater" },
 ];
-
 // array of accessory images and alt text
 const displayAccessories = [
     { src: "images/icons/noItem.png", alt: "none" },
     { src: "images/accessories/cyberGlasses.png", alt: "cyber glasses" },
     { src: "images/accessories/wand.png", alt: "wand" },
+    { src: "images/accessories/cane.png", alt: "cane" },
+    { src: "images/accessories/redCape.png", alt: "red cape" },
+    { src: "images/accessories/wings.png", alt: "wings" },
+
+    // More accessory ideas:
+    // necklace
+    // purse
+    // bowtie
+    // tie
+    // scarf
+    // belt
+    // staff
+    // sword
+    // shield
+
 ];
 
 // array of accessory images and alt text for the accessory option boxes
 const accessoryIcons = [
     { src: "images/icons/noItem.png", alt: "none" },
-    { src: "images/accessories/cyberGlasses.png", alt: "cyber glasses" },
-    { src: "images/accessories/wand.png", alt: "wand" },
+    { src: "images/icons/avatar-options/accessories/cyberGlassesCenter.png", alt: "cyber glasses" },
+    { src: "images/icons/avatar-options/accessories/wandCenter.png", alt: "wand" },
+    { src: "images/icons/avatar-options/accessories/caneCenter.png", alt: "cane" },
+    { src: "images/icons/avatar-options/accessories/redCapeCenter.png", alt: "red cape" },
+    { src: "images/icons/avatar-options/accessories/wingsCenter.png", alt: "wings" },
 ];
 
 //
@@ -100,6 +157,21 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
     // current accessories for each avatar when selected
     const [currentAccessories, setCurrentAccessories] = useState("");
 
+    // states for active options
+    // these are used to highlight the selected item in the options box
+    // based on item index
+
+    // color index for each avatar
+    const [activeColor, setActiveColor] = useState({
+        cat: 0,
+        dog: 0,
+        frog: 0,
+        fox: 0,
+    });
+    const [activeHat, setActiveHat] = useState(0);
+    const [activeClothes, setActiveClothes] = useState(0);
+    const [activeAccessory, setActiveAccessory] = useState(0);
+
     // update color options when selected avatar changes
     useEffect(() => {
         setColorOptions(avatars[selectedAvatar]);
@@ -108,10 +180,14 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
     // change the slide index and update the selected avatar
     // scroll through each type of animal avatar
     const plusSlides = (n) => {
+        // get the new slide index
         let newSlideIndex = slideIndex + n;
+        // if the new slide index is greater than the total number of avatars, set it to 1
         const totalAvatars = Object.keys(avatars).length;
         if (newSlideIndex > totalAvatars) newSlideIndex = 1;
+        // if the new slide index is less than 1, set it to the total number
         if (newSlideIndex < 1) newSlideIndex = totalAvatars;
+        // set the new slide index and update the selected avatar
         setSlideIndex(newSlideIndex);
         setSelectedAvatar(Object.keys(avatars)[newSlideIndex - 1]);
     };
@@ -156,13 +232,25 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                 [avatar]: currentItem === noItem ? "" : currentItem,
             }));
         });
+
+        // set the active item based on the index
+        if (type === "hat") setActiveHat(index);
+        if (type === "clothes") setActiveClothes(index);
+        if (type === "accessory") setActiveAccessory(index);
     };
 
     // change the color of the avatar
-    const changeColor = (color) => {
+    const changeColor = (color, index) => {
+        // update the color for the selected avatar
         setCurrentColors((prevColors) => ({
             ...prevColors,
             [selectedAvatar]: color,
+        }));
+
+        // update the active color based on the index
+        setActiveColor((prevColors) => ({
+            ...prevColors,
+            [selectedAvatar]: index,
         }));
     };
 
@@ -171,6 +259,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
     // based on the selected avatar to display the hat correctly (location)
     const getHatClass = (avatar) => {
         switch (avatar) {
+            // frog avatar has a different hat position (slightly lower)
             case "frog":
                 return "avatar-hat avatar-frog-hat";
             default:
@@ -225,8 +314,6 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
         const newAvatar = canvas.toDataURL("image/png");
         setAvatarImage(newAvatar);
 
-        // onClose();
-
         // // update the user's avatar in the database
     };
 
@@ -245,6 +332,10 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
         <div className={backgroundClassName}>
             <div className="avatar-modal">
                 <div className="MakeAvatar">
+                    {/* 
+                        signup mode is a slightly different version, 
+                        instead of a close button and save button, it has a back and next button
+                    */}
                     {mode === "signup" ? (
                         <></>
                     ) : (
@@ -253,7 +344,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                         </div>
                     )}
 
-
+                    {/* different titles based on the mode */}
                     {mode === "signup" ? (
                         <h1 id="avatar-customize-title">Create Your Avatar</h1>
                     ) : (
@@ -263,7 +354,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                     <div id="avatar-select">
                         {/* previous button */}
                         <button id="avatar-arrowBtn" onClick={() => plusSlides(-1)}>
-                            <img src="images/icons/arrow-right.png" alt="left arrow" className="avatar-left-btn avatar-btn-icon" />
+                            <img src="images/icons/s-arrow.png" alt="left arrow" className="avatar-left-btn avatar-btn-icon" />
                         </button>
 
                         {/* displayed avatar */}
@@ -310,7 +401,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
 
                         {/* next button */}
                         <button id="avatar-arrowBtn" onClick={() => plusSlides(1)}>
-                            <img src="images/icons/arrow-right.png" alt="right arrow" className="avatar-btn-icon" />
+                            <img src="images/icons/s-arrow.png" alt="right arrow" className=" avatar-right-btn avatar-btn-icon" />
                         </button>
                     </div>
 
@@ -339,7 +430,12 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                                 <div className="avatar-options">
                                     {colorOptions.map((color, index) => (
                                         <div key={index} className="avatar-color-option">
-                                            <img src={color} alt={`avatar-color-option-${index}`} onClick={() => changeColor(color)} />
+                                            <img
+                                                src={color}
+                                                alt={`avatar-color-option-${index}`}
+                                                className={`avatar-color ${activeColor[selectedAvatar] === index ? "active-color" : ""}`}
+                                                onClick={() => changeColor(color, index)}
+                                            />
                                         </div>
                                     ))}
                                 </div>
@@ -349,7 +445,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                             <div className={`avatar-tab-contents ${activeTab === "avatar-hats" ? "avatar-active-tab" : ""}`} id="avatar-hats">
                                 <div className="avatar-options">
                                     {hatIcons.map((hat, index) => (
-                                        <div key={index} className="avatar-hat-option" onClick={() => changeItems(index, 'hat')}>
+                                        <div key={index} className={`avatar-hat-option ${activeHat === index ? "active-hat" : ""}`} onClick={() => changeItems(index, 'hat')}>
                                             <img src={hat.src} alt={hat.alt} />
                                         </div>
                                     ))}
@@ -360,7 +456,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                             <div className={`avatar-tab-contents ${activeTab === "avatar-clothes" ? "avatar-active-tab" : ""}`} id="avatar-clothes">
                                 <div className="avatar-options">
                                     {clothesIcons.map((clothes, index) => (
-                                        <div key={index} className="avatar-clothes-option" onClick={() => changeItems(index, 'clothes')}>
+                                        <div key={index} className={`avatar-clothes-option ${activeClothes === index ? "active-clothes" : ""}`} onClick={() => changeItems(index, 'clothes')}>
                                             <img src={clothes.src} alt={clothes.alt} />
                                         </div>
                                     ))}
@@ -371,7 +467,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                             <div className={`avatar-tab-contents ${activeTab === "avatar-accessories" ? "avatar-active-tab" : ""}`} id="avatar-accessories">
                                 <div className="avatar-options">
                                     {accessoryIcons.map((accessory, index) => (
-                                        <div key={index} className="avatar-accessory-option" onClick={() => changeItems(index, 'accessory')}>
+                                        <div key={index} className={`avatar-accessory-option ${activeAccessory === index ? "active-accessory" : ""}`} onClick={() => changeItems(index, 'accessory')}>
                                             <img src={accessory.src} alt={accessory.alt} />
                                         </div>
                                     ))}

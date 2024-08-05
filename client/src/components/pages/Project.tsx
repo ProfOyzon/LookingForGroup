@@ -8,9 +8,9 @@ import { ProjectPost } from "../projectPageComponents/ProjectPost";
 import { ProjectMember } from "../projectPageComponents/ProjectMember";
 import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
+import { RoleListing } from "../projectPageComponents/RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts } from "../../constants/fakeData";
-import { wait } from "@testing-library/user-event/dist/utils";
 
 //This is the Project page component, which contains a layout that allows for displaying project info
 //More info and comments on individual parts are found above their respective parts
@@ -21,25 +21,25 @@ let projectId;
 // Data for a dummy project, used when re-rendering the page after saving settings
 const dummyProject = {
   _id: -1,
-        name: "dummy project",
-        members: [
-            {
-                userID: 0,
-                admin: true,
-                owner: true,
-                role: "Project Lead"
-            },
-        ],
-        description: "dummy project",
-        tags: ["dummy", "project"],
-        neededRoles: [
-            {
-                Role: "dummy",
-                amount: 2,
-                description: "dummy project",
-            },
-        ],
-        posts: []
+  name: "dummy project",
+  members: [
+      {
+          userID: 0,
+          admin: true,
+          owner: true,
+          role: "Project Lead"
+      },
+  ],
+  description: "dummy project",
+  tags: ["dummy", "project"],
+  neededRoles: [
+      {
+          Role: "dummy",
+          amount: 2,
+          description: "dummy project",
+      },
+  ],
+  posts: []
 }
 
 // default settings for the project being loaded, used when loading default data for settings
@@ -47,10 +47,12 @@ let defaultSettings: {projectName: string, projectMembers: {userID: number, admi
   projectName: '',
   projectMembers: []
 }
+let defaultRoleSettings: {Role: string, amount: number, description: string}[];
 
 // object containing the current inputs of settings, used when changing and updating project settings
 // If settings window is closed, this should be reset using defaultSettings
 let tempSettings;
+let tempRoleSettings;
 
 // used with settings, identifies which tab user is currently on
 let currentTab = 'general';
@@ -97,12 +99,6 @@ const addInterested = () => {
   //Get current user id (need session info)
   //Add project id to user's interested project list (need relevant data location)
   //Add user to project's list of interested people (need relevant data location)
-}
-
-//Lets the user edit the roles this project is 'looking for'
-//Should only be accessible to admins of a project
-const editRoles = () => {
-  console.log('This will let the member edit roles');
 }
 
 //Sends the user to the project's virtual space
@@ -160,7 +156,8 @@ const deleteProject = (callback) => {
   openClosePopup(1);
   openClosePopup(0);
   //Delete project from database
-
+  //Error caused by typescript, code still runs correctly
+  projects.splice(projects.indexOf(projects.find(p => p._id === projectId)), 1);
   //Redirect to the MyProjects page
   callback(paths.routes.MYPROJECTS);
 }
@@ -169,8 +166,7 @@ const deleteProject = (callback) => {
 // Includes options to follow, block, report, or show interest in joining the project
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
 
-// projectName, projectDescription, and neededRoles are passed in through props
-// All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
+// projectData is passed in through props, containing data on the project
 const ProjectInfo = (props) => {
   let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
   return (
@@ -178,11 +174,11 @@ const ProjectInfo = (props) => {
       <img id='project-picture' src={profilePlaceholder} alt=''/>
 
       <div id='project-header'>
-        <h1 id='project-title'>{props.projectName}</h1>
+        <h1 id='project-title'>{props.projectData.name}</h1>
         <div id='header-buttons'>
           <button id='follow-project' className='orange-button' onClick={followProject}>Follow</button>
           <div id='more-options'>
-            <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}><img src='elipses.png' alt="..."/></button>
+            <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>...</button>
             <div id='more-options-popup' className='hide'>
               <button className='white-button' onClick={blockProject}>Block</button>
               <button className='white-button' onClick={reportProject}>Report</button>
@@ -191,14 +187,14 @@ const ProjectInfo = (props) => {
         </div>
       </div>
 
-      <p id='project-desc'>{props.projectDescription}
+      <p id='project-desc'>{props.projectData.description}
       </p>
 
       <div id='project-listings'>
         <h3>Looking for</h3>
         <hr/>
         {
-          props.neededRoles.map(role => {
+          props.projectData.neededRoles.map(role => {
             return(
               <div key={key++}>{role.Role} &#40;{role.amount}&#41;</div>
             );
@@ -217,12 +213,19 @@ const ProjectInfo = (props) => {
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
 
 // Utilizes the 'PagePopup' component for project settings, and 'GeneralSettings' as the first rendered tab within it
-// projectName, projectDescription, and neededRoles are passed in through props
-// All 3 are pulled from project data before they are passed through, which can be seen in the Project component below
+// projectData and a callback for resetProjectData are passed in through props
+// projectData is a reference to the current project's info
 const ProjectInfoMember = (props) => {
   const navigate = useNavigate(); // Hook for navigation
 
   let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
+  let key2 = 0;
+
+  const [showPopup1, setShowPopup1] = useState(false);
+  const [showPopup2, setShowPopup2] = useState(false);
+  const [showPopup3, setShowPopup3] = useState(false);
+
+  let openPopups = [showPopup1, showPopup2, showPopup3];
 
   //Function used to update a specific member's setting
   //It is placed before other variables so that it can be used for one
@@ -296,8 +299,13 @@ const ProjectInfoMember = (props) => {
   //useState is used here as part of the settings window
   let [tabContent, setTabContent] = useState(generalTab);
 
+  //useState is also used here to add functionality to the edit roles interface
+  let [currentlyNeededRoles, setCurrentlyNeededRoles] = useState(tempRoleSettings);
+
   //Used to track which members have been deleted
   let deletedMemberIndexList: number[] = [];
+  //Used to track the indexes of deleted roles
+  let deletedRoleIndexList: number[] = [];
 
   //Opens settings and resets any setting inputs from previous opening
   const openSettings = () => {
@@ -312,7 +320,7 @@ const ProjectInfoMember = (props) => {
       setTimeout(() => setTabContent(<MemberSettings projectId={projectId} tempSettings={tempSettings} updateMemberSettings={updateMemberSettings}/>), 1);
     }
     //Timeout is set here to prevent asynchronous tab changes from the 'setTabContent' functions above from being visible
-    setTimeout(() => openClosePopup(0), 20);
+    setTimeout(() => openClosePopup(showPopup1, setShowPopup1, openPopups), 20);
   }
 
   //Updates tempSettings with any inputted setting changes, called when switching tabs or when saving settings
@@ -338,7 +346,7 @@ const ProjectInfoMember = (props) => {
     props.callback();
     
     //Closes the settings popup
-    openClosePopup(0);
+    openClosePopup(showPopup1, setShowPopup1, openPopups);
   }
 
   //Called when a tab is changed in the settings window
@@ -368,17 +376,97 @@ const ProjectInfoMember = (props) => {
     }
   }
 
+  //Called when 'add role' is pressed in edit roles interface
+  //Adds a role to tempRoleSettings
+  const addRole = () => {
+    //get input values
+    let nameInput = document.getElementById('role-name-input-box').value;
+    let numInput = document.getElementById('role-num-input-box').value;
+    let descInput = document.getElementById('role-desc-input-box').value;
+    //check to make sure all values contain data, cancels function if not
+    if (nameInput === '' || numInput === '' || descInput === '') {
+      console.log('all fields must have an appropriate input (display this on interface later)');
+      return;
+    }
+    //create new role
+    let newRole: {Role: string, amount: number, description: string} = 
+      {Role: nameInput, amount: numInput, description: descInput};
+    //add new role to project
+    tempRoleSettings.push(newRole);
+    //update currentlyNeededRoles usestate
+    setCurrentlyNeededRoles(defaultRoleSettings);
+    setTimeout(() => setCurrentlyNeededRoles(tempRoleSettings), 1);
+  }
+
+  //Called when a delete button is clicked on the role list
+  //Adds the index of the role to an list of indexes that will be deleted upon saving
+  const removeRole = (roleIndex) => {
+    deletedRoleIndexList.push(roleIndex);
+  }
+
+  //Undoes a role deletion & removes its index from deletedRoleIndexList
+  const undoRemoveRole = (roleIndex) => {
+    deletedRoleIndexList.splice(deletedRoleIndexList.indexOf(roleIndex), 1);
+  }
+
+  //Called when user is done editing a role's details
+  //roleIndex passes in a number to use as an index reference for the role
+  //note: since there is no id number, need to manipulate deleted index numbers to update correct role
+  const updateRoleSettings = (roleIndex, roleObject) => {
+    tempRoleSettings[roleIndex] = roleObject;
+  }
+
+  //Called when 'save changes' is pressed in edit roles interface
+  //Takes data in tempRoleSettings and updates project data with it
+  const saveRoleSettings = () => {
+
+    //Runs through deletedRoleIndexList and removes all items from tempRoleSettings with these indexes
+    //Sorts indexes from greatest to least first to prevent erroneous deletions
+    deletedRoleIndexList.sort(function(a, b){return b-a});
+    //Delete items at specified indexes
+    deletedRoleIndexList.forEach(index => {
+      tempRoleSettings.splice(index, 1);
+    });
+    //Clean out deletedRoleIndexList
+    deletedRoleIndexList = [];
+
+    //Saves new role data to project data
+    let currentProject = projects.find(p => p._id === Number(projectId));
+    if (currentProject !== undefined) {
+      currentProject.neededRoles = tempRoleSettings;
+    }
+    //Resets defaultRoleSettings with new info
+    defaultRoleSettings = tempRoleSettings;
+
+    //Updates page display & closes interface
+    props.callback();
+    openClosePopup(showPopup3, setShowPopup3, openPopups);
+  }
+
+  //Reloads roles on edit roles interface
+  const resetEditRoles = () => {
+    setCurrentlyNeededRoles([]);
+    setTimeout(() => setCurrentlyNeededRoles(defaultRoleSettings), 1);
+  }
+
+  //uses resetEditRoles & opens edit roles interface
+  //Mainly for using both in a single onClick function
+  const openEditRoles = () => {
+    resetEditRoles();
+    openClosePopup(showPopup3, setShowPopup3, openPopups);
+  }
+
   return (
     <div id='project-info-member'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
 
 
       <div id='project-header'>
-        <h1 id='project-title'>{props.projectName}</h1>
+        <h1 id='project-title'>{props.projectData.name}</h1>
         <div id='header-buttons'>
           <div id='more-options'>
             <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
-              <img id='more-options-button-img' src='elipses.png' alt="..."/></button>
+              ...</button>
             <div id='more-options-popup' className='hide'>
               <button className='white-button' onClick={openSettings}>Project Settings</button>
               <button className='white-button' onClick={leaveProject}>Leave Project</button>
@@ -387,7 +475,7 @@ const ProjectInfoMember = (props) => {
         </div>
       </div>
 
-      <p id='project-desc'>{props.projectDescription}
+      <p id='project-desc'>{props.projectData.description}
       </p>
 
       <div id='member-buttons'>
@@ -399,60 +487,73 @@ const ProjectInfoMember = (props) => {
         <h3>Looking for</h3>
         <hr/>
         {
-          props.neededRoles.map(role => {
+          props.projectData.neededRoles.map(role => {
+            if (role === undefined || role === null){
+              console.log('could not find role')
+              return;
+            }
             return(
               <div key={key++}>{role.Role} &#40;{role.amount}&#41;</div>
             );
           })
         }
 
-        <button id='edit-roles-button' className='white-button' onClick={() => openClosePopup(2)}>Edit Roles</button>
+        <button id='edit-roles-button' className='white-button' onClick={openEditRoles}>Edit Roles</button>
       </div>
 
-      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3}>
+      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup1} setShow={setShowPopup1} openPopups={openPopups}>
         <div id='settings-window-test'>
             <h1>Project Settings</h1>
             <div id='settings-tabs'>
               <button id='general-tab' className='tab-selected' onClick={() => {changeTabs('general')}}>General</button>
               <button id='member-tab' className='tab' onClick={() => {changeTabs('members')}}>Members</button>
-              <button id='delete-project' onClick={() => openClosePopup(1)}>Delete Project</button>
+              <button id='delete-project' onClick={() => openClosePopup(showPopup2, setShowPopup2, openPopups)}>Delete Project</button>
             </div>
             <hr/>
             <div id='settings-content'>
             {tabContent}
             </div>
-            <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(0)}>Cancel</button>
+            <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(showPopup1, setShowPopup1, openPopups)}>Cancel</button>
             <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>
         </div>
       </PagePopup>
 
-      <PagePopup width={'600px'} height={'400px'} popupId={2} zIndex={3}>
+      <PagePopup width={'600px'} height={'400px'} popupId={2} zIndex={3} show={showPopup3} setShow={setShowPopup3} openPopups={openPopups}>
         <div id='edit-roles-window'>
           <h1>Edit Roles</h1>
           <div id='edit-roles-options'>
             <div id='role-name-input'>
               <div>role name</div>
-              <input type='text'></input>
+              <input id='role-name-input-box' type='text'></input>
             </div>
             <div id='role-spots-input'>
               <div>open spots</div>
-              <input type='number'></input>
+              <input id='role-num-input-box' type='number'></input>
             </div>
             <div id='role-desc-input'>
               <div>role description</div>
-              <textarea></textarea>
+              <textarea id='role-desc-input-box'></textarea>
             </div>
+            <button id='role-add-button' onClick={addRole}>Add role</button>
             <div id='roles-list'>
-
+              {
+                currentlyNeededRoles.map(currentRole => {
+                  return(
+                    <RoleListing role={currentRole} num={key2} key={key2++} 
+                    updateRoleSettings={updateRoleSettings} removeRole={removeRole} undoRemoveRole={undoRemoveRole}/>
+                  )
+                })
+              }
             </div>
           </div>
+          <button className='orange-button' onClick={saveRoleSettings}>Save Changes</button>
         </div>
       </PagePopup>
 
-      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={4}>
+      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={4} show={showPopup2} setShow={setShowPopup2} openPopups={openPopups}>
         <div id='project-delete-check'>
           <h3>Are you sure you want to delete this project?</h3>
-          <button id='project-delete-cancel' onClick={() => openClosePopup(1)}>Cancel</button>
+          <button id='project-delete-cancel' onClick={() => openClosePopup(showPopup2, setShowPopup2, openPopups)}>Cancel</button>
           <button id='project-delete-final' onClick={() => deleteProject(navigate)}>DELETE</button>
         </div>
       </PagePopup>
@@ -491,10 +592,12 @@ const Project = (props) => {
   //Pass project settings into variables for use in settings tabs
   defaultSettings.projectName = currentProject.name;
   defaultSettings.projectMembers = [];
+  defaultRoleSettings = currentProject.neededRoles;
   currentProject.members.forEach(member => {
     defaultSettings.projectMembers.push(member);
   });
   tempSettings = JSON.parse(JSON.stringify(defaultSettings));
+  tempRoleSettings = JSON.parse(JSON.stringify(defaultRoleSettings));
 
   //Pass project data for rendering purposes
   const [projectData, setProjectData] = useState(currentProject);
@@ -511,6 +614,7 @@ const Project = (props) => {
     setTimeout(() => {setProjectData(projects.find(p => p._id === Number(projectId)) || projects[0])}, 1);
   }
 
+  //First select element is used for testing/debugging purposes, it should be removed in the final product
   return (
     <div id='project-page' className='page'>
 
@@ -530,8 +634,7 @@ const Project = (props) => {
       <button id='return-button' className='white-button' onClick={() => window.history.back()}>&lt; return</button>
       </div>
 
-      <ProjectInfoMember projectName={projectData.name} projectDescription={projectData.description} 
-        neededRoles={projectData.neededRoles} callback={resetProjectData} projectData={projectData}/>
+      <ProjectInfoMember callback={resetProjectData} projectData={projectData}/>
 
       <div id='member-divider'>
         <hr/>

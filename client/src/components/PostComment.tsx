@@ -85,7 +85,7 @@ export const PostComment = (props) => {
       </div>
 
       <button className='comment-options'>...</button>
-      <button className='comment-like'><img src='' alt='heart'/></button>
+      <button className='comment-like'>like</button>
 
       <button className='comment-reply' onClick={() => props.callback(props.commentId)}>Reply</button>
 

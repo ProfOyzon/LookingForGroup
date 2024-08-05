@@ -6,39 +6,19 @@ const proficiencies = ["Full Stack Developer", "Front End Developer", "Back End 
 //
 // Choose top 3 proficiencies component
 //
-const ChooseProficiencies = ({ show, onNext, onBack }) => {
-    // State variables
-    const [selectedProficiencies, setSelectedProficiencies] = useState<string[]>([]); // State variable for the selected proficiencies
-
+const ChooseProficiencies = ({ show, onNext, onBack, selectedProficiencies, setSelectedProficiencies }) => {
     // Function to handle the proficiency selection
     const handleProficienciesSelect = (proficiency) => {
-        // Check if selectedProficiencies has a length of 3
-        // if it doesn't, highlight the button by adding the 'active' class, and add the proficiency to the selectedProficiencies array
-        if (selectedProficiencies.length < 3) {
-            if (!selectedProficiencies.includes(proficiency.target.innerHTML)) {
-                proficiency.target.classList.add('active');
+        // get the proficiency that was selected
+        const selected = proficiency.target.innerHTML;
 
-                // creating a new array to both update the state and check the length 
-                // of selectedProficiencies after the addition of a new proficiency
-                const newProficiencies = [...selectedProficiencies, proficiency.target.innerHTML];
-                setSelectedProficiencies(newProficiencies);
-            }
-            // else remove the proficiency from the selectedProficiencies array and remove the 'active' class from the button
-            else {
-                proficiency.target.classList.remove('active');
-                setSelectedProficiencies(selectedProficiencies.filter((prof) => prof !== proficiency.target.innerHTML));
-            }
+        // if the proficiency is already selected, remove it from the selectedProficiencies array
+        if (selectedProficiencies.includes(selected)) {
+            setSelectedProficiencies(selectedProficiencies.filter((prof) => prof !== selected));
         }
-        // if selectedProficiencies has a length of 3
-        else {
-            // if the proficiency is already selected, remove it from the selectedProficiencies array and remove the 'active' class from the button
-            if (selectedProficiencies.includes(proficiency.target.innerHTML)) {
-                proficiency.target.classList.remove('active');
-                setSelectedProficiencies(selectedProficiencies.filter((prof) => prof !== proficiency.target.innerHTML));
-            }
-            else {
-                return;
-            }
+        // else if the selectedProficiencies array has less than 3 elements, add the proficiency to the selectedProficiencies array 
+        else if (selectedProficiencies.length < 3) {
+            setSelectedProficiencies([...selectedProficiencies, selected]);
         }
     };
 
@@ -57,8 +37,16 @@ const ChooseProficiencies = ({ show, onNext, onBack }) => {
                     <p>You can add more and edit later</p>
 
                     <div id="proficiency-select">
+                        {/* map through the proficiencies array and create a button for each proficiency */}
                         {proficiencies.map((proficiency, index) => (
-                            <button key={index} onClick={handleProficienciesSelect} className='proficiencyBtn'>{proficiency}</button>
+                            <button
+                                key={index}
+                                value={proficiency}
+                                onClick={handleProficienciesSelect}
+                                // add the 'active' class to the buttons that were selected
+                                // doing this inside className so that it's remembered when the user goes back and forth between modals
+                                className={`proficiencyBtn ${selectedProficiencies.includes(proficiency) ? 'active' : ''}`}
+                            >{proficiency}</button>
                         ))}
 
 
@@ -67,7 +55,14 @@ const ChooseProficiencies = ({ show, onNext, onBack }) => {
                         <button id="signup-backBtn" onClick={onBack}>
                             Back
                         </button>
-                        <button id="signup-nextBtn" onClick={onNext} disabled={selectedProficiencies.length !== 3} >
+                        <button
+                            id="signup-nextBtn"
+                            onClick={onNext}
+                            // disable the next button if the user has not selected 3 proficiencies
+                            // this is to prevent the user from moving to the next modal without selecting the required number of proficiencies
+                            // the user can only move to the next modal when they have selected 3 proficiencies
+                            disabled={selectedProficiencies.length !== 3}
+                        >
                             Next
                         </button>
                     </div>

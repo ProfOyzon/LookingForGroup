@@ -7,6 +7,7 @@ import ChooseSkills from "../SignupProcess/ChooseSkills";
 import ChooseProficiencies from "../SignupProcess/ChooseProficiencies";
 import ChooseInterests from "../SignupProcess/ChooseInterests";
 import CompleteProfile from "../SignupProcess/CompleteProfile";
+import GetStarted from "../SignupProcess/GetStarted";
 
 const SignUp = ({ setAvatarImage, avatarImage }) => {
     const navigate = useNavigate(); // Hook for navigation
@@ -18,12 +19,37 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [checkPassword, setCheckPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(''); // State variable for error messages
+
+    // State variables for modals
     const [showAvatarModal, setShowAvatarModal] = useState(false);
     const [showSkillsModal, setShowSkillsModal] = useState(false);
     const [showProficienciesModal, setShowProficienciesModal] = useState(false);
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [showCompleteProfileModal, setShowCompleteProfileModal] = useState(false);
+    const [showGetStartedModal, setShowGetStartedModal] = useState(false);
+
+    // State variables for selected buttons
+    // to remeber the user's choices when they go back and forth between modals
+    const [selectedProficiencies, setSelectedProficiencies] = useState<string[]>([]); // State variable for the selected proficiencies
+    const [selectedSkills, setSelectedSkills] = useState<string[]>([]); // State variable for the selected skills
+    const [selectedInterests, setSelectedInterests] = useState<string[]>([]); // State variable for the selected interests
+    const [pronouns, setPronouns] = useState(''); // State variable for the user's pronouns
+    const [bio, setBio] = useState(''); // State variable for the user's bio
+
+    // user info to be sent to the backend
+    const userInfo = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        username: username,
+        password: password,
+        proficiencies: selectedProficiencies,
+        skills: selectedSkills,
+        interests: selectedInterests,
+        pronouns: pronouns,
+        bio: bio,
+    };
 
     // Function to handle the login button click
     const handleSignup = () => {
@@ -35,10 +61,17 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
 
             // check if username is unique (??? depends on if we want unique usernames)
 
+            // Check if the password is:
+            // at least 6 characters long?
+            // has a number? 
+            // has a special character
+            
             // check if the passwords match
             if (password !== checkPassword) {
                 setError('Passwords do not match');
-            } else {
+            }
+
+            else {
                 // show the proficiencies modal
                 // from the modal links through the process
                 // profficiencies -> skills -> interests -> avatar -> complete profile --> home
@@ -46,6 +79,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
             }
         }
 
+        // for testing, skips the above checks
         // setShowProficienciesModal(true);
     };
 
@@ -61,10 +95,11 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                     <h2>Sign Up</h2>
 
                     <div className="signup-form-inputs">
-                    <div className="error">{error}</div>
+                        <div className="error">{error}</div>
                         <div className="row">
                             <input
                                 className="signup-name-input"
+                                autoComplete="off"
                                 type="text"
                                 placeholder="First Name"
                                 value={firstName}
@@ -72,6 +107,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                             />
                             <input
                                 className="signup-name-input"
+                                autoComplete="off"
                                 type="text"
                                 placeholder="Last Name"
                                 value={lastName}
@@ -80,6 +116,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                         </div>
                         <input
                             className="signup-input"
+                            autoComplete="off"
                             type="text"
                             placeholder="Email"
                             value={email}
@@ -90,6 +127,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
 
                         <input
                             className="signup-input"
+                            autoComplete="off"
                             type="text"
                             placeholder="Username"
                             value={username}
@@ -97,6 +135,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                         />
                         <input
                             className="signup-input"
+                            autoComplete="off"
                             type="password"
                             placeholder="Password"
                             value={password}
@@ -104,6 +143,7 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                         />
                         <input
                             className="signup-input"
+                            autoComplete="off"
                             type="password"
                             placeholder="Confirm Password"
                             value={checkPassword}
@@ -125,18 +165,24 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                         onNext={() => { setShowProficienciesModal(false); setShowSkillsModal(true); }}
                         onBack={() => { setShowProficienciesModal(false); }}
                         show={showProficienciesModal}
+                        selectedProficiencies={selectedProficiencies}
+                        setSelectedProficiencies={setSelectedProficiencies}
                     />
 
                     <ChooseSkills
                         onNext={() => { setShowSkillsModal(false); setShowInterestsModal(true); }}
                         onBack={() => { setShowSkillsModal(false); setShowProficienciesModal(true); }}
                         show={showSkillsModal}
+                        selectedSkills={selectedSkills}
+                        setSelectedSkills={setSelectedSkills}
                     />
 
                     <ChooseInterests
                         onNext={() => { setShowInterestsModal(false); setShowAvatarModal(true); }}
                         onBack={() => { setShowInterestsModal(false); setShowSkillsModal(true); }}
                         show={showInterestsModal}
+                        selectedInterests={selectedInterests}
+                        setSelectedInterests={setSelectedInterests}
                     />
 
                     <MakeAvatarModal
@@ -149,10 +195,22 @@ const SignUp = ({ setAvatarImage, avatarImage }) => {
                     />
 
                     <CompleteProfile
-                        onNext={() => { setShowCompleteProfileModal(false); navigate(paths.routes.HOME); }}
+                        onNext={() => { setShowCompleteProfileModal(false); setShowGetStartedModal(true); }}
                         onBack={() => { setShowCompleteProfileModal(false); setShowAvatarModal(true); }}
                         show={showCompleteProfileModal}
                         avatarImage={avatarImage}
+                        userInfo={userInfo}
+                        bio={bio}
+                        pronouns={pronouns}
+                        setBio={setBio}
+                        setPronouns={setPronouns}
+                    />
+
+                    <GetStarted
+                        show={showGetStartedModal}
+                        onBack={() => { setShowGetStartedModal(false); setShowCompleteProfileModal(true); }}
+                        onCreateProject={() => { setShowGetStartedModal(false); navigate(paths.routes.MYPROJECTS); }}
+                        onJoinProject={() => { setShowGetStartedModal(false); navigate(paths.routes.HOME); }}
                     />
                 </div>
             </div>

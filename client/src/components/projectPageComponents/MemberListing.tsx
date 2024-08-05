@@ -1,6 +1,5 @@
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
-import { profiles } from "../../constants/fakeData";
 
 //This component is used in the MemberSettings component,
 //  where it is used to render one listing of a full list of project members
@@ -68,10 +67,10 @@ export const MemberListing = (props) => {
     <span className='member-settings-name'>{props.name}</span>
     <span className='member-settings-role'>{props.role}</span>
     <input className='member-settings-role-input' type='text' defaultValue={props.role}></input>
-    <button className='member-settings-edit' onClick={openCloseInput}><img src='' alt='edit'/></button>
+    <button className='member-settings-edit' onClick={openCloseInput}>edit</button>
     <button className='member-settings-edit-done' onClick={saveRoleName}>done</button>
     <button className='member-settings-more' onClick={() => moreSettingsToggle(props.idNum)}>
-      <img className='member-settings-more-img' src='' alt='...'/></button>
+      ...</button>
     <div id={'member-settings-dropdown-' + props.idNum} className='settings-hide'>
       <button className='white-button' onClick={() => props.updateMemberSettings(1, props.idNum)}>Add/Remove Admin Role</button>
       <button className='white-button' onClick={() => props.updateMemberSettings(2, props.idNum)}>Add/Remove Mentor Role</button>

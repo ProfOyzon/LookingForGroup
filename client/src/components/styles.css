@@ -327,8 +327,9 @@ orange-button class makes the button orange, white-button class makes the button
 #return-button-container {
     text-align: left;
     display: flex;
+    position:absolute;
+    float:inline-start;
     flex-direction: row;
-    float: right;
     align-content: center;
     margin: auto;
 }
@@ -971,9 +972,6 @@ Project page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-/* some rules before the @media query are placed here to
-allow them to be reformatted when the mobile view is used */
-
 /*rules for the full page itself*/
 #project-page {
     padding: 0px 15px;
@@ -983,9 +981,10 @@ allow them to be reformatted when the mobile view is used */
 /*used for the header section of the page (with the project title, description & other options)*/
 #project-info {
     display: grid;
-    grid-template: 1fr 1fr / .2fr 1.5fr 400px;
-    grid-template-areas: 'picture header listing'
-        'blank desc listing'
+    grid-template: 0.3fr 1fr auto / .2fr 1.5fr 550px;
+    grid-template-areas: 'blank blank listing'
+                         'picture header listing'
+                         'desc desc listing'
 }
 
 /*rules for the header used when a project member is viewing the page*/
@@ -993,7 +992,7 @@ allow them to be reformatted when the mobile view is used */
     display: grid;
     grid-template: 1fr 1fr / .2fr 1fr 200px 400px;
     grid-template-areas: 'picture header buttons listing'
-        'blank desc buttons listing';
+                         'desc desc buttons listing';
 }
 
 /*rules for the 'enter virtual space' and 'new post' buttons on the header view for members*/
@@ -1012,17 +1011,90 @@ allow them to be reformatted when the mobile view is used */
     grid-area: picture;
 }
 
-/*rules for the title of the project & for nearby buttons*/
+/*rules for the header of the project & for nearby buttons*/
 #project-header {
     grid-area: header;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    text-align:left;
+    display: grid;
+    grid-template: auto auto auto/ auto auto auto;
+    grid-template-areas: 'title status buttons'
+                         'creator count buttons'
+                         'tags members buttons';
+    gap: 5px;
+}
+
+#project-title {
+    grid-area: title;
+}
+
+#project-status {
+    grid-area: status;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#project-creator {
+    grid-area: creator
+}
+
+#project-member-count {
+    grid-area: count;
+}
+
+#project-tags {
+    grid-area: tags;
+    display:flex;
+    gap:10px;
+    margin-top: 10px;
+}
+
+.project-tag {
+    border: 2px solid var(--orange);
+    padding: 2px;
+    border-radius: 5px;
+    width: 150px;
+    height: min-content;
+    text-align:center;
+}
+
+#project-member-preview {
+    grid-area: members;
+    position:relative;
+    height: 50px;
+}
+
+#project-member-preview img{
+    background-color:white;
+    position:absolute;
+    width: 50px;
+    border-radius:100%;
+    padding:2px;
+}
+
+#project-member-preview span{
+    position:absolute;
+    top: 20px;
+    right:0px;
+}
+
+#member-preview-1 {
+    left:0px;
+}
+
+#member-preview-2 {
+    z-index:-1;
+    left:20px;
+}
+
+#member-preview-3 {
+    z-index:-2;
+    left:40px;
 }
 
 #header-buttons {
     display: flex;
     align-items: center;
+    grid-area:buttons
 }
 
 #follow-project {

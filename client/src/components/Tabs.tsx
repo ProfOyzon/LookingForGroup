@@ -1,6 +1,7 @@
 import { act } from "react";
 
 //a multi-use tabs component
+//used to be used for something- not anymore
 
 //add const [activeTab, setActiveTab] = useState(0); to the page then send those into the functions
 

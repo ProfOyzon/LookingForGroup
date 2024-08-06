@@ -38,12 +38,10 @@ const Profile = (props) => {
                     })
                 }
             </select>
-      <ProfileHeader user={user}/>
       <div id="profile-page">
-        <div>
-          <ProfilePreferences user={user}/>
-          <ProfileSkills user={user}/>
-        </div>
+        <ProfileHeader user={user}/>
+        <ProfilePreferences user={user}/>
+        <ProfileSkills user={user}/>
         <div>
           <ProfileProjects user={user}/>
           <ProfileEndorsements user={user}/>

@@ -212,7 +212,7 @@ export const profiles = [
     {
         _id: 0,
         name: "Jared Smith",
-        username: "The Great Old One",
+        username: "TheGreatOldOne",
         pronouns: ["He", "Him"],
         bio: "A Super cool coder!",
         preferences: [
@@ -393,7 +393,7 @@ export const profiles = [
     {
         _id: 2,
         name: "Jane Doe",
-        username: "Princess",
+        username: "Princess2108279",
         pronouns: ["She", "Her"],
         bio: "I dont need to be saved!",
         preferences: [

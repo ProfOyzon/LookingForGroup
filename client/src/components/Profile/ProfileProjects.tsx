@@ -4,7 +4,7 @@ import { ProfileProjectCard } from "../ProfileProjectCard";
 
 export const ProfileProjects = ({user}) => {
     return (
-        <section className="profile-section" id = "profile-projects">
+        <section id = "profile-projects">
             <h2>Projects</h2>
             <div className = "profile-list">
             {user.projects.map(proj => (

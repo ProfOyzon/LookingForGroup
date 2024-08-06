@@ -76,7 +76,7 @@ button {
 /*give sections of the page a drop shadow*/
 section {
     margin: 10px;
-    padding: 4px 8px 4px 8px;
+    padding: 4px 16px 16px 16px;
     border-style: solid;
     border: 2px solid black;
     box-shadow: 10px 10px 5px lightblue;
@@ -856,40 +856,54 @@ Profile page style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
-.header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    gap: 64px;
-    padding: 2px 8px;
-}
-
 #profile-page {
     width: 80%;
     margin: 2% auto;
     text-align: left;
 }
 
-#profile-banner {
-    width: 80%;
-    height: 20vh;
+#profile-header-wrapper{
+    margin: 10px;
 }
 
-#profile-header {
-    width: 100%;
-    border: none;
-    border-bottom: 2px solid black;
+#profile-header{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
     text-align: left;
+    gap: 2vw;
 }
 
-#profile-header>* {
-    margin: auto 10%;
+#profile-name-button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#profile-pfp{
+    box-shadow: 2px 2px 5px black;
+    height: 24vh;
+    width: auto;
 }
 
 #profile-page {
     display: grid;
     grid-template-columns: 50% 50%;
+}
+
+#profile-page>*{
+    height: fit-content;
+}
+
+#profile-skill-list, #profile-preferences-list
+{
+    margin-left: 10%;
+}
+
+#profile-skill-list > .tag, #profile-preferences-list > .tag
+{
+    width: 35%;
+    margin: 1%;
 }
 
 #profile-project-namedate{

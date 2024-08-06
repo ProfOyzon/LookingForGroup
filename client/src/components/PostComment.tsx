@@ -4,6 +4,7 @@ import * as paths from "../constants/routes";
 import profilePlaceholder from "../img/profile-user.png";
 import { profiles, comments } from "../constants/fakeData";
 
+
 //This component is used in the Project Post page, and contains code for structuring the full length of a comment
 //  This includes the comment itself, as well as any replies the comment has.
 //  Comprised of 2 different components that are repeatedly used to fully construct a full comment

@@ -295,15 +295,25 @@ orange-button class makes the button orange, white-button class makes the button
     background-color: var(--orange-hover);
 }
 
-.white-button {
+/*icon button has an icon in it*/
+.white-button, .icon-button {
     background-color: var(--white);
     color: black;
     border: none;
     cursor: pointer;
 }
 
-.white-button:hover {
+.white-button:hover, .icon-button:hover {
     background-color: #D0D0D0;
+}
+
+.icon-button{
+    width: 5vh;
+    height: 5vh;
+}
+
+.icon-button > img{
+    width: 100%;
 }
 
 /*rules for the 'return' button*/

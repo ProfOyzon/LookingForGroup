@@ -1,6 +1,7 @@
 import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
+import menu from "../../img/menu.png"
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as paths from "../../constants/routes";
@@ -178,7 +179,7 @@ const ProjectInfo = (props) => {
         <div id='header-buttons'>
           <button id='follow-project' className='orange-button' onClick={followProject}>Follow</button>
           <div id='more-options'>
-            <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>...</button>
+            <button id='more-options-button' className='icon-button' onClick={toggleOptionDisplay}><img src = {menu}></img></button>
             <div id='more-options-popup' className='hide'>
               <button className='white-button' onClick={blockProject}>Block</button>
               <button className='white-button' onClick={reportProject}>Report</button>
@@ -465,8 +466,8 @@ const ProjectInfoMember = (props) => {
         <h1 id='project-title'>{props.projectData.name}</h1>
         <div id='header-buttons'>
           <div id='more-options'>
-            <button id='more-options-button' className='white-button' onClick={toggleOptionDisplay}>
-              ...</button>
+            <button id='more-options-button' className='icon-button' onClick={toggleOptionDisplay}>
+            <img src = {menu}></img></button>
             <div id='more-options-popup' className='hide'>
               <button className='white-button' onClick={openSettings}>Project Settings</button>
               <button className='white-button' onClick={leaveProject}>Leave Project</button>

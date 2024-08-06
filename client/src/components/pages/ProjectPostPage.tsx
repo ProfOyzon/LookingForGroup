@@ -1,6 +1,7 @@
 import "./pages.css";
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
+import menu from "../../img/menu.png"
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import * as paths from "../../constants/routes";
@@ -180,7 +181,7 @@ const ProjectPostPage = (props) => {
         <img id='post-project-image' src={profilePlaceholder} alt='project image'/>
         <h2 id='post-project-name'>{projects[projectId].name}</h2>
         <button className='orange-button'>Follow</button>
-        <button className='white-button'>...</button>
+        <button className='icon-button'><img src = {menu}></img></button>
       </div>
 
       <hr/>
@@ -188,7 +189,7 @@ const ProjectPostPage = (props) => {
       <div id='post-page-content'>
         <div id='post'>
           <h3 id='post-name'>{postData.title}</h3>
-          <button id='post-options' className='white-button'>...</button>
+          <button id='post-options' className='icon-button'><img src = {menu}></img></button>
 
           <div id='post-content'>
             {postData.postText}

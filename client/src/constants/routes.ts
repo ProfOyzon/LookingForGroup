@@ -12,5 +12,6 @@ export const routes = {
     "CREATEPROJECT":"/createProject",
     "MESSAGEHISTORY":"/messageHistory",
     "SETTINGS": "/settings",
+    "CREDITS": "/credits",
     "NOTFOUND": "/notFound",
 }

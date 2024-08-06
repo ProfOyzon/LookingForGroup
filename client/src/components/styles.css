@@ -862,6 +862,15 @@ Profile page style rules
     text-align: left;
 }
 
+#profile-page {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+#profile-page>*{
+    height: fit-content;
+}
+
 #profile-header-wrapper{
     margin: 10px;
 }
@@ -878,6 +887,7 @@ Profile page style rules
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
 }
 
 #profile-pfp{
@@ -893,7 +903,7 @@ Profile page style rules
 
     width: 200px;
     height: 200px;
-    margin-left: 180px;
+    margin-left: 230px;
     margin-top: 165px;
 }
 #user-options-popup button {
@@ -902,15 +912,6 @@ Profile page style rules
     width: 90%;
     height: 20%;
     margin: 2.5% auto;
-}
-
-#profile-page {
-    display: grid;
-    grid-template-columns: 50% 50%;
-}
-
-#profile-page>*{
-    height: fit-content;
 }
 
 #profile-skill-list, #profile-preferences-list
@@ -958,8 +959,8 @@ Profile page style rules
     }
 
     #user-options-popup {
-        margin-left: 50px;
-        margin-top: 245px;
+        margin-left: 100px;
+        margin-top: 265px;
     }
 }
 

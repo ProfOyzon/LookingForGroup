@@ -5,6 +5,7 @@ import messageImg from '../../img/message.png';
 import resumeImg from '../../img/resume.png';
 import menu from '../../img/menu.png';
 import { PagePopup, openClosePopup } from "../PagePopup";
+import { useState } from 'react';
 
 const toggleUserOptions = () => {
   let popup = document.getElementById("user-options-popup");
@@ -12,7 +13,12 @@ const toggleUserOptions = () => {
 }
 
 
+
+
 export const ProfileHeader = ({user}) => {
+  const [showPopup, setShowPopup] = useState(false);
+  let openPopups = [showPopup];
+  
     return(
       <div id = "profile-header-wrapper">
         <div id = "profile-header">
@@ -38,7 +44,14 @@ export const ProfileHeader = ({user}) => {
               <button className='icon-button' onClick={() => window.location.href="https://discord.com"}><img src={discordImg}></img></button>
               <button className='icon-button' onClick={() => window.location.href="https://twitter.com"}><img src={twitterImg}></img></button>
               <button className='icon-button' onClick={() => window.location.href="messages"}><img src={messageImg}></img></button>
-              <button className='icon-button'><img src={resumeImg}></img></button>
+              <button className='icon-button' onClick={() => openClosePopup(showPopup, setShowPopup, openPopups)} ><img src={resumeImg}></img></button>
+
+              <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={openPopups}>
+                <div id='profile-resume-window'>
+                    <p>resume goes here</p>
+                </div>
+              </PagePopup>
+
             </div>
           </div>
         </div>

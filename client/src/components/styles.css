@@ -886,6 +886,24 @@ Profile page style rules
     width: auto;
 }
 
+#user-options-popup {
+    position: absolute;
+    background-color: white;
+    box-shadow: 2px 2px 5px black;
+
+    width: 200px;
+    height: 200px;
+    margin-left: 180px;
+    margin-top: 165px;
+}
+#user-options-popup button {
+    display: block;
+    border: 1px solid rgb(209, 209, 209);
+    width: 90%;
+    height: 20%;
+    margin: 2.5% auto;
+}
+
 #profile-page {
     display: grid;
     grid-template-columns: 50% 50%;
@@ -937,6 +955,11 @@ Profile page style rules
     {
         width: 80%;
         margin: 1%;
+    }
+
+    #user-options-popup {
+        margin-left: 50px;
+        margin-top: 245px;
     }
 }
 

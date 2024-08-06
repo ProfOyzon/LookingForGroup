@@ -41,11 +41,11 @@ const Profile = (props) => {
       <div id="profile-page">
         <ProfileHeader user={user}/>
         <ProfilePreferences user={user}/>
-        <ProfileSkills user={user}/>
         <div>
-          <ProfileProjects user={user}/>
+          <ProfileSkills user={user}/>
           <ProfileEndorsements user={user}/>
         </div>
+          <ProfileProjects user={user}/>
       </div>
         <ProfileGallery/>
     </div>

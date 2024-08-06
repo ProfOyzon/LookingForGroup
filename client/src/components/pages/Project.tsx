@@ -11,13 +11,30 @@ import { GeneralSettings } from "../projectPageComponents/GeneralSettings";
 import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { RoleListing } from "../projectPageComponents/RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
-import { projects, posts } from "../../constants/fakeData";
+import { projects, posts, profiles } from "../../constants/fakeData";
+
+//Styling changes needed:
+/*
+-Move return button to left side (again?)
+-Display project creator's  username
+-Display at least 2 tags in header
+-Add indicator to whether project is actively being made or not
+-Move members to header, also include number of members
+-How will members be displayed when they're clicked?
+-Add 'gallery' section (No idea what goes in there, though)
+-Update project posts section to project forum
+-No page scrolling, instead use left/right scroll areas for gallery & forum
+-No follow button?
+-No more options dropdown?
+*/
 
 //This is the Project page component, which contains a layout that allows for displaying project info
 //More info and comments on individual parts are found above their respective parts
 
 // holds the id number of the current project being displayed. Used to reference the database.
 let projectId;
+// holds string containing the username of the project's creator
+let projectOwner: string;
 
 // Data for a dummy project, used when re-rendering the page after saving settings
 const dummyProject = {
@@ -141,6 +158,19 @@ const leaveProject = () => {
   //remove user from project members list
 }
 
+const createMemberCount = (projectData) => {
+  if (projectData.members.length >= 1000){
+    if (projectData.members.length >= 1000000) {
+      return (`${Math.trunc(projectData.members.length/1000000)} Members`);
+    }
+    return (`${Math.trunc(projectData.members.length/1000)} Members`);
+  } else if (projectData.members.length === 1) {
+    return (`1 Member`);
+  } else {
+    return (`${projectData.members.length} Members`);
+  }
+}
+
 //Opens/closes the additional project options dropdown menu
 //Works for both the project member and non-project member views
 const toggleOptionDisplay = () => {
@@ -154,13 +184,35 @@ const toggleOptionDisplay = () => {
 //Should only be accessible to the project's creator
 const deleteProject = (callback) => {
   //Close popups
-  openClosePopup(1);
-  openClosePopup(0);
+  //openClosePopup(showPopup2, setShowPopup2, openPopups);
+  //openClosePopup(showPopup1, setShowPopup1, openPopups);
   //Delete project from database
   //Error caused by typescript, code still runs correctly
   projects.splice(projects.indexOf(projects.find(p => p._id === projectId)), 1);
   //Redirect to the MyProjects page
   callback(paths.routes.MYPROJECTS);
+}
+
+// Small component used as part of a popup containing project member info
+// Since both member and non-member views will need to use this, it will be used in the main Project.tsx component
+// projectData is passed in through props, containing the current project's data
+const ProjectMemberPopup = (props) => {
+  let key = 0;
+  return (
+    <>
+    <h1>Members</h1>
+    <hr/>
+    <div id='project-member-chart'>
+      {
+        props.projectData.members.map(member => {
+          return (
+            <ProjectMember onClick={() => window.location.href="profile"} memberId={member.userID} role={member.role}  key={key++}/>
+          );
+        })
+      }
+    </div>
+    </>
+  )
 }
 
 // Page header that displays for users that are not members of the project
@@ -176,6 +228,19 @@ const ProjectInfo = (props) => {
 
       <div id='project-header'>
         <h1 id='project-title'>{props.projectData.name}</h1>
+        <div id='project-creator'>Created by: {projectOwner}</div>
+        <div id='project-tags'>
+          <div className='project-tag'>{props.projectData.tags[0]}</div>
+          <div className='project-tag'>{props.projectData.tags[1]}</div>
+        </div>
+        <div id='project-status'>Status: Active</div>
+        <div id='project-member-count'>{createMemberCount(props.projectData)}</div>
+        <div id='project-member-preview'>
+          <img id='member-preview-1' src={profilePlaceholder}/>
+          <img id='member-preview-2' src={profilePlaceholder}/>
+          <img id='member-preview-3' src={profilePlaceholder}/>
+          <span>Show all members</span>
+        </div>
         <div id='header-buttons'>
           <button id='follow-project' className='orange-button' onClick={followProject}>Follow</button>
           <div id='more-options'>
@@ -574,7 +639,10 @@ const ProjectInfoMember = (props) => {
 const Project = (props) => {
   window.scrollTo(0,0);
 
-  let keys = [0, 0, 0]; //keys are not required for functionality, but react will give an error without it when using .map functions later
+  let keys = [0, 0, 0, 0]; //keys are not required for functionality, but react will give an error without it when using .map functions later
+
+  //useState for members popup
+  const [showPopup, setShowPopup] = useState(false);
 
   //Pulls project ID number from search query (should be stored as 'p')
   //(ex. [site path]/project?p=x , where x = the project ID number)
@@ -602,6 +670,9 @@ const Project = (props) => {
 
   //Pass project data for rendering purposes
   const [projectData, setProjectData] = useState(currentProject);
+
+  //Store project owner's username
+  projectOwner = profiles.find(p => p._id === projectData.members.find(p => p.owner === true).userID).username;
 
   //Workaround function to update data on a project save
   //Necessary due to how setting useState variables works
@@ -635,7 +706,7 @@ const Project = (props) => {
       <button id='return-button' className='white-button' onClick={() => window.history.back()}>&lt; return</button>
       </div>
 
-      <ProjectInfoMember callback={resetProjectData} projectData={projectData}/>
+      <ProjectInfo callback={resetProjectData} projectData={projectData}/>
 
       <div id='member-divider'>
         <hr/>
@@ -664,6 +735,10 @@ const Project = (props) => {
           })
         }
       </div>
+
+      <PagePopup width={'80vw'} height={'80vh'} popupId={3} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={[showPopup]}>
+        <ProjectMemberPopup projectData={projectData}/>
+      </PagePopup>
     </div>
   );
 }

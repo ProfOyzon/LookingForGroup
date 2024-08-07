@@ -65,16 +65,13 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
             </div>
           </div>
 
-          {/* <div className="setting-in-page">
-            <h3>Profile Picture</h3>
-            <div className="setting-content">
-              <div className="displayProfilePic">
-                <img src={profileImage ? profileImage : 'images/icons/profile-black.png'} alt="Profile Pic" />
-              </div>
-              <button className="settingsBtns" onClick={() => { setShowAvatarModal(true); }}>Edit Avatar</button>
-            </div>
-          </div> */}
+          {/* Not sure if this is possible
+              Looks like we would need to translate everything ourselves/have 
+              different versions of the site in different languages and switch between them
 
+              unless it's possible to use a library that does this for us?
+              would need to look into this more
+          */}
           <div className="setting-in-page">
             <h3>Language</h3>
             <div className="setting-content">
@@ -127,7 +124,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
 
           *************************************************************/}
         <div className={`settings-page-tab-contents ${activeTab === "privacy" ? "settings-page-active-tab" : ""}`} id="privacy">
-          <div>privacy settings go here</div>
+          {/* <div>privacy settings go here</div> */}
 
           <ProfileVisibilitySetting />
 
@@ -165,7 +162,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
 
           *************************************************************/}
         <div className={`settings-page-tab-contents ${activeTab === "syncing" ? "settings-page-active-tab" : ""}`} id="syncing">
-          <div>syncing options go here</div>
+          {/* <div>syncing options go here</div> */}
           <div className="setting-in-page">
             <h3></h3>
             <div className="setting-content"></div>
@@ -180,7 +177,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
 
           *************************************************************/}
         <div className={`settings-page-tab-contents ${activeTab === "account" ? "settings-page-active-tab" : ""}`} id="account">
-          <div>account settings go here</div>
+          {/* <div>account settings go here</div> */}
 
           {/* logout */}
           <div className="setting-in-page">
@@ -193,6 +190,18 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
             </div>
           </div>
 
+          {/* display name */}
+          <div className="setting-in-page">
+            <h3>Display Name</h3>
+            <div className="setting-content">
+              <div className="row displayName">
+                <input type="text" placeholder="myDisplayedName" value="" />
+                <img src="images/icons/pencil.png" alt="pencil icon" />
+              </div>
+            </div>
+          </div>
+
+          {/* username */}
           <div className="setting-in-page">
             <h3>Username</h3>
             <div className="setting-content">
@@ -203,16 +212,18 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
             </div>
           </div>
 
+          {/* email */}
           <div className="setting-in-page">
             <h3>Email</h3>
             <div className="setting-content">
               <div className="column">
                 <input className="textInput" type="email" value="myemail@gmail.com" disabled />
-                <button className="settingsBtns" >Change</button>
+                <button className="settingsBtns">Change</button>
               </div>
             </div>
           </div>
 
+          {/* password */}
           <div className="setting-in-page">
             <h3>Change Password</h3>
             <div className="setting-content">
@@ -223,6 +234,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
             </div>
           </div>
 
+          {/* delete account */}
           <div className="setting-in-page">
             <h3>Delete Account
               <br></br>
@@ -232,7 +244,10 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
               <button className="settingsBtns" >Delete Account</button>
             </div>
           </div>
-
+          
+          {/* Space at the bottom of the page
+              mostly for mobile so the last setting isn't hidden by the nav bar
+          */}
           <div id="setting-spacer" ></div>
         </div>
 

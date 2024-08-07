@@ -493,6 +493,10 @@ Sidebar Nav style rules
     font-weight: 600;
 }
 
+.Logout button:hover {
+    background-color: rgb(199, 198, 198);
+}
+
 /* .Logout button:hover {
     transition-duration: 0.25s;
     background-color: var(--orange);
@@ -809,7 +813,7 @@ Discover page style rules
 }
 
 .discover-button-inactive:hover {
-    background-color: rgb(126, 124, 124);
+    background-color: rgb(199, 198, 198);
 }
 
 .discover-button-active {
@@ -1983,6 +1987,10 @@ Messages page style rules
     color: rgb(126, 124, 124);
 }
 
+.message-line-user:hover {
+    text-decoration: underline;
+}
+
 @media only screen and (max-width: 800px) {
     /*responsiveness goes here*/
 }
@@ -2122,6 +2130,29 @@ Settings page style rules
     transition: .2s;
 }
 
+.displayName {
+    input {
+        width: 180px;
+        height: 30px;
+        padding: 5px;
+        margin-right: 10px;
+        border-bottom: 1px solid var(--medGray);
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        background-color: white;
+        font-size: 16px;
+        text-align: left;
+        font-weight: 600;
+        outline: none;
+    }
+
+    img {
+        width: 25px;
+        height: 25px;
+    }
+}
+
 .textInput {
     width: 200px;
     height: 30px;
@@ -2247,7 +2278,7 @@ Login and Signup page style rules
 */
 
 .error {
-    color: var(--primary-blue);
+    color: var(--orange);
     font-weight: 500;
     height: 24px;
     font-size: 14px;
@@ -2529,6 +2560,14 @@ Signup process modal style rules
     font-size: 28px;
     color: var(--orange);
     width: 500px;
+    text-align: center;
+
+    p {
+        font-size: 15px;
+        color: black;
+        margin: 10px;
+        font-weight: 400;
+    }
 }
 
 /* buttons */
@@ -2603,6 +2642,33 @@ Signup process modal style rules
     align-items: center;
     overflow-y: auto;
     margin: 20px;
+}
+
+.edit-interest-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px;
+    padding: 0 20px;
+
+    h4 {
+        margin: 10px;
+    }
+
+    input {
+        width: 340px;
+        height: 30px;
+        padding: 5px 20px;
+        font-size: 15px;
+        border: 2px solid var(--lightGray);
+        border-radius: 50px;
+        background-color: white;
+        color: black;
+        font-weight: 400;
+        align-self: center;
+    }
 }
 
 #profile-details {

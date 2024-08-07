@@ -1038,7 +1038,7 @@ Project page style rules
     display: grid;
     grid-template: auto auto auto/ auto auto auto;
     grid-template-areas: 'title status buttons'
-                         'creator count buttons'
+                         'owner count buttons'
                          'tags members buttons';
     gap: 5px;
 }
@@ -1053,8 +1053,8 @@ Project page style rules
     margin-bottom: auto;
 }
 
-#project-creator {
-    grid-area: creator
+#project-owner {
+    grid-area: owner
 }
 
 #project-member-count {
@@ -1097,6 +1097,12 @@ Project page style rules
     right:0px;
 }
 
+#project-member-preview span:hover{
+    color: var(--hover-blue);
+    text-decoration:underline;
+    cursor: pointer;
+}
+
 #member-preview-1 {
     left:0px;
 }
@@ -1120,6 +1126,15 @@ Project page style rules
 #follow-project {
     width: 100px;
     height: 40px;
+}
+
+/*rules for the member details popup*/
+#project-member-chart {
+    padding: 0 calc((rem(80vw, 200px) / 2) - 20px);
+    height: calc(80vh - 100px);
+    display:flex;
+    flex-wrap:wrap;
+    overflow-y:auto;
 }
 
 /*rules for the more options dropdown menu*/
@@ -1317,6 +1332,7 @@ used to help wrap the lines around the word 'Members'*/
 /*rules for the individual member items*/
 .project-member {
     width: 200px;
+    height: 160px;
     min-width: 200px;
     cursor: pointer;
 }

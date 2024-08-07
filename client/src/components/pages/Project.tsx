@@ -229,7 +229,7 @@ const ProjectInfo = (props) => {
 
       <div id='project-header'>
         <h1 id='project-title'>{props.projectData.name}</h1>
-        <div id='project-creator'>Created by: {projectOwner}</div>
+        <div id='project-owner'>Created by: {projectOwner}</div>
         <div id='project-tags'>
           <Tags className='project-tag'>{props.projectData.tags[0]}</Tags>
           <Tags className='project-tag'>{props.projectData.tags[1]}</Tags>
@@ -240,7 +240,7 @@ const ProjectInfo = (props) => {
           <img id='member-preview-1' src={profilePlaceholder}/>
           <img id='member-preview-2' src={profilePlaceholder}/>
           <img id='member-preview-3' src={profilePlaceholder}/>
-          <span>Show all members</span>
+          <span onClick={props.callback2}>Show all members</span>
         </div>
         <div id='header-buttons'>
           <button id='follow-project' className='orange-button' onClick={followProject}>Follow</button>
@@ -278,6 +278,9 @@ const ProjectInfo = (props) => {
 // Includes options to access project settings, leave the project, and edit what is displayed in the 'looking for' window
 // May need further variants depending on whether the user is a regular member, an admin, or the owner
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
+
+// To-do: add new header layout elements to this component
+// This will be mostly identical to the non-member component above
 
 // Utilizes the 'PagePopup' component for project settings, and 'GeneralSettings' as the first rendered tab within it
 // projectData and a callback for resetProjectData are passed in through props
@@ -707,7 +710,7 @@ const Project = (props) => {
       <button id='return-button' className='white-button' onClick={() => window.history.back()}>&lt; return</button>
       </div>
 
-      <ProjectInfo callback={resetProjectData} projectData={projectData}/>
+      <ProjectInfo callback={resetProjectData} callback2={() => openClosePopup(showPopup, setShowPopup, [showPopup])} projectData={projectData}/>
 
       <div id='member-divider'>
         <hr/>

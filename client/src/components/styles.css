@@ -794,7 +794,7 @@ Discover page style rules
 /*discover button is used for Projects/People selection*/
 .discover-button {
     border-radius: 10px;
-    border: 2px solid var(--orange);
+    border: 2px solid var(--primary-blue);
     font-size: 1.5vw;
     font-weight: bold;
     padding: 0.6vw;
@@ -804,7 +804,7 @@ Discover page style rules
 
 .discover-button-inactive {
     background-color: white;
-    color: var(--orange);
+    color: var(--primary-blue);
 }
 
 .discover-button-inactive:hover {
@@ -812,13 +812,13 @@ Discover page style rules
 }
 
 .discover-button-active {
-    background-color: var(--orange);
+    background-color: var(--primary-blue);
     color: white;
 }
 
 .discover-button-active:hover {
-    background-color: var(--orange-hover);
-    border-color: var(--orange-hover);
+    background-color: var(--hover-blue);
+    border-color: var(--hover-blue);
 }
 
 #discover-button-wrapper {
@@ -2097,19 +2097,19 @@ Settings page style rules
 
 .settingsBtns {
     background-color: white;
-    color: var(--orange);
+    color: var(--primary-blue);
     width: fit-content;
     height: 40px;
     padding: 5px 20px;
     font-size: 16px;
     border: none;
     border-radius: 10px;
-    outline: solid var(--orange) 2px;
+    outline: solid var(--primary-blue) 2px;
     font-weight: 900;
 }
 
 .settingsBtns:hover {
-    background-color: var(--orange);
+    background-color: var(--primary-blue);
     color: white;
     transition: .2s;
 }
@@ -2179,7 +2179,7 @@ Settings page style rules
 }
 
 input:checked+.slider {
-    background-color: var(--orange);
+    background-color: var(--primary-blue);
 }
 
 input:focus+.slider {
@@ -2208,7 +2208,7 @@ input:checked+.slider:before {
     height: 20px;
     border-radius: 50%;
     outline: 2px solid white;
-    background: var(--orange);
+    background: var(--primary-blue);
     cursor: pointer;
 }
 
@@ -2217,7 +2217,7 @@ input:checked+.slider:before {
     height: 20px;
     border-radius: 50%;
     outline: 2px solid white;
-    background: var(--orange);
+    background: var(--primary-blue);
     cursor: pointer;
 }
 
@@ -2239,7 +2239,7 @@ Login and Signup page style rules
 */
 
 .error {
-    color: var(--orange);
+    color: var(--primary-blue);
     font-weight: 500;
     height: 24px;
     font-size: 14px;
@@ -2248,7 +2248,7 @@ Login and Signup page style rules
 
 .background-cover {
     position: fixed;
-    z-index: 2;
+    z-index: 20;
     width: 100vw;
     height: 100vh;
     background-color: white;
@@ -2899,6 +2899,6 @@ Credits link footer style rules
     left: 220px;
     /* box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px; */
     z-index: 2;
-    background-color: deepskyblue;
+    background-color: var(--primary-blue);
     /* text-align: end; */
 }

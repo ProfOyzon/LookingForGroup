@@ -32,11 +32,11 @@ const VolumeSettings = () => {
 
     // styling
     const musicStyle = {
-        background: `linear-gradient(to right, #F76902 ${musicValue}%, #D0D0D0 ${musicValue}%)`
+        background: `linear-gradient(to right, #239EF7 ${musicValue}%, #D0D0D0 ${musicValue}%)`
     };
 
     const sfxStyle = {
-        background: `linear-gradient(to right, #F76902 ${sfxValue}%, #D0D0D0 ${sfxValue}%)`
+        background: `linear-gradient(to right, #239EF7 ${sfxValue}%, #D0D0D0 ${sfxValue}%)`
     };
 
     return (

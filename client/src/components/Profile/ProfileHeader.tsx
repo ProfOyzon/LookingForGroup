@@ -12,19 +12,16 @@ const toggleUserOptions = () => {
   popup ? popup.classList.toggle("show") : console.log('element not found');
 }
 
-
-
-
 export const ProfileHeader = ({user}) => {
   const [showPopup, setShowPopup] = useState(false);
   let openPopups = [showPopup];
-  
+
     return(
       <div id = "profile-header-wrapper">
         <div id = "profile-header">
           <img id = "profile-pfp" src={pfp} width="100" height="100"></img>
           <div id = "profile-info">
-            <div id = "profile-name-button">
+            <div className = "profile-name-button">
               <h2 id="profile-name">{user.name}</h2>
               <button className="icon-button" onClick = {toggleUserOptions}><img src = {menu}/></button>
               <div id='user-options-popup' className='hide'>
@@ -39,7 +36,6 @@ export const ProfileHeader = ({user}) => {
             <div className="profile-list" id = "profile-links">
               {/*TODO: allow user to set their own links and icons for links- not just discord/twitter*/}
               {/*right now just uses 4 set icons/links*/}
-              {/*TODO: have user's resume show up in a popup window*/}
 
               <button className='icon-button' onClick={() => window.location.href="https://discord.com"}><img src={discordImg}></img></button>
               <button className='icon-button' onClick={() => window.location.href="https://twitter.com"}><img src={twitterImg}></img></button>
@@ -48,6 +44,7 @@ export const ProfileHeader = ({user}) => {
 
               <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={openPopups}>
                 <div id='profile-resume-window'>
+                    {/*TODO: have user's resume show up here*/}
                     <p>resume goes here</p>
                 </div>
               </PagePopup>

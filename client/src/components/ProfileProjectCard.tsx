@@ -14,7 +14,7 @@ export const ProfileProjectCard = ({projectID, userID}) => {
     const navigate = useNavigate();
     const pathQuery = `?projID=${project._id}`;
     return (
-        <div className="profile-project-card">
+        <div id="profile-project-card">
             <img id="profile-project-profile-picture" src={profilePicture} alt={project.name}/>
             <div id="profile-project-body">
                 <div id = "profile-project-namedate">

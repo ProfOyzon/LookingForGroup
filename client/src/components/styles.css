@@ -96,8 +96,8 @@ Card component style rules
 /*profile-project-card: used on the profile page to show projects the user is a part of*/
 /*message-card: used on the messages page for each user message*/
 .discover-card,
-.endorsement,
-.profile-project-card {
+#endorsement,
+#profile-project-card {
     width: 70%;
     max-width: 765px;
     max-height: 265px;
@@ -114,8 +114,8 @@ Card component style rules
 }
 
 /*makes them bigger when hovered over */
-.discover-card:hover .endorsement:hover,
-.profile-project-card:hover {
+.discover-card:hover #endorsement:hover,
+#profile-project-card:hover {
     transform: scale(1.05);
 }
 
@@ -160,17 +160,13 @@ Card component style rules
     align-items: center;
 }
 
-.endorsement {
+#profile-project-card{
+    width: 85%;
+}
+
+#endorsement {
     flex-direction: row;
-}
-
-#endorsement-body{
-
-
-}
-
-#endorsement-text{
-    
+    width: 85%;
 }
 
 #message-card {
@@ -496,6 +492,10 @@ Sidebar Nav style rules
     font-weight: 600;
 }
 
+.Logout button:hover {
+    background-color: rgb(199, 198, 198);
+}
+
 /* .Logout button:hover {
     transition-duration: 0.25s;
     background-color: var(--orange);
@@ -798,7 +798,7 @@ Discover page style rules
 /*discover button is used for Projects/People selection*/
 .discover-button {
     border-radius: 10px;
-    border: 2px solid var(--orange);
+    border: 2px solid var(--primary-blue);
     font-size: 1.5vw;
     font-weight: bold;
     padding: 0.6vw;
@@ -808,21 +808,21 @@ Discover page style rules
 
 .discover-button-inactive {
     background-color: white;
-    color: var(--orange);
+    color: var(--primary-blue);
 }
 
 .discover-button-inactive:hover {
-    background-color: rgb(126, 124, 124);
+    background-color: rgb(199, 198, 198);
 }
 
 .discover-button-active {
-    background-color: var(--orange);
+    background-color: var(--primary-blue);
     color: white;
 }
 
 .discover-button-active:hover {
-    background-color: var(--orange-hover);
-    border-color: var(--orange-hover);
+    background-color: var(--hover-blue);
+    border-color: var(--hover-blue);
 }
 
 #discover-button-wrapper {
@@ -872,6 +872,11 @@ Profile page style rules
     height: fit-content;
 }
 
+#profile-gallery{
+    width: 80%;
+    margin: 2% auto;
+}
+
 #profile-header-wrapper{
     margin: 10px;
 }
@@ -884,7 +889,9 @@ Profile page style rules
     gap: 2vw;
 }
 
-#profile-name-button{
+/*rule for a name with a button after it*/
+/*could probably be reused for other pages?*/
+.profile-name-button{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -913,6 +920,10 @@ Profile page style rules
     width: 90%;
     height: 20%;
     margin: 2.5% auto;
+}
+
+.profile-highlighted-skill{
+    border: 2px solid var(--orange);
 }
 
 #profile-skill-list, #profile-preferences-list
@@ -1968,6 +1979,10 @@ Messages page style rules
     color: rgb(126, 124, 124);
 }
 
+.message-line-user:hover {
+    text-decoration: underline;
+}
+
 @media only screen and (max-width: 800px) {
     /*responsiveness goes here*/
 }
@@ -2090,21 +2105,44 @@ Settings page style rules
 
 .settingsBtns {
     background-color: white;
-    color: var(--orange);
+    color: var(--primary-blue);
     width: fit-content;
     height: 40px;
     padding: 5px 20px;
     font-size: 16px;
     border: none;
     border-radius: 10px;
-    outline: solid var(--orange) 2px;
+    outline: solid var(--primary-blue) 2px;
     font-weight: 900;
 }
 
 .settingsBtns:hover {
-    background-color: var(--orange);
+    background-color: var(--primary-blue);
     color: white;
     transition: .2s;
+}
+
+.displayName {
+    input {
+        width: 180px;
+        height: 30px;
+        padding: 5px;
+        margin-right: 10px;
+        border-bottom: 1px solid var(--medGray);
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        background-color: white;
+        font-size: 16px;
+        text-align: left;
+        font-weight: 600;
+        outline: none;
+    }
+
+    img {
+        width: 25px;
+        height: 25px;
+    }
 }
 
 .textInput {
@@ -2172,7 +2210,7 @@ Settings page style rules
 }
 
 input:checked+.slider {
-    background-color: var(--orange);
+    background-color: var(--primary-blue);
 }
 
 input:focus+.slider {
@@ -2201,7 +2239,7 @@ input:checked+.slider:before {
     height: 20px;
     border-radius: 50%;
     outline: 2px solid white;
-    background: var(--orange);
+    background: var(--primary-blue);
     cursor: pointer;
 }
 
@@ -2210,7 +2248,7 @@ input:checked+.slider:before {
     height: 20px;
     border-radius: 50%;
     outline: 2px solid white;
-    background: var(--orange);
+    background: var(--primary-blue);
     cursor: pointer;
 }
 
@@ -2241,7 +2279,7 @@ Login and Signup page style rules
 
 .background-cover {
     position: fixed;
-    z-index: 2;
+    z-index: 20;
     width: 100vw;
     height: 100vh;
     background-color: white;
@@ -2514,6 +2552,14 @@ Signup process modal style rules
     font-size: 28px;
     color: var(--orange);
     width: 500px;
+    text-align: center;
+
+    p {
+        font-size: 15px;
+        color: black;
+        margin: 10px;
+        font-weight: 400;
+    }
 }
 
 /* buttons */
@@ -2588,6 +2634,33 @@ Signup process modal style rules
     align-items: center;
     overflow-y: auto;
     margin: 20px;
+}
+
+.edit-interest-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px;
+    padding: 0 20px;
+
+    h4 {
+        margin: 10px;
+    }
+
+    input {
+        width: 340px;
+        height: 30px;
+        padding: 5px 20px;
+        font-size: 15px;
+        border: 2px solid var(--lightGray);
+        border-radius: 50px;
+        background-color: white;
+        color: black;
+        font-weight: 400;
+        align-self: center;
+    }
 }
 
 #profile-details {
@@ -2892,6 +2965,6 @@ Credits link footer style rules
     left: 220px;
     /* box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px; */
     z-index: 2;
-    background-color: deepskyblue;
+    background-color: var(--primary-blue);
     /* text-align: end; */
 }

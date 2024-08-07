@@ -12,8 +12,8 @@ export const ItemMaker = ({ type, grabber }) => {
     const createInput = () => {
         if (type == "role") {
             return (
-                <select onChange = {
-                    e => {setItem(e.target.value)}
+                <select onChange={
+                    e => { setItem(e.target.value) }
                 }>
                     {
                         hardSkills.map(s => {
@@ -24,10 +24,21 @@ export const ItemMaker = ({ type, grabber }) => {
             )
         }
         else {
-            return <input type="text" onChange = {
-                e => {setItem(e.target.value)}
+            return <input type="text" onChange={
+                e => { setItem(e.target.value) }
             } />
         }
+    }
+
+    const deleteItem = (item) => {
+        arr.splice(arr.indexOf(item, 1));
+        setObj(
+            <div>
+                {arr.map((i) => {
+                    return <p onClick={() => deleteItem(i)}>{i}</p>
+                })}
+            </div>
+        )
     }
 
     return (
@@ -45,7 +56,7 @@ export const ItemMaker = ({ type, grabber }) => {
                     setObj(
                         <div>
                             {arr.map((i) => {
-                                return <p>{i}</p>
+                                return <p onClick={() => deleteItem(i)}>{i}</p>
                             })}
                         </div>
                     )

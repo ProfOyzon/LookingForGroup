@@ -226,47 +226,47 @@ export const profiles = [
             {
                 skill: softSkills[0],
                 type: "softSkill",
-                higlighted: true,
+                highlighted: true,
             },
             {
                 skill: softSkills[1],
                 type: "softSkill",
-                higlighted: true,
+                highlighted: true,
             },
             {
                 skill: softSkills[2],
                 type: "softSkill",
-                higlighted: false,
+                highlighted: false,
             },
             {
                 skill: softSkills[3],
                 type: "softSkill",
-                higlighted: false,
+                highlighted: false,
             },
             {
                 skill: hardSkills[0],
                 type: "hardSkill",
-                higlighted: true,
+                highlighted: true,
             },
             {
                 skill: hardSkills[1],
                 type: "hardSkill",
-                higlighted: false,
+                highlighted: false,
             },
             {
                 skill: hardSkills[2],
                 type: "hardSkill",
-                higlighted: false,
+                highlighted: false,
             },
             {
                 skill: proficiencies[0],
                 type: "proficiency",
-                higlighted: false,
+                highlighted: false,
             },
             {
                 skill: proficiencies[1],
                 type: "proficiency",
-                higlighted: false,
+                highlighted: false,
             },
         ],
         profilePicture: {
@@ -316,48 +316,48 @@ export const profiles = [
             {
                 skill: softSkills[0],
                 type: "softSkill",
-                higlighted: true,
+                highlighted: true,
             },
             {
                 skill: softSkills[1],
                 type: "softSkill",
-                higlighted: true,
+                highlighted: true,
                 
             },
             {
                 skill: softSkills[7],
                 type: "softSkill",
-                higlighted: false,
+                highlighted: false,
             },
             {
                 skill: softSkills[18],
                 type: "softSkill",
-                higlighted: false,
+                highlighted: false,
             },
             {
                 skill: hardSkills[6],
                 type: "hardSkill",
-                higlighted: true,
+                highlighted: true,
             },
             {
                 skill: hardSkills[4],
                 type: "hardSkill",
-                higlighted: false,
+                highlighted: false,
             },
             {
                 skill: proficiencies[8],
                 type: "proficiency",
-                higlighted: false,
+                highlighted: false,
             },
             {
                 skill: proficiencies[6],
                 type: "proficiency",
-                higlighted: false,
+                highlighted: false,
             },
             {
                 skill: proficiencies[15],
                 type: "proficiency",
-                higlighted: false,
+                highlighted: false,
             },
         ],
         profilePicture: {
@@ -408,17 +408,17 @@ export const profiles = [
             {
                 skill: softSkills[0],
                 type: "softSkill",
-                higlighted: true,
+                highlighted: true,
             },
             {
                 skill: hardSkills[1],
                 type: "hardSkill",
-                higlighted: true,
+                highlighted: true,
             },
             {
                 skill: proficiencies[2],
                 type: "proficiency",
-                higlighted: true,
+                highlighted: true,
             },
         ],
         profilePicture: {
@@ -450,17 +450,17 @@ export const profiles = [
             {
                 skill: softSkills[7],
                 type: "softSkill",
-                higlighted: true,
+                highlighted: true,
             },
             {
                 skill: hardSkills[3],
                 type: "hardSkill",
-                higlighted: true,
+                highlighted: true,
             },
             {
                 skill: proficiencies[8],
                 type: "proficiency",
-                higlighted: true,
+                highlighted: true,
             },
         ],
         profilePicture: {

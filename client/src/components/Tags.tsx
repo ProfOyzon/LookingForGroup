@@ -1,8 +1,8 @@
-
 /*component used for things like project tags or user skills */
-export const Tags = ({children}) => {
+/*can send in an extra classname for extra customizability*/
+export const Tags = ({children, className=""}) => {
     return (  
-        <div className="tag">
+        <div className={"tag" + " " + className}>
             <p className="tag-name">{children}</p>
         </div>
     );

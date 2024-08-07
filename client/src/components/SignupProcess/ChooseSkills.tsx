@@ -7,7 +7,7 @@ const skills = ["UI/UX", "Figma", "JavaScript", "Photoshop", "Illustrator", "HTM
 //
 // Choose top 5 skills component
 //
-const ChooseSkills = ({ show, onNext, onBack, selectedSkills, setSelectedSkills }) => {
+const ChooseSkills = ({ show, onNext, onBack, selectedSkills, setSelectedSkills, mode, onClose }) => {
     // Function to handle the skill selection
     const handleSkillSelect = (skill) => {
         // get the skill that was selected
@@ -34,8 +34,19 @@ const ChooseSkills = ({ show, onNext, onBack, selectedSkills, setSelectedSkills 
             <div className="signupProcess-modal">
                 <div className="ChooseSkills">
 
-                    <h1 id="signupProcess-title">Choose Your Top 5 Skills</h1>
-                    <p>You can add more and edit later</p>
+                    {/* different titles based on the mode */}
+                    {mode === "signup" ? (
+                        <>
+                            <h1 id="signupProcess-title">Choose Your Top 5 Skills</h1>
+                            <p>You can add more and edit later</p>
+                        </>
+                    ) : (
+                        <>
+                            <h1 id="signupProcess-title">Edit Skills</h1>
+                            <p>Add skills using the search bar, then select 5 skills to be highlighted on your page</p>
+                        </>
+                    )}
+
 
                     <div id="skill-select">
                         {skills.map((skill, index) => (

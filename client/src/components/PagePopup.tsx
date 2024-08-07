@@ -92,7 +92,7 @@ export const PagePopup = ({children, width, height, popupId, zIndex, show, setSh
         top: `clamp(2.5vh, calc((100% - ${height})/2), 100%)`, 
         left: `clamp(2.5vw, calc((100% - ${width})/2), 100%)`,
         zIndex: zIndex}}>
-        <button id='popup-close' className='white-button' onClick={() => openClosePopup(show, setShow, openPopups)}>
+        <button id='popup-close' className='icon-button' onClick={() => openClosePopup(show, setShow, openPopups)}>
           <img src="images/icons/cancel.png" alt="close" />
         </button>
         <div>{children}</div>

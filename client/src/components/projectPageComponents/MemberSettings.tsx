@@ -1,4 +1,3 @@
-import "../styles.css";
 import { MemberListing } from "./MemberListing";
 import { SearchBar } from "../SearchBar";
 import { projects, profiles } from "../../constants/fakeData";

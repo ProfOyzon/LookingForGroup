@@ -1,5 +1,5 @@
 import { Tags } from "../Tags";
-import edit from '../../img/edit.png';
+import edit from '../../icons/edit.png';
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { SearchBar } from "../SearchBar";
 import { useState } from 'react';

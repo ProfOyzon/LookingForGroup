@@ -1,7 +1,7 @@
-import "./styles.css";
+import "./Styles/styles.css";
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../constants/routes";
-import profilePlaceholder from "../img/profile-user.png";
+import profilePlaceholder from "../icons/profile-user.png";
 import { profiles, comments } from "../constants/fakeData";
 
 

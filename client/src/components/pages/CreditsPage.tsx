@@ -1,5 +1,5 @@
 import "./pages.css";
-import "../styles.css";
+import "../Styles/styles.css";
 import { useState } from 'react';
 
 const Credits = (props) => {

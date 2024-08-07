@@ -1,7 +1,7 @@
 import { ProjectCard } from "../ProjectCard";
 import{projects} from "../../constants/fakeData";
-import { ProfileProjectCard } from "../ProfileProjectCard";
-import edit from '../../img/edit.png';
+import { ProfileProjectCard } from "./ProfileProjectCard";
+import edit from '../../icons/edit.png';
 import { useState } from 'react';
 import { PagePopup, openClosePopup } from "../PagePopup";
 

@@ -1,5 +1,4 @@
-import "../styles.css"
-import profilePlaceholder from "../../img/profile-user.png";
+import profilePlaceholder from "../../icons/profile-user.png";
 
 //This component is used in the project member view of the project page
 //Contains the layout of the 'General' tab of the project settings menu

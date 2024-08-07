@@ -1,4 +1,4 @@
-import "./styles.css";
+import "./Styles/styles.css";
 
 //This component is meant to be reusable in any area of the site, acting as an element that can be
 //  opened or closed after performing certain actions.

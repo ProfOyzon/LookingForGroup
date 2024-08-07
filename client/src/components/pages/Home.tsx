@@ -4,7 +4,7 @@ import { ProfileCard } from "../ProfileCard";
 import { DiscoverButton } from "../DiscoverButton";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
-import "../styles.css";
+import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
 import { Children, useCallback } from "react";

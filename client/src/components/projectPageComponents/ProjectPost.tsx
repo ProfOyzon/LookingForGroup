@@ -1,5 +1,4 @@
-import "../styles.css"
-import postImagePlaceholder from "../../img/AhomeIcon.png";
+import postImagePlaceholder from "../../icons/AhomeIcon.png";
 import { useNavigate } from 'react-router-dom';
 import { posts } from '../../constants/fakeData';
 import * as paths from "../../constants/routes";

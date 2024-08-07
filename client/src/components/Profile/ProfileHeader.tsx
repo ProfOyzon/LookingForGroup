@@ -1,9 +1,9 @@
-import pfp from '../../img/profile-user.png';
-import discordImg from '../../img/discord.png';
-import twitterImg from '../../img/x.png';
-import messageImg from '../../img/message.png';
-import resumeImg from '../../img/resume.png';
-import menu from '../../img/menu.png';
+import pfp from '../../icons/profile-user.png';
+import discordImg from '../../icons/discord.png';
+import twitterImg from '../../icons/x.png';
+import messageImg from '../../icons/message.png';
+import resumeImg from '../../icons/resume.png';
+import menu from '../../icons/menu.png';
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { useState } from 'react';
 

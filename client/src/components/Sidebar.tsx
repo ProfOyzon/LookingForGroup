@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './styles.css';
 import * as paths from "../constants/routes";
 import { useSelector } from 'react-redux';
 

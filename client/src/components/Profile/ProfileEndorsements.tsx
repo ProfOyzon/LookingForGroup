@@ -1,5 +1,5 @@
 import { Endorsement } from "../Endorsement";
-import edit from '../../img/edit.png';
+import edit from '../../icons/edit.png';
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { useState } from 'react';
 

@@ -64,14 +64,14 @@ export const MemberListing = (props) => {
       Member Removed. Saving changes will finalize this.
       <button onClick={undoRemoveMember}>undo</button>
     </div>
-    <img className='member-settings-profile' src={profilePlaceholder} alt=''/>
+    <img className='member-settings-profile' src={profilePlaceholder} alt='profilePlaceholder'/>
     <span className='member-settings-name'>{props.name}</span>
     <span className='member-settings-role'>{props.role}</span>
     <input className='member-settings-role-input' type='text' defaultValue={props.role}></input>
     <button className='member-settings-edit' onClick={openCloseInput}>edit</button>
     <button className='member-settings-edit-done' onClick={saveRoleName}>done</button>
     <button className='member-settings-more' onClick={() => moreSettingsToggle(props.idNum)}>
-      <img src = {menu}/></button>
+      <img src = {menu} alt="menu"/></button>
     <div id={'member-settings-dropdown-' + props.idNum} className='settings-hide'>
       <button className='white-button' onClick={() => props.updateMemberSettings(1, props.idNum)}>Add/Remove Admin Role</button>
       <button className='white-button' onClick={() => props.updateMemberSettings(2, props.idNum)}>Add/Remove Mentor Role</button>

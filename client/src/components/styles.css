@@ -492,6 +492,10 @@ Sidebar Nav style rules
     font-weight: 600;
 }
 
+.Logout button:hover {
+    background-color: rgb(199, 198, 198);
+}
+
 /* .Logout button:hover {
     transition-duration: 0.25s;
     background-color: var(--orange);
@@ -808,7 +812,7 @@ Discover page style rules
 }
 
 .discover-button-inactive:hover {
-    background-color: rgb(126, 124, 124);
+    background-color: rgb(199, 198, 198);
 }
 
 .discover-button-active {

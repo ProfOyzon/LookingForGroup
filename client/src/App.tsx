@@ -45,7 +45,7 @@ function App() {
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
           <Route path={paths.routes.CREDITS} element={<Credits />} />
         </Routes>
-        <CreditsFooter />
+        {/* <CreditsFooter /> */}
       </div>
     </BrowserRouter>
   );

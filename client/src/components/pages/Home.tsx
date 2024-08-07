@@ -9,6 +9,7 @@ import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
 import { Children, useCallback } from "react";
 import { useState } from 'react';
+import CreditsFooter from '../CreditsFooter';
 
 const Home = (props) => {
 
@@ -77,6 +78,8 @@ const Home = (props) => {
             {/* Prints all projects in the fake dataset on screen */}
             {discoverContent}
             {/* <ProfileCard profile={profiles[0]}></ProfileCard> */}
+
+            <CreditsFooter />
 
         </div>
     );

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import * as paths from "./constants/routes";
 import React, { useState } from 'react';
 import Login from './components/pages/Login';
-import SignUp from './components/pages/Signup';
+import SignUp from './components/pages/SignUp';
 import Home from "./components/pages/Home";
 import Messages from "./components/pages/Messages";
 import MyFeed from "./components/pages/MyFeed";

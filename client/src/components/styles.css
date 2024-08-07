@@ -2241,7 +2241,7 @@ Login and Signup page style rules
 
 .background-cover {
     position: fixed;
-    z-index: 2;
+    z-index: 20;
     width: 100vw;
     height: 100vh;
     background-color: white;

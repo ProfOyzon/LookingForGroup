@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 import MakeAvatarModal from "../AvatarCreation/MakeAvatarModal";
 import ChooseSkills from "../SignupProcess/ChooseSkills";
-import ChooseProficiencies from "../SignupProcess/ChooseProficiencies";
+// import ChooseProficiencies from "../SignupProcess/ChooseProficiencies";
 import ChooseInterests from "../SignupProcess/ChooseInterests";
 import CompleteProfile from "../SignupProcess/CompleteProfile";
 import GetStarted from "../SignupProcess/GetStarted";
@@ -24,14 +24,14 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     // State variables for modals
     const [showAvatarModal, setShowAvatarModal] = useState(false);
     const [showSkillsModal, setShowSkillsModal] = useState(false);
-    const [showProficienciesModal, setShowProficienciesModal] = useState(false);
+    // const [showProficienciesModal, setShowProficienciesModal] = useState(false);
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [showCompleteProfileModal, setShowCompleteProfileModal] = useState(false);
     const [showGetStartedModal, setShowGetStartedModal] = useState(false);
 
     // State variables for selected buttons
     // to remeber the user's choices when they go back and forth between modals
-    const [selectedProficiencies, setSelectedProficiencies] = useState<string[]>([]); // State variable for the selected proficiencies
+    // const [selectedProficiencies, setSelectedProficiencies] = useState<string[]>([]); // State variable for the selected proficiencies
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]); // State variable for the selected skills
     const [selectedInterests, setSelectedInterests] = useState<string[]>([]); // State variable for the selected interests
     const [pronouns, setPronouns] = useState(''); // State variable for the user's pronouns
@@ -44,7 +44,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
         email: email,
         username: username,
         password: password,
-        proficiencies: selectedProficiencies,
+        // proficiencies: selectedProficiencies,
         skills: selectedSkills,
         interests: selectedInterests,
         pronouns: pronouns,
@@ -76,8 +76,11 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
             else {
                 // show the proficiencies modal
                 // from the modal links through the process
-                // profficiencies -> skills -> interests -> avatar -> complete profile --> home
-                setShowProficienciesModal(true);
+                // skills -> interests -> avatar -> complete profile --> home
+                // At the moment don't think we need proficiencies, 
+                // if we decide to add it in later, change the below to setShowProficienciesModal(true)
+                // and uncomment all the proficiencies code
+                setShowSkillsModal(true);
             }
         }
 
@@ -163,17 +166,17 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
 
                     {/* Modals */}
 
-                    <ChooseProficiencies
+                    {/* <ChooseProficiencies
                         onNext={() => { setShowProficienciesModal(false); setShowSkillsModal(true); }}
                         onBack={() => { setShowProficienciesModal(false); }}
                         show={showProficienciesModal}
                         selectedProficiencies={selectedProficiencies}
                         setSelectedProficiencies={setSelectedProficiencies}
-                    />
+                    /> */}
 
                     <ChooseSkills
                         onNext={() => { setShowSkillsModal(false); setShowInterestsModal(true); }}
-                        onBack={() => { setShowSkillsModal(false); setShowProficienciesModal(true); }}
+                        onBack={() => { setShowSkillsModal(false); }} // if we are using the proficiencies modal, add setShowProficienciesModal(true); to the end
                         show={showSkillsModal}
                         selectedSkills={selectedSkills}
                         setSelectedSkills={setSelectedSkills}

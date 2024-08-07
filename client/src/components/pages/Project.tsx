@@ -12,6 +12,7 @@ import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { RoleListing } from "../projectPageComponents/RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts, profiles } from "../../constants/fakeData";
+import { Tags } from "../Tags";
 
 //Styling changes needed:
 /*
@@ -230,8 +231,8 @@ const ProjectInfo = (props) => {
         <h1 id='project-title'>{props.projectData.name}</h1>
         <div id='project-creator'>Created by: {projectOwner}</div>
         <div id='project-tags'>
-          <div className='project-tag'>{props.projectData.tags[0]}</div>
-          <div className='project-tag'>{props.projectData.tags[1]}</div>
+          <Tags className='project-tag'>{props.projectData.tags[0]}</Tags>
+          <Tags className='project-tag'>{props.projectData.tags[1]}</Tags>
         </div>
         <div id='project-status'>Status: Active</div>
         <div id='project-member-count'>{createMemberCount(props.projectData)}</div>

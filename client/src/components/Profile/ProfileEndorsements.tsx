@@ -31,7 +31,12 @@ export const ProfileEndorsements = ({user}) => {
 
         <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={openPopups}>
           <div id="profile-edit-endorsements" className="profile-edit">
-              <p>edit endorsements here</p>
+            <h1>Edit Endorsements</h1>
+              <h3>Select endorsements to be highlighted on your page</h3>
+              <h3>My Endorsements: </h3>
+              <div id = "profile-edit-enorsements-list" className="profile-list">
+                {listContent}
+              </div>
           </div>
         </PagePopup>
 

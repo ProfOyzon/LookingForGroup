@@ -1979,6 +1979,10 @@ Messages page style rules
     color: rgb(126, 124, 124);
 }
 
+.message-line-user:hover {
+    text-decoration: underline;
+}
+
 @media only screen and (max-width: 800px) {
     /*responsiveness goes here*/
 }

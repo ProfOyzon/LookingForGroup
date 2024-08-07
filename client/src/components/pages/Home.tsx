@@ -63,7 +63,8 @@ const Home = (props) => {
 
     return (
         <div className="page">
-            <div id="containerId"><NotifButton></NotifButton></div>
+            {/* Notifications are in the navigation bar for now */}
+            {/* <div id="containerId"><NotifButton></NotifButton></div> */}
 
             <h1 className="page-title">Discover</h1>
 

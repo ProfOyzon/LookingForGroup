@@ -16,6 +16,8 @@ import NotFound from "./components/pages/NotFound";
 import SideBar from "./components/Sidebar";
 import MessageHistory from './components/pages/MessageHistory';
 import CreateProject from './components/pages/CreateProject';
+import CreditsFooter from './components/CreditsFooter';
+import Credits from './components/pages/CreditsPage';
 
 
 function App() {
@@ -41,7 +43,9 @@ function App() {
           <Route path={paths.routes.SETTINGS} element={<Settings avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
+          <Route path={paths.routes.CREDITS} element={<Credits />} />
         </Routes>
+        <CreditsFooter />
       </div>
     </BrowserRouter>
   );

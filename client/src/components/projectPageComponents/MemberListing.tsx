@@ -1,5 +1,6 @@
 import "../styles.css";
 import profilePlaceholder from "../../img/profile-user.png";
+import menu from "../../img/menu.png"
 
 //This component is used in the MemberSettings component,
 //  where it is used to render one listing of a full list of project members
@@ -70,7 +71,7 @@ export const MemberListing = (props) => {
     <button className='member-settings-edit' onClick={openCloseInput}>edit</button>
     <button className='member-settings-edit-done' onClick={saveRoleName}>done</button>
     <button className='member-settings-more' onClick={() => moreSettingsToggle(props.idNum)}>
-      ...</button>
+      <img src = {menu}/></button>
     <div id={'member-settings-dropdown-' + props.idNum} className='settings-hide'>
       <button className='white-button' onClick={() => props.updateMemberSettings(1, props.idNum)}>Add/Remove Admin Role</button>
       <button className='white-button' onClick={() => props.updateMemberSettings(2, props.idNum)}>Add/Remove Mentor Role</button>

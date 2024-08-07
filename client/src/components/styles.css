@@ -76,7 +76,7 @@ button {
 /*give sections of the page a drop shadow*/
 section {
     margin: 10px;
-    padding: 4px 8px 4px 8px;
+    padding: 4px 16px 16px 16px;
     border-style: solid;
     border: 2px solid black;
     box-shadow: 10px 10px 5px lightblue;
@@ -295,15 +295,25 @@ orange-button class makes the button orange, white-button class makes the button
     background-color: var(--orange-hover);
 }
 
-.white-button {
+/*icon button has an icon in it*/
+.white-button, .icon-button {
     background-color: var(--white);
     color: black;
     border: none;
     cursor: pointer;
 }
 
-.white-button:hover {
+.white-button:hover, .icon-button:hover {
     background-color: #D0D0D0;
+}
+
+.icon-button{
+    width: 50px;
+    height: 50px;
+}
+
+.icon-button > img{
+    width: 100%;
 }
 
 /*rules for the 'return' button*/
@@ -317,8 +327,9 @@ orange-button class makes the button orange, white-button class makes the button
 #return-button-container {
     text-align: left;
     display: flex;
+    position:absolute;
+    float:inline-start;
     flex-direction: row;
-    float: right;
     align-content: center;
     margin: auto;
 }
@@ -846,40 +857,73 @@ Profile page style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
-.header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    gap: 64px;
-    padding: 2px 8px;
-}
-
 #profile-page {
     width: 80%;
     margin: 2% auto;
     text-align: left;
 }
 
-#profile-banner {
-    width: 80%;
-    height: 20vh;
-}
-
-#profile-header {
-    width: 100%;
-    border: none;
-    border-bottom: 2px solid black;
-    text-align: left;
-}
-
-#profile-header>* {
-    margin: auto 10%;
-}
-
 #profile-page {
     display: grid;
     grid-template-columns: 50% 50%;
+}
+
+#profile-page>*{
+    height: fit-content;
+}
+
+#profile-header-wrapper{
+    margin: 10px;
+}
+
+#profile-header{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    text-align: left;
+    gap: 2vw;
+}
+
+#profile-name-button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#profile-pfp{
+    box-shadow: 2px 2px 5px black;
+    height: 24vh;
+    width: auto;
+}
+
+#user-options-popup {
+    position: absolute;
+    background-color: white;
+    box-shadow: 2px 2px 5px black;
+
+    width: 200px;
+    height: 200px;
+    margin-left: 230px;
+    margin-top: 165px;
+}
+#user-options-popup button {
+    display: block;
+    border: 1px solid rgb(209, 209, 209);
+    width: 90%;
+    height: 20%;
+    margin: 2.5% auto;
+}
+
+#profile-skill-list, #profile-preferences-list
+{
+    margin-left: 10%;
+}
+
+#profile-skill-list > .tag, #profile-preferences-list > .tag
+{
+    width: 35%;
+    margin: 1%;
 }
 
 #profile-project-namedate{
@@ -901,7 +945,24 @@ Profile page style rules
 }
 
 @media only screen and (max-width: 800px) {
-    /*responsiveness for profile page goes here*/
+    #profile-page {
+        display: inline;
+    }
+    #profile-skill-list, #profile-preferences-list
+    {
+        margin-left: 5%;
+    }
+
+    #profile-skill-list > .tag, #profile-preferences-list > .tag
+    {
+        width: 80%;
+        margin: 1%;
+    }
+
+    #user-options-popup {
+        margin-left: 100px;
+        margin-top: 265px;
+    }
 }
 
 /*
@@ -912,9 +973,6 @@ Project page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-/* some rules before the @media query are placed here to
-allow them to be reformatted when the mobile view is used */
-
 /*rules for the full page itself*/
 #project-page {
     padding: 0px 15px;
@@ -924,9 +982,10 @@ allow them to be reformatted when the mobile view is used */
 /*used for the header section of the page (with the project title, description & other options)*/
 #project-info {
     display: grid;
-    grid-template: 1fr 1fr / .2fr 1.5fr 400px;
-    grid-template-areas: 'picture header listing'
-        'blank desc listing'
+    grid-template: 0.3fr 1fr auto / .2fr 1.5fr 550px;
+    grid-template-areas: 'blank blank listing'
+                         'picture header listing'
+                         'desc desc listing'
 }
 
 /*rules for the header used when a project member is viewing the page*/
@@ -934,7 +993,7 @@ allow them to be reformatted when the mobile view is used */
     display: grid;
     grid-template: 1fr 1fr / .2fr 1fr 200px 400px;
     grid-template-areas: 'picture header buttons listing'
-        'blank desc buttons listing';
+                         'desc desc buttons listing';
 }
 
 /*rules for the 'enter virtual space' and 'new post' buttons on the header view for members*/
@@ -953,17 +1012,90 @@ allow them to be reformatted when the mobile view is used */
     grid-area: picture;
 }
 
-/*rules for the title of the project & for nearby buttons*/
+/*rules for the header of the project & for nearby buttons*/
 #project-header {
     grid-area: header;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    text-align:left;
+    display: grid;
+    grid-template: auto auto auto/ auto auto auto;
+    grid-template-areas: 'title status buttons'
+                         'creator count buttons'
+                         'tags members buttons';
+    gap: 5px;
+}
+
+#project-title {
+    grid-area: title;
+}
+
+#project-status {
+    grid-area: status;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#project-creator {
+    grid-area: creator
+}
+
+#project-member-count {
+    grid-area: count;
+}
+
+#project-tags {
+    grid-area: tags;
+    display:flex;
+    gap:10px;
+    margin-top: 10px;
+}
+
+.project-tag {
+    border: 2px solid var(--orange);
+    padding: 2px;
+    border-radius: 5px;
+    width: 150px;
+    height: min-content;
+    text-align:center;
+}
+
+#project-member-preview {
+    grid-area: members;
+    position:relative;
+    height: 50px;
+}
+
+#project-member-preview img{
+    background-color:white;
+    position:absolute;
+    width: 50px;
+    border-radius:100%;
+    padding:2px;
+}
+
+#project-member-preview span{
+    position:absolute;
+    top: 20px;
+    right:0px;
+}
+
+#member-preview-1 {
+    left:0px;
+}
+
+#member-preview-2 {
+    z-index:-1;
+    left:20px;
+}
+
+#member-preview-3 {
+    z-index:-2;
+    left:40px;
 }
 
 #header-buttons {
     display: flex;
     align-items: center;
+    grid-area:buttons
 }
 
 #follow-project {
@@ -2742,4 +2874,24 @@ Signup process modal style rules
     #signupProcess-title {
         font-size: 24px;
     }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Credits link footer style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.FooterContainer {
+    width: 100vw;
+    height: 20px;
+    position: fixed;
+    bottom: 0px;
+    left: 220px;
+    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px; */
+    z-index: 2;
+    background-color: deepskyblue;
+    /* text-align: end; */
 }

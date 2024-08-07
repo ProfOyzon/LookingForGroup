@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const NotificationSettings = () => {
+const ProfileVisibilirySetting = () => {
   return (
 
     <div className="setting-in-page">
@@ -44,4 +44,4 @@ const NotificationSettings = () => {
   );
 };
 
-export default NotificationSettings;
+export default ProfileVisibilirySetting;

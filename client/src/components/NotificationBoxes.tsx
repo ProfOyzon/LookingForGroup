@@ -9,7 +9,7 @@ let notifications = [
     CreateNotification("Notification 6", new Date('2024-06-22T08:00:00Z')),
     CreateNotification("Notification 7", new Date('2024-06-01T11:00:00Z')),
     CreateNotification("Notification 8", new Date('2024-07-12T12:00:00Z')),
-    
+    CreateNotification("Notification 9", new Date('2024-07-12T18:00:00Z')),
 ]
 
 function SortNotifs(notifs) {
@@ -28,7 +28,9 @@ function FormatDate(dateString) {
 }
 
 function GroupNotifsByDate(notifs) {
-    let grouped = [];
+    let grouped;
+    grouped = [];
+
     notifs.forEach(notification => {
         const formattedDate = FormatDate(notification.time);
 
@@ -37,7 +39,8 @@ function GroupNotifsByDate(notifs) {
         }
 
         grouped[formattedDate].push(notification);
-    });
+
+    }, {});
 
     return grouped;
 }
@@ -61,15 +64,20 @@ export function DisplayNotifs2() {
 
             </div>
 
-            {sortedNotifs.map(notif => (
+            {Object.keys(groupedNotifs).map(notif => (
                 <>
                     <div className="date-sent-header">
-                        <p>{notif.time.getMonth()}-{notif.time.getDate()}-{notif.time.getFullYear()}</p>
+                        <p>Date: {notif}</p>
 
                     </div>
-                    <div className="notif-popup-boxes">
-                        <p>{notif.message} --- Time: {notif.time.getHours()}:{notif.time.getMinutes()}</p>
-                    </div>
+
+                    {groupedNotifs[notif].map((notification) => (
+                        <div className="notif-popup-boxes">
+                            <p>{notification.message} --- Time: {notification.time.getHours()}:
+                                {(notification.time.getMinutes() < 10 ? '0' : '') + notification.time.getMinutes()}</p>
+                        </div>
+                    ))}
+
                 </>
             ))}
         </>

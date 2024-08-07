@@ -180,6 +180,8 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                         show={showSkillsModal}
                         selectedSkills={selectedSkills}
                         setSelectedSkills={setSelectedSkills}
+                        mode="signup"
+                        onClose={() => { setShowSkillsModal(false); }}
                     />
 
                     <ChooseInterests
@@ -188,6 +190,8 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                         show={showInterestsModal}
                         selectedInterests={selectedInterests}
                         setSelectedInterests={setSelectedInterests}
+                        mode="signup"
+                        onClose={() => { setShowInterestsModal(false); }}
                     />
 
                     <MakeAvatarModal

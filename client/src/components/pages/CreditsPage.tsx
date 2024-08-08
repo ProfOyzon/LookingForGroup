@@ -15,7 +15,6 @@ const Credits = (props) => {
 
     return (
         <div>
-            Credits go here
             {tempCredits.map((e) => (
                 <p>{e}</p>
             ))}

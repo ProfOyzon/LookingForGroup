@@ -2982,16 +2982,9 @@ Credits link footer style rules
 */
 
 .FooterContainer {
-    /* width: 100vw; */
     height: 100px;
-    /* position: fixed; */
-    /* bottom: 0px;
-    left: 220px; */
-    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px; */
-    /* z-index: 2; */
     z-index: 2;
     background-color: var(--primary-blue);
-    /* text-align: end; */
 }
 
 .FooterContainer button {

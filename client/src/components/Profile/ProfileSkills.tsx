@@ -22,7 +22,6 @@ export const ProfileSkills = ({user}) => {
 
   //usestates for the "edit skills" popup
   const [showPopup, setShowPopup] = useState(false);
-  let openPopups = [showPopup];
 
   //search function for the "edit skills" popup
   const Search = (results) => {
@@ -35,14 +34,14 @@ export const ProfileSkills = ({user}) => {
           <h1>Skills</h1>
           {/*edit projects button*/}
           {/*TODO: only show when a user views their own profile*/}
-          <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup, openPopups)}><img src = {edit}/></button>
+          <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup)}><img src = {edit}/></button>
         </div>
       <div id = "profile-skill-list" className="profile-list">
         {skillList}
       </div>
 
       {/*edit skills popup*/}
-      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={openPopups}>
+      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup}>
         <div id="profile-edit-skills" className="profile-edit">
             <h1>Edit Skills</h1>
             <h3>Select 5 skills to be highlighted on your page</h3>

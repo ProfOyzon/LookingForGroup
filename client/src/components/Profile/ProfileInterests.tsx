@@ -3,6 +3,7 @@ import edit from '../../icons/edit.png';
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { SearchBar } from "../SearchBar";
 import { useState } from 'react';
+import { interests } from "../../constants/interests";
 // import ChooseInterests from "../SignupProcess/ChooseInterests";
 
 export const ProfileInterests = ({ user }) => {
@@ -15,7 +16,6 @@ export const ProfileInterests = ({ user }) => {
 
   //usestate code for the "edit interests" popup
   const [showPopup, setShowPopup] = useState(false);
-  let openPopups = [showPopup];
 
   //search function for the "edit interests" popup
   const Search = (results) => {
@@ -28,7 +28,7 @@ export const ProfileInterests = ({ user }) => {
         <h1>Interests</h1>
         {/*edit interests button*/}
         {/*TODO: only show when a user views their own profile*/}
-        <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup, openPopups)}><img src={edit} /></button>
+        <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup)}><img src={edit} /></button>
         {/* <button className="icon-button" onClick={() => setShowInterestsModal(true)}><img src={edit} /></button> */}
       </div>
       <div id="profile-interests-list" className="profile-list">
@@ -36,11 +36,11 @@ export const ProfileInterests = ({ user }) => {
       </div>
 
       
-      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={openPopups}>
+      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup}>
         <div id="profile-edit-interests" className="profile-edit">
           <h1>Edit Interests</h1>
             <h3>Select 3 or 4 interests to be highlighted on your page</h3>
-            <SearchBar dataSets={[{ }]} onSearch={Search}></SearchBar>
+            <SearchBar dataSets={[{interests}]} onSearch={Search}></SearchBar>
 
             <h3>My Interests: </h3>
             <div id = "profile-edit-interests-list" className="profile-list">

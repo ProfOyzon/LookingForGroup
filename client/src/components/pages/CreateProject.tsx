@@ -21,12 +21,12 @@ const CreateProject = () => {
                 (e) => {
                    setName(e.target.value);
                 }
-            } />
+            } className="c-proj-text" />
             <input type = "text" onChange={
                 (e) => {
                     setDesc(e.target.value);
                 }
-            } />
+            } className="c-proj-text" />
             <ItemMaker type="tag" grabber = {grabTags}/>
             <ItemMaker type="role" grabber = {grabRoles} />
             <button onClick={
@@ -41,7 +41,7 @@ const CreateProject = () => {
                     // This will be database writing in the future
                     console.log(newProj);
                 }
-            }>Create</button>
+            } className="orange-button">Create</button>
         </div>
     )
 }

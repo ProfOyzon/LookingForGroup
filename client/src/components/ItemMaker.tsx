@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { hardSkills } from "../constants/skills";
 
 export const ItemMaker = ({ type, grabber }) => {
-    const [item, setItem] = useState('');
+    const [item, setItem] = useState("Full-stack Development");
     const [arr, setArr] = useState([""]);
     const [listObj, setObj] = useState(<div></div>);
 
@@ -14,7 +14,7 @@ export const ItemMaker = ({ type, grabber }) => {
             return (
                 <select onChange = {
                     e => {setItem(e.target.value)}
-                }>
+                } id="e-maker-select">
                     {
                         hardSkills.map(s => {
                             return <option value={s}>{s}</option>
@@ -26,7 +26,7 @@ export const ItemMaker = ({ type, grabber }) => {
         else {
             return <input type="text" onChange = {
                 e => {setItem(e.target.value)}
-            } />
+            } id="e-maker-text"/>
         }
     }
 
@@ -50,13 +50,13 @@ export const ItemMaker = ({ type, grabber }) => {
                         </div>
                     )
                 }
-            }>Add</button>
+            } className="orange-button">Add</button>
             <button onClick={
                 () => {
                     setArr([]);
                     setObj(<div></div>)
                 }
-            }>Clear</button>
+            } className="white-button">Clear</button>
         </div>
     )
 }

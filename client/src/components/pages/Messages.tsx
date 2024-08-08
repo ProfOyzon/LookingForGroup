@@ -8,6 +8,7 @@ const Messages = (props) => {
 
   return (
     <div>
+      { /* User selection */}
       <select onChange={e => {
         setUID(Number(e.target.value));
       }}>

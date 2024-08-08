@@ -8,13 +8,15 @@ import { useState, useCallback } from "react";
 export const MessagesDisplay = ({ userID }) => {
 
     // --- Searching ---
-    let searchList = [];
+    let searchList = [{}];
+    searchList.pop();
 
     const [filteredMessages, setFilteredMessages] = useState(messages);
 
     // takes the search results and filters them into a new array to be properly displayed
     const HandleSearch = useCallback((results) => {
-        let filteredBlocks = [];
+        let filteredBlocks = [results[0]];
+        filteredBlocks.pop();
         let isMessage = false;
         let alreadyFiltered = false;
         // loops through the results and adds them to the filteredBlocks array as messages

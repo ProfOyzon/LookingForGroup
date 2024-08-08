@@ -21,6 +21,7 @@ const Profile = (props) => {
   //Find profile data using id & assign it to a value to use
   const profileData = profiles.find(p => p._id === Number(profileID)) || profiles[0];
   
+  {/*usestates for selectors*/}
   const [UID, setUID] = useState(profileData._id);
   const user = profiles[UID];
 
@@ -28,6 +29,7 @@ const Profile = (props) => {
   
   return (
     <div className = "page">
+      {/*selector at the top to switch between users */}
       <select onChange = {e => {
                 setUID(Number(e.target.value));
             }}>

@@ -9,6 +9,7 @@ export const ItemMaker = ({ type, grabber }) => {
     const [arr, setArr] = useState([""]);
     const [listObj, setObj] = useState(<div></div>);
 
+    // Determined by "type" to provide either text or dropdown
     const createInput = () => {
         if (type == "role") {
             return (
@@ -30,6 +31,7 @@ export const ItemMaker = ({ type, grabber }) => {
         }
     }
 
+    // Deletes singular item
     const deleteItem = (item) => {
         arr.splice(arr.indexOf(item, 1));
         setObj(
@@ -51,6 +53,7 @@ export const ItemMaker = ({ type, grabber }) => {
             {createInput()}
             <button onClick={
                 () => {
+                    // Add current input to the array
                     arr.push(item);
                     grabber(arr);
                     setObj(
@@ -63,6 +66,7 @@ export const ItemMaker = ({ type, grabber }) => {
                 }
             } className="orange-button">Add</button>
             <button onClick={
+                // Clear array and list
                 () => {
                     setArr([]);
                     setObj(<div></div>)

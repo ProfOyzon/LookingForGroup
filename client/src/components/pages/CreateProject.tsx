@@ -10,7 +10,6 @@ const CreateProject = () => {
     const grabTags = (grabbedTags:string[]) => {
         setTags(grabbedTags);
     }
-
     const grabRoles = (grabbedRoles:string[]) => {
         setRoles(grabbedRoles);
     }

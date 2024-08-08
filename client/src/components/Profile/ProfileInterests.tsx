@@ -11,7 +11,7 @@ export const ProfileInterests = ({ user }) => {
 
   //make a list of all of the user's interests
   let interestsList;
-  interestsList = user.preferences.map(preference => <Tags>{preference}</Tags>)
+  interestsList = user.interests.map(interest => <Tags>{interest}</Tags>)
 
   //usestate code for the "edit interests" popup
   const [showPopup, setShowPopup] = useState(false);

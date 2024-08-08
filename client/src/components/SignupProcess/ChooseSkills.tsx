@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { hardSkills, softSkills, proficiencies } from '../../constants/skills';
 
 // list of skills to choose from
 // technologies, arts, tools, and soft skills
-const skills = ["UI/UX", "Figma", "JavaScript", "Photoshop", "Illustrator", "HTML", "CSS", "Java", "React", "Web Development", "Game Development", "Graphic Design", "3D Design", "2D Design", , "Video Editing", "C#", "Python", "Unity", "Machine Learning", "Artificial Intelligence", "Cybersecurity", "Virtual Reality", "Augmented Reality", "Game Design", "Front End", "Back End", "Design", "Database", "Adaptable", "Dependable", "Creative", "Organized", "Communication", "Teamwork", "Leadership", "Passionate", "Problem Solving", "Critical Thinking", "Time Management", "Detail Oriented", "Self Motivated", "Collaboration", "Innovative", "Resourceful", "Analytical"];
+//combined into one list
+const skills = hardSkills.concat(softSkills.concat(proficiencies));
 
 //
 // Choose top 5 skills component

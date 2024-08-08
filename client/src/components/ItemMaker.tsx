@@ -31,7 +31,8 @@ export const ItemMaker = ({ type, grabber }) => {
         }
     }
 
-    // Deletes singular item
+    // Deletes the item from the array, and then sets the object with the new array
+    // Does not work properly, deletes multiple items at once
     const deleteItem = (item) => {
         arr.splice(arr.indexOf(item, 1));
         setObj(
@@ -59,6 +60,7 @@ export const ItemMaker = ({ type, grabber }) => {
                     setObj(
                         <div>
                             {arr.map((i) => {
+                                // Makes the item into a page element, onClick runs deleteItem on the item
                                 return <p onClick={() => deleteItem(i)}>{i}</p>
                             })}
                         </div>

@@ -13,7 +13,7 @@ const notFound = (req, res) => {
 // Accounts
 
 const login = (req, res) => {
-    // middleware makes sure user is logged out
+    // middleware makes sure user is logged out`
 
     const username = `${req.body.username}`;
     const password = `${req.body.password}`;
@@ -64,17 +64,17 @@ const signup = async (req, res) => {
         return res.status(400).json({ error: 'Passwords do not match' });
     }
 
-    // makes sure that the password is in the correct format
+    // makes sure that the password is in the correct format using regex 
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password1)) {
         return res.status(400).json({ error: 'Password does not match pattern' });
     }
 
-    // make sure that email is in the correct format
+    // make sure that email is in the correct format using regex 
     if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
         return res.status(400).json({ error: 'Email does not match pattern' });
     }
 
-    // make sure that the username is in the correct format
+    // make sure that the username is in the correct format using regex 
     if (!/^[A-Za-z0-9_\-.]{1,16}$/.test(username)) {
         return res.status(400).json({ error: 'Username does not match pattern' });
     }
@@ -132,12 +132,12 @@ const updateAccount = async (req, res) => {
             skills: req.body.skills ? req.body.skills : null,
         }
 
-        // make sure that email is in the correct format
+        // make sure that email is in the correct format using regex 
         if (data.email && !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
             return res.status(400).json({ error: 'Email does not match pattern' });
         }
 
-        // make sure that the username is in the correct format
+        // make sure that the username is in the correct format using regex 
         if (data.username && !/^[A-Za-z0-9_\-.]{1,16}$/.test(username)) {
             return res.status(400).json({ error: 'Username does not match pattern' });
         }
@@ -145,7 +145,7 @@ const updateAccount = async (req, res) => {
         // find and update the doc
         const result = await Account.findOneAndUpdate({ _id: req.session.account._id }, data, { new: true, runValidators: true });
         // push the change to the database
-        result.save();
+        await result.save();
         return res.json({ account: result });
     } catch (err) {
         console.log(err);
@@ -228,7 +228,7 @@ const updateProjectByID = async (req, res) => {
         // find and update the doc
         const result = await Project.findOneAndUpdate({ _id: req.body.projectID }, projectData, { new: true, runValidators: true });
         // push the change to the database
-        result.save();
+        await result.save();
 
         return res.json({ project: result });
     } catch (err) {
@@ -344,7 +344,7 @@ const getPostByID = async (req, res) => {
 const createComment = async (req, res) => {
     // middleware makes sure user is logged in
 
-    // makes sure that the post or comment you are replying to was given
+    // makes sure that the ID of post or comment you are replying to was given
     if (!req.body.postID && !req.body.commentID) {
         return res.status(400).json({ error: 'Missing postID or commentID to reply to' });
     }
@@ -354,7 +354,7 @@ const createComment = async (req, res) => {
         return res.status(400).json({ error: 'Missing Content' });
     }
 
-    // this data represents what will be in the new project to start
+    // this data represents what will be in the new comment to start
     commentData = {
         author: req.session.account._id,
         replies: [],
@@ -405,7 +405,7 @@ const updateCommentByID = async (req, res) => {
         // find and update the doc
         const result = await Comment.findOneAndUpdate({ _id: req.body.commentID }, commentData, { new: true, runValidators: true });
         // push the change to the database
-        result.save();
+        await result.save();
 
         return res.json({ comment: result });
     } catch (err) {
@@ -440,6 +440,7 @@ const createMessage = async (req, res) => {
         return res.status(400).json({ error: 'Missing recipientID' });
     }
 
+    // Find the recipient and make sure they exist
     const recipient = await Account.findById(req.body.recipientID);
     if (!recipient) {
         return res.status(400).json({ error: 'Invalid recipientID' });
@@ -500,7 +501,7 @@ const updateMessageByID = async (req, res) => {
         // find and update the doc
         const result = await Message.findOneAndUpdate({ _id: req.body.messageID }, messageData, { new: true, runValidators: true });
         // push the change to the database
-        result.save();
+        await result.save();
 
         return res.json({ message: result });
     } catch (err) {

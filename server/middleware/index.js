@@ -40,7 +40,7 @@ const requiresProjectOwner = async (req, res, next) => {
         return res.status(400).json({ error: 'Invalid or Missing projectID' });
     }
 
-    // make sure that the user has admin permissions
+    // make sure that the user has owner permissions
     if (project.members.filter(member => member.userID === req.session._id && member.permissions === 'owner').length <= 0) {
         return res.status(400).json({ error: 'Missing Owner Permissions' });
     }
@@ -92,6 +92,7 @@ const requiresMessageSender = async (req, res, next) => {
     return next();
 };
 
+// Makes sure the user is either the recipient or sender of a message
 const requiresMessageAccess = async (req, res, next) => {
     // Make sure this message exists
     const message = await Message.findById(req.body.messageID);
@@ -119,6 +120,7 @@ const bypassSecure = (req, res, next) => {
     next();
 };
 
+// return a different 'secure' function based on production or development mode
 if (process.env.NODE_ENV === 'production') {
     module.exports.requiresSecure = requiresSecure;
 } else {

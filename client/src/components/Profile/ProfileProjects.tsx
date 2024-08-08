@@ -1,7 +1,7 @@
 import { ProjectCard } from "../ProjectCard";
 import{projects} from "../../constants/fakeData";
-import { ProfileProjectCard } from "../ProfileProjectCard";
-import edit from '../../img/edit.png';
+import { ProfileProjectCard } from "./ProfileProjectCard";
+import edit from '../../icons/edit.png';
 import { useState } from 'react';
 import { PagePopup, openClosePopup } from "../PagePopup";
 
@@ -33,7 +33,12 @@ export const ProfileProjects = ({user}) => {
 
             <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={openPopups}>
                 <div id="profile-edit-projects" className="profile-edit">
-                    <p>edit projects here</p>
+                    <h1>Edit Projects</h1>
+                    <h3>Select projects to be highlighted on your page</h3>
+                    <h3>My Projects: </h3>
+                    <div id = "profile-edit-projects-list" className="profile-list">
+                        {listContent}
+                    </div>
                 </div>
             </PagePopup>
         </section>

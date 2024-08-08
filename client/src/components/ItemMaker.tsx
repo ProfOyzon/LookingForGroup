@@ -30,6 +30,17 @@ export const ItemMaker = ({ type, grabber }) => {
         }
     }
 
+    const deleteItem = (item) => {
+        arr.splice(arr.indexOf(item, 1));
+        setObj(
+            <div>
+                {arr.map((i) => {
+                    return <p onClick={() => deleteItem(i)}>{i}</p>
+                })}
+            </div>
+        )
+    }
+
     return (
         <div>
             <div>
@@ -45,7 +56,7 @@ export const ItemMaker = ({ type, grabber }) => {
                     setObj(
                         <div>
                             {arr.map((i) => {
-                                return <p>{i}</p>
+                                return <p onClick={() => deleteItem(i)}>{i}</p>
                             })}
                         </div>
                     )

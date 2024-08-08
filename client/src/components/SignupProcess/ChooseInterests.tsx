@@ -83,13 +83,25 @@ const ChooseInterests = ({ show, onNext, onBack, selectedInterests, setSelectedI
                                 {/* There is a search bar to add their own interest */}
 
                                 {/* Search bar */}
+                                {/* 
+                                *   NEEDED FUNCTIONALITY:
+                                *   - Search for interests
+                                *   - Add interests to the list
+                                */}
                                 <div className="row" style={{alignSelf: 'center'}}>
                                     <label htmlFor="interest-search"><img src="images/icons/search.png" alt="search" style={{ width: '30px', marginRight: '10px' }} /></label>
                                     <input type="text" placeholder="Search for interests" id="interest-search" />
                                 </div>
 
+
                                 <h4>My Interests: </h4>
-                                {/* align and justify to the center */}
+                                {/* 
+                                *   NEEDED FUNCTIONALITY:
+                                *   - Ability to remove interests (x button (always present or only on hover?))
+                                *   - Highlighted interests are the ones that will be shown on the profile
+                                *   - Interests already shown on the profile are highlighted
+                                *   - Any new interests added should eventually  influence suggested projects
+                                */}
                                 <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }} >
                                     {interests.map((interest, index) => (
                                         <button

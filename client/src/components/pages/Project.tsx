@@ -1,7 +1,7 @@
 import "./pages.css";
-import "../styles.css";
-import profilePlaceholder from "../../img/profile-user.png";
-import menu from "../../img/menu.png"
+import "../Styles/styles.css";
+import profilePlaceholder from "../../icons/profile-user.png";
+import menu from "../../icons/menu.png"
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as paths from "../../constants/routes";
@@ -12,6 +12,7 @@ import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { RoleListing } from "../projectPageComponents/RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts, profiles } from "../../constants/fakeData";
+import { Tags } from "../Tags";
 
 //Styling changes needed:
 /*
@@ -228,10 +229,10 @@ const ProjectInfo = (props) => {
 
       <div id='project-header'>
         <h1 id='project-title'>{props.projectData.name}</h1>
-        <div id='project-creator'>Created by: {projectOwner}</div>
+        <div id='project-owner'>Created by: {projectOwner}</div>
         <div id='project-tags'>
-          <div className='project-tag'>{props.projectData.tags[0]}</div>
-          <div className='project-tag'>{props.projectData.tags[1]}</div>
+          <Tags className='project-tag'>{props.projectData.tags[0]}</Tags>
+          <Tags className='project-tag'>{props.projectData.tags[1]}</Tags>
         </div>
         <div id='project-status'>Status: Active</div>
         <div id='project-member-count'>{createMemberCount(props.projectData)}</div>
@@ -239,7 +240,7 @@ const ProjectInfo = (props) => {
           <img id='member-preview-1' src={profilePlaceholder}/>
           <img id='member-preview-2' src={profilePlaceholder}/>
           <img id='member-preview-3' src={profilePlaceholder}/>
-          <span>Show all members</span>
+          <span onClick={props.callback2}>Show all members</span>
         </div>
         <div id='header-buttons'>
           <button id='follow-project' className='orange-button' onClick={followProject}>Follow</button>
@@ -277,6 +278,9 @@ const ProjectInfo = (props) => {
 // Includes options to access project settings, leave the project, and edit what is displayed in the 'looking for' window
 // May need further variants depending on whether the user is a regular member, an admin, or the owner
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
+
+// To-do: add new header layout elements to this component
+// This will be mostly identical to the non-member component above
 
 // Utilizes the 'PagePopup' component for project settings, and 'GeneralSettings' as the first rendered tab within it
 // projectData and a callback for resetProjectData are passed in through props
@@ -706,7 +710,7 @@ const Project = (props) => {
       <button id='return-button' className='white-button' onClick={() => window.history.back()}>&lt; return</button>
       </div>
 
-      <ProjectInfo callback={resetProjectData} projectData={projectData}/>
+      <ProjectInfo callback={resetProjectData} callback2={() => openClosePopup(showPopup, setShowPopup, [showPopup])} projectData={projectData}/>
 
       <div id='member-divider'>
         <hr/>

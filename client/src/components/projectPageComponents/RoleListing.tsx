@@ -1,4 +1,3 @@
-import '../styles.css';
 
 //Will return name, positions, & 3 buttons on a single line
 //Will also return description accessable via a dropdown menu (accessed via 1 of the buttons)

@@ -1,6 +1,5 @@
-import "../styles.css";
-import profilePlaceholder from "../../img/profile-user.png";
-import menu from "../../img/menu.png"
+import profilePlaceholder from "../../icons/profile-user.png";
+import menu from "../../icons/menu.png"
 
 //This component is used in the MemberSettings component,
 //  where it is used to render one listing of a full list of project members

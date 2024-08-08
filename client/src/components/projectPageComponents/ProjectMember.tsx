@@ -1,5 +1,4 @@
-import "../styles.css"
-import profilePlaceholder from "../../img/profile-user.png";
+import profilePlaceholder from "../../icons/profile-user.png";
 import { useNavigate } from 'react-router-dom';
 import { profiles } from '../../constants/fakeData'
 import * as paths from "../../constants/routes";

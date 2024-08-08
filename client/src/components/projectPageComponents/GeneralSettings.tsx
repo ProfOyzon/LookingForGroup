@@ -1,5 +1,4 @@
-import "../styles.css"
-import profilePlaceholder from "../../img/profile-user.png";
+import profilePlaceholder from "../../icons/profile-user.png";
 
 //This component is used in the project member view of the project page
 //Contains the layout of the 'General' tab of the project settings menu
@@ -13,6 +12,7 @@ import profilePlaceholder from "../../img/profile-user.png";
 //  window is closed without saving.
 
 // projectId is passed through props, which is used to ensure correct data is pulled
+// tempSettings is also pulled, containing the current settings inputs
 
 export const GeneralSettings = (props) => {
   return(

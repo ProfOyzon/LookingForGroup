@@ -1,4 +1,5 @@
 import './App.css';
+import './components/Styles/styles.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import * as paths from "./constants/routes";
 import React, { useState } from 'react';
@@ -6,7 +7,6 @@ import Login from './components/pages/Login';
 import SignUp from './components/pages/Signup';
 import Home from "./components/pages/Home";
 import Messages from "./components/pages/Messages";
-import MyFeed from "./components/pages/MyFeed";
 import MyProjects from "./components/pages/MyProjects";
 import Profile from "./components/pages/Profile";
 import Project from "./components/pages/Project";
@@ -34,7 +34,6 @@ function App() {
           <Route path={paths.routes.SIGNUP} element={<SignUp avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
           <Route path={paths.routes.HOME} element={<Home />} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />
-          <Route path={paths.routes.MYFEED} element={<MyFeed />} />
           <Route path={paths.routes.MYPROJECTS} element={<MyProjects />} />
           <Route path={paths.routes.PROFILE} element={<Profile />} />
           <Route path={paths.routes.PROJECT} element={<Project />}/>
@@ -45,7 +44,7 @@ function App() {
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
           <Route path={paths.routes.CREDITS} element={<Credits />} />
         </Routes>
-        <CreditsFooter />
+        {/* <CreditsFooter /> */}
       </div>
     </BrowserRouter>
   );

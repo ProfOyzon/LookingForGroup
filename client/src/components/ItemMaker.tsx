@@ -5,16 +5,17 @@ import React, { useState } from "react";
 import { hardSkills } from "../constants/skills";
 
 export const ItemMaker = ({ type, grabber }) => {
-    const [item, setItem] = useState('');
+    const [item, setItem] = useState("Full-stack Development");
     const [arr, setArr] = useState([""]);
     const [listObj, setObj] = useState(<div></div>);
 
+    // Determined by "type" to provide either text or dropdown
     const createInput = () => {
         if (type == "role") {
             return (
-                <select onChange={
-                    e => { setItem(e.target.value) }
-                }>
+                <select onChange = {
+                    e => {setItem(e.target.value)}
+                } id="e-maker-select">
                     {
                         hardSkills.map(s => {
                             return <option value={s}>{s}</option>
@@ -24,12 +25,13 @@ export const ItemMaker = ({ type, grabber }) => {
             )
         }
         else {
-            return <input type="text" onChange={
-                e => { setItem(e.target.value) }
-            } />
+            return <input type="text" onChange = {
+                e => {setItem(e.target.value)}
+            } id="e-maker-text"/>
         }
     }
 
+    // Deletes singular item
     const deleteItem = (item) => {
         arr.splice(arr.indexOf(item, 1));
         setObj(
@@ -51,6 +53,7 @@ export const ItemMaker = ({ type, grabber }) => {
             {createInput()}
             <button onClick={
                 () => {
+                    // Add current input to the array
                     arr.push(item);
                     grabber(arr);
                     setObj(
@@ -61,13 +64,14 @@ export const ItemMaker = ({ type, grabber }) => {
                         </div>
                     )
                 }
-            }>Add</button>
+            } className="orange-button">Add</button>
             <button onClick={
+                // Clear array and list
                 () => {
                     setArr([]);
                     setObj(<div></div>)
                 }
-            }>Clear</button>
+            } className="white-button">Clear</button>
         </div>
     )
 }

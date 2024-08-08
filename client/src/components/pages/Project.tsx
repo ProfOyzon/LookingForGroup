@@ -1,7 +1,7 @@
 import "./pages.css";
-import "../styles.css";
-import profilePlaceholder from "../../img/profile-user.png";
-import menu from "../../img/menu.png"
+import "../Styles/styles.css";
+import profilePlaceholder from "../../icons/profile-user.png";
+import menu from "../../icons/menu.png"
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as paths from "../../constants/routes";
@@ -12,6 +12,7 @@ import { MemberSettings } from "../projectPageComponents/MemberSettings";
 import { RoleListing } from "../projectPageComponents/RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects, posts, profiles } from "../../constants/fakeData";
+import { Tags } from "../Tags";
 
 //Styling changes needed:
 /*
@@ -60,7 +61,7 @@ const dummyProject = {
   posts: []
 }
 
-// default settings for the project being loaded, used when loading default data for settings
+// default settings for the project being loaded, used when resetting settings inputs
 let defaultSettings: {projectName: string, projectMembers: {userID: number, admin: boolean, owner: boolean, role: string}[]} = {
   projectName: '',
   projectMembers: []
@@ -74,27 +75,6 @@ let tempRoleSettings;
 
 // used with settings, identifies which tab user is currently on
 let currentTab = 'general';
-
-//Closes dropdown menus when clicking outside of them
-/// !! Commented out due to it causing errors when clicking on other pages !!
-/*window.onclick = function(event){
-  if (!event.target.matches('#more-options-button-img')){
-    let popup = document.getElementById('more-options-popup');
-    if(popup.classList.contains('show')){
-      popup.classList.remove('show');
-    }
-  }
-  if (!event.target.matches('.member-settings-more') && !event.target.matches('.member-settings-more-img')){
-    let popups = document.getElementsByClassName('settings-show');
-    let fullLength = popups.length;
-    for (let i = 0; i < fullLength; i++){
-      let popup = popups[0];
-      if (popup.classList.contains('settings-show')){
-        popup.classList.remove('settings-show');
-      }
-    }
-  }
-}*/
 
 // Many functions below are meant to serve as placeholders, and only call a console.log message
 // This is because many of them would involve having to write/read from a completed database, which is not implemented yet
@@ -119,19 +99,18 @@ const addInterested = () => {
   //Add user to project's list of interested people (need relevant data location)
 }
 
-//Sends the user to the project's virtual space
-//Should only be accessible to project members
-const enterVirtualSpace = () => {
-  console.log("This will let the member enter the project's virtual space");
-  //Redirect user to virtal space, along with project id to load correct space
-}
-
 //Lets the user create a new post for the project
 //Should only be accessible to project members and/or admins
 const makeProjectPost = () => {
   console.log("This will let the member create a new project post");
   //Open window or page for making project post
   //No prototype of this found on project page, so I will refrain from adding further for now
+}
+
+//Placeholder for entering the virtual space for a project
+//Can likely be replaced with a simple redirect funciton with useNavigation
+const enterVirtualSpace = () => {
+  console.log("This will take the user into the project's virtual space")
 }
 
 //Lets the user block this project, preventing it from appearing for them
@@ -158,6 +137,8 @@ const leaveProject = () => {
   //remove user from project members list
 }
 
+//Checks the number of members in the project & returns it for displaying in the header
+//If the number of members is higher than certain numbers, it will be abbreviated
 const createMemberCount = (projectData) => {
   if (projectData.members.length >= 1000){
     if (projectData.members.length >= 1000000) {
@@ -174,7 +155,6 @@ const createMemberCount = (projectData) => {
 //Opens/closes the additional project options dropdown menu
 //Works for both the project member and non-project member views
 const toggleOptionDisplay = () => {
-  //document.getElementById("more-options-popup").classList.toggle("show");
   let popup = document.getElementById("more-options-popup");
   popup ? popup.classList.toggle("show") : console.log('element not found');
 }
@@ -183,9 +163,6 @@ const toggleOptionDisplay = () => {
 //Ensure that all other functions come before the redirect function, as changing pages may stop the funciton
 //Should only be accessible to the project's creator
 const deleteProject = (callback) => {
-  //Close popups
-  //openClosePopup(showPopup2, setShowPopup2, openPopups);
-  //openClosePopup(showPopup1, setShowPopup1, openPopups);
   //Delete project from database
   //Error caused by typescript, code still runs correctly
   projects.splice(projects.indexOf(projects.find(p => p._id === projectId)), 1);
@@ -197,7 +174,7 @@ const deleteProject = (callback) => {
 // Since both member and non-member views will need to use this, it will be used in the main Project.tsx component
 // projectData is passed in through props, containing the current project's data
 const ProjectMemberPopup = (props) => {
-  let key = 0;
+  let key = 0; //not required, but react will give errors if key isn't used in .map function
   return (
     <>
     <h1>Members</h1>
@@ -228,10 +205,10 @@ const ProjectInfo = (props) => {
 
       <div id='project-header'>
         <h1 id='project-title'>{props.projectData.name}</h1>
-        <div id='project-creator'>Created by: {projectOwner}</div>
+        <div id='project-owner'>Created by: {projectOwner}</div>
         <div id='project-tags'>
-          <div className='project-tag'>{props.projectData.tags[0]}</div>
-          <div className='project-tag'>{props.projectData.tags[1]}</div>
+          <Tags className='project-tag'>{props.projectData.tags[0]}</Tags>
+          <Tags className='project-tag'>{props.projectData.tags[1]}</Tags>
         </div>
         <div id='project-status'>Status: Active</div>
         <div id='project-member-count'>{createMemberCount(props.projectData)}</div>
@@ -239,7 +216,7 @@ const ProjectInfo = (props) => {
           <img id='member-preview-1' src={profilePlaceholder}/>
           <img id='member-preview-2' src={profilePlaceholder}/>
           <img id='member-preview-3' src={profilePlaceholder}/>
-          <span>Show all members</span>
+          <span onClick={props.callback2}>Show all members</span>
         </div>
         <div id='header-buttons'>
           <button id='follow-project' className='orange-button' onClick={followProject}>Follow</button>
@@ -278,6 +255,9 @@ const ProjectInfo = (props) => {
 // May need further variants depending on whether the user is a regular member, an admin, or the owner
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
 
+// To-do: add new header layout elements to this component
+// This will be mostly identical to the non-member component above, aside from buttons
+
 // Utilizes the 'PagePopup' component for project settings, and 'GeneralSettings' as the first rendered tab within it
 // projectData and a callback for resetProjectData are passed in through props
 // projectData is a reference to the current project's info
@@ -287,10 +267,11 @@ const ProjectInfoMember = (props) => {
   let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
   let key2 = 0;
 
+  //UseState variables used alongside popup components
   const [showPopup1, setShowPopup1] = useState(false);
   const [showPopup2, setShowPopup2] = useState(false);
   const [showPopup3, setShowPopup3] = useState(false);
-
+  //Array holding the states of all popups used for the member view
   let openPopups = [showPopup1, showPopup2, showPopup3];
 
   //Function used to update a specific member's setting
@@ -362,10 +343,10 @@ const ProjectInfoMember = (props) => {
   let generalTab = <GeneralSettings projectId={projectId} tempSettings={tempSettings}/>
   let membersTab = <MemberSettings projectId={projectId} tempSettings={tempSettings} updateMemberSettings={updateMemberSettings}/>
 
-  //useState is used here as part of the settings window
+  //useState variable used to set what is displayed in settings popup
   let [tabContent, setTabContent] = useState(generalTab);
 
-  //useState is also used here to add functionality to the edit roles interface
+  //useState variables used when rendering edit roles interface
   let [currentlyNeededRoles, setCurrentlyNeededRoles] = useState(tempRoleSettings);
 
   //Used to track which members have been deleted
@@ -378,7 +359,7 @@ const ProjectInfoMember = (props) => {
     tempSettings = JSON.parse(JSON.stringify(defaultSettings)); //Json manipulation here is to help create a deep copy of the settings object
     if (currentTab === 'general') {
       //The 2 lines of code in these 2 if/else if statements are roundabout ways to reset the content
-      //On the tabs. A better solution to accomplish such may be possible.
+      //On the tabs. A better solution to accomplish this may be possible.
       setTabContent(membersTab);
       setTimeout(() => setTabContent(<GeneralSettings projectId={projectId} tempSettings={tempSettings}/>), 1);
     } else if (currentTab === 'members') {
@@ -399,7 +380,6 @@ const ProjectInfoMember = (props) => {
 
   //Closes settings window and saves changed settings
   //Will require code to take the input from settings and write to the database
-  //Maybe have save button send a signal to parent component?
   const saveSettings = () => {
     updateSettings();
     let currentProject = projects.find(p => p._id === Number(projectId));
@@ -450,6 +430,7 @@ const ProjectInfoMember = (props) => {
     let numInput = document.getElementById('role-num-input-box').value;
     let descInput = document.getElementById('role-desc-input-box').value;
     //check to make sure all values contain data, cancels function if not
+    // * Will also require checks or encryption to prevent code injection
     if (nameInput === '' || numInput === '' || descInput === '') {
       console.log('all fields must have an appropriate input (display this on interface later)');
       return;
@@ -477,7 +458,7 @@ const ProjectInfoMember = (props) => {
 
   //Called when user is done editing a role's details
   //roleIndex passes in a number to use as an index reference for the role
-  //note: since there is no id number, need to manipulate deleted index numbers to update correct role
+  //note: since there is no id number for roles, need to manipulate deleted index numbers to update correct role
   const updateRoleSettings = (roleIndex, roleObject) => {
     tempRoleSettings[roleIndex] = roleObject;
   }
@@ -649,7 +630,7 @@ const Project = (props) => {
   let urlParams = new URLSearchParams(window.location.search);
   projectId = urlParams.get('projID');
 
-  //If search query doesn't yield anything, resort to a default project
+  //If search query doesn't yield anything, use a default project id
   if (projectId === null) {
     console.log('No query in url, loading default');
     projectId = '0';
@@ -706,7 +687,7 @@ const Project = (props) => {
       <button id='return-button' className='white-button' onClick={() => window.history.back()}>&lt; return</button>
       </div>
 
-      <ProjectInfo callback={resetProjectData} projectData={projectData}/>
+      <ProjectInfoMember callback={resetProjectData} callback2={() => openClosePopup(showPopup, setShowPopup, [showPopup])} projectData={projectData}/>
 
       <div id='member-divider'>
         <hr/>

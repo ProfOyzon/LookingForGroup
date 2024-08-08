@@ -1,4 +1,4 @@
-import "./styles.css";
+import "./Styles/styles.css";
 
 //This component is meant to be reusable in any area of the site, acting as an element that can be
 //  opened or closed after performing certain actions.
@@ -31,7 +31,7 @@ import "./styles.css";
 
 //A bool used to check whether or not we should lock scrolling on the page
 //currently unused due to issues with sidebar layering
-let scrollLock = false;
+// let scrollLock = false;
 
 //A function used to open and/or close a popup
 //Must be able to call within the page itself for the user to access the popup
@@ -69,7 +69,7 @@ export const openClosePopup = (state, setState, openPopups) => {
 }
 
 //Main component of PagePopup, which is exported from this file
-//Passes in 5 values: children, width, height, popupId, & zIndex
+//Passes in 8 values: children, width, height, popupId, zIndex, show, setShow, & openPopups
 
 //children - the actual content of the popup, passed in as if it were acting as the content of an element
 //  ( ex. <PagePopup>This would be passed in as 'children' in the popup!</PagePopup> )
@@ -81,6 +81,9 @@ export const openClosePopup = (state, setState, openPopups) => {
 //zIndex - the zIndex layer of the popup, used to tell which layer the popup should appear on
 //  Should be at least 2 to ensure it overlays the side menu
 //  If multiple popups are being used on a page, use this to differentiate their layers
+//show - the useState variable determining whether the popup is visible or not
+//setShow - the function that sets the previously mentioned useState variable
+//openPopups - the list useState variables of all possibly open popups, used to track which of them are open currently
 export const PagePopup = ({children, width, height, popupId, zIndex, show, setShow, openPopups}) => {
   if (!show) {
     return null;

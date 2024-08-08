@@ -4,11 +4,12 @@ import { ProfileCard } from "../ProfileCard";
 import { DiscoverButton } from "../DiscoverButton";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
-import "../styles.css";
+import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
 import { Children, useCallback } from "react";
 import { useState } from 'react';
+import CreditsFooter from '../CreditsFooter';
 
 const Home = (props) => {
 
@@ -78,6 +79,8 @@ const Home = (props) => {
             {/* Prints all projects in the fake dataset on screen */}
             {discoverContent}
             {/* <ProfileCard profile={profiles[0]}></ProfileCard> */}
+
+            <CreditsFooter />
 
         </div>
     );

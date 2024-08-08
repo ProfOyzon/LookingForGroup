@@ -12,8 +12,6 @@ const CreditsFooter = () => {
 
     // State to manage whether or not the credits page is being shown 
     const [isCredits, setIsCredits] = useState(false);
-    // State to manage the previous state 
-    // const [prevPath, setPrevPath] = useState();
 
     // function to handle the toggling of the credits page 
     const toggleCredits = (isShown, path) => {

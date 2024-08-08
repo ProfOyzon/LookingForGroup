@@ -1,4 +1,3 @@
-import "../styles.css";
 import { MemberListing } from "./MemberListing";
 import { SearchBar } from "../SearchBar";
 import { projects, profiles } from "../../constants/fakeData";
@@ -14,6 +13,7 @@ import { useState } from 'react';
 //    'true' and 'false' also manage to return results despite there being no indicators present within the display due to boolean values used in the data
 
 //A projectId value is passed in to load members of the corresponding project
+//tempSettings is also passed in containing the current settings inputed
 //A function for updating members is also passed in to be used in individual member listings
 
 //Used for the members tab of the project settings

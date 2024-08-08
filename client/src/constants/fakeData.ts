@@ -1,4 +1,5 @@
 import { hardSkills, proficiencies, softSkills } from "./skills";
+import { interests } from "./interests";
 
 // No comments - GL!
 
@@ -215,11 +216,11 @@ export const profiles = [
         username: "TheGreatOldOne",
         pronouns: ["He", "Him"],
         bio: "A Super cool coder!",
-        preferences: [
-            "creative",
-            "hardcore",
-            "challenging",
-            "nighttime"
+        interests: [
+            interests[0],
+            interests[7],
+            interests[15],
+            interests[26],
         ],
         messages: [0, 1],
         skills: [
@@ -305,11 +306,11 @@ export const profiles = [
         username: "Wario",
         pronouns: ["they", "she"],
         bio: "The best Wario to grace this land!",
-        preferences: [
-            "wario",
-            "fangames",
-            "wah",
-            "weekends"
+        interests: [
+            interests[5],
+            interests[8],
+            interests[24],
+            interests[29]
         ],
         messages: [0, 1],
         skills: [
@@ -396,12 +397,12 @@ export const profiles = [
         username: "Princess2108279",
         pronouns: ["She", "Her"],
         bio: "I dont need to be saved!",
-        preferences: [
-            "games",
-            "artistic",
-            "gamefeel",
-            "tuesdays",
-            "thursdays"
+        interests: [
+            interests[6],
+            interests[18],
+            interests[21],
+            interests[25],
+            interests[30]
         ],
         messages: [],
         skills: [
@@ -440,10 +441,10 @@ export const profiles = [
         username: "ILoveBuilding",
         pronouns: ["He", "They"],
         bio: "Bob the Builder is a British animated children's television series created by Keith Chapman for HIT Entertainment and Hot Animation. The series follows the adventures of Bob, a general contractor, specialising in masonry, along with his colleague Wendy, various neighbours, and friends, and equipment, and their gang of anthropomorphised work-vehicles, Scoop, Muck, Dizzy, Roley, Lofty and many others. The series ran from 12 April 1999 to 31 December 20",
-        preferences: [
-            "simulators",
-            "architecture",
-            "low stress"
+        interests: [
+            interests[3],
+            interests[4],
+            interests[11]
         ],
         messages: [],
         skills: [

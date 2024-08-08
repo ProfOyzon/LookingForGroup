@@ -46,7 +46,7 @@ const CreateProject = () => {
                     // This will be database writing in the future
                     console.log(newProj);
                 }
-            } className="orange-button">Create</button>
+            } >Create</button>
         </div>
     )
 }

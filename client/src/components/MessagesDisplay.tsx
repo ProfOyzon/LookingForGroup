@@ -51,7 +51,7 @@ export const MessagesDisplay = ({ userID }) => {
         setFilteredMessages(filteredBlocks);
     }, []);
 
-    // adds all the messages received by the user, and all the profiles
+    // adds all the messages received by the user, and all the profiles >
     // the user has recieved messages from into an array to be searched
     for (let m of messages) {
         if (m.recipientID == userID) {

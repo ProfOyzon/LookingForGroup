@@ -8,6 +8,7 @@ export const MessageLine = ({ msg, username, type }) => {
 
     const navigate = useNavigate();
     let profile;
+    // finds the profile associated with the usernames and stores it for use in the path
     for (let p of profiles) {
         if (username == p.username) {
             profile = p;
@@ -17,7 +18,9 @@ export const MessageLine = ({ msg, username, type }) => {
     
     return (
         <div className={type}>
-            <p className="message-line-user"onClick={() => navigate(paths.routes.PROFILE + pathQuery)}><b>{username}</b></p>
+            <p className="message-line-user"onClick={() => 
+                // onClick navigates to the appropriate profile page
+                navigate(paths.routes.PROFILE + pathQuery)}><b>{username}</b></p>
             <p>{msg.messageContent}</p>
             <p className="date-stamp"><i>{msg.sentDate}</i></p>
         </div>

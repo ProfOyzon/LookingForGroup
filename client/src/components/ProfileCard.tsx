@@ -16,6 +16,7 @@ export const ProfileCard = ({profile}) => {
             <img id="discover-card-profile-picture" src={profilePicture} alt={profile.name}/>
             <div id="discover-card-body">
                 <span><h2 id="discover-card-name" onClick={() => navigate(paths.routes.PROFILE + pathQuery)}>{profile.name}</h2>
+                {/* The pronouns are pulled from an array, and are mapped/joined together with / */}
                 <p id="discover-card-pronouns">{profile.pronouns.map(p => `${p}`).join("/")}</p></span>
                 <p id="discover-card-description">{profile.bio}</p>
                 <div id="discover-card-tag-wrapper">

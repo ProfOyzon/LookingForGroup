@@ -35,12 +35,14 @@ This component is not necessarily the final version and doesn't match the visual
 
 // This is used by the Discover Page to display Project information
 export const ProjectCard = ({project}) => {
+    // Updates the url to point toward the project being clicked
     const navigate = useNavigate();
     let pathQuery = `?projID=${project._id}`;
     return (
         <div className="discover-card">
             <img id="discover-card-profile-picture" src={profilePicture} alt={project.name}/>
             <div id="discover-card-body">
+                {/* When the title is clicked it navigates to the project page */}
                 <h2 id="discover-card-name" onClick={() => navigate(paths.routes.PROJECT + pathQuery)}>{project.name}</h2>
                 <p id="discover-card-description">{project.description}</p>
                 <div id="discover-card-tag-wrapper">
@@ -48,7 +50,7 @@ export const ProjectCard = ({project}) => {
                     <Tags>{project.tags[1]}</Tags>
                     <Tags>{project.tags[2]}</Tags>
                 </div>
-                {/* The needed roles are pulled from an array and are mapped along with the needed amounts */}
+                {/* The needed roles are pulled from an array in fakeData.ts and are mapped along with the needed amounts */}
                 <p id="discover-card-needed-roles"><b>Looking for:</b> {project.neededRoles.map(r => `${r.Role}(${r.amount})`).join(", ")}</p>
             </div>
         </div>

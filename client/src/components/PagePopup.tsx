@@ -7,7 +7,7 @@ import "./Styles/styles.css";
 //Specific buttons can be made within the popup to close it, but it will always contain a close button
 //  in the upper right corner of the popup.
 
-// !!! UPDATED FUNCTIONALITY (8/2/2024) !!!
+// !!! UPDATED FUNCTIONALITY (8/8/2024) !!!
 //     popups now utilize useState variables as part of their functionality,
 //     which requires some changes on the pages using them
 
@@ -16,7 +16,7 @@ import "./Styles/styles.css";
 // 2. choose a location where the popup would be relevant & choose parameters
 //    Additionally, create a useState variable holding a boolean set to false within the same component to be used with the popup
 //    Along with an array containing it and any other useState variables being used for popups
-//      - An example would be '<PagePopup width={x} height={y} popupId={z} z-index={q} show={p} setShow={setP} openPopups={b}>  </PagePopup>'
+//      - An example would be '<PagePopup width={x} height={y} popupId={z} z-index={q} show={p} setShow={setP}>  </PagePopup>'
 //      - x & y = popup width/height, respectively; z = number ID to identify this popup; q = the z-index layer of the popup
 //      - p = the state variable of the created useState; setP = the function that sets the useState variable
 //      - b = the array of useStates being used for popups
@@ -37,39 +37,12 @@ import "./Styles/styles.css";
 //Must be able to call within the page itself for the user to access the popup
 
 //state & setState - useState variable & its set function holding a boolean controlling the visibility of the popup
-//openPopups - an array of useState variables representing what popups on the page are currently visible
-export const openClosePopup = (state, setState, openPopups) => {
+export const openClosePopup = (state, setState) => {
   setState(!state);
-
-  //If a popup is open, disables scrolling of page
-  //When all popups are closed, re-enables page scrolling
-  //This is accomplished by toggling a specific style rule on the page itself
-
-  //Scrollbar disappearing causes a small horizontal shift in the page
-  //In the future, it would be ideal to prevent this from happening
-
-  //Unsure of why 'style' is giving an error- code still runs fine
-
-  // !!! commented out code below is used for locking scrolling when a popup is open, but it is
-  // !!! causing issues with the layering of popups and the sidebar
-
-  /*if (openPopups.includes(true) && !scrollLock) {
-    let page = document.getElementsByClassName('page');
-    page[0].style.top = `-${window.scrollY}px`;
-    page[0].classList.toggle('page-scroll-lock');
-    scrollLock = true;
-  } else if(!openPopups.includes(true)){
-    let page = document.getElementsByClassName('page');
-    let scrollY = page[0].style.top;
-    page[0].style.top = '';
-    page[0].classList.toggle('page-scroll-lock');
-    window.scrollTo(0, parseInt(scrollY || '0') * -1)
-    scrollLock = false
-  }*/
 }
 
 //Main component of PagePopup, which is exported from this file
-//Passes in 8 values: children, width, height, popupId, zIndex, show, setShow, & openPopups
+//Passes in 8 values: children, width, height, popupId, zIndex, show, setShow
 
 //children - the actual content of the popup, passed in as if it were acting as the content of an element
 //  ( ex. <PagePopup>This would be passed in as 'children' in the popup!</PagePopup> )
@@ -83,8 +56,7 @@ export const openClosePopup = (state, setState, openPopups) => {
 //  If multiple popups are being used on a page, use this to differentiate their layers
 //show - the useState variable determining whether the popup is visible or not
 //setShow - the function that sets the previously mentioned useState variable
-//openPopups - the list useState variables of all possibly open popups, used to track which of them are open currently
-export const PagePopup = ({children, width, height, popupId, zIndex, show, setShow, openPopups}) => {
+export const PagePopup = ({children, width, height, popupId, zIndex, show, setShow}) => {
   if (!show) {
     return null;
   }
@@ -95,7 +67,7 @@ export const PagePopup = ({children, width, height, popupId, zIndex, show, setSh
         top: `clamp(2.5vh, calc((100% - ${height})/2), 100%)`, 
         left: `clamp(2.5vw, calc((100% - ${width})/2), 100%)`,
         zIndex: zIndex}}>
-        <button id='popup-close' className='icon-button' onClick={() => openClosePopup(show, setShow, openPopups)}>
+        <button id='popup-close' className='icon-button' onClick={() => openClosePopup(show, setShow)}>
           <img src="images/icons/cancel.png" alt="close" />
         </button>
         <div>{children}</div>

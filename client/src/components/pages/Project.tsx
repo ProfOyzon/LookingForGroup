@@ -16,7 +16,7 @@ import { Tags } from "../Tags";
 
 //Styling changes needed:
 /*
--Move return button to left side (again?)
+-Move return button to left side of page
 -Display project creator's  username
 -Display at least 2 tags in header
 -Add indicator to whether project is actively being made or not
@@ -32,12 +32,16 @@ import { Tags } from "../Tags";
 //This is the Project page component, which contains a layout that allows for displaying project info
 //More info and comments on individual parts are found above their respective parts
 
-// holds the id number of the current project being displayed. Used to reference the database.
+// *** Multiple components are used in this file, and should be separated into smaller files ***
+// *** Information and data may have been shared between components, and separating them may cause issues ***
+// *** Code restructuring may be necessary to ensure it still works ***
+
+//current project's id number
 let projectId;
-// holds string containing the username of the project's creator
+//username of project creator
 let projectOwner: string;
 
-// Data for a dummy project, used when re-rendering the page after saving settings
+// dummy project data, used when re-rendering the page after saving settings
 const dummyProject = {
   _id: -1,
   name: "dummy project",
@@ -61,14 +65,14 @@ const dummyProject = {
   posts: []
 }
 
-// default settings for the project being loaded, used when resetting settings inputs
+// default settings for loaded project
 let defaultSettings: {projectName: string, projectMembers: {userID: number, admin: boolean, owner: boolean, role: string}[]} = {
   projectName: '',
   projectMembers: []
 }
 let defaultRoleSettings: {Role: string, amount: number, description: string}[];
 
-// object containing the current inputs of settings, used when changing and updating project settings
+// temporary settings, holds changes to settings
 // If settings window is closed, this should be reset using defaultSettings
 let tempSettings;
 let tempRoleSettings;
@@ -173,6 +177,8 @@ const deleteProject = (callback) => {
 // Small component used as part of a popup containing project member info
 // Since both member and non-member views will need to use this, it will be used in the main Project.tsx component
 // projectData is passed in through props, containing the current project's data
+
+// *** Separate component that should be moved to another file in the future ***
 const ProjectMemberPopup = (props) => {
   let key = 0; //not required, but react will give errors if key isn't used in .map function
   return (
@@ -195,6 +201,9 @@ const ProjectMemberPopup = (props) => {
 // Page header that displays for users that are not members of the project
 // Includes options to follow, block, report, or show interest in joining the project
 // When loading page, should check to see if the current user is part of the loaded project to determine which header to load
+
+// *** Separate component that should be moved to another file in the future ***
+// Could also move some comments into html of component
 
 // projectData is passed in through props, containing data on the project
 const ProjectInfo = (props) => {
@@ -258,6 +267,8 @@ const ProjectInfo = (props) => {
 // To-do: add new header layout elements to this component
 // This will be mostly identical to the non-member component above, aside from buttons
 
+// *** Separate component that should be moved to another file in the future ***
+
 // Utilizes the 'PagePopup' component for project settings, and 'GeneralSettings' as the first rendered tab within it
 // projectData and a callback for resetProjectData are passed in through props
 // projectData is a reference to the current project's info
@@ -271,8 +282,6 @@ const ProjectInfoMember = (props) => {
   const [showPopup1, setShowPopup1] = useState(false);
   const [showPopup2, setShowPopup2] = useState(false);
   const [showPopup3, setShowPopup3] = useState(false);
-  //Array holding the states of all popups used for the member view
-  let openPopups = [showPopup1, showPopup2, showPopup3];
 
   //Function used to update a specific member's setting
   //It is placed before other variables so that it can be used for one
@@ -367,7 +376,7 @@ const ProjectInfoMember = (props) => {
       setTimeout(() => setTabContent(<MemberSettings projectId={projectId} tempSettings={tempSettings} updateMemberSettings={updateMemberSettings}/>), 1);
     }
     //Timeout is set here to prevent asynchronous tab changes from the 'setTabContent' functions above from being visible
-    setTimeout(() => openClosePopup(showPopup1, setShowPopup1, openPopups), 20);
+    setTimeout(() => openClosePopup(showPopup1, setShowPopup1), 20);
   }
 
   //Updates tempSettings with any inputted setting changes, called when switching tabs or when saving settings
@@ -392,7 +401,7 @@ const ProjectInfoMember = (props) => {
     props.callback();
     
     //Closes the settings popup
-    openClosePopup(showPopup1, setShowPopup1, openPopups);
+    openClosePopup(showPopup1, setShowPopup1);
   }
 
   //Called when a tab is changed in the settings window
@@ -400,6 +409,8 @@ const ProjectInfoMember = (props) => {
   const changeTabs = (tab) => {
     //Depending on tab selected, switches settings content to that tab, while also applying styling rules to 
     //the relevant tabs themselves
+
+    //Could use useState to change tab display instead
     if (tab === 'general') {
       currentTab = 'general';
       setTabContent(generalTab);
@@ -487,7 +498,7 @@ const ProjectInfoMember = (props) => {
 
     //Updates page display & closes interface
     props.callback();
-    openClosePopup(showPopup3, setShowPopup3, openPopups);
+    openClosePopup(showPopup3, setShowPopup3);
   }
 
   //Reloads roles on edit roles interface
@@ -500,9 +511,11 @@ const ProjectInfoMember = (props) => {
   //Mainly for using both in a single onClick function
   const openEditRoles = () => {
     resetEditRoles();
-    openClosePopup(showPopup3, setShowPopup3, openPopups);
+    openClosePopup(showPopup3, setShowPopup3);
   }
 
+  // Some comments may be moved inside html
+  // html can also utilize useState and useEffect later to better represent data updates
   return (
     <div id='project-info-member'>
       <img id='project-picture' src={profilePlaceholder} alt=''/>
@@ -548,24 +561,24 @@ const ProjectInfoMember = (props) => {
         <button id='edit-roles-button' className='white-button' onClick={openEditRoles}>Edit Roles</button>
       </div>
 
-      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup1} setShow={setShowPopup1} openPopups={openPopups}>
+      <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup1} setShow={setShowPopup1}>
         <div id='settings-window-test'>
             <h1>Project Settings</h1>
             <div id='settings-tabs'>
               <button id='general-tab' className='tab-selected' onClick={() => {changeTabs('general')}}>General</button>
               <button id='member-tab' className='tab' onClick={() => {changeTabs('members')}}>Members</button>
-              <button id='delete-project' onClick={() => openClosePopup(showPopup2, setShowPopup2, openPopups)}>Delete Project</button>
+              <button id='delete-project' onClick={() => openClosePopup(showPopup2, setShowPopup2)}>Delete Project</button>
             </div>
             <hr/>
             <div id='settings-content'>
             {tabContent}
             </div>
-            <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(showPopup1, setShowPopup1, openPopups)}>Cancel</button>
+            <button id='settings-cancel' className='white-button' onClick={() => openClosePopup(showPopup1, setShowPopup1)}>Cancel</button>
             <button id='settings-save' className='orange-button' onClick={saveSettings}>Save</button>
         </div>
       </PagePopup>
 
-      <PagePopup width={'600px'} height={'400px'} popupId={2} zIndex={3} show={showPopup3} setShow={setShowPopup3} openPopups={openPopups}>
+      <PagePopup width={'600px'} height={'400px'} popupId={2} zIndex={3} show={showPopup3} setShow={setShowPopup3}>
         <div id='edit-roles-window'>
           <h1>Edit Roles</h1>
           <div id='edit-roles-options'>
@@ -597,10 +610,10 @@ const ProjectInfoMember = (props) => {
         </div>
       </PagePopup>
 
-      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={4} show={showPopup2} setShow={setShowPopup2} openPopups={openPopups}>
+      <PagePopup width={'300px'} height={'150px'} popupId={1} zIndex={4} show={showPopup2} setShow={setShowPopup2}>
         <div id='project-delete-check'>
           <h3>Are you sure you want to delete this project?</h3>
-          <button id='project-delete-cancel' onClick={() => openClosePopup(showPopup2, setShowPopup2, openPopups)}>Cancel</button>
+          <button id='project-delete-cancel' onClick={() => openClosePopup(showPopup2, setShowPopup2)}>Cancel</button>
           <button id='project-delete-final' onClick={() => deleteProject(navigate)}>DELETE</button>
         </div>
       </PagePopup>
@@ -625,7 +638,7 @@ const Project = (props) => {
   //useState for members popup
   const [showPopup, setShowPopup] = useState(false);
 
-  //Pulls project ID number from search query (should be stored as 'p')
+  //*** Pulls project ID number from search query (should be stored as 'p') ***
   //(ex. [site path]/project?p=x , where x = the project ID number)
   let urlParams = new URLSearchParams(window.location.search);
   projectId = urlParams.get('projID');
@@ -668,6 +681,7 @@ const Project = (props) => {
   }
 
   //First select element is used for testing/debugging purposes, it should be removed in the final product
+  //Some comments may be move into html
   return (
     <div id='project-page' className='page'>
 
@@ -717,7 +731,7 @@ const Project = (props) => {
         }
       </div>
 
-      <PagePopup width={'80vw'} height={'80vh'} popupId={3} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={[showPopup]}>
+      <PagePopup width={'80vw'} height={'80vh'} popupId={3} zIndex={3} show={showPopup} setShow={setShowPopup}>
         <ProjectMemberPopup projectData={projectData}/>
       </PagePopup>
     </div>

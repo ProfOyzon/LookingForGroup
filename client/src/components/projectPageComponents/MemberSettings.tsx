@@ -22,7 +22,7 @@ export const MemberSettings = (props) => {
   let key = 0; //Not needed, but react will give an error if not used
   const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
 
-  //Creates an array of objects containin data to use for the search function
+  //Creates an array of objects containing data to use for the search function
   let members = projectData.members.map(member => {
     let profile = profiles.find(p => p._id === Number(member.userID));
     if (profile !== undefined) {

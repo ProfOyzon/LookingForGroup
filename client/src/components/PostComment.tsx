@@ -33,6 +33,8 @@ const showRepliesToggle = (i) => {
 //  'comment' contains data on the current comment to reference when constructing
 //  the callback function should be the 'changeReplyTarget' function, found in ProjectPostPage.tsx line 32
 //    (This is only to pass it onto more 'PostComment' components, it is not directly used here)
+
+// *** Separate component, should be moved into its own file later ***
 const CommentReplies = (props) => {
   if (props.comment.replies.length !== 0){
     i++;

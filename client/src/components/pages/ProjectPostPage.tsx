@@ -70,6 +70,8 @@ const resetReplyTarget = () => {
 //Component that renders the full list of post comments & replies
 //Renders multiple 'PostComment' components within itself, more details can be found in the PostComment.tsx file
 
+// *** Separate component, should be moved into a separate file later ***
+
 //PostComments is passed in through props, which contains data on the comments of the post being rendered
 const PostReplies = (props) => {
   let key = 0; //key is not needed for functionality, but react will given an error if it isn't used in the .map function later
@@ -119,7 +121,7 @@ const ProjectPostPage = (props) => {
   //Find post data using Id (or assign a default if one can't be found)
   const postData = posts.find(p => p._id === Number(postId)) || posts[0];
 
-  //commentComponent hold the current component data, setCommentComponent should be used whenever
+  //commentComponent holds the current component data, setCommentComponent should be used whenever
   //  reply data is updated
   let [commentComponent, setCommentComponent] = useState(<PostReplies postComments={postData.comments}/>);
 
@@ -168,6 +170,7 @@ const ProjectPostPage = (props) => {
     setCommentComponent(<PostReplies postComments={newPostData.comments}/>);
   }
 
+  // Some comments may be moved into html
   return(
     <div className='page'>
       <div id='post-page-nav-buttons'>
@@ -218,8 +221,6 @@ const ProjectPostPage = (props) => {
               <span id='reply-prompt-display'>Replying to Post</span>
               <button id='reply-prompt-reset' className='hide' onClick={resetReplyTarget}>Cancel</button>
             </div>
-            
-            
 
             <textarea id='reply-input' maxLength={300}/>
 

@@ -8,13 +8,32 @@ import followPicture from "../images/heart.png";
 
 import { projects } from "../constants/fakeData";
 
-/*const projectNavigate = (project) => {
-    const navigate = useNavigate();
-    let [searchParams, setSearchParams] = useSearchParams();
-    setSearchParams({p : project._id});
-    navigate(paths.routes.PROJECT, searchParams);
-}*/
+/*
 
+Project Card is featured on the Discover Page as the way for users to see
+information about a project recommended to them.
+
+The card should be visually appealing, have enough information to get a user to click,
+and be somewhat compact.
+
+Right now the ProjectCard features Name, Bio, Project Picture, Desired Skills, and Desired Roles
+
+ProjectCard uses the same styling as ProfileCard as they serve a similar role.
+
+They are separate components because the ProjectCard displays pronouns and the 
+ProjectCard displays desired roles.
+
+I think the two components could be consolidated but would need to display and format content conditionally
+
+The information for the card is pulled from static data in fakeData.ts
+
+Eventually the data should be pulled from a database
+
+This component is not necessarily the final version and doesn't match the visual design of the latest wireframes
+
+*/
+
+// This is used by the Discover Page to display Project information
 export const ProjectCard = ({project}) => {
     const navigate = useNavigate();
     let pathQuery = `?projID=${project._id}`;
@@ -32,9 +51,6 @@ export const ProjectCard = ({project}) => {
                 {/* The needed roles are pulled from an array and are mapped along with the needed amounts */}
                 <p id="discover-card-needed-roles"><b>Looking for:</b> {project.neededRoles.map(r => `${r.Role}(${r.amount})`).join(", ")}</p>
             </div>
-            {/* <button id="project-card-follow" >
-                <img src={followPicture}/>
-            </button> */}
         </div>
     );
 }

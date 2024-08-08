@@ -17,6 +17,7 @@ const MessageHistory = (props) => {
     return(
         <div>
             {
+                // Format message based on sender/reciever
                 messages.map(m => {
                     if(asUser == m.recipientID && fromUser == m.senderID){
                         return (

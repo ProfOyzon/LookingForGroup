@@ -3,7 +3,6 @@ import { MyProjectsDisplay } from "../MyProjectsDisplay";
 import { profiles } from "../../constants/fakeData";
 import { useState } from "react";
 import { PagePopup, openClosePopup } from "../PagePopup";
-import { ProjectCreationWindow } from "../ProjectCreationWindow";
 
 const MyProjects = () => {
     const [UID, setUID] = useState(profiles[0]._id);
@@ -12,6 +11,8 @@ const MyProjects = () => {
     return (
         <div className='page'>
             My Projects
+
+            {/* User selection */}
             <select onChange = {e => {
                 setUID(Number(e.target.value));
             }}>
@@ -21,16 +22,17 @@ const MyProjects = () => {
                     })
                 }
             </select>
+
+            {/* Click -> Create new project */}
             <button id="create-proj-btn" className="orange-button" onClick={
                 () => {
                     window.location.href="createProject"
                 }
             }>Create</button>
+
             <MyProjectsDisplay userID={UID} />
 
-            <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={2}>
-                <ProjectCreationWindow activePage={activePage} setActivePage = {setActivePage}></ProjectCreationWindow>
-            </PagePopup>
+    
                 
         </div>
     );

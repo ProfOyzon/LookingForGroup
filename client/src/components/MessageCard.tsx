@@ -4,6 +4,8 @@ import profilePicture from "../images/blue_frog.png";
 
 export const MessageCard = ({ msg }) => {
     if (!msg) return;
+
+    // Grab profile object from sender ID
     const getS = () => {
         for (let p of profiles) {
             if (p._id == msg.senderID) {
@@ -15,6 +17,7 @@ export const MessageCard = ({ msg }) => {
     }
     const sender = getS();
     if (!sender) return;
+    
     return (
         <div className="discover-card" id="message-card">
             <img src={profilePicture} id="discover-card-profile-picture" />

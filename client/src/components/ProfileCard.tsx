@@ -8,6 +8,7 @@ import followPicture from "../images/heart.png";
 
 import { projects } from "../constants/fakeData";
 
+// This is used by the Discover Page to display Profile information
 export const ProfileCard = ({profile}) => {
     const navigate = useNavigate();
     const pathQuery = `?profID=${profile._id}`;

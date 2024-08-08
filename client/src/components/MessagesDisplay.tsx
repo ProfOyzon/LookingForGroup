@@ -4,6 +4,7 @@ import { messages, profiles } from "../constants/fakeData";
 import { SearchBar } from "./SearchBar";
 import { useState, useCallback } from "react";
 
+// Main Page where conversations are displayed to the user to click into
 export const MessagesDisplay = ({ userID }) => {
 
     // --- Searching ---
@@ -16,10 +17,13 @@ export const MessagesDisplay = ({ userID }) => {
         let filteredBlocks = [];
         let isMessage = false;
         let alreadyFiltered = false;
+        // loops through the results and adds them to the filteredBlocks array as messages
         for (let r of results[0]) {
             for (let m of messages) {
+                // if the result is a message, adds it to the array as is
                 if (r == m) {
                     if(filteredBlocks.includes(r)){
+                        // makes sure the same message is not put into the array twice
                         alreadyFiltered = true;
                     }
                     if (!alreadyFiltered) {
@@ -29,6 +33,7 @@ export const MessagesDisplay = ({ userID }) => {
                 }
             }
             // if the result is a profile, this finds the associated message and adds that to the array
+            // Only runs if it was not a message
             if (!isMessage) {
                 for (let p of profiles) {
                     if (r == p) {

@@ -3,6 +3,7 @@ import { messages, profiles } from "../constants/fakeData";
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../constants/routes";
 
+// Called in Message History to display usernames and message contents
 export const MessageLine = ({ msg, username, type }) => {
     console.log(msg);
 

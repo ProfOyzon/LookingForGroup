@@ -15,6 +15,7 @@ import { projects } from "../constants/fakeData";
     navigate(paths.routes.PROJECT, searchParams);
 }*/
 
+// This is used by the Discover Page to display Project information
 export const ProjectCard = ({project}) => {
     const navigate = useNavigate();
     let pathQuery = `?projID=${project._id}`;

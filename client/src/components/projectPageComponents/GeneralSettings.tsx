@@ -12,6 +12,7 @@ import profilePlaceholder from "../../icons/profile-user.png";
 //  window is closed without saving.
 
 // projectId is passed through props, which is used to ensure correct data is pulled
+// tempSettings is also pulled, containing the current settings inputs
 
 export const GeneralSettings = (props) => {
   return(

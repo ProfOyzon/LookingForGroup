@@ -12,6 +12,7 @@ import { projects, profiles, posts, comments } from "../../constants/fakeData";
 // - encode reply inputs to prevent code injection (if data upload doesn't automatically do that)
 // - update data writing when database if fully introduced
 // - work on page styling for window resizing
+// - reformat display to align with newer wireframes (may require a large overhaul)
 
 //This is the Project Post Page component, which contains a layout that allows for displaying info regarding a project post
 //  Info displayed includes the post itself, as well as comments
@@ -65,8 +66,6 @@ const resetReplyTarget = () => {
     promptButton ? promptButton.classList.toggle('show') : console.log('element not found');
   }
 }
-
-
 
 //Component that renders the full list of post comments & replies
 //Renders multiple 'PostComment' components within itself, more details can be found in the PostComment.tsx file

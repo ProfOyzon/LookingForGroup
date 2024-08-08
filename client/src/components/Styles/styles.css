@@ -18,13 +18,15 @@ Page specific style rules
         -Project member settings
         -Project post page
     -My projects page
-        -Create project window
+        -Create project page
     -Messages
     -Settings
     -Login/signup
         -Signup settings
 
-see pages.css for the rules that format the page itself
+see: pages.css for the rules that format the page itself
+     index.css for fonts
+     makeAvatar.css for avatar creation
 */
 
 /*
@@ -950,7 +952,7 @@ Profile page style rules
     align-items: center;
 }
 
-/*css for mobile profile goes in here*/
+/*css for profile responsiveness---------------------------*/
 @media only screen and (max-width: 800px) {
     /*get rid of the grid*/
     #profile-page {
@@ -1907,57 +1909,10 @@ My projects page style rules
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
-Create project window style rules
+Create project page style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
-
-#create-project-desc {
-    width: 80%;
-    height: 30vh;
-}
-
-#create-project-button-list {
-    position: absolute;
-    bottom: 1vh;
-    right: 1vw;
-}
-
-#create-page-1 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    gap: 64px;
-    padding: 2px 8px;
-    width: 80%;
-    margin: auto;
-}
-
-#create-page-2 {
-    text-align: left;
-    margin-left: 3%;
-}
-
-#create-page-2 h2 {
-    text-align: center;
-}
-
-#create-dates {
-    display: flex;
-    flex-direction: column;
-}
-
-#create-project-name {
-    width: 100%;
-}
-
-#create-project-roles {
-    background-color: #D0D0D0;
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-}
 
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\

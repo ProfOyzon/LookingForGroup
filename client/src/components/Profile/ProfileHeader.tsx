@@ -7,12 +7,14 @@ import menu from '../../icons/menu.png';
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { useState } from 'react';
 
+{/* toggle the popup for the menu that appears next to a users name*/}
 const toggleUserOptions = () => {
   let popup = document.getElementById("user-options-popup");
   popup ? popup.classList.toggle("show") : console.log('element not found');
 }
 
 export const ProfileHeader = ({user}) => {
+  /* usestate for the resume popup window */
   const [showPopup, setShowPopup] = useState(false);
   let openPopups = [showPopup];
 
@@ -21,9 +23,12 @@ export const ProfileHeader = ({user}) => {
         <div id = "profile-header">
           <img id = "profile-pfp" src={pfp} width="100" height="100"></img>
           <div id = "profile-info">
+            {/*div containing the user's name and the user options button*/}
+            {/*together for styling purposes*/}
             <div className = "profile-name-button">
               <h2 id="profile-name">{user.name}</h2>
               <button className="icon-button" onClick = {toggleUserOptions}><img src = {menu}/></button>
+              {/*div for the popup window for user options*/}
               <div id='user-options-popup' className='hide'>
                 <button className='white-button'>Share Profile</button>
                 <button className='white-button'>Favorite</button>
@@ -42,6 +47,7 @@ export const ProfileHeader = ({user}) => {
               <button className='icon-button' onClick={() => window.location.href="messages"}><img src={messageImg}></img></button>
               <button className='icon-button' onClick={() => openClosePopup(showPopup, setShowPopup, openPopups)} ><img src={resumeImg}></img></button>
 
+              {/*popup window to display the user's resume*/}
               <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={openPopups}>
                 <div id='profile-resume-window'>
                     {/*TODO: have user's resume show up here*/}

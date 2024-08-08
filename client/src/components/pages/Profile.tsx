@@ -2,8 +2,7 @@ import "./pages.css";
 import "../Styles/styles.css";
 import {profiles} from "../../constants/fakeData";
 import { ProfileHeader } from "../Profile/ProfileHeader";
-import { ProfilePreferences } from "../Profile/ProfilePreferences";
-import { ProfileGallery } from "../Profile/ProfileGallery";
+import { ProfileInterests } from "../Profile/ProfileInterests";
 import { ProfileSkills } from "../Profile/ProfileSkills";
 import { ProfileEndorsements } from "../Profile/ProfileEndorsements";
 import { ProfileProjects } from "../Profile/ProfileProjects";
@@ -40,14 +39,13 @@ const Profile = (props) => {
             </select>
       <div id="profile-page">
         <ProfileHeader user={user}/>
-        <ProfilePreferences user={user}/>
+        <ProfileInterests user={user}/>
         <div>
           <ProfileSkills user={user}/>
           <ProfileEndorsements user={user}/>
         </div>
           <ProfileProjects user={user}/>
       </div>
-        <ProfileGallery/>
     </div>
   );
 }

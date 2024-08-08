@@ -292,7 +292,7 @@ orange-button class makes the button orange, white-button class makes the button
     background-color: var(--orange-hover);
 }
 
-/*icon button has an icon in it*/
+/*icon button: has an icon in it*/
 .white-button, .icon-button {
     background-color: var(--white);
     color: black;
@@ -330,23 +330,6 @@ orange-button class makes the button orange, white-button class makes the button
     align-content: center;
     margin: auto;
 }
-
-/*the tab buttons in the Tabs component*/
-.tab-button {
-    border: 2px solid lightseagreen;
-    border-radius: 5px;
-    text-align: center;
-    padding: .5vw;
-    margin-left: .5vw;
-    margin-right: .5vw;
-    background-color: white;
-}
-
-/*selected tab button*/
-.active {
-    background-color: lightblue;
-}
-
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
@@ -858,26 +841,40 @@ Profile page style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
+
+/*setup the page with a grid for the 2-column layout*/
 #profile-page {
     width: 80%;
     margin: 2% auto;
     text-align: left;
-}
-
-#profile-page {
     display: grid;
     grid-template-columns: 50% 50%;
 }
 
+/*make the sections of the profile page the right height*/
 #profile-page>*{
     height: fit-content;
 }
 
-#profile-gallery{
-    width: 80%;
-    margin: 2% auto;
+/*rules to make a list of items that wrap automatically */
+/*maybe generic enough to use elsewhere*/
+.profile-list {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px;
+    align-items: center;
 }
 
+/*rule for a name with a button after it*/
+/*could probably be reused for other pages?*/
+.profile-name-button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/*header rules--------------------------------- */
 #profile-header-wrapper{
     margin: 10px;
 }
@@ -888,15 +885,6 @@ Profile page style rules
     width: fit-content;
     text-align: left;
     gap: 2vw;
-}
-
-/*rule for a name with a button after it*/
-/*could probably be reused for other pages?*/
-.profile-name-button{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
 }
 
 #profile-pfp{
@@ -915,6 +903,7 @@ Profile page style rules
     margin-left: 230px;
     margin-top: 165px;
 }
+
 #user-options-popup button {
     display: block;
     border: 1px solid rgb(209, 209, 209);
@@ -923,21 +912,25 @@ Profile page style rules
     margin: 2.5% auto;
 }
 
+/*interests/skill rules ---------------------------------- */
 .profile-highlighted-skill{
     border: 2px solid var(--orange);
 }
 
-#profile-skill-list, #profile-preferences-list
-{
-    margin-left: 10%;
-}
-
-#profile-skill-list > .tag, #profile-preferences-list > .tag
+/*make the skills fit into 2 columns */
+#profile-skill-list > .tag, #profile-interests-list > .tag
 {
     width: 35%;
     margin: 1%;
 }
 
+/*center the skills (kinda)*/
+#profile-skill-list, #profile-interests-list
+{
+    margin-left: 10%;
+}
+
+/*profile project/ endorsement rules------------------------ */
 #profile-project-namedate{
     display: flex;
     flex-direction: column;
@@ -949,13 +942,7 @@ Profile page style rules
     color: var(--orange);
 }
 
-.profile-list {
-    display: flex;
-    flex-flow: row wrap;
-    gap: 8px;
-    align-items: center;
-}
-
+/*popup window rules---------------------------------------- */
 /*TO DO: make the profile edit windows not overflow */
 .profile-edit{
     display: flex;
@@ -963,10 +950,13 @@ Profile page style rules
     align-items: center;
 }
 
+/*css for mobile profile goes in here*/
 @media only screen and (max-width: 800px) {
+    /*get rid of the grid*/
     #profile-page {
         display: inline;
     }
+    /*make the list one skill wide*/
     #profile-skill-list, #profile-preferences-list
     {
         margin-left: 5%;
@@ -978,6 +968,7 @@ Profile page style rules
         margin: 1%;
     }
 
+    /*make the popup not go off the screen*/
     #user-options-popup {
         margin-left: 100px;
         margin-top: 265px;

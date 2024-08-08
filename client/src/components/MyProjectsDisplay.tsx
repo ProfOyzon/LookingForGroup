@@ -5,6 +5,9 @@ import { projects } from "../constants/fakeData";
 import { SearchBar } from "./SearchBar";
 import { useState, useCallback } from "react"; 
 
+//used on my projects page to display the projects in a container
+//and to search them 
+
 export const MyProjectsDisplay = ({userID}) => {
 
     

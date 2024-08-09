@@ -18,6 +18,7 @@ const Credits = (props) => {
             {tempCredits.map((e) => (
                 <p>{e}</p>
             ))}
+            <h4 id="gerrit">Gerrit Wissink</h4>
         </div>
     );
 };

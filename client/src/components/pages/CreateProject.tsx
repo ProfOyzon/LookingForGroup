@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ItemMaker } from "../ItemMaker";
 
+//page to create a project
+//accessed from my projects
 const CreateProject = () => {
     const[pName, setName] = useState("");
     const[pDesc, setDesc] = useState("");

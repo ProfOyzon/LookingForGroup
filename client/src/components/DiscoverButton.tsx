@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 
+//used on the discover page to choose between people and projects
 export const DiscoverButton = ({children, isActive, onClick}) => {
     let [buttonClassName, setButtonClassName] = useState(isActive ? "discover-button-active": "discover-button-inactive");
     

@@ -3,6 +3,7 @@ import { messages } from "../../constants/fakeData";
 import { MessageLine } from "../MessageLine";
 import { profiles } from "../../constants/fakeData";
 
+//message history for a single user- accessed by clicking on a message card
 const MessageHistory = (props) => {
     // TEMP, these will be alterable in the future
     const asUser = 0;

@@ -3,6 +3,7 @@ import { MessagesDisplay } from "../MessagesDisplay";
 import { profiles } from "../../constants/fakeData";
 import { useState } from "react";
 
+//list of all the messages available to a user
 const Messages = (props) => {
   const [uID, setUID] = useState(profiles[0]._id);
 
@@ -19,6 +20,7 @@ const Messages = (props) => {
         }
       </select>
 
+      {/*list of message cards*/}
       <MessagesDisplay userID={uID}/>
     </div>
   );

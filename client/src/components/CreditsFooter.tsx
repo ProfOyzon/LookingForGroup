@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import * as paths from "../constants/routes";
 import { useSelector } from 'react-redux';
 
+//footer supposed to be at the bottom of every page
+//put useful links here- for now just credits
+
 const CreditsFooter = () => {
     const [width, setWidth] = React.useState(window.innerWidth);
     const breakpoint = useSelector((state: any) => state.page.MOBILE_BREAKPOINT);

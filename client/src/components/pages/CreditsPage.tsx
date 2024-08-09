@@ -11,7 +11,7 @@ const Credits = (props) => {
     // MORE (PROBABLY) 
 
     // This is just here to create some placeholder text 
-    let tempCredits = [`Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`];
+    let tempCredits = [`Abraham Furlan`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`, `Jane Doe`];
 
     return (
         <div>

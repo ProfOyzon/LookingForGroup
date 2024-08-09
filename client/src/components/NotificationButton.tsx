@@ -9,7 +9,6 @@ export function NotifButton() {
             <button id="notif-button" onClick={HandleClick}>
                 <img src={bellIcon} className="notif-button-icon" />
                 <div id="notif-popup" className="hide"> 
-                    {/* <DisplayNotifs></DisplayNotifs> */}
                     <DisplayNotifs></DisplayNotifs>
                 </div>
             </button>

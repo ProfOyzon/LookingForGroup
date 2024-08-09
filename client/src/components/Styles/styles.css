@@ -163,7 +163,7 @@ Card component style rules
     align-items: center;
 }
 
-#profile-project-card{
+#profile-project-card {
     width: 85%;
 }
 
@@ -199,7 +199,7 @@ Card component style rules
     width: 80%;
 }
 
-#endorsement-profile-picture{
+#endorsement-profile-picture {
     width: 60%;
 }
 
@@ -295,23 +295,25 @@ orange-button class makes the button orange, white-button class makes the button
 }
 
 /*icon button: has an icon in it*/
-.white-button, .icon-button {
+.white-button,
+.icon-button {
     background-color: var(--white);
     color: black;
     border: none;
     cursor: pointer;
 }
 
-.white-button:hover, .icon-button:hover {
+.white-button:hover,
+.icon-button:hover {
     background-color: #D0D0D0;
 }
 
-.icon-button{
+.icon-button {
     width: 50px;
     height: 50px;
 }
 
-.icon-button > img{
+.icon-button>img {
     width: 100%;
 }
 
@@ -326,12 +328,13 @@ orange-button class makes the button orange, white-button class makes the button
 #return-button-container {
     text-align: left;
     display: flex;
-    position:absolute;
-    float:inline-start;
+    position: absolute;
+    float: inline-start;
     flex-direction: row;
     align-content: center;
     margin: auto;
 }
+
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
@@ -854,7 +857,7 @@ Profile page style rules
 }
 
 /*make the sections of the profile page the right height*/
-#profile-page>*{
+#profile-page>* {
     height: fit-content;
 }
 
@@ -869,7 +872,7 @@ Profile page style rules
 
 /*rule for a name with a button after it*/
 /*could probably be reused for other pages?*/
-.profile-name-button{
+.profile-name-button {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -877,11 +880,11 @@ Profile page style rules
 }
 
 /*header rules--------------------------------- */
-#profile-header-wrapper{
+#profile-header-wrapper {
     margin: 10px;
 }
 
-#profile-header{
+#profile-header {
     display: flex;
     flex-direction: row;
     width: fit-content;
@@ -889,7 +892,7 @@ Profile page style rules
     gap: 2vw;
 }
 
-#profile-pfp{
+#profile-pfp {
     box-shadow: 2px 2px 5px black;
     height: 24vh;
     width: auto;
@@ -915,38 +918,38 @@ Profile page style rules
 }
 
 /*interests/skill rules ---------------------------------- */
-.profile-highlighted-skill{
+.profile-highlighted-skill {
     border: 2px solid var(--orange);
 }
 
 /*make the skills fit into 2 columns */
-#profile-skill-list > .tag, #profile-interests-list > .tag
-{
+#profile-skill-list>.tag,
+#profile-interests-list>.tag {
     width: 35%;
     margin: 1%;
 }
 
 /*center the skills (kinda)*/
-#profile-skill-list, #profile-interests-list
-{
+#profile-skill-list,
+#profile-interests-list {
     margin-left: 10%;
 }
 
 /*profile project/ endorsement rules------------------------ */
-#profile-project-namedate{
+#profile-project-namedate {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
 }
 
-#profile-project-role > b{
+#profile-project-role>b {
     color: var(--orange);
 }
 
 /*popup window rules---------------------------------------- */
 /*TO DO: make the profile edit windows not overflow */
-.profile-edit{
+.profile-edit {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -954,18 +957,20 @@ Profile page style rules
 
 /*css for profile responsiveness---------------------------*/
 @media only screen and (max-width: 800px) {
+
     /*get rid of the grid*/
     #profile-page {
         display: inline;
     }
+
     /*make the list one skill wide*/
-    #profile-skill-list, #profile-preferences-list
-    {
+    #profile-skill-list,
+    #profile-preferences-list {
         margin-left: 5%;
     }
 
-    #profile-skill-list > .tag, #profile-preferences-list > .tag
-    {
+    #profile-skill-list>.tag,
+    #profile-preferences-list>.tag {
         width: 80%;
         margin: 1%;
     }
@@ -996,8 +1001,8 @@ Project page style rules
     display: grid;
     grid-template: 0.3fr 1fr auto / .2fr 1.5fr 550px;
     grid-template-areas: 'blank blank listing'
-                         'picture header listing'
-                         'desc desc listing'
+        'picture header listing'
+        'desc desc listing'
 }
 
 /*rules for the header used when a project member is viewing the page*/
@@ -1005,7 +1010,7 @@ Project page style rules
     display: grid;
     grid-template: 1fr 1fr / .2fr 1fr 200px 400px;
     grid-template-areas: 'picture header buttons listing'
-                         'desc desc buttons listing';
+        'desc desc buttons listing';
 }
 
 /*rules for the 'enter virtual space' and 'new post' buttons on the header view for members*/
@@ -1027,12 +1032,12 @@ Project page style rules
 /*rules for the header of the project & for nearby buttons*/
 #project-header {
     grid-area: header;
-    text-align:left;
+    text-align: left;
     display: grid;
     grid-template: auto auto auto/ auto auto auto;
     grid-template-areas: 'title status buttons'
-                         'owner count buttons'
-                         'tags members buttons';
+        'owner count buttons'
+        'tags members buttons';
     gap: 5px;
 }
 
@@ -1056,8 +1061,8 @@ Project page style rules
 
 #project-tags {
     grid-area: tags;
-    display:flex;
-    gap:10px;
+    display: flex;
+    gap: 10px;
     margin-top: 10px;
 }
 
@@ -1067,53 +1072,53 @@ Project page style rules
     border-radius: 5px;
     width: 150px;
     height: min-content;
-    text-align:center;
+    text-align: center;
 }
 
 #project-member-preview {
     grid-area: members;
-    position:relative;
+    position: relative;
     height: 50px;
 }
 
-#project-member-preview img{
-    background-color:white;
-    position:absolute;
+#project-member-preview img {
+    background-color: white;
+    position: absolute;
     width: 50px;
-    border-radius:100%;
-    padding:2px;
+    border-radius: 100%;
+    padding: 2px;
 }
 
-#project-member-preview span{
-    position:absolute;
+#project-member-preview span {
+    position: absolute;
     top: 20px;
-    right:0px;
+    right: 0px;
 }
 
-#project-member-preview span:hover{
+#project-member-preview span:hover {
     color: var(--hover-blue);
-    text-decoration:underline;
+    text-decoration: underline;
     cursor: pointer;
 }
 
 #member-preview-1 {
-    left:0px;
+    left: 0px;
 }
 
 #member-preview-2 {
-    z-index:-1;
-    left:20px;
+    z-index: -1;
+    left: 20px;
 }
 
 #member-preview-3 {
-    z-index:-2;
-    left:40px;
+    z-index: -2;
+    left: 40px;
 }
 
 #header-buttons {
     display: flex;
     align-items: center;
-    grid-area:buttons
+    grid-area: buttons
 }
 
 #follow-project {
@@ -1125,9 +1130,9 @@ Project page style rules
 #project-member-chart {
     padding: 0 calc((rem(80vw, 200px) / 2) - 20px);
     height: calc(80vh - 100px);
-    display:flex;
-    flex-wrap:wrap;
-    overflow-y:auto;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
 }
 
 /*rules for the more options dropdown menu*/
@@ -2733,23 +2738,23 @@ Signup process modal style rules
     height: 80px;
     margin: 4px 25px;
     flex-wrap: wrap;
+
+    div {
+        margin: 4px;
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-weight: 500;
+    }
 }
 
-#signup-profile-skill div {
-    margin: 0 4px;
-    padding: 4px 8px;
-    /* border: 2px solid var(--purple); */
-    border-radius: 8px;
-    font-weight: 500;
-}
 
 #skill-select button,
 #interest-select button,
 #proficiency-select button {
-    width: 150px;
-    height: 50px;
+    width: 180px;
+    height: 65px;
     margin: 10px;
-    padding: 5px 20px;
+    padding: 0px 20px;
     font-size: 16px;
     border: 2px solid var(--lightGray);
     border-radius: 4px;
@@ -2814,7 +2819,6 @@ Signup process modal style rules
     gap: 10px;
     width: 230px;
     height: 150px;
-    /* border: 1px solid var(--lightGray); */
 }
 
 #new-project-btn,
@@ -2835,11 +2839,10 @@ Signup process modal style rules
     justify-content: center;
     align-items: center;
     gap: 20px;
-}
 
-#new-project-btn img,
-#join-project-btn img {
-    filter: invert(1);
+    img {
+        filter: invert(1);
+    }
 }
 
 #new-project-btn:hover,

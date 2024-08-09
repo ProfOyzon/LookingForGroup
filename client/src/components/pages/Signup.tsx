@@ -18,7 +18,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [checkPassword, setCheckPassword] = useState('');
+    const [checkPassword, setCheckPassword] = useState(''); // second password input to check if they match
     const [error, setError] = useState(''); // State variable for error messages
 
     // State variables for modals
@@ -50,24 +50,27 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
         pronouns: pronouns,
         bio: bio,
         avatarImage: avatarImage,
-        profileImage: profileImage,
+        profileImage: profileImage, // if they upload their own image
     };
 
     // Function to handle the login button click
     const handleSignup = () => {
-        // Check if the email and password are not empty
+        // Check if any of the fields are empty
         if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
             setError('Please fill in all information');
-        } else {
+        }
+        else {
             // check if email is valid
 
             // check if username is unique (??? depends on if we want unique usernames)
 
-            // Check if the password is:
+            // Check password requirements
+            // TODO: discuss password requirements
             // at least 6 characters long?
             // has a number? 
-            // has a special character
-            
+            // has a special character?
+            // has a capital letter?
+
             // check if the passwords match
             if (password !== checkPassword) {
                 setError('Passwords do not match');
@@ -83,19 +86,28 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                 setShowSkillsModal(true);
             }
         }
-
-        // for testing, skips the above checks
-        // setShowCompleteProfileModal(true);
     };
 
+    // Render the sign up page
     return (
         <div className="background-cover">
             <div className="login-signup-container">
+                {/*************************************************************
+
+                    Welcome Directory
+
+                *************************************************************/}
                 <div className="directory column">
                     <h1>Welcome!</h1>
                     <p>Already have an account?</p>
                     <button onClick={() => navigate(paths.routes.LOGIN)}>Log In</button>
                 </div>
+
+                {/*************************************************************
+
+                    Signup Form inputs
+
+                *************************************************************/}
                 <div className="signup-form column">
                     <h2>Sign Up</h2>
 
@@ -164,7 +176,11 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
 
                     <button id="main-loginsignup-btn" onClick={handleSignup}>Sign Up</button>
 
-                    {/* Modals */}
+                    {/*************************************************************
+
+                        Modals for the sign up process
+
+                    *************************************************************/}
 
                     {/* <ChooseProficiencies
                         onNext={() => { setShowProficienciesModal(false); setShowSkillsModal(true); }}

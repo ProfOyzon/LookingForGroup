@@ -5,13 +5,6 @@ import { useSelector } from 'react-redux';
 
 import Notifications from './pages/Notifications';
 
-// To Do:
-// Make mobile friendly version stay at bottom of screen
-// Ensure page content is not covered by sidebar
-// Decide how/if width changes with window size
-// Have profile pic displayed if a user is logged in
-
-
 const SideBar = ({ avatarImage, setAvatarImage }) => {
   const [width, setWidth] = React.useState(window.innerWidth);
   const breakpoint = useSelector((state: any) => state.page.MOBILE_BREAKPOINT);

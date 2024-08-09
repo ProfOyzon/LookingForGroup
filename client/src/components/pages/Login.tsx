@@ -17,10 +17,23 @@ const Login = (props) => {
         if (email === '' || password === '') {
             setError('Please fill in all information');
         } 
+
         // Check if the email is a valid email
-        // else if (!email.includes('@')) {
-        //     setError('Please enter a valid email');
-        // }
+        // and if it's associated with an account
+
+        // if this is only for RIT students, check that it's an RIT email
+
+        // if the email is valid and associated with an account
+        // check if the password is correct
+
+        // if the password is incorrect
+        // setError('Incorrect password');
+
+        // if the email is not associated with an account
+        // setError('Email not associated with an account');
+
+        // if the email is not a valid email
+        // setError('Invalid email');
         
         else {
             // Navigate to the home page
@@ -28,14 +41,26 @@ const Login = (props) => {
         }
     };
 
+    // render the login page
     return (
         <div className="background-cover">
             <div className="login-signup-container">
+                {/*************************************************************
+
+                    Welcome Directory
+
+                *************************************************************/}
                 <div className="directory column">
                     <h1>Welcome!</h1>
                     <p>Don't have an account?</p>
                     <button onClick={() => navigate(paths.routes.SIGNUP)}>Sign Up</button>
                 </div>
+
+                {/*************************************************************
+
+                    Login Form inputs
+
+                *************************************************************/}
                 <div className="login-form column">
                     <h2>Log In</h2>
                     <div className="login-form-inputs">

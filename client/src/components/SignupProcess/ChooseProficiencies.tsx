@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
+// 
+// Not sure if we are using proficiencies, or just skills and interests
+// 
+
 // list of proficiencies to choose from
 const proficiencies = ["Full Stack Developer", "Front End Developer", "Back End Developer", "UI/UX Designer", "Graphic Designer", "Graphic Artist", "Game Developer", "Game Designer", "Web Designer", "Web Editor", "Product Designer", "Mobile Developer", "Software Developer", "Cloud Developer", "Database Developer", "PHP Developer", "BlockChain Developer", "AR/VR Developer", "IT", "Mentor"];
 

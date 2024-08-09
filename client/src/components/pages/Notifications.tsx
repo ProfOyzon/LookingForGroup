@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-// import { DisplayNotifs2 } from "../NotificationBoxes";
 
 const Notifications = ({ show, onClose }) => {
 
@@ -41,7 +40,6 @@ const Notifications = ({ show, onClose }) => {
                 {/* add notifications here */}
 
                 <p>No new notifications</p>
-                {/* <DisplayNotifs2></DisplayNotifs2> */}
             </div>
         </div>
     );

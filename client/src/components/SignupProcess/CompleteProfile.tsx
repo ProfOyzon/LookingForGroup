@@ -18,22 +18,6 @@ const CompleteProfile = ({ show, onNext, onBack, avatarImage, userInfo, bio, pro
     };
 
     // if the user uploads a file, set the profile image to the uploaded file
-    // useEffect(() => {
-    //     const uploadPfp = document.getElementById('upload-pfp') as HTMLInputElement;
-    //     uploadPfp.onchange = (e: Event) => {
-    //         const target = e.target as HTMLInputElement;
-    //         if (target && target.files && target.files[0]) {
-    //             const reader = new FileReader();
-    //             reader.onload = (event) => {
-    //                 if (event.target && event.target.result) {
-    //                     setProfileImage(event.target.result as string);
-    //                 }
-    //             };
-    //             reader.readAsDataURL(target.files[0]);
-    //         }
-    //     };
-    // }, [setProfileImage]);
-
     const handleUploadPfp = (e) => {
         console.log('uploading pfp');
 

@@ -1,0 +1,23 @@
+/* Possibly move this to styles.css? */
+
+/*rules that format the page to work with the sidebar*/
+
+.page {
+    position: absolute;
+    width: calc(100% - 220px);
+    height: 100%;
+    top: 0px;
+    left: 220px;
+
+    /* hide horizontal scrollbar, looses scroll functionality */
+    overflow-x: hidden;
+}
+
+@media only screen and (max-width: 800px) {
+    .page {
+        left: 0px;
+        bottom: 100px;
+        width: 100%;
+        height: calc(100% - 100px);
+    }
+}

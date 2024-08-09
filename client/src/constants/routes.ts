@@ -1,7 +1,16 @@
 export const routes = {
     "DEFAULT": "/",
+    "LOGIN": "/login",
+    "SIGNUP": "/signup",
     "HOME": "/home",
+    "MESSAGES": "/messages",
+    "MYPROJECTS": "/myProjects",
+    "PROFILE": "/profile",
+    "PROJECT": "/project",
+    "PROJECTPOST": "/projectPost",
+    "CREATEPROJECT":"/createProject",
+    "MESSAGEHISTORY":"/messageHistory",
+    "SETTINGS": "/settings",
+    "CREDITS": "/credits",
     "NOTFOUND": "/notFound",
-    "SIDEBAR": "/SideBar"
 }
-

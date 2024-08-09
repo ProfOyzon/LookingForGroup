@@ -1,39 +1,117 @@
 import React, { useState } from 'react';
-import './styles.css';
+import { useNavigate } from 'react-router-dom';
+import * as paths from "../constants/routes";
+import { useSelector } from 'react-redux';
 
-const SideBar = () => {
-  const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
+import Notifications from './pages/Notifications';
+
+const SideBar = ({ avatarImage, setAvatarImage }) => {
+  const [width, setWidth] = React.useState(window.innerWidth);
+  const breakpoint = useSelector((state: any) => state.page.MOBILE_BREAKPOINT);
+
+  // const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
+  const navigate = useNavigate(); // Hook for navigation
+
+  const [activePage, setActivePage] = useState('Discover'); // State to manage the active page [Home, My Projects, Messages, Profile, Settings]
+
+  const [showNotifications, setShowNotifications] = useState(false); // State to manage the notifications modal
 
   // Function to handle the button clicks and update the h1 text
-  const handleTextChange = (text) => {
-    setHeaderText(text);
+  const handleTextChange = (text, path) => {
+    // setHeaderText(text);
+    setActivePage(text);
+    navigate(path); // Navigate to the specified path
   };
 
-  return (
-    <div className='SideBarContainer'>
-      <div className='headerContiner'>
-      <h1>Looking For {headerText}</h1>  
-      </div>
-      
+  React.useEffect(() => {
+    window.addEventListener('resize', () => setWidth(window.innerWidth));
+  })
 
-      <div className = 'ProfileContainer'>
-      <span className="dot">
-     
-      </span>
+  // Mobile layout
+  if (width < breakpoint) {
+    return (
+      <div>
+        <div className="sideBarContainer">
+        <div className='containerButtonSideBar'>
+          <button className={activePage === 'Discover' ? 'active' : ''} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
+            <img src="images/icons/nav/discover.png" className="navIcon" alt="Home" />
+          </button>
+          <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
+            <img src="images/icons/nav/projects.png" className="navIcon" alt="Projects" />
+          </button>
+
+          {/* <button onClick={() => { setShowNotifications(!showNotifications); }}>
+            <img src={bell} className="navIcon" alt="Notifications" />
+          </button> */}
+
+          <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
+            <img src="images/icons/nav/msg-nav.png" className="navIcon" alt="Messages" />
+          </button>
+          <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', paths.routes.PROFILE)}>
+            <img src="images/icons/nav/profile-white.png" className="navIcon" alt="Profile" />
+          </button>
+          <button className={activePage === 'Settings' ? 'active' : ''} onClick={() => handleTextChange('Settings', paths.routes.SETTINGS)}>
+            <img src="images/icons/nav/settings.png" className="navIcon" alt="Setting" />
+          </button>
+        </div>
+        </div>
+
+        {/* <Notifications show={showNotifications} onClose={() => { setShowNotifications(!showNotifications); }} /> */}
       </div>
-      <h1>UserName</h1>
+    );
+  }
+
+  // Desktop layout
+  return (
+    <div>
+      <div className="SideBarContainer">
+      <div className='headerContainer'>
+        <h1>Logo</h1>
+
+        {/* notification bell */}
+        <div id="notif-dot"></div>
+        <button onClick={() => { setShowNotifications(!showNotifications); }}>
+          <img src="images/icons/nav/notif.png" className="navIcon" alt="Notifications" />
+        </button>
+      </div>
+
+      {/* <div className='ProfileContainer'>
+        <div className="displayProfilePic">
+          <img src={avatarImage} alt="Profile Pic" />
+        </div>
+      </div>
+
+      {/* <h1>UserName</h1> */}
+
       <div className='containerButtonSideBar'>
-        <button onClick={() => handleTextChange('Discovery')}>Discovery</button>
-        <button onClick={() => handleTextChange('My Feed')}>My Feed</button>
-        <button onClick={() => handleTextChange('My Projects')}>My Projects</button>
-        <button onClick={() => handleTextChange('Messages')}>Messages</button>
-        <button onClick={() => handleTextChange('Profile')}>Profile</button>
-        <button onClick={() => handleTextChange('Settings')}>Settings</button>
+        <button className={activePage === 'Discover' ? 'active' : ''} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
+          <img src="images/icons/nav/discover.png" className="navIcon" alt="Discover" /> Discover
+        </button>
+        <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
+          <img src="images/icons/nav/projects.png" className="navIcon" alt="Projects" /> My Projects
+        </button>
+
+        {/* <button onClick={() => { setShowNotifications(!showNotifications); }}>
+          <img src={bell} className="navIcon" alt="Notifications" />
+        </button> */}
+
+        <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
+          <img src="images/icons/nav/msg-nav.png" className="navIcon" alt="Messages" /> Messages
+        </button>
+        <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', paths.routes.PROFILE)}>
+          <img src="images/icons/nav/profile-white.png" className="navIcon" alt="Profile" /> Profile
+        </button>
+        <button className={activePage === 'Settings' ? 'active' : ''} onClick={() => handleTextChange('Settings', paths.routes.SETTINGS)}>
+          <img src="images/icons/nav/settings.png" className="navIcon" alt="Setting" /> Settings
+        </button>
       </div>
 
       <div className='Logout'>
-      <button>Logout</button>
+        <button onClick={() => { navigate(paths.routes.LOGIN) }}>Log Out</button>
       </div>
+      </div>
+
+      <Notifications show={showNotifications} onClose={() => { setShowNotifications(false); }} />
     </div>
   );
 };

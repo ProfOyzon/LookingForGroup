@@ -11,6 +11,7 @@ import { Children, useCallback } from "react";
 import { useState } from 'react';
 import CreditsFooter from '../CreditsFooter';
 
+//the main discover page- see a list of people and projects
 const Home = (props) => {
 
     // Sets the default content of the page to be 'projects' and 
@@ -64,7 +65,6 @@ const Home = (props) => {
     const handleButtonClick = (selectedButton) => {
         setSelectedTab(selectedButton);
     }
-
 
     return (
         <div className="page">

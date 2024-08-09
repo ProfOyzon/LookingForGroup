@@ -8,7 +8,6 @@ import { PagePopup, openClosePopup } from "../PagePopup";
 export const ProfileProjects = ({user}) => {
     //usestates for the "edit projects" popup
     const [showPopup, setShowPopup] = useState(false);
-    let openPopups = [showPopup];
 
     //get a list of all the user's projects
     let projectList;
@@ -28,14 +27,14 @@ export const ProfileProjects = ({user}) => {
                 <h1>Projects</h1>
                 {/*edit projects button*/}
                 {/*TODO: only show when a user views their own profile*/}
-                <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup, openPopups)}><img src = {edit}/></button>
+                <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup)}><img src = {edit}/></button>
             </div>
             <div className = "profile-list">
                 {projectList}
             </div>
 
             {/*edit projects window*/}
-            <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={openPopups}>
+            <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup}>
                 <div id="profile-edit-projects" className="profile-edit">
                     <h1>Edit Projects</h1>
                     <h3>Select projects to be highlighted on your page</h3>

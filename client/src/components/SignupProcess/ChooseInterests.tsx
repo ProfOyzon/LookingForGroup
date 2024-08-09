@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { interests } from '../../constants/interests';
 
 // list of interests to choose from
 // types of projects the user is interested in
+import { interests } from '../../constants/interests';
 
 //
 // Choose at least 3 interests component

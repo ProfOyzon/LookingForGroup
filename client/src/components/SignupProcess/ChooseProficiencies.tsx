@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
+//--------------------------------------------------------------------
+///\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+
+//UNUSED CURRENTLY
+//CHOOSING PROFICIENCIES IS NOW PART OF CHOOSE SKILLS
+
+///\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+//--------------------------------------------------------------------
+
+
+
 // list of proficiencies to choose from
 const proficiencies = ["Full Stack Developer", "Front End Developer", "Back End Developer", "UI/UX Designer", "Graphic Designer", "Graphic Artist", "Game Developer", "Game Designer", "Web Designer", "Web Editor", "Product Designer", "Mobile Developer", "Software Developer", "Cloud Developer", "Database Developer", "PHP Developer", "BlockChain Developer", "AR/VR Developer", "IT", "Mentor"];
 

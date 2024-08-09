@@ -4,7 +4,7 @@ import { messages, profiles } from "../constants/fakeData";
 import { SearchBar } from "./SearchBar";
 import { useState, useCallback } from "react";
 
-// Main Page where conversations are displayed to the user to click into
+// used on the messages page to contain the conversations are displayed to the user to click into
 export const MessagesDisplay = ({ userID }) => {
 
     // --- Searching ---

@@ -6,7 +6,6 @@ import { useState } from 'react';
 export const ProfileEndorsements = ({user}) => {
   //usestates for the "edit endorsements" popup
   const [showPopup, setShowPopup] = useState(false);
-  let openPopups = [showPopup];
 
   //make a list of all the endorsements the user has
   let endorsementList;
@@ -26,7 +25,7 @@ export const ProfileEndorsements = ({user}) => {
           <h1>Endorsements</h1>
           {/*edit endorsements button*/}
           {/*TODO: only show when a user views their own profile*/}
-          <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup, openPopups)}><img src = {edit}/></button>
+          <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup)}><img src = {edit}/></button>
         </div>
 
         {/*div containing all the endorsements*/}
@@ -36,7 +35,7 @@ export const ProfileEndorsements = ({user}) => {
 
         {/*edit endorsement popup*/}
         {/*currently nonfunctional*/}
-        <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup} openPopups={openPopups}>
+        <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup}>
           <div id="profile-edit-endorsements" className="profile-edit">
             <h1>Edit Endorsements</h1>
               <h3>Select endorsements to be highlighted on your page</h3>

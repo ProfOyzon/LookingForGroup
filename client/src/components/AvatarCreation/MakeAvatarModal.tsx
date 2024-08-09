@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './makeAvatar.css';
 
-// avatar types and images for each color (three variations)
+// avatar types and images for each color (three variations each animal)
 const avatars = {
     cat: ["images/avatars/blackCat.png", "images/avatars/orangeCat.png", "images/avatars/whiteCat.png"],
     dog: ["images/avatars/brownDog.png", "images/avatars/blackDog.png", "images/avatars/tanDog.png"],
@@ -97,6 +97,7 @@ const clothesIcons = [
     { src: "images/icons/avatar-options/clothes/sailorDressCenter.png", alt: "sailor dress" },
     { src: "images/icons/avatar-options/clothes/pinkSweaterCenter.png", alt: "pink sweater" },
 ];
+
 // array of accessory images and alt text
 const displayAccessories = [
     { src: "images/icons/noItem.png", alt: "none" },
@@ -134,26 +135,26 @@ const accessoryIcons = [
 //
 const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }) => {
     // initialize state variables
-    // current slide index
-    const [slideIndex, setSlideIndex] = useState(1);
-    // current selected avatar type
-    const [selectedAvatar, setSelectedAvatar] = useState("cat");
-    // color options for the selected avatar
-    const [colorOptions, setColorOptions] = useState(avatars.cat);
-    // active customization tab (color or hats)
-    const [activeTab, setActiveTab] = useState("avatar-color");
+    const [slideIndex, setSlideIndex] = useState(1); // current slide index
+    const [selectedAvatar, setSelectedAvatar] = useState("cat"); // current selected avatar type
+    const [colorOptions, setColorOptions] = useState(avatars.cat); // color options for the selected avatar
+    const [activeTab, setActiveTab] = useState("avatar-color"); // active customization tab (color or hats)
 
     // current color
+    // start with the first color when switching between animals
     const [currentColors, setCurrentColors] = useState({
         cat: avatars.cat[0],
         dog: avatars.dog[0],
         frog: avatars.frog[0],
         fox: avatars.fox[0],
     });
+
     // current hats for each avatar when selected
     const [currentHats, setCurrentHats] = useState("");
+
     // current clothes for each avatar when selected
     const [currentClothes, setCurrentClothes] = useState("");
+
     // current accessories for each avatar when selected
     const [currentAccessories, setCurrentAccessories] = useState("");
 
@@ -168,11 +169,13 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
         frog: 0,
         fox: 0,
     });
+
+    // index of the active hat, clothes, and accessory
     const [activeHat, setActiveHat] = useState(0);
     const [activeClothes, setActiveClothes] = useState(0);
     const [activeAccessory, setActiveAccessory] = useState(0);
 
-    // update color options when selected avatar changes
+    // update color options when animal/selected avatar changes
     useEffect(() => {
         setColorOptions(avatars[selectedAvatar]);
     }, [selectedAvatar]);
@@ -291,12 +294,14 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        // draw the images on the canvas
+        // drawing the images on the canvas
+
         // draw the avatar
         ctx.drawImage(avatar, 0, 0, avatar.width, avatar.height);
 
         // draw the hat
         // adjust the hat position based on the avatar
+        // frog avatar has a different hat position
         if (selectedAvatar === "frog") {
             ctx.drawImage(hat, 0, 10, hat.width, hat.height);
         }
@@ -314,7 +319,7 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
         const newAvatar = canvas.toDataURL("image/png");
         setAvatarImage(newAvatar);
 
-        // // update the user's avatar in the database
+        // TODO: update the user's avatar in the database
     };
 
     let backgroundClassName = ""
@@ -334,23 +339,27 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                 <div className="MakeAvatar">
                     {/* 
                         signup mode is a slightly different version, 
-                        instead of a close button and save button, it has a back and next button
+                        instead of a close (x) button and save button, it has a back and next button
                     */}
-                    {mode === "signup" ? (
-                        <></>
-                    ) : (
-                        <div className="avatar-close-btn" onClick={onClose}>
-                            <img src="images/icons/cancel.png" alt="close" />
-                        </div>
-                    )}
 
                     {/* different titles based on the mode */}
                     {mode === "signup" ? (
                         <h1 id="avatar-customize-title">Create Your Avatar</h1>
                     ) : (
-                        <h1 id="avatar-customize-title">Edit Avatar</h1>
+                        <>
+                            {/* Close (x) button */}
+                            <div className="avatar-close-btn" onClick={onClose}>
+                                <img src="images/icons/cancel.png" alt="close" />
+                            </div>
+
+                            <h1 id="avatar-customize-title">Edit Avatar</h1></>
                     )}
 
+                    {/*************************************************************
+
+                        Avatar Display
+
+                    *************************************************************/}
                     <div id="avatar-select">
                         {/* previous button */}
                         <button id="avatar-arrowBtn" onClick={() => plusSlides(-1)}>
@@ -409,7 +418,11 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                     <div id="avatar-customization">
                         <div id="avatar-customize-options">
 
-                            {/* tab links */}
+                            {/*************************************************************
+
+                                Tabs 
+
+                            *************************************************************/}
                             <div className="avatar-tabs">
                                 <div className={`avatar-tab-links ${activeTab === "avatar-color" ? "avatar-active-link" : ""}`} onClick={() => setActiveTab("avatar-color")}>
                                     <img src="images/icons/paint-bucket.png" alt="paint bucket" className="avatar-icon" />
@@ -425,7 +438,11 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                                 </div>
                             </div>
 
-                            {/* color options */}
+                            {/*************************************************************
+
+                                Color Variation Options
+
+                            *************************************************************/}
                             <div className={`avatar-tab-contents ${activeTab === "avatar-color" ? "avatar-active-tab" : ""}`} id="avatar-color">
                                 <div className="avatar-options">
                                     {colorOptions.map((color, index) => (
@@ -441,7 +458,11 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                                 </div>
                             </div>
 
-                            {/* hat options */}
+                            {/*************************************************************
+
+                                Hat Options
+
+                            *************************************************************/}
                             <div className={`avatar-tab-contents ${activeTab === "avatar-hats" ? "avatar-active-tab" : ""}`} id="avatar-hats">
                                 <div className="avatar-options">
                                     {hatIcons.map((hat, index) => (
@@ -452,7 +473,11 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                                 </div>
                             </div>
 
-                            {/* clothes options */}
+                            {/*************************************************************
+
+                                Clothing Options
+
+                            *************************************************************/}
                             <div className={`avatar-tab-contents ${activeTab === "avatar-clothes" ? "avatar-active-tab" : ""}`} id="avatar-clothes">
                                 <div className="avatar-options">
                                     {clothesIcons.map((clothes, index) => (
@@ -463,7 +488,11 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                                 </div>
                             </div>
 
-                            {/* accessories options */}
+                            {/*************************************************************
+
+                                Accessory Options 
+
+                            *************************************************************/}
                             <div className={`avatar-tab-contents ${activeTab === "avatar-accessories" ? "avatar-active-tab" : ""}`} id="avatar-accessories">
                                 <div className="avatar-options">
                                     {accessoryIcons.map((accessory, index) => (
@@ -477,10 +506,10 @@ const MakeAvatarModal = ({ show, onClose, setAvatarImage, mode, onNext, onBack }
                     </div>
 
                     {/* 
-                    determine buttons based on the set mode
-                    one for signup with next and back buttons
-                    other for in the app to edit the avatar
-                */}
+                    *    determine buttons based on the set mode
+                    *    one for signup with next and back buttons
+                    *    other for editing in the app with save button
+                    */}
                     {mode === "signup" ? (
                         <div id="signupProcess-btns">
                             <button id="avatar-backBtn" onClick={onBack}>

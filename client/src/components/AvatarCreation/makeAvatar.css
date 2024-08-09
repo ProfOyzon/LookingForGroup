@@ -5,6 +5,7 @@
   --gray: #969696;
 }
 
+/* background, positioned on top of all other page elements */
 .avatar-modal {
   display: flex;
   flex-direction: column;
@@ -17,6 +18,7 @@
   z-index: 10;
 }
 
+/* "x" button */
 .avatar-close-btn {
   margin-left: 880px;
   cursor: pointer;
@@ -24,13 +26,14 @@
   background-color: transparent;
   position: fixed;
   top: 80px;
+
+  img {
+    width: 40px;
+    height: 40px;
+  }
 }
 
-.avatar-close-btn img {
-  width: 40px;
-  height: 40px;
-}
-
+/* Main white box */
 .MakeAvatar {
   background-color: white;
   margin: auto;
@@ -45,6 +48,7 @@
   z-index: 1;
 }
 
+/* Title */
 #avatar-customize-title {
   font-size: 28px;
   color: var(--orange);
@@ -52,22 +56,23 @@
 }
 
 /*
-    Avatar selection
-    https://www.w3schools.com/howto/howto_js_slideshow.asp
-  */
+  Avatar selection
+  https://www.w3schools.com/howto/howto_js_slideshow.asp
+*/
+
+/* Avatar box, left and right arrows, dots */
 #avatar-select {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
   gap: 30px;
-
   margin-top: 10px;
-
   width: 480px;
   height: 240px;
 }
 
+/* Displayed avatar */
 #avatar {
   display: flex;
   justify-content: center;
@@ -142,8 +147,8 @@
 }
 
 /*
-    Hats
-  */
+  Hats, clothes, accessories
+ */
 
 #avatar-hat-container,
 #avatar-outfit-container,
@@ -163,6 +168,7 @@
   width: 100%;
 }
 
+/* Positioned slightly lower for the frog avatar */
 .avatar-frog-hat {
   position: relative;
   top: 10px;
@@ -170,8 +176,8 @@
 
 
 /*
-    Avatar Customization
-  */
+  Avatar Customization
+*/
 
 #avatar-customization {
   display: flex;
@@ -251,13 +257,11 @@
 .avatar-accessory-option img {
   width: 250px;
   object-fit: contain;
-  /* margin: auto; */
-  /* border: 1px solid palevioletred; */
 }
 
 /* 
-    Tabs 
-  */
+  Tabs 
+*/
 .avatar-tabs {
   display: flex;
   justify-content: center;
@@ -323,7 +327,7 @@
 }
 
 /* 
-    Save button
+  Save button
 */
 #avatar-editBtn,
 #avatar-createBtn {

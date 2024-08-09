@@ -2,6 +2,7 @@ import React from "react";
 import { profiles } from "../constants/fakeData";
 import profilePicture from "../images/blue_frog.png";
 
+//used on the Messages page to show the user's individual dms
 export const MessageCard = ({ msg }) => {
     if (!msg) return;
 

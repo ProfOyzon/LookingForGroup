@@ -5,7 +5,7 @@ import menu from "../../icons/menu.png"
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import * as paths from "../../constants/routes";
-import { PostComment } from "../PostComment";
+import { PostReplies } from "../ProjectPostPageComponents/PostReplies"
 import { projects, profiles, posts, comments } from "../../constants/fakeData";
 
 //To-do
@@ -18,83 +18,6 @@ import { projects, profiles, posts, comments } from "../../constants/fakeData";
 //  Info displayed includes the post itself, as well as comments
 //More info and comments on individual parts are found above their respective parts
 //Additonally, any profile names found will redirect the user to that user's profile page when clicked
-
-//Contains the ids of the post and the project it belongs to, used throughout this file
-//Current data structure has posts belonging to multiple projects, so projectId is set to a constant for now
-let postId;
-const projectId = 0;
-
-//replyingToPost shows whether or not the user is currently replying to the post itself or a comment
-// true = replies given are to the post itself; false = replies given are to a specific comment of the post
-let replyingToPost = true;
-
-//If not replying directly to the post, replyTarget indicates which comment it is replying to, identified by id
-let replyTarget = 0;
-
-//Changes the current target of any reply inputs
-//targetId - the id of the new comment that the user will reply to
-//Called whenever a 'reply' button is clicked in the comment section
-const changeReplyTarget = (targetId) => {
-  if (replyingToPost){
-    //Change values to indicate the user is not replying directly to the post
-    replyingToPost = false;
-    let promptButton = document.getElementById('reply-prompt-reset');
-    //shows a button to cancel and change reply target back to the post itself
-    promptButton ? promptButton.classList.toggle('show') : console.log('element not found');
-  }
-  //Change value of replyTarget to indicate which comment to reply to
-  replyTarget = targetId;
-  //Change display to show the owner of the comment being replied to
-  //If comment data can't be found, use a default name
-  let replyPrompt = document.getElementById('reply-prompt-display');
-  let replyTargetAuthor = comments.find(currentComment => currentComment._id === targetId) || comments[0];
-  replyPrompt ? replyPrompt.innerHTML = "Replying to " + profiles[replyTargetAuthor.author].username :
-    console.log('element not found');
-}
-
-//Resets the target of any reply inputs back to the post itself
-//Called when clicking the 'reply-prompt-reset' button, which shows if replyingToPost = false
-const resetReplyTarget = () => {
-  //Only runs if not already targeting post
-  if(!replyingToPost){
-    //Change value to indicate replying to post
-    replyingToPost = true;
-    //Reset displays to default
-    let replyPrompt = document.getElementById('reply-prompt-display');
-    replyPrompt ? replyPrompt.innerHTML = "Replying to Post" : console.log('element not found');
-    let promptButton = document.getElementById('reply-prompt-reset');
-    promptButton ? promptButton.classList.toggle('show') : console.log('element not found');
-  }
-}
-
-//Component that renders the full list of post comments & replies
-//Renders multiple 'PostComment' components within itself, more details can be found in the PostComment.tsx file
-
-// *** Separate component, should be moved into a separate file later ***
-
-//PostComments is passed in through props, which contains data on the comments of the post being rendered
-const PostReplies = (props) => {
-  let key = 0; //key is not needed for functionality, but react will given an error if it isn't used in the .map function later
-  if (props.postComments.length !== 0){
-    return(
-      <div id='comments-container'>
-        {
-          props.postComments.map(comment => {
-            key++;
-            return(
-              <PostComment commentId={comment} callback={changeReplyTarget} key={key}/>
-            )
-          })
-        }
-      </div>
-    )
-  } else {
-    console.log('no comment found');
-    return(
-      <div>No comments</div>
-    );
-  }
-}
 
 //Main content of the Projest Post Page, which is exported from this file
 //Utilizes the 'PostReplies' component, which is found just above
@@ -109,6 +32,34 @@ const PostReplies = (props) => {
 
 //No values are passed in through props
 const ProjectPostPage = (props) => {
+  //Contains the ids of the post and the project it belongs to, used throughout this file
+  //Current data structure has posts belonging to multiple projects, so projectId is set to a constant for now
+  let postId;
+  const projectId = 0;
+
+  //replyingToPost shows whether or not the user is currently replying to the post itself or a comment
+  // true = replies given are to the post itself; false = replies given are to a specific comment of the post
+  let [replyingToPost, setReplyingToPost] = useState(true);
+
+  //If not replying directly to the post, replyTarget indicates which comment it is replying to, identified by id
+  let [replyTarget, setReplyTarget] = useState(0);
+
+  
+  //Resets the target of any reply inputs back to the post itself
+  //Called when clicking the 'reply-prompt-reset' button, which shows if replyingToPost = false
+  const resetReplyTarget = () => {
+    //Only runs if not already targeting post
+    if(!replyingToPost){
+      //Change value to indicate replying to post
+      setReplyingToPost(true);
+      //Reset displays to default
+      let replyPrompt = document.getElementById('reply-prompt-display');
+      replyPrompt ? replyPrompt.innerHTML = "Replying to Post" : console.log('element not found');
+      let promptButton = document.getElementById('reply-prompt-reset');
+      promptButton ? promptButton.classList.toggle('show') : console.log('element not found');
+    }
+  }
+
   const navigate = useNavigate();
   //Get which post to load using search query
   let urlParams = new URLSearchParams(window.location.search);
@@ -167,7 +118,7 @@ const ProjectPostPage = (props) => {
     }
     //update display to feature new reply
     let newPostData = posts.find(p => p._id === Number(postId)) || posts[0];
-    setCommentComponent(<PostReplies postComments={newPostData.comments}/>);
+    setCommentComponent(<PostReplies postComments={newPostData.comments} replyingToPost={replyingToPost} setReplyingToPost={setReplyingToPost} setReplyTarget={setReplyTarget}/>);
   }
 
   // Some comments may be moved into html

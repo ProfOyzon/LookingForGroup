@@ -1,8 +1,8 @@
-import "./Styles/styles.css";
+import "../Styles/styles.css";
 import { useNavigate } from 'react-router-dom';
-import * as paths from "../constants/routes";
-import profilePlaceholder from "../icons/profile-user.png";
-import { profiles, comments } from "../constants/fakeData";
+import * as paths from "../../constants/routes";
+import profilePlaceholder from "../../icons/profile-user.png";
+import { profiles, comments } from "../../constants/fakeData";
 
 
 //This component is used in the Project Post page, and contains code for structuring the full length of a comment
@@ -35,6 +35,7 @@ const showRepliesToggle = (i) => {
 //    (This is only to pass it onto more 'PostComment' components, it is not directly used here)
 
 // *** Separate component, should be moved into its own file later ***
+// Due to how the two components work in tandem, I am rethinking the action to separate them into their own files
 const CommentReplies = (props) => {
   if (props.comment.replies.length !== 0){
     i++;

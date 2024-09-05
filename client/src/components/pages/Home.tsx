@@ -10,6 +10,7 @@ import { profiles } from "../../constants/fakeData";
 import { Children, useCallback } from "react";
 import { useState } from 'react';
 import CreditsFooter from '../CreditsFooter';
+import ToTopButton from "../ToTopButton";
 
 //the main discover page- see a list of people and projects
 const Home = (props) => {
@@ -83,6 +84,9 @@ const Home = (props) => {
             {/* Footer of the page made exclusively to navigate to a project credits page. */}
             {/* This link should probably be moved to settings in the future but its in this footer for ease of access for now */}
             <CreditsFooter />
+
+            {/* Scroll To Top button */}
+            <ToTopButton />
 
         </div>
     );

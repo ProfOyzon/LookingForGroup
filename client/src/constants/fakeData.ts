@@ -106,7 +106,7 @@ export const projects = [
             },
         ],
         description: "An epic combination of Minecraft and Terraria. Better than both combined. Please dont sue me.",
-        tags: ["2.5D", "Sandbox", "Adventure", "So Retro"],
+        tags: ["2.5D", "Sandbox", "Adventure", "So Retro", "Shared1"],
         neededRoles: [
             {
                 Role: "Project Manager",
@@ -133,7 +133,7 @@ export const projects = [
             }
         ],
         description: "WAAAAAAAAAAAAAAH! Suck on that, Mario",
-        tags: ["Wah", "Waah", "Waaah", "Waaaah"],
+        tags: ["Wah", "Waah", "Waaah", "Waaaah", "Shared1", "Shared2"],
         neededRoles: [
             {
                 Role: "Wario Lover",
@@ -160,7 +160,7 @@ export const projects = [
             }
         ],
         description: "Blah Blah Blah",
-        tags: ["Boring", "BlahBlahBlah", "abc", "12345"],
+        tags: ["Boring", "BlahBlahBlah", "abc", "12345", "Shared2"],
         neededRoles: [
             {
                 Role: "Data Analyst",

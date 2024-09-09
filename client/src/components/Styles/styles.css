@@ -2970,12 +2970,16 @@ Credits style rules
 */
 .ToTopContainer {
     position: fixed;
-    width: 100%;
-    /* left: 50%; */
-    bottom: 40px;
-    /* height: 20px; */
+    right: 10%;
+    bottom: 10%;
+    width: fit-content;
     height: fit-content;
     font-size: 3rem;
     z-index: 1;
     color: green;
+}
+
+.ToTopContainer .to-top-button {
+    width: 300%;
+    text-align: center;
 }

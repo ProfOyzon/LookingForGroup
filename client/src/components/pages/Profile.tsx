@@ -7,6 +7,7 @@ import { ProfileSkills } from "../Profile/ProfileSkills";
 import { ProfileEndorsements } from "../Profile/ProfileEndorsements";
 import { ProfileProjects } from "../Profile/ProfileProjects";
 import { useState } from "react";
+import ToTopButton from "../ToTopButton";
 
 const Profile = (props) => {
   //Get profile id from search query
@@ -48,6 +49,9 @@ const Profile = (props) => {
         </div>
           <ProfileProjects user={user}/>
       </div>
+
+      {/* Scroll To Top button */}
+      <ToTopButton />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { MyProjectsDisplay } from "../MyProjectsDisplay";
 import { profiles } from "../../constants/fakeData";
 import { useState } from "react";
 import { PagePopup, openClosePopup } from "../PagePopup";
+import ToTopButton from "../ToTopButton";
 
 const MyProjects = () => {
     const [UID, setUID] = useState(profiles[0]._id);
@@ -32,7 +33,8 @@ const MyProjects = () => {
 
             <MyProjectsDisplay userID={UID} />
 
-    
+            {/* Scroll To Top button */}
+            <ToTopButton />
                 
         </div>
     );

@@ -3,41 +3,31 @@ import {useState, useEffect} from 'react';
 const ToTopButton = () => {
     let [visible, setVisible] = useState(false);
 
-    const toggleVisible = () => {
-        console.log("test");
-        const scrolled = document.documentElement.scrollTop;
-        if (scrolled > 50) {
+    const toggleVisible = (scrollPage) => {
+        if (scrollPage.scrollTop > 300) {
             setVisible(true);
         }
-        else if (scrolled <= 50) {
+        else if (scrollPage.scrollTop <= 300) {
             setVisible(false);
         }
     };
 
-    const scrollToTop = () => {
-        console.log("test2");
-        // window.scrollTo({
-        //     top: 0,
-        //     left: 0,
-        //     behavior: "smooth"
-        // });
-        window.scrollTo(0, 0);
+    const scrollToTop = (scrollPage) => {
+        scrollPage.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
     };
 
     useEffect(() => {
-        window.addEventListener('scroll', () => toggleVisible());
+        document.querySelector(".page").addEventListener("scroll", () => toggleVisible(document.querySelector(".page")));
     });
 
     return (
         <div className="ToTopContainer">
-            <button className={"to-top-button"} onClick={() => scrollToTop()} style={{display: visible ? "inline" : "none"}}>{"^"}</button>
+            <button className={"to-top-button"} onClick={() => scrollToTop(document.querySelector(".page"))} style={{display: visible ? "inline" : "none"}}>{"^"}</button>
         </div>
     );
-    // return (
-    //     <div className="ToTopContainer">
-    //         <button className={"to-top-button"} onClick={scrollToTop} style={{visibility: visible ? "visible" : "hidden"}}>{"^"}</button>
-    //     </div>
-    // );
 };
 
 export default ToTopButton;

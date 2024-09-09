@@ -19,6 +19,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "mariadb": "^3.3.1",
     "mongoose": "^8.4.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.0"

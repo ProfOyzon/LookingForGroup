@@ -10,6 +10,7 @@ Component Style rules
     -Page popup
     -Search
     -Scrollbar
+    -Tag Filter
 Page specific style rules
     -Discover page
     -Profile page
@@ -769,6 +770,35 @@ Scrollbar style rules
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Tag Filter style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#tag-filter-list {
+    display:flex;
+    flex-wrap:wrap;
+}
+
+.tag-filter {
+    width: 200px;
+    height: 30px;
+    border: var(--orange) solid 2px;
+    color: var(--orange);
+    cursor: pointer;
+}
+
+.tag-filter-selected {
+    width: 200px;
+    height: 30px;
+    border: var(--green) solid 2px;
+    color: var(--green);
     cursor: pointer;
 }
 

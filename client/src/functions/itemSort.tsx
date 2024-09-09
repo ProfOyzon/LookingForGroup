@@ -42,6 +42,10 @@ export const sortItems = (tags : string[], projectSearch : boolean) => {
       }  
     }
     //Once all projects are filtered, return the filled list
+    //If no filters were run, just return full project list
+    if (sortedProjectList.length == 0) {
+      return projects;
+    }
     return sortedProjectList;
   }
   //if people...
@@ -99,6 +103,10 @@ export const sortItems = (tags : string[], projectSearch : boolean) => {
       }
     }
     //Once all people are filtered, return the filled list
+    //If no filters were run, just return full profile list
+    if (sortedProfileList.length == 0) {
+      return profiles;
+    }
     return sortedProfileList;
   }
 }

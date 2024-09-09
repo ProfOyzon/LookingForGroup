@@ -4,6 +4,7 @@ import { ProfileCard } from "../ProfileCard";
 import { DiscoverButton } from "../DiscoverButton";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
+import { TagFilter } from "../TagFilter";
 import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
@@ -68,28 +69,10 @@ const Home = (props) => {
         setSelectedTab(selectedButton);
     }
 
-    //Function to test item sorting (from itemSort.tsx)
-    const testSorting = () => {
-        console.log("Project sorting");
-        console.log(sortItems(["Roguelike"], true));
-        console.log(sortItems(["Rock"], true));
-        console.log(sortItems(["Shared1"], true));
-        console.log(sortItems(["Shared2"], true));
-        console.log(sortItems(["Shared1", "Shared2"], true));
-
-        console.log("Profile sorting");
-        console.log(sortItems(["Problem Solving"], false));
-        console.log(sortItems(["Back-end Development"], false));
-        console.log(sortItems(["CSS"], false));
-        console.log(sortItems(["Web App"], false));
-        console.log(sortItems(["Web App", "Large Team"], false));
-        console.log(sortItems(["Web App", "Problem Solving"], false));
-    }
-
     return (
         <div className="page">
             <h1 className="page-title">Discover</h1>
-            <button onClick={testSorting}>Test button</button>
+            <TagFilter projectFilter={true} setUseState={setFilteredProjects}/>
 
             {/* Discover Buttons change the content of the page based on which one is highlighted */}
             <div id="discover-button-wrapper">

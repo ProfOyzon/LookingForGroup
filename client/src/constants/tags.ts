@@ -1,0 +1,28 @@
+//tags used for projects
+//Many are temporary, as they are just what was in the data
+export const tags = [
+  "Game Development",
+  "Roguelike",
+  "FPS",
+  "So Retro",
+  "Rock",
+  "Cooking",
+  "Birthday",
+  "Dirt",
+  "2.5D",
+  "Sandbox",
+  "Adventure",
+  "Shared1",
+  "Shared2",
+  "Wah",
+  "Waah",
+  "Waaah",
+  "Waaaah",
+  "Boring",
+  "BlahBlahBlah",
+  "abc",
+  "12345",
+  "Class Project",
+  "pls help",
+  "idk",
+]

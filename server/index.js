@@ -1,11 +1,13 @@
 import express from "express";
 import morgan from "morgan";
+import usersRouter from "./routes/users.js";
 import projectsRouter from "./routes/projects.js";
 
 const app = express();
 const port = process.env.PORT || process.env.NODE_PORT || 3001;
 
 app.use(morgan("tiny"));
+app.use(usersRouter);
 app.use(projectsRouter);
 
 app.get("/", (req, res) => {

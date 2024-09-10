@@ -1,42 +1,18 @@
-const path = require('path');
-const express = require('express');
-const morgan = require("morgan");
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const mongoose = require('mongoose');
-
-const config = require('./config.js');
-
-const router = require('./router.js');
-
-const port = process.env.PORT || process.env.NODE_PORT || 3001;
-
-mongoose.connect(config.connections.mongo)
-    .then(() => { console.log("Connected to mongoDB database!\n") });
+import express from "express";
+import morgan from "morgan";
+import usersRouter from "./routes/users.js";
+import projectsRouter from "./routes/projects.js";
 
 const app = express();
+const port = process.env.PORT || process.env.NODE_PORT || 3001;
 
 app.use(morgan("tiny"));
+app.use(usersRouter);
+app.use(projectsRouter);
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-app.set('trust proxy', 1);
-app.use(session({
-    key: 'sessionid',
-    secret: config.secret,
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true,
-    },
-}));
-
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../client/build")));
-}
-
-router(app);
+app.get("/", (req, res) => {
+    return res.json({ message: "You Reached The Looking For Group API" });
+})
 
 app.listen(port, (err) => {
     if (err) { throw err; }

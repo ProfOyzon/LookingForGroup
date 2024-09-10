@@ -7,6 +7,19 @@ import { softSkills, hardSkills, proficiencies } from "../constants/skills";
 
 //This component will contain a list of tag buttons that can be used to filter projects and profiles
 
+//Things to fix:
+//Search bar re-rendering not working correctly *
+//Search queries longer than 2 characters not working
+//selected tag list wiped upon using filter *
+//Implement tag coloring *
+//New repeating tags when using profile filter
+//Implement size limit for tags' space
+
+//create empty array, which will be filled with tags selected by user
+//This needs to be placed outside the main component
+//Placing it inside causes it to be reset whenever 'setUseState' in 'filter' is run
+let selectedTags : string[] = [];
+
 //props used: 
 //projectFilter - boolean, if true this filters projects, if false this filters profiles
 //setUseState - useState function to set states using filtered datasets
@@ -20,8 +33,8 @@ export const TagFilter = ({projectFilter, setUseState}) => {
     tagsList = tags;
   } else { //if people...
     //fill array using 'softSkills', 'hardSkills', & 'proficiencies'
-    tagsList = interests;
-    for (let item of softSkills) {
+    tagsList = interests.concat(softSkills).concat(hardSkills).concat(proficiencies);
+    /* for (let item of softSkills) {
       tagsList.push(item);
     }
     for (let item of hardSkills) {
@@ -29,17 +42,45 @@ export const TagFilter = ({projectFilter, setUseState}) => {
     }
     for (let item of proficiencies) {
       tagsList.push(item);
-    }
+    } */
   }
   //create useState using this array; this will be used for 'tag searching' and modify display accordingly
   let [displayedTags, setDisplayedTags] = useState(tagsList);
-  //create empty array, which will be filled with tags selected by user
-  let selectedTags : string[] = [];
+
+  //tag search function
+  //Runs whenever the input in the searchbar changes
+  //takes in searchResults, which is the data filtered by the search function
+  const tagSearch = (searchResults) => {
+    //Get the 'correct' data out of the weird structuring of searchResults
+    let realSearchResults = searchResults[0]
+    //set displayedTags state
+    setDisplayedTags(realSearchResults);
+    //run through all selected tags & update their displays if present
+    //setTimeout allows new data to be loaded first before updating based on selected tags
+    setTimeout(() => {
+      //First, find all 'selected' elements and change them to unselected displays
+      let selectedTagElements = Array.from(document.getElementsByClassName('tag-filter-selected'));
+      console.log(selectedTagElements);
+      for (let element of selectedTagElements) {
+        element.classList.toggle('tag-filter-selected');
+      }
+      //Then, see if any results are in the currently selected tags
+      for (let result of realSearchResults) {
+        //If the are...
+        if (selectedTags.includes(result)) {
+          //Update their displays to match
+          let tagElement = document.getElementById(`tag-id-${result}`);
+          console.log(tagElement);
+          tagElement ? tagElement.classList.toggle('tag-filter-selected') : console.log('error updating display');
+        }
+      }
+    }, 1);
+  }
 
   //toggle tag function
   //Runs when a tag item is clicked, either adds or removes tag from selected tag array
   //takes in a string representing the tag being selected
-  const toggleTag = (tag : string) => {
+  const toggleTag = (e, tag : string) => {
     //First, check if tag is included in selected tag array
     //if the tag is not there...
     if (!selectedTags.includes(tag)) {
@@ -52,6 +93,7 @@ export const TagFilter = ({projectFilter, setUseState}) => {
     //In both cases, toggle the display of the tag in question to show it is selected
     //Undetermined on how to set up display functions yet, will save for later
     console.log(selectedTags);
+    e.target.classList.toggle('tag-filter-selected');
   }
   
 
@@ -63,7 +105,6 @@ export const TagFilter = ({projectFilter, setUseState}) => {
     //Use returned data with the setUseState function passed into this component
     setUseState(filteredData); //May need adjustments due to same-name useState stuff
     //Additional stuff - if component is part of a popup or dropdown, have this function close it as well
-    console.log(selectedTags);
   }
 
 
@@ -71,7 +112,7 @@ export const TagFilter = ({projectFilter, setUseState}) => {
   return (
     <>
       {/*Include searchbar component (check what searchbar needs to run correctly)*/}
-      <SearchBar dataSets={[{data: tagsList}]} onSearch={setDisplayedTags}/>
+      <SearchBar dataSets={[{data: tagsList}]} onSearch={tagSearch}/>
 
       <div id='tag-filter-list'>
         {
@@ -84,10 +125,10 @@ export const TagFilter = ({projectFilter, setUseState}) => {
             //Otherwise...
               //Use unselected tag classname
             return (
-              <div className={'tag-filter'} onClick={() => toggleTag(tag)}>{tag}</div>
+              <div className={'tag-filter'} id={`tag-id-${tag}`}onClick={(e) => toggleTag(e, tag)}>{tag}</div>
             )
-
           })
+       
         }
       </div>
 

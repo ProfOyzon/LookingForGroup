@@ -72,7 +72,6 @@ const Home = (props) => {
     return (
         <div className="page">
             <h1 className="page-title">Discover</h1>
-            <TagFilter projectFilter={true} setUseState={setFilteredProjects}/>
 
             {/* Discover Buttons change the content of the page based on which one is highlighted */}
             <div id="discover-button-wrapper">

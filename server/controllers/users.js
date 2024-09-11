@@ -12,6 +12,20 @@ const getUsers = async (req, res) => {
     });
 }
 
+const createUser = async (req, res) => {
+    // Create a new project
+
+    // Get input data
+    const { firstName, lastName, bio } = req.body
+
+    // Add entry to database 
+    const sql = "INSERT INTO users (first_name, last_name, bio) VALUES (?, ?, ?)";
+    const values = [firstName, lastName, bio];
+    await pool.query(sql, values);
+
+    return res.sendStatus(201);
+}
+
 const getUsersById = async (req, res) => {
     // Get users using id
 
@@ -29,4 +43,4 @@ const getUsersById = async (req, res) => {
     });
 }
 
-export { getUsers, getUsersById };
+export { getUsers, createUser, getUsersById };

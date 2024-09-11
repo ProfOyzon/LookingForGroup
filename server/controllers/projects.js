@@ -12,6 +12,20 @@ const getProjects = async (req, res) => {
     });
 }
 
+const createProject = async (req, res) => {
+    // Create a new project
+
+    // Get input data
+    const { title, description, id } = req.body
+
+    // Add entry to database 
+    const sql = "INSERT INTO projects (title, description, user_id) VALUES (?, ?, ?)";
+    const values = [title, description, id];
+    await pool.query(sql, values);
+
+    return res.sendStatus(201);
+}
+
 const getProjectById = async (req, res) => {
     // Get projects using its id
 
@@ -29,4 +43,5 @@ const getProjectById = async (req, res) => {
     });
 }
 
-export { getProjects, getProjectById };
+
+export { getProjects, createProject, getProjectById };

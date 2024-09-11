@@ -27,7 +27,7 @@ const createProject = async (req, res) => {
 }
 
 const getProjectById = async (req, res) => {
-    // Get projects using its id
+    // Get a project using its id
 
     // Get id from url 
     const { id } = req.params;
@@ -43,5 +43,19 @@ const getProjectById = async (req, res) => {
     });
 }
 
+const updateProjectById = async (req, res) => {
+    // Update a project
 
-export { getProjects, createProject, getProjectById };
+    // Get id from url 
+    const { id } = req.params;
+    const { title, description} = req.body
+
+    // Update database with project's new info
+    const sql = "UPDATE projects SET title = ?, description = ? WHERE project_id = ?";
+    const values = [title, description, id];
+    await pool.query(sql, values);
+    
+    return res.sendStatus(204)
+}
+
+export { getProjects, createProject, getProjectById, updateProjectById };

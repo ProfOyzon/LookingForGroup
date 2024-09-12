@@ -4,11 +4,17 @@ const getProjects = async (req, res) => {
     // Get all projects
 
     // Get data
-    const rows = await pool.query("SELECT * FROM projects");
-    
+    const projects = await pool.query(`
+        SELECT p.project_id, p.title, p.description, p.user_id, JSON_ARRAYAGG(t.label) AS tags
+        FROM projects p 
+            JOIN project_tags pt ON p.project_id = pt.project_id 
+            JOIN tags t ON pt.tag_id = t.tag_id 
+        GROUP BY p.project_id
+        `);
+    console.log(typeof projects[0].tags);
     return res.status(200).json({
         status: 200,
-        data: rows
+        data: projects
     });
 }
 

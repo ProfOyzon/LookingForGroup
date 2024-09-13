@@ -11,7 +11,7 @@ const getProjects = async (req, res) => {
             JOIN tags t ON pt.tag_id = t.tag_id 
         GROUP BY p.project_id
         `);
-    console.log(typeof projects[0].tags);
+
     return res.status(200).json({
         status: 200,
         data: projects
@@ -22,13 +22,21 @@ const createProject = async (req, res) => {
     // Create a new project
 
     // Get input data
-    const { title, description, id } = req.body
+    const { title, description, id, tags} = req.body
 
-    // Add entry to database 
-    const sql = "INSERT INTO projects (title, description, user_id) VALUES (?, ?, ?)";
+    // Add entry to database and get back its id
+    const sql = "INSERT INTO projects (title, description, user_id) VALUES (?, ?, ?) RETURNING project_id";
     const values = [title, description, id];
-    await pool.query(sql, values);
-
+    const project = await pool.query(sql, values);
+    
+    // Get tag ids and add new entries into project_tags table
+    const placeholders = tags.map(() => "?").join(",");
+    const tagIds = await pool.query(`SELECT tag_id FROM tags WHERE label IN (${placeholders})`, tags);
+    
+    for (let tag of tagIds) {
+        await pool.query("INSERT INTO project_tags (project_id, tag_id) VALUES (?, ?)", [project[0].project_id, tag.tag_id]);
+    }
+    
     return res.sendStatus(201);
 }
 

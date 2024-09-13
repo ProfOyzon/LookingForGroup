@@ -3,6 +3,7 @@ Table of Contents
 General Style rules
 Component Style rules
     -Card components
+    -Panel components
     -Tags
     -Button components
     -Sidebar
@@ -240,6 +241,22 @@ Card component style rules
 #discover-card-pronouns {
     margin-top: 0%;
     text-align: center;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project Panel component style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+.project-panel {
+    height: 200px;
+    border: 2px solid grey;
+}
+
+.project-panel img{
+    height:200px;
 }
 
 /*
@@ -856,6 +873,13 @@ Discover page style rules
 
 #discover-button-wrapper>* {
     max-height: 50px;
+}
+
+#discover-panel-box {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    grid-gap:20px;
 }
 
 @media only screen and (max-width: 800px) {

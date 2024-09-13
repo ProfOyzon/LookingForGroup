@@ -1,6 +1,7 @@
 import "./pages.css";
 import { ProjectCard } from "../ProjectCard";
 import { ProfileCard } from "../ProfileCard";
+import { ProjectPanel } from "../ProjectPanel";
 import { DiscoverButton } from "../DiscoverButton";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
@@ -34,17 +35,65 @@ const Home = (props) => {
 
     //--------------------------
 
+    //Get list of projects (and check if it exists/has content)
+    //Create empty list of projects to display
+    //(Will also include project data when actual projects are used)
+    let projectsToDisplay : {width : number}[] = [];
+    //Find out the width of the flexbox container
+    const flexboxWidth : number = window.innerWidth - 277;
+    console.log(flexboxWidth);
+    //Create width tracker, set it equal to negative of the flexbox gap value
+    let widthTracker : number = -40;
+    //Create row tracker, which tracks the number of "full" flexbox rows
+    let rowTracker : number = 0;
+    //Start iterating through projects
+    //For each project... (For testing purposes, will just loop until break condition is met)
+    while (rowTracker <= 5) {
+        //Get a width value based on the project's display image's aspect ratio
+        //(For testing's sake, width will be randomized)
+        let panelWidth = Math.floor((Math.random() * 200) + 200);
+        //Add (width value + flexbox gap value) to width tracker
+        widthTracker += panelWidth + 40;
+        //if width tracker > flexbox width...
+        if (widthTracker > flexboxWidth) {
+            //Increment row tracker
+            rowTracker++;
+            //Reset width tracker to negative of the flexbox gap value
+            widthTracker = -40;
+            console.log(projectsToDisplay);
+        }
+        //if row tracker < a designated row count...
+        if (rowTracker < 5) {
+            //Add current project to list of projects to display
+            //(Will include actual projects later)
+            projectsToDisplay.push({width: panelWidth});
+        } else { //otherwise...
+            //Break project iteration loop
+            console.log(projectsToDisplay);
+            break;
+        }  
+    }
+
+
     // This displays all of the projects (on project cards) from the static fakeData.ts dataset
     // Eventually the discover page should display a select number of cards instead of all
     let projectContent = <>{
-        projects ?
+        /* projects ?
             projects.length > 0 ?
                 filteredProjects.map((project) => (
                     <ProjectCard project={project}></ProjectCard>
                 ))
                 // If the projects array/object does not exist or has no content then nothing is displayed
                 : null
-            : null
+            : null */
+        
+        //To-do later: case scenario for if row is too small to contain 1 wide project
+        
+        //For each project in project display list... (use map)
+                projectsToDisplay.map((project) => (
+                    //Create a Project Panel component
+                    <ProjectPanel width={project.width}></ProjectPanel>
+                ))
     }</>;
 
     // This displays all of the profiles (on profile cards) from the static fakeData.ts dataset
@@ -81,7 +130,9 @@ const Home = (props) => {
             </div>
 
             {/* Prints all projects in the fake dataset on screen */}
+            <div id='discover-panel-box'>
             {discoverContent}
+            </div>
 
             {/* Footer of the page made exclusively to navigate to a project credits page. */}
             {/* This link should probably be moved to settings in the future but its in this footer for ease of access for now */}

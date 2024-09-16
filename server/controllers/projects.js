@@ -23,7 +23,7 @@ const createProject = async (req, res) => {
     // Get input data
     const { title, description, id, tags} = req.body
 
-    // Add entry to database and get back its id
+    // Add project to database and get back its id
     const sql = "INSERT INTO projects (title, description, user_id) VALUES (?, ?, ?) RETURNING project_id";
     const values = [title, description, id];
     const project = await pool.query(sql, values);
@@ -77,6 +77,7 @@ const updateProject = async (req, res) => {
     
     return res.sendStatus(204)
 }
+
 const addTag = async (req, res) => {
     // Add a tag to a project
 

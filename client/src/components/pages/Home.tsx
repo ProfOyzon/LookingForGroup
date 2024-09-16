@@ -35,17 +35,50 @@ const Home = (props) => {
 
     //--------------------------
 
+    //To-do: 
+    //Figure out infinite scrolling
+    //Consider how window re-sizing will function
+    // Maybe add padding that adjusts to resizing
+    // Once padding hits a minimum size, re-render panels to a narrower size
+    // Help minimize how much re-rendering would be needed
+
+    //Gets the width of the scrollbar
+    //Obtained from https://stackoverflow.com/questions/13382516/getting-scroll-bar-width-using-javascript
+    function getScrollbarWidth() {
+
+        // Creating invisible container
+        const outer = document.createElement('div');
+        outer.style.visibility = 'hidden';
+        outer.style.overflow = 'scroll'; // forcing scrollbar to appear
+        outer.style.msOverflowStyle = 'scrollbar'; // needed for WinJS apps
+        document.body.appendChild(outer);
+        
+        // Creating inner element and placing it in the container
+        const inner = document.createElement('div');
+        outer.appendChild(inner);
+        
+        // Calculating difference between container's full width and the child width
+        const scrollbarWidth = (outer.offsetWidth - inner.offsetWidth);
+        
+        // Removing temporary elements from the DOM
+        outer.parentNode.removeChild(outer);
+        
+        return scrollbarWidth;
+    }
+
     //Get list of projects (and check if it exists/has content)
     //Create empty list of projects to display
     //(Will also include project data when actual projects are used)
-    let projectsToDisplay : {width : number}[] = [];
+    let projectsToDisplay : {width : number, row : number}[] = [];
     //Find out the width of the flexbox container
-    const flexboxWidth : number = window.innerWidth - 277;
-    console.log(flexboxWidth);
+    //Number is hard-coded for now, figure out math after row setting up is done
+    const flexboxWidth : number = window.innerWidth - 220 - getScrollbarWidth();
     //Create width tracker, set it equal to negative of the flexbox gap value
-    let widthTracker : number = -40;
+    let widthTracker : number = -20;
     //Create row tracker, which tracks the number of "full" flexbox rows
     let rowTracker : number = 0;
+    //Create project tracker, which tracks the number of project panels that will be placed in a row
+    let projectTracker : number = 0;
     //Start iterating through projects
     //For each project... (For testing purposes, will just loop until break condition is met)
     while (rowTracker <= 5) {
@@ -53,27 +86,55 @@ const Home = (props) => {
         //(For testing's sake, width will be randomized)
         let panelWidth = Math.floor((Math.random() * 200) + 200);
         //Add (width value + flexbox gap value) to width tracker
-        widthTracker += panelWidth + 40;
-        //if width tracker > flexbox width...
+        //Note - borders & other factors may add extra width, double check calculations using inspector
+        widthTracker += panelWidth + 24;
+        //if width tracker > flexbox width, make final adjustments to row before moving to next
         if (widthTracker > flexboxWidth) {
+            //Calculate flexboxWidth - total width of all projects
+            let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
+            //Divide difference to split among project panels' widths (and the remainder);
+            let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
+            let widthAdjustmentRemainder = flexboxDifference % projectTracker;
+            //Loop through all projects inside the most recently completed row
+            for (let project of projectsToDisplay) {
+                //Find projects of the current row being adjusted
+                if (project.row == rowTracker) {
+                    //Divide difference evenly amongst all project's widths
+                    project.width += widthAdjustment + widthAdjustmentRemainder;
+                    //remove remainder once it is used once
+                    widthAdjustmentRemainder = 0;
+                }
+            }
             //Increment row tracker
             rowTracker++;
             //Reset width tracker to negative of the flexbox gap value
-            widthTracker = -40;
-            console.log(projectsToDisplay);
+            widthTracker = panelWidth + 4;
+            //Reset project tracker
+            projectTracker = 0;
         }
         //if row tracker < a designated row count...
         if (rowTracker < 5) {
             //Add current project to list of projects to display
             //(Will include actual projects later)
-            projectsToDisplay.push({width: panelWidth});
+            projectsToDisplay.push({width: panelWidth, row: rowTracker});
+            projectTracker++;
         } else { //otherwise...
             //Break project iteration loop
-            console.log(projectsToDisplay);
             break;
         }  
     }
 
+    const addContent = () => {
+        const {
+            scrollTop,
+            scrollHeight,
+            clientHeight
+        } = document.querySelector(".page");
+
+        if (scrollTop + clientHeight >= scrollHeight) {
+            console.log("hi, I'm testing to see if this check works!");
+        }
+    }
 
     // This displays all of the projects (on project cards) from the static fakeData.ts dataset
     // Eventually the discover page should display a select number of cards instead of all
@@ -119,7 +180,7 @@ const Home = (props) => {
     }
 
     return (
-        <div className="page">
+        <div className="page" onScroll={addContent}>
             <h1 className="page-title">Discover</h1>
 
             {/* Discover Buttons change the content of the page based on which one is highlighted */}

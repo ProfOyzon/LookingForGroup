@@ -29,7 +29,7 @@ const createProject = async (req, res) => {
     const values = [title, description, id];
     const project = await pool.query(sql, values);
     
-    // Get tag ids and add new entries into project_tags table
+    // Get tag ids and add new entries to database 
     const placeholders = tags.map(() => "?").join(",");
     const tagIds = await pool.query(`SELECT tag_id FROM tags WHERE label IN (${placeholders})`, tags);
     
@@ -47,7 +47,14 @@ const getProjectById = async (req, res) => {
     const { id } = req.params;
 
     // Get data
-    const sql = "SELECT * FROM projects WHERE project_id = ?";
+    const sql = `
+        SELECT p.project_id, p.title, p.description, p.user_id, JSON_ARRAYAGG(t.label) AS tags
+        FROM projects p 
+            JOIN project_tags pt ON p.project_id = pt.project_id 
+            JOIN tags t ON pt.tag_id = t.tag_id
+        WHERE p.project_id = ? 
+        GROUP BY p.project_id
+        `;
     const values = [id];
     const rows = await pool.query(sql, values);
     

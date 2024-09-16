@@ -3,7 +3,6 @@ import pool from "../config/database.js"
 const getProjects = async (req, res) => {
     // Get all projects
 
-    // Get data
     const projects = await pool.query(`
         SELECT p.project_id, p.title, p.description, p.user_id, JSON_ARRAYAGG(t.label) AS tags
         FROM projects p 
@@ -29,7 +28,7 @@ const createProject = async (req, res) => {
     const values = [title, description, id];
     const project = await pool.query(sql, values);
     
-    // Get tag ids and add new entries to database 
+    // Get tag ids and add project's tags to database 
     const placeholders = tags.map(() => "?").join(",");
     const tagIds = await pool.query(`SELECT tag_id FROM tags WHERE label IN (${placeholders})`, tags);
     
@@ -46,7 +45,7 @@ const getProjectById = async (req, res) => {
     // Get id from url 
     const { id } = req.params;
 
-    // Get data
+    // Get project data
     const sql = `
         SELECT p.project_id, p.title, p.description, p.user_id, JSON_ARRAYAGG(t.label) AS tags
         FROM projects p 
@@ -64,10 +63,10 @@ const getProjectById = async (req, res) => {
     });
 }
 
-const updateProjectById = async (req, res) => {
+const updateProject = async (req, res) => {
     // Update a project
 
-    // Get id from url 
+    // Get input data
     const { id } = req.params;
     const { title, description} = req.body
 
@@ -78,5 +77,32 @@ const updateProjectById = async (req, res) => {
     
     return res.sendStatus(204)
 }
+const addTag = async (req, res) => {
+    // Add a tag to a project
 
-export { getProjects, createProject, getProjectById, updateProjectById };
+    // Get input data
+    const { id } = req.params;
+    const { tag } = req.body
+
+    // Get tag id and add project's tag into database
+    const tagId = await pool.query(`SELECT tag_id FROM tags WHERE label = ?`, tag);
+    await pool.query("INSERT INTO project_tags (project_id, tag_id) VALUES (?, ?)", [id, tagId[0].tag_id]);
+
+    return res.sendStatus(201);
+}
+
+const deleteTag = async (req, res) => {
+    // Delete tag from a project
+
+    // Get input data
+    const { id } = req.params;
+    const { tag } = req.body
+
+    // Get tag id and remove project's tag from database
+    const tagId = await pool.query(`SELECT tag_id FROM tags WHERE label = ?`, tag);
+    await pool.query("DELETE FROM project_tags WHERE project_id = ? AND tag_id = ?", [id, tagId[0].tag_id]);
+
+    return res.sendStatus(204);
+}
+
+export { getProjects, createProject, getProjectById, updateProject, addTag, deleteTag };

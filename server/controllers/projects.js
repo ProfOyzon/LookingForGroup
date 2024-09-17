@@ -1,4 +1,5 @@
-import pool from "../config/database.js"
+import pool from "../config/database.js";
+import { genPlaceholders } from "../utils/sqlUtil.js";
 
 const getProjects = async (req, res) => {
     // Get all projects
@@ -29,7 +30,7 @@ const createProject = async (req, res) => {
     const project = await pool.query(sql, values);
     
     // Get tag ids and add project's tags to database 
-    const placeholders = tags.map(() => "?").join(",");
+    const placeholders = genPlaceholders(tags)
     const tagIds = await pool.query(`SELECT tag_id FROM tags WHERE label IN (${placeholders})`, tags);
     
     for (let tag of tagIds) {

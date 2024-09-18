@@ -4,13 +4,22 @@ import { genPlaceholders } from "../utils/sqlUtil.js";
 const getProjects = async (req, res) => {
     // Get all projects
 
-    const projects = await pool.query(`
-        SELECT p.project_id, p.title, p.description, p.user_id, JSON_ARRAYAGG(t.label) AS tags
-        FROM projects p 
-            JOIN project_tags pt ON p.project_id = pt.project_id 
-            JOIN tags t ON pt.tag_id = t.tag_id 
-        GROUP BY p.project_id
-        `);
+    const sql = `SELECT p.project_id, p.title, p.description, p.user_id, g.genres, t.tags
+        FROM projects p
+        JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+            FROM project_genres pg 
+            JOIN genres g 
+                ON pg.genre_id = g.genre_id
+            GROUP BY pg.project_id) g
+        ON p.project_id = g.project_id
+        JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+            FROM project_tags pt 
+            JOIN tags t 
+                ON pt.tag_id = t.tag_id
+            GROUP BY pt.project_id) t
+        ON p.project_id = t.project_id
+        `;
+    const projects = await pool.query(sql);
 
     return res.status(200).json({
         status: 200,
@@ -47,13 +56,21 @@ const getProjectById = async (req, res) => {
     const { id } = req.params;
 
     // Get project data
-    const sql = `
-        SELECT p.project_id, p.title, p.description, p.user_id, JSON_ARRAYAGG(t.label) AS tags
-        FROM projects p 
-            JOIN project_tags pt ON p.project_id = pt.project_id 
-            JOIN tags t ON pt.tag_id = t.tag_id
-        WHERE p.project_id = ? 
-        GROUP BY p.project_id
+    const sql = `SELECT p.project_id, p.title, p.description, p.user_id, g.genres, t.tags
+        FROM projects p
+        JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+            FROM project_genres pg 
+            JOIN genres g 
+                ON pg.genre_id = g.genre_id
+            GROUP BY pg.project_id) g
+        ON p.project_id = g.project_id
+        JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+            FROM project_tags pt 
+            JOIN tags t 
+                ON pt.tag_id = t.tag_id
+            GROUP BY pt.project_id) t
+        ON p.project_id = t.project_id
+        WHERE p.project_id = ?
         `;
     const values = [id];
     const rows = await pool.query(sql, values);

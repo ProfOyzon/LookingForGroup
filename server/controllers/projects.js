@@ -1,15 +1,25 @@
-import pool from "../config/database.js"
+import pool from "../config/database.js";
+import { genPlaceholders } from "../utils/sqlUtil.js";
 
 const getProjects = async (req, res) => {
     // Get all projects
 
-    const projects = await pool.query(`
-        SELECT p.project_id, p.title, p.description, p.user_id, JSON_ARRAYAGG(t.label) AS tags
-        FROM projects p 
-            JOIN project_tags pt ON p.project_id = pt.project_id 
-            JOIN tags t ON pt.tag_id = t.tag_id 
-        GROUP BY p.project_id
-        `);
+    const sql = `SELECT p.project_id, p.title, p.description, p.user_id, g.genres, t.tags
+        FROM projects p
+        JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+            FROM project_genres pg 
+            JOIN genres g 
+                ON pg.genre_id = g.genre_id
+            GROUP BY pg.project_id) g
+        ON p.project_id = g.project_id
+        JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+            FROM project_tags pt 
+            JOIN tags t 
+                ON pt.tag_id = t.tag_id
+            GROUP BY pt.project_id) t
+        ON p.project_id = t.project_id
+        `;
+    const projects = await pool.query(sql);
 
     return res.status(200).json({
         status: 200,
@@ -21,21 +31,27 @@ const createProject = async (req, res) => {
     // Create a new project
 
     // Get input data
-    const { title, description, id, tags} = req.body
+    const { title, description, id, genres, tags} = req.body;
 
     // Add project to database and get back its id
     const sql = "INSERT INTO projects (title, description, user_id) VALUES (?, ?, ?) RETURNING project_id";
     const values = [title, description, id];
     const project = await pool.query(sql, values);
+
+    // Get genre ids and add project's genres to database
+    let placeholders = genPlaceholders(genres);
+    const genreIds = await pool.query(`SELECT genre_id FROM genres WHERE label IN (${placeholders})`, genres);
+    for (let genre of genreIds) {
+        await pool.query("INSERT INTO project_genres (project_id, genre_id) VALUES (?, ?)", [project[0].project_id, genre.genre_id]);
+    }
     
     // Get tag ids and add project's tags to database 
-    const placeholders = tags.map(() => "?").join(",");
+    placeholders = genPlaceholders(tags);
     const tagIds = await pool.query(`SELECT tag_id FROM tags WHERE label IN (${placeholders})`, tags);
-    
     for (let tag of tagIds) {
         await pool.query("INSERT INTO project_tags (project_id, tag_id) VALUES (?, ?)", [project[0].project_id, tag.tag_id]);
     }
-    
+
     return res.sendStatus(201);
 }
 
@@ -46,20 +62,28 @@ const getProjectById = async (req, res) => {
     const { id } = req.params;
 
     // Get project data
-    const sql = `
-        SELECT p.project_id, p.title, p.description, p.user_id, JSON_ARRAYAGG(t.label) AS tags
-        FROM projects p 
-            JOIN project_tags pt ON p.project_id = pt.project_id 
-            JOIN tags t ON pt.tag_id = t.tag_id
-        WHERE p.project_id = ? 
-        GROUP BY p.project_id
+    const sql = `SELECT p.project_id, p.title, p.description, p.user_id, g.genres, t.tags
+        FROM projects p
+        JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+            FROM project_genres pg 
+            JOIN genres g 
+                ON pg.genre_id = g.genre_id
+            GROUP BY pg.project_id) g
+        ON p.project_id = g.project_id
+        JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+            FROM project_tags pt 
+            JOIN tags t 
+                ON pt.tag_id = t.tag_id
+            GROUP BY pt.project_id) t
+        ON p.project_id = t.project_id
+        WHERE p.project_id = ?
         `;
     const values = [id];
-    const rows = await pool.query(sql, values);
+    const project = await pool.query(sql, values);
     
     return res.status(200).json({
         status: 200,
-        data: rows
+        data: project
     });
 }
 
@@ -68,7 +92,7 @@ const updateProject = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { title, description} = req.body
+    const { title, description} = req.body;
 
     // Update database with project's new info
     const sql = "UPDATE projects SET title = ?, description = ? WHERE project_id = ?";
@@ -78,12 +102,40 @@ const updateProject = async (req, res) => {
     return res.sendStatus(204)
 }
 
+const addGenre = async (req, res) => {
+    // Add a genre to a project
+
+    // Get input data
+    const { id } = req.params;
+    const { genre } = req.body;
+
+    // Get genre id and add project's genre into database
+    const genreId = await pool.query(`SELECT genre_id FROM genres WHERE label = ?`, genre);
+    await pool.query("INSERT INTO project_genres (project_id, genre_id) VALUES (?, ?)", [id, genreId[0].genre_id]);
+
+    return res.sendStatus(201);
+}
+
+const deleteGenre = async (req, res) => {
+    // Delete tag from a project
+
+    // Get input data
+    const { id } = req.params;
+    const { genre } = req.body;
+
+    // Get genre id and remove project's genre from database
+    const genreId = await pool.query(`SELECT genre_id FROM genres WHERE label = ?`, genre);
+    await pool.query("DELETE FROM project_genres WHERE project_id = ? AND genre_id = ?", [id, genreId[0].genre_id]);
+
+    return res.sendStatus(204);
+}
+
 const addTag = async (req, res) => {
     // Add a tag to a project
 
     // Get input data
     const { id } = req.params;
-    const { tag } = req.body
+    const { tag } = req.body;
 
     // Get tag id and add project's tag into database
     const tagId = await pool.query(`SELECT tag_id FROM tags WHERE label = ?`, tag);
@@ -97,7 +149,7 @@ const deleteTag = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { tag } = req.body
+    const { tag } = req.body;
 
     // Get tag id and remove project's tag from database
     const tagId = await pool.query(`SELECT tag_id FROM tags WHERE label = ?`, tag);
@@ -106,4 +158,4 @@ const deleteTag = async (req, res) => {
     return res.sendStatus(204);
 }
 
-export { getProjects, createProject, getProjectById, updateProject, addTag, deleteTag };
+export { getProjects, createProject, getProjectById, updateProject, addGenre, deleteGenre, addTag, deleteTag };

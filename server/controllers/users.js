@@ -1,4 +1,5 @@
-import pool from "../config/database.js"
+import pool from "../config/database.js";
+import { genPlaceholders } from "../utils/sqlUtil.js";
 
 const getUsers = async (req, res) => {
     // Get all users
@@ -29,7 +30,7 @@ const createUser = async (req, res) => {
     const user = await pool.query(sql, values);
 
     // Get skill ids and add user's skills to database 
-    const placeholders = skills.map(() => "?").join(",");
+    const placeholders = genPlaceholders(skills);
     const skillIds = await pool.query(`SELECT skill_id FROM skills WHERE label IN (${placeholders})`, skills);
 
     for (let skill of skillIds) {

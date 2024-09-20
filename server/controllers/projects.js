@@ -175,9 +175,26 @@ const addJob = async (req, res) => {
     const { job } = req.body;
 
     // Add project's job into database
-    await pool.query("INSERT INTO jobs (role, amount, description, project_id) VALUES (?, ?, ?, ?)", [job.role, job.amount, job.description, id]);
+    const sql = "INSERT INTO jobs (role, amount, description, project_id) VALUES (?, ?, ?, ?)";
+    const values = [job.role, job.amount, job.description, id];
+    await pool.query(sql, values);
 
     return res.sendStatus(201);
+}
+
+const updateJob = async (req, res) => {
+    // Update a project's job
+
+    // Get input data
+    const { id } = req.params;
+    const { job } = req.body;
+
+    // Update a project's job
+    const sql = "UPDATE jobs SET amount = ?, description = ? WHERE role = ? AND project_id = ?";
+    const values = [job.amount, job.description, job.role, id];
+    await pool.query(sql, values);
+    
+    return res.sendStatus(204)
 }
 
 const deleteJob = async (req, res) => {
@@ -194,5 +211,5 @@ const deleteJob = async (req, res) => {
 }
 
 export { getProjects, createProject, getProjectById, updateProject, 
-    addGenre, deleteGenre, addTag, deleteTag, addJob, deleteJob
+    addGenre, deleteGenre, addTag, deleteTag, addJob, updateJob, deleteJob
 };

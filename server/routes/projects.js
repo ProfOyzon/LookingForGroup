@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getProjects, getProjectById, createProject, updateProject, 
-    addGenre, deleteGenre, addTag, deleteTag, addJob, deleteJob } from "../controllers/projects.js";
+    addGenre, deleteGenre, addTag, deleteTag, addJob, updateJob, deleteJob } from "../controllers/projects.js";
 
 const router = Router();
 
@@ -13,6 +13,7 @@ router.delete("/api/projects/:id/genres", deleteGenre);
 router.post("/api/projects/:id/tags", addTag);
 router.delete("/api/projects/:id/tags", deleteTag);
 router.post("/api/projects/:id/jobs", addJob);
+router.put("/api/projects/:id/jobs", updateJob);
 router.delete("/api/projects/:id/jobs", deleteJob);
 
 export default router;

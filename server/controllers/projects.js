@@ -172,11 +172,11 @@ const addJob = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { job } = req.body;
+    const { role, amount, description } = req.body;
 
     // Add project's job into database
     const sql = "INSERT INTO jobs (role, amount, description, project_id) VALUES (?, ?, ?, ?)";
-    const values = [job.role, job.amount, job.description, id];
+    const values = [role, amount, description, id];
     await pool.query(sql, values);
 
     return res.sendStatus(201);
@@ -187,11 +187,11 @@ const updateJob = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { job } = req.body;
+    const { role, amount, description } = req.body;
 
     // Update a project's job
     const sql = "UPDATE jobs SET amount = ?, description = ? WHERE role = ? AND project_id = ?";
-    const values = [job.amount, job.description, job.role, id];
+    const values = [amount, description, role, id];
     await pool.query(sql, values);
     
     return res.sendStatus(204)
@@ -202,10 +202,10 @@ const deleteJob = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { job } = req.body;
+    const { role } = req.body;
 
     // Remove project's job from database
-    await pool.query("DELETE FROM jobs WHERE role = ? AND project_id = ?", [job.role, id]);
+    await pool.query("DELETE FROM jobs WHERE role = ? AND project_id = ?", [role, id]);
 
     return res.sendStatus(204);
 }

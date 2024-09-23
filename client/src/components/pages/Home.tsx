@@ -16,6 +16,12 @@ import { useEffect } from 'react' ;
 import CreditsFooter from '../CreditsFooter';
 import ToTopButton from "../ToTopButton";
 
+//These values need to be outside the component, otherwise they get reset every time it re-renders
+//List that holds project data that will be displayed. Changes along with search parameters
+let projectList = projects;
+//Variable that tracks what position we are at in the above array
+let projectListPosition : number = 0;
+
 //the main discover page- see a list of people and projects
 const Home = (props) => {
 
@@ -37,11 +43,12 @@ const Home = (props) => {
     //--------------------------
 
     //To-do: 
-    //Figure out infinite scrolling
-    //Consider how window re-sizing will function
-    // Maybe add padding that adjusts to resizing
-    // Once padding hits a minimum size, re-render panels to a narrower size
-    // Help minimize how much re-rendering would be needed
+    //Add use case for too wide projects *
+    //Add use case for when there are no more projects to load*
+    //Ensure that each project is only displayed once*
+    //Integrate search functionality
+    //Maybe add tag filter functionality too? (and combine with search?)
+    //Ensure it at least works with mobile view
 
     //Gets the width of the scrollbar
     //Obtained from https://stackoverflow.com/questions/13382516/getting-scroll-bar-width-using-javascript
@@ -66,71 +73,111 @@ const Home = (props) => {
         
         return scrollbarWidth;
     }
-
-    //Get list of projects (and check if it exists/has content)
-    //Create empty list of projects to display
-    //(Will also include project data when actual projects are used)
-    let projectsToDisplay : {width : number, adjust : number, row : number}[] = [];
     
     //Find out the width of the flexbox container
-    //Number is hard-coded for now, figure out math after row setting up is done
     let flexboxWidth : number = window.innerWidth - 220 - getScrollbarWidth();
-    //Create width tracker, set it equal to negative of the flexbox gap value
+    //tracks the width of items in the current flexbox row
     let widthTracker : number = -20;
-    //Create row tracker, which tracks the number of "full" flexbox rows
+    //tracks the number of "full" flexbox rows
     let rowTracker : number = 0;
-    //Create project tracker, which tracks the number of project panels that will be placed in a row
+    //tracks the number of project panels that will be placed in a row
     let projectTracker : number = 0;
-    //Start iterating through projects
-    //For each project... (For testing purposes, will just loop until break condition is met)
-    while (rowTracker <= 5) {
-        //Get a width value based on the project's display image's aspect ratio
-        //(For testing's sake, width will be randomized)
-        let panelWidth = Math.floor((Math.random() * 200) + 200);
-        //Add (width value + flexbox gap value) to width tracker
-        //Note - borders & other factors may add extra width, double check calculations using inspector
-        widthTracker += panelWidth + 24;
-        //if width tracker > flexbox width, make final adjustments to row before moving to next
-        if (widthTracker > flexboxWidth) {
-            //Calculate flexboxWidth - total width of all projects
-            let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
-            //Divide difference to split among project panels' widths (and the remainder);
-            let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
-            let widthAdjustmentRemainder = flexboxDifference % projectTracker;
-            //Loop through all projects inside the most recently completed row
-            for (let project of projectsToDisplay) {
-                //Find projects of the current row being adjusted
-                if (project.row == rowTracker) {
-                    //Divide difference evenly amongst all project's widths
-                    //project.width += widthAdjustment + widthAdjustmentRemainder;
-                    project.adjust = widthAdjustment + widthAdjustmentRemainder;
-                    //remove remainder once it is used once
-                    widthAdjustmentRemainder = 0;
+
+    //Loads a new set of project panels to render
+    //Calls when page first loads & when a new list of projects is being used (e.g. after a search)
+    const firstContent = (newProjectList) => {
+        //Set new project list to run through
+        projectList = newProjectList;
+        //Reset projectListPosition
+        projectListPosition = 0;
+
+        //empty list of projects to display
+        //(Will also include project data when actual projects are used)
+        let projectsToDisplay : {project, width : number, adjust : number, row : number}[] = [];
+
+        //Reset variables, if needed
+        widthTracker = -20;
+        rowTracker = 0;
+        projectTracker = 0;
+
+        //Set up initial project (ensures first row has something in it)
+        let firstPanelWidth = Math.floor((Math.random() * 200) + 200);
+        widthTracker += firstPanelWidth + 24;
+        projectsToDisplay.push({project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker});
+        projectListPosition++
+        projectTracker++;
+
+        //Start iterating through projects
+        //(For testing purposes, will just loop until break condition is met)
+        while (rowTracker <= 5 && projectListPosition < projectList.length) {
+            //Get a width value based on the project's display image's aspect ratio
+            //Formula for getting width from image: 
+            /*
+            (image height) / X = 100px
+            (image height) = 100px * X
+            X = (image height) / 100px;
+            (image width) / X = final width
+
+            (image width) / ((image height) / 100px) = final width
+
+
+            (image height) * X = 100px
+            X = 100px / (image height)
+
+            (image width) * (100px / (image height)) = final width [we'll use this one]
+            */
+            //(For testing's sake, width will be randomized)
+            ///let panelWidth = imageWidth * (100 / imageHeight); [Use this when images are integrated]
+            let panelWidth = Math.floor((Math.random() * 200) + 200);
+            //Add (width value + flexbox gap value + borders) to width tracker
+            //Note - borders & other factors may add extra width, double check calculations using inspector
+            widthTracker += panelWidth + 24;
+            //if width tracker > flexbox width, make final adjustments to row before moving to next
+            if (widthTracker > flexboxWidth) {
+                //Calculate flexboxWidth - total width of all projects
+                let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
+                //Divide difference to split among project panels' widths (and the remainder);
+                let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
+                let widthAdjustmentRemainder = flexboxDifference % projectTracker;
+                //Loop through all projects inside the most recently completed row
+                for (let project of projectsToDisplay) {
+                    //Find projects of the current row being adjusted
+                    if (project.row === rowTracker) {
+                        //Divide difference evenly amongst all project's widths
+                        //project.width += widthAdjustment + widthAdjustmentRemainder;
+                        project.adjust = widthAdjustment + widthAdjustmentRemainder;
+                        //remove remainder once it is used once
+                        widthAdjustmentRemainder = 0;
+                    }
                 }
+                //Increment row tracker
+                rowTracker++;
+                //Reset width tracker to negative of the flexbox gap value
+                widthTracker = panelWidth + 4;
+                //Reset project tracker
+                projectTracker = 0;
             }
-            //Increment row tracker
-            rowTracker++;
-            //Reset width tracker to negative of the flexbox gap value
-            widthTracker = panelWidth + 4;
-            //Reset project tracker
-            projectTracker = 0;
+            //if row tracker < a designated row count...
+            if (rowTracker < 5) {
+                //Add current project to list of projects to display
+                //(Will include actual projects later)
+                projectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker});
+                projectListPosition++;
+                projectTracker++;
+            } else { //otherwise...
+                //Break project iteration loop
+                break;
+            }  
         }
-        //if row tracker < a designated row count...
-        if (rowTracker < 5) {
-            //Add current project to list of projects to display
-            //(Will include actual projects later)
-            projectsToDisplay.push({width: panelWidth, adjust: 0, row: rowTracker});
-            projectTracker++;
-        } else { //otherwise...
-            //Break project iteration loop
-            break;
-        }  
+
+        return (projectsToDisplay);
     }
 
     //Holds data for currently displayed projects
     let [displayedProjects, setDisplayedProjects] = 
-        useState<{width : number, adjust : number, row : number}[]>(projectsToDisplay);
+        useState<{project, width : number, adjust : number, row : number}[]>(firstContent(projects));
 
+    //Function that adds more panels to render, called when the user scrolls to the bottom of the page
     const addContent = () => {
         const {
             scrollTop,
@@ -139,23 +186,21 @@ const Home = (props) => {
         } = document.querySelector(".page");
 
         if (scrollTop + clientHeight >= scrollHeight) {
-            console.log("addContent called");
-
-            let newProjectsToDisplay : {width : number, adjust : number, row : number}[] = [];
+            let newProjectsToDisplay : {project, width : number, adjust : number, row : number}[] = [];
 
             //Reset calculation values
             widthTracker = -20;
             let lastRow = displayedProjects[displayedProjects.length - 1].row + 1;
             rowTracker = displayedProjects[displayedProjects.length - 1].row + 1;
             projectTracker = 0;
-            console.log(lastRow);
-            //console.log(rowTracker);
-            console.log(displayedProjects);
 
-            while (rowTracker <= lastRow + 5) {
+            console.log(projectListPosition, projectList.length);
+
+            while (rowTracker <= lastRow + 5 && projectListPosition < projectList.length) {
                 //Get a width value based on the project's display image's aspect ratio
+                //let panelWidth = imageWidth * (100 / imageHeight); [Use this when images are integrated]
                 let panelWidth = Math.floor((Math.random() * 200) + 200);
-                //Add (width value + flexbox gap value) to width tracker
+                //Add (width value + flexbox gap value + borders) to width tracker
                 widthTracker += panelWidth + 24;
                 if (widthTracker > flexboxWidth) {
                     let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
@@ -164,7 +209,7 @@ const Home = (props) => {
                     let widthAdjustmentRemainder = flexboxDifference % projectTracker;
                     //Loop through all projects inside the most recently completed row
                     for (let project of newProjectsToDisplay) {
-                        if (project.row == rowTracker) {
+                        if (project.row === rowTracker) {
                             //Divide difference evenly amongst all project's widths
                             project.adjust = widthAdjustment + widthAdjustmentRemainder;
                             widthAdjustmentRemainder = 0;
@@ -176,13 +221,15 @@ const Home = (props) => {
                 }
                 if (rowTracker < lastRow + 5) {
                     //Add current project to list of projects to display
-                    newProjectsToDisplay.push({width: panelWidth, adjust: 0, row: rowTracker});
+                    newProjectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker});
+                    projectListPosition++;
                     projectTracker++;
                 } else { 
                     break;
                 }  
             }
 
+            //Append new project list to existing one
             setDisplayedProjects(displayedProjects.concat(newProjectsToDisplay));
         }
     }
@@ -190,28 +237,24 @@ const Home = (props) => {
     //Whenever window gets resized, updates the display of project panels
     //Tracks the time of the most recent call
     let lastResizeCall : number = 0;
+
+    //Adjusts display to fit resized window, called whenever window size is adjusted
     const resizeDisplay = () => {
-        //console.log("resize called");
         //Get time this function was called
         let thisCall : number = new Date().getTime();
-        //Set lastResizeCall to thisCall
         lastResizeCall = thisCall;
         //Set timer to check whether to continue this call or not
-        //If this is no longer the most recent call, stop this call
         setTimeout(() => {
-            if (lastResizeCall != thisCall) {
-                console.log('call cancelled');
-                console.log(thisCall, lastResizeCall);
+            //If this is no longer the most recent call, stop this call
+            if (lastResizeCall !== thisCall) {
+
                 return;
-            } else {
-    
             }
-            console.log('call commenced');
     
             //Similar to initial project panel rendering, just uses all currently displays projects
             //instead of adding new ones
             //Array holding edited project details
-            let resizedProjects : {width : number, adjust : number, row : number}[] = [];
+            let resizedProjects : {project, width : number, adjust : number, row : number}[] = [];
             //Calculate new flexbox width
             flexboxWidth = window.innerWidth - 220 - getScrollbarWidth();
             //Reset tracker variables (widthTracker, rowTracker, projectTracker)
@@ -231,21 +274,18 @@ const Home = (props) => {
                     let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
                     let widthRemainder = flexboxDifference % projectTracker;
                     for (let rowProject of resizedProjects) {
-                        if (rowProject.row == rowTracker) {
+                        if (rowProject.row === rowTracker) {
                             rowProject.adjust = widthAdjustment + widthRemainder;
                             widthRemainder = 0;
                         }
                     }
-                    //Increment rowTracker
+                    //Increment & reset tracker variables
                     rowTracker++;
-                    //Reset widthTracker (add current project's width to this)
                     widthTracker = project.width + 4;
-                    //Reset projectTracker
                     projectTracker = 0;
                 }
-                //Add project to resized projects
-                resizedProjects.push({width: project.width, adjust: 0, row: rowTracker});
-                //Increment projectTracker
+                //Add project to resized projects &  increment projectTracker
+                resizedProjects.push({project: project.project, width: project.width, adjust: 0, row: rowTracker});
                 projectTracker++;
             }
             //Perform width adjustment on last row
@@ -255,7 +295,7 @@ const Home = (props) => {
             let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
             let widthRemainder = flexboxDifference % projectTracker;
             for (let rowProject of resizedProjects) {
-                if (rowProject.row == rowTracker) {
+                if (rowProject.row === rowTracker) {
                     rowProject.adjust = widthAdjustment + widthRemainder;
                     widthRemainder = 0;
                 }

@@ -2,6 +2,7 @@ import "./pages.css";
 import { ProjectCard } from "../ProjectCard";
 import { ProfileCard } from "../ProfileCard";
 import { ProjectPanel } from "../ProjectPanel";
+import { ProfilePanel } from "../ProfilePanel";
 import { DiscoverButton } from "../DiscoverButton";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
@@ -306,7 +307,6 @@ const Home = (props) => {
         }, 100)
     }
         
-
     //Runs resizing function whenever window width changes
     //Don't add dependencies to it - it causes state to be reset for some reason (I don't know why)
     useEffect(() => {
@@ -315,6 +315,55 @@ const Home = (props) => {
             window.removeEventListener('resize', resizeDisplay)
         };
     });
+
+    //Variables and functions past this point will be used for profile panel displays
+    //Profile rendering will use multiple flexbox columns
+
+    //Create array of height trackers to track total height in each column
+    let heightTrackers : number[];
+
+    const firstProfiles = () => {
+        //Reset height trackers
+        heightTrackers = [];
+        //Calculate the width of available space (flexboxWidth contains this in this file)
+        //Divide that width and determine how many columns can fit
+        let totalColumns = Math.floor(flexboxWidth / 220);
+        //Create a number of arrays to hold profile panels equal to the number of columns
+        //Also, create height trackers for each column
+        let columnsToDisplay : {height : number}[][] = [];
+        for (let i = 0; i < totalColumns; i++){
+            columnsToDisplay.push([]);
+            heightTrackers.push(0);
+        }
+        //Start iterating through profiles (set limit of 30 profiles at first render)
+        //For each profile... (until all profiles are used or 30 are used)
+        for (let i = 0; i < 30; i++){
+            //If there are no more profiles to use, break this loop
+            /*if ([no more profiles]) {
+                break;
+            }*/
+            //Calculate height based off of image + any extra space for info
+            //(For testing purposes, height is randomized)
+            let panelHeight = Math.floor((Math.random() * 300) + 200);
+            //Check which column has the least height currently (if multiple have same, use first)
+            let shortestColumn = 0;
+            for (let j = 1; j < heightTrackers.length; j++){
+                if (heightTrackers[j] < heightTrackers[shortestColumn]) {
+                    shortestColumn = j;
+                }
+            }
+            //Add current profile to column with least height
+            columnsToDisplay[shortestColumn].push({height: panelHeight});
+            //Add profile height to column's height tracker
+            heightTrackers[shortestColumn] += panelHeight;
+        }
+            
+        //Return full set of arrays
+        return(columnsToDisplay);
+    }
+    
+
+    let [profileColumns, setProfileColumns] = useState<{height : number}[][]>(firstProfiles);
 
     // This displays all of the projects (on project cards) from the static fakeData.ts dataset
     // Eventually the discover page should display a select number of cards instead of all
@@ -328,8 +377,6 @@ const Home = (props) => {
                 : null
             : null */
         
-        //To-do later: case scenario for if row is too small to contain 1 wide project
-        
         //For each project in project display list... (use map)
                 displayedProjects.map((project) => (
                     //Create a Project Panel component
@@ -339,15 +386,26 @@ const Home = (props) => {
 
     // This displays all of the profiles (on profile cards) from the static fakeData.ts dataset
     // Eventually the discover page should display a select number of cards instead of all
+    console.log(profileColumns);
     let profileContent = <>{
-        profiles ?
+        /* profiles ?
             profiles.length > 0 ?
                 filteredProfiles.map((profile) => (
                     <ProfileCard profile={profile}></ProfileCard>
                 ))
                 // If the profiles array/object does not exist or has no content then nothing is displayed
                 : null
-            : null
+            : null */
+
+        //For each array in profileColumns...
+        profileColumns.map((column) => (
+            //Create a column element & map through profiles in array
+            <div>
+                {column.map((profile) => (
+                    <ProfilePanel height={profile.height}></ProfilePanel>
+                ))}
+            </div>
+        ))
     }</>;
 
 

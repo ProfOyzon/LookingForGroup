@@ -20,6 +20,10 @@ app.get("/api", (req, res) => {
     return res.json({ message: "You Reached The Looking For Group API" });
 })
 
+app.get("/*", (req, res) => {
+    res.sendFile("index.html", {root: join(__dirname, '../client/build/')});
+})
+
 app.listen(port, (err) => {
     if (err) { throw err; }
     console.log(`Listening on port ${port}`);

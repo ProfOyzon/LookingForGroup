@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = process.env.PORT || process.env.NODE_PORT || 3001;
 
-app.use(express.static(join(__dirname, "../client")));
+app.use(express.static(join(__dirname, "../client/build")));
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(usersRouter);

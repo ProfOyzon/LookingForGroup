@@ -23,8 +23,14 @@ let projectList = projects;
 //Variable that tracks what position we are at in the above array
 let projectListPosition : number = 0;
 
+//List that holds profile data that will be displayed. Changes along with search parameters
+let profileList = profiles;
+//Variable that tracks what position we are at in the above array
+let profileListPosition : number = 0;
 //Create array of profiles to help track the order they were added
-let displayedProfileList : {height : number}[] = [];
+let displayedProfileList : {profile, height : number}[] = [];
+//Create array of height trackers to track total height in each column
+let heightTrackers : number[];
 
 //the main discover page- see a list of people and projects
 const Home = (props) => {
@@ -47,8 +53,6 @@ const Home = (props) => {
     //--------------------------
 
     //To-do: 
-    //Add use case for too wide projects *
-    //Add use case for when there are no more projects to load*
     //Ensure that each project is only displayed once*
     //Integrate search functionality
     //Maybe add tag filter functionality too? (and combine with search?)
@@ -178,12 +182,10 @@ const Home = (props) => {
     }
 
     //Holds data for currently displayed projects
-    let [displayedProjects, setDisplayedProjects] = 
-        useState<{project, width : number, adjust : number, row : number}[]>(firstContent(projects));
+    let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number}[]>(firstContent(projects));
 
     //Function that adds more panels to render, called when the user scrolls to the bottom of the page
     const addContent = () => {
-        console.log(selectedTab);
         const {
             scrollTop,
             scrollHeight,
@@ -193,7 +195,6 @@ const Home = (props) => {
         if (scrollTop + clientHeight >= scrollHeight) {
             //calls profile adding instead if on profile tab, may change if pages are separated
             if (selectedTab === 'People') {
-                console.log('calling addProfiles');
                 addProfiles();
                 return;
             }
@@ -334,18 +335,17 @@ const Home = (props) => {
     //Variables and functions past this point will be used for profile panel displays
     //Profile rendering will use multiple flexbox columns
 
-    //Create array of height trackers to track total height in each column
-    let heightTrackers : number[] = [];
-
-    const firstProfiles = () => {
+    const firstProfiles = (newProfileList) => {
+        profileList = newProfileList;
+        profileListPosition = 0;
         //Reset height trackers
         heightTrackers = [];
         //Calculate the width of available space (flexboxWidth contains this in this file)
         //Divide that width and determine how many columns can fit
-        let totalColumns = Math.floor(flexboxWidth / 220);
+        let totalColumns = Math.floor(flexboxWidth / 224);
         //Create a number of arrays to hold profile panels equal to the number of columns
         //Also, create height trackers for each column
-        let columnsToDisplay : {height : number}[][] = [];
+        let columnsToDisplay : {profile, height : number}[][] = [];
         for (let i = 0; i < totalColumns; i++){
             columnsToDisplay.push([]);
             heightTrackers.push(0);
@@ -354,9 +354,9 @@ const Home = (props) => {
         //For each profile... (until all profiles are used or 30 are used)
         for (let i = 0; i < 30; i++){
             //If there are no more profiles to use, break this loop
-            /*if ([no more profiles]) {
+            if (profileListPosition >= profileList.length) {
                 break;
-            }*/
+            }
             //Calculate height based off of image + any extra space for info
             //(For testing purposes, height is randomized)
             let panelHeight = Math.floor((Math.random() * 300) + 200);
@@ -368,9 +368,10 @@ const Home = (props) => {
                 }
             }
             //Add current profile to column with least height
-            columnsToDisplay[shortestColumn].push({height: panelHeight});
+            columnsToDisplay[shortestColumn].push({profile: profileList[i], height: panelHeight});
             //Also add current profile to displayedProfileList
-            displayedProfileList.push({height: panelHeight});
+            displayedProfileList.push({profile: profileList[i], height: panelHeight});
+            profileListPosition++;
             //Add profile height to column's height tracker
             heightTrackers[shortestColumn] += panelHeight;
         }
@@ -379,22 +380,20 @@ const Home = (props) => {
         return(columnsToDisplay);
     }
     
-
-    let [profileColumns, setProfileColumns] = useState<{height : number}[][]>(firstProfiles);
+    let [profileColumns, setProfileColumns] = useState<{profile, height : number}[][]>(firstProfiles(profiles));
 
     //Function that handles resizing of profile panels
     const resizeProfiles = () => {
-        console.log(displayedProfileList);
         //Check current flexbox width & number of columns it can hold
-        flexboxWidth = window.innerWidth - 220 - getScrollbarWidth();
-        let newColumns = Math.floor(flexboxWidth / 220);
+        flexboxWidth = window.innerWidth - 224 - getScrollbarWidth();
+        let newColumns = Math.floor(flexboxWidth / 224);
         //If number of columns available has changed...
         if (newColumns !== heightTrackers.length){
             //Construct new array to contain resized column info
-            let resizedColumnsToDisplay : {height : number}[][] = [];
+            let resizedColumnsToDisplay : {profile, height : number}[][] = [];
             //Reset all height trackers
-            for (let t of heightTrackers) {
-                t = 0;
+            for (let i = 0; i < heightTrackers.length; i++) {
+                heightTrackers[i] = 0;
             }
             //Check if more or less columns are available
             //If less...
@@ -424,7 +423,7 @@ const Home = (props) => {
                     }
                 }
                 //Add profile to the least tallest column currently
-                resizedColumnsToDisplay[shortestColumn].push({height: profile.height});
+                resizedColumnsToDisplay[shortestColumn].push({profile: profile.profile, height: profile.height});
                 //Add profile height to the column's height tracker
                 heightTrackers[shortestColumn] += profile.height;
             }
@@ -435,14 +434,16 @@ const Home = (props) => {
 
     //Function that handles adding new profiles when scrolling to the bottom of the page
     const addProfiles = () => {
-        console.log('addProfiles called');
         //Get current set of displayed profiles
-        let newProfilePanels : {height : number}[][] = JSON.parse(JSON.stringify(profileColumns));
+        let newProfilePanels : {profile, height : number}[][] = JSON.parse(JSON.stringify(profileColumns));
         //Find where we left off on the profile list
         //Start iterating through profiles
         //For each profile... (until 30 or used or list is exhausted)
         for (let i = 0; i < 30; i++) {
             //If there are no more profiles, break this loop
+            if (profileListPosition >= profileList.length) {
+                break;
+            }
             //Calculate panel height based off image
             //(height is randomized for now)
             let panelHeight = Math.floor((Math.random() * 300) + 200);
@@ -454,14 +455,17 @@ const Home = (props) => {
                 }
             }
             //Add profile to column with shortest height
-            newProfilePanels[shortestColumn].push({height: panelHeight});
+            newProfilePanels[shortestColumn].push({profile: profileList[profileListPosition], height: panelHeight});
             //Add profile to displayedProfileList
-            displayedProfileList.push({height: panelHeight});
+            displayedProfileList.push({profile: profileList[profileListPosition],height: panelHeight});
+            profileListPosition++;
             //Add profile's height to column's height tracker
             heightTrackers[shortestColumn] += panelHeight;
         }
         //Set profileColumns with newly added profiles
         setProfileColumns(newProfilePanels);
+
+        console.log(profileListPosition, profileList.length);
     }
 
     // This displays all of the projects (on project cards) from the static fakeData.ts dataset

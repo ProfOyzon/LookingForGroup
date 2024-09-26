@@ -4,11 +4,12 @@ import { fileURLToPath } from "url";
 import morgan from "morgan";
 import usersRouter from "./routes/users.js";
 import projectsRouter from "./routes/projects.js";
+import envConfig from "./config/env.js";
 
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
-const port = process.env.PORT || process.env.NODE_PORT || 3001;
+const port = envConfig.port;
 
 app.use(express.static(join(__dirname, "../client/build")));
 app.use(morgan("tiny"));

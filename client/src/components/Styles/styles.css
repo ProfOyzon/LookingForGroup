@@ -3410,3 +3410,96 @@ Project post image style rules
     width: 125px;
     height: 125px;
 } */
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Dark mode style rules 
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/* .page#home {
+    background-color: white;
+    color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+    .page#home {
+        background-color: #414141;
+        color: white;
+    }
+} */
+
+.scrollable-stuff#theme-light .carousel-card {
+    background-color: white;
+    color: black;
+}
+
+.scrollable-stuff#theme-dark .carousel-card {
+    background-color: #414141;
+    color: white;
+}
+
+/*
+----------------------------------------------------- 
+Dark Mode Switch 
+----------------------------------------------------- 
+*/
+.toggle-checkbox {
+    opacity: 0;
+}
+
+.toggle-checkbox:hover + .toggle-label {
+    outline: solid 3px black;
+    transform: outline .3s;
+}
+
+.toggle-container {
+    position: relative;
+
+    display: grid;
+    grid-area: toggle;
+    place-items: center;
+}
+
+.toggle-label {
+    position: relative;
+    width: 50px;
+    height: 25px;
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 100px;
+    color: black;
+    transform: outline .3s;
+
+    display: flex;
+    /* justify-content: end; */
+}
+
+/* .toggle-checkbox:checked + .toggle-label {
+    background-color: white;
+    border-color: black;
+    color: black;
+} */
+
+.toggle-label-switch {
+    position: absolute;
+    box-sizing: border-box;
+    width: 50%;
+    height: 100%;
+    right: 25px;
+    border: 3px solid black;
+    background-color: white;
+    border-radius: 100px;
+
+    transition: right .3s;
+}
+
+[aria-label='color mode toggle, dark mode'] {
+    background-color: #414141;
+}
+
+[aria-label='color mode toggle, dark mode'] .toggle-label-switch {
+    right: 0px;
+}

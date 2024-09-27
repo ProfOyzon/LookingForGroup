@@ -8,15 +8,23 @@ import { TagFilter } from "../TagFilter";
 import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
-import { Children, useCallback } from "react";
+import { Children, useCallback, useEffect } from "react";
 import { sortItems } from "../../functions/itemSort";
 import { useState } from 'react';
 import CreditsFooter from '../CreditsFooter';
 import ToTopButton from "../ToTopButton";
 import ProjectCarousel from "../ProjectCarousel";
+import { setTheme } from "../../functions/darkMode";
+import { keepTheme } from "../../functions/darkMode";
+import Toggle from "../darkModeButton";
 
 //the main discover page- see a list of people and projects
 const Home = (props) => {
+    const [idName, setIdName] = useState("theme-light");
+
+    useEffect(() => {
+        keepTheme(setIdName)
+    }, [setIdName])
 
     // Sets the default content of the page to be 'projects' and 
     // listens to changes in the tab
@@ -82,6 +90,8 @@ const Home = (props) => {
         <div className="page" id="home">
             <h1 className="page-title">Discover</h1>
 
+            <Toggle setIdName={setIdName}></Toggle>
+
             {/* Discover Buttons change the content of the page based on which one is highlighted */}
             <div id="discover-button-wrapper">
                 <DiscoverButton isActive={selectedTab === 'Projects'} onClick={() => handleButtonClick('Projects')}>Projects</DiscoverButton>
@@ -89,7 +99,7 @@ const Home = (props) => {
                 <SearchBar dataSets={[{ data: projects }, { data: profiles }]} onSearch={HandleSearch} setSearched={setHasSearched}></SearchBar>
             </div>
 
-            <div className="scrollable-stuff">
+            <div className="scrollable-stuff" id={idName}>
                 {/* This is a carousel that contains a few random projects or profiles (currently just displays all of them) */}
                 {/* Should be seen upon opening the page */}
                 {/* Eventually, will only appear if the user has not searched or filtered anything */}

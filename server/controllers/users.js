@@ -14,7 +14,7 @@ const getUsers = async (req, res) => {
     
     return res.status(200).json({
         status: 200,
-        data: users
+        data: users[0]
     });
 }
 
@@ -28,7 +28,7 @@ const createUser = async (req, res) => {
     const sql = "INSERT INTO users (first_name, last_name, bio) VALUES (?, ?, ?) RETURNING user_id";
     const values = [firstName, lastName, bio];
     const user = await pool.query(sql, values);
-
+    
     // Get skill ids and add user's skills to database 
     const placeholders = genPlaceholders(skills);
     const skillIds = await pool.query(`SELECT skill_id FROM skills WHERE label IN (${placeholders})`, skills);
@@ -56,11 +56,11 @@ const getUsersById = async (req, res) => {
         GROUP BY u.user_id
         `;
     const values = [id];
-    const rows = await pool.query(sql, values);
+    const user = await pool.query(sql, values);
     
     return res.status(200).json({
         status: 200,
-        data: rows
+        data: user[0]
     });
 }
 

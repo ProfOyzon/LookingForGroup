@@ -19,7 +19,7 @@ const getProjects = async (req, res) => {
             GROUP BY pt.project_id) t
         ON p.project_id = t.project_id
         `;
-    const projects = await pool.query(sql);
+    const [projects] = await pool.query(sql);
 
     return res.status(200).json({
         status: 200,
@@ -34,27 +34,28 @@ const createProject = async (req, res) => {
     const { title, description, id, genres, tags, jobs} = req.body;
 
     // Add project to database and get back its id
-    const sql = "INSERT INTO projects (title, description, user_id) VALUES (?, ?, ?) RETURNING project_id";
+    const sql = "INSERT INTO projects (title, description, user_id) VALUES (?, ?, ?)";
     const values = [title, description, id];
-    const project = await pool.query(sql, values);
+    await pool.query(sql, values);
+    const [projectId] = await pool.query("SELECT project_id FROM projects WHERE title = ? AND user_id = ?", [title, id]);
 
     // Get genre ids and add project's genres to database
     let placeholders = genPlaceholders(genres);
-    const genreIds = await pool.query(`SELECT genre_id FROM genres WHERE label IN (${placeholders})`, genres);
+    const [genreIds] = await pool.query(`SELECT genre_id FROM genres WHERE label IN (${placeholders})`, genres);
     for (let genre of genreIds) {
-        await pool.query("INSERT INTO project_genres (project_id, genre_id) VALUES (?, ?)", [project[0].project_id, genre.genre_id]);
+        await pool.query("INSERT INTO project_genres (project_id, genre_id) VALUES (?, ?)", [projectId[0].project_id, genre.genre_id]);
     }
     
     // Get tag ids and add project's tags to database 
     placeholders = genPlaceholders(tags);
-    const tagIds = await pool.query(`SELECT tag_id FROM tags WHERE label IN (${placeholders})`, tags);
+    const [tagIds] = await pool.query(`SELECT tag_id FROM tags WHERE label IN (${placeholders})`, tags);
     for (let tag of tagIds) {
-        await pool.query("INSERT INTO project_tags (project_id, tag_id) VALUES (?, ?)", [project[0].project_id, tag.tag_id]);
+        await pool.query("INSERT INTO project_tags (project_id, tag_id) VALUES (?, ?)", [projectId[0].project_id, tag.tag_id]);
     }
 
     // Add project's jobs to database
     for (let job of jobs) {
-        await pool.query("INSERT INTO jobs (role, amount, description, project_id) VALUES (?, ?, ?, ?)", [job.role, job.amount, job.description, project[0].project_id])
+        await pool.query("INSERT INTO jobs (role, amount, description, project_id) VALUES (?, ?, ?, ?)", [job.role, job.amount, job.description, projectId[0].project_id])
     }
 
     return res.sendStatus(201);
@@ -88,7 +89,7 @@ const getProjectById = async (req, res) => {
         WHERE p.project_id = ?
         `;
     const values = [id, id];
-    const project = await pool.query(sql, values);
+    const [project] = await pool.query(sql, values);
     
     return res.status(200).json({
         status: 200,
@@ -119,7 +120,7 @@ const addGenre = async (req, res) => {
     const { genre } = req.body;
 
     // Get genre id and add project's genre into database
-    const genreId = await pool.query(`SELECT genre_id FROM genres WHERE label = ?`, genre);
+    const [genreId] = await pool.query(`SELECT genre_id FROM genres WHERE label = ?`, genre);
     await pool.query("INSERT INTO project_genres (project_id, genre_id) VALUES (?, ?)", [id, genreId[0].genre_id]);
 
     return res.sendStatus(201);
@@ -133,7 +134,7 @@ const deleteGenre = async (req, res) => {
     const { genre } = req.body;
 
     // Get genre id and remove project's genre from database
-    const genreId = await pool.query(`SELECT genre_id FROM genres WHERE label = ?`, genre);
+    const [genreId] = await pool.query(`SELECT genre_id FROM genres WHERE label = ?`, genre);
     await pool.query("DELETE FROM project_genres WHERE project_id = ? AND genre_id = ?", [id, genreId[0].genre_id]);
 
     return res.sendStatus(204);
@@ -147,7 +148,7 @@ const addTag = async (req, res) => {
     const { tag } = req.body;
 
     // Get tag id and add project's tag into database
-    const tagId = await pool.query(`SELECT tag_id FROM tags WHERE label = ?`, tag);
+    const [tagId] = await pool.query(`SELECT tag_id FROM tags WHERE label = ?`, tag);
     await pool.query("INSERT INTO project_tags (project_id, tag_id) VALUES (?, ?)", [id, tagId[0].tag_id]);
 
     return res.sendStatus(201);
@@ -161,7 +162,7 @@ const deleteTag = async (req, res) => {
     const { tag } = req.body;
 
     // Get tag id and remove project's tag from database
-    const tagId = await pool.query(`SELECT tag_id FROM tags WHERE label = ?`, tag);
+    const [tagId] = await pool.query(`SELECT tag_id FROM tags WHERE label = ?`, tag);
     await pool.query("DELETE FROM project_tags WHERE project_id = ? AND tag_id = ?", [id, tagId[0].tag_id]);
 
     return res.sendStatus(204);

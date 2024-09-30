@@ -1,10 +1,10 @@
-import mariadb from "mariadb";
+import mysql from "mysql2/promise";
 import envConfig from "./env.js";
 
 let pool;
 // Create a pool connection with MariaDB database
 try {
-    pool = mariadb.createPool({
+    pool = mysql.createPool({
         host: envConfig.dbHost, 
         user:envConfig.dbUser, 
         password: envConfig.dbPass,

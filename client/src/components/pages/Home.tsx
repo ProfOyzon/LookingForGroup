@@ -90,7 +90,7 @@ const Home = (props) => {
         <div className="page" id="home">
             <h1 className="page-title">Discover</h1>
 
-            <Toggle setIdName={setIdName}></Toggle>
+            {/* <Toggle setIdName={setIdName}></Toggle> */}
 
             {/* Discover Buttons change the content of the page based on which one is highlighted */}
             <div id="discover-button-wrapper">

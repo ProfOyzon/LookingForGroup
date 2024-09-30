@@ -3419,7 +3419,7 @@ Dark mode style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-/* .page#home {
+.page#home {
     background-color: white;
     color: black;
 }
@@ -3429,16 +3429,18 @@ Dark mode style rules
         background-color: #414141;
         color: white;
     }
-} */
+}
 
-.scrollable-stuff#theme-light .carousel-card {
+.scrollable-stuff .carousel-card {
     background-color: white;
     color: black;
 }
 
-.scrollable-stuff#theme-dark .carousel-card {
-    background-color: #414141;
-    color: white;
+@media (prefers-color-scheme: dark) {
+    .scrollable-stuff .carousel-card {
+        background-color: #414141;
+        color: white;
+    }
 }
 
 /*

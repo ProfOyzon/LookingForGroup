@@ -11,6 +11,7 @@ import MyProjects from "./components/pages/MyProjects";
 import Profile from "./components/pages/Profile";
 import Project from "./components/pages/Project";
 import ProjectPostPage from "./components/pages/ProjectPostPage";
+import DiscoverAndMeet from "./components/pages/DiscoverAndMeet";
 import Settings from "./components/pages/Settings";
 import NotFound from "./components/pages/NotFound";
 import SideBar from "./components/Sidebar";
@@ -43,6 +44,7 @@ function App() {
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
           <Route path={paths.routes.CREDITS} element={<Credits />} />
+          <Route path={paths.routes.DISCOVERANDMEET} element={<DiscoverAndMeet />} />
         </Routes>
         {/* <CreditsFooter /> */}
       </div>

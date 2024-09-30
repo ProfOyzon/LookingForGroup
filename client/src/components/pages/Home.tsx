@@ -182,7 +182,7 @@ const Home = (props) => {
     }
 
     //Holds data for currently displayed projects
-    let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number}[]>(firstContent(projects));
+    let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number}[]>(() => firstContent(projects));
 
     //Function that adds more panels to render, called when the user scrolls to the bottom of the page
     const addContent = () => {
@@ -380,7 +380,7 @@ const Home = (props) => {
         return(columnsToDisplay);
     }
     
-    let [profileColumns, setProfileColumns] = useState<{profile, height : number}[][]>(firstProfiles(profiles));
+    let [profileColumns, setProfileColumns] = useState<{profile, height : number}[][]>(() => firstProfiles(profiles));
 
     //Function that handles resizing of profile panels
     const resizeProfiles = () => {

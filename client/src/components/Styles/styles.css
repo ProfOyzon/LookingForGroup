@@ -54,6 +54,14 @@ General style rules
     --primary-blue: #239EF7;
     --hover-blue: #0086E7;
     --clicked-blue: #0073C6;
+
+    --orange-light: #FEAD81;
+    --peach: #FFCEB4;
+    --purple-light: #D3D3FF;
+    --lavender: #271D66;
+    --purple-dark: #2C2A3A;
+    --dark-lighttheme: #171717;
+    --dark-darktheme: #1E1E1E;
 }
 
 /*basic rules for hiding/showing certain elements
@@ -391,8 +399,10 @@ Sidebar Nav style rules
     left: 0px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
     z-index: 2;
+    color: var(--dark-lighttheme);
     background-color: white;
-    background-image: url("../../../public/images/nav-background.png");
+    /*background-image: url("../../../public/images/nav-background.png");*/
+    background-image: linear-gradient(var(--purple-light), var(--peach));
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -409,7 +419,8 @@ Sidebar Nav style rules
 .headerContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    justify-content: center;
     align-items: center;
     width: 200px;
     margin: 30px 0 60px 0;
@@ -440,7 +451,7 @@ Sidebar Nav style rules
     font-weight: bold;
     font-size: 24px;
     margin: 0px 20px;
-    color: white;
+    color: var(--lavender);
 }
 
 /*sidebar options*/
@@ -450,32 +461,33 @@ Sidebar Nav style rules
     align-items: center;
     cursor: pointer;
     gap: 8px;
-    background-color: var(--primary-blue);
+    /*background-color: var(--primary-blue);*/
 }
 
 .containerButtonSideBar button {
     width: 200px;
     height: 60px;
-    background-color: var(--primary-blue);
+    /*background-color: var(--primary-blue);*/
+    background-color:rgb(0, 0, 0, 0);
     border: none;
-    border-radius: 8px;
+    border-radius: 30px;
     font-size: 18px;
     text-align: left;
     padding-left: 25px;
     padding-right: auto;
     display: flex;
     align-items: center;
-    color: white;
+    /*color: var(--dark-lighttheme);*/
     gap: 20px;
 }
 
 .containerButtonSideBar button:hover {
     transition-duration: 0.25s;
-    background-color: var(--clicked-blue);
+    background-color: grey;
 }
 
 .containerButtonSideBar button.active {
-    background-color: var(--hover-blue);
+    background-color: white;
     transition: 0.25s;
 }
 
@@ -500,6 +512,7 @@ Sidebar Nav style rules
 }
 
 /*logout button*/
+/*!!!May be removed later!!!*/
 .Logout {
     display: flex;
     align-items: center;
@@ -532,6 +545,32 @@ Sidebar Nav style rules
     outline: solid var(--orange) 2px;
     cursor: pointer;
 } */
+
+/*create button*/
+.Create {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Create button {
+    background-color: white;
+    color: var(--lavender);
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 40px;
+    width: 200px;
+    height: 45px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    /* outline: solid var(--orange) 2px; */
+    font-weight: 600;
+}
+
+.Create button:hover {
+    background-color: rgb(199, 198, 198);
+}
 
 /*responsive stuff for sidebar*/
 @media only screen and (max-width: 800px) {
@@ -774,6 +813,7 @@ Search style rules
 
 .navIcon {
     width: 33px;
+    filter:invert();
 }
 
 @media only screen and (max-width: 800px) {

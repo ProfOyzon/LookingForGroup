@@ -3419,13 +3419,13 @@ Dark mode style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-.page#home {
+.page {
     background-color: white;
     color: black;
 }
 
 @media (prefers-color-scheme: dark) {
-    .page#home {
+    .page {
         background-color: #414141;
         color: white;
     }

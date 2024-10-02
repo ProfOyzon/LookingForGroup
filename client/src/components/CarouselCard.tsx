@@ -3,7 +3,8 @@ import { Tags } from "./Tags";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as paths from "../constants/routes";
 
-import profilePicture from "../images/blue_frog.png";
+import profilePicture1 from "../images/blue_frog.png";
+import profilePicture2 from "../images/ritchie.png";
 import followPicture from "../images/heart.png";
 
 import { projects } from "../constants/fakeData";
@@ -15,7 +16,10 @@ export const ProjectCard = ({project}) => {
     let pathQuery = `?projID=${project._id}`;
     return (
         <div className="carousel-card">
-            <img id="carousel-card-profile-picture" src={profilePicture} alt={project.name}/>
+            {/* <img id="carousel-card-profile-picture" src={profilePicture1} alt={project.name}/> */}
+            <div id="carousel-card-pfp-container">
+                <img id="carousel-card-profile-picture" src={profilePicture2} alt={project.name}/>
+            </div>
             <div id="carousel-card-body">
                 {/* When the title is clicked it navigates to the project page */}
                 <h2 id="carousel-card-name" onClick={() => navigate(paths.routes.PROJECT + pathQuery)}>
@@ -50,7 +54,10 @@ export const ProfileCard = ({profile}) => {
     const pathQuery = `?profID=${profile._id}`;
     return (
         <div className="carousel-card">
-            <img id="carousel-card-profile-picture" src={profilePicture} alt={profile.name}/>
+            {/* <img id="carousel-card-profile-picture" src={profilePicture1} alt={profile.name}/> */}
+            <div id="carousel-card-pfp-container">
+                <img id="carousel-card-profile-picture" src={profilePicture1} alt={profile.name}/>
+            </div>
             <div id="carousel-card-body">
                 <span>
                     {/* When the title is clicked it navigates to the profile page */}

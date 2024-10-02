@@ -3274,10 +3274,22 @@ Carousel Cards
 }
 
 /*profile picture rules-----------------------------------------------------*/
-#carousel-card-profile-picture {
-    width: 100%;
+#carousel-card-pfp-container {
+    box-sizing: border-box;
+    position: relative;
+    width: 200px;
+    height: 200px;
     border: 2px solid black;
-    border-radius: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+#carousel-card-profile-picture {
+    width: auto;
+    height: 100%;
+    margin: 0 auto;
+
+    display: inline;
 }
 
 /*text rules---------------------------------------------------------------*/

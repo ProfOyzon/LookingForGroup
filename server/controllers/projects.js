@@ -4,7 +4,7 @@ import { genPlaceholders } from "../utils/sqlUtil.js";
 const getProjects = async (req, res) => {
     // Get all projects
 
-    const sql = `SELECT p.*, g.genres, t.tags
+    const sql = `SELECT p.project_id, p.title, p.description, g.genres, t.tags
         FROM projects p
         JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
             FROM project_genres pg 
@@ -31,7 +31,7 @@ const createProject = async (req, res) => {
     // Create a new project
 
     // Get input data
-    const { title, description, id, genres, tags, jobs} = req.body;
+    const { title, description, id, genres, tags, jobs, members} = req.body;
 
     // Add project to database and get back its id
     const sql = "INSERT INTO projects (title, description, user_id) VALUES (?, ?, ?)";
@@ -58,6 +58,11 @@ const createProject = async (req, res) => {
         await pool.query("INSERT INTO jobs (role, amount, description, project_id) VALUES (?, ?, ?, ?)", [job.role, job.amount, job.description, projectId[0].project_id])
     }
 
+    // Add project's members to database
+    for (let member of members) {
+        await pool.query("INSERT INTO members (project_id, user_id, role) VALUES (?, ?, ?)", [projectId[0].project_id, member.userId, member.role]);
+    }
+
     return res.sendStatus(201);
 }
 
@@ -68,7 +73,7 @@ const getProjectById = async (req, res) => {
     const { id } = req.params;
 
     // Get project data
-    const sql = `SELECT p.*, g.genres, t.tags, j.jobs
+    const sql = `SELECT p.project_id, p.title, p.description, g.genres, t.tags, j.jobs, m.members
         FROM projects p
         JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
             FROM project_genres pg 
@@ -86,9 +91,16 @@ const getProjectById = async (req, res) => {
 		    FROM jobs j
 		    WHERE j.project_id = ?) j
         ON p.project_id = j.project_id
+        JOIN (SELECT m.project_id, JSON_ARRAYAGG(JSON_OBJECT("user_id", m.user_id, "first_name", u.first_name, 
+        "last_name", u.last_name, "role", m.role)) AS members
+		    FROM members m
+            JOIN users u 
+				ON m.user_id = u.user_id
+		    WHERE m.project_id = ?) m
+        ON p.project_id = m.project_id
         WHERE p.project_id = ?
         `;
-    const values = [id, id];
+    const values = [id, id, id];
     const [project] = await pool.query(sql, values);
     
     return res.status(200).json({
@@ -211,6 +223,50 @@ const deleteJob = async (req, res) => {
     return res.sendStatus(204);
 }
 
+const addMember = async (req, res) => {
+    // Add a member to a project
+
+    // Get input data
+    const { id } = req.params;
+    const { userId, role } = req.body;
+
+    // Add project's member into database
+    const sql = "INSERT INTO members (project_id, user_id, role) VALUES (?, ?, ?)";
+    const values = [id, userId, role];
+    await pool.query(sql, values);
+
+    return res.sendStatus(201);
+}
+
+const updateMember = async (req, res) => {
+    // Update a project's job
+
+    // Get input data
+    const { id } = req.params;
+    const { userId, role } = req.body;
+
+    // Update a project's job
+    const sql = "UPDATE members SET role = ? WHERE project_id = ? AND user_id = ?";
+    const values = [role, id, userId];
+    await pool.query(sql, values);
+    
+    return res.sendStatus(204)
+}
+
+const deleteMember = async (req, res) => {
+    // Delete a member from a project
+
+    // Get input data
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    // Remove project's member from database
+    await pool.query("DELETE FROM members WHERE project_id = ? AND user_id = ?", [id, userId]);
+
+    return res.sendStatus(204);
+}
+
 export { getProjects, createProject, getProjectById, updateProject, 
-    addGenre, deleteGenre, addTag, deleteTag, addJob, updateJob, deleteJob
+    addGenre, deleteGenre, addTag, deleteTag, addJob, updateJob, deleteJob,
+    addMember, updateMember, deleteMember
 };

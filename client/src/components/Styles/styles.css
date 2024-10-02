@@ -14,6 +14,7 @@ Component Style rules
     -Tag Filter
 Page specific style rules
     -Discover page
+    -Discover & Meet page
     -Profile page
     -Project page
         -Project general settings
@@ -777,9 +778,10 @@ Search style rules
 }
 
 .search-bar {
-    padding: 2px;
-    border: 3px solid gray;
-    border-radius: 10px;
+    padding: 2px 5px;
+    /*border: 3px solid gray;*/
+    border-radius: 30px;
+    background-color: var(--peach);
     font-size: 1vw;
     text-align: left;
     display: flex;
@@ -937,13 +939,6 @@ Discover page style rules
     max-height: 50px;
 }
 
-#discover-panel-box {
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    grid-gap:20px;
-}
-
 @media only screen and (max-width: 800px) {
 
     #discover-button-wrapper {
@@ -953,6 +948,193 @@ Discover page style rules
     .discover-button {
         font-size: 0.8rem;
     }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Discover and Meet page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#discover-header {
+    display:grid;
+    align-items:center;
+    margin-right:50px;
+    grid-template:
+        'search blank buttons' 70px / auto 1fr 140px;
+}
+
+#discover-searchbar {
+    grid-area: search;
+    height: auto;
+}
+
+#discover-header-buttons {
+    grid-area: buttons;
+}
+
+/*Arrangement of button sizes may need adjustment, current solution is too hard-coded*/
+#discover-header-buttons button {
+    background-color: var(--peach);
+    border-radius:40px;
+    border:none;
+    margin-left:10px;
+    height:auto;
+    width:auto;
+    padding-top:4px;
+}
+
+#discover-header-buttons img {
+    filter:none;
+    height:auto;
+    margin:2px;
+}
+
+#discover-hero {
+    width: auto;
+    height: 20vw;
+    margin: 0 50px;
+    background-color: var(--peach);
+    border-radius:10px;
+}
+
+#profile-hero {
+    display:grid;
+    border-radius:10px;
+    font-size: 1vw;
+    height: calc(20vw - 20px);
+    background-image: linear-gradient(white 40%, transparent);
+    padding-bottom:20px;
+    grid-template:
+        'image1 header image3' auto
+        'image1 image2 image3' 1fr
+        'blurb1 blurb2 blurb3' auto /
+        1fr     1fr    1fr
+}
+
+#profile-hero-bg1 {
+    background-image: linear-gradient(to right, var(--purple-light), var(--peach));
+    border-radius:10px;
+    width:auto;
+}
+
+#profile-hero-header {
+    grid-area: header;
+}
+#profile-hero-header h2 {
+    color: var(--lavender);
+}
+
+#profile-hero-img-1 {
+    grid-area: image1;
+}
+#profile-hero-img-2 {
+    grid-area: image2;
+}
+#profile-hero-img-3 {
+    grid-area: image3;
+}
+
+.profile-hero-blurb {
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+}
+
+#profile-hero-blurb-1 {
+    grid-area: blurb1;
+}
+#profile-hero-blurb-2 {
+    grid-area: blurb2;
+}
+#profile-hero-blurb-3 {
+    grid-area: blurb3;
+}
+
+.profile-hero-highlight {
+    font-weight:bold;
+    color: var(--lavender);
+}
+
+#discover-filters {
+    margin: 20px 50px;
+    display:grid;
+    grid-template: 
+        "tags filters" auto / 90% auto;
+}
+
+#discover-tag-filters-container {
+    grid-area: tags;
+    position: relative;
+}
+
+.filters-scroller {
+    position: absolute;
+    top:0;
+    height:100%;
+    width: 80px;
+    font-size:medium;
+    border:none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.filters-scroller:hover {
+    font-weight:bold;
+}
+
+#filters-left-scroll {
+    left: 0;
+    text-align:left;
+    background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+#filters-right-scroll {
+    right: 0;
+    text-align:right;
+    background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,1));
+}
+
+#discover-tag-filters {
+    height:auto;
+    display:flex;
+    gap:5px;
+    overflow-x:hidden;
+}
+
+.discover-tag-filter {
+    height: 30px;
+    padding:5px 10px;
+    font-size:medium;
+    background-color: rgba(0, 0, 0, 0);
+    border:none;
+    border-radius:30px;
+    flex-shrink: 0;
+}
+
+.discover-tag-filter:hover {
+    background-color: var(--peach);
+    color: var(--lavender);
+}
+
+#discover-more-filters {
+    grid-area: filters;
+    height: 30px;
+    font-size:medium;
+    padding:5px 10px;
+    background-color: var(--lavender);
+    color: white;
+    border:none;
+    border-radius:30px;
+}
+
+#discover-panel-box {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    grid-gap:20px;
+    margin: 0 50px;
 }
 
 /*

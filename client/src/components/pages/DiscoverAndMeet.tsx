@@ -3,7 +3,6 @@ import { ProjectCard } from "../ProjectCard";
 import { ProfileCard } from "../ProfileCard";
 import { ProjectPanel } from "../ProjectPanel";
 import { ProfilePanel } from "../ProfilePanel";
-import { DiscoverButton } from "../DiscoverButton";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
 import { TagFilter } from "../TagFilter";
@@ -17,6 +16,8 @@ import { useState } from 'react';
 import { useEffect } from 'react' ;
 import CreditsFooter from '../CreditsFooter';
 import ToTopButton from "../ToTopButton";
+import bell from "../../icons/bell.png";
+import profileImage from "../../icons/profile-user.png";
 
 //Get whether we are loading projects or profiles using search query
 let urlParams = new URLSearchParams(window.location.search);
@@ -72,13 +73,15 @@ const DiscoverAndMeet = () => {
 
   //Variables used for panel displays
   //Find out the width of the flexbox container
-  let flexboxWidth : number = window.innerWidth - 220 - getScrollbarWidth();
+  let flexboxWidth : number = window.innerWidth - 320 - getScrollbarWidth();
   //tracks the width of items in the current flexbox row
   let widthTracker : number = -20;
   //tracks the number of "full" flexbox rows
   let rowTracker : number = 0;
   //tracks the number of project panels that will be placed in a row
   let projectTracker : number = 0;
+  //Tracks the time of the most recent resize call
+  let lastResizeCall : number = 0;
 
   //Loads a new set of project panels to render
   //Calls when page first loads & when a new list of projects is being used (e.g. after a search)
@@ -179,12 +182,6 @@ const DiscoverAndMeet = () => {
     } = document.querySelector(".page");
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      //calls profile adding instead if on profile tab, may change if pages are separated
-      if (selectedTab === 'People') {
-        addProfiles();
-        return;
-      }
-
       let newProjectsToDisplay : {project, width : number, adjust : number, row : number}[] = [];
 
       //Reset calculation values
@@ -243,19 +240,12 @@ const DiscoverAndMeet = () => {
         return;
       }
 
-      //For testing use, may change if projects & profiles are on separate pages
-      //If current tab is on profiles, run profile resizing instead
-      if (selectedTab === 'People') {
-        resizeProfiles();
-        return;
-      }
-
       //Similar to initial project panel rendering, just uses all currently displays projects
       //instead of adding new ones
       //Array holding edited project details
       let resizedProjects : {project, width : number, adjust : number, row : number}[] = [];
       //Calculate new flexbox width
-      flexboxWidth = window.innerWidth - 220 - getScrollbarWidth();
+      flexboxWidth = window.innerWidth - 320 - getScrollbarWidth();
       //Reset tracker variables (widthTracker, rowTracker, projectTracker)
       widthTracker = -20;
       rowTracker = 0;
@@ -305,6 +295,7 @@ const DiscoverAndMeet = () => {
     }, 100)
   }
 
+  //Calls when page first loads & when a new list of profiles is being used (e.g. after a search)
   const firstProfiles = (newProfileList) => {
     profileList = newProfileList;
     profileListPosition = 0;
@@ -352,89 +343,117 @@ const DiscoverAndMeet = () => {
 
   //Function that handles adding new profiles when scrolling to the bottom of the page
   const addProfiles = () => {
-    //Get current set of displayed profiles
-    let newProfilePanels : {profile, height : number}[][] = JSON.parse(JSON.stringify(profileColumns));
-    //Find where we left off on the profile list
-    //Start iterating through profiles
-    //For each profile... (until 30 or used or list is exhausted)
-    for (let i = 0; i < 30; i++) {
-      //If there are no more profiles, break this loop
-      if (profileListPosition >= profileList.length) {
-        break;
-      }
-      //Calculate panel height based off image
-      //(height is randomized for now)
-      let panelHeight = Math.floor((Math.random() * 300) + 200);
-      //Find column with shortest height
-      let shortestColumn = 0;
-      for (let j = 1; j < heightTrackers.length; j++){
-        if (heightTrackers[j] < heightTrackers[shortestColumn]) {
-          shortestColumn = j;
-        }
-      }
-      //Add profile to column with shortest height
-      newProfilePanels[shortestColumn].push({profile: profileList[profileListPosition], height: panelHeight});
-      //Add profile to displayedProfileList
-      displayedProfileList.push({profile: profileList[profileListPosition],height: panelHeight});
-      profileListPosition++;
-      //Add profile's height to column's height tracker
-      heightTrackers[shortestColumn] += panelHeight;
-    }
-    //Set profileColumns with newly added profiles
-    setProfileColumns(newProfilePanels);
+    const {
+      scrollTop,
+      scrollHeight,
+      clientHeight
+    } = document.querySelector(".page");
 
-    console.log(profileListPosition, profileList.length);
+    if (scrollTop + clientHeight >= scrollHeight) {
+      //Get current set of displayed profiles
+      let newProfilePanels : {profile, height : number}[][] = JSON.parse(JSON.stringify(profileColumns));
+      //Find where we left off on the profile list
+      //Start iterating through profiles
+      //For each profile... (until 30 or used or list is exhausted)
+      for (let i = 0; i < 30; i++) {
+        //If there are no more profiles, break this loop
+        if (profileListPosition >= profileList.length) {
+          break;
+        }
+        //Calculate panel height based off image
+        //(height is randomized for now)
+        let panelHeight = Math.floor((Math.random() * 300) + 200);
+        //Find column with shortest height
+        let shortestColumn = 0;
+        for (let j = 1; j < heightTrackers.length; j++){
+          if (heightTrackers[j] < heightTrackers[shortestColumn]) {
+            shortestColumn = j;
+          }
+        }
+        //Add profile to column with shortest height
+        newProfilePanels[shortestColumn].push({profile: profileList[profileListPosition], height: panelHeight});
+        //Add profile to displayedProfileList
+        displayedProfileList.push({profile: profileList[profileListPosition],height: panelHeight});
+        profileListPosition++;
+        //Add profile's height to column's height tracker
+        heightTrackers[shortestColumn] += panelHeight;
+      }
+      //Set profileColumns with newly added profiles
+      setProfileColumns(newProfilePanels);
+    }
   }
 
   //Function that handles resizing of profile panels
   const resizeProfiles = () => {
-    //Check current flexbox width & number of columns it can hold
-    flexboxWidth = window.innerWidth - 224 - getScrollbarWidth();
-    let newColumns = Math.floor(flexboxWidth / 224);
-    //If number of columns available has changed...
-    if (newColumns !== heightTrackers.length){
-      //Construct new array to contain resized column info
-      let resizedColumnsToDisplay : {profile, height : number}[][] = [];
-      //Reset all height trackers
-      for (let i = 0; i < heightTrackers.length; i++) {
-        heightTrackers[i] = 0;
+    //Get time this function was called
+    let thisCall : number = new Date().getTime();
+    lastResizeCall = thisCall;
+    //Set timer to check whether to continue this call or not
+    setTimeout(() => {
+      //If this is no longer the most recent call, stop this call
+      if (lastResizeCall !== thisCall) {
+        return;
       }
-      //Check if more or less columns are available
-      //If less...
-      if (newColumns < heightTrackers.length) {
-        //Remove height trackers that go beyond limit
-        while (heightTrackers.length > newColumns) {
-          heightTrackers.pop();
+
+      //Check current flexbox width & number of columns it can hold
+      flexboxWidth = window.innerWidth - 324 - getScrollbarWidth();
+      let newColumns = Math.floor(flexboxWidth / 224);
+      //If number of columns available has changed...
+      if (newColumns !== heightTrackers.length){
+        //Construct new array to contain resized column info
+        let resizedColumnsToDisplay : {profile, height : number}[][] = [];
+        //Reset all height trackers
+        for (let i = 0; i < heightTrackers.length; i++) {
+          heightTrackers[i] = 0;
         }
-      } else { //else (if more)...
-        //Add height trackers to match new limit
-        while (heightTrackers.length < newColumns) {
-          heightTrackers.push(0);
-        }
-      }
-      //Fill new column info array with empty arrays
-      for (let i = 0; i < heightTrackers.length; i++){
-        resizedColumnsToDisplay.push([]);
-      }
-      //Get current set of displayed profiles (not profileColumns, need an unaltered list)
-      //For each profile...
-      for (let profile of displayedProfileList) {
-        //Check which column has the least height currently (use first if there's a tie)
-        let shortestColumn = 0;
-        for (let i = 1; i < heightTrackers.length; i++){
-          if (heightTrackers[i] < heightTrackers[shortestColumn]) {
-            shortestColumn = i;
+        //Check if more or less columns are available
+        //If less...
+        if (newColumns < heightTrackers.length) {
+          //Remove height trackers that go beyond limit
+          while (heightTrackers.length > newColumns) {
+            heightTrackers.pop();
+          }
+        } else { //else (if more)...
+          //Add height trackers to match new limit
+          while (heightTrackers.length < newColumns) {
+            heightTrackers.push(0);
           }
         }
-        //Add profile to the least tallest column currently
-        resizedColumnsToDisplay[shortestColumn].push({profile: profile.profile, height: profile.height});
-        //Add profile height to the column's height tracker
-        heightTrackers[shortestColumn] += profile.height;
+        //Fill new column info array with empty arrays
+        for (let i = 0; i < heightTrackers.length; i++){
+          resizedColumnsToDisplay.push([]);
+        }
+        //Get current set of displayed profiles (not profileColumns, need an unaltered list)
+        //For each profile...
+        for (let profile of displayedProfileList) {
+          //Check which column has the least height currently (use first if there's a tie)
+          let shortestColumn = 0;
+          for (let i = 1; i < heightTrackers.length; i++){
+            if (heightTrackers[i] < heightTrackers[shortestColumn]) {
+              shortestColumn = i;
+            }
+          }
+          //Add profile to the least tallest column currently
+          resizedColumnsToDisplay[shortestColumn].push({profile: profile.profile, height: profile.height});
+          //Add profile height to the column's height tracker
+          heightTrackers[shortestColumn] += profile.height;
+        }
+        //Set profileColumns to newly created resized columns
+        setProfileColumns(resizedColumnsToDisplay);
       }
-      //Set profileColumns to newly created resized columns
-      setProfileColumns(resizedColumnsToDisplay);
-    }
+    })
   }
+
+  //Choose which functions to use based on what we are displaying
+  const firstContent = category === 'projects' ? firstProjects : firstProfiles;
+  const addContent = category === 'projects' ? addProjects : addProfiles;
+  const resizeDisplay = category === 'projects' ? resizeProjects : resizeProfiles;
+
+  //Can possibly merge these two into a single useState? mostly concerned with different variable types
+  //Holds data for currently displayed projects
+  let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number}[]>(() => firstProjects(projects));
+  //Holds data for currently displayed profiles
+  let [profileColumns, setProfileColumns] = useState<{profile, height : number}[][]>(() => firstProfiles(profiles));
 
   //Runs resizing function whenever window width changes
   //Don't add dependencies to it - it causes state to be reset for some reason (I don't know why)
@@ -445,30 +464,114 @@ const DiscoverAndMeet = () => {
     };
   });
 
-  return(
-    <>
-    {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
-    <div>
+  //Hero banner for profile display
+  let profileHero = <>{
+    <div id='profile-hero-bg1'>
+      <div id='profile-hero'>
+        <div id='profile-hero-header'>
+          <h2>Welcome!</h2>
+          Looking for talented people to collaborate with?
+        </div>
 
-    </div>
+        <img id='profile-hero-img-1'/>
+        <img id='profile-hero-img-2'/>
+        <img id='profile-hero-img-3'/>
 
-    {/* Contains tag filters & button to access more filters 
-      When page loads, determine if project tags or profile tags should be used
-      Clicking a tag filter adds it to a list & updates panel display based on that list
-      Changes to filters via filter menu are only applied after a confirmation
-    */}
-    <div>
-      <div>
-        
+        <div id='profile-hero-blurb-1' className='profile-hero-blurb'>
+          <div>
+          <span className='profile-hero-highlight'>Explore profiles</span> to see each other's <br/>personality, expertise, and project history.
+          </div>
+        </div>
+
+        <div id='profile-hero-blurb-2' className='profile-hero-blurb'>
+          <div>
+          Find someone interesting? <span className='profile-hero-highlight'>Send a message!</span>
+          <br/><br/>
+          <span className='profile-hero-highlight'>Introduce yourself</span>, share project ideas, <br/>and show interest in working together!
+          </div>
+        </div>
+
+        <div id='profile-hero-blurb-3' className='profile-hero-blurb'>
+          <div>
+          Keep your profile up to date with your <br/>skills, project preferences, and interests to<br/>
+          <span className='profile-hero-highlight'>find your group!</span>
+          </div>
+        </div>
       </div>
-      <button>Filters</button>
     </div>
+  }</>
 
-    {/* Panel container */}
-    <div id='discover-panel-box'>
+  //Displays a set of project panels
+  let projectContent = <>{
+    //For each project in project display list... (use map)
+    displayedProjects.map((project) => (
+      //Create a Project Panel component
+      <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
+    ))
+  }</>
 
+  //Displays a set of profile panels
+  let profileContent = <>{
+    //For each array in profileColumns...
+    profileColumns.map((column) => (
+      //Create a column element & map through profiles in array
+      <div>
+        {column.map((profile) => (
+          <ProfilePanel height={profile.height}></ProfilePanel>
+        ))}
+      </div>
+    ))
+  }</>
+
+  //Decides which 'content' to display on the page
+  let heroContent = category === 'projects' ? <>Nothing yet, sorry</> : profileHero;
+  let panelContent = category === 'projects' ? projectContent : profileContent;
+
+  return(
+    <div className='page' onScroll={addContent}>
+      {/* Search bar and profile/notification buttons */}
+      <div id='discover-header'>
+        <span id='discover-searchbar'>
+          <SearchBar dataSets={projects} onSearch={() => {console.log('hi')}}/>
+        </span>
+        <span id='discover-header-buttons'>
+          <button><img src={bell} className="navIcon" alt="Notifications" /></button>
+          <button><img src={profileImage} className="navIcon" alt="User" /></button>
+        </span>
+      </div>
+      {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
+      <div id='discover-hero'>
+      {heroContent}
+      </div>
+
+      {/* Contains tag filters & button to access more filters 
+        When page loads, determine if project tags or profile tags should be used
+        Clicking a tag filter adds it to a list & updates panel display based on that list
+        Changes to filters via filter menu are only applied after a confirmation
+      */}
+      <div id='discover-filters'>
+        <div id='discover-tag-filters-container'>
+          <button id='filters-left-scroll' className='filters-scroller'>&lt;</button>
+          <div id='discover-tag-filters'>
+            {
+              tagList.map((tag) => (
+                <button className='discover-tag-filter'>{tag}</button>
+              ))
+            }
+          </div>
+          <button id='filters-right-scroll' className='filters-scroller'>&gt;</button>
+        </div>
+        <button id='discover-more-filters'>Filters</button>
+      </div>
+
+      {/* Panel container */}
+      <div id='discover-panel-box'>
+      {panelContent}
+      </div>
+
+      {/* Credits footer */}
+      <CreditsFooter/>
     </div>
-    </>
   )
 }
 

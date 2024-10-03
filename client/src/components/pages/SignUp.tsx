@@ -8,6 +8,7 @@ import ChooseSkills from "../SignupProcess/ChooseSkills";
 import ChooseInterests from "../SignupProcess/ChooseInterests";
 import CompleteProfile from "../SignupProcess/CompleteProfile";
 import GetStarted from "../SignupProcess/GetStarted";
+import { sendPost } from "../../functions/fetch";
 
 const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) => {
     const navigate = useNavigate(); // Hook for navigation
@@ -54,7 +55,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     };
 
     // Function to handle the login button click
-    const handleSignup = () => {
+    const handleSignup = async () => {
         // Check if any of the fields are empty
         if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
             setError('Please fill in all information');
@@ -74,6 +75,8 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
             // check if the passwords match
             if (password !== checkPassword) {
                 setError('Passwords do not match');
+
+                return false;
             }
 
             else {
@@ -83,9 +86,17 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                 // At the moment don't think we need proficiencies, 
                 // if we decide to add it in later, change the below to setShowProficienciesModal(true)
                 // and uncomment all the proficiencies code
-                setShowSkillsModal(true);
+                //setShowSkillsModal(true);
+                //sendPost("/api/users", {email, username, password, firstName, lastName});
+
+                let bio = "nbasd";
+                let skills = ["Creativity"];
+                sendPost('/api/users', {username, password, email, firstName, lastName, bio, skills});
+                
             }
         }
+
+
     };
 
     // Render the sign up page

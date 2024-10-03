@@ -1,3 +1,5 @@
+// OLD DATABASE
+
 const path = require('path');
 const database = require('../database');
 const { Account, Project, Message, Post, Comment } = database;

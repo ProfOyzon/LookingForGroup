@@ -112,4 +112,67 @@ const deleteSkill = async (req, res) => {
     return res.sendStatus(204);
 }
 
-export { getUsers, createUser, getUsersById, updateUser, addSkill, deleteSkill };
+const getProjectFollowing = async (req, res) => {
+    // Get projects the user is following
+
+    // Get id from url 
+    const { id } = req.params;
+
+    // Get user data
+    const sql = `SELECT p.* 
+	    FROM project_followings pf
+	    JOIN (SELECT p.project_id, p.title, p.description, g.genres, t.tags
+            FROM projects p
+            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+                FROM project_genres pg 
+                JOIN genres g 
+                    ON pg.genre_id = g.genre_id
+                GROUP BY pg.project_id) g
+            ON p.project_id = g.project_id
+            JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+                FROM project_tags pt 
+                JOIN tags t 
+                    ON pt.tag_id = t.tag_id
+                GROUP BY pt.project_id) t
+            ON p.project_id = t.project_id) p
+	    ON pf.project_id = p.project_id
+        WHERE pf.user_id = ?
+        `;
+    const values = [id];
+    const user = await pool.query(sql, values);
+    
+    return res.status(200).json({
+        status: 200,
+        data: user[0]
+    });
+}
+
+const addProjectFollowing = async (req, res) => {
+    // Add a project the user decided to follow 
+
+    // Get input data
+    const { id } = req.params;
+    const { projectId } = req.body
+
+    // Add projet following into database
+    await pool.query("INSERT INTO project_followings (user_id, project_id) VALUES (?, ?)", [id, projectId]);
+
+    return res.sendStatus(201);
+}
+
+const deleteProjectFollowing = async (req, res) => {
+    // Delete a project the user was following
+
+    // Get input data
+    const { id } = req.params;
+    const { projectId } = req.body
+
+    // Remove project following from database
+    await pool.query("DELETE FROM project_followings WHERE user_id = ? AND project_id = ?", [id, projectId]);
+
+    return res.sendStatus(204);
+}
+
+export { getUsers, createUser, getUsersById, updateUser, addSkill, deleteSkill, 
+    getProjectFollowing, addProjectFollowing, deleteProjectFollowing
+ };

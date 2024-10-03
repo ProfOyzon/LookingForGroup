@@ -6,7 +6,6 @@ import usersRouter from "./routes/users.js";
 import projectsRouter from "./routes/projects.js";
 import envConfig from "./config/env.js";
 
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = envConfig.port;

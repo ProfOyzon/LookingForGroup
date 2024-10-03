@@ -9,7 +9,7 @@
     "stop": "pm2 stop ./lookingforgrp.com/server/index.js",
     "server": "start http://localhost:8081 & nodemon server/index.js",
     "client": "npm start --prefix client",
-    "dev": "npm run server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm run build --prefix client"
   },
   "author": "",

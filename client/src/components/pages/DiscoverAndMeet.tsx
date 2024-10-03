@@ -19,6 +19,13 @@ import ToTopButton from "../ToTopButton";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
 
+//To-do
+//Let scroll buttons move tags *
+//Hide scroll buttons when reaching edge *
+//Have tags actually filter projects
+//Create dropdown menus
+//Have search bar work too along with tags
+
 //Get whether we are loading projects or profiles using search query
 let urlParams = new URLSearchParams(window.location.search);
 const category = urlParams.get('category');
@@ -38,6 +45,9 @@ let profileListPosition : number = 0;
 let displayedProfileList : {profile, height : number}[] = [];
 //Create array of height trackers to track total height in each column
 let heightTrackers : number[];
+
+//array that tracks what tags are currently being used to filter
+let activeTagFilters : string[] = [];
 
 const DiscoverAndMeet = () => {
   //Gets the width of the scrollbar
@@ -293,7 +303,10 @@ const DiscoverAndMeet = () => {
       //Set displayed projects state
       setDisplayedProjects(resizedProjects);
     }, 100)
-  }
+
+    //Also ensure scroll buttons display correctly on resize
+    resizeTagFilter();
+  };
 
   //Calls when page first loads & when a new list of profiles is being used (e.g. after a search)
   const firstProfiles = (newProfileList) => {
@@ -441,7 +454,10 @@ const DiscoverAndMeet = () => {
         //Set profileColumns to newly created resized columns
         setProfileColumns(resizedColumnsToDisplay);
       }
-    })
+    }, 100);
+
+    //Also ensure scroll buttons display correctly on resize
+    resizeTagFilter();
   }
 
   //Choose which functions to use based on what we are displaying
@@ -463,6 +479,70 @@ const DiscoverAndMeet = () => {
       window.removeEventListener('resize', resizeDisplay)
     };
   });
+
+  //Function called when a tag is clicked, adds the tag to the list of filters being used
+  const toggleTag = (e, tagName : string) => {
+    //Check if the tag is already in activeTagFilters
+    //if it isn't...
+    if (!activeTagFilters.includes(tagName)) {
+      //Add this tag to the list
+      activeTagFilters.push(tagName);
+    } else { //else... (it is in there)
+      //Remove this tag from the list
+      activeTagFilters.splice(activeTagFilters.indexOf(tagName), 1);
+    }
+    //Also, toggle the tag filter's display
+    e.target.classList.toggle('discover-tag-filter-selected');
+  }
+
+  //Function called when scroll arrows are clicked
+  //Scrolls the list of tag filters right or left
+  const scrollTags = (direction) => { 
+    //Check if left or right button was clicked
+    let tagFilterElement = document.getElementById('discover-tag-filters');
+    //Check other button is hidden, if so...
+    if (document.getElementById('filters-left-scroll').classList.contains('hide') || 
+    document.getElementById('filters-right-scroll').classList.contains('hide')) {
+      //Un-hide the other scrolling button
+      document.getElementById('filters-left-scroll').classList.remove('hide');
+      document.getElementById('filters-right-scroll').classList.remove('hide');
+    }
+    //If we are going to hit the edge with this scroll...
+    if (tagFilterElement.scrollLeft - 800 <= 0 && direction === 'left') {
+      //hide the relevant scrolling button
+      document.getElementById('filters-left-scroll').classList.add('hide');
+    } else if (tagFilterElement.scrollLeft + tagFilterElement.offsetWidth + 800 >= tagFilterElement.scrollWidth && direction === 'right') {
+      document.getElementById('filters-right-scroll').classList.add('hide');
+    };
+    //Scroll tag bar left or right by a certain amount
+    if (direction === 'left') {
+      tagFilterElement.scrollBy(-800, 0);
+    } else if (direction === 'right') {
+      tagFilterElement.scrollBy(800, 0);
+    }
+  }
+
+  //Called when resizing page
+  //ensures that scroll buttons show and hide when they're supposed to on resizes
+  const resizeTagFilter = () => {
+    let tagFilterElement = document.getElementById('discover-tag-filters');
+    let leftScroller = document.getElementById('filters-left-scroll');
+    let rightScroller = document.getElementById('filters-right-scroll')
+    //If tag filter is scrolled all the way left, hide left scroll button
+    //If tag filter is not all the way left, ensure button is showed
+    if (tagFilterElement.scrollLeft <= 0 && !leftScroller.classList.contains('hide')) {
+      leftScroller.classList.add('hide')
+    } else if (tagFilterElement.scrollLeft > 0 && leftScroller.classList.contains('hide')) {
+      leftScroller.classList.remove('hide')
+    }
+    //If tag filter is all the way right, hide right scroll button
+    //If tag filter is not all the way right, ensure button is showed
+    if (tagFilterElement.scrollLeft + tagFilterElement.offsetWidth >= tagFilterElement.scrollWidth && !rightScroller.classList.contains('hide')) {
+      rightScroller.classList.add('hide')
+    } else if (tagFilterElement.scrollLeft + tagFilterElement.offsetWidth < tagFilterElement.scrollWidth && rightScroller.classList.contains('hide')) {
+      rightScroller.classList.remove('hide')
+    }
+  }
 
   //Hero banner for profile display
   let profileHero = <>{
@@ -551,15 +631,15 @@ const DiscoverAndMeet = () => {
       */}
       <div id='discover-filters'>
         <div id='discover-tag-filters-container'>
-          <button id='filters-left-scroll' className='filters-scroller'>&lt;</button>
+          <button id='filters-left-scroll' className='filters-scroller hide' onClick={() => scrollTags('left')}>&lt;</button>
           <div id='discover-tag-filters'>
             {
               tagList.map((tag) => (
-                <button className='discover-tag-filter'>{tag}</button>
+                <button className='discover-tag-filter' onClick={(e) => toggleTag(e, tag.toLowerCase())}>{tag}</button>
               ))
             }
           </div>
-          <button id='filters-right-scroll' className='filters-scroller'>&gt;</button>
+          <button id='filters-right-scroll' className='filters-scroller' onClick={() => scrollTags('right')}>&gt;</button>
         </div>
         <button id='discover-more-filters'>Filters</button>
       </div>

@@ -484,7 +484,7 @@ Sidebar Nav style rules
 
 .containerButtonSideBar button:hover {
     transition-duration: 0.25s;
-    background-color: grey;
+    background-color: rgba(255, 255, 255, .5);
 }
 
 .containerButtonSideBar button.active {
@@ -1101,6 +1101,7 @@ Discover and Meet page style rules
     display:flex;
     gap:5px;
     overflow-x:hidden;
+    scroll-behavior:smooth;
 }
 
 .discover-tag-filter {
@@ -1114,6 +1115,12 @@ Discover and Meet page style rules
 }
 
 .discover-tag-filter:hover {
+    background-color: #FFDFC5;
+    color: var(--lavender);
+}
+
+.discover-tag-filter-selected {
+    border:4px solid var(--lavender);
     background-color: var(--peach);
     color: var(--lavender);
 }

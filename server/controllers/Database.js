@@ -1,3 +1,5 @@
+// OLD DATABASE
+
 const path = require('path');
 const database = require('../database');
 const { Account, Project, Message, Post, Comment } = database;
@@ -31,7 +33,6 @@ const login = (req, res) => {
 
         // update the current session to use this account (and convert it to usable json)
         req.session.account = Account.toAPI(account);
-
 
         return res.json({
             loggedIn: true,

@@ -1,5 +1,7 @@
 import pool from "../config/database.js";
 import { genPlaceholders } from "../utils/sqlUtil.js";
+//import { bcrypt } from "";
+import bcrypt from "bcrypt";
 
 const getUsers = async (req, res) => {
     // Get all users
@@ -22,11 +24,14 @@ const createUser = async (req, res) => {
     // Create a new project
 
     // Get input data
-    const { firstName, lastName, bio, skills } = req.body
+    const { username, password, email, firstName, lastName, bio, skills } = req.body
+
+    let hashPass = await bcrypt.hash(password, 10);
+    console.log(hashPass);
 
     // Add user to database and get back its id
-    const sql = "INSERT INTO users (first_name, last_name, bio) VALUES (?, ?, ?) RETURNING user_id";
-    const values = [firstName, lastName, bio];
+    const sql = "INSERT INTO users (username, password, email, first_name, last_name, bio) VALUES (?, ?, ?, ?, ?, ?) RETURNING user_id";
+    const values = [username, hashPass, email, firstName, lastName, bio];
     const user = await pool.query(sql, values);
     
     // Get skill ids and add user's skills to database 

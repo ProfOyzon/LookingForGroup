@@ -2,6 +2,7 @@ import "./pages.css";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
+import { handleError, sendPost, hideError } from "../../functions/fetch.js";
 
 const Login = (props) => {
     const navigate = useNavigate(); // Hook for navigation
@@ -13,9 +14,11 @@ const Login = (props) => {
 
     // Function to handle the login button click
     const handleLogin = () => {
+        //hideError();
         // Check if the email and password are not empty
         if (email === '' || password === '') {
             setError('Please fill in all information');
+            //handleError('Username or password is empty!');
         } 
 
         // Check if the email is a valid email
@@ -65,6 +68,7 @@ const Login = (props) => {
                     <h2>Log In</h2>
                     <div className="login-form-inputs">
                     <div className="error">{error}</div>
+                    <span id="errorMessage"></span>
                         <input
                             className="login-input"
                             type="text"

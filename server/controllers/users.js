@@ -6,8 +6,7 @@ import bcrypt from "bcrypt";
 const getUsers = async (req, res) => {
     // Get all users
 
-    const users = await pool.query(`
-        SELECT u.user_id, u.first_name, u.last_name, u.bio, JSON_ARRAYAGG(s.label) AS skills
+    const [users] = await pool.query(`SELECT u.user_id, u.first_name, u.last_name, u.bio, JSON_ARRAYAGG(s.label) AS skills
         FROM users u
             JOIN user_skills us ON u.user_id = us.user_id 
             JOIN skills s ON us.skill_id = s.skill_id 
@@ -16,7 +15,7 @@ const getUsers = async (req, res) => {
     
     return res.status(200).json({
         status: 200,
-        data: users[0]
+        data: users
     });
 }
 
@@ -52,8 +51,7 @@ const getUsersById = async (req, res) => {
     const { id } = req.params;
 
     // Get user data
-    const sql = `
-        SELECT u.user_id, u.first_name, u.last_name, u.bio, JSON_ARRAYAGG(s.label) AS skills
+    const sql = `SELECT u.user_id, u.first_name, u.last_name, u.bio, JSON_ARRAYAGG(s.label) AS skills
         FROM users u
             JOIN user_skills us ON u.user_id = us.user_id 
             JOIN skills s ON us.skill_id = s.skill_id
@@ -61,11 +59,11 @@ const getUsersById = async (req, res) => {
         GROUP BY u.user_id
         `;
     const values = [id];
-    const user = await pool.query(sql, values);
+    const [user] = await pool.query(sql, values);
     
     return res.status(200).json({
         status: 200,
-        data: user[0]
+        data: user
     });
 }
 
@@ -118,33 +116,41 @@ const getProjectFollowing = async (req, res) => {
     // Get id from url 
     const { id } = req.params;
 
-    // Get user data
-    const sql = `SELECT p.* 
-	    FROM project_followings pf
-	    JOIN (SELECT p.project_id, p.title, p.description, g.genres, t.tags
-            FROM projects p
-            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
-                FROM project_genres pg 
-                JOIN genres g 
-                    ON pg.genre_id = g.genre_id
-                GROUP BY pg.project_id) g
-            ON p.project_id = g.project_id
-            JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
-                FROM project_tags pt 
-                JOIN tags t 
-                    ON pt.tag_id = t.tag_id
-                GROUP BY pt.project_id) t
-            ON p.project_id = t.project_id) p
-	    ON pf.project_id = p.project_id
-        WHERE pf.user_id = ?
-        `;
-    const values = [id];
-    const user = await pool.query(sql, values);
-    
-    return res.status(200).json({
-        status: 200,
-        data: user[0]
-    });
+    try {
+        // Get user data
+        const sql = `SELECT p.* 
+            FROM project_followings pf
+            JOIN (SELECT p.project_id, p.title, p.description, g.genres, t.tags
+                FROM projects p
+                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+                    FROM project_genres pg 
+                    JOIN genres g 
+                        ON pg.genre_id = g.genre_id
+                    GROUP BY pg.project_id) g
+                ON p.project_id = g.project_id
+                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+                    FROM project_tags pt 
+                    JOIN tags t 
+                        ON pt.tag_id = t.tag_id
+                    GROUP BY pt.project_id) t
+                ON p.project_id = t.project_id) p
+            ON pf.project_id = p.project_id
+            WHERE pf.user_id = ?
+            `;
+        const values = [id];
+        const [user] = await pool.query(sql, values);
+        
+        return res.status(200).json({
+            status: 200,
+            data: user
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting projects the user is following" 
+        });
+    }
 }
 
 const addProjectFollowing = async (req, res) => {
@@ -154,10 +160,18 @@ const addProjectFollowing = async (req, res) => {
     const { id } = req.params;
     const { projectId } = req.body
 
-    // Add projet following into database
-    await pool.query("INSERT INTO project_followings (user_id, project_id) VALUES (?, ?)", [id, projectId]);
+    try {
+        // Add projet following into database
+        await pool.query("INSERT INTO project_followings (user_id, project_id) VALUES (?, ?)", [id, projectId]);
 
-    return res.sendStatus(201);
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while adding a project the user wants to follow" 
+        });
+    }
 }
 
 const deleteProjectFollowing = async (req, res) => {
@@ -167,12 +181,97 @@ const deleteProjectFollowing = async (req, res) => {
     const { id } = req.params;
     const { projectId } = req.body
 
-    // Remove project following from database
-    await pool.query("DELETE FROM project_followings WHERE user_id = ? AND project_id = ?", [id, projectId]);
+    try {
+        // Remove project following from database
+        await pool.query("DELETE FROM project_followings WHERE user_id = ? AND project_id = ?", [id, projectId]);
 
-    return res.sendStatus(204);
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while removing a project the user wants to unfollow" 
+        });
+    }
+}
+
+const getUserFollowing = async (req, res) => {
+    // Get people the user is following
+
+    // Get id from url 
+    const { id } = req.params;
+
+    try {
+        // Get user data
+        const sql = `SELECT u.* 
+            FROM user_followings uf
+            JOIN (SELECT u.user_id, u.first_name, u.last_name, u.bio, JSON_ARRAYAGG(s.label) AS skills
+                FROM users u
+                    JOIN user_skills us ON u.user_id = us.user_id 
+                    JOIN skills s ON us.skill_id = s.skill_id 
+                GROUP BY u.user_id) u
+            ON uf.following_id = u.user_id
+            WHERE uf.user_id = ?
+            `;
+        const values = [id];
+        const [user] = await pool.query(sql, values);
+        
+        return res.status(200).json({
+            status: 200,
+            data: user
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting people the user is following" 
+        });
+    }
+}
+
+const addUserFollowing = async (req, res) => {
+    // Add the person the user decided to follow 
+
+    // Get input data
+    const { id } = req.params;
+    const { userId } = req.body
+
+    try {
+        // Add user following into database
+        await pool.query("INSERT INTO user_followings (user_id, following_id) VALUES (?, ?)", [id, userId]);
+
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while adding a person the user wants to follow" 
+        });
+    }
+}
+
+const deleteUserFollowing = async (req, res) => {
+    // Delete the person the user was following
+
+    // Get input data
+    const { id } = req.params;
+    const { userId } = req.body
+
+    try {
+        // Remove user following from database
+        await pool.query("DELETE FROM user_followings WHERE user_id = ? AND following_id = ?", [id, userId]);
+
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while removing a person the user wants to unfollow" 
+        });
+    }
 }
 
 export { getUsers, createUser, getUsersById, updateUser, addSkill, deleteSkill, 
-    getProjectFollowing, addProjectFollowing, deleteProjectFollowing
+    getProjectFollowing, addProjectFollowing, deleteProjectFollowing,
+    getUserFollowing, addUserFollowing, deleteUserFollowing
  };

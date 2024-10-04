@@ -110,6 +110,49 @@ const deleteSkill = async (req, res) => {
     return res.sendStatus(204);
 }
 
+const getMyProjects = async (req, res) => {
+    // Get projects the user is a member of
+
+    // Get id from url 
+    const { id } = req.params;
+
+    try {
+        // Get user data
+        const sql = `SELECT p.* 
+            FROM members m
+            JOIN (SELECT p.project_id, p.title, p.description, g.genres, t.tags
+                FROM projects p
+                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+                    FROM project_genres pg 
+                    JOIN genres g 
+                        ON pg.genre_id = g.genre_id
+                    GROUP BY pg.project_id) g
+                ON p.project_id = g.project_id
+                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+                    FROM project_tags pt 
+                    JOIN tags t 
+                        ON pt.tag_id = t.tag_id
+                    GROUP BY pt.project_id) t
+                ON p.project_id = t.project_id) p
+            ON m.project_id = p.project_id
+            WHERE m.user_id = ?
+            `;
+        const values = [id];
+        const [projects] = await pool.query(sql, values);
+        
+        return res.status(200).json({
+            status: 200,
+            data: projects
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting projects the user is a member of" 
+        });
+    }
+}
+
 const getProjectFollowing = async (req, res) => {
     // Get projects the user is following
 
@@ -138,11 +181,11 @@ const getProjectFollowing = async (req, res) => {
             WHERE pf.user_id = ?
             `;
         const values = [id];
-        const [user] = await pool.query(sql, values);
+        const [projects] = await pool.query(sql, values);
         
         return res.status(200).json({
             status: 200,
-            data: user
+            data: projects
         });
     } catch (err) {
         console.log(err);
@@ -214,11 +257,11 @@ const getUserFollowing = async (req, res) => {
             WHERE uf.user_id = ?
             `;
         const values = [id];
-        const [user] = await pool.query(sql, values);
+        const [users] = await pool.query(sql, values);
         
         return res.status(200).json({
             status: 200,
-            data: user
+            data: users
         });
     } catch (err) {
         console.log(err);
@@ -271,7 +314,7 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export { getUsers, createUser, getUsersById, updateUser, addSkill, deleteSkill, 
-    getProjectFollowing, addProjectFollowing, deleteProjectFollowing,
-    getUserFollowing, addUserFollowing, deleteUserFollowing
+export { getUsers, createUser, getUsersById, updateUser, addSkill, deleteSkill, getMyProjects, 
+    getProjectFollowing, addProjectFollowing, deleteProjectFollowing, getUserFollowing, 
+    addUserFollowing, deleteUserFollowing
  };

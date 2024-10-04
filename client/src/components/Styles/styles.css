@@ -9,6 +9,7 @@ Component Style rules
     -Sidebar
     -Notifications
     -Page popup
+    -Dropdown
     -Search
     -Scrollbar
     -Tag Filter
@@ -827,6 +828,22 @@ Search style rules
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
+Dropdown style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+.dropdown {
+    border:solid 1px var(--dark-lighttheme);
+    border-radius: 5px;
+    box-shadow: 1px 2px 2px var(--dark-lighttheme);
+    position:absolute;
+    background-color:white;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
 Scrollbar style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
@@ -1128,6 +1145,8 @@ Discover and Meet page style rules
 #discover-more-filters {
     grid-area: filters;
     height: 30px;
+    width:100%;
+    display:block;
     font-size:medium;
     padding:5px 10px;
     background-color: var(--lavender);

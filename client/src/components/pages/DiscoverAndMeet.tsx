@@ -6,14 +6,14 @@ import { ProfilePanel } from "../ProfilePanel";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
 import { TagFilter } from "../TagFilter";
+import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
 import * as tags from "../../constants/tags";
 import { Children, useCallback } from "react";
 import { sortItems } from "../../functions/itemSort";
-import { useState } from 'react';
-import { useEffect } from 'react' ;
+import { useState, useEffect } from 'react';
 import CreditsFooter from '../CreditsFooter';
 import ToTopButton from "../ToTopButton";
 import bell from "../../icons/bell.png";
@@ -641,16 +641,16 @@ const DiscoverAndMeet = () => {
           </div>
           <button id='filters-right-scroll' className='filters-scroller' onClick={() => scrollTags('right')}>&gt;</button>
         </div>
-        <button id='discover-more-filters'>Filters</button>
+        <Dropdown>
+          <DropdownButton buttonId={'discover-more-filters'}>Filters</DropdownButton>
+          <DropdownContent>Is this working?</DropdownContent>
+        </Dropdown>
       </div>
 
       {/* Panel container */}
       <div id='discover-panel-box'>
       {panelContent}
       </div>
-
-      {/* Credits footer */}
-      <CreditsFooter/>
     </div>
   )
 }

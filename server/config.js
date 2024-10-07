@@ -1,9 +1,11 @@
+// OLD DATABASE
+
 require('dotenv').config();
 
 const connections = {
     development: {
         http: {
-            port: 3000,
+            port: 3001,
         },
         mongo: process.env.MONGODB_URI || 'mongodb://localhost/LookingForGroup',
         redis: process.env.REDISCLOUD_URL,
@@ -11,7 +13,7 @@ const connections = {
 
     production: {
         http: {
-            port: process.env.PORT || process.env.NODE_PORT || 3000,
+            port: process.env.PORT || process.env.NODE_PORT || 3001,
         },
         mongo: process.env.MONGODB_URI,
         redis: process.env.REDISCLOUD_URL,

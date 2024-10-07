@@ -3307,3 +3307,7 @@ Credits style rules
     width: 300%;
     text-align: center;
 }
+
+.hidden {
+    display: none;
+}

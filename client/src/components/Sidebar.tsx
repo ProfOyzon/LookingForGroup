@@ -5,6 +5,11 @@ import { useSelector } from 'react-redux';
 
 import Notifications from './pages/Notifications';
 
+//Style changes to do:
+//Remove blue background image, replace with single color (or gradient?)
+//Change shape of active buttons to be more rounded
+//Remove notification button
+
 const SideBar = ({ avatarImage, setAvatarImage }) => {
   const [width, setWidth] = React.useState(window.innerWidth);
   const breakpoint = useSelector((state: any) => state.page.MOBILE_BREAKPOINT);
@@ -69,10 +74,10 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
         <h1>Logo</h1>
 
         {/* notification bell */}
-        <div id="notif-dot"></div>
+        {/*<div id="notif-dot"></div>
         <button onClick={() => { setShowNotifications(!showNotifications); }}>
           <img src="images/icons/nav/notif.png" className="navIcon" alt="Notifications" />
-        </button>
+        </button>*/}
       </div>
 
       {/* <div className='ProfileContainer'>
@@ -106,8 +111,11 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
         </button>
       </div>
 
-      <div className='Logout'>
+      {/* <div className='Logout'>
         <button onClick={() => { navigate(paths.routes.LOGIN) }}>Log Out</button>
+      </div> */}
+      <div className='Create'>
+        <button>Create</button>
       </div>
       </div>
 

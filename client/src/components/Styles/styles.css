@@ -3,16 +3,19 @@ Table of Contents
 General Style rules
 Component Style rules
     -Card components
+    -Panel components
     -Tags
     -Button components
     -Sidebar
     -Notifications
     -Page popup
+    -Dropdown
     -Search
     -Scrollbar
     -Tag Filter
 Page specific style rules
     -Discover page
+    -Discover & Meet page
     -Profile page
     -Project page
         -Project general settings
@@ -53,6 +56,14 @@ General style rules
     --primary-blue: #239EF7;
     --hover-blue: #0086E7;
     --clicked-blue: #0073C6;
+
+    --orange-light: #FEAD81;
+    --peach: #FFCEB4;
+    --purple-light: #D3D3FF;
+    --lavender: #271D66;
+    --purple-dark: #2C2A3A;
+    --dark-lighttheme: #171717;
+    --dark-darktheme: #1E1E1E;
 }
 
 /*basic rules for hiding/showing certain elements
@@ -245,6 +256,44 @@ Card component style rules
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
+Project Panel component style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+.project-panel {
+    height: 200px;
+    border: 2px solid grey;
+}
+
+.project-panel img{
+    height:200px;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Profile Panel component style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+.profile-column {
+    width: 200px;
+    display:flex;
+}
+
+.profile-panel {
+    width: 200px;
+    border: 2px solid grey;
+}
+
+.profile-panel img{
+    width:200px;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
 Tag component style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
@@ -352,8 +401,10 @@ Sidebar Nav style rules
     left: 0px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
     z-index: 2;
+    color: var(--dark-lighttheme);
     background-color: white;
-    background-image: url("../../../public/images/nav-background.png");
+    /*background-image: url("../../../public/images/nav-background.png");*/
+    background-image: linear-gradient(var(--purple-light), var(--peach));
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -370,7 +421,8 @@ Sidebar Nav style rules
 .headerContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    justify-content: center;
     align-items: center;
     width: 200px;
     margin: 30px 0 60px 0;
@@ -401,7 +453,7 @@ Sidebar Nav style rules
     font-weight: bold;
     font-size: 24px;
     margin: 0px 20px;
-    color: white;
+    color: var(--lavender);
 }
 
 /*sidebar options*/
@@ -411,32 +463,33 @@ Sidebar Nav style rules
     align-items: center;
     cursor: pointer;
     gap: 8px;
-    background-color: var(--primary-blue);
+    /*background-color: var(--primary-blue);*/
 }
 
 .containerButtonSideBar button {
     width: 200px;
     height: 60px;
-    background-color: var(--primary-blue);
+    /*background-color: var(--primary-blue);*/
+    background-color:rgb(0, 0, 0, 0);
     border: none;
-    border-radius: 8px;
+    border-radius: 30px;
     font-size: 18px;
     text-align: left;
     padding-left: 25px;
     padding-right: auto;
     display: flex;
     align-items: center;
-    color: white;
+    /*color: var(--dark-lighttheme);*/
     gap: 20px;
 }
 
 .containerButtonSideBar button:hover {
     transition-duration: 0.25s;
-    background-color: var(--clicked-blue);
+    background-color: rgba(255, 255, 255, .5);
 }
 
 .containerButtonSideBar button.active {
-    background-color: var(--hover-blue);
+    background-color: white;
     transition: 0.25s;
 }
 
@@ -461,6 +514,7 @@ Sidebar Nav style rules
 }
 
 /*logout button*/
+/*!!!May be removed later!!!*/
 .Logout {
     display: flex;
     align-items: center;
@@ -493,6 +547,32 @@ Sidebar Nav style rules
     outline: solid var(--orange) 2px;
     cursor: pointer;
 } */
+
+/*create button*/
+.Create {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Create button {
+    background-color: white;
+    color: var(--lavender);
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 40px;
+    width: 200px;
+    height: 45px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    /* outline: solid var(--orange) 2px; */
+    font-weight: 600;
+}
+
+.Create button:hover {
+    background-color: rgb(199, 198, 198);
+}
 
 /*responsive stuff for sidebar*/
 @media only screen and (max-width: 800px) {
@@ -699,9 +779,10 @@ Search style rules
 }
 
 .search-bar {
-    padding: 2px;
-    border: 3px solid gray;
-    border-radius: 10px;
+    padding: 2px 5px;
+    /*border: 3px solid gray;*/
+    border-radius: 30px;
+    background-color: var(--peach);
     font-size: 1vw;
     text-align: left;
     display: flex;
@@ -735,12 +816,29 @@ Search style rules
 
 .navIcon {
     width: 33px;
+    filter:invert();
 }
 
 @media only screen and (max-width: 800px) {
     .search-bar {
         font-size: 0.5rem;
     }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Dropdown style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+.dropdown {
+    border:solid 1px var(--dark-lighttheme);
+    border-radius: 5px;
+    box-shadow: 1px 2px 2px var(--dark-lighttheme);
+    position:absolute;
+    background-color:white;
 }
 
 /*
@@ -867,6 +965,202 @@ Discover page style rules
     .discover-button {
         font-size: 0.8rem;
     }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Discover and Meet page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#discover-header {
+    display:grid;
+    align-items:center;
+    margin-right:50px;
+    grid-template:
+        'search blank buttons' 70px / auto 1fr 140px;
+}
+
+#discover-searchbar {
+    grid-area: search;
+    height: auto;
+}
+
+#discover-header-buttons {
+    grid-area: buttons;
+}
+
+/*Arrangement of button sizes may need adjustment, current solution is too hard-coded*/
+#discover-header-buttons button {
+    background-color: var(--peach);
+    border-radius:40px;
+    border:none;
+    margin-left:10px;
+    height:auto;
+    width:auto;
+    padding-top:4px;
+}
+
+#discover-header-buttons img {
+    filter:none;
+    height:auto;
+    margin:2px;
+}
+
+#discover-hero {
+    width: auto;
+    height: 20vw;
+    margin: 0 50px;
+    background-color: var(--peach);
+    border-radius:10px;
+}
+
+#profile-hero {
+    display:grid;
+    border-radius:10px;
+    font-size: 1vw;
+    height: calc(20vw - 20px);
+    background-image: linear-gradient(white 40%, transparent);
+    padding-bottom:20px;
+    grid-template:
+        'image1 header image3' auto
+        'image1 image2 image3' 1fr
+        'blurb1 blurb2 blurb3' auto /
+        1fr     1fr    1fr
+}
+
+#profile-hero-bg1 {
+    background-image: linear-gradient(to right, var(--purple-light), var(--peach));
+    border-radius:10px;
+    width:auto;
+}
+
+#profile-hero-header {
+    grid-area: header;
+}
+#profile-hero-header h2 {
+    color: var(--lavender);
+}
+
+#profile-hero-img-1 {
+    grid-area: image1;
+}
+#profile-hero-img-2 {
+    grid-area: image2;
+}
+#profile-hero-img-3 {
+    grid-area: image3;
+}
+
+.profile-hero-blurb {
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+}
+
+#profile-hero-blurb-1 {
+    grid-area: blurb1;
+}
+#profile-hero-blurb-2 {
+    grid-area: blurb2;
+}
+#profile-hero-blurb-3 {
+    grid-area: blurb3;
+}
+
+.profile-hero-highlight {
+    font-weight:bold;
+    color: var(--lavender);
+}
+
+#discover-filters {
+    margin: 20px 50px;
+    display:grid;
+    grid-template: 
+        "tags filters" auto / 90% auto;
+}
+
+#discover-tag-filters-container {
+    grid-area: tags;
+    position: relative;
+}
+
+.filters-scroller {
+    position: absolute;
+    top:0;
+    height:100%;
+    width: 80px;
+    font-size:medium;
+    border:none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.filters-scroller:hover {
+    font-weight:bold;
+}
+
+#filters-left-scroll {
+    left: 0;
+    text-align:left;
+    background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+#filters-right-scroll {
+    right: 0;
+    text-align:right;
+    background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,1));
+}
+
+#discover-tag-filters {
+    height:auto;
+    display:flex;
+    gap:5px;
+    overflow-x:hidden;
+    scroll-behavior:smooth;
+}
+
+.discover-tag-filter {
+    height: 30px;
+    padding:5px 10px;
+    font-size:medium;
+    background-color: rgba(0, 0, 0, 0);
+    border:none;
+    border-radius:30px;
+    flex-shrink: 0;
+}
+
+.discover-tag-filter:hover {
+    background-color: #FFDFC5;
+    color: var(--lavender);
+}
+
+.discover-tag-filter-selected {
+    border:4px solid var(--lavender);
+    background-color: var(--peach);
+    color: var(--lavender);
+}
+
+#discover-more-filters {
+    grid-area: filters;
+    height: 30px;
+    width:100%;
+    display:block;
+    font-size:medium;
+    padding:5px 10px;
+    background-color: var(--lavender);
+    color: white;
+    border:none;
+    border-radius:30px;
+}
+
+#discover-panel-box {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    grid-gap:20px;
+    margin: 0 50px;
 }
 
 /*

@@ -334,7 +334,7 @@ const addMember = async (req, res) => {
 }
 
 const updateMember = async (req, res) => {
-    // Update a project's job
+    // Update a member of a project
 
     // Get input data
     const { id } = req.params;

@@ -6,11 +6,14 @@ import bcrypt from "bcrypt";
 const getUsers = async (req, res) => {
     // Get all users
 
-    const [users] = await pool.query(`SELECT u.user_id, u.first_name, u.last_name, u.bio, JSON_ARRAYAGG(s.label) AS skills
+    const [users] = await pool.query(`SELECT u.user_id, u.first_name, u.last_name, u.bio, s.skills
         FROM users u
-            JOIN user_skills us ON u.user_id = us.user_id 
-            JOIN skills s ON us.skill_id = s.skill_id 
-        GROUP BY u.user_id
+        JOIN (SELECT us.user_id, JSON_ARRAYAGG(s.label) AS skills
+            FROM user_skills us 
+            JOIN skills s 
+                ON us.skill_id = s.skill_id
+            GROUP BY us.user_id) s
+		ON u.user_id = s.user_id
         `);
     
     return res.status(200).json({
@@ -51,12 +54,15 @@ const getUsersById = async (req, res) => {
     const { id } = req.params;
 
     // Get user data
-    const sql = `SELECT u.user_id, u.first_name, u.last_name, u.bio, JSON_ARRAYAGG(s.label) AS skills
+    const sql = `SELECT u.user_id, u.first_name, u.last_name, u.bio, s.skills
         FROM users u
-            JOIN user_skills us ON u.user_id = us.user_id 
-            JOIN skills s ON us.skill_id = s.skill_id
+        JOIN (SELECT us.user_id, JSON_ARRAYAGG(s.label) AS skills
+            FROM user_skills us 
+            JOIN skills s 
+                ON us.skill_id = s.skill_id
+            GROUP BY us.user_id) s
+		ON u.user_id = s.user_id
         WHERE u.user_id = ? 
-        GROUP BY u.user_id
         `;
     const values = [id];
     const [user] = await pool.query(sql, values);
@@ -117,7 +123,7 @@ const getMyProjects = async (req, res) => {
     const { id } = req.params;
 
     try {
-        // Get user data
+        // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
             JOIN (SELECT p.project_id, p.title, p.description, g.genres, t.tags
@@ -149,6 +155,72 @@ const getMyProjects = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "An error occurred while getting projects the user is a member of" 
+        });
+    }
+}
+
+const getVisibleProjects = async (req, res) => {
+    // Get projects the user is a member and is set to be publicly visible
+
+    // Get id from url 
+    const { id } = req.params;
+
+    try {
+        // Get projects' data
+        const sql = `SELECT p.* 
+            FROM members m
+            JOIN (SELECT p.project_id, p.title, p.description, g.genres, t.tags
+                FROM projects p
+                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+                    FROM project_genres pg 
+                    JOIN genres g 
+                        ON pg.genre_id = g.genre_id
+                    GROUP BY pg.project_id) g
+                ON p.project_id = g.project_id
+                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+                    FROM project_tags pt 
+                    JOIN tags t 
+                        ON pt.tag_id = t.tag_id
+                    GROUP BY pt.project_id) t
+                ON p.project_id = t.project_id) p
+            ON m.project_id = p.project_id
+            WHERE m.user_id = ? AND profile_visibility = "public"
+            `;
+        const values = [id];
+        const [projects] = await pool.query(sql, values);
+        
+        return res.status(200).json({
+            status: 200,
+            data: projects
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting projects the user is a member of and that are publicly visible" 
+        });
+    }
+}
+
+const updateProjectVisibility = async (req, res) => {
+    // Update profile visibility on projects the user is a member of
+
+    // Get id from url 
+    const { id } = req.params;
+    const { projectId, visibility } = req.body;
+
+    try {
+        // Update a project visibility on user profiles
+        const sql = "UPDATE members SET profile_visibility = ? WHERE project_id = ? AND user_id = ?";
+        const values = [visibility, projectId, id];
+        await pool.query(sql, values);
+        
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the visibility of a project on a user's profile" 
         });
     }
 }
@@ -314,7 +386,8 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export { getUsers, createUser, getUsersById, updateUser, addSkill, deleteSkill, getMyProjects, 
-    getProjectFollowing, addProjectFollowing, deleteProjectFollowing, getUserFollowing, 
-    addUserFollowing, deleteUserFollowing
+export { getUsers, createUser, getUsersById, updateUser, addSkill, deleteSkill, 
+    getMyProjects, getVisibleProjects, updateProjectVisibility, 
+    getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
+    getUserFollowing, addUserFollowing, deleteUserFollowing
  };

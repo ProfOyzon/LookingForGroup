@@ -11,10 +11,8 @@ import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
 import * as tags from "../../constants/tags";
-import { Children, useCallback } from "react";
 import { sortItems } from "../../functions/itemSort";
 import { useState, useEffect } from 'react';
-import CreditsFooter from '../CreditsFooter';
 import ToTopButton from "../ToTopButton";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
@@ -651,6 +649,8 @@ const DiscoverAndMeet = () => {
       <div id='discover-panel-box'>
       {panelContent}
       </div>
+
+      <ToTopButton/>
     </div>
   )
 }

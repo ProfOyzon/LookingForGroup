@@ -1,4 +1,4 @@
-import {useEffect, useState, createContext, useContext} from 'react';
+import {useEffect, useState, createContext, useContext, useRef} from 'react';
 //This is a reusable component that can be used to create dropdown menus and windows
 //This article was used to help create this component:
 //https://www.codemzy.com/blog/reactjs-dropdown-component
@@ -43,22 +43,30 @@ export const DropdownContent = ({children}) => {
 //Full dropdown component
 export const Dropdown = ({children}) => {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  /* useEffect(() => {
+  useEffect(() => {
     console.log('useEffect dropdown called');
+
+    let close = (e) => {
+      if (!dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+
     if (open) {
-      window.addEventListener('click', () => {setOpen(false)});
+      window.addEventListener('click', close);
       console.log('closing');
     }
 
     return () => {
-      window.removeEventListener('click', () => {setOpen(false)})
+      window.removeEventListener('click', close)
     };
-  }, [open]); */
+  }, [open]);
 
   return(
     <DropdownContext.Provider value={{open, setOpen}}>
-      <div>{children}</div>
+      <div ref={dropdownRef}>{children}</div>
     </DropdownContext.Provider>
   )
 }

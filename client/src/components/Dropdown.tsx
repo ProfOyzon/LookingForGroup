@@ -46,7 +46,6 @@ export const Dropdown = ({children}) => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    console.log('useEffect dropdown called');
 
     let close = (e) => {
       if (!dropdownRef.current.contains(e.target)) {

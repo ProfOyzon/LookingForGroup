@@ -29,14 +29,31 @@ let urlParams = new URLSearchParams(window.location.search);
 const category = urlParams.get('category');
 
 //These values need to be outside the component, otherwise they get reset every time it re-renders
+//Lists that hold the original list of projects and profiles, only updates on page reload
+const fullProjectList = projects;
+const fullProfileList = profiles;
 //List that holds project data that will be displayed. Changes along with search parameters
 //Could combine this and profile variants into single variable
 let projectList = projects;
+//List that holds a project list that is filtered by searching
+let filteredProjectList = projects;
+//List that holds trimmed project data for use in searching
+//Note: Depending on user needs, may need to change or add to what is used in searches
+const projectSearchData = fullProjectList.map((project) => {
+  return({name: project.name, description: project.description});
+});
 //Variable that tracks what position we are at in the above array
 let projectListPosition : number = 0;
 
 //List that holds profile data that will be displayed. Changes along with search parameters
 let profileList = profiles;
+//List that holds a profile list that is filtered by searching
+let filteredProfileList = profiles;
+//List that holds trimmed profile data for use in searching
+//Note: Depending on user needs, may need to change or add to what is used in searches
+const profileSearchData = fullProfileList.map((profile) => {
+  return({name: profile.name, username: profile.username, bio: profile.bio});
+});
 //Variable that tracks what position we are at in the above array
 let profileListPosition : number = 0;
 //Create array of profiles to help track the order they were added
@@ -127,7 +144,6 @@ const DiscoverAndMeet = () => {
         (image width) / X = final width
 
         (image width) / ((image height) / 100px) = final width
-
 
         (image height) * X = 100px
         X = 100px / (image height)
@@ -306,6 +322,52 @@ const DiscoverAndMeet = () => {
     resizeTagFilter();
   };
 
+  //Updates filtered project list with new search info
+  const searchProjects = (searchResults) => {
+    //searchResults structure: array[array[{object1},{object2}]]
+    //Reset filtersProjectList
+    filteredProjectList = [];
+    //Filter through searchResults and original search data
+    for (let result of searchResults[0]) {
+      for (let item of projectSearchData) {
+        //If 2 items match...
+        if (result === item) {
+          //Get index of item in original search data
+          //Get item with this index in projectList
+          let projectItem = fullProjectList[projectSearchData.indexOf(item)];
+          //Push this item to filteredProjectList
+          filteredProjectList.push(projectItem);
+          continue;
+        }
+      }
+    } 
+    
+    updateProjectList();
+  }
+
+  //Make new list of projects by mapping new filtered list
+  const updateProjectList = () => {
+    //Note: tags are not included in current mySQL database for projects
+    let tagFilterCheck = true;
+    let tagFilteredList = filteredProjectList.filter((project) => {
+      //Sets all tags to lowercase, for easier tag reading
+      let lowercaseProjectTags = project.tags.map((tag) => {
+        return tag.toLowerCase();
+      })
+      //if project in filtered list contains all tags in taglist, include it
+      for (let tag of activeTagFilters) {
+        if (!lowercaseProjectTags.includes(tag)) {
+          tagFilterCheck = false;
+          break;
+        }
+      }
+
+      return(tagFilterCheck);
+    })
+    //set displayed projects using firstProjects
+    setDisplayedProjects(() => firstProjects(tagFilteredList));
+  }
+
   //Calls when page first loads & when a new list of profiles is being used (e.g. after a search)
   const firstProfiles = (newProfileList) => {
     profileList = newProfileList;
@@ -458,10 +520,51 @@ const DiscoverAndMeet = () => {
     resizeTagFilter();
   }
 
+  const updateProfileList = () => {
+    //Note: tags are not included in current mySQL database for profiles
+    let tagFilterCheck = true;
+    let tagFilteredList = filteredProjectList.filter((project) => {
+      //if project in filtered list contains all tags in taglist, include it
+      for (let tag of activeTagFilters) {
+        //No tags yet, so this is commented out for now
+        //Remember to set profile tags to lower case
+        /*if (!project.tags.includes(tag)) {
+          tagFilterCheck = false;
+          break;
+        }*/
+
+        return(tagFilterCheck);
+      }
+    })
+
+    setProfileColumns(() => firstProfiles(tagFilteredList));
+  }
+
+  //Updates filtered profile list with new search info
+  const searchProfiles = (searchResults) => {
+    filteredProfileList = [];
+    //Filter through searchResults and original search data
+    for (let result of searchResults[0]) {
+      for (let item of profileSearchData) {
+        //If 2 items match...
+        if (result === item) {
+          //Get index of item in original search data
+          //Get item with this index in profileList
+          let profileItem = fullProfileList[profileSearchData.indexOf(item)];
+          //Push this item to filteredProfileList
+          filteredProfileList.push(profileItem);
+        }
+      }
+    }
+        
+    updateProfileList();
+  }
+
   //Choose which functions to use based on what we are displaying
   const firstContent = category === 'projects' ? firstProjects : firstProfiles;
   const addContent = category === 'projects' ? addProjects : addProfiles;
   const resizeDisplay = category === 'projects' ? resizeProjects : resizeProfiles;
+  const updateItemList = category ==='projects' ? updateProjectList : updateProfileList;
 
   //Can possibly merge these two into a single useState? mostly concerned with different variable types
   //Holds data for currently displayed projects
@@ -491,6 +594,8 @@ const DiscoverAndMeet = () => {
     }
     //Also, toggle the tag filter's display
     e.target.classList.toggle('discover-tag-filter-selected');
+
+    updateItemList();
   }
 
   //Function called when scroll arrows are clicked
@@ -610,7 +715,8 @@ const DiscoverAndMeet = () => {
       {/* Search bar and profile/notification buttons */}
       <div id='discover-header'>
         <span id='discover-searchbar'>
-          <SearchBar dataSets={projects} onSearch={() => {console.log('hi')}}/>
+          <SearchBar dataSets={[{data: category === 'projects' ? projectSearchData : profileSearchData}]}
+           onSearch={category === 'projects' ? searchProjects : searchProfiles}/>
         </span>
         <span id='discover-header-buttons'>
           <button><img src={bell} className="navIcon" alt="Notifications" /></button>

@@ -12,6 +12,7 @@ const port = envConfig.port;
 
 app.use(express.static(join(__dirname, "../client/build")));
 app.use(morgan("tiny"));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(usersRouter);
 app.use(projectsRouter);

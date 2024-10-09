@@ -88,6 +88,27 @@ const updateUser = async (req, res) => {
     return res.sendStatus(204)
 }
 
+const updateProfilePicture = async (req, res) => {
+    // Update profile picture for a user
+
+    // Get id from url
+    const { id } = req.params;
+
+    try {
+        // Update user's profile picture
+        console.log("Now in controller");
+        console.log(req.file);
+    } catch(err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while saving the profile picture" 
+        });
+    }
+
+    return res.sendStatus(204);
+}
+
 const addSkill = async (req, res) => {
     // Add a skill to a user
 
@@ -205,7 +226,7 @@ const getVisibleProjects = async (req, res) => {
 const updateProjectVisibility = async (req, res) => {
     // Update profile visibility on projects the user is a member of
 
-    // Get id from url 
+    // Get input data 
     const { id } = req.params;
     const { projectId, visibility } = req.body;
 
@@ -386,7 +407,7 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export { getUsers, createUser, getUsersById, updateUser, addSkill, deleteSkill, 
+export { getUsers, createUser, getUsersById, updateUser, updateProfilePicture, addSkill, deleteSkill, 
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

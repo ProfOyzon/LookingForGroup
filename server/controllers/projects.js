@@ -4,9 +4,9 @@ import { genPlaceholders } from "../utils/sqlUtil.js";
 const getProjects = async (req, res) => {
     // Get all projects
     try {
-        const sql = `SELECT p.project_id, p.title, p.description, g.genres, t.tags
+        const sql = `SELECT p.project_id, p.title, p.description, g.project_types, t.tags
             FROM projects p
-            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                 FROM project_genres pg 
                 JOIN genres g 
                     ON pg.genre_id = g.genre_id
@@ -89,9 +89,9 @@ const getProjectById = async (req, res) => {
 
     try {
         // Get project data
-        const sql = `SELECT p.project_id, p.title, p.description, g.genres, t.tags, j.jobs, m.members
+        const sql = `SELECT p.project_id, p.title, p.description, g.project_types, t.tags, j.jobs, m.members
             FROM projects p
-            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                 FROM project_genres pg 
                 JOIN genres g 
                     ON pg.genre_id = g.genre_id

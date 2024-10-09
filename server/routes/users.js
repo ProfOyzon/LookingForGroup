@@ -12,7 +12,7 @@ router.put("/api/users/:id", updateUser);
 router.post("/api/users/:id/skills", addSkill);
 router.delete("/api/users/:id/skills", deleteSkill);
 router.get("/api/users/:id/projects", getMyProjects);
-router.get("/api/users/:id/projects/visible", getVisibleProjects);
+router.get("/api/users/:id/projects/profile", getVisibleProjects);
 router.put("/api/users/:id/projects/visibility", updateProjectVisibility);
 router.get("/api/users/:id/followings/projects", getProjectFollowing);
 router.post("/api/users/:id/followings/projects", addProjectFollowing);

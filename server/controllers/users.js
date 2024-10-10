@@ -1,7 +1,11 @@
+import bcrypt from "bcrypt";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import sharp from "sharp";
 import pool from "../config/database.js";
 import { genPlaceholders } from "../utils/sqlUtil.js";
-//import { bcrypt } from "";
-import bcrypt from "bcrypt";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const getUsers = async (req, res) => {
     // Get all users
@@ -96,8 +100,13 @@ const updateProfilePicture = async (req, res) => {
 
     try {
         // Update user's profile picture
-        console.log("Now in controller");
-        console.log(req.file);
+        const fileName = `${id}profile.webp`;
+        const saveTo = join(__dirname, "../images/profiles");
+        const filePath = join(saveTo, fileName);
+        
+        await sharp(req.file.buffer).webp({quality: 50}).toFile(filePath);
+
+        return res.sendStatus(204);
     } catch(err) {
         console.log(err);
         return res.status(400).json({

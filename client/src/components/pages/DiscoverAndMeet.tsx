@@ -5,28 +5,40 @@ import { ProjectPanel } from "../ProjectPanel";
 import { ProfilePanel } from "../ProfilePanel";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
-import { TagFilter } from "../TagFilter";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
+import { Popup, PopupButton, PopupContent } from "../Popup";
 import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
 import * as tags from "../../constants/tags";
-import { sortItems } from "../../functions/itemSort";
 import { useState, useEffect } from 'react';
 import ToTopButton from "../ToTopButton";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
 
 //To-do
-//Let scroll buttons move tags *
-//Hide scroll buttons when reaching edge *
-//Have tags actually filter projects
-//Create dropdown menus
-//Have search bar work too along with tags
+//Add carosel to project view
+//Ensure we can pull from the database
+//Add actual images to panels/ensure images can work
+//Add images to profile hero
+//Add light/dark mode functionality
+//Add more icons to various places in ui
+//Create and add a filter dropdown for searching
+//Determine how search bar will work across site
 
-//Get whether we are loading projects or profiles using search query
-let urlParams = new URLSearchParams(window.location.search);
-const category = urlParams.get('category');
+/* const getProjectData = async () => {
+  const url = 'http://localhost:8081/api/projects'
+  try {
+    let response = await fetch(url);
+
+    const projectData = await response.json;
+    console.log(projectData);
+  } catch(error) {
+    console.error(error.message);
+  }
+} 
+
+getProjectData(); */
 
 //These values need to be outside the component, otherwise they get reset every time it re-renders
 //Lists that hold the original list of projects and profiles, only updates on page reload
@@ -64,7 +76,9 @@ let heightTrackers : number[];
 //array that tracks what tags are currently being used to filter
 let activeTagFilters : string[] = [];
 
-const DiscoverAndMeet = () => {
+//Main DiscoverAndMeet component
+//category - string variable that determines what layout type to load (defaults to profile if invalid value is given)
+const DiscoverAndMeet = ({category}) => {
   //Gets the width of the scrollbar
   //Obtained from https://stackoverflow.com/questions/13382516/getting-scroll-bar-width-using-javascript
   function getScrollbarWidth() {
@@ -348,8 +362,9 @@ const DiscoverAndMeet = () => {
   //Make new list of projects by mapping new filtered list
   const updateProjectList = () => {
     //Note: tags are not included in current mySQL database for projects
-    let tagFilterCheck = true;
     let tagFilteredList = filteredProjectList.filter((project) => {
+      //Filter check to ensure if we include an item or not
+      let tagFilterCheck = true;
       //Sets all tags to lowercase, for easier tag reading
       let lowercaseProjectTags = project.tags.map((tag) => {
         return tag.toLowerCase();
@@ -523,7 +538,7 @@ const DiscoverAndMeet = () => {
   const updateProfileList = () => {
     //Note: tags are not included in current mySQL database for profiles
     let tagFilterCheck = true;
-    let tagFilteredList = filteredProjectList.filter((project) => {
+    let tagFilteredList = filteredProfileList.filter((profile) => {
       //if project in filtered list contains all tags in taglist, include it
       for (let tag of activeTagFilters) {
         //No tags yet, so this is commented out for now
@@ -532,9 +547,9 @@ const DiscoverAndMeet = () => {
           tagFilterCheck = false;
           break;
         }*/
-
-        return(tagFilterCheck);
       }
+
+      return(tagFilterCheck);
     })
 
     setProfileColumns(() => firstProfiles(tagFilteredList));
@@ -561,10 +576,9 @@ const DiscoverAndMeet = () => {
   }
 
   //Choose which functions to use based on what we are displaying
-  const firstContent = category === 'projects' ? firstProjects : firstProfiles;
   const addContent = category === 'projects' ? addProjects : addProfiles;
   const resizeDisplay = category === 'projects' ? resizeProjects : resizeProfiles;
-  const updateItemList = category ==='projects' ? updateProjectList : updateProfileList;
+  const updateItemList = category === 'projects' ? updateProjectList : updateProfileList;
 
   //Can possibly merge these two into a single useState? mostly concerned with different variable types
   //Holds data for currently displayed projects
@@ -686,24 +700,28 @@ const DiscoverAndMeet = () => {
 
   //Displays a set of project panels
   let projectContent = <>{
-    //For each project in project display list... (use map)
-    displayedProjects.map((project) => (
-      //Create a Project Panel component
-      <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
-    ))
+    projectList.length > 0 ? 
+      //For each project in project display list... (use map)
+      displayedProjects.map((project) => (
+        //Create a Project Panel component
+        <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
+      )) :
+      <>Sorry, no projects here</>
   }</>
 
   //Displays a set of profile panels
   let profileContent = <>{
-    //For each array in profileColumns...
-    profileColumns.map((column) => (
-      //Create a column element & map through profiles in array
-      <div>
-        {column.map((profile) => (
-          <ProfilePanel height={profile.height}></ProfilePanel>
-        ))}
-      </div>
-    ))
+    profileColumns[0].length > 0 ?
+      //For each array in profileColumns...
+      profileColumns.map((column) => (
+        //Create a column element & map through profiles in array
+        <div>
+          {column.map((profile) => (
+            <ProfilePanel height={profile.height}></ProfilePanel>
+          ))}
+        </div>
+      )) :
+      <>Unfortunately, such a person does not exist</>
   }</>
 
   //Decides which 'content' to display on the page
@@ -721,6 +739,10 @@ const DiscoverAndMeet = () => {
         <span id='discover-header-buttons'>
           <button><img src={bell} className="navIcon" alt="Notifications" /></button>
           <button><img src={profileImage} className="navIcon" alt="User" /></button>
+          <Popup>
+            <PopupButton buttonId=''>Popup here</PopupButton>
+            <PopupContent>{profileHero}</PopupContent>
+          </Popup>
         </span>
       </div>
       {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
@@ -761,4 +783,22 @@ const DiscoverAndMeet = () => {
   )
 }
 
-export default DiscoverAndMeet;
+//2 extra components that only serve as different layouts for the above component
+//Required due to the page failing to re-render when switching between its 2 view via the sidebar
+export const Discover = () => {
+  //Reset tags
+  activeTagFilters = [];
+  return(
+    <DiscoverAndMeet category={'projects'}/>
+  )
+}
+
+export const Meet = () => {
+  //Reset tags
+  activeTagFilters = [];
+  return(
+    <DiscoverAndMeet category={'profiles'}/>
+  )
+}
+
+//export default DiscoverAndMeet;

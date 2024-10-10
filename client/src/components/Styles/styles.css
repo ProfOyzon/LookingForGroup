@@ -263,6 +263,7 @@ Project Panel component style rules
 .project-panel {
     height: 200px;
     border: 2px solid grey;
+    background-color: white;
 }
 
 .project-panel img{
@@ -285,6 +286,7 @@ Profile Panel component style rules
 .profile-panel {
     width: 200px;
     border: 2px solid grey;
+    background-color:white;
 }
 
 .profile-panel img{
@@ -729,6 +731,7 @@ Page popup style rules
     left: 0;
     width: 100%;
     height: 100%;
+    z-index:2;
 }
 
 /*rules for the popup itself*/
@@ -740,6 +743,21 @@ Page popup style rules
     max-width: 95vw;
     max-height: 95vh;
     opacity: 100%;
+    z-index:3;
+    width: auto;
+    height: auto;
+}
+
+.popup-container {
+    display:flex;
+    position: fixed;
+    align-items:center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height:100%;
+    z-index:3;
 }
 
 #popup-close {
@@ -747,6 +765,21 @@ Page popup style rules
     border-radius: 4px;
     top: 10px;
     right: 10px;
+}
+
+.popup-close {
+    position: absolute;
+    border-radius: 4px !important;
+    top:0px;
+    right:0px;
+    width:40px !important;
+    height:40px !important;
+    background-color:white !important;
+    margin: 4px 4px 0 0 !important;
+}
+
+.popup-close:hover {
+    background-color:var(--lightGray) !important;
 }
 
 #popup-close img {
@@ -1104,19 +1137,18 @@ Discover and Meet page style rules
 #filters-left-scroll {
     left: 0;
     text-align:left;
-    background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,0));
+    background-image: linear-gradient(to right, rgba(244,244,244,1), rgba(244,244,244,1), rgba(244,244,244,0));
 }
 
 #filters-right-scroll {
     right: 0;
     text-align:right;
-    background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,1));
+    background-image: linear-gradient(to right, rgba(244,244,244,0), rgba(244,244,244,1), rgba(244,244,244,1));
 }
 
 #discover-tag-filters {
     height:auto;
     display:flex;
-    gap:5px;
     overflow-x:hidden;
     scroll-behavior:smooth;
 }
@@ -1127,19 +1159,25 @@ Discover and Meet page style rules
     font-size:medium;
     background-color: rgba(0, 0, 0, 0);
     border:none;
+    margin: 0 4px;
     border-radius:30px;
     flex-shrink: 0;
 }
 
 .discover-tag-filter:hover {
-    background-color: #FFDFC5;
+    background-color: white;
     color: var(--lavender);
 }
 
 .discover-tag-filter-selected {
-    border:4px solid var(--lavender);
+    /*border:4px solid var(--lavender);*/
     background-color: var(--peach);
     color: var(--lavender);
+    /*margin: 0;*/
+}
+
+.discover-tag-filter-selected:hover {
+    background-color:var(--peach);
 }
 
 #discover-more-filters {

@@ -11,6 +11,7 @@ const app = express();
 const port = envConfig.port;
 
 app.use(express.static(join(__dirname, "../client/build")));
+app.use("/images", express.static(join(__dirname, "./images")));
 app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

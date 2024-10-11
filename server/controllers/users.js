@@ -114,8 +114,6 @@ const updateProfilePicture = async (req, res) => {
             error: "An error occurred while saving the profile picture" 
         });
     }
-
-    return res.sendStatus(204);
 }
 
 const addSkill = async (req, res) => {

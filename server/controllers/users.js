@@ -99,12 +99,17 @@ const updateProfilePicture = async (req, res) => {
     const { id } = req.params;
 
     try {
-        // Update user's profile picture
+        // Download user's uploaded image. Convert to webp and reduce file size
         const fileName = `${id}profile.webp`;
         const saveTo = join(__dirname, "../images/profiles");
         const filePath = join(saveTo, fileName);
         
         await sharp(req.file.buffer).webp({quality: 50}).toFile(filePath);
+
+        // Store file name in database
+        const sql = "UPDATE users SET profile_image = ? WHERE user_id = ?";
+        const values = [fileName, id];
+        await pool.query(sql, values);
 
         return res.sendStatus(204);
     } catch(err) {

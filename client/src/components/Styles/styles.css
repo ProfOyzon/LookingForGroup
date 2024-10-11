@@ -3438,8 +3438,8 @@ Dark mode style rules
 
 @media (prefers-color-scheme: dark) {
     .page {
-        background-color: #414141;
-        color: white;
+        background-color: #171717;
+        color: #f27d52;
     }
 }
 
@@ -3450,8 +3450,8 @@ Dark mode style rules
 
 @media (prefers-color-scheme: dark) {
     .scrollable-stuff .carousel-card {
-        background-color: #414141;
-        color: white;
+        background-color: #171717;
+        color: #f27d52;
     }
 }
 
@@ -3511,7 +3511,7 @@ Dark Mode Switch
 }
 
 [aria-label='color mode toggle, dark mode'] {
-    background-color: #414141;
+    background-color: #171717;
 }
 
 [aria-label='color mode toggle, dark mode'] .toggle-label-switch {

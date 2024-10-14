@@ -439,7 +439,7 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export { getUsers, createUser, getUsersById, updateUser, updateProfilePicture, addSkill, deleteSkill, 
+export { getUsers, createUser, getUsersById, getUserByUsername, login, updateUser, updateProfilePicture, addSkill, deleteSkill, 
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

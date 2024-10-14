@@ -49,7 +49,7 @@ const login = async (req, res) => {
 
     console.log("USERNAME IS: " + username);
 
-    const userQuery = "SELECT * FROM users WHERE username = ?";k
+    const userQuery = "SELECT * FROM users WHERE username = ?";
     const [user] = await pool.query(userQuery, [username]);
 
     console.log("I FOUND THE USER, IT'S: " + user);

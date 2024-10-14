@@ -10,6 +10,7 @@ export const routes = {
     "PROJECTPOST": "/projectPost",
     "CREATEPROJECT":"/createProject",
     "MESSAGEHISTORY":"/messageHistory",
+    "DISCOVERANDMEET":"/discoverAndMeet",
     "SETTINGS": "/settings",
     "CREDITS": "/credits",
     "NOTFOUND": "/notFound",

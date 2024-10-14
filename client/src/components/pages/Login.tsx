@@ -8,7 +8,7 @@ const Login = (props) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(''); // Error message for missing or incorrect information
 
@@ -16,15 +16,10 @@ const Login = (props) => {
     const handleLogin = () => {
         //hideError();
         // Check if the email and password are not empty
-        if (email === '' || password === '') {
+        if (username === '' || password === '') {
             setError('Please fill in all information');
             //handleError('Username or password is empty!');
-        } 
-
-        // Check if the email is a valid email
-        // and if it's associated with an account
-
-        // if this is only for RIT students, check that it's an RIT email
+        }
 
         // if the email is valid and associated with an account
         // check if the password is correct
@@ -39,8 +34,11 @@ const Login = (props) => {
         // setError('Invalid email');
         
         else {
+
+            sendPost('/api/users/login', {username, password});
+
             // Navigate to the home page
-            navigate(paths.routes.HOME);
+            //navigate(paths.routes.HOME);
         }
     };
 
@@ -73,8 +71,8 @@ const Login = (props) => {
                             className="login-input"
                             type="text"
                             placeholder="School Email or Username"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                         <input
                             className="login-input"

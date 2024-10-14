@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import morgan from "morgan";
@@ -16,6 +17,12 @@ app.use(morgan("tiny"));
 app.use(express.json());
 app.use(usersRouter);
 app.use(projectsRouter);
+
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false
+}));
 
 app.get("/api", (req, res) => {
     return res.json({ message: "You Reached The Looking For Group API" });

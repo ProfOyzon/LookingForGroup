@@ -27,22 +27,32 @@ const createUser = async (req, res) => {
     const { username, password, email, firstName, lastName, bio, skills } = req.body
 
     let hashPass = await bcrypt.hash(password, 10);
-    console.log(hashPass);
 
     // Add user to database and get back its id
-    const sql = "INSERT INTO users (username, password, email, first_name, last_name, bio) VALUES (?, ?, ?, ?, ?, ?) RETURNING user_id";
-    const values = [username, hashPass, email, firstName, lastName, bio];
-    const user = await pool.query(sql, values);
+    const sql = "INSERT INTO users (username, password, primary_email, rit_email, first_name, last_name, bio) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const values = [username, hashPass, email, email, firstName, lastName, bio];
+    await pool.query(sql, values);
     
     // Get skill ids and add user's skills to database 
-    const placeholders = genPlaceholders(skills);
+    /* const placeholders = genPlaceholders(skills);
     const skillIds = await pool.query(`SELECT skill_id FROM skills WHERE label IN (${placeholders})`, skills);
 
     for (let skill of skillIds) {
         await pool.query("INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)", [user[0].user_id, skill.skill_id]);
-    }
+    } */
 
     return res.sendStatus(201);
+}
+
+const login = async (req, res) => {
+    const { username, password } = req.body;
+
+    console.log("USERNAME IS: " + username);
+
+    const userQuery = "SELECT * FROM users WHERE username = ?";k
+    const [user] = await pool.query(userQuery, [username]);
+
+    console.log("I FOUND THE USER, IT'S: " + user);
 }
 
 const getUsersById = async (req, res) => {
@@ -67,6 +77,16 @@ const getUsersById = async (req, res) => {
         status: 200,
         data: user[0]
     });
+}
+
+const getUserByUsername = async (req, res) => {
+    // Get user's id by username
+
+    // Get username from url
+    const { id } = req.params;
+
+    // Get user data
+    //const sql =
 }
 
 const updateUser = async (req, res) => {
@@ -112,4 +132,4 @@ const deleteSkill = async (req, res) => {
     return res.sendStatus(204);
 }
 
-export { getUsers, createUser, getUsersById, updateUser, addSkill, deleteSkill };
+export { getUsers, createUser, getUsersById, updateUser, addSkill, deleteSkill, getUserByUsername, login };

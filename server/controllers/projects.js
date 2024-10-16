@@ -1,5 +1,6 @@
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { unlink } from "fs/promises";
 import sharp from "sharp";
 import pool from "../config/database.js";
 import { genPlaceholders } from "../utils/sqlUtil.js";
@@ -186,6 +187,61 @@ const updateThumbnail = async (req, res) => {
             status: 400, 
             error: "An error occurred while saving the project's thumbnail" 
         });
+    }
+}
+
+const addPicture = async (req, res) => {
+    // Update thumbnail for a project
+
+    // Get data
+    const { id } = req.params;
+    const { position } = req.body
+    
+    try {
+        // Download user's uploaded image. Convert to webp and reduce file size
+        const fileName = `${id}picture${position}.webp`;
+        const saveTo = join(__dirname, "../images/projects");
+        const filePath = join(saveTo, fileName);
+        
+        await sharp(req.file.buffer).webp({quality: 50}).toFile(filePath);
+
+        // Store file name in database
+        const sql = "INSERT INTO project_images (image, position, project_id) VALUES (?, ?, ?)";
+        const values = [fileName, Number(position), id];
+        await pool.query(sql, values);
+
+        return res.sendStatus(201);
+    } catch(err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while saving the project's picture" 
+        });
+    }
+}
+
+const deletePicture = async (req, res) => {
+    // Delete picture from a project
+
+    // Get input data
+    const { id } = req.params;
+    const { image } = req.body;
+
+    try {
+        // Remove project's picture from server and database
+        const filePath = join(__dirname, "../images/projects/");
+        await unlink(filePath + image);
+
+        await pool.query("DELETE FROM project_images WHERE image = ? AND project_id = ?", [image, id]);
+
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while removing a project's picture" 
+        });
+
     }
 }
 
@@ -411,7 +467,8 @@ const deleteMember = async (req, res) => {
     }
 }
 
-export { getProjects, createProject, getProjectById, updateProject, updateThumbnail,
+export default { getProjects, createProject, getProjectById, updateProject, 
+    updateThumbnail, addPicture, deletePicture,
     addGenre, deleteGenre, addTag, deleteTag, addJob, updateJob, deleteJob,
     addMember, updateMember, deleteMember
 };

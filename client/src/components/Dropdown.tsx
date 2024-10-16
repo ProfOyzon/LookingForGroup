@@ -19,6 +19,11 @@ import {useEffect, useState, createContext, useContext, useRef} from 'react';
 </Dropdown>
 */
 //Classes for the <DropdownButton> component are not implemented yet, but can be if necessary (let Joseph Dunne know)
+//If you want your dropdown to align with the right side of the element... 
+//add a 'rightAlign' prop to the <DropdownContent> component with a boolean value of 'true'
+//This is meant to help prevent dropdowns from going off the screen, but it can just be used for styling too.
+//I thought about making it do this dynamically, but chose this route as it:
+//1. was easier to implement, 2. is less code intensive, and 3. I trust the team to know how to use it like this
 
 //Context that will be shared through all components in dropdown
 //Contains info on whether the dropdown is open or not
@@ -40,15 +45,23 @@ export const DropdownButton = ({children, buttonId}) => {
   )
 }
 
-export const DropdownContent = ({children}) => {
+export const DropdownContent = ({children, rightAlign = false}) => {
   const { open } = useContext(DropdownContext);
 
   if (open) {
-    return (
-      <div className='dropdown'>
-        {children}
-      </div>
-    )
+    if (!rightAlign) {
+      return (
+        <div className='dropdown'>
+          {children}
+        </div>
+      )
+    } else {
+      return (
+        <div className='dropdown' style={{right: 0}}>
+          {children}
+        </div>
+      )
+    }
   } else {
     return(
       <></>
@@ -72,7 +85,6 @@ export const Dropdown = ({children}) => {
 
     if (open) {
       window.addEventListener('click', close);
-      console.log('closing');
     }
 
     return () => {
@@ -82,7 +94,7 @@ export const Dropdown = ({children}) => {
 
   return(
     <DropdownContext.Provider value={{open, setOpen}}>
-      <div ref={dropdownRef}>{children}</div>
+      <div className='dropdown-container' ref={dropdownRef}>{children}</div>
     </DropdownContext.Provider>
   )
 }

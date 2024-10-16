@@ -6,7 +6,7 @@ import { ProfilePanel } from "../ProfilePanel";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
-import { Popup, PopupButton, PopupContent } from "../Popup";
+import { Popup, PopupButton, PopupContent, PopupFunction } from "../Popup";
 import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
@@ -15,6 +15,7 @@ import { useState, useEffect } from 'react';
 import ToTopButton from "../ToTopButton";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
+import e from "express";
 
 //To-do
 //Add carosel to project view
@@ -23,8 +24,7 @@ import profileImage from "../../icons/profile-user.png";
 //Add images to profile hero
 //Add light/dark mode functionality
 //Add more icons to various places in ui
-//Create and add a filter dropdown for searching
-//Determine how search bar will work across site
+//Add checks for filters used in filter popup
 
 /* const getProjectData = async () => {
   const url = 'http://localhost:8081/api/projects'
@@ -75,6 +75,10 @@ let heightTrackers : number[];
 
 //array that tracks what tags are currently being used to filter
 let activeTagFilters : string[] = [];
+//array that tracks active tags used in the more filters dropdown
+let extraTagFilters : string[] = [];
+//array that tracks tag selected in the filters popup, contents are copied to extraTagFilters when applied
+let popupTagSelections : string[] = [];
 
 //Main DiscoverAndMeet component
 //category - string variable that determines what layout type to load (defaults to profile if invalid value is given)
@@ -103,10 +107,19 @@ const DiscoverAndMeet = ({category}) => {
     return scrollbarWidth;
   }
 
-  //Set the hero component based on projects or profiles
-  //const heroComponent = category === 'projects' ? (component 1) : (component 2)
   //Get a list of tags to use for tag filters (project tags for projects, profession tags for profiles)
   const tagList = category === 'projects' ? tags.tags : tags.proficiencies;
+  //Get more lists of tags for the filter dropdown menu
+  /* const extraTags = category === 'projects' ? 
+    [
+      {list: tags.projectTypes, name: 'Project Types'}, 
+      {list: tags.projectDetails, name: 'Project Details'}, 
+      {list: tags.proficiencies, name: 'Looking for...'}
+    ] :
+    [
+      {list: tags.softSkills, name: 'Soft Skills'}, 
+      {list: tags.tools, name: 'Hard Skills'}
+    ]; */
 
   //Set up panel display functions
 
@@ -290,6 +303,8 @@ const DiscoverAndMeet = ({category}) => {
       projectTracker = 0;
       //Iterate through all currently displayed projects
       //For each project...
+      //There is some sort of bug happening here, occasionally more than the max projects are being displayed
+      //Issue only seems to occur after saving new code while test server is being hosted, so it may not need to be addressed
       for (let project of displayedProjects){
         //Add width to widthTracker
         widthTracker += project.width + 24;
@@ -513,6 +528,7 @@ const DiscoverAndMeet = ({category}) => {
         }
         //Get current set of displayed profiles (not profileColumns, need an unaltered list)
         //For each profile...
+        let loopTracker = 0;
         for (let profile of displayedProfileList) {
           //Check which column has the least height currently (use first if there's a tie)
           let shortestColumn = 0;
@@ -525,8 +541,12 @@ const DiscoverAndMeet = ({category}) => {
           resizedColumnsToDisplay[shortestColumn].push({profile: profile.profile, height: profile.height});
           //Add profile height to the column's height tracker
           heightTrackers[shortestColumn] += profile.height;
+          loopTracker++;
         }
         //Set profileColumns to newly created resized columns
+        console.log(loopTracker);
+        console.log(displayedProfileList);
+        console.log(resizedColumnsToDisplay);
         setProfileColumns(resizedColumnsToDisplay);
       }
     }, 100);
@@ -724,6 +744,86 @@ const DiscoverAndMeet = ({category}) => {
       <>Unfortunately, such a person does not exist</>
   }</>
 
+  const toggleFilterTag = (e, tagName : string) => {
+    //Check if the tag is already in popupTagSelections
+    //if it isn't...
+    if (!popupTagSelections.includes(tagName)) {
+      //Add this tag to the list
+      popupTagSelections.push(tagName);
+    } else { //else... (it is in there)
+      //Remove this tag from the list
+      popupTagSelections.splice(popupTagSelections.indexOf(tagName), 1);
+    }
+    //Also, toggle the tag filter's display
+    e.target.classList.toggle('tag-button-selected');
+    console.log(popupTagSelections);
+  }
+
+  const setFilterTags = () => {
+    console.log('Im still being called!!! woohoo');
+    //Update active filters with currently selected tags
+    //JSON parsing is used to ensure this is a deep copy
+    extraTagFilters = JSON.parse(JSON.stringify(popupTagSelections));
+    //Run search through panels with new filters in place
+    //There are no checks that include extraTagFilters yet, as tags are not fully implemented
+    //Be sure to add a filter/check to updateItemList once tags are implemented more fully
+    updateItemList();
+  }
+
+  let FilterCategory = ({filterTagList, id, categoryTitle, tagColor = 'grey'}) => {
+    const [displayedTags, setDisplayedTags] = useState(filterTagList);
+    
+    return (
+      <div id={id} className='filter-category'>
+        <h2>{categoryTitle}</h2>
+        <hr/>
+        {/* dataSets contains list of tags, onSearch will use function to add tag to list */}
+        <SearchBar dataSets={{data: filterTagList}} onSearch={() => {}}/>
+        {/* List of tags, use flexbox */}
+        <div className='filter-category-tags'>
+          {
+            displayedTags.map((tag) => {
+              let selected = popupTagSelections.includes(tag) ? 'tag-button-selected' : '';
+              return (
+                <button className={`tag-button tag-button-${tagColor} ${selected}`} onClick={(e) => {toggleFilterTag(e, tag)}}>{tag}</button>
+              )
+            })
+          }
+        </div>
+      </div>
+    )
+  }
+
+  let filterPopup = category === 'projects' ? 
+    <>{
+      <>
+      <h2>Filters</h2>
+      <div id='filter-popup-projects'>
+        <FilterCategory filterTagList={tags.projectTypes} id='filter-popup-categories' categoryTitle='Categories' tagColor='blue'/>
+        <FilterCategory filterTagList={tags.tags} id='filter-popup-genres' categoryTitle='Genres' tagColor='green'/>
+        <FilterCategory filterTagList={tags.projectDetails} id='filter-popup-misc' categoryTitle='Misc.'/>
+      </div>
+      <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
+      </>
+    }</> :
+    <>{
+      <>
+      <h2>Filters</h2>
+      <div id='filter-popup-profiles'>
+        <div className='filter-popup-column'>
+          <FilterCategory filterTagList={tags.devSkills} id='filter-popup-dev-skills' categoryTitle='Developer Skills' tagColor='yellow'/>
+          <FilterCategory filterTagList={tags.DesignSkills} id='filter-popup-des-skills' categoryTitle='Designer Skills' tagColor='red'/>
+        </div>
+        <div className='filter-popup-column'>
+          <FilterCategory filterTagList={tags.proficiencies} id='filter-popup-roles' categoryTitle='Roles'/>
+          <FilterCategory filterTagList={tags.tags} id='filter-popup-majors' categoryTitle='Majors'/>
+          <FilterCategory filterTagList={tags.softSkills} id='filter-popup-soft-skills' categoryTitle='Soft Skills' tagColor='indigo'/>
+        </div>
+      </div>
+      <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
+      </>
+    }</>
+
   //Decides which 'content' to display on the page
   let heroContent = category === 'projects' ? <>Nothing yet, sorry</> : profileHero;
   let panelContent = category === 'projects' ? projectContent : profileContent;
@@ -767,10 +867,18 @@ const DiscoverAndMeet = ({category}) => {
           </div>
           <button id='filters-right-scroll' className='filters-scroller' onClick={() => scrollTags('right')}>&gt;</button>
         </div>
-        <Dropdown>
-          <DropdownButton buttonId={'discover-more-filters'}>Filters</DropdownButton>
-          <DropdownContent>Is this working?</DropdownContent>
-        </Dropdown>
+        <Popup>
+          <PopupButton buttonId={'discover-more-filters'}>Filters</PopupButton>
+          {/* When page loads, get all necessary tag lists based on page category
+          Place these lists in an array, along with an identifier for which column they belong
+          map through these lists to construct filter dropdown
+          displayed tags are determined using a state variable, changable w/ searchbar
+          tags have an onClick function that adds their tag to a full tag list 
+          full tag list is only applied when hitting done, which then pushes the info to an active list*/}
+          <PopupContent>
+            {filterPopup}
+          </PopupContent>
+        </Popup>
       </div>
 
       {/* Panel container */}
@@ -785,17 +893,24 @@ const DiscoverAndMeet = ({category}) => {
 
 //2 extra components that only serve as different layouts for the above component
 //Required due to the page failing to re-render when switching between its 2 view via the sidebar
+//Some bugs that may appear may be due to values outside the main component not being reset on a component change
+//If that's the case, simply reset them in here
 export const Discover = () => {
   //Reset tags
   activeTagFilters = [];
+  extraTagFilters = [];
+  popupTagSelections = [];
   return(
     <DiscoverAndMeet category={'projects'}/>
   )
 }
 
 export const Meet = () => {
-  //Reset tags
+  //Reset variables
   activeTagFilters = [];
+  extraTagFilters = [];
+  popupTagSelections = [];
+  displayedProfileList = [];
   return(
     <DiscoverAndMeet category={'profiles'}/>
   )

@@ -6,6 +6,9 @@ import {useState, createContext, useContext} from 'react';
 //Inside this <Popup> component, add a <PopupButton> and <PopupContent> component
 //Inside the <PopupButton>, you can add any text you want to help signify what the popup will contain
 //Additionally, you can set a buttonId attribute in the <PopupButton> component if you want to add an id to the button
+//You can also choose to include a function as a 'callback' prop in <PopupButton> if you wish to have it do something else
+//Finally, you can even include extra <PopupButton> components inside your <PopupContent> component!
+//This can be useful if you want a button that closes your popup & does something else too.
 //Place the main content of the popup within the <PopupContent> component; this can be anything you want
 //Below is a full example of what a full <Popup> component should look like
 /*
@@ -18,7 +21,7 @@ import {useState, createContext, useContext} from 'react';
 */
 //Classes for the <PopupButton> component are not implemented yet, but can be if necessary (let Joseph Dunne know)
 //Should you wish, you can place a second popup inside an already existing one
-//Note that popups can only be closed one at a time currently
+//Note that popups can only be closed one at a time currently without some sort of manipulation
 
 //Create context to be used throughout component on popup's visibility state
 const PopupContext = createContext({
@@ -27,10 +30,11 @@ const PopupContext = createContext({
 });
 
 //Button component that will open/close the popup
-export const PopupButton = ({children, buttonId}) => {
+export const PopupButton = ({children, buttonId, callback = () => {}}) => {
   const {open, setOpen} = useContext(PopupContext);
 
   const toggleOpen = () => {
+    callback();
     setOpen(!open);
   }
 

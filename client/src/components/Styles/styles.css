@@ -770,6 +770,7 @@ Page popup style rules
 .popup-close {
     position: absolute;
     border-radius: 4px !important;
+    border: none !important;
     top:0px;
     right:0px;
     width:40px !important;
@@ -865,6 +866,10 @@ Dropdown style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 */
+
+.dropdown-container {
+    position: relative;
+}
 
 .dropdown {
     border:solid 1px var(--dark-lighttheme);
@@ -1191,6 +1196,111 @@ Discover and Meet page style rules
     color: white;
     border:none;
     border-radius:30px;
+}
+
+.filter-category {
+    text-align:left;
+    height:auto;
+}
+
+.filter-category h2 {
+    margin:10px 0;
+}
+
+.filter-category .search-wrapper {
+    display:block;
+    margin:0;
+}
+
+.filter-category .search-bar {
+    float:none;
+    width:min-content;
+    margin: 10px 0;
+}
+
+.filter-category-tags {
+    display:flex;
+    height:auto;
+    min-height: 75px;
+    max-height: 150px;
+    overflow:auto;
+    flex-flow:wrap;
+    gap:8px 0;
+}
+
+#filter-popup-projects {
+    width: auto;
+    max-width: 900px;
+    height:70vh;
+    max-height:620px;
+    margin: 40px;
+    display:grid;
+    grid-template:
+        'categories' 1fr
+        'genres' 1fr
+        'misc' 1fr /
+        auto;
+    overflow:auto;
+}
+
+#filter-popup-categories {grid-area:categories;}
+#filter-popup-genres {grid-area:genres;}
+#filter-popup-misc {grid-area:misc;}
+
+.filter-popup-column {
+    display:flex;
+    flex-direction:column;
+    height:100%;
+}
+
+#filter-popup-profiles {
+    display:flex;
+    gap:10px;
+    margin: 0 10px;
+    max-height: 600px;
+}
+
+#filter-popup-profiles div {
+    width:auto;
+    max-width:600px;
+}
+
+#filter-popup-apply {
+    height: 30px;
+    width:80px;
+    margin:10px auto;
+    display:block;
+    font-size:medium;
+    padding:5px 10px;
+    background-color: var(--lavender);
+    color: white;
+    border:none;
+    border-radius:30px;
+}
+
+/*tag rules may be used for buttons elsewhere, but will stay here for the time being*/
+.tag-button {
+    border-radius: 30px;
+    border: none;
+    padding: 5px 10px;
+    font-size: medium;
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+.tag-button-red {background-color: #FFD9DF;}
+.tag-button-yellow {background-color: #FFECD1;}
+.tag-button-green {background-color: #E5F0DD;}
+.tag-button-blue {background-color: #DFF1F8;}
+.tag-button-indigo {background-color: #E6E6FF;}
+.tag-button-grey {background-color: #E3E3E3;}
+
+.tag-button:hover {
+    filter:saturate(250%) contrast(120%);
+}
+
+.tag-button-selected {
+    filter:saturate(250%) contrast(120%);
 }
 
 #discover-panel-box {

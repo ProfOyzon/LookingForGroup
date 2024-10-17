@@ -191,7 +191,7 @@ const updateThumbnail = async (req, res) => {
 }
 
 const addPicture = async (req, res) => {
-    // Update thumbnail for a project
+    // Update picture for a project
 
     // Get data
     const { id } = req.params;
@@ -199,7 +199,7 @@ const addPicture = async (req, res) => {
     
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
-        const fileName = `${id}picture${position}.webp`;
+        const fileName = `${id}picture${Date.now()}.webp`;
         const saveTo = join(__dirname, "../images/projects");
         const filePath = join(saveTo, fileName);
         
@@ -216,6 +216,31 @@ const addPicture = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "An error occurred while saving the project's picture" 
+        });
+    }
+}
+
+const updatePicturePositions = async (req, res) => {
+    // Update picture order for a project
+
+    // Get input data
+    const { id } = req.params;
+    const { images } = req.body;
+
+    try {
+        // Update the picture positions for a project
+        for (let image of images) {
+            const sql = "UPDATE project_images SET position = ? WHERE image = ? AND project_id = ?";
+            const values = [image.position, image.name, id];
+            await pool.query(sql, values);
+        }
+        
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the picture order for a project" 
         });
     }
 }
@@ -468,7 +493,7 @@ const deleteMember = async (req, res) => {
 }
 
 export default { getProjects, createProject, getProjectById, updateProject, 
-    updateThumbnail, addPicture, deletePicture,
+    updateThumbnail, addPicture, updatePicturePositions, deletePicture,
     addGenre, deleteGenre, addTag, deleteTag, addJob, updateJob, deleteJob,
     addMember, updateMember, deleteMember
 };

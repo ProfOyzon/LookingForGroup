@@ -230,8 +230,8 @@ const updatePicturePositions = async (req, res) => {
     try {
         // Update the picture positions for a project
         for (let image of images) {
-            const sql = "UPDATE project_images SET position = ? WHERE image = ? AND project_id = ?";
-            const values = [image.position, image.name, id];
+            const sql = "UPDATE project_images SET position = ? WHERE image_id = ? AND project_id = ?";
+            const values = [image.position, image.id, id];
             await pool.query(sql, values);
         }
         

@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const getUsers = async (req, res) => {
     // Get all users
 
-    const [users] = await pool.query(`SELECT u.user_id, u.first_name, u.last_name, u.bio, s.skills
+    const [users] = await pool.query(`SELECT u.user_id, u.first_name, u.last_name, u.bio, u.profile_image, s.skills
         FROM users u
         JOIN (SELECT us.user_id, JSON_ARRAYAGG(s.label) AS skills
             FROM user_skills us 
@@ -68,7 +68,7 @@ const getUsersById = async (req, res) => {
     const { id } = req.params;
 
     // Get user data
-    const sql = `SELECT u.user_id, u.first_name, u.last_name, u.bio, s.skills
+    const sql = `SELECT u.user_id, u.first_name, u.last_name, u.bio, u.profile_image, s.skills
         FROM users u
         JOIN (SELECT us.user_id, JSON_ARRAYAGG(s.label) AS skills
             FROM user_skills us 
@@ -179,7 +179,7 @@ const getMyProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.description, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.description, p.thumbnail, g.project_types, t.tags
                 FROM projects p
                 JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                     FROM project_genres pg 
@@ -222,7 +222,7 @@ const getVisibleProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.description, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.description, p.thumbnail, g.project_types, t.tags
                 FROM projects p
                 JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                     FROM project_genres pg 
@@ -288,7 +288,7 @@ const getProjectFollowing = async (req, res) => {
         // Get user data
         const sql = `SELECT p.* 
             FROM project_followings pf
-            JOIN (SELECT p.project_id, p.title, p.description, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.description, p.thumbnail, g.project_types, t.tags
                 FROM projects p
                 JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                     FROM project_genres pg 
@@ -373,7 +373,7 @@ const getUserFollowing = async (req, res) => {
         // Get user data
         const sql = `SELECT u.* 
             FROM user_followings uf
-            JOIN (SELECT u.user_id, u.first_name, u.last_name, u.bio, JSON_ARRAYAGG(s.label) AS skills
+            JOIN (SELECT u.user_id, u.first_name, u.last_name, u.bio, u.profile_image, JSON_ARRAYAGG(s.label) AS skills
                 FROM users u
                     JOIN user_skills us ON u.user_id = us.user_id 
                     JOIN skills s ON us.skill_id = s.skill_id 

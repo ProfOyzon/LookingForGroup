@@ -1,5 +1,6 @@
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { unlink } from "fs/promises";
 import sharp from "sharp";
 import pool from "../config/database.js";
 import { genPlaceholders } from "../utils/sqlUtil.js";
@@ -9,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const getProjects = async (req, res) => {
     // Get all projects
     try {
-        const sql = `SELECT p.project_id, p.title, p.description, g.project_types, t.tags
+        const sql = `SELECT p.project_id, p.title, p.description, p.thumbnail, g.project_types, t.tags
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                 FROM project_genres pg 
@@ -94,7 +95,7 @@ const getProjectById = async (req, res) => {
 
     try {
         // Get project data
-        const sql = `SELECT p.project_id, p.title, p.description, g.project_types, t.tags, j.jobs, m.members
+        const sql = `SELECT p.project_id, p.title, p.description, g.project_types, t.tags, j.jobs, m.members, pi.images
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                 FROM project_genres pg 
@@ -119,9 +120,13 @@ const getProjectById = async (req, res) => {
                     ON m.user_id = u.user_id
                 WHERE m.project_id = ?) m
             ON p.project_id = m.project_id
+            JOIN (SELECT pi.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", pi.image_id, "image", pi.image, "position", pi.position)) AS images
+				FROM project_images pi
+				WHERE pi.project_id = ?) pi
+			ON p.project_id = pi.project_id
             WHERE p.project_id = ?
             `;
-        const values = [id, id, id];
+        const values = [id, id, id, id];
         const [project] = await pool.query(sql, values);
         
         return res.status(200).json({
@@ -186,6 +191,86 @@ const updateThumbnail = async (req, res) => {
             status: 400, 
             error: "An error occurred while saving the project's thumbnail" 
         });
+    }
+}
+
+const addPicture = async (req, res) => {
+    // Update picture for a project
+
+    // Get data
+    const { id } = req.params;
+    const { position } = req.body
+    
+    try {
+        // Download user's uploaded image. Convert to webp and reduce file size
+        const fileName = `${id}picture${Date.now()}.webp`;
+        const saveTo = join(__dirname, "../images/projects");
+        const filePath = join(saveTo, fileName);
+        
+        await sharp(req.file.buffer).webp({quality: 50}).toFile(filePath);
+
+        // Store file name in database
+        const sql = "INSERT INTO project_images (image, position, project_id) VALUES (?, ?, ?)";
+        const values = [fileName, Number(position), id];
+        await pool.query(sql, values);
+
+        return res.sendStatus(201);
+    } catch(err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while saving the project's picture" 
+        });
+    }
+}
+
+const updatePicturePositions = async (req, res) => {
+    // Update picture order for a project
+
+    // Get input data
+    const { id } = req.params;
+    const { images } = req.body;
+
+    try {
+        // Update the picture positions for a project
+        for (let image of images) {
+            const sql = "UPDATE project_images SET position = ? WHERE image_id = ? AND project_id = ?";
+            const values = [image.position, image.id, id];
+            await pool.query(sql, values);
+        }
+        
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the picture order for a project" 
+        });
+    }
+}
+
+const deletePicture = async (req, res) => {
+    // Delete picture from a project
+
+    // Get input data
+    const { id } = req.params;
+    const { image } = req.body;
+
+    try {
+        // Remove project's picture from server and database
+        const filePath = join(__dirname, "../images/projects/");
+        await unlink(filePath + image);
+
+        await pool.query("DELETE FROM project_images WHERE image = ? AND project_id = ?", [image, id]);
+
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while removing a project's picture" 
+        });
+
     }
 }
 
@@ -411,7 +496,8 @@ const deleteMember = async (req, res) => {
     }
 }
 
-export { getProjects, createProject, getProjectById, updateProject, updateThumbnail,
+export default { getProjects, createProject, getProjectById, updateProject, 
+    updateThumbnail, addPicture, updatePicturePositions, deletePicture,
     addGenre, deleteGenre, addTag, deleteTag, addJob, updateJob, deleteJob,
     addMember, updateMember, deleteMember
 };

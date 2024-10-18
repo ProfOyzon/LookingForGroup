@@ -10,6 +10,7 @@ Component Style rules
     -Notifications
     -Page popup
     -Dropdown
+    -Header
     -Search
     -Scrollbar
     -Tag Filter
@@ -797,6 +798,85 @@ Page popup style rules
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
+Header style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#header {
+    display:grid;
+    align-items:center;
+    margin-right:50px;
+    grid-template:
+        'search blank buttons' 70px / auto 1fr 140px;
+}
+
+#header-searchbar {
+    grid-area: search;
+    height: auto;
+}
+
+#header-buttons {
+    grid-area: buttons;
+}
+
+#header-buttons button {
+    background-color: var(--peach);
+    border-radius:40px;
+    border:none;
+    margin-left:10px;
+    height:auto;
+    width:auto;
+    padding-top:4px;
+}
+
+#header-buttons img {
+    filter:none;
+    height:auto;
+    margin:2px;
+}
+
+#header-profile-dropdown {
+    padding:10px;
+    color: var(--lavender);
+}
+
+#header-profile-user {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+#header-profile-email {
+    font-style: italic;
+    font-size:smaller;
+    color:black;
+}
+
+#header-profile-dropdown img {
+    width:32px;
+    height:32px;
+}
+
+#header-profile-dropdown button {
+    background-color:white;
+    display:flex;
+    width:100%;
+    border-radius:10px;
+    gap:10px;
+    align-items:center;
+    margin:0;
+    flex-shrink: 0;
+    color:black;
+}
+
+#header-profile-dropdown button:hover {
+    background-color: #E0E0E0;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
 Search style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
@@ -1199,8 +1279,15 @@ Discover and Meet page style rules
 }
 
 .filter-category {
+    display:flex;
+    flex-direction:column;
     text-align:left;
     height:auto;
+    min-height:140px;
+}
+
+.filter-category hr {
+    width:90%;
 }
 
 .filter-category h2 {
@@ -1221,8 +1308,6 @@ Discover and Meet page style rules
 .filter-category-tags {
     display:flex;
     height:auto;
-    min-height: 75px;
-    max-height: 150px;
     overflow:auto;
     flex-flow:wrap;
     gap:8px 0;
@@ -1247,18 +1332,29 @@ Discover and Meet page style rules
 #filter-popup-genres {grid-area:genres;}
 #filter-popup-misc {grid-area:misc;}
 
-.filter-popup-column {
-    display:flex;
-    flex-direction:column;
-    height:100%;
-}
-
 #filter-popup-profiles {
-    display:flex;
+    display:grid;
+    height:70vh;
+    min-height:420px;
+    max-height: 620px;
+    grid-template:
+        'devskills roles' 1fr
+        'devskills roles' 1fr
+        'devskills majors' 1fr
+        'desskills majors' 1fr
+        'desskills softskills' 1fr
+        'desskills softskills' 1fr /
+        auto        auto;
     gap:10px;
     margin: 0 10px;
-    max-height: 600px;
+    overflow:auto;
 }
+
+#filter-popup-dev-skills {grid-area:devskills;}
+#filter-popup-des-skills {grid-area:desskills;}
+#filter-popup-roles {grid-area:roles;}
+#filter-popup-majors {grid-area:majors;}
+#filter-popup-soft-skills {grid-area:softskills;}
 
 #filter-popup-profiles div {
     width:auto;

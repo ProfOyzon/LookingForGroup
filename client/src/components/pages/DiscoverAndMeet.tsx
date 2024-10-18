@@ -5,8 +5,9 @@ import { ProjectPanel } from "../ProjectPanel";
 import { ProfilePanel } from "../ProfilePanel";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
+import { Header } from "../Header";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
-import { Popup, PopupButton, PopupContent, PopupFunction } from "../Popup";
+import { Popup, PopupButton, PopupContent } from "../Popup";
 import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
@@ -109,17 +110,6 @@ const DiscoverAndMeet = ({category}) => {
 
   //Get a list of tags to use for tag filters (project tags for projects, profession tags for profiles)
   const tagList = category === 'projects' ? tags.tags : tags.proficiencies;
-  //Get more lists of tags for the filter dropdown menu
-  /* const extraTags = category === 'projects' ? 
-    [
-      {list: tags.projectTypes, name: 'Project Types'}, 
-      {list: tags.projectDetails, name: 'Project Details'}, 
-      {list: tags.proficiencies, name: 'Looking for...'}
-    ] :
-    [
-      {list: tags.softSkills, name: 'Soft Skills'}, 
-      {list: tags.tools, name: 'Hard Skills'}
-    ]; */
 
   //Set up panel display functions
 
@@ -810,15 +800,11 @@ const DiscoverAndMeet = ({category}) => {
       <>
       <h2>Filters</h2>
       <div id='filter-popup-profiles'>
-        <div className='filter-popup-column'>
-          <FilterCategory filterTagList={tags.devSkills} id='filter-popup-dev-skills' categoryTitle='Developer Skills' tagColor='yellow'/>
-          <FilterCategory filterTagList={tags.DesignSkills} id='filter-popup-des-skills' categoryTitle='Designer Skills' tagColor='red'/>
-        </div>
-        <div className='filter-popup-column'>
-          <FilterCategory filterTagList={tags.proficiencies} id='filter-popup-roles' categoryTitle='Roles'/>
-          <FilterCategory filterTagList={tags.tags} id='filter-popup-majors' categoryTitle='Majors'/>
-          <FilterCategory filterTagList={tags.softSkills} id='filter-popup-soft-skills' categoryTitle='Soft Skills' tagColor='indigo'/>
-        </div>
+        <FilterCategory filterTagList={tags.devSkills} id='filter-popup-dev-skills' categoryTitle='Developer Skills' tagColor='yellow'/>
+        <FilterCategory filterTagList={tags.DesignSkills} id='filter-popup-des-skills' categoryTitle='Designer Skills' tagColor='red'/>
+        <FilterCategory filterTagList={tags.proficiencies} id='filter-popup-roles' categoryTitle='Roles'/>
+        <FilterCategory filterTagList={tags.tags} id='filter-popup-majors' categoryTitle='Majors'/>
+        <FilterCategory filterTagList={tags.softSkills} id='filter-popup-soft-skills' categoryTitle='Soft Skills' tagColor='indigo'/>
       </div>
       <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
       </>
@@ -831,20 +817,8 @@ const DiscoverAndMeet = ({category}) => {
   return(
     <div className='page' onScroll={addContent}>
       {/* Search bar and profile/notification buttons */}
-      <div id='discover-header'>
-        <span id='discover-searchbar'>
-          <SearchBar dataSets={[{data: category === 'projects' ? projectSearchData : profileSearchData}]}
-           onSearch={category === 'projects' ? searchProjects : searchProfiles}/>
-        </span>
-        <span id='discover-header-buttons'>
-          <button><img src={bell} className="navIcon" alt="Notifications" /></button>
-          <button><img src={profileImage} className="navIcon" alt="User" /></button>
-          <Popup>
-            <PopupButton buttonId=''>Popup here</PopupButton>
-            <PopupContent>{profileHero}</PopupContent>
-          </Popup>
-        </span>
-      </div>
+      <Header dataSets={[{data: category === 'projects' ? projectSearchData : profileSearchData}]}
+        onSearch={category === 'projects' ? searchProjects : searchProfiles}/>
       {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
       <div id='discover-hero'>
       {heroContent}

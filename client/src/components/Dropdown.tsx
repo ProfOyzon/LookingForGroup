@@ -33,7 +33,7 @@ const DropdownContext = createContext({
 });
 
 //Button component that will open/close dropdown
-export const DropdownButton = ({children, buttonId}) => {
+export const DropdownButton = ({children, buttonId = ''}) => {
   const { open, setOpen } = useContext(DropdownContext);
 
   const toggleOpen = () => {

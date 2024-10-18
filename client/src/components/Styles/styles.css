@@ -1550,6 +1550,31 @@ Profile page style rules
     }
 }
 
+/* --------------------------------- Edit Modal Rules --------------------------------- */
+#edit-profile-header {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#edit-profile-header button {
+    background-color: white;
+    border: 0px;
+    border-radius: 35px;
+    color: black;
+    /* font-family: Inter; */
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 10px 20px;
+}
+
+#edit-profile-header button#selected {
+    background-color: #e0e0f2;
+    color: #271d66;
+    font-weight: 700;
+}
+
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------

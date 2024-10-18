@@ -1,12 +1,17 @@
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import sharp from "sharp";
 import pool from "../config/database.js";
 import { genPlaceholders } from "../utils/sqlUtil.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const getProjects = async (req, res) => {
     // Get all projects
     try {
-        const sql = `SELECT p.project_id, p.title, p.description, g.genres, t.tags
+        const sql = `SELECT p.project_id, p.title, p.description, g.project_types, t.tags
             FROM projects p
-            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                 FROM project_genres pg 
                 JOIN genres g 
                     ON pg.genre_id = g.genre_id
@@ -89,9 +94,9 @@ const getProjectById = async (req, res) => {
 
     try {
         // Get project data
-        const sql = `SELECT p.project_id, p.title, p.description, g.genres, t.tags, j.jobs, m.members
+        const sql = `SELECT p.project_id, p.title, p.description, g.project_types, t.tags, j.jobs, m.members
             FROM projects p
-            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS genres 
+            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                 FROM project_genres pg 
                 JOIN genres g 
                     ON pg.genre_id = g.genre_id
@@ -151,6 +156,35 @@ const updateProject = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "An error occurred while updating the project" 
+        });
+    }
+}
+
+const updateThumbnail = async (req, res) => {
+    // Update thumbnail for a project
+
+    // Get id from url
+    const { id } = req.params;
+
+    try {
+        // Download user's uploaded image. Convert to webp and reduce file size
+        const fileName = `${id}thumbnail.webp`;
+        const saveTo = join(__dirname, "../images/thumbnails");
+        const filePath = join(saveTo, fileName);
+        
+        await sharp(req.file.buffer).webp({quality: 50}).toFile(filePath);
+
+        // Store file name in database
+        const sql = "UPDATE projects SET thumbnail = ? WHERE project_id = ?";
+        const values = [fileName, id];
+        await pool.query(sql, values);
+
+        return res.sendStatus(204);
+    } catch(err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while saving the project's thumbnail" 
         });
     }
 }
@@ -334,7 +368,7 @@ const addMember = async (req, res) => {
 }
 
 const updateMember = async (req, res) => {
-    // Update a project's job
+    // Update a member of a project
 
     // Get input data
     const { id } = req.params;
@@ -377,7 +411,7 @@ const deleteMember = async (req, res) => {
     }
 }
 
-export { getProjects, createProject, getProjectById, updateProject, 
+export { getProjects, createProject, getProjectById, updateProject, updateThumbnail,
     addGenre, deleteGenre, addTag, deleteTag, addJob, updateJob, deleteJob,
     addMember, updateMember, deleteMember
 };

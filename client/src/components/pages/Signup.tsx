@@ -62,6 +62,9 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
         }
         else {
             // check if email is valid
+            if (!email.includes('rit.edu')){
+                setError("Not an RIT email");
+            }
 
             // check if username is unique (??? depends on if we want unique usernames)
 

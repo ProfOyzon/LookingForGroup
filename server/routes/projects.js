@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { getProjects, getProjectById, createProject, updateProject, 
+import mid from "../middleware/index.js";
+import { getProjects, getProjectById, createProject, updateProject, updateThumbnail,
     addGenre, deleteGenre, addTag, deleteTag, addJob, updateJob, deleteJob,
     addMember, updateMember, deleteMember } from "../controllers/projects.js";
 
@@ -9,6 +10,7 @@ router.get("/api/projects", getProjects);
 router.post("/api/projects", createProject);
 router.get("/api/projects/:id", getProjectById);
 router.put("/api/projects/:id", updateProject);
+router.put("/api/projects/:id/thumbnail", mid.checkImageFile, updateThumbnail);
 router.post("/api/projects/:id/genres", addGenre);
 router.delete("/api/projects/:id/genres", deleteGenre);
 router.post("/api/projects/:id/tags", addTag);

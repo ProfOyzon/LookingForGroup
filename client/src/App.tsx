@@ -11,7 +11,7 @@ import MyProjects from "./components/pages/MyProjects";
 import Profile from "./components/pages/Profile";
 import Project from "./components/pages/Project";
 import ProjectPostPage from "./components/pages/ProjectPostPage";
-import DiscoverAndMeet from "./components/pages/DiscoverAndMeet";
+import {Discover,Meet} from "./components/pages/DiscoverAndMeet";
 import Settings from "./components/pages/Settings";
 import NotFound from "./components/pages/NotFound";
 import SideBar from "./components/Sidebar";
@@ -30,10 +30,11 @@ function App() {
       <div className="App">
         <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} />
         <Routes>
-          <Route path={paths.routes.DEFAULT} element={<Home />} />
+          <Route path={paths.routes.DEFAULT} element={<Discover />} />
           <Route path={paths.routes.LOGIN} element={<Login />} />
           <Route path={paths.routes.SIGNUP} element={<SignUp avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
-          <Route path={paths.routes.HOME} element={<Home />} />
+          <Route path={paths.routes.HOME} element={<Discover />} />
+          <Route path={paths.routes.MEET} element={<Meet />} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />
           <Route path={paths.routes.MYPROJECTS} element={<MyProjects />} />
           <Route path={paths.routes.PROFILE} element={<Profile />} />
@@ -44,7 +45,6 @@ function App() {
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
           <Route path={paths.routes.CREDITS} element={<Credits />} />
-          <Route path={paths.routes.DISCOVERANDMEET} element={<DiscoverAndMeet />} />
         </Routes>
         {/* <CreditsFooter /> */}
       </div>

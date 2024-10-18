@@ -10,6 +10,7 @@ Component Style rules
     -Notifications
     -Page popup
     -Dropdown
+    -Header
     -Search
     -Scrollbar
     -Tag Filter
@@ -263,6 +264,7 @@ Project Panel component style rules
 .project-panel {
     height: 200px;
     border: 2px solid grey;
+    background-color: white;
 }
 
 .project-panel img{
@@ -285,6 +287,7 @@ Profile Panel component style rules
 .profile-panel {
     width: 200px;
     border: 2px solid grey;
+    background-color:white;
 }
 
 .profile-panel img{
@@ -729,6 +732,7 @@ Page popup style rules
     left: 0;
     width: 100%;
     height: 100%;
+    z-index:2;
 }
 
 /*rules for the popup itself*/
@@ -740,6 +744,21 @@ Page popup style rules
     max-width: 95vw;
     max-height: 95vh;
     opacity: 100%;
+    z-index:3;
+    width: auto;
+    height: auto;
+}
+
+.popup-container {
+    display:flex;
+    position: fixed;
+    align-items:center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height:100%;
+    z-index:3;
 }
 
 #popup-close {
@@ -747,6 +766,22 @@ Page popup style rules
     border-radius: 4px;
     top: 10px;
     right: 10px;
+}
+
+.popup-close {
+    position: absolute;
+    border-radius: 4px !important;
+    border: none !important;
+    top:0px;
+    right:0px;
+    width:40px !important;
+    height:40px !important;
+    background-color:white !important;
+    margin: 4px 4px 0 0 !important;
+}
+
+.popup-close:hover {
+    background-color:var(--lightGray) !important;
 }
 
 #popup-close img {
@@ -758,6 +793,85 @@ Page popup style rules
 .page-scroll-lock {
     position: fixed;
     padding-right: 15px;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Header style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#header {
+    display:grid;
+    align-items:center;
+    margin-right:50px;
+    grid-template:
+        'search blank buttons' 70px / auto 1fr 140px;
+}
+
+#header-searchbar {
+    grid-area: search;
+    height: auto;
+}
+
+#header-buttons {
+    grid-area: buttons;
+}
+
+#header-buttons button {
+    background-color: var(--peach);
+    border-radius:40px;
+    border:none;
+    margin-left:10px;
+    height:auto;
+    width:auto;
+    padding-top:4px;
+}
+
+#header-buttons img {
+    filter:none;
+    height:auto;
+    margin:2px;
+}
+
+#header-profile-dropdown {
+    padding:10px;
+    color: var(--lavender);
+}
+
+#header-profile-user {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+#header-profile-email {
+    font-style: italic;
+    font-size:smaller;
+    color:black;
+}
+
+#header-profile-dropdown img {
+    width:32px;
+    height:32px;
+}
+
+#header-profile-dropdown button {
+    background-color:white;
+    display:flex;
+    width:100%;
+    border-radius:10px;
+    gap:10px;
+    align-items:center;
+    margin:0;
+    flex-shrink: 0;
+    color:black;
+}
+
+#header-profile-dropdown button:hover {
+    background-color: #E0E0E0;
 }
 
 /*
@@ -832,6 +946,10 @@ Dropdown style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 */
+
+.dropdown-container {
+    position: relative;
+}
 
 .dropdown {
     border:solid 1px var(--dark-lighttheme);
@@ -1104,19 +1222,18 @@ Discover and Meet page style rules
 #filters-left-scroll {
     left: 0;
     text-align:left;
-    background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,0));
+    background-image: linear-gradient(to right, rgba(244,244,244,1), rgba(244,244,244,1), rgba(244,244,244,0));
 }
 
 #filters-right-scroll {
     right: 0;
     text-align:right;
-    background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,1));
+    background-image: linear-gradient(to right, rgba(244,244,244,0), rgba(244,244,244,1), rgba(244,244,244,1));
 }
 
 #discover-tag-filters {
     height:auto;
     display:flex;
-    gap:5px;
     overflow-x:hidden;
     scroll-behavior:smooth;
 }
@@ -1127,19 +1244,25 @@ Discover and Meet page style rules
     font-size:medium;
     background-color: rgba(0, 0, 0, 0);
     border:none;
+    margin: 0 4px;
     border-radius:30px;
     flex-shrink: 0;
 }
 
 .discover-tag-filter:hover {
-    background-color: #FFDFC5;
+    background-color: white;
     color: var(--lavender);
 }
 
 .discover-tag-filter-selected {
-    border:4px solid var(--lavender);
+    /*border:4px solid var(--lavender);*/
     background-color: var(--peach);
     color: var(--lavender);
+    /*margin: 0;*/
+}
+
+.discover-tag-filter-selected:hover {
+    background-color:var(--peach);
 }
 
 #discover-more-filters {
@@ -1153,6 +1276,127 @@ Discover and Meet page style rules
     color: white;
     border:none;
     border-radius:30px;
+}
+
+.filter-category {
+    display:flex;
+    flex-direction:column;
+    text-align:left;
+    height:auto;
+    min-height:140px;
+}
+
+.filter-category hr {
+    width:90%;
+}
+
+.filter-category h2 {
+    margin:10px 0;
+}
+
+.filter-category .search-wrapper {
+    display:block;
+    margin:0;
+}
+
+.filter-category .search-bar {
+    float:none;
+    width:min-content;
+    margin: 10px 0;
+}
+
+.filter-category-tags {
+    display:flex;
+    height:auto;
+    overflow:auto;
+    flex-flow:wrap;
+    gap:8px 0;
+}
+
+#filter-popup-projects {
+    width: auto;
+    max-width: 900px;
+    height:70vh;
+    max-height:620px;
+    margin: 40px;
+    display:grid;
+    grid-template:
+        'categories' 1fr
+        'genres' 1fr
+        'misc' 1fr /
+        auto;
+    overflow:auto;
+}
+
+#filter-popup-categories {grid-area:categories;}
+#filter-popup-genres {grid-area:genres;}
+#filter-popup-misc {grid-area:misc;}
+
+#filter-popup-profiles {
+    display:grid;
+    height:70vh;
+    min-height:420px;
+    max-height: 620px;
+    grid-template:
+        'devskills roles' 1fr
+        'devskills roles' 1fr
+        'devskills majors' 1fr
+        'desskills majors' 1fr
+        'desskills softskills' 1fr
+        'desskills softskills' 1fr /
+        auto        auto;
+    gap:10px;
+    margin: 0 10px;
+    overflow:auto;
+}
+
+#filter-popup-dev-skills {grid-area:devskills;}
+#filter-popup-des-skills {grid-area:desskills;}
+#filter-popup-roles {grid-area:roles;}
+#filter-popup-majors {grid-area:majors;}
+#filter-popup-soft-skills {grid-area:softskills;}
+
+#filter-popup-profiles div {
+    width:auto;
+    max-width:600px;
+}
+
+#filter-popup-apply {
+    height: 30px;
+    width:80px;
+    margin:10px auto;
+    display:block;
+    font-size:medium;
+    padding:5px 10px;
+    background-color: var(--lavender);
+    color: white;
+    border:none;
+    border-radius:30px;
+}
+
+/*tag rules may be used for buttons elsewhere, but will stay here for the time being*/
+.tag-button {
+    border-radius: 30px;
+    border: none;
+    padding: 5px 10px;
+    font-size: medium;
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+.tag-button-red {background-color: #FFD9DF;}
+.tag-button-yellow {background-color: #FFECD1;}
+.tag-button-green {background-color: #E5F0DD;}
+.tag-button-blue {background-color: #DFF1F8;}
+.tag-button-indigo {background-color: #E6E6FF;}
+.tag-button-grey {background-color: #E3E3E3;}
+
+.tag-button:hover {
+    filter:saturate(250%) contrast(120%);
+}
+
+.tag-button-selected {
+    filter:saturate(250%) contrast(120%);
 }
 
 #discover-panel-box {

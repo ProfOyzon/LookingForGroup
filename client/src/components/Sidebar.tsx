@@ -92,6 +92,9 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
         <button className={activePage === 'Discover' ? 'active' : ''} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
           <img src="images/icons/nav/discover.png" className="navIcon" alt="Discover" /> Discover
         </button>
+        <button className={activePage === 'Meet' ? 'active' : ''} onClick={() => handleTextChange('Meet', paths.routes.MEET)}>
+          <img src="images/icons/nav/profile-white.png" className="navIcon" alt="Meet" /> Meet
+        </button>
         <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
           <img src="images/icons/nav/projects.png" className="navIcon" alt="Projects" /> My Projects
         </button>

@@ -8,6 +8,7 @@
     height: 100%;
     top: 0px;
     left: 220px;
+    background-color: #F4F4F4;
 
     /* hide horizontal scrollbar, looses scroll functionality */
     overflow-x: hidden;

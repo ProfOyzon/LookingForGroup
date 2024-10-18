@@ -5,40 +5,68 @@ import { ProjectPanel } from "../ProjectPanel";
 import { ProfilePanel } from "../ProfilePanel";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
-import { TagFilter } from "../TagFilter";
+import { Header } from "../Header";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
+import { Popup, PopupButton, PopupContent } from "../Popup";
 import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
 import * as tags from "../../constants/tags";
-import { Children, useCallback } from "react";
-import { sortItems } from "../../functions/itemSort";
 import { useState, useEffect } from 'react';
-import CreditsFooter from '../CreditsFooter';
 import ToTopButton from "../ToTopButton";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
+import e from "express";
 
 //To-do
-//Let scroll buttons move tags *
-//Hide scroll buttons when reaching edge *
-//Have tags actually filter projects
-//Create dropdown menus
-//Have search bar work too along with tags
+//Add carosel to project view
+//Ensure we can pull from the database
+//Add actual images to panels/ensure images can work
+//Add images to profile hero
+//Add light/dark mode functionality
+//Add more icons to various places in ui
+//Add checks for filters used in filter popup
 
-//Get whether we are loading projects or profiles using search query
-let urlParams = new URLSearchParams(window.location.search);
-const category = urlParams.get('category');
+/* const getProjectData = async () => {
+  const url = 'http://localhost:8081/api/projects'
+  try {
+    let response = await fetch(url);
+
+    const projectData = await response.json;
+    console.log(projectData);
+  } catch(error) {
+    console.error(error.message);
+  }
+} 
+
+getProjectData(); */
 
 //These values need to be outside the component, otherwise they get reset every time it re-renders
+//Lists that hold the original list of projects and profiles, only updates on page reload
+const fullProjectList = projects;
+const fullProfileList = profiles;
 //List that holds project data that will be displayed. Changes along with search parameters
 //Could combine this and profile variants into single variable
 let projectList = projects;
+//List that holds a project list that is filtered by searching
+let filteredProjectList = projects;
+//List that holds trimmed project data for use in searching
+//Note: Depending on user needs, may need to change or add to what is used in searches
+const projectSearchData = fullProjectList.map((project) => {
+  return({name: project.name, description: project.description});
+});
 //Variable that tracks what position we are at in the above array
 let projectListPosition : number = 0;
 
 //List that holds profile data that will be displayed. Changes along with search parameters
 let profileList = profiles;
+//List that holds a profile list that is filtered by searching
+let filteredProfileList = profiles;
+//List that holds trimmed profile data for use in searching
+//Note: Depending on user needs, may need to change or add to what is used in searches
+const profileSearchData = fullProfileList.map((profile) => {
+  return({name: profile.name, username: profile.username, bio: profile.bio});
+});
 //Variable that tracks what position we are at in the above array
 let profileListPosition : number = 0;
 //Create array of profiles to help track the order they were added
@@ -48,8 +76,14 @@ let heightTrackers : number[];
 
 //array that tracks what tags are currently being used to filter
 let activeTagFilters : string[] = [];
+//array that tracks active tags used in the more filters dropdown
+let extraTagFilters : string[] = [];
+//array that tracks tag selected in the filters popup, contents are copied to extraTagFilters when applied
+let popupTagSelections : string[] = [];
 
-const DiscoverAndMeet = () => {
+//Main DiscoverAndMeet component
+//category - string variable that determines what layout type to load (defaults to profile if invalid value is given)
+const DiscoverAndMeet = ({category}) => {
   //Gets the width of the scrollbar
   //Obtained from https://stackoverflow.com/questions/13382516/getting-scroll-bar-width-using-javascript
   function getScrollbarWidth() {
@@ -74,8 +108,6 @@ const DiscoverAndMeet = () => {
     return scrollbarWidth;
   }
 
-  //Set the hero component based on projects or profiles
-  //const heroComponent = category === 'projects' ? (component 1) : (component 2)
   //Get a list of tags to use for tag filters (project tags for projects, profession tags for profiles)
   const tagList = category === 'projects' ? tags.tags : tags.proficiencies;
 
@@ -129,7 +161,6 @@ const DiscoverAndMeet = () => {
         (image width) / X = final width
 
         (image width) / ((image height) / 100px) = final width
-
 
         (image height) * X = 100px
         X = 100px / (image height)
@@ -262,6 +293,8 @@ const DiscoverAndMeet = () => {
       projectTracker = 0;
       //Iterate through all currently displayed projects
       //For each project...
+      //There is some sort of bug happening here, occasionally more than the max projects are being displayed
+      //Issue only seems to occur after saving new code while test server is being hosted, so it may not need to be addressed
       for (let project of displayedProjects){
         //Add width to widthTracker
         widthTracker += project.width + 24;
@@ -307,6 +340,53 @@ const DiscoverAndMeet = () => {
     //Also ensure scroll buttons display correctly on resize
     resizeTagFilter();
   };
+
+  //Updates filtered project list with new search info
+  const searchProjects = (searchResults) => {
+    //searchResults structure: array[array[{object1},{object2}]]
+    //Reset filtersProjectList
+    filteredProjectList = [];
+    //Filter through searchResults and original search data
+    for (let result of searchResults[0]) {
+      for (let item of projectSearchData) {
+        //If 2 items match...
+        if (result === item) {
+          //Get index of item in original search data
+          //Get item with this index in projectList
+          let projectItem = fullProjectList[projectSearchData.indexOf(item)];
+          //Push this item to filteredProjectList
+          filteredProjectList.push(projectItem);
+          continue;
+        }
+      }
+    } 
+    
+    updateProjectList();
+  }
+
+  //Make new list of projects by mapping new filtered list
+  const updateProjectList = () => {
+    //Note: tags are not included in current mySQL database for projects
+    let tagFilteredList = filteredProjectList.filter((project) => {
+      //Filter check to ensure if we include an item or not
+      let tagFilterCheck = true;
+      //Sets all tags to lowercase, for easier tag reading
+      let lowercaseProjectTags = project.tags.map((tag) => {
+        return tag.toLowerCase();
+      })
+      //if project in filtered list contains all tags in taglist, include it
+      for (let tag of activeTagFilters) {
+        if (!lowercaseProjectTags.includes(tag)) {
+          tagFilterCheck = false;
+          break;
+        }
+      }
+
+      return(tagFilterCheck);
+    })
+    //set displayed projects using firstProjects
+    setDisplayedProjects(() => firstProjects(tagFilteredList));
+  }
 
   //Calls when page first loads & when a new list of profiles is being used (e.g. after a search)
   const firstProfiles = (newProfileList) => {
@@ -438,6 +518,7 @@ const DiscoverAndMeet = () => {
         }
         //Get current set of displayed profiles (not profileColumns, need an unaltered list)
         //For each profile...
+        let loopTracker = 0;
         for (let profile of displayedProfileList) {
           //Check which column has the least height currently (use first if there's a tie)
           let shortestColumn = 0;
@@ -450,8 +531,12 @@ const DiscoverAndMeet = () => {
           resizedColumnsToDisplay[shortestColumn].push({profile: profile.profile, height: profile.height});
           //Add profile height to the column's height tracker
           heightTrackers[shortestColumn] += profile.height;
+          loopTracker++;
         }
         //Set profileColumns to newly created resized columns
+        console.log(loopTracker);
+        console.log(displayedProfileList);
+        console.log(resizedColumnsToDisplay);
         setProfileColumns(resizedColumnsToDisplay);
       }
     }, 100);
@@ -460,10 +545,50 @@ const DiscoverAndMeet = () => {
     resizeTagFilter();
   }
 
+  const updateProfileList = () => {
+    //Note: tags are not included in current mySQL database for profiles
+    let tagFilterCheck = true;
+    let tagFilteredList = filteredProfileList.filter((profile) => {
+      //if project in filtered list contains all tags in taglist, include it
+      for (let tag of activeTagFilters) {
+        //No tags yet, so this is commented out for now
+        //Remember to set profile tags to lower case
+        /*if (!project.tags.includes(tag)) {
+          tagFilterCheck = false;
+          break;
+        }*/
+      }
+
+      return(tagFilterCheck);
+    })
+
+    setProfileColumns(() => firstProfiles(tagFilteredList));
+  }
+
+  //Updates filtered profile list with new search info
+  const searchProfiles = (searchResults) => {
+    filteredProfileList = [];
+    //Filter through searchResults and original search data
+    for (let result of searchResults[0]) {
+      for (let item of profileSearchData) {
+        //If 2 items match...
+        if (result === item) {
+          //Get index of item in original search data
+          //Get item with this index in profileList
+          let profileItem = fullProfileList[profileSearchData.indexOf(item)];
+          //Push this item to filteredProfileList
+          filteredProfileList.push(profileItem);
+        }
+      }
+    }
+        
+    updateProfileList();
+  }
+
   //Choose which functions to use based on what we are displaying
-  const firstContent = category === 'projects' ? firstProjects : firstProfiles;
   const addContent = category === 'projects' ? addProjects : addProfiles;
   const resizeDisplay = category === 'projects' ? resizeProjects : resizeProfiles;
+  const updateItemList = category === 'projects' ? updateProjectList : updateProfileList;
 
   //Can possibly merge these two into a single useState? mostly concerned with different variable types
   //Holds data for currently displayed projects
@@ -493,6 +618,8 @@ const DiscoverAndMeet = () => {
     }
     //Also, toggle the tag filter's display
     e.target.classList.toggle('discover-tag-filter-selected');
+
+    updateItemList();
   }
 
   //Function called when scroll arrows are clicked
@@ -583,25 +710,105 @@ const DiscoverAndMeet = () => {
 
   //Displays a set of project panels
   let projectContent = <>{
-    //For each project in project display list... (use map)
-    displayedProjects.map((project) => (
-      //Create a Project Panel component
-      <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
-    ))
+    projectList.length > 0 ? 
+      //For each project in project display list... (use map)
+      displayedProjects.map((project) => (
+        //Create a Project Panel component
+        <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
+      )) :
+      <>Sorry, no projects here</>
   }</>
 
   //Displays a set of profile panels
   let profileContent = <>{
-    //For each array in profileColumns...
-    profileColumns.map((column) => (
-      //Create a column element & map through profiles in array
-      <div>
-        {column.map((profile) => (
-          <ProfilePanel height={profile.height}></ProfilePanel>
-        ))}
-      </div>
-    ))
+    profileColumns[0].length > 0 ?
+      //For each array in profileColumns...
+      profileColumns.map((column) => (
+        //Create a column element & map through profiles in array
+        <div>
+          {column.map((profile) => (
+            <ProfilePanel height={profile.height}></ProfilePanel>
+          ))}
+        </div>
+      )) :
+      <>Unfortunately, such a person does not exist</>
   }</>
+
+  const toggleFilterTag = (e, tagName : string) => {
+    //Check if the tag is already in popupTagSelections
+    //if it isn't...
+    if (!popupTagSelections.includes(tagName)) {
+      //Add this tag to the list
+      popupTagSelections.push(tagName);
+    } else { //else... (it is in there)
+      //Remove this tag from the list
+      popupTagSelections.splice(popupTagSelections.indexOf(tagName), 1);
+    }
+    //Also, toggle the tag filter's display
+    e.target.classList.toggle('tag-button-selected');
+    console.log(popupTagSelections);
+  }
+
+  const setFilterTags = () => {
+    console.log('Im still being called!!! woohoo');
+    //Update active filters with currently selected tags
+    //JSON parsing is used to ensure this is a deep copy
+    extraTagFilters = JSON.parse(JSON.stringify(popupTagSelections));
+    //Run search through panels with new filters in place
+    //There are no checks that include extraTagFilters yet, as tags are not fully implemented
+    //Be sure to add a filter/check to updateItemList once tags are implemented more fully
+    updateItemList();
+  }
+
+  let FilterCategory = ({filterTagList, id, categoryTitle, tagColor = 'grey'}) => {
+    const [displayedTags, setDisplayedTags] = useState(filterTagList);
+    
+    return (
+      <div id={id} className='filter-category'>
+        <h2>{categoryTitle}</h2>
+        <hr/>
+        {/* dataSets contains list of tags, onSearch will use function to add tag to list */}
+        <SearchBar dataSets={{data: filterTagList}} onSearch={() => {}}/>
+        {/* List of tags, use flexbox */}
+        <div className='filter-category-tags'>
+          {
+            displayedTags.map((tag) => {
+              let selected = popupTagSelections.includes(tag) ? 'tag-button-selected' : '';
+              return (
+                <button className={`tag-button tag-button-${tagColor} ${selected}`} onClick={(e) => {toggleFilterTag(e, tag)}}>{tag}</button>
+              )
+            })
+          }
+        </div>
+      </div>
+    )
+  }
+
+  let filterPopup = category === 'projects' ? 
+    <>{
+      <>
+      <h2>Filters</h2>
+      <div id='filter-popup-projects'>
+        <FilterCategory filterTagList={tags.projectTypes} id='filter-popup-categories' categoryTitle='Categories' tagColor='blue'/>
+        <FilterCategory filterTagList={tags.tags} id='filter-popup-genres' categoryTitle='Genres' tagColor='green'/>
+        <FilterCategory filterTagList={tags.projectDetails} id='filter-popup-misc' categoryTitle='Misc.'/>
+      </div>
+      <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
+      </>
+    }</> :
+    <>{
+      <>
+      <h2>Filters</h2>
+      <div id='filter-popup-profiles'>
+        <FilterCategory filterTagList={tags.devSkills} id='filter-popup-dev-skills' categoryTitle='Developer Skills' tagColor='yellow'/>
+        <FilterCategory filterTagList={tags.DesignSkills} id='filter-popup-des-skills' categoryTitle='Designer Skills' tagColor='red'/>
+        <FilterCategory filterTagList={tags.proficiencies} id='filter-popup-roles' categoryTitle='Roles'/>
+        <FilterCategory filterTagList={tags.tags} id='filter-popup-majors' categoryTitle='Majors'/>
+        <FilterCategory filterTagList={tags.softSkills} id='filter-popup-soft-skills' categoryTitle='Soft Skills' tagColor='indigo'/>
+      </div>
+      <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
+      </>
+    }</>
 
   //Decides which 'content' to display on the page
   let heroContent = category === 'projects' ? <>Nothing yet, sorry</> : profileHero;
@@ -610,15 +817,8 @@ const DiscoverAndMeet = () => {
   return(
     <div className='page' onScroll={addContent}>
       {/* Search bar and profile/notification buttons */}
-      <div id='discover-header'>
-        <span id='discover-searchbar'>
-          <SearchBar dataSets={projects} onSearch={() => {console.log('hi')}}/>
-        </span>
-        <span id='discover-header-buttons'>
-          <button><img src={bell} className="navIcon" alt="Notifications" /></button>
-          <button><img src={profileImage} className="navIcon" alt="User" /></button>
-        </span>
-      </div>
+      <Header dataSets={[{data: category === 'projects' ? projectSearchData : profileSearchData}]}
+        onSearch={category === 'projects' ? searchProjects : searchProfiles}/>
       {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
       <div id='discover-hero'>
       {heroContent}
@@ -641,18 +841,53 @@ const DiscoverAndMeet = () => {
           </div>
           <button id='filters-right-scroll' className='filters-scroller' onClick={() => scrollTags('right')}>&gt;</button>
         </div>
-        <Dropdown>
-          <DropdownButton buttonId={'discover-more-filters'}>Filters</DropdownButton>
-          <DropdownContent>Is this working?</DropdownContent>
-        </Dropdown>
+        <Popup>
+          <PopupButton buttonId={'discover-more-filters'}>Filters</PopupButton>
+          {/* When page loads, get all necessary tag lists based on page category
+          Place these lists in an array, along with an identifier for which column they belong
+          map through these lists to construct filter dropdown
+          displayed tags are determined using a state variable, changable w/ searchbar
+          tags have an onClick function that adds their tag to a full tag list 
+          full tag list is only applied when hitting done, which then pushes the info to an active list*/}
+          <PopupContent>
+            {filterPopup}
+          </PopupContent>
+        </Popup>
       </div>
 
       {/* Panel container */}
       <div id='discover-panel-box'>
       {panelContent}
       </div>
+
+      <ToTopButton/>
     </div>
   )
 }
 
-export default DiscoverAndMeet;
+//2 extra components that only serve as different layouts for the above component
+//Required due to the page failing to re-render when switching between its 2 view via the sidebar
+//Some bugs that may appear may be due to values outside the main component not being reset on a component change
+//If that's the case, simply reset them in here
+export const Discover = () => {
+  //Reset tags
+  activeTagFilters = [];
+  extraTagFilters = [];
+  popupTagSelections = [];
+  return(
+    <DiscoverAndMeet category={'projects'}/>
+  )
+}
+
+export const Meet = () => {
+  //Reset variables
+  activeTagFilters = [];
+  extraTagFilters = [];
+  popupTagSelections = [];
+  displayedProfileList = [];
+  return(
+    <DiscoverAndMeet category={'profiles'}/>
+  )
+}
+
+//export default DiscoverAndMeet;

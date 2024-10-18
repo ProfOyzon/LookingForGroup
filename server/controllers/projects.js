@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const getProjects = async (req, res) => {
     // Get all projects
     try {
-        const sql = `SELECT p.project_id, p.title, p.description, g.project_types, t.tags
+        const sql = `SELECT p.project_id, p.title, p.description, p.thumbnail, g.project_types, t.tags
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                 FROM project_genres pg 
@@ -95,7 +95,7 @@ const getProjectById = async (req, res) => {
 
     try {
         // Get project data
-        const sql = `SELECT p.project_id, p.title, p.description, g.project_types, t.tags, j.jobs, m.members
+        const sql = `SELECT p.project_id, p.title, p.description, g.project_types, t.tags, j.jobs, m.members, pi.images
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
                 FROM project_genres pg 
@@ -120,9 +120,13 @@ const getProjectById = async (req, res) => {
                     ON m.user_id = u.user_id
                 WHERE m.project_id = ?) m
             ON p.project_id = m.project_id
+            JOIN (SELECT pi.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", pi.image_id, "image", pi.image, "position", pi.position)) AS images
+				FROM project_images pi
+				WHERE pi.project_id = ?) pi
+			ON p.project_id = pi.project_id
             WHERE p.project_id = ?
             `;
-        const values = [id, id, id];
+        const values = [id, id, id, id];
         const [project] = await pool.query(sql, values);
         
         return res.status(200).json({

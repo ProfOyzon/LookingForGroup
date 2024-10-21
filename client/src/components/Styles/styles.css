@@ -1552,6 +1552,8 @@ Profile page style rules
 
 /* --------------------------------- Edit Modal Rules --------------------------------- */
 #edit-profile-header {
+    margin-top: 35px;
+
     display: flex;
     justify-content: space-evenly;
 }
@@ -1574,6 +1576,104 @@ Profile page style rules
     color: #271d66;
     font-weight: 700;
 }
+
+#edit-profile-body {
+    margin-top: 26px;
+
+    /* display: grid;
+    grid-template-columns: 50% 50%; */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#edit-profile-column-1, #edit-profile-column-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.edit-region {
+    width: fit-content;
+}
+
+.edit-region .edit-region-image {
+    box-sizing: border-box;
+    /* border: 1px solid black; */
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.edit-region .edit-region-button {
+    box-sizing: border-box;
+    border: 2px solid black;
+    border-radius: 100px;
+    width: 140px;
+    height: 35px;
+    flex-shrink: 0;
+    margin-right: 10px;
+    color: black;
+    text-align: center;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: -0.176px;
+}
+
+.edit-region .edit-region-header {
+    color: #271d66;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: start;
+}
+
+.edit-region .edit-region-instruct {
+    color: black;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-align: start;
+}
+
+.edit-region .edit-region-input {
+    box-sizing: border-box;
+    border: 1px solid #0e0e0e;
+    border-radius: 10px;
+    width: 333px;
+    height: 35px;
+    margin-top: 5px;
+    flex-shrink: 0;
+    color: black;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: -0.165px;
+    text-indent: 11px;
+}
+
+.edit-region .edit-region-input.headline, .edit-region .edit-region-input.funfact {
+    min-height: 75px;
+    padding-top: 14px;
+    line-height: normal;
+    resize: none;
+}
+
+/* Was originally used when the images within the buttons on the edit card were actually images 
+This is no longer the case however */
+/* .button-image {
+    display: inline;
+    height: 13px;
+} */
 
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\

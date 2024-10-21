@@ -843,12 +843,6 @@ const DiscoverAndMeet = ({category}) => {
         </div>
         <Popup>
           <PopupButton buttonId={'discover-more-filters'}>Filters</PopupButton>
-          {/* When page loads, get all necessary tag lists based on page category
-          Place these lists in an array, along with an identifier for which column they belong
-          map through these lists to construct filter dropdown
-          displayed tags are determined using a state variable, changable w/ searchbar
-          tags have an onClick function that adds their tag to a full tag list 
-          full tag list is only applied when hitting done, which then pushes the info to an active list*/}
           <PopupContent>
             {filterPopup}
           </PopupContent>

@@ -18,6 +18,7 @@ Page specific style rules
     -Discover page
     -Discover & Meet page
     -Profile page
+    --New Profile page
     -Project page
         -Project general settings
         -Project member settings
@@ -1548,6 +1549,162 @@ Profile page style rules
         margin-left: 100px;
         margin-top: 265px;
     }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+New Profile page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#profile-page-content {
+    display:flex;
+}
+
+#profile-page-content h2 {
+    color: var(--lavender);
+}
+
+#profile-image {
+    width:350px;
+    object-fit:contain;
+    border-radius:10px;
+}
+
+#profile-discover-column {
+    min-width: 350px;
+    padding:50px;
+}
+
+.profile-column-extra-item {
+    display:flex;
+    text-align:left;
+    align-content:center;
+    margin: 10px 0;
+}
+
+.profile-column-extra-item div {
+    margin:auto 0;
+}
+
+.profile-discover-icon {
+    width:32px;
+    height:32px;
+    margin: 0 10px;
+}
+
+#profile-about-me-column {
+    width: auto;
+    margin:20px;
+    text-align:left;
+}
+
+#profile-about-me-content {
+    display:grid;
+    grid-template:
+        'desc skills' auto
+        'looking looking' auto
+        'projects projects' auto /
+        2fr       1fr;
+    gap: 20px;
+}
+
+#profile-about-me-header {
+    display:grid;
+    grid-template:
+        'header buttons' auto /
+        auto    164px;
+    align-items:center;
+}
+
+#about-me-header-text {
+    grid-area:header;
+}
+
+#about-me-buttons {
+    grid-area:buttons;
+    display:flex;
+    align-items:center;
+    height:calc(100% - 40px);
+    padding:20px 0;
+    gap:5px;
+}
+
+#about-me-buttons button {
+    border:none;
+    border-radius:30px;
+    background-color: rgba(0, 0, 0, 0);
+    height:100%;
+    font-weight:bold;
+    font-size: 1.8ch;
+}
+
+#about-me-buttons button:hover {
+    background-color: var(--gray);
+}
+
+#about-me-buttons > div {
+    height:100%;
+}
+
+#edit-profile-button {
+    text-align:center;
+    border: 2px solid black !important;
+    border-radius: 30px;
+    height:100%;
+    width: 120px;
+}
+
+#about-me-buttons img {
+    width:32px;
+    height:32px;
+}
+
+#profile-about-me-description {
+    grid-area:desc;
+    background-color: var(--purple-light);
+    border-radius:10px;
+    padding: 20px;
+    font-size: 2.1ch;
+}
+
+#profile-about-me-skills {
+    grid-area:skills;
+    background-color: var(--purple-light);
+    border-radius:10px;
+    padding:0 20px;
+}
+
+#profile-about-me-skills h2{
+    margin: 15px 0;
+}
+
+#skill-tags-container {
+    display:flex;
+    flex-flow:wrap;
+    gap:5px;
+}
+
+#skill-tags-container .tag-button {
+    margin:0;
+}
+
+#profile-looking-for {
+    grid-area:looking;
+}
+
+#profile-projects {
+    grid-area:projects;
+}
+
+#profile-project-list {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    grid-gap:20px;
+    text-align:center;
 }
 
 /*

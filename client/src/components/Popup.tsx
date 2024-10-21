@@ -30,7 +30,7 @@ const PopupContext = createContext({
 });
 
 //Button component that will open/close the popup
-export const PopupButton = ({children, buttonId, callback = () => {}}) => {
+export const PopupButton = ({children, buttonId = '', callback = () => {}}) => {
   const {open, setOpen} = useContext(PopupContext);
 
   const toggleOpen = () => {

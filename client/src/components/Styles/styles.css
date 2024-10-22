@@ -1551,6 +1551,14 @@ Profile page style rules
 }
 
 /* --------------------------------- Edit Modal Rules --------------------------------- */
+#edit-profile-modal {
+    height: 80vh;
+    background-color: #f4f4f4;
+
+    display: grid;
+    grid-template-rows: 14% auto 10%;
+}
+
 #edit-profile-header {
     margin-top: 35px;
 
@@ -1559,16 +1567,29 @@ Profile page style rules
 }
 
 #edit-profile-header button {
-    background-color: white;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
     border: 0px;
     border-radius: 35px;
+    width: 185px;
+    height: 45px;
     color: black;
     /* font-family: Inter; */
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
+}
+
+#edit-profile-header button:hover {
+    background-color: #eaeaf3;
+    color: #130e33;
+}
+
+#edit-profile-header button:active {
+    background-color: #e0e0f2;
+    color: #271d66;
 }
 
 #edit-profile-header button#selected {
@@ -1577,12 +1598,7 @@ Profile page style rules
     font-weight: 700;
 }
 
-#edit-profile-body {
-    margin-top: 26px;
-
-    /* display: grid;
-    grid-template-columns: 50% 50%; */
-
+.edit-profile-body.discover {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -1646,6 +1662,7 @@ Profile page style rules
 
 .edit-region .edit-region-input {
     box-sizing: border-box;
+    background-color: #f4f4f4;
     border: 1px solid #0e0e0e;
     border-radius: 10px;
     width: 333px;
@@ -1661,11 +1678,152 @@ Profile page style rules
     text-indent: 11px;
 }
 
-.edit-region .edit-region-input.headline, .edit-region .edit-region-input.funfact {
+.edit-region .edit-region-input:is(textarea) {
     min-height: 75px;
     padding-top: 14px;
     line-height: normal;
     resize: none;
+}
+
+.edit-profile-about-section {
+    margin: 0px 150px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.edit-profile-about-section .edit-region {
+    width: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.edit-region .edit-region-input.wide {
+    width: auto;
+}
+
+.edit-region-input.projects {
+    /* border: 0px; */
+    border-radius: 0px;
+    width: auto;
+}
+
+.edit-profile-body.skills {
+    height: 60vh;
+    display: grid;
+    grid-template-rows: 100%;
+    justify-content: stretch;
+}
+
+.edit-profile-skills-section {
+    margin: 0px 150px;
+    height: auto;
+
+    display: grid;
+    grid-template-rows: 50% 50%;
+    gap: 20px;
+}
+
+.edit-profile-skills-section .edit-region {
+    width: auto;
+}
+
+.edit-profile-skills-section .edit-region .edit-region-input.skills {
+    width: auto;
+}
+
+.skills-list-region {
+    box-sizing: border-box;
+    background-color: white;
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    /* display: grid;
+    grid-template-rows: 12% 10% 10% auto;
+    gap: 10px; */
+}
+
+.skills-list-search {
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 50px;
+    width: 250px;
+}
+
+.skills-list-search .skills-searchbar {
+    box-sizing: border-box;
+    border: 0px;
+    margin: 7px 10px;
+}
+
+.skills-list-search .skills-searchbar:active {
+    border: 0px;
+}
+
+.skills-list-header {
+    display: flex;
+    gap: 20px;
+}
+
+.skills-list-button {
+    box-sizing: border-box;
+    background-color: white;
+    border: 0px;
+    height: 21px;
+    font-size: 13px;
+    padding: 3px 1px;
+}
+
+.skills-list-button:hover {
+    box-sizing: border-box;
+    background-color: #eeeeee;
+    border-bottom: 1px solid black;
+}
+
+.skills-list-button:active {
+    background-color: #dddddd;
+    border-bottom: 2px solid black;
+}
+
+.skills-list-button#selected {
+    font-weight: 700;
+    border-bottom: 2px solid black;
+}
+
+.skills-list-region hr {
+    width: 90%;
+}
+
+#edit-profile-save .edit-region-save-button {
+    box-sizing: border-box;
+    background-color: #271d66;
+    border: 0px;
+    border-radius: 55px;
+    padding: 3px 17px;
+    color: white;
+    text-align: center;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px;
+}
+
+#edit-profile-save .edit-region-save-button:hover {
+    background-color: #17113d;
+}
+
+#edit-profile-save .edit-region-save-button:active {
+    background-color: #0e0a24;
 }
 
 /* Was originally used when the images within the buttons on the edit card were actually images 

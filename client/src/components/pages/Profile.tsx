@@ -50,7 +50,7 @@ const Profile = (props) => {
         </div>
         <ProfileProjects user={user}/>
       </div>
-      <EditButton />
+      <EditButton user={user}/>
 
       {/* Scroll To Top button */}
       <ToTopButton />

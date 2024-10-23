@@ -1551,6 +1551,7 @@ Profile page style rules
 }
 
 /* --------------------------------- Edit Modal Rules --------------------------------- */
+
 #edit-profile-modal {
     height: 80vh;
     background-color: #f4f4f4;
@@ -1706,9 +1707,34 @@ Profile page style rules
 }
 
 .edit-region-input.projects {
-    /* border: 0px; */
+    border: 0px;
     border-radius: 0px;
     width: auto;
+    height: max-content;
+    overflow-y: scroll;
+    margin-top: 10px;
+    text-align: start;
+    text-indent: 0;
+}
+
+.list-project {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 250px;
+    height: 150px;
+    margin-right: 20px;
+    font-size: 18px;
+    font-weight: 700;
+
+    display: inline-block;
+}
+
+.inner-list-project {
+    height: 150px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .edit-profile-body.skills {
@@ -1732,7 +1758,10 @@ Profile page style rules
 }
 
 .edit-profile-skills-section .edit-region .edit-region-input.skills {
+    box-sizing: border-box;
+    border: 0px;
     width: auto;
+    height: max-content;
 }
 
 .skills-list-region {
@@ -1802,6 +1831,51 @@ Profile page style rules
 
 .skills-list-region hr {
     width: 90%;
+    /* border: 1px solid #271d66; */
+}
+
+.skills-list {
+    text-align: start;
+    overflow-y: scroll;
+}
+
+.skill-item {
+    border: 0px;
+    border-radius: 50px;
+    font-size: 13px;
+    padding: 3px 15px;
+    margin: 4px 5px;
+
+    display: inline-block;
+}
+
+.skill-item.soft {
+    background-color: #c1c1ff66;
+}
+
+.skill-item.soft:hover {
+    background-color: #c1c1ff;
+}
+
+.skill-item.hard {
+    background-color: #ffb48b66;
+}
+
+.skill-item.hard:hover {
+    background-color: #ffb48b;
+}
+
+.skill-item.prof {
+    background-color: #ffa0b066;
+}
+
+.skill-item.prof:hover {
+    background-color: #ffa0b0;
+}
+
+.chosen-skills {
+    text-align: start;
+    overflow-y: scroll;
 }
 
 #edit-profile-save .edit-region-save-button {

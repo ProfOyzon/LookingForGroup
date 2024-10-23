@@ -1,10 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { PagePopup, openClosePopup } from "../PagePopup";
 // import { Popup, PopupContent, PopupButton } from "../Popup";
+import { softSkills } from "../../constants/skills";
+import { hardSkills } from "../../constants/skills";
+import { proficiencies } from "../../constants/skills";
+import { projects } from "../../constants/fakeData";
 
 // On click, this button should open the Profile Edit modal 
-const EditButton = () => {
+const EditButton = ({user}) => {
+    // console.log(user);
+    // console.log(projects);
     const [showPopup, setShowPopup] = useState(false);
+
+    let pronouns = "";
+    if (user.pronouns.length > 0) {
+        for (let i = 0; i < user.pronouns.length; i++) {
+            pronouns += user.pronouns[i];
+            if (i < user.pronouns.length - 1) {
+                pronouns += "/";
+            }
+        }
+    }
+    else {
+        pronouns = "N/A";
+    }
 
     // "Discovery Card" 
     const page1 = <div className='edit-profile-body discover'>
@@ -19,7 +38,7 @@ const EditButton = () => {
             {/* Name */}
             <div className='edit-region name'>
                 <div className='edit-region-header name'>Name</div>
-                <input type='text' className='edit-region-input name' placeholder='TEST...'></input>
+                <input type='text' className='edit-region-input name' placeholder={user.name}></input>
             </div>
 
             {/* Proficiency */}
@@ -41,7 +60,7 @@ const EditButton = () => {
             {/* Pronouns */}
             <div className='edit-region pronouns'>
                 <div className='edit-region-header pronouns'>Pronouns <i className='fa-solid fa-transgender'></i></div>
-                <input type='text' className='edit-region-input pronouns' placeholder='TE/ST'></input>
+                <input type='text' className='edit-region-input pronouns' placeholder={pronouns}></input>
             </div>
 
             {/* Major and year */}
@@ -60,8 +79,12 @@ const EditButton = () => {
             <div className='edit-region favorite'>
                 <div className='edit-region-header favorite'>Favorite Project <i className='fa-regular fa-folder'></i></div>
                 <select className='edit-region-input favorite'>
-                    <option value={"TEST"}>TEST...</option>
-                </select>
+                    {
+                        user.projects.map((projectID) => {
+                            return <option value={projectID}>{projects[projectID].name}</option>
+                        })
+                    }
+                </select>;
             </div>
 
             {/* Fun fact */}
@@ -80,7 +103,7 @@ const EditButton = () => {
             <div className='edit-region about'>
                 <div className='edit-region-header about'>About You</div>
                 <div className='edit-region-instruct about'>Give yourself a more detailed bio than your headline.</div>
-                <textarea className='edit-region-input wide about' placeholder='TEST...'></textarea>
+                <textarea className='edit-region-input wide about' placeholder={user.bio}></textarea>
             </div>
 
             {/* Looking for */}
@@ -94,13 +117,85 @@ const EditButton = () => {
             <div className='edit-region projects'>
                 <div className='edit-region-header projects'>Projects</div>
                 <div className='edit-region-instruct projects'>Choose to hide/show projects you've worked on.<br />Drag and drop images to change order.</div>
-                <div className='edit-region-input projects'></div>
+                <div className='edit-region-input projects'>
+                    {
+                        user.projects.map((projectID) => {
+                            return (<div className='list-project'>
+                                <div className='inner-list-project'>
+                                    {projects[projectID].name}
+                                </div>
+                            </div>);
+                        })
+                    }
+                </div>
             </div>
         </div>
     </div>;
 
-    let skillsList = <div className='skills-list'></div>;
-    let chosenSkills;
+    const [filterSel, setFilterSel] = useState(0);
+
+    let skillsList = [""];
+    for (let i = 0; i < softSkills.length; i++) {
+        skillsList.push(softSkills[i]);
+    }
+    for (let i = 0; i < hardSkills.length; i++) {
+        skillsList.push(hardSkills[i]);
+    }
+    for (let i = 0; i < proficiencies.length; i++) {
+        skillsList.push(proficiencies[i]);
+    }
+    skillsList.sort();
+    let skillsListText = <div className='skills-list'>
+        {
+            skillsList.map((skill) => {
+                if (skill !== "") {
+                    let hasSkill = false;
+                    for (let i = 0; i < user.skills.length; i++) {
+                        if (user.skills[i].skill == skill) {
+                            hasSkill = true;
+                        }
+                    }
+
+                    if (!hasSkill) {
+                        if (filterSel === 0) {
+                            let skillClass = 'skill-item list';
+                            if (softSkills.indexOf(skill) != -1) {
+                                skillClass += ' soft';
+                            }
+                            else if (hardSkills.indexOf(skill) != -1) {
+                                skillClass += ' hard';
+                            }
+                            else if (proficiencies.indexOf(skill) != -1) {
+                                skillClass += ' prof';
+                            }
+                            return <button className={skillClass} onClick={() => {}}>#{skill.toLowerCase().replaceAll(" ", "")}</button>;
+                        }
+                        else if (filterSel === 1 && hardSkills.indexOf(skill) != -1) {
+                            return <button className='skill-item list hard' onClick={() => {}}>#{skill.toLowerCase().replaceAll(" ", "")}</button>;
+                        }
+                        else if (filterSel === 2 && proficiencies.indexOf(skill) != -1) {
+                            return <button className='skill-item list prof' onClick={() => {}}>#{skill.toLowerCase().replaceAll(" ", "")}</button>;
+                        }
+                        else if (filterSel === 3 && softSkills.indexOf(skill) != -1) {
+                            return <button className='skill-item list soft' onClick={() => {}}>#{skill.toLowerCase().replaceAll(" ", "")}</button>;
+                        }
+                    }
+                }
+            })
+        }
+    </div>;
+
+    let chosenSkills = <div className='chosen-skills'>
+        {
+            user.skills.map((skillItem) => {
+                if (skillItem.skill != "") {
+                    let chosenClass = "skill-item chosen";
+                    chosenClass += (skillItem.type == "softSkill" ? " soft" : skillItem.type == "hardSkill" ? " hard" : skillItem.type == "proficiency" ? " prof" : "");
+                    return <button className={chosenClass} onClick={() => {}}>#{skillItem.skill.toLowerCase().replaceAll(" ", "")}</button>;
+                }
+            })
+        }
+    </div>
 
     // "Skills" 
     const page3 = <div className='edit-profile-body skills'>
@@ -113,22 +208,22 @@ const EditButton = () => {
                 </div>
 
                 <div className='skills-list-header'>
-                    <button className='skills-list-button all' id="selected" onClick={() => {}}>All</button>
-                    <button className='skills-list-button dev' onClick={() => {}}>Developer Skills</button>
-                    <button className='skills-list-button des' onClick={() => {}}>Designer Skills</button>
-                    <button className='skills-list-button soft' onClick={() => {}}>Soft Skills</button>
+                    <button className='skills-list-button all' id={filterSel === 0 ? "selected" : ""} onClick={() => setFilterSel(0)}>All</button>
+                    <button className='skills-list-button dev' id={filterSel === 1 ? "selected" : ""} onClick={() => setFilterSel(1)}>Developer Skills</button>
+                    <button className='skills-list-button des' id={filterSel === 2 ? "selected" : ""} onClick={() => setFilterSel(2)}>Designer Skills</button>
+                    <button className='skills-list-button soft' id={filterSel === 3 ? "selected" : ""} onClick={() => setFilterSel(3)}>Soft Skills</button>
                 </div>
 
                 <hr />
 
-                {skillsList}
+                {skillsListText}
             </div>
 
             {/* Skills */}
             <div className='edit-region skills'>
                 <div className='edit-region-header skills'>Skills</div>
                 <div className='edit-region-instruct skills'>Click to unselect</div>
-                <div className='edit-region-input skills'></div>
+                <div className='edit-region-input skills'>{chosenSkills}</div>
             </div>
         </div>
     </div>;

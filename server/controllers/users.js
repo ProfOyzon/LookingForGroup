@@ -186,10 +186,18 @@ const addSkill = async (req, res) => {
     const { id } = req.params;
     const { skillId } = req.body
 
-    // Add user's skill into database
-    await pool.query("INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)", [id, skillId]);
+    try {
+        // Add user's skill into database
+        await pool.query("INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)", [id, skillId]);
 
-    return res.sendStatus(201);
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while adding a new skill for the user" 
+        });
+    }
 }
 
 const deleteSkill = async (req, res) => {
@@ -199,10 +207,18 @@ const deleteSkill = async (req, res) => {
     const { id } = req.params;
     const { skillId } = req.body
 
-    // Remove user's skill from database
-    await pool.query("DELETE FROM user_skills WHERE user_id = ? AND skill_id = ?", [id, skillId]);
+    try {
+        // Remove user's skill from database
+        await pool.query("DELETE FROM user_skills WHERE user_id = ? AND skill_id = ?", [id, skillId]);
 
-    return res.sendStatus(204);
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while removing a skill from the user" 
+        });
+    }
 }
 
 const getMyProjects = async (req, res) => {

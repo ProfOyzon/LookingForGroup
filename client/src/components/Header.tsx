@@ -26,10 +26,10 @@ export const Header = ({dataSets, onSearch}) => {
   
   return(
     <div id='header'>
-        <span id='header-searchbar'>
+        <div id='header-searchbar'>
           <SearchBar dataSets={dataSets} onSearch={onSearch}/>
-        </span>
-        <span id='header-buttons'>
+        </div>
+        <div id='header-buttons'>
           <Dropdown>
             <DropdownButton><img src={bell} className="navIcon" alt="Notifications" /></DropdownButton>
             <DropdownContent rightAlign={true}>This is where notification stuff will be</DropdownContent>
@@ -50,7 +50,7 @@ export const Header = ({dataSets, onSearch}) => {
               </div>
             </DropdownContent>
           </Dropdown>
-        </span>
+        </div>
       </div>
   )
 }

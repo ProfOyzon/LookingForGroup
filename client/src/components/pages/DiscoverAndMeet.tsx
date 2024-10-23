@@ -110,6 +110,21 @@ const DiscoverAndMeet = ({category}) => {
 
   //Get a list of tags to use for tag filters (project tags for projects, profession tags for profiles)
   const tagList = category === 'projects' ? tags.tags : tags.proficiencies;
+  //list of tabs for the filter popup to use, changes depending on if discover or meet page is being used
+  let filterPopupTabs = category === 'projects' ? 
+    [
+      {categoryTags: tags.projectTypes, categoryName: 'Project Type'},
+      {categoryTags: tags.tags, categoryName: 'Genre'},
+      {categoryTags: tags.tags, categoryName: 'Purpose'}
+    ] :
+    [
+      {categoryTags: tags.devSkills, categoryName: 'Developer Skill'},
+      {categoryTags: tags.DesignSkills, categoryName: 'Designer Skill'},
+      {categoryTags: tags.softSkills, categoryName: 'Soft Skill'},
+      {categoryTags: tags.tags, categoryName: 'Role'},
+      {categoryTags: tags.tags, categoryName: 'Major'},
+    ]
+  ;
 
   //Set up panel display functions
 
@@ -209,6 +224,24 @@ const DiscoverAndMeet = ({category}) => {
             //Break project iteration loop
             break;
         }  
+    }
+
+    //Perform width adjustments on last row
+    //Calculate flexboxWidth - total width of all projects
+    let flexboxDifference = flexboxWidth - (widthTracker);
+    //Divide difference to split among project panels' widths (and the remainder);
+    let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
+    let widthAdjustmentRemainder = flexboxDifference % projectTracker;
+    //Loop through all projects inside the most recently completed row
+    for (let project of projectsToDisplay) {
+        //Find projects of the current row being adjusted
+        if (project.row === rowTracker) {
+            //Divide difference evenly amongst all project's widths
+            //project.width += widthAdjustment + widthAdjustmentRemainder;
+            project.adjust = widthAdjustment + widthAdjustmentRemainder;
+            //remove remainder once it is used once
+            widthAdjustmentRemainder = 0;
+        }
     }
 
     return (projectsToDisplay);
@@ -844,7 +877,42 @@ const DiscoverAndMeet = ({category}) => {
         <Popup>
           <PopupButton buttonId={'discover-more-filters'}>Filters</PopupButton>
           <PopupContent>
-            {filterPopup}
+            {/*filterPopup*/}
+            <div id='discover-filter-popup-bg1'>
+              <div id='discover-filter-popup'>
+                <h2>Tag Filters</h2>
+                <div id='filter-popup-selector-container'>
+                  <SearchBar dataSets={{data: tagList}} onSearch={() => {}}/>
+                  <div id='filter-popup-selector-tabs'>
+                    {
+                      /* map something out here, add onClick function */
+                      filterPopupTabs.map((tab) => (
+                        <button onClick={() => {}}>{tab.categoryName}</button>
+                      ))
+                    }
+                  </div>
+                  <hr/>
+                  <div id='filter-popup-selector-tags'>
+                    {
+                      /* map tags out here */
+                    }
+                  </div>
+                </div>
+
+                <div id='filter-popup-selected-tags'>
+                  <h2>Selected</h2>
+                  <div id='filter-popup-selected-tags-container'>
+                    {
+                      popupTagSelections.map((tag) => (
+                        <button className='tag-button' onClick={(e) => toggleFilterTag(e, tag)}>{tag}</button>
+                      ))
+                    }
+                  </div>
+                </div>
+
+                <button>Apply</button>
+              </div>
+            </div>
           </PopupContent>
         </Popup>
       </div>

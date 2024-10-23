@@ -781,6 +781,12 @@ Page popup style rules
     margin: 4px 4px 0 0 !important;
 }
 
+.popup-close img {
+    width:100%;
+    height:32px;
+    margin-top:3px;
+}
+
 .popup-close:hover {
     background-color:var(--lightGray) !important;
 }
@@ -807,9 +813,10 @@ Header style rules
 #header {
     display:grid;
     align-items:center;
+    text-align:left;
     margin-right:50px;
     grid-template:
-        'search blank buttons' 70px / auto 1fr 140px;
+        'search buttons' 70px / auto 100px;
 }
 
 #header-searchbar {
@@ -817,15 +824,22 @@ Header style rules
     height: auto;
 }
 
+#header-searchbar > .search-wrapper > .search-bar {
+    margin:0;
+}
+
 #header-buttons {
     grid-area: buttons;
+    display:flex;
+    justify-content:flex-end;
+    width:100px;
 }
 
 #header-buttons button {
     background-color: var(--peach);
     border-radius:40px;
-    border:none;
     margin-left:10px;
+    border:none;
     height:auto;
     width:auto;
     padding-top:4px;
@@ -1561,6 +1575,7 @@ New Profile page style rules
 
 #profile-page-content {
     display:flex;
+    margin: 0 50px;
 }
 
 #profile-page-content h2 {
@@ -1575,14 +1590,34 @@ New Profile page style rules
 
 #profile-discover-column {
     min-width: 350px;
-    padding:50px;
+    padding:50px 50px 50px 0;
+}
+
+#profile-discover-column-header {
+    margin:10px 0 20px;
+}
+
+#profile-discover-column-username h2 {
+    margin:0;
+}
+
+#profile-discover-column-profession h3 {
+    margin:0;
+}
+
+#profile-discover-column-headline {
+    margin-bottom:30px;
+}
+
+#profile-discover-column-headline > div {
+    margin-top:5px;
 }
 
 .profile-column-extra-item {
     display:flex;
     text-align:left;
     align-content:center;
-    margin: 10px 0;
+    margin: 20px 0;
 }
 
 .profile-column-extra-item div {
@@ -1597,7 +1632,7 @@ New Profile page style rules
 
 #profile-about-me-column {
     width: auto;
-    margin:20px;
+    margin:20px 0 20px 20px;
     text-align:left;
 }
 
@@ -1632,6 +1667,10 @@ New Profile page style rules
     gap:5px;
 }
 
+.about-me-buttons-minimal {
+    justify-content:flex-end;
+}
+
 #about-me-buttons button {
     border:none;
     border-radius:30px;
@@ -1639,6 +1678,10 @@ New Profile page style rules
     height:100%;
     font-weight:bold;
     font-size: 1.8ch;
+}
+
+#about-me-buttons button > img {
+    margin-top:3px;
 }
 
 #about-me-buttons button:hover {
@@ -1685,6 +1728,14 @@ New Profile page style rules
     display:flex;
     flex-flow:wrap;
     gap:5px;
+}
+
+.skill-tag-label {
+    border-radius: 30px;
+    border: none;
+    padding: 5px 10px;
+    font-size: medium;
+    flex-shrink: 0;
 }
 
 #skill-tags-container .tag-button {
@@ -1840,11 +1891,11 @@ Project page style rules
     left: 40px;
 }
 
-#header-buttons {
+/* #header-buttons {
     display: flex;
     align-items: center;
     grid-area: buttons
-}
+} */
 
 #follow-project {
     width: 100px;

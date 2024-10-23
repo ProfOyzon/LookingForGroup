@@ -16,8 +16,22 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
 
   // const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
   const navigate = useNavigate(); // Hook for navigation
+  const currentURL = window.location.pathname;
+  console.log(currentURL);
 
-  const [activePage, setActivePage] = useState('Discover'); // State to manage the active page [Home, My Projects, Messages, Profile, Settings]
+  let startingPage : string;
+
+  switch (window.location.pathname) {
+    case '/discover': startingPage = 'Discover'; break;
+    case '/meet': startingPage = 'Meet'; break;
+    case '/myProjects': startingPage = 'My Projects'; break;
+    case '/messages': startingPage = 'Messages'; break;
+    case '/profile': startingPage = 'Profile'; break;
+    case '/settings': startingPage = 'Settings'; break;
+    default: startingPage = 'Discover';
+  }
+
+  const [activePage, setActivePage] = useState(startingPage); // State to manage the active page [Discover, Meet, My Projects, Messages, Profile, Settings]
 
   const [showNotifications, setShowNotifications] = useState(false); // State to manage the notifications modal
 

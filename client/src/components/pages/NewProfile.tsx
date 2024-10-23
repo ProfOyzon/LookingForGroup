@@ -10,9 +10,39 @@ import profileImage from "../../icons/profile-user.png";
 
 const NewProfile = () => {
   //Variables used to represent profile data (only placeholders are used for now until backend is integrated)
+
+  //Get a profile based on searchParam userId given
+  ///const profileData = (/* Some sort of fetch request */);
+  //Check whether or not the profile is the current user's
+  let usersProfile = true;
+  /* 
+  if (profileData === userSessionData) {
+    usersProfile = true;
+  } 
+  */
+  //Pull data from profile and place them in variables 
+  //(structure depends on database structure, so wait for implementation)
+  //data includes...
+    //Profile image
+    //User's name (full name or username?)
+    //Their profession
+    //headline
+    //pronouns, major, location, favorite project, fun fact (may not all be included)
+
+    //About Me description
+    //Profile's selected tags
+    //Looking for stuff??
+    //List of projects worked on
+  
+
   //Holds a list of tags that the user selected to represent their skills
   //(How will tag categories be identified for color?)
-  let placeholderTags = ['test1', 'test2', 'test3', 'test4', 'test5butlonger']
+  let placeholderTags = [
+    {tag:'test1', category:1},
+    {tag:'test2', category:2},
+    {tag:'test3', category:2},
+    {tag:'test4', category:3},
+    {tag:'test5butlonger', category:1}]
 
   //functions & variables used for project rendering
   // ---different sizes, make sure to double-check math used for project rendering
@@ -42,8 +72,7 @@ const NewProfile = () => {
   }
 
   //Find out the width of the flexbox container
-  let flexboxWidth : number = window.innerWidth - (710 + getScrollbarWidth());
-  console.log(flexboxWidth);
+  let flexboxWidth : number = window.innerWidth - (760 + getScrollbarWidth());
   //tracks the width of items in the current flexbox row
   let widthTracker : number = -20;
   //tracks the number of "full" flexbox rows
@@ -79,65 +108,81 @@ const NewProfile = () => {
     projectTracker++;
 
     //Start iterating through projects
-    //(For testing purposes, will just loop until break condition is met)
-    while (rowTracker <= 5 && projectListPosition < projectList.length) {
-        //Get a width value based on the project's display image's aspect ratio
-        //Formula for getting width from image: 
-        /*
-        (image height) / X = 100px
-        (image height) = 100px * X
-        X = (image height) / 100px;
-        (image width) / X = final width
+    while (projectListPosition < projectList.length) {
+      //Get thumbnail image of current project
+      //const img = new Image();
+      //img.src = profilePicture;
 
-        (image width) / ((image height) / 100px) = final width
+      //Get a width value based on the project's display image's aspect ratio
+      //Formula for getting width from image: 
+      /*
+      (image height) / X = 100px
+      (image height) = 100px * X
+      X = (image height) / 100px;
+      (image width) / X = final width
 
-        (image height) * X = 100px
-        X = 100px / (image height)
+      (image width) / ((image height) / 100px) = final width
 
-        (image width) * (100px / (image height)) = final width [we'll use this one]
-        */
-        //(For testing's sake, width will be randomized)
-        ///let panelWidth = imageWidth * (100 / imageHeight); [Use this when images are integrated]
-        let panelWidth = Math.floor((Math.random() * 200) + 200);
-        //Add (width value + flexbox gap value + borders) to width tracker
-        //Note - borders & other factors may add extra width, double check calculations using inspector
-        widthTracker += panelWidth + 24;
-        //if width tracker > flexbox width, make final adjustments to row before moving to next
-        if (widthTracker > flexboxWidth) {
-            //Calculate flexboxWidth - total width of all projects
-            let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
-            //Divide difference to split among project panels' widths (and the remainder);
-            let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
-            let widthAdjustmentRemainder = flexboxDifference % projectTracker;
-            //Loop through all projects inside the most recently completed row
-            for (let project of projectsToDisplay) {
-                //Find projects of the current row being adjusted
-                if (project.row === rowTracker) {
-                    //Divide difference evenly amongst all project's widths
-                    //project.width += widthAdjustment + widthAdjustmentRemainder;
-                    project.adjust = widthAdjustment + widthAdjustmentRemainder;
-                    //remove remainder once it is used once
-                    widthAdjustmentRemainder = 0;
-                }
-            }
-            //Increment row tracker
-            rowTracker++;
-            //Reset width tracker to negative of the flexbox gap value
-            widthTracker = panelWidth + 4;
-            //Reset project tracker
-            projectTracker = 0;
+      (image height) * X = 100px
+      X = 100px / (image height)
+
+      (image width) * (100px / (image height)) = final width [we'll use this one]
+      */
+
+      //(For testing's sake, width will be randomized)
+      //let panelWidth = (img.naturalWidth * 100) / img.naturalHeight; [Use this when images are integrated]
+      let panelWidth = Math.floor((Math.random() * 200) + 200);
+      //Add (width value + flexbox gap value + borders) to width tracker
+      //Note - borders & other factors may add extra width, double check calculations using inspector
+      widthTracker += panelWidth + 24;
+      //if width tracker > flexbox width, make final adjustments to row before moving to next
+      if (widthTracker > flexboxWidth) {
+        //Calculate flexboxWidth - total width of all projects
+        let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
+        //Divide difference to split among project panels' widths (and the remainder);
+        let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
+        let widthAdjustmentRemainder = flexboxDifference % projectTracker;
+        //Loop through all projects inside the most recently completed row
+        for (let project of projectsToDisplay) {
+          //Find projects of the current row being adjusted
+          if (project.row === rowTracker) {
+            //Divide difference evenly amongst all project's widths
+            //project.width += widthAdjustment + widthAdjustmentRemainder;
+            project.adjust = widthAdjustment + widthAdjustmentRemainder;
+            //remove remainder once it is used once
+            widthAdjustmentRemainder = 0;
+          }
         }
-        //if row tracker < a designated row count...
-        if (rowTracker < 5) {
-            //Add current project to list of projects to display
-            //(Will include actual projects later)
-            projectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker});
-            projectListPosition++;
-            projectTracker++;
-        } else { //otherwise...
-            //Break project iteration loop
-            break;
-        }  
+        //Increment row tracker
+        rowTracker++;
+        //Reset width tracker to negative of the flexbox gap value
+        widthTracker = panelWidth + 4;
+        //Reset project tracker
+        projectTracker = 0;
+      }
+      //Add current project to list of projects to display
+      //(Will include actual projects later)
+      projectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker});
+      projectListPosition++;
+      projectTracker++;
+    }
+
+    //Run one last width check to fully fill last row
+    //Calculate flexboxWidth - total width of all projects
+    let flexboxDifference = flexboxWidth - (widthTracker);
+    //Divide difference to split among project panels' widths (and the remainder);
+    let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
+    let widthAdjustmentRemainder = flexboxDifference % projectTracker;
+    //Loop through all projects inside the most recently completed row
+    for (let project of projectsToDisplay) {
+      //Find projects of the current row being adjusted
+      if (project.row === rowTracker) {
+        //Divide difference evenly amongst all project's widths
+        //project.width += widthAdjustment + widthAdjustmentRemainder;
+        project.adjust = widthAdjustment + widthAdjustmentRemainder;
+        //remove remainder once it is used once
+        widthAdjustmentRemainder = 0;
+      }
     }
 
     return (projectsToDisplay);
@@ -161,7 +206,7 @@ const NewProfile = () => {
       let resizedProjects : {project, width : number, adjust : number, row : number}[] = [];
       //Calculate new flexbox width
       // ---Different size, check to see what math needs to be done
-      flexboxWidth = window.innerWidth - (710 + getScrollbarWidth());
+      flexboxWidth = window.innerWidth - (760 + getScrollbarWidth());
       //Reset tracker variables (widthTracker, rowTracker, projectTracker)
       widthTracker = -20;
       rowTracker = 0;
@@ -225,6 +270,22 @@ const NewProfile = () => {
     };
   });
 
+  const aboutMeButtons = usersProfile === true ? 
+    <>{
+      <div id='about-me-buttons'>
+        <button><img src={profileImage} alt='forward???'/></button>
+        <Popup>
+          <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
+          <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
+        </Popup>
+      </div>
+    }</> :
+    <>{
+      <div id='about-me-buttons' className='about-me-buttons-minimal'>
+        <button><img src={profileImage} alt='forward???'/></button>
+      </div>
+    }</>
+
   return (
     <div className='page'>
       <Header dataSets={{data: []}} onSearch={() => {}}/>
@@ -270,13 +331,7 @@ const NewProfile = () => {
         <div id='profile-about-me-column'>
           <div id='profile-about-me-header'>
             <h2 id='about-me-header-text'>About Me</h2>
-            <div id='about-me-buttons'>
-              <button><img src={profileImage} alt='forward???'/></button>
-              <Popup>
-                <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
-                <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
-              </Popup>
-            </div>
+            {aboutMeButtons}
           </div>
 
           <div id='profile-about-me-content'>
@@ -291,8 +346,15 @@ const NewProfile = () => {
                 /* Will take in a list of tags the user has selected,
                 then use a map function to generate tags to fill this div */
                   placeholderTags.map((tag) => {
+                    let category : string;
+                    switch(tag.category){
+                      case 1: category = 'red'; break;
+                      case 2: category = 'yellow'; break;
+                      case 3: category = 'indigo'; break;
+                      default: category = 'grey';
+                    }
                     return(
-                      <div className='tag-button tag-button-red'>{tag}</div>
+                      <div className={`skill-tag-label tag-button-${category}`}>{tag.tag}</div>
                     )
                   })
                 }
@@ -316,7 +378,7 @@ const NewProfile = () => {
                       //Create a Project Panel component
                       <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
                     )) :
-                    <>Sorry, no projects here</>
+                    <>This user has not worked on any projects yet.</>
                 }</>
               </div>
             </div>

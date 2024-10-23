@@ -1,4 +1,5 @@
 import {useState, createContext, useContext} from 'react';
+import close from '../icons/cancel.png';
 //This is a reusable component that can be used to make popup windows on pages
 
 //To use this component, import all components that are exported in this file
@@ -53,7 +54,7 @@ export const PopupContent = ({children}) => {
       <div className='popup-cover'/>
       <div className='popup-container'>
         <div className='popup'>
-          <button className='popup-close' onClick={() => setOpen(!open)}>X</button>
+          <button className='popup-close' onClick={() => setOpen(!open)}><img src={close} alt='X'/></button>
           {children}
         </div>
       </div>

@@ -184,11 +184,10 @@ const addSkill = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { skill } = req.body
+    const { skillId } = req.body
 
-    // Get skill id and add user's skill into database
-    const skillId = await pool.query(`SELECT skill_id FROM skills WHERE label = ?`, skill);
-    await pool.query("INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)", [id, skillId[0].skill_id]);
+    // Add user's skill into database
+    await pool.query("INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)", [id, skillId]);
 
     return res.sendStatus(201);
 }
@@ -198,11 +197,10 @@ const deleteSkill = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { skill } = req.body
+    const { skillId } = req.body
 
-    // Get skill id and remove user's skill from database
-    const skillId = await pool.query(`SELECT skill_id FROM skills WHERE label = ?`, skill);
-    await pool.query("DELETE FROM user_skills WHERE user_id = ? AND skill_id = ?", [id, skillId[0].skill_id]);
+    // Remove user's skill from database
+    await pool.query("DELETE FROM user_skills WHERE user_id = ? AND skill_id = ?", [id, skillId]);
 
     return res.sendStatus(204);
 }

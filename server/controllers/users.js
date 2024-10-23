@@ -9,21 +9,35 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const getUsers = async (req, res) => {
     // Get all users
-
-    const [users] = await pool.query(`SELECT u.user_id, u.first_name, u.last_name, u.bio, u.profile_image, s.skills
-        FROM users u
-        JOIN (SELECT us.user_id, JSON_ARRAYAGG(s.label) AS skills
-            FROM user_skills us 
-            JOIN skills s 
-                ON us.skill_id = s.skill_id
-            GROUP BY us.user_id) s
-		ON u.user_id = s.user_id
-        `);
-    
-    return res.status(200).json({
-        status: 200,
-        data: users
-    });
+    try {
+        const [users] = await pool.query(`SELECT u.user_id, u.first_name, u.last_name, u.profile_image,
+            u.headline, u.pronouns, jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
+            FROM users u
+            JOIN (SELECT jt.title_id, jt.label AS job_title
+                FROM job_titles jt) jt
+            ON u.job_title_id = jt.title_id
+            JOIN (SELECT m.major_id, m.label AS major
+                FROM majors m) m
+            ON u.major_id = m.major_id
+            JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label)) AS skills
+                FROM user_skills us 
+                JOIN skills s 
+                    ON us.skill_id = s.skill_id
+                GROUP BY us.user_id) s
+            ON u.user_id = s.user_id
+            `);
+        
+        return res.status(200).json({
+            status: 200,
+            data: users
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting all users" 
+        });
+    }
 }
 
 const createUser = async (req, res) => {
@@ -67,24 +81,39 @@ const getUsersById = async (req, res) => {
     // Get id from url 
     const { id } = req.params;
 
-    // Get user data
-    const sql = `SELECT u.user_id, u.first_name, u.last_name, u.bio, u.profile_image, s.skills
-        FROM users u
-        JOIN (SELECT us.user_id, JSON_ARRAYAGG(s.label) AS skills
-            FROM user_skills us 
-            JOIN skills s 
-                ON us.skill_id = s.skill_id
-            GROUP BY us.user_id) s
-		ON u.user_id = s.user_id
-        WHERE u.user_id = ? 
-        `;
-    const values = [id];
-    const [user] = await pool.query(sql, values);
-    
-    return res.status(200).json({
-        status: 200,
-        data: user
-    });
+    try {
+        // Get user data
+        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, s.skills
+            FROM users u
+            JOIN (SELECT jt.title_id, jt.label AS job_title
+                FROM job_titles jt) jt
+            ON u.job_title_id = jt.title_id
+            JOIN (SELECT m.major_id, m.label AS major
+                FROM majors m) m
+            ON u.major_id = m.major_id
+            JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label)) AS skills
+                FROM user_skills us 
+                JOIN skills s 
+                    ON us.skill_id = s.skill_id
+                GROUP BY us.user_id) s
+            ON u.user_id = s.user_id
+            WHERE u.user_id = ? 
+            `;
+        const values = [id];
+        const [user] = await pool.query(sql, values);
+        
+        return res.status(200).json({
+            status: 200,
+            data: user
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting the user" 
+        });
+    }
 }
 
 const getUserByUsername = async (req, res) => {
@@ -102,14 +131,23 @@ const updateUser = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { firstName, lastName, bio } = req.body
+    const { firstName, lastName, headline, pronouns, jobTitleId, majorId, academicYear, location, funFact, bio } = req.body
 
-    // Update database with users's new info
-    const sql = "UPDATE users SET first_name = ?, last_name = ?, bio = ? WHERE user_id = ?";
-    const values = [firstName, lastName, bio, id];
-    await pool.query(sql, values);
-    
-    return res.sendStatus(204)
+    try {
+        // Update database with users's new info
+        const sql = `UPDATE users SET first_name = ?, last_name = ?, headline = ?, pronouns = ?, job_title_id = ?,
+        major_id = ?, academic_year = ?, location = ?, fun_fact = ?, bio = ? WHERE user_id = ?`;
+        const values = [firstName, lastName, headline, pronouns, jobTitleId, majorId, academicYear, location, funFact, bio, id];
+        await pool.query(sql, values);
+        
+        return res.sendStatus(204)
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the user's profile" 
+        });
+    }
 }
 
 const updateProfilePicture = async (req, res) => {

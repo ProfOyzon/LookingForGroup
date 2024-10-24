@@ -210,7 +210,6 @@ const updateSkillPositions = async (req, res) => {
     const { skills } = req.body;
 
     try {
-        // Update the skill positions for a user
         for (let skill of skills) {
             const sql = "UPDATE user_skills SET position = ? WHERE user_id = ? AND skill_id = ?";
             const values = [skill.position, id, skill.id];

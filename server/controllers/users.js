@@ -523,4 +523,4 @@ export default { getUsers, createUser, getUsersById, getUserByUsername, login, u
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing
- };
+};

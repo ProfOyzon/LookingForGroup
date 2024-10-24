@@ -186,11 +186,10 @@ const addSkill = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { skillId } = req.body
+    const { skillId, position } = req.body
 
     try {
-        // Add user's skill into database
-        await pool.query("INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)", [id, skillId]);
+        await pool.query("INSERT INTO user_skills (user_id, skill_id, position) VALUES (?, ?, ?)", [id, skillId, position]);
 
         return res.sendStatus(201);
     } catch (err) {

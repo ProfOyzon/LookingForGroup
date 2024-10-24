@@ -19,7 +19,8 @@ const getUsers = async (req, res) => {
             JOIN (SELECT m.major_id, m.label AS major
                 FROM majors m) m
             ON u.major_id = m.major_id
-            JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label)) AS skills
+            JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+                "position", us.position)) AS skills
                 FROM user_skills us 
                 JOIN skills s 
                     ON us.skill_id = s.skill_id
@@ -92,7 +93,8 @@ const getUsersById = async (req, res) => {
             JOIN (SELECT m.major_id, m.label AS major
                 FROM majors m) m
             ON u.major_id = m.major_id
-            JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label)) AS skills
+            JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+                "position", us.position)) AS skills
                 FROM user_skills us 
                 JOIN skills s 
                     ON us.skill_id = s.skill_id
@@ -196,6 +198,31 @@ const addSkill = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "An error occurred while adding a new skill for the user" 
+        });
+    }
+}
+
+const updateSkillPositions = async (req, res) => {
+    // Update skill order for a user
+
+    // Get input data 
+    const { id } = req.params;
+    const { skills } = req.body;
+
+    try {
+        // Update the skill positions for a user
+        for (let skill of skills) {
+            const sql = "UPDATE user_skills SET position = ? WHERE user_id = ? AND skill_id = ?";
+            const values = [skill.position, id, skill.id];
+            await pool.query(sql, values);
+        }
+        
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the skill order for a project" 
         });
     }
 }
@@ -491,7 +518,8 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export { getUsers, createUser, getUsersById, getUserByUsername, login, updateUser, updateProfilePicture, addSkill, deleteSkill, 
+export default { getUsers, createUser, getUsersById, getUserByUsername, login, updateUser, updateProfilePicture, 
+    addSkill, updateSkillPositions, deleteSkill, 
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

@@ -9,8 +9,19 @@ import { projects } from "../../constants/fakeData";
 // On click, this button should open the Profile Edit modal 
 const EditButton = ({user}) => {
     // console.log(user);
-    // console.log(projects);
     const [showPopup, setShowPopup] = useState(false);
+
+    let names = user.name.split(" ");
+    let firstName = names[0];
+    let lastName = names[1];
+    if (names.length > 2) {
+        for (let i = 2; i < names.length; i++) {
+            lastName += names[i];
+            if (i < names.length - 1) {
+                lastName += " ";
+            }
+        }
+    }
 
     let pronouns = "";
     if (user.pronouns.length > 0) {
@@ -25,112 +36,129 @@ const EditButton = ({user}) => {
         pronouns = "N/A";
     }
 
-    // "Discovery Card" 
-    const page1 = <div className='edit-profile-body discover'>
-        <div id='edit-profile-column-1'>
-            {/* Profile pic / avatar */}
+    // "About" 
+    const page1 = <div className='edit-profile-body about'>
+        <div className='edit-profile-section-1'>
+            {/* Profile Pic */}
             <div className='edit-region photo'>
-                <div className='edit-region-image photo'></div>
-                <button className='edit-region-button upload'><i className='fa fa-camera'></i> Upload Photo</button>
-                <button className='edit-region-button avatar'><i className='fa-solid fa-cat'></i> Use Avatar</button>
+                <div className='edit-region-image'></div>
             </div>
 
-            {/* Name */}
-            <div className='edit-region name'>
-                <div className='edit-region-header name'>Name</div>
-                <input type='text' className='edit-region-input name' placeholder={user.name}></input>
+            <div className='about-row row-1'>
+                {/* First Name */}
+                <div className='edit-region first-name'>
+                    <div className='edit-region-header first-name'>First Name*</div>
+                    <input type='text' className='edit-region-input first-name' placeholder={firstName}></input>
+                </div>
+
+                {/* Last Name */}
+                <div className='edit-region last-name'>
+                    <div className='edit-region-header last-name'>Last Name*</div>
+                    <input type='text' className='edit-region-input last-name' placeholder={lastName}></input>
+                </div>
+
+                {/* Pronouns */}
+                <div className='edit-region pronouns'>
+                    <div className='edit-region-header pronouns'>Pronouns</div>
+                    <input type='text' className='edit-region-input pronouns' placeholder={pronouns.toLowerCase()}></input>
+                </div>
             </div>
 
-            {/* Proficiency */}
-            <div className='edit-region proficiency'>
-                <div className='edit-region-header proficiency'>Proficieny</div>
-                <select className='edit-region-input proficiency'>
-                    <option value={"TEST"}>TEST...</option>
-                </select>
+            <div className='about-row row-2'>
+                {/* Role */}
+                <div className='edit-region role'>
+                    <div className='edit-region-header role'>Role*</div>
+                    <select className='edit-region-input role'>
+                        <option value='test'>Test...</option>
+                    </select>
+                </div>
+
+                {/* Major */}
+                <div className='edit-region major'>
+                    <div className='edit-region-header major'>Major*</div>
+                    <select className='edit-region-input major'>
+                        <option value='test'>Test...</option>
+                    </select>
+                </div>
+
+                {/* Year */}
+                <div className='edit-region year'>
+                    <div className='edit-region-header year'>Year</div>
+                    <select className='edit-region-input year'>
+                        <option value='first'>1st</option>
+                        <option value='second'>2nd</option>
+                        <option value='third'>3rd</option>
+                        <option value='fourth'>4th</option>
+                        <option value='fifth'>5th</option>
+                        <option value='sixth'>6th</option>
+                        <option value='seventh'>7th</option>
+                        <option value='eighth'>8th</option>
+                        <option value='nineth'>9th</option>
+                        <option value='tenth'>10th</option>
+                    </select>
+                </div>
             </div>
 
-            {/* Headline */}
-            <div className='edit-region headline'>
-                <div className='edit-region-header headline'>Headline</div>
-                <div className='edit-region-instruct headline'>Introduce yourself in a sentence or two. Be fun!</div>
-                <textarea className='edit-region-input headline' placeholder='TEST...'></textarea>
+            {/* Location */}
+            <div className='edit-region location'>
+                <div className='edit-region-header location'>Location</div>
+                <input type='text' className='edit-region-input location' placeholder='Test...'></input>
             </div>
         </div>
-        <div id='edit-profile-column-2'>
-            {/* Pronouns */}
-            <div className='edit-region pronouns'>
-                <div className='edit-region-header pronouns'>Pronouns <i className='fa-solid fa-transgender'></i></div>
-                <input type='text' className='edit-region-input pronouns' placeholder={pronouns}></input>
+
+        <div className='edit-profile-section-2'>
+            {/* Personal Quote */}
+            <div className='edit-region quote'>
+                <div className='edit-region-header quote'>Personal Quote</div>
+                <div className='edit-region-instruct quote'>Write a fun and catchy phrase that captures your unique personality!</div>
+                <div className='edit-region-text-area quote'>
+                    <textarea className='edit-region-input big quote' maxLength={100} placeholder='Test...'></textarea>
+                    <span className='word-limit-label quote'>0 / 100</span>
+                </div>
             </div>
 
-            {/* Major and year */}
-            <div className='edit-region major'>
-                <div className='edit-region-header major'>Major and Year <i className='fa-solid fa-graduation-cap'></i></div>
-                <input type='text' className='edit-region-input major' placeholder='TEST, Test Year'></input>
-            </div>
-
-            {/* Where are you from? */}
-            <div className='edit-region where'>
-                <div className='edit-region-header where'>Where are you from? <i className='fa-solid fa-location-dot'></i></div>
-                <input type='text' className='edit-region-input where' placeholder='TEST...'></input>
-            </div>
-
-            {/* Favorite project */}
-            <div className='edit-region favorite'>
-                <div className='edit-region-header favorite'>Favorite Project <i className='fa-regular fa-folder'></i></div>
-                <select className='edit-region-input favorite'>
-                    {
-                        user.projects.map((projectID) => {
-                            return <option value={projectID}>{projects[projectID].name}</option>
-                        })
-                    }
-                </select>;
-            </div>
-
-            {/* Fun fact */}
-            <div className='edit-region funfact'>
-                <div className='edit-region-header funfact'>Fun Fact <i className='fa-solid fa-star'></i></div>
-                <div className='edit-region-instruct funfact'>What's a short fun fact about you?</div>
-                <textarea className='edit-region-input funfact' placeholder='TEST...'></textarea>
+            {/* Fun Fact */}
+            <div className='edit-region fact'>
+                <div className='edit-region-header fact'>Fun Fact</div>
+                <div className='edit-region-instruct fact'>Share a fun fact about yourself thata will surprise others!</div>
+                <div className='edit-region-text-area fact'>
+                    <textarea className='edit-region-input big fact' maxLength={100} placeholder='Test...'></textarea>
+                    <span className='word-limit-label fact'>0 / 100</span>
+                </div>
             </div>
         </div>
-    </div>;
 
-    // "About & Projects" 
-    const page2 = <div className='edit-profile-body about'>
-        <div className='edit-profile-about-section'>
-            {/* About you */}
-            <div className='edit-region about'>
-                <div className='edit-region-header about'>About You</div>
-                <div className='edit-region-instruct about'>Give yourself a more detailed bio than your headline.</div>
-                <textarea className='edit-region-input wide about' placeholder={user.bio}></textarea>
-            </div>
-
-            {/* Looking for */}
-            {/* <div className='edit-region looking'>
-                <div className='edit-region-header looking'>Looking For</div>
-                <div className='edit-region-instruct looking'>Describe your project/work/group preferences here.</div>
-                <textarea className='edit-region-input wide looking' placeholder='TEST...'></textarea>
-            </div> */}
-
-            {/* Projects */}
-            <div className='edit-region projects'>
-                <div className='edit-region-header projects'>Projects</div>
-                <div className='edit-region-instruct projects'>Choose to hide/show projects you've worked on.<br />Drag and drop images to change order.</div>
-                <div className='edit-region-input projects'>
-                    {
-                        user.projects.map((projectID) => {
-                            return (<div className='list-project'>
-                                <div className='inner-list-project'>
-                                    {projects[projectID].name}
-                                </div>
-                            </div>);
-                        })
-                    }
+        <div className='edit-profile-section-3'>
+            {/* About You */}
+            <div className='edit-region quote'>
+                <div className='edit-region-header you'>About You</div>
+                <div className='edit-region-instruct you'>Share a brief overview of who you are, your interests, and what drives you!</div>
+                <div className='edit-region-text-area you'>
+                    <textarea className='edit-region-input big you' maxLength={300} placeholder={user.bio}></textarea>
+                    <span className='word-limit-label you'>0 / 300</span>
                 </div>
             </div>
         </div>
     </div>;
+
+    // "Projects" 
+    const page2 = <div className='edit-profile-body projects'>
+        <div className='edit-region projects'>
+            <div className='edit-region-header projects'>Projects</div>
+            <div className='edit-region-instruct projects'>Choose to hide/show projects you've worke on.</div>
+            <div className='edit-region-input projects'>
+                {
+                    user.projects.map((projectID) => {
+                        return (<div className='list-project'>
+                            <div className='inner-list-project'>
+                                {projects[projectID].name}
+                            </div>
+                        </div>);
+                    })
+                }
+            </div>
+        </div>
+    </div>
 
     const [filterSel, setFilterSel] = useState(0);
 
@@ -219,11 +247,13 @@ const EditButton = ({user}) => {
                 {skillsListText}
             </div>
 
-            {/* Skills */}
-            <div className='edit-region skills'>
-                <div className='edit-region-header skills'>Skills</div>
-                <div className='edit-region-instruct skills'>Click to unselect</div>
-                <div className='edit-region-input skills'>{chosenSkills}</div>
+            {/* Selected skills area */}
+            <div className='skills-selected-region'>
+                <div className='edit-region skills'>
+                    <div className='edit-region-header skills'>Selected</div>
+                    <div className='edit-region-instruct skills'>Click to deselect</div>
+                    <div className='edit-region-input skills'>{chosenSkills}</div>
+                </div>
             </div>
         </div>
     </div>;
@@ -241,13 +271,13 @@ const EditButton = ({user}) => {
         displayedPage = page3;
     }
 
-    let button1 = <button className='profile-discover-button' onClick={() => setPage(1)}>Discover Card</button>;
+    let button1 = <button className='profile-discover-button' onClick={() => setPage(1)}>About</button>;
     if (page === 1) {
-        button1 = <button className='profile-discover-button' id="selected" onClick={() => setPage(1)}>Discover Card</button>;
+        button1 = <button className='profile-discover-button' id="selected" onClick={() => setPage(1)}>About</button>;
     }
-    let button2 = <button className='profile-discover-button' onClick={() => setPage(2)}>About & Projects</button>;
+    let button2 = <button className='profile-discover-button' onClick={() => setPage(2)}>Projects</button>;
     if (page === 2) {
-        button2 = <button className='profile-discover-button' id="selected" onClick={() => setPage(2)}>About & Projects</button>;
+        button2 = <button className='profile-discover-button' id="selected" onClick={() => setPage(2)}>Projects</button>;
     }
     let button3 = <button className='profile-discover-button' onClick={() => setPage(3)}>Skills</button>;
     if (page === 3) {

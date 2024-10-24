@@ -17,7 +17,6 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
   // const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
   const navigate = useNavigate(); // Hook for navigation
   const currentURL = window.location.pathname;
-  console.log(currentURL);
 
   let startingPage : string;
 

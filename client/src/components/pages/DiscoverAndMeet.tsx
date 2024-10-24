@@ -27,24 +27,42 @@ import e from "express";
 //Add more icons to various places in ui
 //Add checks for filters used in filter popup
 
-/* const getProjectData = async () => {
+const getProjectData = async () => {
   const url = 'http://localhost:8081/api/projects'
   try {
-    let response = await fetch(url);
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {"Content-Type": "application/json"}
+    });
 
-    const projectData = await response.json;
+    const projectData = await response.json();
     console.log(projectData);
+
+    return projectData.data;
   } catch(error) {
     console.error(error.message);
   }
 } 
 
-getProjectData(); */
+const getProfileData = async () => {
+  const url = 'http://localhost:8081/api/users'
+  try {
+    let response = await fetch(url);
+
+    const profileData = await response.json();
+    console.log(profileData);
+
+    return profileData.data;
+  } catch(error) {
+    console.error(error.message)
+  }
+}
 
 //These values need to be outside the component, otherwise they get reset every time it re-renders
 //Lists that hold the original list of projects and profiles, only updates on page reload
 const fullProjectList = projects;
 const fullProfileList = profiles;
+console.log(fullProjectList);
 //List that holds project data that will be displayed. Changes along with search parameters
 //Could combine this and profile variants into single variable
 let projectList = projects;

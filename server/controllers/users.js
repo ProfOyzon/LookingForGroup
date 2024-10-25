@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const getUsers = async (req, res) => {
     // Get all users
     try {
-        const [users] = await pool.query(`SELECT u.user_id, u.first_name, u.last_name, u.profile_image,
+        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image,
             u.headline, u.pronouns, jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
             FROM users u
             JOIN (SELECT jt.title_id, jt.label AS job_title
@@ -26,7 +26,8 @@ const getUsers = async (req, res) => {
                     ON us.skill_id = s.skill_id
                 GROUP BY us.user_id) s
             ON u.user_id = s.user_id
-            `);
+        `;
+        const [users] = await pool.query(sql);
         
         return res.status(200).json({
             status: 200,

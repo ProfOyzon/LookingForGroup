@@ -385,12 +385,12 @@ const addJob = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { role, amount, description } = req.body;
+    const { titleId, amount, description } = req.body;
 
     try {
         // Add project's job into database
-        const sql = "INSERT INTO jobs (role, amount, description, project_id) VALUES (?, ?, ?, ?)";
-        const values = [role, amount, description, id];
+        const sql = "INSERT INTO jobs (title_id, amount, description, project_id) VALUES (?, ?, ?, ?)";
+        const values = [titleId, amount, description, id];
         await pool.query(sql, values);
 
         return res.sendStatus(201);
@@ -408,12 +408,12 @@ const updateJob = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { role, amount, description } = req.body;
+    const { titleId, amount, description } = req.body;
 
     try {
         // Update a project's job
-        const sql = "UPDATE jobs SET amount = ?, description = ? WHERE role = ? AND project_id = ?";
-        const values = [amount, description, role, id];
+        const sql = "UPDATE jobs SET amount = ?, description = ? WHERE title_id = ? AND project_id = ?";
+        const values = [amount, description, titleId, id];
         await pool.query(sql, values);
         
         return res.sendStatus(204);
@@ -431,11 +431,11 @@ const deleteJob = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { role } = req.body;
+    const { titleId } = req.body;
 
     try {
         // Remove project's job from database
-        await pool.query("DELETE FROM jobs WHERE role = ? AND project_id = ?", [role, id]);
+        await pool.query("DELETE FROM jobs WHERE title_id = ? AND project_id = ?", [titleId, id]);
 
         return res.sendStatus(204);
     } catch (err) {
@@ -452,12 +452,12 @@ const addMember = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { userId, role } = req.body;
+    const { userId, titleId } = req.body;
 
     try {
         // Add project's member into database
-        const sql = "INSERT INTO members (project_id, user_id, role) VALUES (?, ?, ?)";
-        const values = [id, userId, role];
+        const sql = "INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?)";
+        const values = [id, userId, titleId];
         await pool.query(sql, values);
 
         return res.sendStatus(201);
@@ -475,12 +475,12 @@ const updateMember = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { userId, role } = req.body;
+    const { userId, titleId } = req.body;
 
     try {
         // Update a project's job
-        const sql = "UPDATE members SET role = ? WHERE project_id = ? AND user_id = ?";
-        const values = [role, id, userId];
+        const sql = "UPDATE members SET title_id = ? WHERE project_id = ? AND user_id = ?";
+        const values = [titleId, id, userId];
         await pool.query(sql, values);
         
         return res.sendStatus(204);

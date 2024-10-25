@@ -220,7 +220,7 @@ const updateSkillPositions = async (req, res) => {
         console.log(err);
         return res.status(400).json({
             status: 400, 
-            error: "An error occurred while updating the skill order for a project" 
+            error: "An error occurred while updating the skill order for a user" 
         });
     }
 }

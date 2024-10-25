@@ -15,6 +15,7 @@ router.delete("/api/projects/:id/pictures", projCtrl.deletePicture);
 router.post("/api/projects/:id/project-types", projCtrl.addProjectType);
 router.delete("/api/projects/:id/project-types", projCtrl.deleteProjectType);
 router.post("/api/projects/:id/tags", projCtrl.addTag);
+router.put("/api/projects/:id/tags", projCtrl.updateTagPositions);
 router.delete("/api/projects/:id/tags", projCtrl.deleteTag);
 router.post("/api/projects/:id/jobs", projCtrl.addJob);
 router.put("/api/projects/:id/jobs", projCtrl.updateJob);

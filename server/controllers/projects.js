@@ -319,12 +319,11 @@ const addTag = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { tag } = req.body;
+    const { tagId, position } = req.body;
 
     try {
-        // Get tag id and add project's tag into database
-        const [tagId] = await pool.query(`SELECT tag_id FROM tags WHERE label = ?`, tag);
-        await pool.query("INSERT INTO project_tags (project_id, tag_id) VALUES (?, ?)", [id, tagId[0].tag_id]);
+        // Add project's tag into database
+        await pool.query("INSERT INTO project_tags (project_id, tag_id, position) VALUES (?, ?, ?)", [id, tagId, position]);
 
         return res.sendStatus(201);
     } catch (err) {
@@ -336,17 +335,40 @@ const addTag = async (req, res) => {
     }
 }
 
+const updateTagPositions = async (req, res) => {
+    // Update tag order for a project
+
+    // Get input data 
+    const { id } = req.params;
+    const { tags } = req.body;
+
+    try {
+        for (let tag of tags) {
+            const sql = "UPDATE project_tags SET position = ? WHERE project_id = ? AND tag_id = ?";
+            const values = [tag.position, id, tag.id];
+            await pool.query(sql, values);
+        }
+        
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the tag order for a project" 
+        });
+    }
+}
+
 const deleteTag = async (req, res) => {
     // Delete tag from a project
 
     // Get input data
     const { id } = req.params;
-    const { tag } = req.body;
+    const { tagId } = req.body;
 
     try {
-        // Get tag id and remove project's tag from database
-        const [tagId] = await pool.query(`SELECT tag_id FROM tags WHERE label = ?`, tag);
-        await pool.query("DELETE FROM project_tags WHERE project_id = ? AND tag_id = ?", [id, tagId[0].tag_id]);
+        // Remove project's tag from database
+        await pool.query("DELETE FROM project_tags WHERE project_id = ? AND tag_id = ?", [id, tagId]);
 
         return res.sendStatus(204);
     } catch (err) {
@@ -494,6 +516,8 @@ const deleteMember = async (req, res) => {
 
 export default { getProjects, createProject, getProjectById, updateProject, 
     updateThumbnail, addPicture, updatePicturePositions, deletePicture,
-    addProjectType, deleteProjectType, addTag, deleteTag, addJob, updateJob, deleteJob,
+    addProjectType, deleteProjectType, 
+    addTag, updateTagPositions, deleteTag, 
+    addJob, updateJob, deleteJob,
     addMember, updateMember, deleteMember
 };

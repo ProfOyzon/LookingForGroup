@@ -12,8 +12,8 @@ router.put("/api/projects/:id/thumbnail", mid.checkImageFile, projCtrl.updateThu
 router.post("/api/projects/:id/pictures", mid.checkImageFile, projCtrl.addPicture);
 router.put("/api/projects/:id/pictures", projCtrl.updatePicturePositions);
 router.delete("/api/projects/:id/pictures", projCtrl.deletePicture);
-router.post("/api/projects/:id/genres", projCtrl.addGenre);
-router.delete("/api/projects/:id/genres", projCtrl.deleteGenre);
+router.post("/api/projects/:id/project-types", projCtrl.addProjectType);
+router.delete("/api/projects/:id/project-types", projCtrl.deleteProjectType);
 router.post("/api/projects/:id/tags", projCtrl.addTag);
 router.delete("/api/projects/:id/tags", projCtrl.deleteTag);
 router.post("/api/projects/:id/jobs", projCtrl.addJob);

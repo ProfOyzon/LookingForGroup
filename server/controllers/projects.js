@@ -274,46 +274,42 @@ const deletePicture = async (req, res) => {
     }
 }
 
-const addGenre = async (req, res) => {
-    // Add a genre to a project
+const addProjectType = async (req, res) => {
+    // Add a project type to a project
 
     // Get input data
     const { id } = req.params;
-    const { genre } = req.body;
+    const { typeId } = req.body;
 
     try {
-        // Get genre id and add project's genre into database
-        const [genreId] = await pool.query(`SELECT genre_id FROM genres WHERE label = ?`, genre);
-        await pool.query("INSERT INTO project_genres (project_id, genre_id) VALUES (?, ?)", [id, genreId[0].genre_id]);
+        await pool.query("INSERT INTO project_genres (project_id, type_id) VALUES (?, ?)", [id, typeId]);
 
         return res.sendStatus(201);
     } catch (err) {
         console.log(err);
         return res.status(400).json({
             status: 400, 
-            error: "An error occurred while adding a project's genre" 
+            error: "An error occurred while adding a project's project type" 
         });
     }
 }
 
-const deleteGenre = async (req, res) => {
-    // Delete genre from a project
+const deleteProjectType = async (req, res) => {
+    // Delete project type from a project
 
     // Get input data
     const { id } = req.params;
-    const { genre } = req.body;
+    const { typeId } = req.body;
 
     try {
-        // Get genre id and remove project's genre from database
-        const [genreId] = await pool.query(`SELECT genre_id FROM genres WHERE label = ?`, genre);
-        await pool.query("DELETE FROM project_genres WHERE project_id = ? AND genre_id = ?", [id, genreId[0].genre_id]);
+        await pool.query("DELETE FROM project_genres WHERE project_id = ? AND type_id = ?", [id, typeId]);
 
         return res.sendStatus(204);
     } catch (err) {
         console.log(err);
         return res.status(400).json({
             status: 400, 
-            error: "An error occurred while removing a project's genre" 
+            error: "An error occurred while removing a project's project type" 
         });
     }
 }
@@ -498,6 +494,6 @@ const deleteMember = async (req, res) => {
 
 export default { getProjects, createProject, getProjectById, updateProject, 
     updateThumbnail, addPicture, updatePicturePositions, deletePicture,
-    addGenre, deleteGenre, addTag, deleteTag, addJob, updateJob, deleteJob,
+    addProjectType, deleteProjectType, addTag, deleteTag, addJob, updateJob, deleteJob,
     addMember, updateMember, deleteMember
 };

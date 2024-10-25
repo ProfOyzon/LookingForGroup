@@ -87,7 +87,7 @@ const getJobTitles = async (req, res) => {
 }
 
 const getMajors = async (req, res) => {
-    // Get all job titles
+    // Get all majors
 
     try {
         const sql = `SELECT * FROM majors`;
@@ -106,4 +106,24 @@ const getMajors = async (req, res) => {
     }
 }
 
-export default { getSkills, getTags, getJobTitles, getMajors };
+const getProjectTypes = async (req, res) => {
+    // Get all project types
+
+    try {
+        const sql = `SELECT * FROM genres`;
+        const [projectTypes] = await pool.query(sql);
+
+        return res.status(200).json({
+            status: 200,
+            data: projectTypes
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting the project types set" 
+        });
+    }
+}
+
+export default { getSkills, getTags, getJobTitles, getMajors, getProjectTypes };

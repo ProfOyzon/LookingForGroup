@@ -297,7 +297,7 @@ const addGenre = async (req, res) => {
 }
 
 const deleteGenre = async (req, res) => {
-    // Delete tag from a project
+    // Delete genre from a project
 
     // Get input data
     const { id } = req.params;

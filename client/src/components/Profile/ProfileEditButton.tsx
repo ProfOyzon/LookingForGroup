@@ -36,6 +36,11 @@ const EditButton = ({user}) => {
         pronouns = "N/A";
     }
 
+    const [currentFirstName, setCurrentFirstName] = useState(firstName);
+    const [currentLastName, setCurrentLastName] = useState(lastName);
+
+    const [currentQuote, setCurrentQuote] = useState("");
+
     // "About" 
     const page1 = <div className='edit-profile-body about'>
         <div className='edit-profile-section-1'>
@@ -48,19 +53,21 @@ const EditButton = ({user}) => {
                 {/* First Name */}
                 <div className='edit-region first-name'>
                     <div className='edit-region-header first-name'>First Name*</div>
-                    <input type='text' className='edit-region-input first-name' placeholder={firstName}></input>
+                    <input type='text' className='edit-region-input first-name'
+                        value={currentFirstName} onChange={(e) => {setCurrentFirstName(e.target.value)}}></input>
                 </div>
 
                 {/* Last Name */}
                 <div className='edit-region last-name'>
                     <div className='edit-region-header last-name'>Last Name*</div>
-                    <input type='text' className='edit-region-input last-name' placeholder={lastName}></input>
+                    <input type='text' className='edit-region-input last-name'
+                        value={currentLastName} onChange={(e) => {setCurrentLastName(e.target.value)}}></input>
                 </div>
 
                 {/* Pronouns */}
                 <div className='edit-region pronouns'>
                     <div className='edit-region-header pronouns'>Pronouns</div>
-                    <input type='text' className='edit-region-input pronouns' placeholder={pronouns.toLowerCase()}></input>
+                    <input type='text' className='edit-region-input pronouns' value={pronouns.toLowerCase()}></input>
                 </div>
             </div>
 
@@ -102,7 +109,7 @@ const EditButton = ({user}) => {
             {/* Location */}
             <div className='edit-region location'>
                 <div className='edit-region-header location'>Location</div>
-                <input type='text' className='edit-region-input location' placeholder='Test...'></input>
+                <input type='text' className='edit-region-input location'></input>
             </div>
         </div>
 
@@ -112,8 +119,9 @@ const EditButton = ({user}) => {
                 <div className='edit-region-header quote'>Personal Quote</div>
                 <div className='edit-region-instruct quote'>Write a fun and catchy phrase that captures your unique personality!</div>
                 <div className='edit-region-text-area quote'>
-                    <textarea className='edit-region-input big quote' maxLength={100} placeholder='Test...'></textarea>
-                    <span className='word-limit-label quote'>0 / 100</span>
+                    <textarea className='edit-region-input big quote' maxLength={100}
+                        value={currentQuote.substring(0, 100)} onChange={(e) => {setCurrentQuote(e.target.value)}}></textarea>
+                    <span className='word-limit-label quote'>{currentQuote.length} / 100</span>
                 </div>
             </div>
 
@@ -122,7 +130,7 @@ const EditButton = ({user}) => {
                 <div className='edit-region-header fact'>Fun Fact</div>
                 <div className='edit-region-instruct fact'>Share a fun fact about yourself thata will surprise others!</div>
                 <div className='edit-region-text-area fact'>
-                    <textarea className='edit-region-input big fact' maxLength={100} placeholder='Test...'></textarea>
+                    <textarea className='edit-region-input big fact' maxLength={100}></textarea>
                     <span className='word-limit-label fact'>0 / 100</span>
                 </div>
             </div>
@@ -134,7 +142,7 @@ const EditButton = ({user}) => {
                 <div className='edit-region-header you'>About You</div>
                 <div className='edit-region-instruct you'>Share a brief overview of who you are, your interests, and what drives you!</div>
                 <div className='edit-region-text-area you'>
-                    <textarea className='edit-region-input big you' maxLength={300} placeholder={user.bio}></textarea>
+                    <textarea className='edit-region-input big you' maxLength={300} value={user.bio}></textarea>
                     <span className='word-limit-label you'>0 / 300</span>
                 </div>
             </div>
@@ -160,103 +168,158 @@ const EditButton = ({user}) => {
         </div>
     </div>
 
-    const [filterSel, setFilterSel] = useState(0);
-
-    let skillsList = [""];
-    for (let i = 0; i < softSkills.length; i++) {
-        skillsList.push(softSkills[i]);
-    }
-    for (let i = 0; i < hardSkills.length; i++) {
-        skillsList.push(hardSkills[i]);
-    }
-    for (let i = 0; i < proficiencies.length; i++) {
-        skillsList.push(proficiencies[i]);
-    }
-    skillsList.sort();
-    let skillsListText = <div className='skills-list'>
-        {
-            skillsList.map((skill) => {
-                if (skill !== "") {
-                    let hasSkill = false;
-                    for (let i = 0; i < user.skills.length; i++) {
-                        if (user.skills[i].skill == skill) {
-                            hasSkill = true;
-                        }
-                    }
-
-                    if (!hasSkill) {
-                        if (filterSel === 0) {
-                            let skillClass = 'skill-item list';
-                            if (softSkills.indexOf(skill) != -1) {
-                                skillClass += ' soft';
-                            }
-                            else if (hardSkills.indexOf(skill) != -1) {
-                                skillClass += ' hard';
-                            }
-                            else if (proficiencies.indexOf(skill) != -1) {
-                                skillClass += ' prof';
-                            }
-                            return <button className={skillClass} onClick={() => {}}>#{skill.toLowerCase().replaceAll(" ", "")}</button>;
-                        }
-                        else if (filterSel === 1 && hardSkills.indexOf(skill) != -1) {
-                            return <button className='skill-item list hard' onClick={() => {}}>#{skill.toLowerCase().replaceAll(" ", "")}</button>;
-                        }
-                        else if (filterSel === 2 && proficiencies.indexOf(skill) != -1) {
-                            return <button className='skill-item list prof' onClick={() => {}}>#{skill.toLowerCase().replaceAll(" ", "")}</button>;
-                        }
-                        else if (filterSel === 3 && softSkills.indexOf(skill) != -1) {
-                            return <button className='skill-item list soft' onClick={() => {}}>#{skill.toLowerCase().replaceAll(" ", "")}</button>;
-                        }
-                    }
-                }
-            })
-        }
-    </div>;
-
-    let chosenSkills = <div className='chosen-skills'>
+    let currentSkillsList = <ul className='chosen-skills-list'>
         {
             user.skills.map((skillItem) => {
                 if (skillItem.skill != "") {
                     let chosenClass = "skill-item chosen";
                     chosenClass += (skillItem.type == "softSkill" ? " soft" : skillItem.type == "hardSkill" ? " hard" : skillItem.type == "proficiency" ? " prof" : "");
-                    return <button className={chosenClass} onClick={() => {}}>#{skillItem.skill.toLowerCase().replaceAll(" ", "")}</button>;
+                    let chosenName = skillItem.skill;
+                    return (
+                        <li className='chosen-item'>
+                            ≡
+                            <span className={chosenClass}>
+                                <button className='chosen-button' onClick={() => {}}>X</button>
+                                {chosenName}
+                            </span>
+                        </li>
+                    );
                 }
             })
         }
-    </div>
+    </ul>
+
+    const [filterSel, setFilterSel] = useState(0);
+    // 0 -> Developer Skills -> Hard Skills 
+    // 1 -> Designer Skills -> Proficiencies 
+    // 2 -> Soft Skills -> Soft Skills 
+
+    let filterButton1 = <button className='skills-filter-button' id={filterSel === 0 ? "selected" : ""} onClick={() => setFilterSel(0)}>Developer Skills</button>;
+    let filterButton2 = <button className='skills-filter-button' id={filterSel === 1 ? "selected" : ""} onClick={() => setFilterSel(1)}>Designer Skills</button>;
+    let filterButton3 = <button className='skills-filter-button' id={filterSel === 2 ? "selected" : ""} onClick={() => setFilterSel(2)}>Soft Skills</button>;
+
+    let filteredSkillsList = <div className='skills-list'></div>;
+    if (filterSel === 0) {
+        let tempList = [hardSkills[0]];
+        for (let i = 1; i < hardSkills.length; i++) {
+            tempList.push(hardSkills[i]);
+        }
+        tempList.sort();
+
+        filteredSkillsList = <div className='skills-list'>{
+            tempList.map((skill) => {
+                let skillClass = "skill-item-button hard";
+                let found = false;
+                for (let i = 0; i < user.skills.length; i++) {
+                    if (user.skills[i].skill == skill) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    skillClass += " chosen";
+                }
+
+                return <button className={skillClass}>{found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}</button>
+            })
+        }</div>;
+    }
+    else if (filterSel === 1) {
+        let tempList = [proficiencies[0]];
+        for (let i = 1; i < proficiencies.length; i++) {
+            tempList.push(proficiencies[i]);
+        }
+        tempList.sort();
+
+        filteredSkillsList = <div className='skills-list'>{
+            tempList.map((skill) => {
+                let skillClass = "skill-item-button prof";
+                let found = false;
+                for (let i = 0; i < user.skills.length; i++) {
+                    if (user.skills[i].skill == skill) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    skillClass += " chosen";
+                }
+
+                return <button className={skillClass}>{found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}</button>
+            })
+        }</div>;
+    }
+    else if (filterSel === 2) {
+        let tempList = [softSkills[0]];
+        for (let i = 1; i < softSkills.length; i++) {
+            tempList.push(softSkills[i]);
+        }
+        tempList.sort();
+
+        filteredSkillsList = <div className='skills-list'>{
+            tempList.map((skill) => {
+                let skillClass = "skill-item-button soft";
+                let found = false;
+                for (let i = 0; i < user.skills.length; i++) {
+                    if (user.skills[i].skill == skill) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    skillClass += " chosen";
+                }
+
+                return <button className={skillClass}>{found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}</button>
+            })
+        }</div>;
+    }
 
     // "Skills" 
     const page3 = <div className='edit-profile-body skills'>
         <div className='edit-profile-skills-section'>
-            {/* Skills selecting area */}
-            <div className='skills-list-region'>
-                <div className='skills-list-search'>
-                    <i className='fa-solid fa-magnifying-glass'></i>
-                    <input type='searchbar' className='skills-searchbar' placeholder='Search'></input>
-                </div>
-
-                <div className='skills-list-header'>
-                    <button className='skills-list-button all' id={filterSel === 0 ? "selected" : ""} onClick={() => setFilterSel(0)}>All</button>
-                    <button className='skills-list-button dev' id={filterSel === 1 ? "selected" : ""} onClick={() => setFilterSel(1)}>Developer Skills</button>
-                    <button className='skills-list-button des' id={filterSel === 2 ? "selected" : ""} onClick={() => setFilterSel(2)}>Designer Skills</button>
-                    <button className='skills-list-button soft' id={filterSel === 3 ? "selected" : ""} onClick={() => setFilterSel(3)}>Soft Skills</button>
-                </div>
-
-                <hr />
-
-                {skillsListText}
+            {/* Current skills area */}
+            <div className='selected-skills-region'>
+                <div className='edit-region-header skills'>Selected</div>
+                <div className='edit-region-instruct skills'>Drag and drop to reorder</div>
+                {currentSkillsList}
             </div>
 
-            {/* Selected skills area */}
-            <div className='skills-selected-region'>
-                <div className='edit-region skills'>
-                    <div className='edit-region-header skills'>Selected</div>
-                    <div className='edit-region-instruct skills'>Click to deselect</div>
-                    <div className='edit-region-input skills'>{chosenSkills}</div>
+            {/* All skills area */}
+            <div className='skills-list-region'>
+                {/* Search Bar */}
+                <div className='skills-search'>
+                    <i className='fa-solid fa-magnifying-glass'></i>
+                    <input type='searchbar' className='skill-searchbar' onChange={() => {}} placeholder='Search'></input>
                 </div>
+
+                {/* Filter Tabs */}
+                <div className='skills-header'>
+                    {filterButton1}
+                    {filterButton2}
+                    {filterButton3}
+                </div>
+
+                {/* Skills List */}
+                {filteredSkillsList}
             </div>
         </div>
     </div>;
+
+    // "Links" 
+    const page4 = <div className='edit-profile-body links'>
+        <div className='edit-profile-section'>
+            <div className='edit-region links'>
+                <div className='edit-region-header links'>Social Links</div>
+                <div className='edit-region-instruct links'>Provide the links to pages you wish to include on your page.</div>
+                <div className='edit-region-link-item'>
+                    <select className='link-options-list'>
+                        <option value="Select">Select</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                    </select>
+                    <input type='text' className='edit-region-input links'></input>
+                </div>
+            </div>
+        </div>
+    </div>
 
     const [page, setPage] = useState(1);
 
@@ -269,6 +332,9 @@ const EditButton = ({user}) => {
     }
     else if (page === 3) {
         displayedPage = page3;
+    }
+    else if (page === 4) {
+        displayedPage = page4;
     }
 
     let button1 = <button className='profile-discover-button' onClick={() => setPage(1)}>About</button>;
@@ -283,6 +349,10 @@ const EditButton = ({user}) => {
     if (page === 3) {
         button3 = <button className='profile-discover-button' id="selected" onClick={() => setPage(3)}>Skills</button>;
     }
+    let button4 = <button className='profile-discover-button' onClick={() => setPage(4)}>Links</button>;
+    if (page === 4) {
+        button4 = <button className='profile-discover-button' id="selected" onClick={() => setPage(4)}>Links</button>;
+    }
 
     return (
         <div id='profile-edit-button-section'>
@@ -296,6 +366,7 @@ const EditButton = ({user}) => {
                         {button1}
                         {button2}
                         {button3}
+                        {button4}
                     </div>
 
                     <div id='edit-profile-content'>

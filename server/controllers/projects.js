@@ -199,6 +199,33 @@ const updateThumbnail = async (req, res) => {
     }
 }
 
+const getProjectPictures = async (req, res) => {
+    // Get a project's pictures
+
+    // Get id from url 
+    const { id } = req.params;
+
+    try {
+        const sql = `SELECT pi.image_id, pi.image, pi.position
+			FROM project_images pi
+			WHERE pi.project_id = ?
+            `;
+        const values = [id];
+        const [pictures] = await pool.query(sql, values);
+        
+        return res.status(200).json({
+            status: 200,
+            data: pictures
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting the project's pictures" 
+        });
+    }
+}
+
 const addPicture = async (req, res) => {
     // Update picture for a project
 
@@ -520,7 +547,7 @@ const deleteMember = async (req, res) => {
 }
 
 export default { getProjects, createProject, getProjectById, updateProject, 
-    updateThumbnail, addPicture, updatePicturePositions, deletePicture,
+    updateThumbnail, getProjectPictures, addPicture, updatePicturePositions, deletePicture,
     addProjectType, deleteProjectType, 
     addTag, updateTagPositions, deleteTag, 
     addJob, updateJob, deleteJob,

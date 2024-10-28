@@ -44,7 +44,7 @@ const createProject = async (req, res) => {
     // Create a new project
 
     // Get input data
-    const {userId, title, hook, description, purpose, audience, projectTypes, tags, jobs, members} = req.body;
+    const {userId, title, hook, description, purpose, audience} = req.body;
 
     try {
         // Add project to database and get back its id
@@ -52,26 +52,6 @@ const createProject = async (req, res) => {
         const values = [title, hook, description, purpose, audience, userId];
         await pool.query(sql, values);
         const [projectId] = await pool.query("SELECT project_id FROM projects WHERE title = ? AND user_id = ?", [title, userId]);
-
-        // Add project's types to database
-        for (let type of projectTypes) {
-            await pool.query("INSERT INTO project_genres (project_id, type_id) VALUES (?, ?)", [projectId[0].project_id, type]);
-        }
-        
-        // Add project's tags to database 
-        for (let tag of tags) {
-            await pool.query("INSERT INTO project_tags (project_id, tag_id, position) VALUES (?, ?, ?)", [projectId[0].project_id, tag.id, tag.position]);
-        }
-
-        // Add project's jobs to database
-        for (let job of jobs) {
-            await pool.query("INSERT INTO jobs (title_id, amount, description, project_id) VALUES (?, ?, ?, ?)", [job.titleId, job.amount, job.description, projectId[0].project_id])
-        }
-
-        // Add project's members to database
-        for (let member of members) {
-            await pool.query("INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?)", [projectId[0].project_id, member.id, member.titleId]);
-        }
 
         return res.status(201).json({
             status: 201,

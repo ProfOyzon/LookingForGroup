@@ -151,12 +151,12 @@ const updateProject = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { title, description} = req.body;
+    const { title, hook, description, purpose, audience} = req.body;
 
     try {
         // Update database with project's new info
-        const sql = "UPDATE projects SET title = ?, description = ? WHERE project_id = ?";
-        const values = [title, description, id];
+        const sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, audience = ?  WHERE project_id = ?";
+        const values = [title, hook, description, purpose, audience, id];
         await pool.query(sql, values);
         
         return res.sendStatus(204);

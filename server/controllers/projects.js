@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const getProjects = async (req, res) => {
     // Get all projects
     try {
-        const sql = `SELECT p.project_id, p.title, p.description, p.thumbnail, g.project_types, t.tags
+        const sql = `SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                 FROM project_genres pg 
@@ -44,40 +44,39 @@ const createProject = async (req, res) => {
     // Create a new project
 
     // Get input data
-    const { title, description, id, genres, tags, jobs, members} = req.body;
+    const {userId, title, hook, description, purpose, audience, projectTypes, tags, jobs, members} = req.body;
 
     try {
         // Add project to database and get back its id
-        const sql = "INSERT INTO projects (title, description, user_id) VALUES (?, ?, ?)";
-        const values = [title, description, id];
+        const sql = "INSERT INTO projects (title, hook, description, purpose, audience, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+        const values = [title, hook, description, purpose, audience, userId];
         await pool.query(sql, values);
-        const [projectId] = await pool.query("SELECT project_id FROM projects WHERE title = ? AND user_id = ?", [title, id]);
+        const [projectId] = await pool.query("SELECT project_id FROM projects WHERE title = ? AND user_id = ?", [title, userId]);
 
-        // Get genre ids and add project's genres to database
-        let placeholders = genPlaceholders(genres);
-        const [genreIds] = await pool.query(`SELECT genre_id FROM genres WHERE label IN (${placeholders})`, genres);
-        for (let genre of genreIds) {
-            await pool.query("INSERT INTO project_genres (project_id, genre_id) VALUES (?, ?)", [projectId[0].project_id, genre.genre_id]);
+        // Add project's types to database
+        for (let type of projectTypes) {
+            await pool.query("INSERT INTO project_genres (project_id, type_id) VALUES (?, ?)", [projectId[0].project_id, type]);
         }
         
-        // Get tag ids and add project's tags to database 
-        placeholders = genPlaceholders(tags);
-        const [tagIds] = await pool.query(`SELECT tag_id FROM tags WHERE label IN (${placeholders})`, tags);
-        for (let tag of tagIds) {
-            await pool.query("INSERT INTO project_tags (project_id, tag_id) VALUES (?, ?)", [projectId[0].project_id, tag.tag_id]);
+        // Add project's tags to database 
+        for (let tag of tags) {
+            await pool.query("INSERT INTO project_tags (project_id, tag_id, position) VALUES (?, ?, ?)", [projectId[0].project_id, tag.id, tag.position]);
         }
 
         // Add project's jobs to database
         for (let job of jobs) {
-            await pool.query("INSERT INTO jobs (role, amount, description, project_id) VALUES (?, ?, ?, ?)", [job.role, job.amount, job.description, projectId[0].project_id])
+            await pool.query("INSERT INTO jobs (title_id, amount, description, project_id) VALUES (?, ?, ?, ?)", [job.titleId, job.amount, job.description, projectId[0].project_id])
         }
 
         // Add project's members to database
         for (let member of members) {
-            await pool.query("INSERT INTO members (project_id, user_id, role) VALUES (?, ?, ?)", [projectId[0].project_id, member.userId, member.role]);
+            await pool.query("INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?)", [projectId[0].project_id, member.id, member.titleId]);
         }
 
-        return res.sendStatus(201);
+        return res.status(201).json({
+            status: 201,
+            data: projectId
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -95,7 +94,7 @@ const getProjectById = async (req, res) => {
 
     try {
         // Get project data
-        const sql = `SELECT p.project_id, p.title, p.description, p.purpose, p.audience, g.project_types, t.tags, j.jobs, m.members, pi.images
+        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.purpose, p.audience, g.project_types, t.tags, j.jobs, m.members, pi.images
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                 FROM project_genres pg 

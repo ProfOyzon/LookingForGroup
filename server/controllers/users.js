@@ -13,13 +13,13 @@ const getUsers = async (req, res) => {
         const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image,
             u.headline, u.pronouns, jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
             FROM users u
-            JOIN (SELECT jt.title_id, jt.label AS job_title
+            LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
                 FROM job_titles jt) jt
             ON u.job_title_id = jt.title_id
-            JOIN (SELECT m.major_id, m.label AS major
+            LEFT JOIN (SELECT m.major_id, m.label AS major
                 FROM majors m) m
             ON u.major_id = m.major_id
-            JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+            LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
                 "position", us.position)) AS skills
                 FROM user_skills us 
                 JOIN skills s 
@@ -88,13 +88,13 @@ const getUsersById = async (req, res) => {
         const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
             jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, s.skills
             FROM users u
-            JOIN (SELECT jt.title_id, jt.label AS job_title
+            LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
                 FROM job_titles jt) jt
             ON u.job_title_id = jt.title_id
-            JOIN (SELECT m.major_id, m.label AS major
+            LEFT JOIN (SELECT m.major_id, m.label AS major
                 FROM majors m) m
             ON u.major_id = m.major_id
-            JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+            LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
                 "position", us.position)) AS skills
                 FROM user_skills us 
                 JOIN skills s 

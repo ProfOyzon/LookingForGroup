@@ -109,7 +109,7 @@ const getProjectById = async (req, res) => {
                     ON pt.tag_id = t.tag_id
                 GROUP BY pt.project_id) t
             ON p.project_id = t.project_id
-            JOIN (SELECT j.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", j.job_id, "job_title", jt.label, "amount", j.amount, 
+            LEFT JOIN (SELECT j.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", j.job_id, "job_title", jt.label, "amount", j.amount, 
             "description", j.description)) AS jobs
                 FROM jobs j
                 JOIN job_titles jt

@@ -77,7 +77,7 @@ const login = async (req, res) => {
     console.log(user);
 }
 
-const getUsersById = async (req, res) => {
+const getUserById = async (req, res) => {
     // Get users using id
 
     // Get id from url 
@@ -257,15 +257,15 @@ const getMyProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.description, p.thumbnail, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
                 FROM projects p
-                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
+                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
                     JOIN genres g 
-                        ON pg.genre_id = g.genre_id
+                        ON pg.type_id = g.type_id
                     GROUP BY pg.project_id) g
                 ON p.project_id = g.project_id
-                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label)) AS tags
                     FROM project_tags pt 
                     JOIN tags t 
                         ON pt.tag_id = t.tag_id
@@ -300,15 +300,15 @@ const getVisibleProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.description, p.thumbnail, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
                 FROM projects p
-                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
+                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
                     JOIN genres g 
-                        ON pg.genre_id = g.genre_id
+                        ON pg.type_id = g.type_id
                     GROUP BY pg.project_id) g
                 ON p.project_id = g.project_id
-                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label)) AS tags
                     FROM project_tags pt 
                     JOIN tags t 
                         ON pt.tag_id = t.tag_id
@@ -366,15 +366,15 @@ const getProjectFollowing = async (req, res) => {
         // Get user data
         const sql = `SELECT p.* 
             FROM project_followings pf
-            JOIN (SELECT p.project_id, p.title, p.description, p.thumbnail, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
                 FROM projects p
-                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
+                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
                     JOIN genres g 
-                        ON pg.genre_id = g.genre_id
+                        ON pg.type_id = g.type_id
                     GROUP BY pg.project_id) g
                 ON p.project_id = g.project_id
-                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label)) AS tags
                     FROM project_tags pt 
                     JOIN tags t 
                         ON pt.tag_id = t.tag_id
@@ -451,14 +451,26 @@ const getUserFollowing = async (req, res) => {
         // Get user data
         const sql = `SELECT u.* 
             FROM user_followings uf
-            JOIN (SELECT u.user_id, u.first_name, u.last_name, u.bio, u.profile_image, JSON_ARRAYAGG(s.label) AS skills
+            JOIN (SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, jt.job_title, 
+                m.major, u.academic_year, u.location, u.fun_fact, s.skills
                 FROM users u
-                    JOIN user_skills us ON u.user_id = us.user_id 
-                    JOIN skills s ON us.skill_id = s.skill_id 
+                    LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+                    FROM job_titles jt) jt
+                        ON u.job_title_id = jt.title_id
+                    LEFT JOIN (SELECT m.major_id, m.label AS major
+                    FROM majors m) m
+                        ON u.major_id = m.major_id
+                    LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+                        "position", us.position)) AS skills
+                        FROM user_skills us 
+                        JOIN skills s 
+                            ON us.skill_id = s.skill_id
+                        GROUP BY us.user_id) s
+                    ON u.user_id = s.user_id
                 GROUP BY u.user_id) u
             ON uf.following_id = u.user_id
             WHERE uf.user_id = ?
-            `;
+        `;
         const values = [id];
         const [users] = await pool.query(sql, values);
         
@@ -517,7 +529,7 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export default { getUsers, createUser, getUsersById, getUserByUsername, login, updateUser, updateProfilePicture, 
+export default { getUsers, createUser, getUserById, getUserByUsername, login, updateUser, updateProfilePicture, 
     addSkill, updateSkillPositions, deleteSkill, 
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 

@@ -24,7 +24,7 @@ const getProjects = async (req, res) => {
                     ON pt.tag_id = t.tag_id
                 GROUP BY pt.project_id) t
             ON p.project_id = t.project_id
-            `;
+        `;
         const [projects] = await pool.query(sql);
 
         return res.status(200).json({
@@ -109,7 +109,7 @@ const getProjectById = async (req, res) => {
 				WHERE pi.project_id = ?) pi
 			ON p.project_id = pi.project_id
             WHERE p.project_id = ?
-            `;
+        `;
         const values = [id, id, id, id];
         const [project] = await pool.query(sql, values);
         

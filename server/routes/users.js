@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/api/users", userCtrl.getUsers);
 router.post("/api/users", userCtrl.createUser);
-router.get("/api/users/:id", userCtrl.getUsersById);
+router.get("/api/users/:id", userCtrl.getUserById);
 router.get("/api/users/:username", userCtrl.getUserByUsername);
 router.put("/api/users/:id", userCtrl.updateUser);
 router.put("/api/users/:id/profile-picture", mid.checkImageFile, userCtrl.updateProfilePicture);

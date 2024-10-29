@@ -18,7 +18,8 @@ const getProjects = async (req, res) => {
                     ON pg.type_id = g.type_id
                 GROUP BY pg.project_id) g
             ON p.project_id = g.project_id
-            JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label)) AS tags
+            JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label, "type", t.type,
+                "position", pt.position)) AS tags
                 FROM project_tags pt 
                 JOIN tags t 
                     ON pt.tag_id = t.tag_id
@@ -82,7 +83,8 @@ const getProjectById = async (req, res) => {
                     ON pg.type_id = g.type_id
                 GROUP BY pg.project_id) g
             ON p.project_id = g.project_id
-            JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label)) AS tags
+            JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label, "type", t.type,
+                "position", pt.position)) AS tags
                 FROM project_tags pt 
                 JOIN tags t 
                     ON pt.tag_id = t.tag_id

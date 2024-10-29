@@ -1,25 +1,76 @@
 import "./pages.css";
 import "../Styles/styles.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Header } from "../Header";
 import { ProjectPanel } from "../ProjectPanel";
 import { Popup, PopupButton, PopupContent } from "../Popup"; 
 import { profiles, projects } from "../../constants/fakeData";
 import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
+import * as tags from "../../constants/tags";
+
+//To-do:
+//Fix profile page not changing when clicking 'profile' sidebar link
+//(If viewing another's profile, should switch to user's profile when clicking such)
+//Ensure all tag types function correctly
 
 const NewProfile = () => {
+  //Check to see if database call returned anything
+  let [failCheck, setFailCheck] = useState(false);
+
+  //Get url parameters to tell what user we are looking for
+  let urlParams = new URLSearchParams(window.location.search);
+  let profileID = urlParams.get('userID');
+  if (profileID === undefined) {
+    //If no profileID is in search query, automatically set to the current user's id
+    console.log('profileID not found, using default');
+    profileID = '1';
+  }
+
+  //Function used to get profile data
+  const getProfileData = async () => {
+    const url = `http://localhost:8081/api/users/${profileID}`;
+
+    try {
+      let response = await fetch(url);
+
+      const profileData = await response.json();
+      console.log(profileData);
+      console.log(profileData.data[0]);
+
+      if(profileData.data[0] === undefined){
+        setFailCheck(true);
+        return;
+      }
+
+      setDisplayedProfile(profileData.data[0]);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  //State that hold info on the profile being displayed
+  const [displayedProfile, setDisplayedProfile] = useState();
+  
+
+  //Runs funciton to get data if we haven't yet
+  if (displayedProfile === undefined) {
+    getProfileData();
+  }
+
+  console.log(displayedProfile);
+
   //Variables used to represent profile data (only placeholders are used for now until backend is integrated)
 
   //Get a profile based on searchParam userId given
   ///const profileData = (/* Some sort of fetch request */);
   //Check whether or not the profile is the current user's
-  let usersProfile = true;
-  /* 
-  if (profileData === userSessionData) {
+  let usersProfile = false;
+  
+  if (profileID === '1') {
     usersProfile = true;
   } 
-  */
+  
   //Pull data from profile and place them in variables 
   //(structure depends on database structure, so wait for implementation)
   //data includes...
@@ -37,12 +88,8 @@ const NewProfile = () => {
 
   //Holds a list of tags that the user selected to represent their skills
   //(How will tag categories be identified for color?)
-  let placeholderTags = [
-    {tag:'test1', category:1},
-    {tag:'test2', category:2},
-    {tag:'test3', category:2},
-    {tag:'test4', category:3},
-    {tag:'test5butlonger', category:1}]
+  //No indicator on data, will need to cross-refrence here
+    let placeholderTags = ['Figma','Javascript','Visual Studio Code','Flexibility','Krita'];
 
   //functions & variables used for project rendering
   // ---different sizes, make sure to double-check math used for project rendering
@@ -72,7 +119,10 @@ const NewProfile = () => {
   }
 
   //Find out the width of the flexbox container
-  let flexboxWidth : number = window.innerWidth - (760 + getScrollbarWidth());
+  let flexboxWidth : number = window.innerWidth >= 1000 ? window.innerWidth - (760 + getScrollbarWidth()) :
+    window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
+    window.innerWidth - (100)
+  ;
   //tracks the width of items in the current flexbox row
   let widthTracker : number = -20;
   //tracks the number of "full" flexbox rows
@@ -206,7 +256,10 @@ const NewProfile = () => {
       let resizedProjects : {project, width : number, adjust : number, row : number}[] = [];
       //Calculate new flexbox width
       // ---Different size, check to see what math needs to be done
-      flexboxWidth = window.innerWidth - (760 + getScrollbarWidth());
+      flexboxWidth = window.innerWidth >= 1000 ? window.innerWidth - (760 + getScrollbarWidth()) :
+        window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
+        window.innerWidth - (100)
+      ;
       //Reset tracker variables (widthTracker, rowTracker, projectTracker)
       widthTracker = -20;
       rowTracker = 0;
@@ -286,10 +339,26 @@ const NewProfile = () => {
       </div>
     }</>
 
+  //Page layout for if profile data hasn't been loaded yet
+  let loadingProfile = <>{
+    <div>
+      Loading profile...
+    </div>
+  }</>
+
+  //Page layout for if profile data isn't found
+  let loadingFailed = <>{
+    <div>
+      Data on this profile does not exist.
+    </div>
+  }</>
+
   return (
     <div className='page'>
       <Header dataSets={{data: []}} onSearch={() => {}}/>
 
+      {/* Checks if we have profile data to use, then determines what to render */}
+      {failCheck === true ? loadingFailed : displayedProfile === undefined ? loadingProfile :
       <div id='profile-page-content'>
         {/* Left-side column that will contain info found on a discover card
         Mostly just includes small tidbits about the person 
@@ -298,13 +367,13 @@ const NewProfile = () => {
           <img src={profilePicture} id='profile-image' alt='profile image'/>
 
           <div id='profile-discover-column-header'>
-            <div id='profile-discover-column-username'><h2>User Name</h2></div>
+            <div id='profile-discover-column-username'><h2>{displayedProfile.first_name} {displayedProfile.last_name}</h2></div>
             <div id='profile-discover-column-profession'><h3>Profession</h3></div>
           </div>
 
           <div id='profile-discover-column-headline'>
             <img src={profileImage} className='profile-discover-icon' alt='headline'/>
-            <div>This here's an headline! It's used for a quick blurb about the user.</div>
+            <div>{displayedProfile.bio}</div>
           </div>
 
           <div id='profile-discover-column-extra'>
@@ -345,26 +414,30 @@ const NewProfile = () => {
                 {
                 /* Will take in a list of tags the user has selected,
                 then use a map function to generate tags to fill this div */
-                  placeholderTags.map((tag) => {
+                  displayedProfile.skills.map((tag) => {
                     let category : string;
-                    switch(tag.category){
+                    /* switch(tag){
                       case 1: category = 'red'; break;
                       case 2: category = 'yellow'; break;
                       case 3: category = 'indigo'; break;
                       default: category = 'grey';
-                    }
+                    } */
+                    if (tags.desSkills.includes(tag)) {category = 'red';}
+                    else if (tags.devSkills.includes(tag)) {category = 'yellow';}
+                    else if (tags.softSkills.includes(tag)) {category = 'purple';}
+                    else {category = 'grey';}
                     return(
-                      <div className={`skill-tag-label tag-button-${category}`}>{tag.tag}</div>
+                      <div className={`skill-tag-label label-${category}`}>{tag}</div>
                     )
                   })
                 }
               </div>
             </div>
 
-            <div id='profile-looking-for'>
+            {/*<div id='profile-looking-for'>
               <h2>Looking for</h2>
               Looking for... something? I'm not entirely sure what goes here yet.
-            </div>
+            </div>*/}
 
             <div id='profile-projects'>
               <h2>Projects</h2>
@@ -385,6 +458,8 @@ const NewProfile = () => {
           </div>
         </div>
       </div>
+      }
+      
     </div>
   )
 }

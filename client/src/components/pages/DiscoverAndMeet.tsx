@@ -12,7 +12,7 @@ import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
 import * as tags from "../../constants/tags";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ToTopButton from "../ToTopButton";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
@@ -27,42 +27,14 @@ import e from "express";
 //Add more icons to various places in ui
 //Add checks for filters used in filter popup
 
-const getProjectData = async () => {
-  const url = 'http://localhost:8081/api/projects'
-  try {
-    let response = await fetch(url, {
-      method: "GET",
-      headers: {"Content-Type": "application/json"}
-    });
-
-    const projectData = await response.json();
-    console.log(projectData);
-
-    return projectData.data;
-  } catch(error) {
-    console.error(error.message);
-  }
-} 
-
-const getProfileData = async () => {
-  const url = 'http://localhost:8081/api/users'
-  try {
-    let response = await fetch(url);
-
-    const profileData = await response.json();
-    console.log(profileData);
-
-    return profileData.data;
-  } catch(error) {
-    console.error(error.message)
-  }
-}
 
 //These values need to be outside the component, otherwise they get reset every time it re-renders
 //Lists that hold the original list of projects and profiles, only updates on page reload
-const fullProjectList = projects;
-const fullProfileList = profiles;
-console.log(fullProjectList);
+
+//Use this when testing with 'npm run client'
+/* const fullProjectList = projects;
+const fullProfileList = profiles; */
+
 //List that holds project data that will be displayed. Changes along with search parameters
 //Could combine this and profile variants into single variable
 let projectList = projects;
@@ -70,7 +42,7 @@ let projectList = projects;
 let filteredProjectList = projects;
 //List that holds trimmed project data for use in searching
 //Note: Depending on user needs, may need to change or add to what is used in searches
-const projectSearchData = fullProjectList.map((project) => {
+const projectSearchData = projectList.map((project) => {
   return({name: project.name, description: project.description});
 });
 //Variable that tracks what position we are at in the above array
@@ -82,7 +54,7 @@ let profileList = profiles;
 let filteredProfileList = profiles;
 //List that holds trimmed profile data for use in searching
 //Note: Depending on user needs, may need to change or add to what is used in searches
-const profileSearchData = fullProfileList.map((profile) => {
+const profileSearchData = profileList.map((profile) => {
   return({name: profile.name, username: profile.username, bio: profile.bio});
 });
 //Variable that tracks what position we are at in the above array
@@ -102,6 +74,53 @@ let popupTagSelections : string[] = [];
 //Main DiscoverAndMeet component
 //category - string variable that determines what layout type to load (defaults to profile if invalid value is given)
 const DiscoverAndMeet = ({category}) => {
+
+  //Use these when testing with 'npm run server'
+  //Functions used to retrieve data from the database
+  const getProjectData = async () => {
+    const url = 'http://localhost:8081/api/projects'
+    try {
+      let response = await fetch(url, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}
+      });
+  
+      const projectData = await response.json();
+  
+      setFullProjectList(projectData.data);
+      setDisplayedProjects(() => firstProjects(projectData.data));
+    } catch(error) {
+      console.error(error.message);
+    }
+  } 
+
+  const getProfileData = async () => {
+    const url = 'http://localhost:8081/api/users'
+    try {
+      let response = await fetch(url);
+  
+      const profileData = await response.json();
+      console.log(profileData);
+  
+      setFullProfileList(profileData.data);
+      setProfileColumns(() => firstProfiles(profileData.data));
+    } catch(error) {
+      console.error(error.message)
+    }
+  }
+
+  const [fullProjectList, setFullProjectList] = useState();
+  const [fullProfileList, setFullProfileList] = useState();
+
+  //Makes calls to the database to retrieve data
+  //Only does so if relevant data has not been retrieved already
+  if (fullProjectList === undefined) {
+    getProjectData();
+  }
+  if (fullProfileList === undefined) {
+    getProfileData();
+  }
+
   //Gets the width of the scrollbar
   //Obtained from https://stackoverflow.com/questions/13382516/getting-scroll-bar-width-using-javascript
   function getScrollbarWidth() {
@@ -137,7 +156,7 @@ const DiscoverAndMeet = ({category}) => {
     ] :
     [
       {categoryTags: tags.devSkills, categoryName: 'Developer Skill'},
-      {categoryTags: tags.DesignSkills, categoryName: 'Designer Skill'},
+      {categoryTags: tags.desSkills, categoryName: 'Designer Skill'},
       {categoryTags: tags.softSkills, categoryName: 'Soft Skill'},
       {categoryTags: tags.tags, categoryName: 'Role'},
       {categoryTags: tags.tags, categoryName: 'Major'},
@@ -148,7 +167,9 @@ const DiscoverAndMeet = ({category}) => {
 
   //Variables used for panel displays
   //Find out the width of the flexbox container
-  let flexboxWidth : number = window.innerWidth - 320 - getScrollbarWidth();
+  let flexboxWidth : number = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
+    : window.innerWidth - (100 + getScrollbarWidth())
+  ;
   //tracks the width of items in the current flexbox row
   let widthTracker : number = -20;
   //tracks the number of "full" flexbox rows
@@ -161,6 +182,9 @@ const DiscoverAndMeet = ({category}) => {
   //Loads a new set of project panels to render
   //Calls when page first loads & when a new list of projects is being used (e.g. after a search)
   const firstProjects = (newProjectList) => {
+    if (newProjectList === undefined) {
+      return [];
+    }
     //Set new project list to run through
     projectList = newProjectList;
     //Reset projectListPosition
@@ -202,6 +226,7 @@ const DiscoverAndMeet = ({category}) => {
         */
         //(For testing's sake, width will be randomized)
         ///let panelWidth = imageWidth * (100 / imageHeight); [Use this when images are integrated]
+        //Add use case for if width is too wide for window
         let panelWidth = Math.floor((Math.random() * 200) + 200);
         //Add (width value + flexbox gap value + borders) to width tracker
         //Note - borders & other factors may add extra width, double check calculations using inspector
@@ -337,7 +362,9 @@ const DiscoverAndMeet = ({category}) => {
       //Array holding edited project details
       let resizedProjects : {project, width : number, adjust : number, row : number}[] = [];
       //Calculate new flexbox width
-      flexboxWidth = window.innerWidth - 320 - getScrollbarWidth();
+      flexboxWidth = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
+        : window.innerWidth - (100 + getScrollbarWidth())
+      ;
       //Reset tracker variables (widthTracker, rowTracker, projectTracker)
       widthTracker = -20;
       rowTracker = 0;
@@ -441,6 +468,10 @@ const DiscoverAndMeet = ({category}) => {
 
   //Calls when page first loads & when a new list of profiles is being used (e.g. after a search)
   const firstProfiles = (newProfileList) => {
+    console.log(newProfileList);
+    if (newProfileList === undefined) {
+      return([[]]);
+    }
     profileList = newProfileList;
     profileListPosition = 0;
     //Reset height trackers
@@ -540,7 +571,9 @@ const DiscoverAndMeet = ({category}) => {
       }
 
       //Check current flexbox width & number of columns it can hold
-      flexboxWidth = window.innerWidth - 324 - getScrollbarWidth();
+      flexboxWidth = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
+        : window.innerWidth - (100 + getScrollbarWidth())
+      ;
       let newColumns = Math.floor(flexboxWidth / 224);
       //If number of columns available has changed...
       if (newColumns !== heightTrackers.length){
@@ -643,9 +676,9 @@ const DiscoverAndMeet = ({category}) => {
 
   //Can possibly merge these two into a single useState? mostly concerned with different variable types
   //Holds data for currently displayed projects
-  let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number}[]>(() => firstProjects(projects));
+  let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number}[]>(() => firstProjects(fullProjectList));
   //Holds data for currently displayed profiles
-  let [profileColumns, setProfileColumns] = useState<{profile, height : number}[][]>(() => firstProfiles(profiles));
+  let [profileColumns, setProfileColumns] = useState<{profile, height : number}[][]>(() => firstProfiles(fullProfileList));
 
   //Runs resizing function whenever window width changes
   //Don't add dependencies to it - it causes state to be reset for some reason (I don't know why)
@@ -852,7 +885,7 @@ const DiscoverAndMeet = ({category}) => {
       <h2>Filters</h2>
       <div id='filter-popup-profiles'>
         <FilterCategory filterTagList={tags.devSkills} id='filter-popup-dev-skills' categoryTitle='Developer Skills' tagColor='yellow'/>
-        <FilterCategory filterTagList={tags.DesignSkills} id='filter-popup-des-skills' categoryTitle='Designer Skills' tagColor='red'/>
+        <FilterCategory filterTagList={tags.desSkills} id='filter-popup-des-skills' categoryTitle='Designer Skills' tagColor='red'/>
         <FilterCategory filterTagList={tags.proficiencies} id='filter-popup-roles' categoryTitle='Roles'/>
         <FilterCategory filterTagList={tags.tags} id='filter-popup-majors' categoryTitle='Majors'/>
         <FilterCategory filterTagList={tags.softSkills} id='filter-popup-soft-skills' categoryTitle='Soft Skills' tagColor='indigo'/>

@@ -35,7 +35,7 @@ export const Header = ({dataSets, onSearch}) => {
             <DropdownContent rightAlign={true}>This is where notification stuff will be</DropdownContent>
           </Dropdown>
           <Dropdown>
-            <DropdownButton><img src={profileImage} className="navIcon" alt="User" /></DropdownButton>
+            <DropdownButton><img src={profileImage} className="navIcon" alt="User" /><img className="navIcon" alt="V"/></DropdownButton>
             <DropdownContent rightAlign={true}>
               <div id='header-profile-dropdown'>
                 <div id='header-profile-user'>

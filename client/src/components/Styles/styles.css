@@ -66,6 +66,17 @@ General style rules
     --purple-dark: #2C2A3A;
     --dark-lighttheme: #171717;
     --dark-darktheme: #1E1E1E;
+
+    --tag-red: #FFA0B0;
+    --tag-yellow: #FFCF8B;
+    --tag-green: #BED9AA;
+    --tag-blue: #B0DCEE;
+    --tag-purple: #D7BED3;
+    --tag-light-red: #FFD9DF;
+    --tag-light-yellow: #FFEBD0;
+    --tag-light-green: #E5F0DD;
+    --tag-light-blue: #DFF1F8;
+    --tag-light-purple: #E6E6FF;
 }
 
 /*basic rules for hiding/showing certain elements
@@ -269,7 +280,9 @@ Project Panel component style rules
 }
 
 .project-panel img{
-    height:200px;
+    object-fit:contain;
+    max-height:200px;
+    width:100%;
 }
 
 /*
@@ -816,7 +829,7 @@ Header style rules
     text-align:left;
     margin-right:50px;
     grid-template:
-        'search buttons' 70px / auto 100px;
+        'search buttons' 70px / auto 120px;
 }
 
 #header-searchbar {
@@ -832,10 +845,11 @@ Header style rules
     grid-area: buttons;
     display:flex;
     justify-content:flex-end;
-    width:100px;
+    width:120px;
 }
 
 #header-buttons button {
+    display:flex;
     background-color: var(--peach);
     border-radius:40px;
     margin-left:10px;
@@ -843,6 +857,7 @@ Header style rules
     height:auto;
     width:auto;
     padding-top:4px;
+    align-items:center;
 }
 
 #header-buttons img {
@@ -1578,6 +1593,12 @@ New Profile page style rules
     margin: 0 50px;
 }
 
+@media only screen and (max-width: 1000px) {
+    #profile-page-content {
+        flex-wrap:wrap;
+    }
+}
+
 #profile-page-content h2 {
     color: var(--lavender);
 }
@@ -1644,6 +1665,27 @@ New Profile page style rules
         'projects projects' auto /
         2fr       1fr;
     gap: 20px;
+}
+
+@media only screen and (max-width: 1400px){
+    #profile-about-me-content {
+        grid-template:
+            'desc skills' auto
+            'looking looking' auto
+            'projects projects' auto /
+            1fr       1fr;
+    }
+}
+
+@media only screen and (max-width: 1200px){
+    #profile-about-me-content {
+        grid-template:
+            'desc' auto
+            'skills' auto
+            'looking' auto 
+            'projects' auto/
+            1fr;
+    }
 }
 
 #profile-about-me-header {
@@ -1737,6 +1779,12 @@ New Profile page style rules
     font-size: medium;
     flex-shrink: 0;
 }
+
+.label-red {background-color:var(--tag-red)}
+.label-yellow {background-color:var(--tag-yellow)}
+.label-green {background-color:var(--tag-green)}
+.label-blue {background-color:var(--tag-blue)}
+.label-purple {background-color:var(--tag-purple)}
 
 #skill-tags-container .tag-button {
     margin:0;

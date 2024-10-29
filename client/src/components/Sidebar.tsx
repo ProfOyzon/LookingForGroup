@@ -119,7 +119,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
         <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
           <img src="images/icons/nav/msg-nav.png" className="navIcon" alt="Messages" /> Messages
         </button>
-        <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', paths.routes.PROFILE)}>
+        <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', `${paths.routes.PROFILE}?userID=1`)}>
           <img src="images/icons/nav/profile-white.png" className="navIcon" alt="Profile" /> Profile
         </button>
         <button className={activePage === 'Settings' ? 'active' : ''} onClick={() => handleTextChange('Settings', paths.routes.SETTINGS)}>

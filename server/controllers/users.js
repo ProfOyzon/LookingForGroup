@@ -10,8 +10,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const getUsers = async (req, res) => {
     // Get all users
     try {
-        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image,
-            u.headline, u.pronouns, jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
+        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+        jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
             FROM users u
             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
                 FROM job_titles jt) jt
@@ -172,7 +172,10 @@ const updateProfilePicture = async (req, res) => {
         const values = [fileName, id];
         await pool.query(sql, values);
 
-        return res.sendStatus(204);
+        return res.status(201).json({
+            status: 201,
+            data: {profile_image: fileName}
+        });
     } catch(err) {
         console.log(err);
         return res.status(400).json({

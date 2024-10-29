@@ -9,7 +9,7 @@ router.post("/api/projects", projCtrl.createProject);
 router.get("/api/projects/:id", projCtrl.getProjectById);
 router.put("/api/projects/:id", projCtrl.updateProject);
 router.put("/api/projects/:id/thumbnail", mid.checkImageFile, projCtrl.updateThumbnail);
-router.get("/api/projects/:id/pictures", projCtrl.getProjectPictures);
+router.get("/api/projects/:id/pictures", projCtrl.getPictures);
 router.post("/api/projects/:id/pictures", mid.checkImageFile, projCtrl.addPicture);
 router.put("/api/projects/:id/pictures", projCtrl.updatePicturePositions);
 router.delete("/api/projects/:id/pictures", projCtrl.deletePicture);

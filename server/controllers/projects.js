@@ -180,7 +180,7 @@ const updateThumbnail = async (req, res) => {
     }
 }
 
-const getProjectPictures = async (req, res) => {
+const getPictures = async (req, res) => {
     // Get a project's pictures
 
     // Get id from url 
@@ -528,7 +528,7 @@ const deleteMember = async (req, res) => {
 }
 
 export default { getProjects, createProject, getProjectById, updateProject, 
-    updateThumbnail, getProjectPictures, addPicture, updatePicturePositions, deletePicture,
+    updateThumbnail, getPictures, addPicture, updatePicturePositions, deletePicture,
     addProjectType, deleteProjectType, 
     addTag, updateTagPositions, deleteTag, 
     addJob, updateJob, deleteJob,

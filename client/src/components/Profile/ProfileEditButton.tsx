@@ -5,6 +5,8 @@ import { softSkills } from "../../constants/skills";
 import { hardSkills } from "../../constants/skills";
 import { proficiencies } from "../../constants/skills";
 import { projects } from "../../constants/fakeData";
+import { roles } from "../../constants/roles";
+import { majors } from "../../constants/majors";
 
 // On click, this button should open the Profile Edit modal 
 const EditButton = ({user}) => {
@@ -40,9 +42,9 @@ const EditButton = ({user}) => {
     const [currentFirstName, setCurrentFirstName] = useState(firstName);
     const [currentLastName, setCurrentLastName] = useState(lastName);
     const [currentPronouns, setCurrentPronouns] = useState(pronouns.toLowerCase());
-    // currentRole 
-    // currentMajor 
-    // currentYear 
+    const [currentRole, setCurrentRole] = useState("");
+    const [currentMajor, setCurrentMajor] = useState("");
+    const [currentYear, setCurrentYear] = useState("blank");
     const [currentLocation, setCurrentLocation] = useState("");
     const [currentQuote, setCurrentQuote] = useState("");
     const [currentFunFact, setCurrentFunFact] = useState("");
@@ -52,7 +54,11 @@ const EditButton = ({user}) => {
         <div className='edit-profile-section-1'>
             {/* Profile Pic */}
             <div className='edit-region photo'>
-                <div className='edit-region-image'></div>
+                <div className='edit-region-image photo'>
+                    <div className='edit-region-button-div photo'>
+                        <button className='edit-region-button photo'><i className='fa-solid fa-camera'></i></button>
+                    </div>
+                </div>
             </div>
 
             <div className='about-row row-1'>
@@ -82,33 +88,44 @@ const EditButton = ({user}) => {
                 {/* Role */}
                 <div className='edit-region role'>
                     <div className='edit-region-header role'>Role*</div>
-                    <select className='edit-region-input role'>
-                        <option value='test'>Test...</option>
+                    <select className='edit-region-input role' value={currentRole} onChange={(e) => {setCurrentRole(e.target.value)}}>
+                        <option value="none" disabled>Select</option>
+                        {
+                            roles.map((role) => {
+                                return <option value={role.toLowerCase()}>{role}</option>
+                            })
+                        }
                     </select>
                 </div>
 
                 {/* Major */}
                 <div className='edit-region major'>
                     <div className='edit-region-header major'>Major*</div>
-                    <select className='edit-region-input major'>
-                        <option value='test'>Test...</option>
+                    <select className='edit-region-input major' value={currentMajor} onChange={(e) => {setCurrentMajor(e.target.value)}}>
+                        <option value="none" disabled>Select</option>
+                        {
+                            majors.map((major) => {
+                                return <option value={major.toLowerCase()}>{major}</option>
+                            })
+                        }
                     </select>
                 </div>
 
                 {/* Year */}
                 <div className='edit-region year'>
                     <div className='edit-region-header year'>Year</div>
-                    <select className='edit-region-input year'>
-                        <option value='first'>1st</option>
-                        <option value='second'>2nd</option>
-                        <option value='third'>3rd</option>
-                        <option value='fourth'>4th</option>
-                        <option value='fifth'>5th</option>
-                        <option value='sixth'>6th</option>
-                        <option value='seventh'>7th</option>
-                        <option value='eighth'>8th</option>
-                        <option value='nineth'>9th</option>
-                        <option value='tenth'>10th</option>
+                    <select className='edit-region-input year' value={currentYear} onChange={(e) => {setCurrentYear(e.target.value)}}>
+                        <option value="blank"></option>
+                        <option value='1'>1st</option>
+                        <option value='2'>2nd</option>
+                        <option value='3'>3rd</option>
+                        <option value='4'>4th</option>
+                        <option value='5'>5th</option>
+                        <option value='6'>6th</option>
+                        <option value='7'>7th</option>
+                        <option value='8'>8th</option>
+                        <option value='9'>9th</option>
+                        <option value='10'>10th</option>
                     </select>
                 </div>
             </div>
@@ -160,16 +177,35 @@ const EditButton = ({user}) => {
     </div>;
 
     // "Projects" 
+    const [currentHidden, setCurrentHidden] = useState([false, false, false]);
+
+    const updateHiddenProjects = (index) => {
+        let tempList = [currentHidden[0]];
+        for (let i = 1; i < currentHidden.length; i++) {
+            tempList.push(currentHidden[i]);
+        }
+
+        tempList[index] = !tempList[index];
+        setCurrentHidden(tempList);
+    };
+
     const page2 = <div className='edit-profile-body projects'>
         <div className='edit-region projects'>
             <div className='edit-region-header projects'>Projects</div>
             <div className='edit-region-instruct projects'>Choose to hide/show projects you've worke on.</div>
             <div className='edit-region-input projects'>
                 {
-                    user.projects.map((projectID) => {
+                    user.projects.map((projectID, index) => {
                         return (<div className='list-project'>
                             <div className='inner-list-project'>
                                 {projects[projectID].name}
+                            </div>
+                            <div className='list-project-hide-icon'>
+                                <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(index)}}>
+                                    {
+                                        currentHidden[index] ? <i className='fa-solid fa-eye-slash'></i> : <i className='fa-solid fa-eye'></i>
+                                    }
+                                </button>
                             </div>
                         </div>);
                     })
@@ -415,17 +451,17 @@ const EditButton = ({user}) => {
 
     const getLinksDropDown = (currentType, index) => {
         let dropDownList = <select className='link-options-list' value={currentType} onChange={(e) => {updateType(index, e.target.value)}}>
-            <option value="Select">Select</option>
-            <option value="instagram">Instagram</option>
-            <option value="linkedin">LinkedIn</option>
-            <option value="discord">Discord</option>
-            <option value="twitter">Twitter</option>
-            <option value="itch.io">Itch.io</option>
-            <option value="steam">Steam</option>
-            <option value="youtube">YouTube</option>
-            <option value="facebook">Facebook</option>
-            <option value="bluesky">Bluesky</option>
-            <option value="other">Other</option>
+            <option value="Select" disabled>Select</option>
+            <option value="instagram">&#xf16d; &nbsp;&nbsp; Instagram</option>
+            <option value="twitter">&#xe61b; &nbsp;&nbsp; X</option>
+            <option value="facebook">&#xf39e; &nbsp;&nbsp;&nbsp; Facebook</option>
+            <option value="discord">&#xf392; &nbsp; Discord</option>
+            <option value="bluesky">&#xe671; &nbsp; Bluesky</option>
+            <option value="linkedin">&#xf08c; &nbsp;&nbsp; LinkedIn</option>
+            <option value="youtube">&#xf167; &nbsp;&nbsp; YouTube</option>
+            <option value="steam">&#xf1b6; &nbsp;&nbsp; Steam</option>
+            <option value="itch.io">&#xf83a; &nbsp;&nbsp; Itch.io</option>
+            <option value="other">&#xf0c1; &nbsp;&nbsp; Other</option>
         </select>;
 
         return dropDownList;

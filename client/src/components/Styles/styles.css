@@ -1589,7 +1589,6 @@ New Profile page style rules
 */
 
 #profile-page-content {
-    display:flex;
     margin: 0 50px;
 }
 
@@ -1599,14 +1598,100 @@ New Profile page style rules
     }
 }
 
+#profile-information-grid {
+    display:grid;
+    grid-template:
+        'image name buttons' 40px
+        'image extra extra' 40px
+        'image desc desc' auto
+        'image fact fact' auto
+        'bio skills skills' auto /
+        350px auto 150px;
+    background-color: #ECEDF7;
+    border-radius:15px;
+    padding:30px;
+    gap:10px;
+}
+
 #profile-page-content h2 {
     color: var(--lavender);
 }
 
 #profile-image {
     width:350px;
+    grid-area:image;
     object-fit:contain;
     border-radius:10px;
+}
+
+#profile-bio {
+    grid-area:bio;
+    font-style:italic;
+    color:var(--darkGray);
+}
+
+#profile-info-name {
+    grid-area:name;
+    align-items:center;
+    display:flex;
+    font-style:italic;
+    font-size:2ch;
+    color:var(--darkGray);
+    gap:10px;
+}
+
+#profile-fullname {
+    color:var(--lavender);
+    font-size:3ch;
+    font-weight:bold;
+    font-style:normal;
+}
+
+#profile-info-buttons {
+    grid-area:buttons;
+    align-items:center;
+}
+
+#profile-info-extras {
+    grid-area:extra;
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.profile-extra {
+    display:flex;
+    align-items:center;
+    font-style:italic;
+}
+
+#profile-info-description {
+    grid-area:desc;
+    text-align:left;
+}
+
+#profile-info-funfact {
+    grid-area:fact;
+    text-align:left;
+    margin-top:auto;
+    font-style:italic;
+}
+
+#fun-fact-start {
+    color:var(--lavender);
+    font-weight: bold;
+}
+
+#profile-info-skills {
+    grid-area:skills;
+    display:flex;
+    gap:10px;
+}
+
+.info-extra-image {
+    width:26px;
+    height:26px;
+    margin: 0 10px;    
 }
 
 #profile-discover-column {
@@ -1704,8 +1789,9 @@ New Profile page style rules
     grid-area:buttons;
     display:flex;
     align-items:center;
-    height:calc(100% - 40px);
-    padding:20px 0;
+    /*height:calc(100% - 40px);*/
+    height:100%;
+    /* padding:20px 0; */
     gap:5px;
 }
 
@@ -1736,10 +1822,15 @@ New Profile page style rules
 
 #edit-profile-button {
     text-align:center;
-    border: 2px solid black !important;
+    background-color:var(--lavender) !important;
+    color: #ECECF7;
     border-radius: 30px;
     height:100%;
     width: 120px;
+}
+
+#edit-profile-button:hover {
+    background-color:var(--purple) !important;
 }
 
 #about-me-buttons img {

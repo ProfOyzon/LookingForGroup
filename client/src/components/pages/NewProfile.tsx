@@ -13,6 +13,14 @@ import * as tags from "../../constants/tags";
 //Fix profile page not changing when clicking 'profile' sidebar link
 //(If viewing another's profile, should switch to user's profile when clicking such)
 //Ensure all tag types function correctly
+//Add default profile to use when not testing with 'npm run server'
+
+let defaultProfile = {
+  first_name: 'User', 
+  last_name: 'Name', 
+  bio: `Here's a quick lil blurb about me!`,
+  skills: ['Figma','JavaScript','Visual Studio Code','Flexibility','Krita'],
+}
 
 const NewProfile = () => {
   //Check to see if database call returned anything
@@ -50,13 +58,15 @@ const NewProfile = () => {
   }
 
   //State that hold info on the profile being displayed
-  const [displayedProfile, setDisplayedProfile] = useState();
+  //use 'defaultProfile' in useState when using 'npm run client'. otherwise leave blank.
+  const [displayedProfile, setDisplayedProfile] = useState(defaultProfile);
   
 
   //Runs funciton to get data if we haven't yet
-  if (displayedProfile === undefined) {
+  //Comment out if using 'npm run client' (can't connect to server with it)
+  /*if (displayedProfile === undefined) {
     getProfileData();
-  }
+  } */
 
   console.log(displayedProfile);
 
@@ -89,7 +99,7 @@ const NewProfile = () => {
   //Holds a list of tags that the user selected to represent their skills
   //(How will tag categories be identified for color?)
   //No indicator on data, will need to cross-refrence here
-    let placeholderTags = ['Figma','Javascript','Visual Studio Code','Flexibility','Krita'];
+    //let placeholderTags = ['Figma','Javascript','Visual Studio Code','Flexibility','Krita'];
 
   //functions & variables used for project rendering
   // ---different sizes, make sure to double-check math used for project rendering
@@ -360,10 +370,77 @@ const NewProfile = () => {
       {/* Checks if we have profile data to use, then determines what to render */}
       {failCheck === true ? loadingFailed : displayedProfile === undefined ? loadingProfile :
       <div id='profile-page-content'>
-        {/* Left-side column that will contain info found on a discover card
+        {/* New profile display using css grid, will contain all info except for projects */}
+        <div id='profile-information-grid'>
+          <img src={profilePicture} id='profile-image' alt='profile image'/>
+          <div id='profile-bio'>{displayedProfile.bio}</div>
+
+          <div id='profile-info-name'><span id='profile-fullname'>{displayedProfile.first_name} {displayedProfile.last_name}</span>@{'someguy'}</div>
+          <div id='profile-info-buttons'>{aboutMeButtons}</div>
+
+          <div id='profile-info-extras'>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='profession'/>{'Profession'}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='major'/>{'Profesional Typer, 13th'}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='location'/>{'Middle of, Nowhere'}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='pronouns'/>{'Was/Were'}</div>
+          </div>
+
+          <div id='profile-info-description'>
+            {'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti, deserunt facilis. A nam neque, unde eligendi officia voluptates porro sint? Tempore debitis laborum, expedita sunt illum magnam maiores eius temporibus amet. Fuga quaerat magnam veritatis facilis ipsa praesentium minus rem sunt in, facere, asperiores corporis quae veniam. Similique possimus neque sit velit earum est deleniti nostrum repellat aut alias sequi assumenda ipsum tempora minus facilis, ex at excepturi libero doloribus.'}
+          </div>
+
+          <div id='profile-info-funfact'>
+            <span id='fun-fact-start'>Fun Fact! </span>
+            {`I'm not a real person, I'm just a digital representation of one!`}
+          </div>
+
+          <div id='profile-info-skills'>
+            {
+              /* Will take in a list of tags the user has selected,
+              then use a map function to generate tags to fill this div */
+              displayedProfile.skills.map((tag) => {
+                let category : string;
+                if (tags.desSkills.includes(tag)) {category = 'red';}
+                else if (tags.devSkills.includes(tag)) {category = 'yellow';}
+                else if (tags.softSkills.includes(tag)) {category = 'purple';}
+                else {category = 'grey';}
+                return(
+                  <div className={`skill-tag-label label-${category}`}>{tag}</div>
+                )
+              })
+            }
+          </div>
+        </div>
+
+        <div id='profile-projects'>
+          <h2>Projects</h2>
+          <div id='profile-project-list'>
+            {/* Will use same rendering system as the discover page, just with projects
+            this user has worked on. Only needs re-rendering on page resizing. maybe. */}
+            <>{
+              displayedProjects.length > 0 ? 
+                //For each project in project display list... (use map)
+                displayedProjects.map((project) => (
+                  //Create a Project Panel component
+                  <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
+                )) :
+                <>This user has not worked on any projects yet.</>
+            }</>
+          </div>
+        </div>
+      </div>
+      //Old layout goes here
+      }
+    </div>
+  )
+}
+
+{
+  //Old layout (remove later)
+      /* Left-side column that will contain info found on a discover card
         Mostly just includes small tidbits about the person 
-        width is set, unchanging*/}
-        <div id='profile-discover-column'>
+        width is set, unchanging*/
+        /* <div id='profile-discover-column'>
           <img src={profilePicture} id='profile-image' alt='profile image'/>
 
           <div id='profile-discover-column-header'>
@@ -396,7 +473,7 @@ const NewProfile = () => {
         </div>
 
         {/* This column contains more in-depth information, including skills and worked-on projects 
-        width readjusts and re-orders based on size*/}
+        width readjusts and re-orders based on size*}
         <div id='profile-about-me-column'>
           <div id='profile-about-me-header'>
             <h2 id='about-me-header-text'>About Me</h2>
@@ -413,7 +490,7 @@ const NewProfile = () => {
               <div id='skill-tags-container'>
                 {
                 /* Will take in a list of tags the user has selected,
-                then use a map function to generate tags to fill this div */
+                then use a map function to generate tags to fill this div *
                   displayedProfile.skills.map((tag) => {
                     let category : string;
                     /* switch(tag){
@@ -421,7 +498,7 @@ const NewProfile = () => {
                       case 2: category = 'yellow'; break;
                       case 3: category = 'indigo'; break;
                       default: category = 'grey';
-                    } */
+                    } *
                     if (tags.desSkills.includes(tag)) {category = 'red';}
                     else if (tags.devSkills.includes(tag)) {category = 'yellow';}
                     else if (tags.softSkills.includes(tag)) {category = 'purple';}
@@ -432,18 +509,18 @@ const NewProfile = () => {
                   })
                 }
               </div>
-            </div>
+            </div> 
 
             {/*<div id='profile-looking-for'>
               <h2>Looking for</h2>
               Looking for... something? I'm not entirely sure what goes here yet.
-            </div>*/}
+            </div>*}
 
             <div id='profile-projects'>
               <h2>Projects</h2>
               <div id='profile-project-list'>
                 {/* Will use same rendering system as the discover page, just with projects
-                this user has worked on. Only needs re-rendering on page resizing. maybe. */}
+                this user has worked on. Only needs re-rendering on page resizing. maybe. *}
                 <>{
                   displayedProjects.length > 0 ? 
                     //For each project in project display list... (use map)
@@ -454,14 +531,10 @@ const NewProfile = () => {
                     <>This user has not worked on any projects yet.</>
                 }</>
               </div>
-            </div>
-          </div>
+            </div> 
+          </div> 
         </div>
-      </div>
-      }
-      
-    </div>
-  )
+      </div> */
 }
 
 export default NewProfile;

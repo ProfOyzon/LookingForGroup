@@ -460,7 +460,7 @@ const EditButton = ({user}) => {
 
     // "Links" 
     const [currentLinks, setCurrentLinks] = useState(user.links);
-    const [currentLinksCount, setCurrentLinksCount] = useState(user.links.length);
+    // const [currentLinksCount, setCurrentLinksCount] = useState(user.links.length);
 
     const getLinksDropDown = (currentType: string, index: number) => {
         let dropDownList = <select className='link-options-list' value={currentType} onChange={(e) => {updateType(index, e.target.value)}}>
@@ -500,13 +500,17 @@ const EditButton = ({user}) => {
     };
 
     const addNewLink = () => {
-        setCurrentLinksCount(currentLinksCount + 1);
-        addLinkToList({text: '', url: ''});
+        addLinkToList({text: 'instagram', url: ''});
     };
 
     const removeLink = (index: number) => {
-        setCurrentLinksCount(currentLinksCount - 1);
-        removeLinkFromList(currentLinks[index]);
+        let tempList = new Array(0);
+        for (let i = 0; i < currentLinks.length; i++) {
+            if (i != index) {
+                tempList.push(currentLinks[i]);
+            }
+        }
+        setCurrentLinks(tempList);
     };
 
     const updateType = (index: number, newType: string) => {
@@ -525,39 +529,26 @@ const EditButton = ({user}) => {
         setCurrentLinks(tempList);
     };
 
-    let linksList = new Array(0);
-    for (let i = 0; i < currentLinksCount; i++) {
-        let tempLink;
-        if (i >= currentLinks.length || currentLinks.length == 0) {
-            tempLink = <div className='edit-region-link-item'>
-                {getLinksDropDown("", i)}
-                <div className='edit-region-input links'>
-                    <input type='text' className='edit-region-input-text'
-                        placeholder='URL' onChange={(e) => {updateURL(i, e.target.value)}}></input>
-                    <button className='remove-button' onClick={(e) => {removeLink(i)}}>—</button>
-                </div>
-            </div>;
-        }
-        else {
-            tempLink = <div className='edit-region-link-item'>
-                {getLinksDropDown(currentLinks[i].text, i)}
-                <div className='edit-region-input links'>
-                    <input type='text' className='edit-region-input-text'
-                        value={currentLinks[i].url} onChange={(e) => {updateURL(i, e.target.value)}}></input>
-                    <button className='remove-button' onClick={(e) => {removeLink(i)}}>—</button>
-                </div>
-            </div>;
-        }
-        linksList.push(tempLink);
-    }
-
     const page4 = <div className='edit-profile-body links'>
         <div className='edit-profile-section'>
             <div className='edit-region links'>
                 <div className='edit-region-header links'>Social Links</div>
                 <div className='edit-region-instruct links'>Provide the links to pages you wish to include on your page.</div>
                 <div className='edit-region-links-list'>
-                    {linksList}
+                    {
+                        currentLinks.map((linkItem: { text: string, url: string }, index: number) => {
+                            return (
+                                <div className='edit-region-link-item'>
+                                    {getLinksDropDown(linkItem.text, index)}
+                                    <div className='edit-region-input links'>
+                                        <input type='text' className='edit-region-input-text'
+                                            placeholder='URL' value={linkItem.url} onChange={(e) => {updateURL(index, e.target.value)}}></input>
+                                        <button className='remove-button' onClick={(e) => {removeLink(index)}}>—</button>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    }
                     <div className='edit-region-button-section links'>
                         <button className='edit-region-button links' onClick={(e) => {addNewLink()}}>+ <em>Add social profile</em></button>
                     </div>

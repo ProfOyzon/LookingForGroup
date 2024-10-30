@@ -8,6 +8,12 @@ import { projects } from "../../constants/fakeData";
 import { roles } from "../../constants/roles";
 import { majors } from "../../constants/majors";
 
+/* TO DO:
+ - Add in code to save the data to the server 
+ - Display the profile pic 
+ - Pull in code from the server 
+*/
+
 // On click, this button should open the Profile Edit modal 
 const EditButton = ({user}) => {
     // console.log(user);
@@ -50,6 +56,24 @@ const EditButton = ({user}) => {
     const [currentFunFact, setCurrentFunFact] = useState("");
     const [currentAbout, setCurrentAbout] = useState(user.bio);
 
+    const getOrdinal = (index: number) => {
+        if (index === 1) {
+            return "1st";
+        }
+        if (index === 2) {
+            return "2nd";
+        }
+        if (index === 3) {
+            return "3rd";
+        }
+        return `${index}th`;
+    };
+
+    let yearOptions = [<option value="blank"></option>];
+    for (let i = 0; i < 10; i++) { // The "10" can be replaced with any value we choose to use as the maximum number of years 
+        yearOptions.push(<option value={i + 1}>{getOrdinal(i + 1)}</option>);
+    }
+
     const page1 = <div className='edit-profile-body about'>
         <div className='edit-profile-section-1'>
             {/* Profile Pic */}
@@ -91,7 +115,7 @@ const EditButton = ({user}) => {
                     <select className='edit-region-input role' value={currentRole} onChange={(e) => {setCurrentRole(e.target.value)}}>
                         <option value="none" disabled>Select</option>
                         {
-                            roles.map((role) => {
+                            roles.map((role: string) => {
                                 return <option value={role.toLowerCase()}>{role}</option>
                             })
                         }
@@ -104,7 +128,7 @@ const EditButton = ({user}) => {
                     <select className='edit-region-input major' value={currentMajor} onChange={(e) => {setCurrentMajor(e.target.value)}}>
                         <option value="none" disabled>Select</option>
                         {
-                            majors.map((major) => {
+                            majors.map((major: string) => {
                                 return <option value={major.toLowerCase()}>{major}</option>
                             })
                         }
@@ -115,17 +139,7 @@ const EditButton = ({user}) => {
                 <div className='edit-region year'>
                     <div className='edit-region-header year'>Year</div>
                     <select className='edit-region-input year' value={currentYear} onChange={(e) => {setCurrentYear(e.target.value)}}>
-                        <option value="blank"></option>
-                        <option value='1'>1st</option>
-                        <option value='2'>2nd</option>
-                        <option value='3'>3rd</option>
-                        <option value='4'>4th</option>
-                        <option value='5'>5th</option>
-                        <option value='6'>6th</option>
-                        <option value='7'>7th</option>
-                        <option value='8'>8th</option>
-                        <option value='9'>9th</option>
-                        <option value='10'>10th</option>
+                        {yearOptions}
                     </select>
                 </div>
             </div>
@@ -164,7 +178,7 @@ const EditButton = ({user}) => {
 
         <div className='edit-profile-section-3'>
             {/* About You */}
-            <div className='edit-region quote'>
+            <div className='edit-region you'>
                 <div className='edit-region-header you'>About You</div>
                 <div className='edit-region-instruct you'>Share a brief overview of who you are, your interests, and what drives you!</div>
                 <div className='edit-region-text-area you'>
@@ -179,9 +193,9 @@ const EditButton = ({user}) => {
     // "Projects" 
     const [currentHidden, setCurrentHidden] = useState([false, false, false]);
 
-    const updateHiddenProjects = (index) => {
-        let tempList = [currentHidden[0]];
-        for (let i = 1; i < currentHidden.length; i++) {
+    const updateHiddenProjects = (index: number) => {
+        let tempList = new Array(0);
+        for (let i = 0; i < currentHidden.length; i++) {
             tempList.push(currentHidden[i]);
         }
 
@@ -195,7 +209,7 @@ const EditButton = ({user}) => {
             <div className='edit-region-instruct projects'>Choose to hide/show projects you've worke on.</div>
             <div className='edit-region-input projects'>
                 {
-                    user.projects.map((projectID, index) => {
+                    user.projects.map((projectID: number, index: number) => {
                         return (<div className='list-project'>
                             <div className='inner-list-project'>
                                 {projects[projectID].name}
@@ -218,7 +232,7 @@ const EditButton = ({user}) => {
     const [currentSkills, setCurrentSkills] = useState(user.skills);
     // const [orderedSkills, setOrderedSkills] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8]);
 
-    const addToSkillsList = (newSkill) => {
+    const addToSkillsList = (newSkill: { type: string, skill: string, highlighted: boolean }) => {
         let found = false;
         for (let i = 0; i < currentSkills.length; i++) {
             if (currentSkills[i].type == newSkill.type && currentSkills[i].skill == newSkill.skill) {
@@ -227,8 +241,7 @@ const EditButton = ({user}) => {
         }
 
         if (!found) {
-            // let tempList = {type: String, skill: String}[0];
-            let tempList = [];
+            let tempList = new Array(0);
             for (let i = 0; i < currentSkills.length; i++) {
                 tempList.push(currentSkills[i]);
             }
@@ -237,8 +250,8 @@ const EditButton = ({user}) => {
         }
     };
 
-    const removeFromSkillsList = (index) => {
-        let tempList = [];
+    const removeFromSkillsList = (index: number) => {
+        let tempList = new Array(0);
         for (let i = 0; i < currentSkills.length; i++) {
             if (i != index) {
                 tempList.push(currentSkills[i]);
@@ -253,7 +266,7 @@ const EditButton = ({user}) => {
 
     let displayedSkillsList = <div className='chosen-skills-list'>
         {
-            currentSkills.map((skillItem, index) => {
+            currentSkills.map((skillItem: { type: string, skill: string }, index: number) => {
                 if (skillItem.skill != "") {
                     let chosenClass = "skill-item chosen";
                     // chosenClass += (skillItem.type == "softSkill" ? " soft" : skillItem.type == "hardSkill" ? " hard" : skillItem.type == "proficiency" ? " prof" : "");
@@ -279,7 +292,7 @@ const EditButton = ({user}) => {
     // 0 -> Developer Skills -> Hard Skills 
     // 1 -> Designer Skills -> Proficiencies 
     // 2 -> Soft Skills -> Soft Skills 
-    const changeFilter = (val) => {
+    const changeFilter = (val: number) => {
         if (currentSearch === "") {
             setFilterSel(val);
         }
@@ -328,7 +341,7 @@ const EditButton = ({user}) => {
                         skillClass += " chosen";
                     }
 
-                    return <button className={skillClass} onClick={(e) => {addToSkillsList({type: skillType, skill: skill})}}>
+                    return <button className={skillClass} onClick={(e) => {addToSkillsList({type: skillType, skill: skill, highlighted: false})}}>
                         {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}
                     </button>;
                 }
@@ -355,7 +368,7 @@ const EditButton = ({user}) => {
                     skillClass += " chosen";
                 }
 
-                return <button className={skillClass} onClick={(e) => {addToSkillsList({type: "hardSkill", skill: skill})}}>
+                return <button className={skillClass} onClick={(e) => {addToSkillsList({type: "hardSkill", skill: skill, highlighted: false})}}>
                     {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}
                 </button>;
             })
@@ -381,7 +394,7 @@ const EditButton = ({user}) => {
                     skillClass += " chosen";
                 }
 
-                return <button className={skillClass} onClick={(e) => {addToSkillsList({type: "proficiency", skill: skill})}}>
+                return <button className={skillClass} onClick={(e) => {addToSkillsList({type: "proficiency", skill: skill, highlighted: false})}}>
                     {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}
                 </button>;
             })
@@ -407,7 +420,7 @@ const EditButton = ({user}) => {
                     skillClass += " chosen";
                 }
 
-                return <button className={skillClass} onClick={(e) => {addToSkillsList({type: "softSkill", skill: skill})}}>
+                return <button className={skillClass} onClick={(e) => {addToSkillsList({type: "softSkill", skill: skill, highlighted: false})}}>
                     {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}
                 </button>;
             })
@@ -449,7 +462,7 @@ const EditButton = ({user}) => {
     const [currentLinks, setCurrentLinks] = useState(user.links);
     const [currentLinksCount, setCurrentLinksCount] = useState(user.links.length);
 
-    const getLinksDropDown = (currentType, index) => {
+    const getLinksDropDown = (currentType: string, index: number) => {
         let dropDownList = <select className='link-options-list' value={currentType} onChange={(e) => {updateType(index, e.target.value)}}>
             <option value="Select" disabled>Select</option>
             <option value="instagram">&#xf16d; &nbsp;&nbsp; Instagram</option>
@@ -467,8 +480,8 @@ const EditButton = ({user}) => {
         return dropDownList;
     };
 
-    const addLinkToList = (newLink = {text: String, url: String}) => {
-        let tempList = [];
+    const addLinkToList = (newLink: { text: string, url: string }) => {
+        let tempList = new Array(0);
         for (let i = 0; i < currentLinks.length; i++) {
             tempList.push(currentLinks[i]);
         }
@@ -476,8 +489,8 @@ const EditButton = ({user}) => {
         setCurrentLinks(tempList);
     };
 
-    const removeLinkFromList = (theLink = {text: String, url: String}) => {
-        let tempList = [];
+    const removeLinkFromList = (theLink: { text: string, url: string }) => {
+        let tempList = new Array(0);
         for (let i = 0; i < currentLinks.length; i++) {
             if (!(currentLinks[i].text == theLink.text && currentLinks[i].url == theLink.url)) {
                 tempList.push(currentLinks[i]);
@@ -491,12 +504,12 @@ const EditButton = ({user}) => {
         addLinkToList({text: '', url: ''});
     };
 
-    const removeLink = (index) => {
+    const removeLink = (index: number) => {
         setCurrentLinksCount(currentLinksCount - 1);
         removeLinkFromList(currentLinks[index]);
     };
 
-    const updateType = (index, newType) => {
+    const updateType = (index: number, newType: string) => {
         let tempList = [index == 0 ? {text: newType, url: currentLinks[0].url} : currentLinks[0]];
         for (let i = 1; i < currentLinks.length; i++) {
             tempList.push(index == i ? {text: newType, url: currentLinks[i].url} : currentLinks[i]);
@@ -504,7 +517,7 @@ const EditButton = ({user}) => {
         setCurrentLinks(tempList);
     };
 
-    const updateURL = (index, newURL) => {
+    const updateURL = (index: number, newURL: string) => {
         let tempList = [index == 0 ? {text: currentLinks[0].text, url: newURL} : currentLinks[0]];
         for (let i = 1; i < currentLinks.length; i++) {
             tempList.push(index == 0 ? {text: currentLinks[i].text, url: newURL} : currentLinks[i]);
@@ -512,7 +525,7 @@ const EditButton = ({user}) => {
         setCurrentLinks(tempList);
     };
 
-    let linksList = [];
+    let linksList = new Array(0);
     for (let i = 0; i < currentLinksCount; i++) {
         let tempLink;
         if (i >= currentLinks.length || currentLinks.length == 0) {
@@ -587,6 +600,12 @@ const EditButton = ({user}) => {
         button4 = <button className='profile-discover-button' id="selected" onClick={() => setPage(4)}>Links</button>;
     }
 
+    const saveNewData = () => {
+        // TO DO: Add in code to save the data to the server 
+
+        openClosePopup(showPopup, setShowPopup);
+    };
+
     return (
         <div id='profile-edit-button-section'>
             <button className='profile-edit-button' onClick={() => openClosePopup(showPopup, setShowPopup)}>Edit Profile</button>
@@ -608,7 +627,7 @@ const EditButton = ({user}) => {
 
                     <div id='edit-profile-save'>
                         {/* Save button */}
-                        <button className='edit-region-save-button' onClick={() => {}}>Save Changes</button>
+                        <button className='edit-region-save-button' onClick={() => {saveNewData()}}>Save Changes</button>
                     </div>
                 </div>
             </PagePopup>

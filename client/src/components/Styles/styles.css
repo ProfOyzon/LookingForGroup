@@ -1768,7 +1768,7 @@ select.edit-region-input {
     box-shadow: none;
     width: auto;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     margin-top: 5px;
     padding-left: 10px;
     padding-top: 10px;
@@ -1825,19 +1825,6 @@ select.edit-region-input {
     line-height: 20px;
 }
 
-.list-project-hide-icon-slash {
-    position: absolute;
-    background-color: #00000000;
-    border: 0px;
-    bottom: 14px;
-    right: 11px;
-    color: white;
-    font-size: 30px;
-    font-style: italic;
-    line-height: 16px;
-    text-shadow: -2px 0px #271d66;
-}
-
 /* ----- Skills Page ----- */
 .edit-profile-body.skills {
     height: 57vh;
@@ -1864,7 +1851,7 @@ select.edit-region-input {
     border: 0px;
     border-radius: 10px;
     height: 57vh;
-    padding: 25px 26px;
+    padding: 25px 5px 25px 26px;
     text-align: start;
     box-shadow: 0px 0px 10px 0px #00000040;
 }
@@ -1874,7 +1861,7 @@ select.edit-region-input {
     height: 87%;
     margin-top: 15px;
     padding: 0px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .chosen-item {
@@ -1992,7 +1979,7 @@ select.edit-region-input {
     /* height: 40vh; */
 
     text-align: start;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .skill-item-button {
@@ -2023,16 +2010,31 @@ select.edit-region-input {
 
 /* ----- Links Page ----- */
 .edit-profile-body.links {
-    margin: 28px 66px;
+    height: 57vh;
+    margin: 28px 66px 28px 58px;
 
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 22px; */
+}
+
+.edit-profile-section {
+    height: 100%;
+}
+
+.edit-region.links {
+    height: 100%;
+}
+
+.edit-region-header.links, .edit-region-instruct.links {
+    margin-left: 8px;
 }
 
 .edit-region-links-list {
     width: 100%;
-    margin-top: 8px;
+    height: 85%;
+    padding: 15px 8px;
+    overflow-y: auto;
 
     display: flex;
     flex-direction: column;

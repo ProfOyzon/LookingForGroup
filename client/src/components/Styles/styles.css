@@ -1561,6 +1561,7 @@ Profile page style rules
 }
 
 #edit-profile-header {
+    height: fit-content;
     margin-top: 35px;
 
     display: flex;
@@ -1599,11 +1600,13 @@ Profile page style rules
 
 /* ----- About Page ----- */
 .edit-profile-body.about {
-    margin: 28px 71px;
+    box-sizing: border-box;
+    height: calc(100% - 28px - 10px);
+    margin: 28px 71px 0px 71px;
 
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 15px;
 }
 
 .edit-profile-body.about .edit-profile-section-1 {
@@ -1635,6 +1638,10 @@ Profile page style rules
 
 .edit-region.photo {
     grid-area: image;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .edit-region .edit-region-image {
@@ -1642,9 +1649,9 @@ Profile page style rules
     border: 2px solid white;
     border-radius: 10px;
     aspect-ratio: 1 / 1;
-    /* width: 210px; */
+    width: 210px;
     max-width: 200px;
-    /* height: 210px; */
+    height: 210px;
     max-height: 200px;
     margin: 0px 12.5%;
     padding: 0px;
@@ -1750,6 +1757,22 @@ select.edit-region-input {
     font-size: 14px;
     font-style: italic;
     letter-spacing: 0%;
+}
+
+.edit-profile-body.about .edit-profile-section-3 {
+    height: 100%;
+}
+
+.edit-region.you {
+    height: 100%;
+}
+
+.edit-region-text-area.you {
+    height: calc(100% - 27px - 19px - 8px - 10px);
+}
+
+.edit-region-input.you {
+    height: 100%;
 }
 
 /* ----- Projects Page ----- */

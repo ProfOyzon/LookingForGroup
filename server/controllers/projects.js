@@ -61,17 +61,20 @@ const createProject = async (req, res) => {
         
         // Add project's tags to database 
         for (let tag of tags) {
-            await pool.query("INSERT INTO project_tags (project_id, tag_id, position) VALUES (?, ?, ?)", [projectId[0].project_id, tag.id, tag.position]);
+            await pool.query("INSERT INTO project_tags (project_id, tag_id, position) VALUES (?, ?, ?)", 
+                [projectId[0].project_id, tag.id, tag.position]);
         }
 
         // Add project's jobs to database
         for (let job of jobs) {
-            await pool.query("INSERT INTO jobs (title_id, amount, description, project_id) VALUES (?, ?, ?, ?)", [job.titleId, job.amount, job.description, projectId[0].project_id])
+            await pool.query("INSERT INTO jobs (title_id, amount, description, project_id) VALUES (?, ?, ?, ?)", 
+                [job.titleId, job.amount, job.description, projectId[0].project_id])
         }
 
         // Add project's members to database
         for (let member of members) {
-            await pool.query("INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?)", [projectId[0].project_id, member.id, member.titleId]);
+            await pool.query("INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?)", 
+                [projectId[0].project_id, member.id, member.titleId]);
         }
 
         return res.status(201).json({
@@ -153,37 +156,62 @@ const updateProject = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { title, hook, description, purpose, audience, projectTypes} = req.body;
+    const { title, hook, description, purpose, audience, projectTypes, tags} = req.body;
 
     try {
         // Update database with project's new info
-        let sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, audience = ?  WHERE project_id = ?";
+        let sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, audience = ? WHERE project_id = ?";
         let values = [title, hook, description, purpose, audience, id];
         await pool.query(sql, values);
         
         // Update project's types in database
         // Create array from project types to be added 
         const newProjectTypes = projectTypes.map((type) => type.id);
-        console.log("Adding", newProjectTypes);
         // Get project types already in database that need to be removed
         let placeholders = genPlaceholders(newProjectTypes);
-        sql = `SELECT JSON_ARRAYAGG(pg.type_id) as project_types FROM project_genres pg WHERE pg.project_id = ? AND NOT pg.type_id IN (${placeholders})`;
+        sql = `SELECT JSON_ARRAYAGG(pg.type_id) as project_types FROM project_genres pg 
+        WHERE pg.project_id = ? AND NOT pg.type_id IN (${placeholders})`;
         values = [id, ...newProjectTypes]
         const [removingProjectTypes] = await pool.query(sql, values);
         // Remove project types if any were found
         if (removingProjectTypes[0].project_types) {
             placeholders = genPlaceholders(removingProjectTypes[0].project_types);
-            console.log("Removing", removingProjectTypes[0].project_types)
             sql = `DELETE FROM project_genres WHERE project_id = ? AND type_id IN (${placeholders})`;
             values = [id, ...removingProjectTypes[0].project_types]
             await pool.query(sql, values);
         }
         // Add new project types or update if already in database
-        sql = `INSERT INTO project_genres (project_id, type_id) VALUES (?, ?) AS new ON DUPLICATE KEY UPDATE type_id = new.type_id`
-        for (let typeId of newProjectTypes) {
-            await pool.query(sql, [id, typeId]);
+        sql = `INSERT INTO project_genres (project_id, type_id) VALUES (?, ?) AS new 
+        ON DUPLICATE KEY UPDATE project_id = new.project_id, type_id = new.type_id`
+        for (let type of projectTypes) {
+            await pool.query(sql, [id, type.id]);
         }
-
+        
+        // Update project's tags in database
+        // Create array from tags to be added 
+        const newTags = tags.map((tag) => tag.id);
+        console.log("Adding", newTags);
+        // Get tags already in database that need to be removed
+        placeholders = genPlaceholders(newTags);
+        sql = `SELECT JSON_ARRAYAGG(pt.tag_id) as tags FROM project_tags pt 
+        WHERE pt.project_id = ? AND NOT pt.tag_id IN (${placeholders})`;
+        values = [id, ...newTags]
+        const [removingTags] = await pool.query(sql, values);
+        // Remove tags if any were found
+        if (removingTags[0].tags) {
+            placeholders = genPlaceholders(removingTags[0].tags);
+            console.log("Removing", removingTags[0].tags);
+            sql = `DELETE FROM project_tags WHERE project_id = ? AND tag_id IN (${placeholders})`;
+            values = [id, ...removingTags[0].tags]
+            await pool.query(sql, values);
+        }
+        // Add new tags or update if already in database
+        sql = `INSERT INTO project_tags (project_id, tag_id, position) VALUES (?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE project_id = new.project_id, tag_id = new.tag_id, position = new.position`
+        for (let tag of tags) {
+            await pool.query(sql, [id, tag.id, tag.position]);
+        }
+        
         return res.sendStatus(204);
     } catch (err) {
         console.log(err);

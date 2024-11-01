@@ -56,7 +56,7 @@ const createProject = async (req, res) => {
 
         // Add project's types to database
         for (let type of projectTypes) {
-            await pool.query("INSERT INTO project_genres (project_id, type_id) VALUES (?, ?)", [projectId[0].project_id, type]);
+            await pool.query("INSERT INTO project_genres (project_id, type_id) VALUES (?, ?)", [projectId[0].project_id, type.id]);
         }
         
         // Add project's tags to database 
@@ -153,14 +153,37 @@ const updateProject = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { title, hook, description, purpose, audience} = req.body;
+    const { title, hook, description, purpose, audience, projectTypes} = req.body;
 
     try {
         // Update database with project's new info
-        const sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, audience = ?  WHERE project_id = ?";
-        const values = [title, hook, description, purpose, audience, id];
+        let sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, audience = ?  WHERE project_id = ?";
+        let values = [title, hook, description, purpose, audience, id];
         await pool.query(sql, values);
         
+        // Update project's types in database
+        // Create array from project types to be added 
+        const newProjectTypes = projectTypes.map((type) => type.id);
+        console.log("Adding", newProjectTypes);
+        // Get project types already in database that need to be removed
+        let placeholders = genPlaceholders(newProjectTypes);
+        sql = `SELECT JSON_ARRAYAGG(pg.type_id) as project_types FROM project_genres pg WHERE pg.project_id = ? AND NOT pg.type_id IN (${placeholders})`;
+        values = [id, ...newProjectTypes]
+        const [removingProjectTypes] = await pool.query(sql, values);
+        // Remove project types if any were found
+        if (removingProjectTypes[0].project_types) {
+            placeholders = genPlaceholders(removingProjectTypes[0].project_types);
+            console.log("Removing", removingProjectTypes[0].project_types)
+            sql = `DELETE FROM project_genres WHERE project_id = ? AND type_id IN (${placeholders})`;
+            values = [id, ...removingProjectTypes[0].project_types]
+            await pool.query(sql, values);
+        }
+        // Add new project types or update if already in database
+        sql = `INSERT INTO project_genres (project_id, type_id) VALUES (?, ?) AS new ON DUPLICATE KEY UPDATE type_id = new.type_id`
+        for (let typeId of newProjectTypes) {
+            await pool.query(sql, [id, typeId]);
+        }
+
         return res.sendStatus(204);
     } catch (err) {
         console.log(err);

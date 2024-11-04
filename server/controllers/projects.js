@@ -156,7 +156,7 @@ const updateProject = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { title, hook, description, purpose, audience, projectTypes, tags, jobs} = req.body;
+    const { title, hook, description, purpose, audience, projectTypes, tags, jobs, members} = req.body;
 
     try {
         // Update database with project's new info
@@ -165,7 +165,7 @@ const updateProject = async (req, res) => {
         await pool.query(sql, values);
         
         // ----- UPDATE PROJECT'S TYPES -----
-        // Create array from project types to be added 
+        // Create array from project types 
         const newProjectTypes = projectTypes.map((type) => type.id);
         // Get project types already in database that need to be removed
         let placeholders = genPlaceholders(newProjectTypes);
@@ -188,7 +188,7 @@ const updateProject = async (req, res) => {
         }
         
         // ----- UPDATE PROJECT'S TAGS -----
-        // Create array from tags to be added 
+        // Create array from tags
         const newTags = tags.map((tag) => tag.id);
         // Get tags already in database that need to be removed
         placeholders = genPlaceholders(newTags);
@@ -211,9 +211,8 @@ const updateProject = async (req, res) => {
         }
 
         // ----- UPDATE PROJECT'S JOBS -----
-        // Create array from jobs to be added 
+        // Create array from jobs
         const newJobs = jobs.map((job) => job.titleId);
-        console.log("Adding", newJobs);
         // Get jobs already in database that need to be removed
         placeholders = genPlaceholders(newJobs);
         sql = `SELECT JSON_ARRAYAGG(j.title_id) AS jobs FROM jobs j
@@ -223,7 +222,6 @@ const updateProject = async (req, res) => {
         // Remove jobs if any were found
         if (removingJobs[0].jobs) {
             placeholders = genPlaceholders(removingJobs[0].jobs);
-            console.log("Removing", removingJobs[0].jobs);
             sql = `DELETE FROM jobs WHERE project_id = ? AND title_id IN (${placeholders})`;
             values = [id, ...removingJobs[0].jobs]
             await pool.query(sql, values);
@@ -234,6 +232,29 @@ const updateProject = async (req, res) => {
         description = new.description`
         for (let job of jobs) {
             await pool.query(sql, [id, job.titleId, job.amount, job.description]);
+        }
+
+        // ----- UPDATE PROJECT'S MEMBERS -----
+        // Create array from members 
+        const newMembers = members.map((member) => member.id);
+        // Get members already in database that need to be removed
+        placeholders = genPlaceholders(newMembers);
+        sql = `SELECT JSON_ARRAYAGG(m.user_id) AS members FROM members m
+        WHERE m.project_id = ? AND NOT m.user_id IN (${placeholders})`;
+        values = [id, ...newMembers]
+        const [removingMembers] = await pool.query(sql, values);
+        // Remove members if any were found
+        if (removingMembers[0].members) {
+            placeholders = genPlaceholders(removingMembers[0].members);
+            sql = `DELETE FROM members WHERE project_id = ? AND user_id IN (${placeholders})`;
+            values = [id, ...removingMembers[0].members]
+            await pool.query(sql, values);
+        }
+        // Add new members or update if already in database
+        sql = `INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE project_id = new.project_id, user_id = new.user_id, title_id = new.title_id`
+        for (let member of members) {
+            await pool.query(sql, [id, member.id, member.titleId]);
         }
         
         return res.sendStatus(204);

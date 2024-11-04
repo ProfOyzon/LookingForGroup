@@ -17,47 +17,13 @@ import { majors } from "../../constants/majors";
 // On click, this button should open the Profile Edit modal 
 const EditButton = ({user}) => {
     const getData = async () => {
-        // const url = 'http://localhost:8081/api/datasets/majors';
-        const url = 'http://localhost:8081/api/datasets/job-titles';
-        // const url = 'http://localhost:8081/api/datasets';
+        const url = 'http://localhost:8081/api/datasets/majors';
         try {
             let response = await fetch(url);
-            console.log(response);
 
             const data = await response.json();
 
             console.log(data);
-
-            // let response = await fetch(url, {
-            //     method: "GET",
-            //     headers: {"Content-Type": "application/json"}
-            // });
-            // let response = await fetch(url);
-            // console.log(response);
-            // const data = await response.json();
-            // if (response.body) {
-            //     console.log(response.body);
-            //     console.log("Is response body locked? -> " + response.body.locked);
-            //     console.log(response.body.getReader());
-            // }
-
-            // "Failed to execute 'json' on 'Response': body stream is locked" 
-
-            // const data = await response.json();
-            // const data = await Response.json(response);
-            // console.log(data);
-
-            // console.log(response);
-            // if (response.body) {
-            //     if (response.body.locked) {
-            //         throw new Error("Response body is locked");
-            //     }
-            //     else {
-            //         const data = await response.json();
-            //         // const data = await Response.json(response);
-            //         // console.log(data);
-            //     }
-            // }
             return;
         }
         catch (error) {

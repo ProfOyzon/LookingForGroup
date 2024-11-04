@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import morgan from "morgan";
 import usersRouter from "./routes/users.js";
 import projectsRouter from "./routes/projects.js";
+import datasetsRouter from "./routes/datasets.js";
 import envConfig from "./config/env.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(usersRouter);
 app.use(projectsRouter);
+app.use(datasetsRouter);
 
 app.use(session({
     secret: 'your-secret-key',

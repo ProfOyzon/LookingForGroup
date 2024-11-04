@@ -489,16 +489,6 @@ const EditButton = ({user}) => {
         setCurrentLinks(tempList);
     };
 
-    const removeLinkFromList = (theLink: { text: string, url: string }) => {
-        let tempList = new Array(0);
-        for (let i = 0; i < currentLinks.length; i++) {
-            if (!(currentLinks[i].text == theLink.text && currentLinks[i].url == theLink.url)) {
-                tempList.push(currentLinks[i]);
-            }
-        }
-        setCurrentLinks(tempList);
-    };
-
     const addNewLink = () => {
         addLinkToList({text: 'instagram', url: ''});
     };

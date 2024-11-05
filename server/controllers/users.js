@@ -134,14 +134,39 @@ const updateUser = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { firstName, lastName, headline, pronouns, jobTitleId, majorId, academicYear, location, funFact, bio } = req.body
+    const { firstName, lastName, headline, pronouns, jobTitleId, majorId, academicYear, location, funFact, bio, skills } = req.body
 
     try {
         // Update database with users's new info
-        const sql = `UPDATE users SET first_name = ?, last_name = ?, headline = ?, pronouns = ?, job_title_id = ?,
+        let sql = `UPDATE users SET first_name = ?, last_name = ?, headline = ?, pronouns = ?, job_title_id = ?,
         major_id = ?, academic_year = ?, location = ?, fun_fact = ?, bio = ? WHERE user_id = ?`;
-        const values = [firstName, lastName, headline, pronouns, jobTitleId, majorId, academicYear, location, funFact, bio, id];
+        let values = [firstName, lastName, headline, pronouns, jobTitleId, majorId, academicYear, location, funFact, bio, id];
         await pool.query(sql, values);
+
+        // ----- UPDATE USER'S SKILLS -----
+        // Create array from skills
+        const newSkills = skills.map((skill) => skill.id);
+        console.log("Adding", newSkills)
+        // Get skills already in database that need to be removed
+        let placeholders = genPlaceholders(newSkills);
+        sql = `SELECT JSON_ARRAYAGG(us.skill_id) AS skills FROM user_skills us 
+        WHERE us.user_id = ? AND NOT us.skill_id IN (${placeholders})`;
+        values = [id, ...newSkills]
+        const [removingSkills] = await pool.query(sql, values);
+        // Remove skills if any were found
+        if (removingSkills[0].skills) {
+            placeholders = genPlaceholders(removingSkills[0].skills);
+            console.log("Removing", removingSkills[0].skills)
+            sql = `DELETE FROM user_skills WHERE user_id = ? AND skill_id IN (${placeholders})`;
+            values = [id, ...removingSkills[0].skills]
+            await pool.query(sql, values);
+        }
+        // Add new skills or update if already in database
+        sql = `INSERT INTO user_skills (user_id, skill_id, position) VALUES (?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE user_id = new.user_id, skill_id = new.skill_id, position = new.position`
+        for (let skill of skills) {
+            await pool.query(sql, [id, skill.id, skill.position]);
+        }
         
         return res.sendStatus(204)
     } catch (err) {

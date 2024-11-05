@@ -9,69 +9,66 @@ import { roles } from "../../constants/roles";
 import { majors } from "../../constants/majors";
 
 /* TO DO:
+ - Pull in projects data from the server 
  - Add in code to save the data to the server 
  - Display the profile pic 
- - Pull in code from the server 
 */
 
 // On click, this button should open the Profile Edit modal 
-const EditButton = ({user}) => {
-    const getData = async () => {
-        const url = 'http://localhost:8081/api/datasets/majors';
-        try {
-            let response = await fetch(url);
+const EditButton = ({userData}) => {
+    // console.log(userData);
 
-            const data = await response.json();
-
-            console.log(data);
-            return;
-        }
-        catch (error) {
-            console.log(error.message);
-        }
-    };
-
-    getData();
-
-    // console.log(user);
     const [showPopup, setShowPopup] = useState(false);
 
     // "About" 
-    let names = user.name.split(" ");
-    let firstName = names[0];
-    let lastName = names[1];
-    if (names.length > 2) {
-        for (let i = 2; i < names.length; i++) {
-            lastName += names[i];
-            if (i < names.length - 1) {
-                lastName += " ";
-            }
+    const [rolesList, setRolesList] = useState();
+    const [majorsList, setMajorsList] = useState();
+
+    const getJobTitles = async () => {
+        const url = 'http://localhost:8081/api/datasets/job-titles';
+
+        try {
+            let response = await fetch(url);
+
+            const rawData = await response.json();
+            setRolesList(rawData.data);
         }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getMajors = async () => {
+        const url = 'http://localhost:8081/api/datasets/majors';
+
+        try {
+            let response = await fetch(url);
+
+            const rawData = await response.json();
+            setMajorsList(rawData.data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    if (rolesList === undefined) {
+        getJobTitles();
+    }
+    if (majorsList === undefined) {
+        getMajors();
     }
 
-    let pronouns = "";
-    if (user.pronouns.length > 0) {
-        for (let i = 0; i < user.pronouns.length; i++) {
-            pronouns += user.pronouns[i];
-            if (i < user.pronouns.length - 1) {
-                pronouns += "/";
-            }
-        }
-    }
-    else {
-        pronouns = "N/A";
-    }
-
-    const [currentFirstName, setCurrentFirstName] = useState(firstName);
-    const [currentLastName, setCurrentLastName] = useState(lastName);
-    const [currentPronouns, setCurrentPronouns] = useState(pronouns.toLowerCase());
-    const [currentRole, setCurrentRole] = useState("");
-    const [currentMajor, setCurrentMajor] = useState("");
-    const [currentYear, setCurrentYear] = useState("blank");
-    const [currentLocation, setCurrentLocation] = useState("");
-    const [currentQuote, setCurrentQuote] = useState("");
-    const [currentFunFact, setCurrentFunFact] = useState("");
-    const [currentAbout, setCurrentAbout] = useState(user.bio);
+    const [currentFirstName, setCurrentFirstName] = useState(userData.first_name);
+    const [currentLastName, setCurrentLastName] = useState(userData.last_name);
+    const [currentPronouns, setCurrentPronouns] = useState(userData.pronouns);
+    const [currentRole, setCurrentRole] = useState(userData.job_title);
+    const [currentMajor, setCurrentMajor] = useState(userData.major);
+    const [currentYear, setCurrentYear] = useState(userData.academic_year);
+    const [currentLocation, setCurrentLocation] = useState(userData.location);
+    const [currentQuote, setCurrentQuote] = useState(userData.headline);
+    const [currentFunFact, setCurrentFunFact] = useState(userData.fun_fact);
+    const [currentAbout, setCurrentAbout] = useState(userData.bio);
 
     const getOrdinal = (index: number) => {
         if (index === 1) {
@@ -88,7 +85,7 @@ const EditButton = ({user}) => {
 
     let yearOptions = [<option value="blank"></option>];
     for (let i = 0; i < 10; i++) { // The "10" can be replaced with any value we choose to use as the maximum number of years 
-        yearOptions.push(<option value={i + 1}>{getOrdinal(i + 1)}</option>);
+        yearOptions.push(<option value={getOrdinal(i + 1)}>{getOrdinal(i + 1)}</option>);
     }
 
     const page1 = <div className='edit-profile-body about'>
@@ -132,8 +129,8 @@ const EditButton = ({user}) => {
                     <select className='edit-region-input role' value={currentRole} onChange={(e) => {setCurrentRole(e.target.value)}}>
                         <option value="none" disabled>Select</option>
                         {
-                            roles.map((role: string) => {
-                                return <option value={role.toLowerCase()}>{role}</option>
+                            rolesList === undefined ? "" : rolesList.map((roleItem) => {
+                                return <option value={roleItem.label}>{roleItem.label}</option>
                             })
                         }
                     </select>
@@ -145,8 +142,8 @@ const EditButton = ({user}) => {
                     <select className='edit-region-input major' value={currentMajor} onChange={(e) => {setCurrentMajor(e.target.value)}}>
                         <option value="none" disabled>Select</option>
                         {
-                            majors.map((major: string) => {
-                                return <option value={major.toLowerCase()}>{major}</option>
+                            majorsList === undefined ? "" : majorsList.map((majorItem) => {
+                                return <option value={majorItem.label}>{majorItem.label}</option>
                             })
                         }
                     </select>
@@ -223,33 +220,33 @@ const EditButton = ({user}) => {
     const page2 = <div className='edit-profile-body projects'>
         <div className='edit-region projects'>
             <div className='edit-region-header projects'>Projects</div>
-            <div className='edit-region-instruct projects'>Choose to hide/show projects you've worke on.</div>
+            <div className='edit-region-instruct projects'>Choose to hide/show projects you've worked on.</div>
             <div className='edit-region-input projects'>
                 {
-                    user.projects.map((projectID: number, index: number) => {
-                        return (<div className='list-project'>
-                            <div className='inner-list-project'>
-                                {projects[projectID].name}
-                            </div>
-                            <div className='list-project-hide-icon'>
-                                <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(index)}}>
-                                    {
-                                        currentHidden[index] ? <i className='fa-solid fa-eye-slash'></i> : <i className='fa-solid fa-eye'></i>
-                                    }
-                                </button>
-                            </div>
-                        </div>);
-                    })
+                    // userData.projects.map((projectID: number, index: number) => {
+                    //     return (<div className='list-project'>
+                    //         <div className='inner-list-project'>
+                    //             {projects[projectID].name}
+                    //         </div>
+                    //         <div className='list-project-hide-icon'>
+                    //             <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(index)}}>
+                    //                 {
+                    //                     currentHidden[index] ? <i className='fa-solid fa-eye-slash'></i> : <i className='fa-solid fa-eye'></i>
+                    //                 }
+                    //             </button>
+                    //         </div>
+                    //     </div>);
+                    // })
                 }
             </div>
         </div>
     </div>
 
     // "Skills" 
-    const [currentSkills, setCurrentSkills] = useState(user.skills);
+    const [currentSkills, setCurrentSkills] = useState(userData.skills.toSorted((a, b) => a.position - b.position));
     // const [orderedSkills, setOrderedSkills] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8]);
 
-    const addToSkillsList = (newSkill: { type: string, skill: string, highlighted: boolean }) => {
+    const addToSkillsList = (newSkill) => {
         let found = false;
         for (let i = 0; i < currentSkills.length; i++) {
             if (currentSkills[i].type == newSkill.type && currentSkills[i].skill == newSkill.skill) {
@@ -263,6 +260,7 @@ const EditButton = ({user}) => {
                 tempList.push(currentSkills[i]);
             }
             tempList.push(newSkill);
+            tempList.sort((a, b) => a.position - b.position);
             setCurrentSkills(tempList);
         }
     };
@@ -274,6 +272,7 @@ const EditButton = ({user}) => {
                 tempList.push(currentSkills[i]);
             }
         }
+        tempList.sort((a, b) => a.position - b.position);
         setCurrentSkills(tempList);
     };
 
@@ -281,20 +280,19 @@ const EditButton = ({user}) => {
     //     element.id = canDrag ? "draggable" : "";
     // };
 
+    // console.log(currentSkills);
     let displayedSkillsList = <div className='chosen-skills-list'>
         {
-            currentSkills.map((skillItem: { type: string, skill: string }, index: number) => {
+            currentSkills.map((skillItem, index: number) => {
                 if (skillItem.skill != "") {
                     let chosenClass = "skill-item chosen";
-                    // chosenClass += (skillItem.type == "softSkill" ? " soft" : skillItem.type == "hardSkill" ? " hard" : skillItem.type == "proficiency" ? " prof" : "");
-                    chosenClass += ` ${skillItem.type.substring(0, 4)}`;
-                    let chosenName = skillItem.skill;
+                    chosenClass += ` ${skillItem.type.toLowerCase().substring(0, 4)}`;
                     return (
                         <div className='chosen-item'>
                             ≡
                             <span className={chosenClass}>
                                 <button className='chosen-button' onClick={(e) => {removeFromSkillsList(index)}}>X</button>
-                                {chosenName}
+                                {skillItem.skill}
                             </span>
                         </div>
                     );
@@ -304,6 +302,47 @@ const EditButton = ({user}) => {
     </div>
 
     const [currentSearch, setCurrentSearch] = useState("");
+    const [skillsList, setSkillsList] = useState();
+
+    const getSkillsList = async (type: String) => {
+        if (type.toLowerCase() === "developer" || type.toLowerCase() === "designer" || type.toLowerCase() === "soft") {
+            const url = `http://localhost:8081/api/datasets/skills?type=${type.toLowerCase()}`;
+            try {
+                let response = await fetch(url);
+
+                const rawData = await response.json();
+                // console.log(rawData.data);
+                setSkillsList(rawData.data.toSorted((a, b) => {
+                    if (a.label.toLowerCase() < b.label.toLowerCase()) {
+                        return -1;
+                    }
+                    if (a.label.toLowerCase() > b.label.toLowerCase()) {
+                        return 1;
+                    }
+                    return 0;
+                }));
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+        else {
+            const url = `http://localhost:8081/api/datasets/skills`;
+            try {
+                let response = await fetch(url);
+
+                const rawData = await response.json();
+                setSkillsList(rawData.data);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
+    if (skillsList === undefined) {
+        getSkillsList("developer");
+    }
     
     const [filterSel, setFilterSel] = useState(0);
     // 0 -> Developer Skills -> Hard Skills 
@@ -312,6 +351,19 @@ const EditButton = ({user}) => {
     const changeFilter = (val: number) => {
         if (currentSearch === "") {
             setFilterSel(val);
+            switch (val) {
+                case 0:
+                    getSkillsList("developer");
+                    break;
+                
+                case 1:
+                    getSkillsList("designer");
+                    break;
+                
+                case 2:
+                    getSkillsList("soft");
+                    break;
+            }
         }
     }
 
@@ -319,38 +371,15 @@ const EditButton = ({user}) => {
     let filterButton2 = <button className='skills-filter-button' id={filterSel === 1 ? "selected" : ""} onClick={() => changeFilter(1)}>Designer Skills</button>;
     let filterButton3 = <button className='skills-filter-button' id={filterSel === 2 ? "selected" : ""} onClick={() => changeFilter(2)}>Soft Skills</button>;
 
-    let filteredSkillsList = <div className='skills-list'></div>;
+    let filteredSkillsListDisplay = <div className='skills-list'></div>;
     if (currentSearch !== "") {
-        let tempList = [hardSkills[0]];
-        for (let i = 1; i < hardSkills.length; i++) {
-            tempList.push(hardSkills[i]);
-        }
-        for (let i = 0; i < proficiencies.length; i++) {
-            tempList.push(proficiencies[i]);
-        }
-        for (let i = 0; i < softSkills.length; i++) {
-            tempList.push(softSkills[i]);
-        }
-        tempList.sort();
-
-        filteredSkillsList = <div className='skills-list'>{
-            tempList.map((skill) => {
-                if (skill.substring(0, currentSearch.length).toLowerCase() == currentSearch.toLowerCase()) {
-                    let skillType = "";
-                    if (hardSkills.indexOf(skill) != -1) {
-                        skillType = "hardSkill";
-                    }
-                    if (proficiencies.indexOf(skill) != -1) {
-                        skillType = "proficiency";
-                    }
-                    if (softSkills.indexOf(skill) != -1) {
-                        skillType = "softSkill";
-                    }
-
-                    let skillClass = `skill-item-button ${skillType.substring(0, 4)}`;
+        filteredSkillsListDisplay = <div className='skills-list'>{
+            skillsList === undefined ? "" : skillsList.map((skillItem) => {
+                if (skillItem.label.substring(0, currentSearch.length).toLowerCase() == currentSearch.toLowerCase()) {
+                    let skillClass = `skill-item-button ${skillItem.type.toLowerCase().substring(0, 4)}`;
                     let found = false;
                     for (let i = 0; i < currentSkills.length; i++) {
-                        if (currentSkills[i].skill == skill) {
+                        if (currentSkills[i].skill == skillItem.label) {
                             found = true;
                         }
                     }
@@ -358,26 +387,22 @@ const EditButton = ({user}) => {
                         skillClass += " chosen";
                     }
 
-                    return <button className={skillClass} onClick={(e) => {addToSkillsList({type: skillType, skill: skill, highlighted: false})}}>
-                        {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}
+                    return <button className={skillClass} onClick={(e) => {
+                        addToSkillsList({id: skillItem.skill_id, type: skillItem.type, skill: skillItem.label, position: currentSkills.length})
+                    }}>
+                        {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skillItem.label}
                     </button>;
                 }
             })
         }</div>;
     }
-    else if (filterSel === 0) {
-        let tempList = [hardSkills[0]];
-        for (let i = 1; i < hardSkills.length; i++) {
-            tempList.push(hardSkills[i]);
-        }
-        tempList.sort();
-
-        filteredSkillsList = <div className='skills-list'>{
-            tempList.map((skill) => {
-                let skillClass = "skill-item-button hard";
+    else {
+        filteredSkillsListDisplay = <div className='skills-list'>{
+            skillsList === undefined ? "" : skillsList.map((skillItem) => {
+                let skillClass = `skill-item-button ${skillItem.type.toLowerCase().substring(0, 4)}`;
                 let found = false;
                 for (let i = 0; i < currentSkills.length; i++) {
-                    if (currentSkills[i].skill == skill) {
+                    if (currentSkills[i].skill == skillItem.label) {
                         found = true;
                     }
                 }
@@ -385,60 +410,10 @@ const EditButton = ({user}) => {
                     skillClass += " chosen";
                 }
 
-                return <button className={skillClass} onClick={(e) => {addToSkillsList({type: "hardSkill", skill: skill, highlighted: false})}}>
-                    {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}
-                </button>;
-            })
-        }</div>;
-    }
-    else if (filterSel === 1) {
-        let tempList = [proficiencies[0]];
-        for (let i = 1; i < proficiencies.length; i++) {
-            tempList.push(proficiencies[i]);
-        }
-        tempList.sort();
-
-        filteredSkillsList = <div className='skills-list'>{
-            tempList.map((skill) => {
-                let skillClass = "skill-item-button prof";
-                let found = false;
-                for (let i = 0; i < currentSkills.length; i++) {
-                    if (currentSkills[i].skill == skill) {
-                        found = true;
-                    }
-                }
-                if (found) {
-                    skillClass += " chosen";
-                }
-
-                return <button className={skillClass} onClick={(e) => {addToSkillsList({type: "proficiency", skill: skill, highlighted: false})}}>
-                    {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}
-                </button>;
-            })
-        }</div>;
-    }
-    else if (filterSel === 2) {
-        let tempList = [softSkills[0]];
-        for (let i = 1; i < softSkills.length; i++) {
-            tempList.push(softSkills[i]);
-        }
-        tempList.sort();
-
-        filteredSkillsList = <div className='skills-list'>{
-            tempList.map((skill) => {
-                let skillClass = "skill-item-button soft";
-                let found = false;
-                for (let i = 0; i < currentSkills.length; i++) {
-                    if (currentSkills[i].skill == skill) {
-                        found = true;
-                    }
-                }
-                if (found) {
-                    skillClass += " chosen";
-                }
-
-                return <button className={skillClass} onClick={(e) => {addToSkillsList({type: "softSkill", skill: skill, highlighted: false})}}>
-                    {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skill}
+                return <button className={skillClass} onClick={(e) => {
+                    addToSkillsList({id: skillItem.skill_id, type: skillItem.type, skill: skillItem.label, position: currentSkills.length})
+                }}>
+                    {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skillItem.label}
                 </button>;
             })
         }</div>;
@@ -470,14 +445,13 @@ const EditButton = ({user}) => {
                 </div>
 
                 {/* Skills List */}
-                {filteredSkillsList}
+                {filteredSkillsListDisplay}
             </div>
         </div>
     </div>;
 
     // "Links" 
-    const [currentLinks, setCurrentLinks] = useState(user.links);
-    // const [currentLinksCount, setCurrentLinksCount] = useState(user.links.length);
+    const [currentLinks, setCurrentLinks] = useState(userData.links);
 
     const getLinksDropDown = (currentType: string, index: number) => {
         let dropDownList = <select className='link-options-list' value={currentType} onChange={(e) => {updateType(index, e.target.value)}}>
@@ -543,18 +517,18 @@ const EditButton = ({user}) => {
                 <div className='edit-region-instruct links'>Provide the links to pages you wish to include on your page.</div>
                 <div className='edit-region-links-list'>
                     {
-                        currentLinks.map((linkItem: { text: string, url: string }, index: number) => {
-                            return (
-                                <div className='edit-region-link-item'>
-                                    {getLinksDropDown(linkItem.text, index)}
-                                    <div className='edit-region-input links'>
-                                        <input type='text' className='edit-region-input-text'
-                                            placeholder='URL' value={linkItem.url} onChange={(e) => {updateURL(index, e.target.value)}}></input>
-                                        <button className='remove-button' onClick={(e) => {removeLink(index)}}>—</button>
-                                    </div>
-                                </div>
-                            );
-                        })
+                        // currentLinks.map((linkItem: { text: string, url: string }, index: number) => {
+                        //     return (
+                        //         <div className='edit-region-link-item'>
+                        //             {getLinksDropDown(linkItem.text, index)}
+                        //             <div className='edit-region-input links'>
+                        //                 <input type='text' className='edit-region-input-text'
+                        //                     placeholder='URL' value={linkItem.url} onChange={(e) => {updateURL(index, e.target.value)}}></input>
+                        //                 <button className='remove-button' onClick={(e) => {removeLink(index)}}>—</button>
+                        //             </div>
+                        //         </div>
+                        //     );
+                        // })
                     }
                     <div className='edit-region-button-section links'>
                         <button className='edit-region-button links' onClick={(e) => {addNewLink()}}>+ <em>Add social profile</em></button>

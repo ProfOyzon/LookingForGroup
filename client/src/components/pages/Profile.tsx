@@ -29,6 +29,27 @@ const Profile = (props) => {
 
   window.scrollTo(0,0);
 
+  const [userData, setUserData] = useState();
+
+  const getUserData = async (userID: number) => {
+    const url = `http://localhost:8081/api/users/${userID}`;
+    try {
+      let response = await fetch(url, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}
+      });
+      const rawData = await response.json();
+
+      setUserData(rawData.data[0]);
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+  if (userData === undefined) {
+    getUserData(1);
+  }
+
   return (
     <div className = "page">
       {/*selector at the top to switch between users */}
@@ -50,7 +71,7 @@ const Profile = (props) => {
         </div>
         <ProfileProjects user={user}/>
       </div>
-      <EditButton user={user}/>
+      {userData === undefined ? "" : <EditButton userData={userData}/>}
 
       {/* Scroll To Top button */}
       <ToTopButton />

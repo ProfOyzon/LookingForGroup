@@ -1910,11 +1910,11 @@ select.edit-region-input {
     background-color: #c1c1ff;
 }
 
-.skill-item.chosen.hard, .skill-item-button.hard.chosen {
+.skill-item.chosen.hard, .skill-item.chosen.deve, .skill-item-button.hard.chosen, .skill-item-button.deve.chosen {
     background-color: #ffcf8b;
 }
 
-.skill-item.chosen.prof, .skill-item-button.prof.chosen {
+.skill-item.chosen.prof, .skill-item.chosen.desi, .skill-item-button.prof.chosen, .skill-item-button.desi.chosen {
     background-color: #ffa0b0;
 }
 
@@ -2023,11 +2023,11 @@ select.edit-region-input {
     background-color: #e7e5ff;
 }
 
-.skill-item-button.hard {
+.skill-item-button.hard, .skill-item-button.deve {
     background-color: #ffecd1;
 }
 
-.skill-item-button.prof {
+.skill-item-button.prof, .skill-item-button.desi {
     background-color: #ffd9df;
 }
 

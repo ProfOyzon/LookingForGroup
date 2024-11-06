@@ -38,8 +38,8 @@ const Profile = (props) => {
         method: "GET",
         headers: {"Content-Type": "application/json"}
       });
-      const rawData = await response.json();
 
+      const rawData = await response.json();
       setUserData(rawData.data[0]);
     }
     catch (error) {

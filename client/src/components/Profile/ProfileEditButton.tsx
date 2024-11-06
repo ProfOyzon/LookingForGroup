@@ -9,9 +9,8 @@ import { roles } from "../../constants/roles";
 import { majors } from "../../constants/majors";
 
 /* TO DO:
- - Pull in projects data from the server 
- - Add in code to save the data to the server 
- - Display the profile pic 
+ - GET and PUT profile picture data to and from the server 
+ - Make the skills reorderable 
 */
 
 // On click, this button should open the Profile Edit modal 
@@ -205,16 +204,79 @@ const EditButton = ({userData}) => {
     </div>;
 
     // "Projects" 
-    const [currentHidden, setCurrentHidden] = useState([false, false, false]);
+    const [userProjects, setUserProjects] = useState();
+    const [shownProjects, setShownProjects] = useState();
 
-    const updateHiddenProjects = (index: number) => {
-        let tempList = new Array(0);
-        for (let i = 0; i < currentHidden.length; i++) {
-            tempList.push(currentHidden[i]);
+    const getUsersProjects = async () => {
+        const url = `http://localhost:8081/api/users/${userData.user_id}/projects`;
+        try {
+            let response = await fetch(url, {
+                method: "GET",
+                headers: {"Content-Type": "application/json"}
+            });
+
+            const rawData = await response.json();
+            setUserProjects(rawData.data);
         }
+        catch (error) {
+            console.log(error);
+        }
+    };
 
-        tempList[index] = !tempList[index];
-        setCurrentHidden(tempList);
+    const getVisibleProjects = async () => {
+        const url = `http://localhost:8081/api/users/${userData.user_id}/projects/profile`;
+        try {
+            let response = await fetch(url);
+
+            const rawData = await response.json();
+            setShownProjects(rawData.data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    if (userProjects === undefined) {
+        getUsersProjects();
+    }
+    if (shownProjects === undefined) {
+        getVisibleProjects();
+    }
+
+    const checkIfProjectIsShown = (projectID) => {
+        if (shownProjects !== undefined) {
+            for (let i = 0; i < shownProjects.length; i++) {
+                if (shownProjects[i].project_id === projectID) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    };
+
+    const updateHiddenProjects = (project) => {
+        if (shownProjects !== undefined) {
+            if (checkIfProjectIsShown(project.project_id)) {
+                let tempList = new Array(0);
+                for (let i = 0; i < shownProjects.length; i++) {
+                    if (shownProjects[i].project_id !== project.project_id) {
+                        tempList.push(shownProjects[i]);
+                    }
+                }
+
+                setShownProjects(tempList);
+            }
+            else {
+                let tempList = new Array(0);
+                for (let i = 0; i < shownProjects.length; i++) {
+                    tempList.push(shownProjects[i]);
+                }
+                tempList.push(project);
+
+                setShownProjects(tempList);
+            }
+        }
     };
 
     const page2 = <div className='edit-profile-body projects'>
@@ -223,20 +285,20 @@ const EditButton = ({userData}) => {
             <div className='edit-region-instruct projects'>Choose to hide/show projects you've worked on.</div>
             <div className='edit-region-input projects'>
                 {
-                    // userData.projects.map((projectID: number, index: number) => {
-                    //     return (<div className='list-project'>
-                    //         <div className='inner-list-project'>
-                    //             {projects[projectID].name}
-                    //         </div>
-                    //         <div className='list-project-hide-icon'>
-                    //             <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(index)}}>
-                    //                 {
-                    //                     currentHidden[index] ? <i className='fa-solid fa-eye-slash'></i> : <i className='fa-solid fa-eye'></i>
-                    //                 }
-                    //             </button>
-                    //         </div>
-                    //     </div>);
-                    // })
+                    userProjects !== undefined && shownProjects !== undefined ? userProjects.map((project) => {
+                        return (<div className='list-project'>
+                            {
+                                project.thumbnail == null ? <div className='inner-list-project'>{project.title}</div> : ""
+                            }
+                            <div className='list-project-hide-icon'>
+                                <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(project)}}>
+                                    {
+                                        checkIfProjectIsShown(project.project_id) ? <i className='fa-solid fa-eye'></i> : <i className='fa-solid fa-eye-slash'></i>
+                                    }
+                                </button>
+                            </div>
+                        </div>);
+                    }) : ""
                 }
             </div>
         </div>
@@ -572,10 +634,105 @@ const EditButton = ({userData}) => {
         button4 = <button className='profile-discover-button' id="selected" onClick={() => setPage(4)}>Links</button>;
     }
 
-    const saveNewData = () => {
-        // TO DO: Add in code to save the data to the server 
+    const getRoleId = (roleName: string) => {
+        if (rolesList !== undefined) {
+            for (let i = 0; i < rolesList.length; i++) {
+                if (rolesList[i].label == roleName) {
+                    return rolesList[i].title_id;
+                }
+            }
+            return -1;
+        }
+    };
+
+    const getMajorId = (majorName: string) => {
+        if (majorsList !== undefined) {
+            for (let i = 0; i < majorsList.length; i++) {
+                if (majorsList[i].label == majorName) {
+                    return majorsList[i].major_id;
+                }
+            }
+            return -1;
+        }
+    };
+
+    const createSkillsList = () => {
+        let tempList = new Array(0);
+        for (let i = 0; i < currentSkills.length; i++) {
+            tempList.push({id: currentSkills[i].id, position: currentSkills[i].position});
+        }
+        return tempList;
+    };
+
+    const saveData = () => {
+        // User 
+        saveUserData();
+
+        // Profile Picture 
+        // ---CODE GOES HERE--- 
+
+        // Projects 
+        saveProjectsPage();
+
+        // Links 
+        // ---CODE GOES HERE--- 
 
         openClosePopup(showPopup, setShowPopup);
+    };
+
+    const saveUserData = async () => {
+        const url = `http://localhost:8081/api/users/${userData.user_id}`;
+        try {
+            let response = await fetch(url, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    firstName: currentFirstName,
+                    lastName: currentLastName,
+                    headline: currentQuote,
+                    pronouns: currentPronouns,
+                    jobTitleId: getRoleId(currentRole),
+                    majorId: getMajorId(currentMajor),
+                    academicYear: currentYear,
+                    location: currentLocation,
+                    funFact: currentFunFact,
+                    bio: currentAbout,
+                    skills: createSkillsList()
+                })
+            });
+
+            console.log(`User data: Response status: ${response.status}`);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    const saveProjectsPage = async () => {
+        if (userProjects !== undefined) {
+            for (let i = 0; i < userProjects.length; i++) {
+                const url = `http://localhost:8081/api/users/${userData.user_id}/projects/visibility`;
+                try {
+                    let response = await fetch(url, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            projectId: userProjects.project_id,
+                            visibility: checkIfProjectIsShown(userProjects.project_id) ? "public" : "private"
+                        })
+                    });
+
+                    console.log(`Projects data #${i + 1}: Response status: ${response.status}`);
+                }
+                catch (error) {
+                    console.log(error);
+                }
+            }
+        }
     };
 
     return (
@@ -599,7 +756,7 @@ const EditButton = ({userData}) => {
 
                     <div id='edit-profile-save'>
                         {/* Save button */}
-                        <button className='edit-region-save-button' onClick={() => {saveNewData()}}>Save Changes</button>
+                        <button className='edit-region-save-button' onClick={() => {saveData()}}>Save Changes</button>
                     </div>
                 </div>
             </PagePopup>

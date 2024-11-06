@@ -174,8 +174,12 @@ const updateUser = async (req, res) => {
         }
 
         // ----- UPDATE USER'S SOCIALS -----
-        // Create array from skills
+        // Create array from socials
         const newSocials = socials.map((social) => social.id);
+        // Add 0 if empty to allow sql statement to still find exisiting data
+        if (newSocials.length === 0) {
+            newSocials.push(0);
+        }
         // Get socials already in database that need to be removed
         placeholders = genPlaceholders(newSocials);
         sql = `SELECT JSON_ARRAYAGG(uso.website_id) AS socials FROM user_socials uso 

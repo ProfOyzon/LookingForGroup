@@ -213,7 +213,11 @@ const updateProject = async (req, res) => {
         // ----- UPDATE PROJECT'S JOBS -----
         // Create array from jobs
         const newJobs = jobs.map((job) => job.titleId);
-        // Get jobs already in database that need to be removed
+        // Add 0 if empty to allow sql statement to still find exisiting data
+        if (newJobs.length === 0) {
+            newJobs.push(0);
+        }
+        // Get jobs already in database that need to be removed 
         placeholders = genPlaceholders(newJobs);
         sql = `SELECT JSON_ARRAYAGG(j.title_id) AS jobs FROM jobs j
         WHERE j.project_id = ? AND NOT j.title_id IN (${placeholders})`;

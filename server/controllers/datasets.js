@@ -130,12 +130,12 @@ const getSocials = async (req, res) => {
     // Get all project types
 
     try {
-        const sql = `SELECT * FROM websites`;
-        const [websites] = await pool.query(sql);
+        const sql = `SELECT * FROM socials`;
+        const [socials] = await pool.query(sql);
 
         return res.status(200).json({
             status: 200,
-            data: websites
+            data: socials
         });
     } catch (err) {
         console.log(err);

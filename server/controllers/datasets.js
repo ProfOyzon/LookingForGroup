@@ -126,4 +126,24 @@ const getProjectTypes = async (req, res) => {
     }
 }
 
-export default { getSkills, getTags, getJobTitles, getMajors, getProjectTypes };
+const getSocials = async (req, res) => {
+    // Get all project types
+
+    try {
+        const sql = `SELECT * FROM websites`;
+        const [websites] = await pool.query(sql);
+
+        return res.status(200).json({
+            status: 200,
+            data: websites
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting the websites set" 
+        });
+    }
+}
+
+export default { getSkills, getTags, getJobTitles, getMajors, getProjectTypes, getSocials };

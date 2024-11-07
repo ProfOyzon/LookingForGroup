@@ -176,7 +176,7 @@ const updateUser = async (req, res) => {
         // ----- UPDATE USER'S SOCIALS -----
         // Create array from socials
         const newSocials = socials.map((social) => social.id);
-        // Add 0 if empty to allow sql statement to still find exisiting data
+        // Add 0 if empty to allow sql statement to still find exisiting data to be removed
         if (newSocials.length === 0) {
             newSocials.push(0);
         }

@@ -323,6 +323,13 @@ const EditButton = ({userData}) => {
             }
             tempList.push(newSkill);
             tempList.sort((a, b) => a.position - b.position);
+
+            for (let i = 0; i < tempList.length; i++) {
+                if (tempList[i].position > i + 1) {
+                    tempList[i].position = i + 1;
+                }
+            }
+
             setCurrentSkills(tempList);
         }
     };
@@ -335,33 +342,87 @@ const EditButton = ({userData}) => {
             }
         }
         tempList.sort((a, b) => a.position - b.position);
+
+        for (let i = 0; i < tempList.length; i++) {
+            if (tempList[i].position > i + 1) {
+                tempList[i].position = i + 1;
+            }
+        }
+
         setCurrentSkills(tempList);
     };
 
-    // const becomeDraggable = (element, canDrag) => {
-    //     element.id = canDrag ? "draggable" : "";
-    // };
-
-    // console.log(currentSkills);
-    let displayedSkillsList = <div className='chosen-skills-list'>
-        {
-            currentSkills.map((skillItem, index: number) => {
-                if (skillItem.skill != "") {
-                    let chosenClass = "skill-item chosen";
-                    chosenClass += ` ${skillItem.type.toLowerCase().substring(0, 4)}`;
-                    return (
-                        <div className='chosen-item'>
-                            ≡
-                            <span className={chosenClass}>
-                                <button className='chosen-button' onClick={(e) => {removeFromSkillsList(index)}}>X</button>
-                                {skillItem.skill}
-                            </span>
-                        </div>
-                    );
-                }
-            })
+    const editSkillPosition = (index: number, newPos: number) => {
+        if (index + 1 === newPos || index + 1 === newPos - 1) {
+            console.log(`Index: ${index} | New Position: ${newPos}`);
+            setCurrentSkills(currentSkills);
         }
-    </div>
+        else {
+            console.log(`Index: ${index} | New Position: ${newPos}`);
+            let tempList = [{id: currentSkills[index].id, type: currentSkills[index].type, skill: currentSkills[index].skill, position: newPos}];
+            for (let i = 0; i < currentSkills.length; i++) {
+                if (i != index) {
+                    if (currentSkills[i].position >= newPos) {
+                        tempList.push({id: currentSkills[i].id, type: currentSkills[i].type, skill: currentSkills[i].skill, position: currentSkills[i].position + 1});
+                    }
+                    else {
+                        tempList.push(currentSkills[i]);
+                    }
+                }
+            }
+            tempList.sort((a, b) => a.position - b.position);
+
+            for (let i = 0; i < tempList.length; i++) {
+                if (tempList[i].position > i + 1) {
+                    tempList[i].position = i + 1;
+                }
+            }
+
+            console.log(tempList);
+            setCurrentSkills(tempList);
+        }
+    }
+
+    const allowDrop = (ev) => {
+        ev.preventDefault();
+    };
+
+    const drag = (ev) => {
+        ev.dataTransfer.setData("text", ev.target.id);
+    };
+
+    const drop = (ev) => {
+        ev.preventDefault();
+        let data = ev.dataTransfer.getData("text");
+
+        let theSkill = document.querySelector(`#${data}`);
+        if (theSkill !== undefined && theSkill !== null) {
+            let thePos = parseInt(theSkill.id.substring(4));
+            let theSpot = parseInt(ev.target.id.substring(4));
+            editSkillPosition(thePos - 1, theSpot);
+        }
+    };
+
+    let mySkillsList = [<span className='chosen-gap' id='spot1' onDrop={(e) => {drop(e)}} onDragOver={(e) => {allowDrop(e)}}></span>];
+    for (let i = 0; i < currentSkills.length; i++) {
+        if (currentSkills[i].skill != "") {
+            // Skill 
+            let chosenClass = "skill-item chosen";
+            chosenClass += ` ${currentSkills[i].type.toLowerCase().substring(0, 4)}`;
+            mySkillsList.push(<div className='chosen-item' id={"drag" + (i + 1)} draggable="true" onDragStart={(e) => {drag(e)}}>
+                ≡
+                <span className={chosenClass}>
+                    <button className='chosen-button' onClick={(e) => {removeFromSkillsList(i)}}>X</button>
+                    {currentSkills[i].skill}
+                </span>
+            </div>);
+
+            // Gap 
+            mySkillsList.push(<span className='chosen-gap' id={"spot" + (i + 2)} onDrop={(e) => {drop(e)}} onDragOver={(e) => {allowDrop(e)}}></span>);
+        }
+    }
+
+    let displayedSkillsList = <div className='chosen-skills-list'>{mySkillsList}</div>
 
     const [currentSearch, setCurrentSearch] = useState("");
     const [skillsList, setSkillsList] = useState();
@@ -373,7 +434,6 @@ const EditButton = ({userData}) => {
                 let response = await fetch(url);
 
                 const rawData = await response.json();
-                // console.log(rawData.data);
                 setSkillsList(rawData.data.toSorted((a, b) => {
                     if (a.label.toLowerCase() < b.label.toLowerCase()) {
                         return -1;
@@ -450,7 +510,7 @@ const EditButton = ({userData}) => {
                     }
 
                     return <button className={skillClass} onClick={(e) => {
-                        addToSkillsList({id: skillItem.skill_id, type: skillItem.type, skill: skillItem.label, position: currentSkills.length})
+                        addToSkillsList({id: skillItem.skill_id, type: skillItem.type, skill: skillItem.label, position: currentSkills.length + 1})
                     }}>
                         {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skillItem.label}
                     </button>;
@@ -473,7 +533,7 @@ const EditButton = ({userData}) => {
                 }
 
                 return <button className={skillClass} onClick={(e) => {
-                    addToSkillsList({id: skillItem.skill_id, type: skillItem.type, skill: skillItem.label, position: currentSkills.length})
+                    addToSkillsList({id: skillItem.skill_id, type: skillItem.type, skill: skillItem.label, position: currentSkills.length + 1})
                 }}>
                     {found ? "✓" : "+"}&nbsp;&nbsp;&nbsp;{skillItem.label}
                 </button>;
@@ -517,7 +577,7 @@ const EditButton = ({userData}) => {
 
     const getLinksDropDown = (currentType: string, index: number) => {
         let dropDownList = <select className='link-options-list' value={currentType} onChange={(e) => {updateType(index, e.target.value)}}>
-            <option value="Select" disabled>Select</option>
+            <option value="select">Select</option>
             <option value="instagram">&#xf16d; &nbsp;&nbsp; Instagram</option>
             <option value="twitter">&#xe61b; &nbsp;&nbsp; X</option>
             <option value="facebook">&#xf39e; &nbsp;&nbsp;&nbsp; Facebook</option>
@@ -543,7 +603,7 @@ const EditButton = ({userData}) => {
     };
 
     const addNewLink = () => {
-        addLinkToList({text: 'instagram', url: ''});
+        addLinkToList({text: 'select', url: ''});
     };
 
     const removeLink = (index: number) => {
@@ -674,9 +734,6 @@ const EditButton = ({userData}) => {
         // Projects 
         saveProjectsPage();
 
-        // Links 
-        // ---CODE GOES HERE--- 
-
         openClosePopup(showPopup, setShowPopup);
     };
 
@@ -699,7 +756,7 @@ const EditButton = ({userData}) => {
                     location: currentLocation,
                     funFact: currentFunFact,
                     bio: currentAbout,
-                    skills: createSkillsList()
+                    skills: createSkillsList(),
                 })
             });
 

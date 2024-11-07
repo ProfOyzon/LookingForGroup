@@ -1888,15 +1888,16 @@ select.edit-region-input {
 }
 
 .chosen-item {
+    background-color: #00000000;
     font-family: Arial;
     font-size: 13px;
     line-height: 15px;
-    margin: 8px 0px;
+    margin: 0px;
 }
 
-.chosen-item #draggable {
-    position: absolute;
-    /* margin: 0px; */
+.chosen-gap {
+    display: block;
+    height: 8px;
 }
 
 .skill-item.chosen {

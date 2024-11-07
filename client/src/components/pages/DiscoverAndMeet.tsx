@@ -35,28 +35,24 @@ import e from "express";
 /* const fullProjectList = projects;
 const fullProfileList = profiles; */
 
+//Variable to tell whether or not we are using 'npm run server' (true) or 'npm run client' (false)
+//Manually switch whenever deciding which npm command to run
+let runningServer = false;
+
 //List that holds project data that will be displayed. Changes along with search parameters
 //Could combine this and profile variants into single variable
-let projectList = projects;
+let projectList = [];
 //List that holds a project list that is filtered by searching
-let filteredProjectList = projects;
-//List that holds trimmed project data for use in searching
-//Note: Depending on user needs, may need to change or add to what is used in searches
-const projectSearchData = projectList.map((project) => {
-  return({name: project.name, description: project.description});
-});
+let filteredProjectList = [];
+
 //Variable that tracks what position we are at in the above array
 let projectListPosition : number = 0;
 
 //List that holds profile data that will be displayed. Changes along with search parameters
-let profileList = profiles;
+let profileList = [];
 //List that holds a profile list that is filtered by searching
-let filteredProfileList = profiles;
-//List that holds trimmed profile data for use in searching
-//Note: Depending on user needs, may need to change or add to what is used in searches
-const profileSearchData = profileList.map((profile) => {
-  return({name: profile.name, username: profile.username, bio: profile.bio});
-});
+let filteredProfileList = [];
+
 //Variable that tracks what position we are at in the above array
 let profileListPosition : number = 0;
 //Create array of profiles to help track the order they were added
@@ -109,8 +105,11 @@ const DiscoverAndMeet = ({category}) => {
     }
   }
 
-  const [fullProjectList, setFullProjectList] = useState();
-  const [fullProfileList, setFullProfileList] = useState();
+  let defaultProjectList = runningServer ? undefined : projects;
+  let defaultProfileList = runningServer ? undefined : profiles;
+
+  const [fullProjectList, setFullProjectList] = useState(defaultProjectList);
+  const [fullProfileList, setFullProfileList] = useState(defaultProfileList);
 
   //Makes calls to the database to retrieve data
   //Only does so if relevant data has not been retrieved already
@@ -119,7 +118,19 @@ const DiscoverAndMeet = ({category}) => {
   }
   if (fullProfileList === undefined) {
     getProfileData();
-  }
+  } 
+
+  //List that holds trimmed project data for use in searching
+  //Note: Depending on user needs, may need to change or add to what is used in searches
+  const projectSearchData = fullProjectList != undefined ? fullProjectList.map((project) => {
+    return({name: project.title, description: project.description});
+  }) : [];
+
+  //List that holds trimmed profile data for use in searching
+  //Note: Depending on user needs, may need to change or add to what is used in searches
+  const profileSearchData = fullProfileList != undefined ? fullProfileList.map((profile) => {
+    return({name: `${profile.first_name} ${profile.last_name}`, username: profile.username, bio: profile.bio});
+  }) : [];
 
   //Gets the width of the scrollbar
   //Obtained from https://stackoverflow.com/questions/13382516/getting-scroll-bar-width-using-javascript
@@ -143,6 +154,25 @@ const DiscoverAndMeet = ({category}) => {
     outer.parentNode.removeChild(outer);
     
     return scrollbarWidth;
+  }
+
+  //Gets the height of the text that will be rendered in a profile panel
+  //(actual profile text should be implemented later)
+  //MARGIN ISN'T GETTING COUNTED
+  //Note: data names may need changing when using data from the server
+  function getProfilePanelTextHeight(profileData) {
+    //Create invisible element
+    const textbox = document.createElement('div');
+    textbox.style.visibility = 'hidden';
+    textbox.className = 'profile-panel';
+    textbox.innerHTML = `<h2>${profileData.name}</h2><h3>Profession</h3><div>${profileData.bio}</div>`;
+    document.body.appendChild(textbox);
+
+    const textHeight = textbox.offsetHeight;
+
+    textbox.parentElement.removeChild(textbox);
+
+    return textHeight
   }
 
   //Get a list of tags to use for tag filters (project tags for projects, profession tags for profiles)
@@ -495,7 +525,8 @@ const DiscoverAndMeet = ({category}) => {
       }
       //Calculate height based off of image + any extra space for info
       //(For testing purposes, height is randomized)
-      let panelHeight = Math.floor((Math.random() * 300) + 200);
+      let panelHeight = Math.floor((Math.random() * 300) + 200) + getProfilePanelTextHeight(profileList[i]);
+      console.log(panelHeight, getProfilePanelTextHeight(profileList[i]));
       //Check which column has the least height currently (if multiple have same, use first)
       let shortestColumn = 0;
       for (let j = 1; j < heightTrackers.length; j++){
@@ -811,7 +842,7 @@ const DiscoverAndMeet = ({category}) => {
         //Create a column element & map through profiles in array
         <div>
           {column.map((profile) => (
-            <ProfilePanel height={profile.height}></ProfilePanel>
+            <ProfilePanel profileData={profile.profile} height={profile.height}></ProfilePanel>
           ))}
         </div>
       )) :

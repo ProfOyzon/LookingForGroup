@@ -1,21 +1,26 @@
 import "./pages.css";
 import "../Styles/styles.css";
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { Header } from "../Header";
 import { ProjectPanel } from "../ProjectPanel";
 import { Popup, PopupButton, PopupContent } from "../Popup"; 
+import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import { profiles, projects } from "../../constants/fakeData";
 import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
+import menuImage from "../../icons/menu.png";
 import * as tags from "../../constants/tags";
 
 //To-do:
 //Fix profile page not changing when clicking 'profile' sidebar link
 //(If viewing another's profile, should switch to user's profile when clicking such)
 //Ensure all tag types function correctly
-//Add default profile to use when not testing with 'npm run server'
+//Fix weird sidebar breakpoint styling
 
-let defaultProfile = {
+let runningServer = true;
+
+let defaultProfile = runningServer ? undefined : {
   first_name: 'User', 
   last_name: 'Name', 
   bio: `Here's a quick lil blurb about me!`,
@@ -23,13 +28,15 @@ let defaultProfile = {
 }
 
 const NewProfile = () => {
+  const location = useLocation();
   //Check to see if database call returned anything
   let [failCheck, setFailCheck] = useState(false);
 
   //Get url parameters to tell what user we are looking for
   let urlParams = new URLSearchParams(window.location.search);
   let profileID = urlParams.get('userID');
-  if (profileID === undefined) {
+  console.log(profileID);
+  if (profileID === undefined || profileID === null) {
     //If no profileID is in search query, automatically set to the current user's id
     console.log('profileID not found, using default');
     profileID = '1';
@@ -64,9 +71,9 @@ const NewProfile = () => {
 
   //Runs funciton to get data if we haven't yet
   //Comment out if using 'npm run client' (can't connect to server with it)
-  /*if (displayedProfile === undefined) {
+  if (displayedProfile === undefined) {
     getProfileData();
-  } */
+  }
 
   console.log(displayedProfile);
 
@@ -129,9 +136,8 @@ const NewProfile = () => {
   }
 
   //Find out the width of the flexbox container
-  let flexboxWidth : number = window.innerWidth >= 1000 ? window.innerWidth - (760 + getScrollbarWidth()) :
-    window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
-    window.innerWidth - (100)
+  let flexboxWidth : number = window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
+    window.innerWidth - (100  + getScrollbarWidth())
   ;
   //tracks the width of items in the current flexbox row
   let widthTracker : number = -20;
@@ -266,9 +272,8 @@ const NewProfile = () => {
       let resizedProjects : {project, width : number, adjust : number, row : number}[] = [];
       //Calculate new flexbox width
       // ---Different size, check to see what math needs to be done
-      flexboxWidth = window.innerWidth >= 1000 ? window.innerWidth - (760 + getScrollbarWidth()) :
-        window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
-        window.innerWidth - (100)
+      flexboxWidth = window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
+        window.innerWidth - (100 + getScrollbarWidth());
       ;
       //Reset tracker variables (widthTracker, rowTracker, projectTracker)
       widthTracker = -20;
@@ -333,10 +338,24 @@ const NewProfile = () => {
     };
   });
 
+  useEffect(() => {
+    console.log('testing url changes');
+    let newUrlParams = new URLSearchParams(window.location.search);
+    profileID = newUrlParams.get('userID');
+    if (profileID === undefined) {
+      //If no profileID is in search query, automatically set to the current user's id
+      console.log('profileID not found, using default');
+      profileID = '1';
+    }
+
+    getProfileData();
+  }, [location])
+
   const aboutMeButtons = usersProfile === true ? 
     <>{
       <div id='about-me-buttons'>
-        <button><img src={profileImage} alt='forward???'/></button>
+        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='linkedin'/></button>
+        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='instagram'/></button>
         <Popup>
           <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
           <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
@@ -345,7 +364,19 @@ const NewProfile = () => {
     }</> :
     <>{
       <div id='about-me-buttons' className='about-me-buttons-minimal'>
-        <button><img src={profileImage} alt='forward???'/></button>
+        <button><img src={profileImage} alt='linkedin'/></button>
+        <button><img src={profileImage} alt='instagram'/></button>
+        <button><img src={profileImage} alt='like'/></button>
+        <Dropdown>
+          <DropdownButton><img src={menuImage} alt='...'/></DropdownButton>
+          <DropdownContent rightAlign={true}>
+            <div id='profile-menu-dropdown'>
+              <button className='profile-menu-dropdown-button'>Share</button>
+              <button className='profile-menu-dropdown-button'>Block</button>
+              <button className='profile-menu-dropdown-button' id='profile-menu-report'>Report</button>
+            </div>
+          </DropdownContent>
+        </Dropdown>
       </div>
     }</>
 

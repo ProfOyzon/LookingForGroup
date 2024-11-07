@@ -38,12 +38,11 @@ export const Header = ({dataSets, onSearch}) => {
             <DropdownButton><img src={profileImage} className="navIcon" alt="User" /><img className="navIcon" alt="V"/></DropdownButton>
             <DropdownContent rightAlign={true}>
               <div id='header-profile-dropdown'>
-                <div id='header-profile-user'>
+                <button onClick={() => handlePageChange(paths.routes.PROFILE)} id='header-profile-user'>
                   <img src={profileImage} alt='X'/>
                   <div>Username<br/><span id='header-profile-email'>user@rit.edu</span></div>
-                </div>
+                </button>
                 <hr/>
-                <button onClick={() => handlePageChange(paths.routes.PROFILE)}><img src={profileImage} alt='X'/>Edit Profile</button>
                 <button onClick={() => {}}><img src={profileImage} alt='X'/>Light Mode</button> {/* Light mode toggle goes here! */}
                 <button onClick={() => handlePageChange(paths.routes.SETTINGS)}><img src={profileImage} alt='X'/>Settings</button>
                 <button onClick={() => {}}><img src={profileImage} alt='X'/>Log out</button>

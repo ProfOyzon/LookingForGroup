@@ -20,6 +20,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
 
   let startingPage : string;
 
+  // Check to see what page we are on
   switch (window.location.pathname) {
     case '/discover': startingPage = 'Discover'; break;
     case '/meet': startingPage = 'Meet'; break;

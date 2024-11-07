@@ -1553,8 +1553,8 @@ Profile page style rules
 /* --------------------------------- Edit Modal Rules --------------------------------- */
 #edit-profile-modal {
     height: 80vh;
-    background-image: linear-gradient(315deg, #ffceb4, #d3d3ff);
-    /* background-image: linear-gradient(-52deg, #ececf7, #d4d5ff); */
+    /* background-image: linear-gradient(315deg, #ffceb4, #d3d3ff); */
+    background-image: linear-gradient(-52deg, #ececf7, #d4d5ff);
 
     display: grid;
     grid-template-rows: 14% auto 10%;

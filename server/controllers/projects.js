@@ -45,12 +45,12 @@ const createProject = async (req, res) => {
     // Create a new project
 
     // Get input data
-    const {userId, title, hook, description, purpose, audience, projectTypes, tags, jobs, members, socials} = req.body;
+    const {userId, title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
 
     try {
         // Add project to database and get back its id
-        const sql = "INSERT INTO projects (title, hook, description, purpose, audience, user_id) VALUES (?, ?, ?, ?, ?, ?)";
-        const values = [title, hook, description, purpose, audience, userId];
+        const sql = "INSERT INTO projects (title, hook, description, purpose, status, audience, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        const values = [title, hook, description, purpose, status, audience, userId];
         await pool.query(sql, values);
         const [projectId] = await pool.query("SELECT project_id FROM projects WHERE title = ? AND user_id = ?", [title, userId]);
 
@@ -104,7 +104,7 @@ const getProjectById = async (req, res) => {
 
     try {
         // Get project data
-        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.purpose, p.audience, g.project_types, 
+        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.purpose, p.status, p.audience, g.project_types, 
             t.tags, j.jobs, m.members, pi.images, so.socials
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
@@ -169,12 +169,12 @@ const updateProject = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { title, hook, description, purpose, audience, projectTypes, tags, jobs, members, socials} = req.body;
+    const { title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
 
     try {
         // Update database with project's new info
-        let sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, audience = ? WHERE project_id = ?";
-        let values = [title, hook, description, purpose, audience, id];
+        let sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, status = ?, audience = ? WHERE project_id = ?";
+        let values = [title, hook, description, purpose, status, audience, id];
         await pool.query(sql, values);
         
         // ----- UPDATE PROJECT'S TYPES -----

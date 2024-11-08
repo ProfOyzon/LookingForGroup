@@ -5,40 +5,54 @@ import { ProjectPanel } from "../ProjectPanel";
 import { ProfilePanel } from "../ProfilePanel";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
-import { TagFilter } from "../TagFilter";
+import { Header } from "../Header";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
+import { Popup, PopupButton, PopupContent } from "../Popup";
 import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
 import * as tags from "../../constants/tags";
-import { Children, useCallback } from "react";
-import { sortItems } from "../../functions/itemSort";
-import { useState, useEffect } from 'react';
-import CreditsFooter from '../CreditsFooter';
+import { useState, useEffect, useRef } from 'react';
 import ToTopButton from "../ToTopButton";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
+import e from "express";
 
 //To-do
-//Let scroll buttons move tags *
-//Hide scroll buttons when reaching edge *
-//Have tags actually filter projects
-//Create dropdown menus
-//Have search bar work too along with tags
+//Add carosel to project view
+//Ensure we can pull from the database
+//Add actual images to panels/ensure images can work
+//Add images to profile hero
+//Add light/dark mode functionality
+//Add more icons to various places in ui
+//Add checks for filters used in filter popup
 
-//Get whether we are loading projects or profiles using search query
-let urlParams = new URLSearchParams(window.location.search);
-const category = urlParams.get('category');
 
 //These values need to be outside the component, otherwise they get reset every time it re-renders
+//Lists that hold the original list of projects and profiles, only updates on page reload
+
+//Use this when testing with 'npm run client'
+/* const fullProjectList = projects;
+const fullProfileList = profiles; */
+
+//Variable to tell whether or not we are using 'npm run server' (true) or 'npm run client' (false)
+//Manually switch whenever deciding which npm command to run
+let runningServer = true;
+
 //List that holds project data that will be displayed. Changes along with search parameters
 //Could combine this and profile variants into single variable
-let projectList = projects;
+let projectList = [];
+//List that holds a project list that is filtered by searching
+let filteredProjectList = [];
+
 //Variable that tracks what position we are at in the above array
 let projectListPosition : number = 0;
 
 //List that holds profile data that will be displayed. Changes along with search parameters
-let profileList = profiles;
+let profileList = [];
+//List that holds a profile list that is filtered by searching
+let filteredProfileList = [];
+
 //Variable that tracks what position we are at in the above array
 let profileListPosition : number = 0;
 //Create array of profiles to help track the order they were added
@@ -48,8 +62,76 @@ let heightTrackers : number[];
 
 //array that tracks what tags are currently being used to filter
 let activeTagFilters : string[] = [];
+//array that tracks active tags used in the more filters dropdown
+let extraTagFilters : string[] = [];
+//array that tracks tag selected in the filters popup, contents are copied to extraTagFilters when applied
+let popupTagSelections : string[] = [];
 
-const DiscoverAndMeet = () => {
+//Main DiscoverAndMeet component
+//category - string variable that determines what layout type to load (defaults to profile if invalid value is given)
+const DiscoverAndMeet = ({category}) => {
+
+  //Use these when testing with 'npm run server'
+  //Functions used to retrieve data from the database
+  const getProjectData = async () => {
+    const url = 'http://localhost:8081/api/projects'
+    try {
+      let response = await fetch(url, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}
+      });
+  
+      const projectData = await response.json();
+  
+      setFullProjectList(projectData.data);
+      setDisplayedProjects(() => firstProjects(projectData.data));
+    } catch(error) {
+      console.error(error.message);
+    }
+  } 
+
+  const getProfileData = async () => {
+    const url = 'http://localhost:8081/api/users'
+    try {
+      let response = await fetch(url);
+  
+      const profileData = await response.json();
+      console.log(profileData);
+  
+      setFullProfileList(profileData.data);
+      setProfileColumns(() => firstProfiles(profileData.data));
+    } catch(error) {
+      console.error(error.message)
+    }
+  }
+
+  let defaultProjectList = runningServer ? undefined : projects;
+  let defaultProfileList = runningServer ? undefined : profiles;
+
+  const [fullProjectList, setFullProjectList] = useState(defaultProjectList);
+  const [fullProfileList, setFullProfileList] = useState(defaultProfileList);
+
+  //Makes calls to the database to retrieve data
+  //Only does so if relevant data has not been retrieved already
+  if (fullProjectList === undefined) {
+    getProjectData();
+  }
+  if (fullProfileList === undefined) {
+    getProfileData();
+  } 
+
+  //List that holds trimmed project data for use in searching
+  //Note: Depending on user needs, may need to change or add to what is used in searches
+  const projectSearchData = fullProjectList != undefined ? fullProjectList.map((project) => {
+    return({name: project.title, description: project.description});
+  }) : [];
+
+  //List that holds trimmed profile data for use in searching
+  //Note: Depending on user needs, may need to change or add to what is used in searches
+  const profileSearchData = fullProfileList != undefined ? fullProfileList.map((profile) => {
+    return({name: `${profile.first_name} ${profile.last_name}`, username: profile.username, bio: profile.bio});
+  }) : [];
+
   //Gets the width of the scrollbar
   //Obtained from https://stackoverflow.com/questions/13382516/getting-scroll-bar-width-using-javascript
   function getScrollbarWidth() {
@@ -74,16 +156,50 @@ const DiscoverAndMeet = () => {
     return scrollbarWidth;
   }
 
-  //Set the hero component based on projects or profiles
-  //const heroComponent = category === 'projects' ? (component 1) : (component 2)
+  //Gets the height of the text that will be rendered in a profile panel
+  //(actual profile text should be implemented later)
+  //MARGIN ISN'T GETTING COUNTED
+  //Note: data names may need changing when using data from the server
+  function getProfilePanelTextHeight(profileData) {
+    //Create invisible element
+    const textbox = document.createElement('div');
+    textbox.style.visibility = 'hidden';
+    textbox.className = 'profile-panel';
+    textbox.innerHTML = `<h2>${profileData.name}</h2><h3>Profession</h3><div>${profileData.bio}</div>`;
+    document.body.appendChild(textbox);
+
+    const textHeight = textbox.offsetHeight;
+
+    textbox.parentElement.removeChild(textbox);
+
+    return textHeight
+  }
+
   //Get a list of tags to use for tag filters (project tags for projects, profession tags for profiles)
   const tagList = category === 'projects' ? tags.tags : tags.proficiencies;
+  //list of tabs for the filter popup to use, changes depending on if discover or meet page is being used
+  let filterPopupTabs = category === 'projects' ? 
+    [
+      {categoryTags: tags.projectTypes, categoryName: 'Project Type'},
+      {categoryTags: tags.tags, categoryName: 'Genre'},
+      {categoryTags: tags.tags, categoryName: 'Purpose'}
+    ] :
+    [
+      {categoryTags: tags.devSkills, categoryName: 'Developer Skill'},
+      {categoryTags: tags.desSkills, categoryName: 'Designer Skill'},
+      {categoryTags: tags.softSkills, categoryName: 'Soft Skill'},
+      {categoryTags: tags.tags, categoryName: 'Role'},
+      {categoryTags: tags.tags, categoryName: 'Major'},
+    ]
+  ;
 
   //Set up panel display functions
 
   //Variables used for panel displays
   //Find out the width of the flexbox container
-  let flexboxWidth : number = window.innerWidth - 320 - getScrollbarWidth();
+  let flexboxWidth : number = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
+    : window.innerWidth - (100 + getScrollbarWidth())
+  ;
   //tracks the width of items in the current flexbox row
   let widthTracker : number = -20;
   //tracks the number of "full" flexbox rows
@@ -96,6 +212,9 @@ const DiscoverAndMeet = () => {
   //Loads a new set of project panels to render
   //Calls when page first loads & when a new list of projects is being used (e.g. after a search)
   const firstProjects = (newProjectList) => {
+    if (newProjectList === undefined) {
+      return [];
+    }
     //Set new project list to run through
     projectList = newProjectList;
     //Reset projectListPosition
@@ -130,7 +249,6 @@ const DiscoverAndMeet = () => {
 
         (image width) / ((image height) / 100px) = final width
 
-
         (image height) * X = 100px
         X = 100px / (image height)
 
@@ -138,6 +256,7 @@ const DiscoverAndMeet = () => {
         */
         //(For testing's sake, width will be randomized)
         ///let panelWidth = imageWidth * (100 / imageHeight); [Use this when images are integrated]
+        //Add use case for if width is too wide for window
         let panelWidth = Math.floor((Math.random() * 200) + 200);
         //Add (width value + flexbox gap value + borders) to width tracker
         //Note - borders & other factors may add extra width, double check calculations using inspector
@@ -178,6 +297,24 @@ const DiscoverAndMeet = () => {
             //Break project iteration loop
             break;
         }  
+    }
+
+    //Perform width adjustments on last row
+    //Calculate flexboxWidth - total width of all projects
+    let flexboxDifference = flexboxWidth - (widthTracker);
+    //Divide difference to split among project panels' widths (and the remainder);
+    let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
+    let widthAdjustmentRemainder = flexboxDifference % projectTracker;
+    //Loop through all projects inside the most recently completed row
+    for (let project of projectsToDisplay) {
+        //Find projects of the current row being adjusted
+        if (project.row === rowTracker) {
+            //Divide difference evenly amongst all project's widths
+            //project.width += widthAdjustment + widthAdjustmentRemainder;
+            project.adjust = widthAdjustment + widthAdjustmentRemainder;
+            //remove remainder once it is used once
+            widthAdjustmentRemainder = 0;
+        }
     }
 
     return (projectsToDisplay);
@@ -255,13 +392,17 @@ const DiscoverAndMeet = () => {
       //Array holding edited project details
       let resizedProjects : {project, width : number, adjust : number, row : number}[] = [];
       //Calculate new flexbox width
-      flexboxWidth = window.innerWidth - 320 - getScrollbarWidth();
+      flexboxWidth = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
+        : window.innerWidth - (100 + getScrollbarWidth())
+      ;
       //Reset tracker variables (widthTracker, rowTracker, projectTracker)
       widthTracker = -20;
       rowTracker = 0;
       projectTracker = 0;
       //Iterate through all currently displayed projects
       //For each project...
+      //There is some sort of bug happening here, occasionally more than the max projects are being displayed
+      //Issue only seems to occur after saving new code while test server is being hosted, so it may not need to be addressed
       for (let project of displayedProjects){
         //Add width to widthTracker
         widthTracker += project.width + 24;
@@ -308,8 +449,59 @@ const DiscoverAndMeet = () => {
     resizeTagFilter();
   };
 
+  //Updates filtered project list with new search info
+  const searchProjects = (searchResults) => {
+    //searchResults structure: array[array[{object1},{object2}]]
+    //Reset filtersProjectList
+    filteredProjectList = [];
+    //Filter through searchResults and original search data
+    for (let result of searchResults[0]) {
+      for (let item of projectSearchData) {
+        //If 2 items match...
+        if (result === item) {
+          //Get index of item in original search data
+          //Get item with this index in projectList
+          let projectItem = fullProjectList[projectSearchData.indexOf(item)];
+          //Push this item to filteredProjectList
+          filteredProjectList.push(projectItem);
+          continue;
+        }
+      }
+    } 
+    
+    updateProjectList();
+  }
+
+  //Make new list of projects by mapping new filtered list
+  const updateProjectList = () => {
+    //Note: tags are not included in current mySQL database for projects
+    let tagFilteredList = filteredProjectList.filter((project) => {
+      //Filter check to ensure if we include an item or not
+      let tagFilterCheck = true;
+      //Sets all tags to lowercase, for easier tag reading
+      let lowercaseProjectTags = project.tags.map((tag) => {
+        return tag.toLowerCase();
+      })
+      //if project in filtered list contains all tags in taglist, include it
+      for (let tag of activeTagFilters) {
+        if (!lowercaseProjectTags.includes(tag)) {
+          tagFilterCheck = false;
+          break;
+        }
+      }
+
+      return(tagFilterCheck);
+    })
+    //set displayed projects using firstProjects
+    setDisplayedProjects(() => firstProjects(tagFilteredList));
+  }
+
   //Calls when page first loads & when a new list of profiles is being used (e.g. after a search)
   const firstProfiles = (newProfileList) => {
+    console.log(newProfileList);
+    if (newProfileList === undefined) {
+      return([[]]);
+    }
     profileList = newProfileList;
     profileListPosition = 0;
     //Reset height trackers
@@ -333,7 +525,8 @@ const DiscoverAndMeet = () => {
       }
       //Calculate height based off of image + any extra space for info
       //(For testing purposes, height is randomized)
-      let panelHeight = Math.floor((Math.random() * 300) + 200);
+      let panelHeight = Math.floor((Math.random() * 300) + 200) + getProfilePanelTextHeight(profileList[i]);
+      console.log(panelHeight, getProfilePanelTextHeight(profileList[i]));
       //Check which column has the least height currently (if multiple have same, use first)
       let shortestColumn = 0;
       for (let j = 1; j < heightTrackers.length; j++){
@@ -409,7 +602,9 @@ const DiscoverAndMeet = () => {
       }
 
       //Check current flexbox width & number of columns it can hold
-      flexboxWidth = window.innerWidth - 324 - getScrollbarWidth();
+      flexboxWidth = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
+        : window.innerWidth - (100 + getScrollbarWidth())
+      ;
       let newColumns = Math.floor(flexboxWidth / 224);
       //If number of columns available has changed...
       if (newColumns !== heightTrackers.length){
@@ -438,6 +633,7 @@ const DiscoverAndMeet = () => {
         }
         //Get current set of displayed profiles (not profileColumns, need an unaltered list)
         //For each profile...
+        let loopTracker = 0;
         for (let profile of displayedProfileList) {
           //Check which column has the least height currently (use first if there's a tie)
           let shortestColumn = 0;
@@ -450,8 +646,12 @@ const DiscoverAndMeet = () => {
           resizedColumnsToDisplay[shortestColumn].push({profile: profile.profile, height: profile.height});
           //Add profile height to the column's height tracker
           heightTrackers[shortestColumn] += profile.height;
+          loopTracker++;
         }
         //Set profileColumns to newly created resized columns
+        console.log(loopTracker);
+        console.log(displayedProfileList);
+        console.log(resizedColumnsToDisplay);
         setProfileColumns(resizedColumnsToDisplay);
       }
     }, 100);
@@ -460,16 +660,56 @@ const DiscoverAndMeet = () => {
     resizeTagFilter();
   }
 
+  const updateProfileList = () => {
+    //Note: tags are not included in current mySQL database for profiles
+    let tagFilterCheck = true;
+    let tagFilteredList = filteredProfileList.filter((profile) => {
+      //if project in filtered list contains all tags in taglist, include it
+      for (let tag of activeTagFilters) {
+        //No tags yet, so this is commented out for now
+        //Remember to set profile tags to lower case
+        /*if (!project.tags.includes(tag)) {
+          tagFilterCheck = false;
+          break;
+        }*/
+      }
+
+      return(tagFilterCheck);
+    })
+
+    setProfileColumns(() => firstProfiles(tagFilteredList));
+  }
+
+  //Updates filtered profile list with new search info
+  const searchProfiles = (searchResults) => {
+    filteredProfileList = [];
+    //Filter through searchResults and original search data
+    for (let result of searchResults[0]) {
+      for (let item of profileSearchData) {
+        //If 2 items match...
+        if (result === item) {
+          //Get index of item in original search data
+          //Get item with this index in profileList
+          let profileItem = fullProfileList[profileSearchData.indexOf(item)];
+          //Push this item to filteredProfileList
+          filteredProfileList.push(profileItem);
+        }
+      }
+    }
+        
+    updateProfileList();
+  }
+
   //Choose which functions to use based on what we are displaying
-  const firstContent = category === 'projects' ? firstProjects : firstProfiles;
   const addContent = category === 'projects' ? addProjects : addProfiles;
   const resizeDisplay = category === 'projects' ? resizeProjects : resizeProfiles;
+  const updateItemList = category === 'projects' ? updateProjectList : updateProfileList;
 
   //Can possibly merge these two into a single useState? mostly concerned with different variable types
   //Holds data for currently displayed projects
-  let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number}[]>(() => firstProjects(projects));
+  let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number}[]>(() => firstProjects(fullProjectList));
   //Holds data for currently displayed profiles
-  let [profileColumns, setProfileColumns] = useState<{profile, height : number}[][]>(() => firstProfiles(profiles));
+  let [profileColumns, setProfileColumns] = useState<{profile, height : number}[][]>(() => firstProfiles(fullProfileList));
 
   //Runs resizing function whenever window width changes
   //Don't add dependencies to it - it causes state to be reset for some reason (I don't know why)
@@ -493,6 +733,8 @@ const DiscoverAndMeet = () => {
     }
     //Also, toggle the tag filter's display
     e.target.classList.toggle('discover-tag-filter-selected');
+
+    updateItemList();
   }
 
   //Function called when scroll arrows are clicked
@@ -583,25 +825,105 @@ const DiscoverAndMeet = () => {
 
   //Displays a set of project panels
   let projectContent = <>{
-    //For each project in project display list... (use map)
-    displayedProjects.map((project) => (
-      //Create a Project Panel component
-      <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
-    ))
+    projectList.length > 0 ? 
+      //For each project in project display list... (use map)
+      displayedProjects.map((project) => (
+        //Create a Project Panel component
+        <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
+      )) :
+      <>Sorry, no projects here</>
   }</>
 
   //Displays a set of profile panels
   let profileContent = <>{
-    //For each array in profileColumns...
-    profileColumns.map((column) => (
-      //Create a column element & map through profiles in array
-      <div>
-        {column.map((profile) => (
-          <ProfilePanel height={profile.height}></ProfilePanel>
-        ))}
-      </div>
-    ))
+    profileColumns[0].length > 0 ?
+      //For each array in profileColumns...
+      profileColumns.map((column) => (
+        //Create a column element & map through profiles in array
+        <div>
+          {column.map((profile) => (
+            <ProfilePanel profileData={profile.profile} height={profile.height}></ProfilePanel>
+          ))}
+        </div>
+      )) :
+      <>Unfortunately, such a person does not exist</>
   }</>
+
+  const toggleFilterTag = (e, tagName : string) => {
+    //Check if the tag is already in popupTagSelections
+    //if it isn't...
+    if (!popupTagSelections.includes(tagName)) {
+      //Add this tag to the list
+      popupTagSelections.push(tagName);
+    } else { //else... (it is in there)
+      //Remove this tag from the list
+      popupTagSelections.splice(popupTagSelections.indexOf(tagName), 1);
+    }
+    //Also, toggle the tag filter's display
+    e.target.classList.toggle('tag-button-selected');
+    console.log(popupTagSelections);
+  }
+
+  const setFilterTags = () => {
+    console.log('Im still being called!!! woohoo');
+    //Update active filters with currently selected tags
+    //JSON parsing is used to ensure this is a deep copy
+    extraTagFilters = JSON.parse(JSON.stringify(popupTagSelections));
+    //Run search through panels with new filters in place
+    //There are no checks that include extraTagFilters yet, as tags are not fully implemented
+    //Be sure to add a filter/check to updateItemList once tags are implemented more fully
+    updateItemList();
+  }
+
+  let FilterCategory = ({filterTagList, id, categoryTitle, tagColor = 'grey'}) => {
+    const [displayedTags, setDisplayedTags] = useState(filterTagList);
+    
+    return (
+      <div id={id} className='filter-category'>
+        <h2>{categoryTitle}</h2>
+        <hr/>
+        {/* dataSets contains list of tags, onSearch will use function to add tag to list */}
+        <SearchBar dataSets={{data: filterTagList}} onSearch={() => {}}/>
+        {/* List of tags, use flexbox */}
+        <div className='filter-category-tags'>
+          {
+            displayedTags.map((tag) => {
+              let selected = popupTagSelections.includes(tag) ? 'tag-button-selected' : '';
+              return (
+                <button className={`tag-button tag-button-${tagColor} ${selected}`} onClick={(e) => {toggleFilterTag(e, tag)}}>{tag}</button>
+              )
+            })
+          }
+        </div>
+      </div>
+    )
+  }
+
+  let filterPopup = category === 'projects' ? 
+    <>{
+      <>
+      <h2>Filters</h2>
+      <div id='filter-popup-projects'>
+        <FilterCategory filterTagList={tags.projectTypes} id='filter-popup-categories' categoryTitle='Categories' tagColor='blue'/>
+        <FilterCategory filterTagList={tags.tags} id='filter-popup-genres' categoryTitle='Genres' tagColor='green'/>
+        <FilterCategory filterTagList={tags.projectDetails} id='filter-popup-misc' categoryTitle='Misc.'/>
+      </div>
+      <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
+      </>
+    }</> :
+    <>{
+      <>
+      <h2>Filters</h2>
+      <div id='filter-popup-profiles'>
+        <FilterCategory filterTagList={tags.devSkills} id='filter-popup-dev-skills' categoryTitle='Developer Skills' tagColor='yellow'/>
+        <FilterCategory filterTagList={tags.desSkills} id='filter-popup-des-skills' categoryTitle='Designer Skills' tagColor='red'/>
+        <FilterCategory filterTagList={tags.proficiencies} id='filter-popup-roles' categoryTitle='Roles'/>
+        <FilterCategory filterTagList={tags.tags} id='filter-popup-majors' categoryTitle='Majors'/>
+        <FilterCategory filterTagList={tags.softSkills} id='filter-popup-soft-skills' categoryTitle='Soft Skills' tagColor='indigo'/>
+      </div>
+      <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
+      </>
+    }</>
 
   //Decides which 'content' to display on the page
   let heroContent = category === 'projects' ? <>Nothing yet, sorry</> : profileHero;
@@ -610,15 +932,8 @@ const DiscoverAndMeet = () => {
   return(
     <div className='page' onScroll={addContent}>
       {/* Search bar and profile/notification buttons */}
-      <div id='discover-header'>
-        <span id='discover-searchbar'>
-          <SearchBar dataSets={projects} onSearch={() => {console.log('hi')}}/>
-        </span>
-        <span id='discover-header-buttons'>
-          <button><img src={bell} className="navIcon" alt="Notifications" /></button>
-          <button><img src={profileImage} className="navIcon" alt="User" /></button>
-        </span>
-      </div>
+      <Header dataSets={[{data: category === 'projects' ? projectSearchData : profileSearchData}]}
+        onSearch={category === 'projects' ? searchProjects : searchProfiles}/>
       {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
       <div id='discover-hero'>
       {heroContent}
@@ -641,18 +956,82 @@ const DiscoverAndMeet = () => {
           </div>
           <button id='filters-right-scroll' className='filters-scroller' onClick={() => scrollTags('right')}>&gt;</button>
         </div>
-        <Dropdown>
-          <DropdownButton buttonId={'discover-more-filters'}>Filters</DropdownButton>
-          <DropdownContent>Is this working?</DropdownContent>
-        </Dropdown>
+        <Popup>
+          <PopupButton buttonId={'discover-more-filters'}>Filters</PopupButton>
+          <PopupContent>
+            {/*filterPopup*/}
+            <div id='discover-filter-popup-bg1'>
+              <div id='discover-filter-popup'>
+                <h2>Tag Filters</h2>
+                <div id='filter-popup-selector-container'>
+                  <SearchBar dataSets={{data: tagList}} onSearch={() => {}}/>
+                  <div id='filter-popup-selector-tabs'>
+                    {
+                      /* map something out here, add onClick function */
+                      filterPopupTabs.map((tab) => (
+                        <button onClick={() => {}}>{tab.categoryName}</button>
+                      ))
+                    }
+                  </div>
+                  <hr/>
+                  <div id='filter-popup-selector-tags'>
+                    {
+                      /* map tags out here */
+                    }
+                  </div>
+                </div>
+
+                <div id='filter-popup-selected-tags'>
+                  <h2>Selected</h2>
+                  <div id='filter-popup-selected-tags-container'>
+                    {
+                      popupTagSelections.map((tag) => (
+                        <button className='tag-button' onClick={(e) => toggleFilterTag(e, tag)}>{tag}</button>
+                      ))
+                    }
+                  </div>
+                </div>
+
+                <button>Apply</button>
+              </div>
+            </div>
+          </PopupContent>
+        </Popup>
       </div>
 
       {/* Panel container */}
       <div id='discover-panel-box'>
       {panelContent}
       </div>
+
+      <ToTopButton/>
     </div>
   )
 }
 
-export default DiscoverAndMeet;
+//2 extra components that only serve as different layouts for the above component
+//Required due to the page failing to re-render when switching between its 2 view via the sidebar
+//Some bugs that may appear may be due to values outside the main component not being reset on a component change
+//If that's the case, simply reset them in here
+export const Discover = () => {
+  //Reset tags
+  activeTagFilters = [];
+  extraTagFilters = [];
+  popupTagSelections = [];
+  return(
+    <DiscoverAndMeet category={'projects'}/>
+  )
+}
+
+export const Meet = () => {
+  //Reset variables
+  activeTagFilters = [];
+  extraTagFilters = [];
+  popupTagSelections = [];
+  displayedProfileList = [];
+  return(
+    <DiscoverAndMeet category={'profiles'}/>
+  )
+}
+
+//export default DiscoverAndMeet;

@@ -9,21 +9,37 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const getUsers = async (req, res) => {
     // Get all users
-
-    const [users] = await pool.query(`SELECT u.user_id, u.first_name, u.last_name, u.bio, s.skills
-        FROM users u
-        JOIN (SELECT us.user_id, JSON_ARRAYAGG(s.label) AS skills
-            FROM user_skills us 
-            JOIN skills s 
-                ON us.skill_id = s.skill_id
-            GROUP BY us.user_id) s
-		ON u.user_id = s.user_id
-        `);
-    
-    return res.status(200).json({
-        status: 200,
-        data: users
-    });
+    try {
+        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+        jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
+            FROM users u
+            LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+                FROM job_titles jt) jt
+            ON u.job_title_id = jt.title_id
+            LEFT JOIN (SELECT m.major_id, m.label AS major
+                FROM majors m) m
+            ON u.major_id = m.major_id
+            LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+                "position", us.position)) AS skills
+                FROM user_skills us 
+                JOIN skills s 
+                    ON us.skill_id = s.skill_id
+                GROUP BY us.user_id) s
+            ON u.user_id = s.user_id
+        `;
+        const [users] = await pool.query(sql);
+        
+        return res.status(200).json({
+            status: 200,
+            data: users
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting all users" 
+        });
+    }
 }
 
 const createUser = async (req, res) => {
@@ -73,30 +89,52 @@ const login = async (req, res) => {
     return res.json({ redirect: '/' });
 }
 
-const getUsersById = async (req, res) => {
+const getUserById = async (req, res) => {
     // Get users using id
 
     // Get id from url 
     const { id } = req.params;
 
-    // Get user data
-    const sql = `SELECT u.user_id, u.first_name, u.last_name, u.bio, s.skills
-        FROM users u
-        JOIN (SELECT us.user_id, JSON_ARRAYAGG(s.label) AS skills
-            FROM user_skills us 
-            JOIN skills s 
-                ON us.skill_id = s.skill_id
-            GROUP BY us.user_id) s
-		ON u.user_id = s.user_id
-        WHERE u.user_id = ? 
-        `;
-    const values = [id];
-    const [user] = await pool.query(sql, values);
-    
-    return res.status(200).json({
-        status: 200,
-        data: user
-    });
+    try {
+        // Get user data
+        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, s.skills, so.socials
+            FROM users u
+            LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+                FROM job_titles jt) jt
+            ON u.job_title_id = jt.title_id
+            LEFT JOIN (SELECT m.major_id, m.label AS major
+                FROM majors m) m
+            ON u.major_id = m.major_id
+            LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+                "position", us.position)) AS skills
+                FROM user_skills us 
+                JOIN skills s 
+                    ON us.skill_id = s.skill_id
+                GROUP BY us.user_id) s
+            ON u.user_id = s.user_id
+            LEFT JOIN (SELECT uso.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", so.website_id, "website", so.label, "url", uso.url)) AS socials
+                FROM user_socials uso 
+                JOIN socials so
+                    ON uso.website_id = so.website_id
+                GROUP BY uso.user_id) so
+            ON u.user_id = so.user_id
+            WHERE u.user_id = ? 
+            `;
+        const values = [id];
+        const [user] = await pool.query(sql, values);
+        
+        return res.status(200).json({
+            status: 200,
+            data: user
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting the user" 
+        });
+    }
 }
 
 const getUserByUsername = async (req, res) => {
@@ -136,12 +174,71 @@ const updateUser = async (req, res) => {
     const { id } = req.params;
     const { firstName, lastName, bio } = req.body
 
-    // Update database with users's new info
-    const sql = "UPDATE users SET first_name = ?, last_name = ?, bio = ? WHERE user_id = ?";
-    const values = [firstName, lastName, bio, id];
-    await pool.query(sql, values);
-    
-    return res.sendStatus(204);
+    try {
+        // Update database with users's new info
+        let sql = `UPDATE users SET first_name = ?, last_name = ?, headline = ?, pronouns = ?, job_title_id = ?,
+        major_id = ?, academic_year = ?, location = ?, fun_fact = ?, bio = ? WHERE user_id = ?`;
+        let values = [firstName, lastName, headline, pronouns, jobTitleId, majorId, academicYear, location, funFact, bio, id];
+        await pool.query(sql, values);
+
+        // ----- UPDATE USER'S SKILLS -----
+        // Create array from skills
+        const newSkills = skills.map((skill) => skill.id);
+        // Get skills already in database that need to be removed
+        let placeholders = genPlaceholders(newSkills);
+        sql = `SELECT JSON_ARRAYAGG(us.skill_id) AS skills FROM user_skills us 
+        WHERE us.user_id = ? AND NOT us.skill_id IN (${placeholders})`;
+        values = [id, ...newSkills];
+        const [removingSkills] = await pool.query(sql, values);
+        // Remove skills if any were found
+        if (removingSkills[0].skills) {
+            placeholders = genPlaceholders(removingSkills[0].skills);
+            sql = `DELETE FROM user_skills WHERE user_id = ? AND skill_id IN (${placeholders})`;
+            values = [id, ...removingSkills[0].skills];
+            await pool.query(sql, values);
+        }
+        // Add new skills or update if already in database
+        sql = `INSERT INTO user_skills (user_id, skill_id, position) VALUES (?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE user_id = new.user_id, skill_id = new.skill_id, position = new.position`
+        for (let skill of skills) {
+            await pool.query(sql, [id, skill.id, skill.position]);
+        }
+
+        // ----- UPDATE USER'S SOCIALS -----
+        // Create array from socials
+        const newSocials = socials.map((social) => social.id);
+        // Add 0 if empty to allow sql statement to still find exisiting data to be removed
+        if (newSocials.length === 0) {
+            newSocials.push(0);
+        }
+        // Get socials already in database that need to be removed
+        placeholders = genPlaceholders(newSocials);
+        sql = `SELECT JSON_ARRAYAGG(uso.website_id) AS socials FROM user_socials uso 
+        WHERE uso.user_id = ? AND NOT uso.website_id IN (${placeholders})`;
+        values = [id, ...newSocials];
+        const [removingSocials] = await pool.query(sql, values);
+        // Remove socials if any were found
+        if (removingSocials[0].socials) {
+            placeholders = genPlaceholders(removingSocials[0].socials);
+            sql = `DELETE FROM user_socials WHERE user_id = ? AND website_id IN (${placeholders})`;
+            values = [id, ...removingSocials[0].socials];
+            await pool.query(sql, values);
+        }
+        // Add new socials or update if already in database
+        sql = `INSERT INTO user_socials (user_id, website_id, url) VALUES (?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE user_id = new.user_id, website_id = new.website_id, url = new.url`
+        for (let social of socials) {
+            await pool.query(sql, [id, social.id, social.url]);
+        }
+        
+        return res.sendStatus(204)
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the user's profile" 
+        });
+    }
 }
 
 const updateProfilePicture = async (req, res) => {
@@ -163,7 +260,10 @@ const updateProfilePicture = async (req, res) => {
         const values = [fileName, id];
         await pool.query(sql, values);
 
-        return res.sendStatus(204);
+        return res.status(201).json({
+            status: 201,
+            data: [{profile_image: fileName}]
+        });
     } catch(err) {
         console.log(err);
         return res.status(400).json({
@@ -178,13 +278,43 @@ const addSkill = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { skill } = req.body
+    const { skillId, position } = req.body
 
-    // Get skill id and add user's skill into database
-    const skillId = await pool.query(`SELECT skill_id FROM skills WHERE label = ?`, skill);
-    await pool.query("INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)", [id, skillId[0].skill_id]);
+    try {
+        await pool.query("INSERT INTO user_skills (user_id, skill_id, position) VALUES (?, ?, ?)", [id, skillId, position]);
 
-    return res.sendStatus(201);
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while adding a new skill for the user" 
+        });
+    }
+}
+
+const updateSkillPositions = async (req, res) => {
+    // Update skill order for a user
+
+    // Get input data 
+    const { id } = req.params;
+    const { skills } = req.body;
+
+    try {
+        for (let skill of skills) {
+            const sql = "UPDATE user_skills SET position = ? WHERE user_id = ? AND skill_id = ?";
+            const values = [skill.position, id, skill.id];
+            await pool.query(sql, values);
+        }
+        
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the skill order for a user" 
+        });
+    }
 }
 
 const deleteSkill = async (req, res) => {
@@ -192,13 +322,20 @@ const deleteSkill = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { skill } = req.body
+    const { skillId } = req.body
 
-    // Get skill id and remove user's skill from database
-    const skillId = await pool.query(`SELECT skill_id FROM skills WHERE label = ?`, skill);
-    await pool.query("DELETE FROM user_skills WHERE user_id = ? AND skill_id = ?", [id, skillId[0].skill_id]);
+    try {
+        // Remove user's skill from database
+        await pool.query("DELETE FROM user_skills WHERE user_id = ? AND skill_id = ?", [id, skillId]);
 
-    return res.sendStatus(204);
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while removing a skill from the user" 
+        });
+    }
 }
 
 const getMyProjects = async (req, res) => {
@@ -211,15 +348,16 @@ const getMyProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.description, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
                 FROM projects p
-                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
+                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
                     JOIN genres g 
-                        ON pg.genre_id = g.genre_id
+                        ON pg.type_id = g.type_id
                     GROUP BY pg.project_id) g
                 ON p.project_id = g.project_id
-                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label, "type", t.type,
+                "position", pt.position)) AS tags
                     FROM project_tags pt 
                     JOIN tags t 
                         ON pt.tag_id = t.tag_id
@@ -254,15 +392,16 @@ const getVisibleProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.description, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
                 FROM projects p
-                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
+                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
                     JOIN genres g 
-                        ON pg.genre_id = g.genre_id
+                        ON pg.type_id = g.type_id
                     GROUP BY pg.project_id) g
                 ON p.project_id = g.project_id
-                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label, "type", t.type,
+                "position", pt.position)) AS tags
                     FROM project_tags pt 
                     JOIN tags t 
                         ON pt.tag_id = t.tag_id
@@ -320,15 +459,16 @@ const getProjectFollowing = async (req, res) => {
         // Get user data
         const sql = `SELECT p.* 
             FROM project_followings pf
-            JOIN (SELECT p.project_id, p.title, p.description, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
                 FROM projects p
-                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(g.label) AS project_types 
+                JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
                     JOIN genres g 
-                        ON pg.genre_id = g.genre_id
+                        ON pg.type_id = g.type_id
                     GROUP BY pg.project_id) g
                 ON p.project_id = g.project_id
-                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(t.label) AS tags
+                JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label, "type", t.type,
+                "position", pt.position)) AS tags
                     FROM project_tags pt 
                     JOIN tags t 
                         ON pt.tag_id = t.tag_id
@@ -405,14 +545,26 @@ const getUserFollowing = async (req, res) => {
         // Get user data
         const sql = `SELECT u.* 
             FROM user_followings uf
-            JOIN (SELECT u.user_id, u.first_name, u.last_name, u.bio, JSON_ARRAYAGG(s.label) AS skills
+            JOIN (SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
                 FROM users u
-                    JOIN user_skills us ON u.user_id = us.user_id 
-                    JOIN skills s ON us.skill_id = s.skill_id 
+                    LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+                    FROM job_titles jt) jt
+                        ON u.job_title_id = jt.title_id
+                    LEFT JOIN (SELECT m.major_id, m.label AS major
+                    FROM majors m) m
+                        ON u.major_id = m.major_id
+                    LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+                        "position", us.position)) AS skills
+                        FROM user_skills us 
+                        JOIN skills s 
+                            ON us.skill_id = s.skill_id
+                        GROUP BY us.user_id) s
+                    ON u.user_id = s.user_id
                 GROUP BY u.user_id) u
             ON uf.following_id = u.user_id
             WHERE uf.user_id = ?
-            `;
+        `;
         const values = [id];
         const [users] = await pool.query(sql, values);
         
@@ -471,8 +623,9 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export { getUsers, createUser, getUsersById, getUserByUsername, getUsernameBySession, login, updateUser, updateProfilePicture, addSkill, deleteSkill, 
+export default { getUsers, createUser, getUserById, getUserByUsername, getUsernameBySession, login, updateUser, updateProfilePicture, 
+    addSkill, updateSkillPositions, deleteSkill, 
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing
- };
+};

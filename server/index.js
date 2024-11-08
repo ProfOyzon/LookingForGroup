@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import morgan from "morgan";
 import usersRouter from "./routes/users.js";
 import projectsRouter from "./routes/projects.js";
+import datasetsRouter from "./routes/datasets.js";
 import envConfig from "./config/env.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -42,6 +43,7 @@ app.use(session({
 
 app.use(usersRouter);
 app.use(projectsRouter);
+app.use(datasetsRouter);
 
 app.get("/api", (req, res) => {
     return res.json({ message: "You Reached The Looking For Group API" });

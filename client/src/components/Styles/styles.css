@@ -10,6 +10,7 @@ Component Style rules
     -Notifications
     -Page popup
     -Dropdown
+    -Header
     -Search
     -Scrollbar
     -Tag Filter
@@ -17,6 +18,7 @@ Page specific style rules
     -Discover page
     -Discover & Meet page
     -Profile page
+    --New Profile page
     -Project page
         -Project general settings
         -Project member settings
@@ -64,6 +66,17 @@ General style rules
     --purple-dark: #2C2A3A;
     --dark-lighttheme: #171717;
     --dark-darktheme: #1E1E1E;
+
+    --tag-red: #FFA0B0;
+    --tag-yellow: #FFCF8B;
+    --tag-green: #BED9AA;
+    --tag-blue: #B0DCEE;
+    --tag-purple: #D7BED3;
+    --tag-light-red: #FFD9DF;
+    --tag-light-yellow: #FFEBD0;
+    --tag-light-green: #E5F0DD;
+    --tag-light-blue: #DFF1F8;
+    --tag-light-purple: #E6E6FF;
 }
 
 /*basic rules for hiding/showing certain elements
@@ -263,10 +276,13 @@ Project Panel component style rules
 .project-panel {
     height: 200px;
     border: 2px solid grey;
+    background-color: white;
 }
 
 .project-panel img{
-    height:200px;
+    object-fit:contain;
+    max-height:200px;
+    width:100%;
 }
 
 /*
@@ -285,10 +301,47 @@ Profile Panel component style rules
 .profile-panel {
     width: 200px;
     border: 2px solid grey;
+    background-color:white;
+    position:relative;
+    text-align:left;
 }
 
 .profile-panel img{
     width:200px;
+}
+
+.profile-panel-hover {
+    background-color:rgba(32, 29, 102, .9);
+    color:white;
+    opacity: 0;
+    position:absolute;
+    height:100%;
+    width:100%;
+    transition: opacity .2s;
+    top:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    text-align:left;
+}
+
+.profile-panel-hover img {
+    width:24px;
+    height:24px;
+    filter: invert();
+}
+
+.profile-panel-hover-item {
+    display:flex;
+    align-items:center;
+    font-style:italic;
+    gap:15px;
+    margin:8px 20px;
+}
+
+.profile-panel:hover .profile-panel-hover{
+    opacity: 1;
+    cursor: pointer;
 }
 
 /*
@@ -729,6 +782,7 @@ Page popup style rules
     left: 0;
     width: 100%;
     height: 100%;
+    z-index:2;
 }
 
 /*rules for the popup itself*/
@@ -740,6 +794,21 @@ Page popup style rules
     max-width: 95vw;
     max-height: 95vh;
     opacity: 100%;
+    z-index:3;
+    width: auto;
+    height: auto;
+}
+
+.popup-container {
+    display:flex;
+    position: fixed;
+    align-items:center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height:100%;
+    z-index:3;
 }
 
 #popup-close {
@@ -747,6 +816,28 @@ Page popup style rules
     border-radius: 4px;
     top: 10px;
     right: 10px;
+}
+
+.popup-close {
+    position: absolute;
+    border-radius: 4px !important;
+    border: none !important;
+    top:0px;
+    right:0px;
+    width:40px !important;
+    height:40px !important;
+    background-color:white !important;
+    margin: 4px 4px 0 0 !important;
+}
+
+.popup-close img {
+    width:100%;
+    height:32px;
+    margin-top:3px;
+}
+
+.popup-close:hover {
+    background-color:var(--lightGray) !important;
 }
 
 #popup-close img {
@@ -758,6 +849,95 @@ Page popup style rules
 .page-scroll-lock {
     position: fixed;
     padding-right: 15px;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Header style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#header {
+    display:grid;
+    align-items:center;
+    text-align:left;
+    margin-right:50px;
+    grid-template:
+        'search buttons' 70px / auto 120px;
+}
+
+#header-searchbar {
+    grid-area: search;
+    height: auto;
+}
+
+#header-searchbar > .search-wrapper > .search-bar {
+    margin:0;
+}
+
+#header-buttons {
+    grid-area: buttons;
+    display:flex;
+    justify-content:flex-end;
+    width:120px;
+}
+
+#header-buttons button {
+    display:flex;
+    background-color: var(--peach);
+    border-radius:40px;
+    margin-left:10px;
+    border:none;
+    height:auto;
+    width:auto;
+    padding-top:4px;
+    align-items:center;
+}
+
+#header-buttons img {
+    filter:none;
+    height:auto;
+    margin:2px;
+}
+
+#header-profile-dropdown {
+    padding:10px;
+    color: var(--lavender);
+}
+
+#header-profile-user {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+#header-profile-email {
+    font-style: italic;
+    font-size:smaller;
+    color:black;
+}
+
+#header-profile-dropdown img {
+    width:32px;
+    height:32px;
+}
+
+#header-profile-dropdown button {
+    background-color:white;
+    display:flex;
+    width:100%;
+    border-radius:10px;
+    gap:10px;
+    align-items:center;
+    margin:0;
+    flex-shrink: 0;
+    color:black;
+}
+
+#header-profile-dropdown button:hover {
+    background-color: #E0E0E0;
 }
 
 /*
@@ -833,12 +1013,17 @@ Dropdown style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 */
 
+.dropdown-container {
+    position: relative;
+}
+
 .dropdown {
     border:solid 1px var(--dark-lighttheme);
     border-radius: 5px;
     box-shadow: 1px 2px 2px var(--dark-lighttheme);
     position:absolute;
     background-color:white;
+    z-index:1;
 }
 
 /*
@@ -1104,19 +1289,18 @@ Discover and Meet page style rules
 #filters-left-scroll {
     left: 0;
     text-align:left;
-    background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,0));
+    background-image: linear-gradient(to right, rgba(244,244,244,1), rgba(244,244,244,1), rgba(244,244,244,0));
 }
 
 #filters-right-scroll {
     right: 0;
     text-align:right;
-    background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,1));
+    background-image: linear-gradient(to right, rgba(244,244,244,0), rgba(244,244,244,1), rgba(244,244,244,1));
 }
 
 #discover-tag-filters {
     height:auto;
     display:flex;
-    gap:5px;
     overflow-x:hidden;
     scroll-behavior:smooth;
 }
@@ -1127,19 +1311,25 @@ Discover and Meet page style rules
     font-size:medium;
     background-color: rgba(0, 0, 0, 0);
     border:none;
+    margin: 0 4px;
     border-radius:30px;
     flex-shrink: 0;
 }
 
 .discover-tag-filter:hover {
-    background-color: #FFDFC5;
+    background-color: white;
     color: var(--lavender);
 }
 
 .discover-tag-filter-selected {
-    border:4px solid var(--lavender);
+    /*border:4px solid var(--lavender);*/
     background-color: var(--peach);
     color: var(--lavender);
+    /*margin: 0;*/
+}
+
+.discover-tag-filter-selected:hover {
+    background-color:var(--peach);
 }
 
 #discover-more-filters {
@@ -1153,6 +1343,127 @@ Discover and Meet page style rules
     color: white;
     border:none;
     border-radius:30px;
+}
+
+.filter-category {
+    display:flex;
+    flex-direction:column;
+    text-align:left;
+    height:auto;
+    min-height:140px;
+}
+
+.filter-category hr {
+    width:90%;
+}
+
+.filter-category h2 {
+    margin:10px 0;
+}
+
+.filter-category .search-wrapper {
+    display:block;
+    margin:0;
+}
+
+.filter-category .search-bar {
+    float:none;
+    width:min-content;
+    margin: 10px 0;
+}
+
+.filter-category-tags {
+    display:flex;
+    height:auto;
+    overflow:auto;
+    flex-flow:wrap;
+    gap:8px 0;
+}
+
+#filter-popup-projects {
+    width: auto;
+    max-width: 900px;
+    height:70vh;
+    max-height:620px;
+    margin: 40px;
+    display:grid;
+    grid-template:
+        'categories' 1fr
+        'genres' 1fr
+        'misc' 1fr /
+        auto;
+    overflow:auto;
+}
+
+#filter-popup-categories {grid-area:categories;}
+#filter-popup-genres {grid-area:genres;}
+#filter-popup-misc {grid-area:misc;}
+
+#filter-popup-profiles {
+    display:grid;
+    height:70vh;
+    min-height:420px;
+    max-height: 620px;
+    grid-template:
+        'devskills roles' 1fr
+        'devskills roles' 1fr
+        'devskills majors' 1fr
+        'desskills majors' 1fr
+        'desskills softskills' 1fr
+        'desskills softskills' 1fr /
+        auto        auto;
+    gap:10px;
+    margin: 0 10px;
+    overflow:auto;
+}
+
+#filter-popup-dev-skills {grid-area:devskills;}
+#filter-popup-des-skills {grid-area:desskills;}
+#filter-popup-roles {grid-area:roles;}
+#filter-popup-majors {grid-area:majors;}
+#filter-popup-soft-skills {grid-area:softskills;}
+
+#filter-popup-profiles div {
+    width:auto;
+    max-width:600px;
+}
+
+#filter-popup-apply {
+    height: 30px;
+    width:80px;
+    margin:10px auto;
+    display:block;
+    font-size:medium;
+    padding:5px 10px;
+    background-color: var(--lavender);
+    color: white;
+    border:none;
+    border-radius:30px;
+}
+
+/*tag rules may be used for buttons elsewhere, but will stay here for the time being*/
+.tag-button {
+    border-radius: 30px;
+    border: none;
+    padding: 5px 10px;
+    font-size: medium;
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+.tag-button-red {background-color: #FFD9DF;}
+.tag-button-yellow {background-color: #FFECD1;}
+.tag-button-green {background-color: #E5F0DD;}
+.tag-button-blue {background-color: #DFF1F8;}
+.tag-button-indigo {background-color: #E6E6FF;}
+.tag-button-grey {background-color: #E3E3E3;}
+
+.tag-button:hover {
+    filter:saturate(250%) contrast(120%);
+}
+
+.tag-button-selected {
+    filter:saturate(250%) contrast(120%);
 }
 
 #discover-panel-box {
@@ -1309,6 +1620,336 @@ Profile page style rules
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
+New Profile page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#profile-page-content {
+    margin: 0 50px;
+}
+
+#profile-information-grid {
+    display:grid;
+    grid-template:
+        'image name buttons' 40px
+        'image extra extra' 40px
+        'image desc desc' auto
+        'image fact fact' auto
+        'bio skills skills' auto /
+        350px auto 200px;
+    background-color: #ECEDF7;
+    border-radius:15px;
+    padding:30px;
+    gap:10px;
+}
+
+#profile-page-content h2 {
+    color: var(--lavender);
+}
+
+#profile-image {
+    width:350px;
+    grid-area:image;
+    object-fit:contain;
+    border-radius:10px;
+}
+
+#profile-bio {
+    grid-area:bio;
+    font-style:italic;
+    color:var(--darkGray);
+}
+
+#profile-info-name {
+    grid-area:name;
+    align-items:center;
+    display:flex;
+    font-style:italic;
+    font-size:2ch;
+    color:var(--darkGray);
+    gap:10px;
+}
+
+#profile-fullname {
+    color:var(--lavender);
+    font-size:3ch;
+    font-weight:bold;
+    font-style:normal;
+}
+
+#profile-info-buttons {
+    grid-area:buttons;
+    align-items:center;
+}
+
+#profile-info-extras {
+    grid-area:extra;
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.profile-extra {
+    display:flex;
+    align-items:center;
+    font-style:italic;
+}
+
+#profile-info-description {
+    grid-area:desc;
+    text-align:left;
+}
+
+#profile-info-funfact {
+    grid-area:fact;
+    text-align:left;
+    margin-top:auto;
+    font-style:italic;
+}
+
+#fun-fact-start {
+    color:var(--lavender);
+    font-weight: bold;
+}
+
+#profile-info-skills {
+    grid-area:skills;
+    display:flex;
+    gap:10px;
+}
+
+.info-extra-image {
+    width:26px;
+    height:26px;
+    margin: 0 10px;    
+}
+
+/* #profile-discover-column {
+    min-width: 350px;
+    padding:50px 50px 50px 0;
+}
+
+#profile-discover-column-header {
+    margin:10px 0 20px;
+}
+
+#profile-discover-column-username h2 {
+    margin:0;
+}
+
+#profile-discover-column-profession h3 {
+    margin:0;
+}
+
+#profile-discover-column-headline {
+    margin-bottom:30px;
+}
+
+#profile-discover-column-headline > div {
+    margin-top:5px;
+}
+
+.profile-column-extra-item {
+    display:flex;
+    text-align:left;
+    align-content:center;
+    margin: 20px 0;
+}
+
+.profile-column-extra-item div {
+    margin:auto 0;
+} */
+
+/* .profile-discover-icon {
+    width:32px;
+    height:32px;
+    margin: 0 10px;
+}
+
+#profile-about-me-column {
+    width: auto;
+    margin:20px 0 20px 20px;
+    text-align:left;
+}
+
+#profile-about-me-content {
+    display:grid;
+    grid-template:
+        'desc skills' auto
+        'looking looking' auto
+        'projects projects' auto /
+        2fr       1fr;
+    gap: 20px;
+}
+
+@media only screen and (max-width: 1400px){
+    #profile-about-me-content {
+        grid-template:
+            'desc skills' auto
+            'looking looking' auto
+            'projects projects' auto /
+            1fr       1fr;
+    }
+}
+
+@media only screen and (max-width: 1200px){
+    #profile-about-me-content {
+        grid-template:
+            'desc' auto
+            'skills' auto
+            'looking' auto 
+            'projects' auto/
+            1fr;
+    }
+}
+
+#profile-about-me-header {
+    display:grid;
+    grid-template:
+        'header buttons' auto /
+        auto    164px;
+    align-items:center;
+}
+
+#about-me-header-text {
+    grid-area:header;
+} */
+
+#about-me-buttons {
+    grid-area:buttons;
+    display:flex;
+    align-items:center;
+    /*height:calc(100% - 40px);*/
+    height:100%;
+    /* padding:20px 0; */
+    gap:5px;
+}
+
+.about-me-buttons-minimal {
+    justify-content:flex-end;
+}
+
+#about-me-buttons button {
+    border:none;
+    border-radius:30px;
+    background-color: rgba(0, 0, 0, 0);
+    height:100%;
+    font-weight:bold;
+    font-size: 1.8ch;
+    padding-top: 0;
+    padding-bottom:0;
+}
+
+#about-me-buttons button > img {
+    margin-top:3px;
+}
+
+#about-me-buttons button:hover {
+    background-color: var(--gray);
+}
+
+#about-me-buttons > div {
+    height:100%;
+}
+
+#edit-profile-button {
+    text-align:center;
+    background-color:var(--lavender) !important;
+    color: #ECECF7;
+    border-radius: 30px;
+    height:100%;
+    width: 120px;
+}
+
+#edit-profile-button:hover {
+    background-color:var(--purple) !important;
+}
+
+#about-me-buttons img {
+    width:32px;
+    height:32px;
+}
+
+#profile-menu-dropdown {
+    text-align:left;
+    padding:8px;
+}
+
+.profile-menu-dropdown-button {
+    font-weight:normal !important;
+    border-radius:5px !important;
+    margin: 4px 0 4px;
+    width:100%;
+    text-align:left;
+}
+
+#profile-menu-report {
+    color:red;
+}
+
+/* #profile-about-me-description {
+    grid-area:desc;
+    background-color: #ECECF7;
+    border-radius:10px;
+    padding: 20px;
+    font-size: 2.1ch;
+}
+
+#profile-about-me-skills {
+    grid-area:skills;
+    background-color: #ECECF7;
+    border-radius:10px;
+    padding:0 20px;
+}
+
+#profile-about-me-skills h2{
+    margin: 15px 0;
+}
+
+#skill-tags-container {
+    display:flex;
+    flex-flow:wrap;
+    gap:5px;
+} */
+
+.skill-tag-label {
+    border-radius: 30px;
+    border: none;
+    padding: 5px 10px;
+    font-size: medium;
+    flex-shrink: 0;
+}
+
+.label-red {background-color:var(--tag-red)}
+.label-yellow {background-color:var(--tag-yellow)}
+.label-green {background-color:var(--tag-green)}
+.label-blue {background-color:var(--tag-blue)}
+.label-purple {background-color:var(--tag-purple)}
+
+/* #skill-tags-container .tag-button {
+    margin:0;
+}
+
+#profile-looking-for {
+    grid-area:looking;
+} */
+
+#profile-projects {
+    grid-area:projects;
+}
+
+#profile-project-list {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    grid-gap:20px;
+    text-align:center;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
 Project page style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
@@ -1439,11 +2080,11 @@ Project page style rules
     left: 40px;
 }
 
-#header-buttons {
+/* #header-buttons {
     display: flex;
     align-items: center;
     grid-area: buttons
-}
+} */
 
 #follow-project {
     width: 100px;

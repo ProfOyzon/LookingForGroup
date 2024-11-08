@@ -306,7 +306,6 @@ const EditButton = ({userData}) => {
 
     // "Skills" 
     const [currentSkills, setCurrentSkills] = useState(userData.skills.toSorted((a, b) => a.position - b.position));
-    // const [orderedSkills, setOrderedSkills] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8]);
 
     const addToSkillsList = (newSkill) => {
         let found = false;
@@ -385,6 +384,7 @@ const EditButton = ({userData}) => {
 
     const allowDrop = (ev) => {
         ev.preventDefault();
+        ev.target.style = {backgroundColor: "black"};
     };
 
     const drag = (ev) => {
@@ -409,7 +409,7 @@ const EditButton = ({userData}) => {
             // Skill 
             let chosenClass = "skill-item chosen";
             chosenClass += ` ${currentSkills[i].type.toLowerCase().substring(0, 4)}`;
-            mySkillsList.push(<div className='chosen-item' id={"drag" + (i + 1)} draggable="true" onDragStart={(e) => {drag(e)}}>
+            mySkillsList.push(<div className='chosen-item' id={"drag" + (i + 1)} key={"skill" + i} draggable="true" onDragStart={(e) => {drag(e)}}>
                 ≡
                 <span className={chosenClass}>
                     <button className='chosen-button' onClick={(e) => {removeFromSkillsList(i)}}>X</button>
@@ -418,7 +418,8 @@ const EditButton = ({userData}) => {
             </div>);
 
             // Gap 
-            mySkillsList.push(<span className='chosen-gap' id={"spot" + (i + 2)} onDrop={(e) => {drop(e)}} onDragOver={(e) => {allowDrop(e)}}></span>);
+            let newGap = <span className='chosen-gap' id={"spot" + (i + 2)} key={"key" + i} onDrop={(e) => {drop(e)}} onDragOver={(e) => {allowDrop(e)}}></span>;
+            mySkillsList.push(newGap);
         }
     }
 
@@ -573,24 +574,96 @@ const EditButton = ({userData}) => {
     </div>;
 
     // "Links" 
-    const [currentLinks, setCurrentLinks] = useState(userData.links);
+    const [currentLinks, setCurrentLinks] = useState(userData.socials);
+    const [socialLinks, setSocialLinks] = useState();
+
+    const getSocials = async () => {
+        const url = `http://localhost:8081/api/datasets/socials`;
+        try {
+            let response = await fetch(url);
+
+            const rawData = await response.json();
+            setSocialLinks(rawData.data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    if (socialLinks === undefined) {
+        getSocials();
+    }
+
+    const getWebsiteIcon = (websiteName: string) => {
+        switch (websiteName.toLowerCase()) {
+            case "instagram":
+                return "&#xf16d;"
+                break;
+            
+            case "x":
+                return "&#xe61b;"
+                break;
+            
+            case "facebook":
+                return "&#xf39e;"
+                break;
+            
+            case "discord":
+                return "&#xf392;"
+                break;
+            
+            case "bluesky":
+                return "&#xe671;"
+                break;
+            
+            case "linkedin":
+                return "&#xf08c;"
+                break;
+            
+            case "youtube":
+                return "&#xf167;"
+                break;
+            
+            case "steam":
+                return "&#xf1b6;"
+                break;
+            
+            case "itch":
+                return "&#xf83a;"
+                break;
+            
+            case "other":
+                return "&#xf0c1;"
+                break;
+        }
+    };
 
     const getLinksDropDown = (currentType: string, index: number) => {
-        let dropDownList = <select className='link-options-list' value={currentType} onChange={(e) => {updateType(index, e.target.value)}}>
-            <option value="select">Select</option>
-            <option value="instagram">&#xf16d; &nbsp;&nbsp; Instagram</option>
-            <option value="twitter">&#xe61b; &nbsp;&nbsp; X</option>
-            <option value="facebook">&#xf39e; &nbsp;&nbsp;&nbsp; Facebook</option>
-            <option value="discord">&#xf392; &nbsp; Discord</option>
-            <option value="bluesky">&#xe671; &nbsp; Bluesky</option>
-            <option value="linkedin">&#xf08c; &nbsp;&nbsp; LinkedIn</option>
-            <option value="youtube">&#xf167; &nbsp;&nbsp; YouTube</option>
-            <option value="steam">&#xf1b6; &nbsp;&nbsp; Steam</option>
-            <option value="itch.io">&#xf83a; &nbsp;&nbsp; Itch.io</option>
-            <option value="other">&#xf0c1; &nbsp;&nbsp; Other</option>
-        </select>;
+        if (socialLinks !== undefined) {
+            let socialsList = new Array(0);
+            for (let i = 0; i < socialLinks.length; i++) {
+                let tempLink = <option value={socialLinks[i].label.toLowerCase()}>
+                    {`${getWebsiteIcon(socialLinks[i].label)} &nbsp;&nbsp; ${socialLinks[i].label}`}
+                </option>;
+                socialsList.push(tempLink);
+            }
 
-        return dropDownList;
+            let dropDownList = <select className='link-options-list' value={currentType} onChange={(e) => {updateType(index, e.target.value)}}>
+                <option value="select">Select</option>
+                {/* <option value="instagram">&#xf16d; &nbsp;&nbsp; Instagram</option>
+                <option value="twitter">&#xe61b; &nbsp;&nbsp; X</option>
+                <option value="facebook">&#xf39e; &nbsp;&nbsp;&nbsp; Facebook</option>
+                <option value="discord">&#xf392; &nbsp; Discord</option>
+                <option value="bluesky">&#xe671; &nbsp; Bluesky</option>
+                <option value="linkedin">&#xf08c; &nbsp;&nbsp; LinkedIn</option>
+                <option value="youtube">&#xf167; &nbsp;&nbsp; YouTube</option>
+                <option value="steam">&#xf1b6; &nbsp;&nbsp; Steam</option>
+                <option value="itch.io">&#xf83a; &nbsp;&nbsp; Itch.io</option>
+                <option value="other">&#xf0c1; &nbsp;&nbsp; Other</option> */}
+            </select>;
+
+            return dropDownList;
+        }
     };
 
     const addLinkToList = (newLink: { text: string, url: string }) => {
@@ -757,6 +830,7 @@ const EditButton = ({userData}) => {
                     funFact: currentFunFact,
                     bio: currentAbout,
                     skills: createSkillsList(),
+                    socials: userData.socials
                 })
             });
 

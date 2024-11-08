@@ -1618,6 +1618,20 @@ Profile page style rules
 }
 
 /* --------------------------------- Edit Modal Rules --------------------------------- */
+.profile-edit-button {
+    background-color: #271D66;
+}
+
+#popup-container-0:has(#edit-profile-modal) #popup-close {
+    background-color: auto;
+    border: none;
+    border-radius: auto;
+    font-size: auto;
+    font-weight: auto;
+    height: auto;
+    padding: auto;
+}
+
 #edit-profile-modal {
     height: 80vh;
     /* background-image: linear-gradient(315deg, #ffceb4, #d3d3ff); */
@@ -1635,7 +1649,7 @@ Profile page style rules
     justify-content: space-evenly;
 }
 
-#edit-profile-header button {
+#edit-profile-modal #edit-profile-header button {
     box-sizing: border-box;
     background-color: #00000000;
     border: 0px;
@@ -1649,17 +1663,17 @@ Profile page style rules
     line-height: normal;
 }
 
-#edit-profile-header button:hover {
+#edit-profile-modal #edit-profile-header button:hover {
     background-color: #271d6680;
     color: white;
 }
 
-#edit-profile-header button:active {
+#edit-profile-modal #edit-profile-header button:active {
     background-color: #271d66;
     color: white;
 }
 
-#edit-profile-header button#selected {
+#edit-profile-modal #edit-profile-header button#selected {
     background-color: #271d66;
     color: white;
     font-weight: 700;
@@ -1730,7 +1744,7 @@ Profile page style rules
     align-items: end;
 }
 
-.edit-region-button.photo {
+#edit-profile-modal .edit-region-button.photo {
     background-color: #00000000;
     border: 0px;
     border-radius: 50px;
@@ -1897,21 +1911,24 @@ select.edit-region-input {
 
 .list-project-hide-icon {
     position: relative;
+    height: 100%;
     text-align: end;
 }
 
-.list-project-hide-icon-button {
+#edit-profile-modal .list-project-hide-icon-button {
     position: absolute;
     background-color: #271d66;
     border: 0px;
     border-radius: 50px;
     bottom: 9px;
     right: 5px;
+    height: auto;
     aspect-ratio: 1 / 1;
     padding: 5px;
     color: white;
     font-family: Arial;
     font-size: 18px;
+    font-weight: normal;
     line-height: 20px;
 }
 
@@ -1931,7 +1948,6 @@ select.edit-region-input {
     display: grid;
     grid-template-columns: 32% auto;
     column-gap: 23px;
-    /* align-items: stretch; */
     align-items: start;
 }
 
@@ -1974,25 +1990,29 @@ select.edit-region-input {
     padding: 5px 12px;
 }
 
-.skill-item.chosen.soft, .skill-item-button.soft.chosen {
+.skill-item.chosen.soft,
+#edit-profile-modal .skill-item-button.soft.chosen {
     background-color: #c1c1ff;
 }
 
-.skill-item.chosen.hard, .skill-item.chosen.deve, .skill-item-button.hard.chosen, .skill-item-button.deve.chosen {
+.skill-item.chosen.hard, .skill-item.chosen.deve, 
+#edit-profile-modal .skill-item-button.hard.chosen, #edit-profile-modal .skill-item-button.deve.chosen {
     background-color: #ffcf8b;
 }
 
-.skill-item.chosen.prof, .skill-item.chosen.desi, .skill-item-button.prof.chosen, .skill-item-button.desi.chosen {
+.skill-item.chosen.prof, .skill-item.chosen.desi,
+#edit-profile-modal .skill-item-button.prof.chosen, #edit-profile-modal .skill-item-button.desi.chosen {
     background-color: #ffa0b0;
 }
 
-.chosen-button {
+#edit-profile-modal .chosen-button {
     box-sizing: border-box;
     background-color: #00000000;
     border: 0px;
     margin: 0px 5px 0px 0px;
     padding: 5px;
     font-size: 14px;
+    font-weight: normal;
 }
 
 .skills-list-region {
@@ -2050,17 +2070,25 @@ select.edit-region-input {
     column-gap: 38px;
 }
 
-.skills-filter-button {
+#edit-profile-modal .skills-filter-button {
     box-sizing: border-box;
     background-color: white;
     border: 0px;
+    border-radius: 0px;
+    height: auto;
     margin: 0px;
+    padding-top: 1px;
     padding-bottom: 10px;
     color: #636363;
     font-size: 14px;
+    font-weight: normal;
 }
 
-.skills-filter-button#selected {
+#edit-profile-modal .skills-filter-button:hover {
+    background-color: #dddddd;
+}
+
+#edit-profile-modal .skills-filter-button#selected {
     color: #261d66;
     font-weight: 700;
 }
@@ -2073,7 +2101,7 @@ select.edit-region-input {
     overflow-y: auto;
 }
 
-.skill-item-button {
+#edit-profile-modal .skill-item-button {
     box-sizing: border-box;
     border: 0px;
     border-radius: 55px;
@@ -2082,20 +2110,21 @@ select.edit-region-input {
     margin-bottom: 10px;
     padding: 5px 12px;
     font-size: 13px;
+    font-weight: normal;
     line-height: 15px;
 
     display: inline-block;
 }
 
-.skill-item-button.soft {
+#edit-profile-modal .skill-item-button.soft {
     background-color: #e7e5ff;
 }
 
-.skill-item-button.hard, .skill-item-button.deve {
+#edit-profile-modal .skill-item-button.hard, #edit-profile-modal .skill-item-button.deve {
     background-color: #ffecd1;
 }
 
-.skill-item-button.prof, .skill-item-button.desi {
+#edit-profile-modal .skill-item-button.prof, #edit-profile-modal .skill-item-button.desi {
     background-color: #ffd9df;
 }
 

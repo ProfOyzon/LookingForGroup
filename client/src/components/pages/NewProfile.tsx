@@ -11,6 +11,7 @@ import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
 import menuImage from "../../icons/menu.png";
 import * as tags from "../../constants/tags";
+import EditButton from "../Profile/ProfileEditButton";
 
 //To-do:
 //Fix profile page not changing when clicking 'profile' sidebar link (specifically for on invalid id pages)
@@ -356,10 +357,11 @@ const NewProfile = () => {
       <div id='about-me-buttons'>
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='linkedin'/></button>
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='instagram'/></button>
-        <Popup>
+        <EditButton userData={displayedProfile}/>
+        {/* <Popup>
           <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
           <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
-        </Popup>
+        </Popup> */}
       </div>
     }</> :
     <>{
@@ -431,12 +433,12 @@ const NewProfile = () => {
               then use a map function to generate tags to fill this div */
               displayedProfile.skills.map((tag) => {
                 let category : string;
-                if (tags.desSkills.includes(tag)) {category = 'red';}
-                else if (tags.devSkills.includes(tag)) {category = 'yellow';}
-                else if (tags.softSkills.includes(tag)) {category = 'purple';}
+                if (tag.type === 'Design') {category = 'red';}
+                else if (tag.type === 'Developer') {category = 'yellow';}
+                else if (tag.type === 'Soft') {category = 'purple';}
                 else {category = 'grey';}
                 return(
-                  <div className={`skill-tag-label label-${category}`}>{tag}</div>
+                  <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
                 )
               })
             }

@@ -13,7 +13,7 @@ import menuImage from "../../icons/menu.png";
 import * as tags from "../../constants/tags";
 
 //To-do:
-//Fix profile page not changing when clicking 'profile' sidebar link
+//Fix profile page not changing when clicking 'profile' sidebar link (specifically for on invalid id pages)
 //(If viewing another's profile, should switch to user's profile when clicking such)
 //Ensure all tag types function correctly
 //Fix weird sidebar breakpoint styling

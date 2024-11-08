@@ -37,7 +37,7 @@ const fullProfileList = profiles; */
 
 //Variable to tell whether or not we are using 'npm run server' (true) or 'npm run client' (false)
 //Manually switch whenever deciding which npm command to run
-let runningServer = false;
+let runningServer = true;
 
 //List that holds project data that will be displayed. Changes along with search parameters
 //Could combine this and profile variants into single variable

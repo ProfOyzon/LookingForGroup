@@ -67,8 +67,8 @@ const createProject = async (req, res) => {
 
         // Add project's jobs to database
         for (let job of jobs) {
-            await pool.query("INSERT INTO jobs (project_id, title_id, amount, description) VALUES (?, ?, ?, ?)", 
-                [projectId[0].project_id, job.titleId, job.amount, job.description])
+            await pool.query("INSERT INTO jobs (project_id, title_id, availability, duration, location, compensation, description) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                [projectId[0].project_id, job.titleId, job.availability, job.duration, job.location, job.compensation, job.description])
         }
 
         // Add project's members to database
@@ -120,8 +120,8 @@ const getProjectById = async (req, res) => {
                     ON pt.tag_id = t.tag_id
                 GROUP BY pt.project_id) t
             ON p.project_id = t.project_id
-            LEFT JOIN (SELECT j.project_id, JSON_ARRAYAGG(JSON_OBJECT("title_id", j.title_id, "job_title", jt.label, "amount", j.amount, 
-            "description", j.description)) AS jobs
+            LEFT JOIN (SELECT j.project_id, JSON_ARRAYAGG(JSON_OBJECT("title_id", j.title_id, "job_title", jt.label, "availability", j.availability, 
+            "duration", j.duration, "location", j.location, "compensation", j.compensation, "description", j.description)) AS jobs
                 FROM jobs j
                 JOIN job_titles jt
 			        ON j.title_id = jt.title_id
@@ -136,7 +136,7 @@ const getProjectById = async (req, res) => {
 				    ON m.title_id = jt.title_id
                 WHERE m.project_id = ?) m
             ON p.project_id = m.project_id
-            JOIN (SELECT pi.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", pi.image_id, "image", pi.image, "position", pi.position)) AS images
+            LEFT JOIN (SELECT pi.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", pi.image_id, "image", pi.image, "position", pi.position)) AS images
 				FROM project_images pi
 				WHERE pi.project_id = ?) pi
 			ON p.project_id = pi.project_id
@@ -244,11 +244,11 @@ const updateProject = async (req, res) => {
             await pool.query(sql, values);
         }
         // Add new jobs or update if already in database
-        sql = `INSERT INTO jobs (project_id, title_id, amount, description) VALUES (?, ?, ?, ?) AS new
-        ON DUPLICATE KEY UPDATE project_id = new.project_id, title_id = new.title_id, amount = new.amount, 
-        description = new.description`
+        sql = `INSERT INTO jobs (project_id, title_id, availability, duration, location, compensation, description) VALUES (?, ?, ?, ?, ?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE project_id = new.project_id, title_id = new.title_id, availability = new.availability, duration = new.duration,
+        location = new.location, compensation = new.compensation, description = new.description`
         for (let job of jobs) {
-            await pool.query(sql, [id, job.titleId, job.amount, job.description]);
+            await pool.query(sql, [id, job.titleId, job.availability, job.duration, job.location, job.compensation, job.description]);
         }
 
         // ----- UPDATE PROJECT'S MEMBERS -----
@@ -277,7 +277,6 @@ const updateProject = async (req, res) => {
         // ----- UPDATE PROJECT'S SOCIALS -----
         // Create array from socials
         const newSocials = socials.map((social) => social.id);
-        console.log("Adding", newSocials);
         // Add 0 if empty to allow sql statement to still find exisiting data to be removed
         if (newSocials.length === 0) {
             newSocials.push(0);
@@ -291,7 +290,6 @@ const updateProject = async (req, res) => {
         // Remove socials if any were found
         if (removingSocials[0].socials) {
             placeholders = genPlaceholders(removingSocials[0].socials);
-            console.log("Removing", removingSocials[0].socials);
             sql = `DELETE FROM project_socials WHERE project_id = ? AND website_id IN (${placeholders})`;
             values = [id, ...removingSocials[0].socials];
             await pool.query(sql, values);

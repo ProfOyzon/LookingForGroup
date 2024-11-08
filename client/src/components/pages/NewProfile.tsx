@@ -431,12 +431,12 @@ const NewProfile = () => {
               then use a map function to generate tags to fill this div */
               displayedProfile.skills.map((tag) => {
                 let category : string;
-                if (tags.desSkills.includes(tag)) {category = 'red';}
-                else if (tags.devSkills.includes(tag)) {category = 'yellow';}
-                else if (tags.softSkills.includes(tag)) {category = 'purple';}
+                if (tag.type === 'Design') {category = 'red';}
+                else if (tag.type === 'Developer') {category = 'yellow';}
+                else if (tag.type === 'Soft') {category = 'purple';}
                 else {category = 'grey';}
                 return(
-                  <div className={`skill-tag-label label-${category}`}>{tag}</div>
+                  <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
                 )
               })
             }

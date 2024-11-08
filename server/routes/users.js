@@ -2,7 +2,8 @@ import { Router } from "express";
 import mid from "../middleware/index.js";
 import { getUsers, getUsersById, createUser, updateUser, updateProfilePicture, addSkill, deleteSkill, getMyProjects, getVisibleProjects,
     updateProjectVisibility, getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
-    getUserFollowing, addUserFollowing, deleteUserFollowing, getUserByUsername, login } from "../controllers/users.js";
+    getUserFollowing, addUserFollowing, deleteUserFollowing, getUserByUsername, login, 
+    getUsernameBySession} from "../controllers/users.js";
 
 const router = Router();
 
@@ -10,6 +11,7 @@ router.get("/api/users", getUsers);
 router.post("/api/users", createUser);
 router.get("/api/users/:id", getUsersById);
 router.get("/api/users/:username", getUserByUsername);
+router.get("/api/users/get-username-session", getUsernameBySession);
 router.put("/api/users/:id", updateUser);
 router.put("/api/users/:id/profile-picture", mid.checkImageFile, updateProfilePicture);
 router.post("/api/users/:id/skills", addSkill);

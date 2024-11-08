@@ -53,12 +53,24 @@ const createUser = async (req, res) => {
 const login = async (req, res) => {
     const { username, password } = req.body;
 
-    console.log("USERNAME IS: " + username);
+    const userQuery = "SELECT * FROM users WHERE username = ?";
+    const [userResult] = await pool.query(userQuery, [username]);
+    const user = userResult[0];
 
-    const userQuery = "SELECT user_id FROM users WHERE username = ?";
-    const [user] = await pool.query(userQuery, [username]);
+    const match = await bcrypt.compare(password, user.password);
 
-    console.log(user);
+    if (user == null || !match) {
+        return res.status(400).json({ error: 'Wrong username or password' });
+    }
+    
+    req.session.user = user;
+    req.session.authorized = true;
+
+    console.log(req.session.authorized);
+    console.log("logged in mf");
+    console.log(req.session.user);
+
+    return res.json({ redirect: '/' });
 }
 
 const getUsersById = async (req, res) => {
@@ -88,13 +100,33 @@ const getUsersById = async (req, res) => {
 }
 
 const getUserByUsername = async (req, res) => {
+    
     // Get user's id by username
+    const userQuery = "SELECT * FROM users WHERE username = ?";
+    const [user] = await pool.query(userQuery, [username]);
 
     // Get username from url
-    const { id } = req.params;
+    const { id } = req.params; 
 
     // Get user data
     //const sql =
+}
+
+const getUsernameBySession = async (req, res) => {
+    console.log("HELOOOOOO");
+    let username;
+    console.log("HELO)OOOOOOOOO");
+    //username = await req.session.user.first_name;
+    try {
+        console.log(req.session.user.first_name);
+        //username = await req.session.user.first_name;
+        return res.status(201).json({ username: 'blahlvhagefdg' });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: 'Error finding session!' });
+    }
+    console.log("HELO)OOOOOOOOO");
+    return res.status(201).json({ username: username });
 }
 
 const updateUser = async (req, res) => {
@@ -109,7 +141,7 @@ const updateUser = async (req, res) => {
     const values = [firstName, lastName, bio, id];
     await pool.query(sql, values);
     
-    return res.sendStatus(204)
+    return res.sendStatus(204);
 }
 
 const updateProfilePicture = async (req, res) => {
@@ -439,7 +471,7 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export { getUsers, createUser, getUsersById, getUserByUsername, login, updateUser, updateProfilePicture, addSkill, deleteSkill, 
+export { getUsers, createUser, getUsersById, getUserByUsername, getUsernameBySession, login, updateUser, updateProfilePicture, addSkill, deleteSkill, 
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

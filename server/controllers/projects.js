@@ -45,12 +45,12 @@ const createProject = async (req, res) => {
     // Create a new project
 
     // Get input data
-    const {userId, title, hook, description, purpose, audience, projectTypes, tags, jobs, members} = req.body;
+    const {userId, title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
 
     try {
         // Add project to database and get back its id
-        const sql = "INSERT INTO projects (title, hook, description, purpose, audience, user_id) VALUES (?, ?, ?, ?, ?, ?)";
-        const values = [title, hook, description, purpose, audience, userId];
+        const sql = "INSERT INTO projects (title, hook, description, purpose, status, audience, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        const values = [title, hook, description, purpose, status, audience, userId];
         await pool.query(sql, values);
         const [projectId] = await pool.query("SELECT project_id FROM projects WHERE title = ? AND user_id = ?", [title, userId]);
 
@@ -67,14 +67,20 @@ const createProject = async (req, res) => {
 
         // Add project's jobs to database
         for (let job of jobs) {
-            await pool.query("INSERT INTO jobs (project_id, title_id, amount, description) VALUES (?, ?, ?, ?)", 
-                [projectId[0].project_id, job.titleId, job.amount, job.description])
+            await pool.query("INSERT INTO jobs (project_id, title_id, availability, duration, location, compensation, description) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                [projectId[0].project_id, job.titleId, job.availability, job.duration, job.location, job.compensation, job.description])
         }
 
         // Add project's members to database
         for (let member of members) {
             await pool.query("INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?)", 
                 [projectId[0].project_id, member.id, member.titleId]);
+        }
+
+        // Add project's socials to database
+        for (let social of socials) {
+            await pool.query("INSERT INTO project_socials (project_id, website_id, url) VALUES (?, ?, ?)", 
+                [projectId[0].project_id, social.id, social.url]);
         }
 
         return res.status(201).json({
@@ -98,7 +104,8 @@ const getProjectById = async (req, res) => {
 
     try {
         // Get project data
-        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.purpose, p.audience, g.project_types, t.tags, j.jobs, m.members, pi.images
+        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.purpose, p.status, p.audience, g.project_types, 
+            t.tags, j.jobs, m.members, pi.images, so.socials
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                 FROM project_genres pg 
@@ -113,8 +120,8 @@ const getProjectById = async (req, res) => {
                     ON pt.tag_id = t.tag_id
                 GROUP BY pt.project_id) t
             ON p.project_id = t.project_id
-            LEFT JOIN (SELECT j.project_id, JSON_ARRAYAGG(JSON_OBJECT("title_id", j.title_id, "job_title", jt.label, "amount", j.amount, 
-            "description", j.description)) AS jobs
+            LEFT JOIN (SELECT j.project_id, JSON_ARRAYAGG(JSON_OBJECT("title_id", j.title_id, "job_title", jt.label, "availability", j.availability, 
+            "duration", j.duration, "location", j.location, "compensation", j.compensation, "description", j.description)) AS jobs
                 FROM jobs j
                 JOIN job_titles jt
 			        ON j.title_id = jt.title_id
@@ -129,10 +136,16 @@ const getProjectById = async (req, res) => {
 				    ON m.title_id = jt.title_id
                 WHERE m.project_id = ?) m
             ON p.project_id = m.project_id
-            JOIN (SELECT pi.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", pi.image_id, "image", pi.image, "position", pi.position)) AS images
+            LEFT JOIN (SELECT pi.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", pi.image_id, "image", pi.image, "position", pi.position)) AS images
 				FROM project_images pi
 				WHERE pi.project_id = ?) pi
 			ON p.project_id = pi.project_id
+            LEFT JOIN (SELECT ps.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", so.website_id, "website", so.label, "url", ps.url)) AS socials
+                FROM project_socials ps 
+                JOIN socials so
+                    ON ps.website_id = so.website_id
+                GROUP BY ps.project_id) so
+            ON p.project_id = so.project_id
             WHERE p.project_id = ?
         `;
         const values = [id, id, id, id];
@@ -156,12 +169,12 @@ const updateProject = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { title, hook, description, purpose, audience, projectTypes, tags, jobs, members} = req.body;
+    const { title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
 
     try {
         // Update database with project's new info
-        let sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, audience = ? WHERE project_id = ?";
-        let values = [title, hook, description, purpose, audience, id];
+        let sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, status = ?, audience = ? WHERE project_id = ?";
+        let values = [title, hook, description, purpose, status, audience, id];
         await pool.query(sql, values);
         
         // ----- UPDATE PROJECT'S TYPES -----
@@ -171,13 +184,13 @@ const updateProject = async (req, res) => {
         let placeholders = genPlaceholders(newProjectTypes);
         sql = `SELECT JSON_ARRAYAGG(pg.type_id) AS project_types FROM project_genres pg 
         WHERE pg.project_id = ? AND NOT pg.type_id IN (${placeholders})`;
-        values = [id, ...newProjectTypes]
+        values = [id, ...newProjectTypes];
         const [removingProjectTypes] = await pool.query(sql, values);
         // Remove project types if any were found
         if (removingProjectTypes[0].project_types) {
             placeholders = genPlaceholders(removingProjectTypes[0].project_types);
             sql = `DELETE FROM project_genres WHERE project_id = ? AND type_id IN (${placeholders})`;
-            values = [id, ...removingProjectTypes[0].project_types]
+            values = [id, ...removingProjectTypes[0].project_types];
             await pool.query(sql, values);
         }
         // Add new project types or update if already in database
@@ -194,13 +207,13 @@ const updateProject = async (req, res) => {
         placeholders = genPlaceholders(newTags);
         sql = `SELECT JSON_ARRAYAGG(pt.tag_id) AS tags FROM project_tags pt 
         WHERE pt.project_id = ? AND NOT pt.tag_id IN (${placeholders})`;
-        values = [id, ...newTags]
+        values = [id, ...newTags];
         const [removingTags] = await pool.query(sql, values);
         // Remove tags if any were found
         if (removingTags[0].tags) {
             placeholders = genPlaceholders(removingTags[0].tags);
             sql = `DELETE FROM project_tags WHERE project_id = ? AND tag_id IN (${placeholders})`;
-            values = [id, ...removingTags[0].tags]
+            values = [id, ...removingTags[0].tags];
             await pool.query(sql, values);
         }
         // Add new tags or update if already in database
@@ -213,25 +226,29 @@ const updateProject = async (req, res) => {
         // ----- UPDATE PROJECT'S JOBS -----
         // Create array from jobs
         const newJobs = jobs.map((job) => job.titleId);
-        // Get jobs already in database that need to be removed
+        // Add 0 if empty to allow sql statement to still find exisiting data to be removed
+        if (newJobs.length === 0) {
+            newJobs.push(0);
+        }
+        // Get jobs already in database that need to be removed 
         placeholders = genPlaceholders(newJobs);
         sql = `SELECT JSON_ARRAYAGG(j.title_id) AS jobs FROM jobs j
         WHERE j.project_id = ? AND NOT j.title_id IN (${placeholders})`;
-        values = [id, ...newJobs]
+        values = [id, ...newJobs];
         const [removingJobs] = await pool.query(sql, values);
         // Remove jobs if any were found
         if (removingJobs[0].jobs) {
             placeholders = genPlaceholders(removingJobs[0].jobs);
             sql = `DELETE FROM jobs WHERE project_id = ? AND title_id IN (${placeholders})`;
-            values = [id, ...removingJobs[0].jobs]
+            values = [id, ...removingJobs[0].jobs];
             await pool.query(sql, values);
         }
         // Add new jobs or update if already in database
-        sql = `INSERT INTO jobs (project_id, title_id, amount, description) VALUES (?, ?, ?, ?) AS new
-        ON DUPLICATE KEY UPDATE project_id = new.project_id, title_id = new.title_id, amount = new.amount, 
-        description = new.description`
+        sql = `INSERT INTO jobs (project_id, title_id, availability, duration, location, compensation, description) VALUES (?, ?, ?, ?, ?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE project_id = new.project_id, title_id = new.title_id, availability = new.availability, duration = new.duration,
+        location = new.location, compensation = new.compensation, description = new.description`
         for (let job of jobs) {
-            await pool.query(sql, [id, job.titleId, job.amount, job.description]);
+            await pool.query(sql, [id, job.titleId, job.availability, job.duration, job.location, job.compensation, job.description]);
         }
 
         // ----- UPDATE PROJECT'S MEMBERS -----
@@ -241,13 +258,13 @@ const updateProject = async (req, res) => {
         placeholders = genPlaceholders(newMembers);
         sql = `SELECT JSON_ARRAYAGG(m.user_id) AS members FROM members m
         WHERE m.project_id = ? AND NOT m.user_id IN (${placeholders})`;
-        values = [id, ...newMembers]
+        values = [id, ...newMembers];
         const [removingMembers] = await pool.query(sql, values);
         // Remove members if any were found
         if (removingMembers[0].members) {
             placeholders = genPlaceholders(removingMembers[0].members);
             sql = `DELETE FROM members WHERE project_id = ? AND user_id IN (${placeholders})`;
-            values = [id, ...removingMembers[0].members]
+            values = [id, ...removingMembers[0].members];
             await pool.query(sql, values);
         }
         // Add new members or update if already in database
@@ -255,6 +272,33 @@ const updateProject = async (req, res) => {
         ON DUPLICATE KEY UPDATE project_id = new.project_id, user_id = new.user_id, title_id = new.title_id`
         for (let member of members) {
             await pool.query(sql, [id, member.id, member.titleId]);
+        }
+
+        // ----- UPDATE PROJECT'S SOCIALS -----
+        // Create array from socials
+        const newSocials = socials.map((social) => social.id);
+        // Add 0 if empty to allow sql statement to still find exisiting data to be removed
+        if (newSocials.length === 0) {
+            newSocials.push(0);
+        }
+        // Get socials already in database that need to be removed
+        placeholders = genPlaceholders(newSocials);
+        sql = `SELECT JSON_ARRAYAGG(ps.website_id) AS socials FROM project_socials ps 
+        WHERE ps.project_id = ? AND NOT ps.website_id IN (${placeholders})`;
+        values = [id, ...newSocials];
+        const [removingSocials] = await pool.query(sql, values);
+        // Remove socials if any were found
+        if (removingSocials[0].socials) {
+            placeholders = genPlaceholders(removingSocials[0].socials);
+            sql = `DELETE FROM project_socials WHERE project_id = ? AND website_id IN (${placeholders})`;
+            values = [id, ...removingSocials[0].socials];
+            await pool.query(sql, values);
+        }
+        // Add new socials or update if already in database
+        sql = `INSERT INTO project_socials (project_id, website_id, url) VALUES (?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE project_id = new.project_id, website_id = new.website_id, url = new.url`
+        for (let social of socials) {
+            await pool.query(sql, [id, social.id, social.url]);
         }
         
         return res.sendStatus(204);

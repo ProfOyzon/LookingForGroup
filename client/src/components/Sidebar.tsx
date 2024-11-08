@@ -16,8 +16,22 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
 
   // const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
   const navigate = useNavigate(); // Hook for navigation
+  const currentURL = window.location.pathname;
 
-  const [activePage, setActivePage] = useState('Discover'); // State to manage the active page [Home, My Projects, Messages, Profile, Settings]
+  let startingPage : string;
+
+  // Check to see what page we are on
+  switch (window.location.pathname) {
+    case '/discover': startingPage = 'Discover'; break;
+    case '/meet': startingPage = 'Meet'; break;
+    case '/myProjects': startingPage = 'My Projects'; break;
+    case '/messages': startingPage = 'Messages'; break;
+    case '/profile': startingPage = 'Profile'; break;
+    case '/settings': startingPage = 'Settings'; break;
+    default: startingPage = 'Discover';
+  }
+
+  const [activePage, setActivePage] = useState(startingPage); // State to manage the active page [Discover, Meet, My Projects, Messages, Profile, Settings]
 
   const [showNotifications, setShowNotifications] = useState(false); // State to manage the notifications modal
 
@@ -106,7 +120,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
         <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
           <img src="images/icons/nav/msg-nav.png" className="navIcon" alt="Messages" /> Messages
         </button>
-        <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', paths.routes.PROFILE)}>
+        <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', `${paths.routes.PROFILE}?userID=1`)}>
           <img src="images/icons/nav/profile-white.png" className="navIcon" alt="Profile" /> Profile
         </button>
         <button className={activePage === 'Settings' ? 'active' : ''} onClick={() => handleTextChange('Settings', paths.routes.SETTINGS)}>

@@ -38,7 +38,7 @@ const Home = (props) => {
 
     let username = "placeholder";
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log("edfsefgsergf");
         const fetchUsername = async () => {
             console.log("fetchUsername launched");
@@ -47,9 +47,10 @@ const Home = (props) => {
                 const response = await fetch("/api/users/get-username-session");
                 console.log("gobbledegook 2");
                 console.log(response);
-                /* if (!response.ok) {
+                // The response was commented out
+                if (!response.ok) {
                     throw new Error("Bad response");
-                } */
+                }
                 console.log("gobbledegook 3");
                 const data = await response.json();
                 console.log(data);
@@ -62,21 +63,22 @@ const Home = (props) => {
             }
         }
 
-        /* fetch("api/users/get-username-session")
+        // This block was commented out
+        fetch("api/users/get-username-session")
             .then((response) => {
                 return response.json();
             })
             .then((data) => {
                 console.log(data);
                 username = data;
-            }) */
+            })
 
         sendGet("/api/users/get-username-sessio");
 
         //username = GET("api/users/get-username-session");
         fetchUsername();
         console.log(username);
-    }, []);
+    }, []); */
 
     // Sets the default content of the page to be 'projects' and 
     // listens to changes in the tab

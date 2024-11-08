@@ -16,6 +16,7 @@ import { useState, useEffect, useRef } from 'react';
 import ToTopButton from "../ToTopButton";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
+import { sendPost, sendGet, GET } from "../../functions/fetch";
 import e from "express";
 
 //To-do
@@ -71,10 +72,42 @@ let popupTagSelections : string[] = [];
 //category - string variable that determines what layout type to load (defaults to profile if invalid value is given)
 const DiscoverAndMeet = ({category}) => {
 
+  const [username, setUsername] = useState();
+
+  useEffect(() => {
+    console.log("edfsefgsergf");
+      const fetchUsername = async () => {
+          console.log("fetchUsername launched");
+          try {
+              console.log("gobbledegook");
+              const response = await fetch("/api/users/get-username-session");
+              console.log("gobbledegook 2");
+              console.log(response);
+              console.log("gobbledegook 3");
+              const { data } = await response.json();
+              console.log(data);
+              setUsername(data);
+              console.log(username);
+          }   catch (err) {
+              if (err instanceof Error) {
+                  
+              }
+          }
+      }
+
+      //sendGet("/api/users/get-username-sessio");
+
+      //username = GET("api/users/get-username-session");
+      fetchUsername();
+      console.log(username);
+  }, []);
+
+  //fetchUsername();
+
   //Use these when testing with 'npm run server'
   //Functions used to retrieve data from the database
   const getProjectData = async () => {
-    const url = 'http://localhost:8081/api/projects'
+    const url = '/api/projects'
     try {
       let response = await fetch(url, {
         method: "GET",
@@ -91,7 +124,7 @@ const DiscoverAndMeet = ({category}) => {
   } 
 
   const getProfileData = async () => {
-    const url = 'http://localhost:8081/api/users'
+    const url = '/api/users'
     try {
       let response = await fetch(url);
   
@@ -103,6 +136,30 @@ const DiscoverAndMeet = ({category}) => {
     } catch(error) {
       console.error(error.message)
     }
+  }
+
+  const fetchUsername = async () => {
+    console.log("fetchUsername launched");
+    try {
+        console.log("gobbledegook");
+        const response = await fetch("/api/users/get-username-session");
+        console.log("gobbledegook 2");
+        console.log(response);
+        /* if (!response.ok) {
+            throw new Error("Bad response");
+        } */
+        console.log("gobbledegook 3");
+        const data = await response.json();
+        console.log(data);
+        setUsername(data);
+        console.log(username);
+    }   catch (err) {
+        console.log("ERROR!!!");
+    }
+  }
+
+  const fetchRealUsername = async () => {
+    const url = '/api/user'
   }
 
   let defaultProjectList = runningServer ? undefined : projects;
@@ -119,6 +176,9 @@ const DiscoverAndMeet = ({category}) => {
   if (fullProfileList === undefined) {
     getProfileData();
   } 
+  if (username == "") {
+    fetchUsername();
+  }
 
   //List that holds trimmed project data for use in searching
   //Note: Depending on user needs, may need to change or add to what is used in searches
@@ -937,6 +997,7 @@ const DiscoverAndMeet = ({category}) => {
       {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
       <div id='discover-hero'>
       {heroContent}
+      {username}
       </div>
 
       {/* Contains tag filters & button to access more filters 

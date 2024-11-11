@@ -23,6 +23,7 @@ Page specific style rules
         -Project general settings
         -Project member settings
         -Project post page
+    --New Project page
     -My projects page
         -Create project page
     -Messages
@@ -62,6 +63,7 @@ General style rules
     --orange-light: #FEAD81;
     --peach: #FFCEB4;
     --purple-light: #D3D3FF;
+    --background-light: #ECECF7;
     --lavender: #271D66;
     --purple-dark: #2C2A3A;
     --dark-lighttheme: #171717;
@@ -463,6 +465,10 @@ Sidebar Nav style rules
     background-repeat: no-repeat;
 }
 
+#lfg-logo {
+    width:80px;
+}
+
 /* .ProfileContainer {
     width: 220px;
     display: flex;
@@ -477,7 +483,7 @@ Sidebar Nav style rules
     /* justify-content: space-between; */
     justify-content: center;
     align-items: center;
-    width: 200px;
+    width: 220px;
     margin: 30px 0 60px 0;
 }
 
@@ -1216,6 +1222,14 @@ Discover and Meet page style rules
         1fr     1fr    1fr
 }
 
+#profile-hero-img-1 {grid-area: image1}
+#profile-hero-img-2 {grid-area: image2}
+#profile-hero-img-3 {grid-area: image3}
+
+.profile-hero-img {
+    width:100%;
+}
+    
 #profile-hero-bg1 {
     background-image: linear-gradient(to right, var(--purple-light), var(--peach));
     border-radius:10px;
@@ -2852,6 +2866,169 @@ plus a follow button & a more options button*/
         width: 95%;
         padding-bottom: 60px;
     }
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+New Project Page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#project-page-content {
+    display:grid;
+    grid-template:
+        'carrousel info' auto
+        'overview people' auto
+        'overview positions' auto /
+        17fr      15fr;
+    margin: 0 50px;
+    gap:20px;
+}
+
+#project-image-carrousel {
+    grid-area:carrousel;
+}
+
+#project-info-panel {
+    grid-area:info;
+    background-color: var(--background-light);
+    border-radius:10px;
+    text-align:left;
+    padding:20px;
+}
+
+.project-info-highlight {
+    color:var(--lavender);
+}
+
+#project-info-header {
+    display:flex;
+}
+
+#project-title {
+    font-size:3.5ch;
+    font-weight:700;
+    color:var(--lavender);
+    margin: 0 0 10px;
+}
+
+#project-info-buttons {
+    display:flex;
+    height: 28px;
+    margin-left: auto;
+}
+
+#project-info-buttons button {
+    border:none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#project-info-buttons img {
+    width: 28px;
+    height: 28px;
+}
+
+#project-description, #project-status, #project-creation {
+    margin:10px 0;
+}
+
+#project-status {
+    font-style:italic;
+    color: var(--darkGray);
+}
+
+#project-open-positions {
+    border:none;
+    border-radius: 30px;
+    background-color:var(--lavender);
+    color:white;
+}
+
+#project-creation {
+    font-style:italic;
+    color: var(--darkGray);
+}
+
+#project-overview {
+    grid-area:overview;
+    text-align:left;
+}
+
+#project-overview-title {
+    font-size: 3ch;
+    color: var(--lavender);
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+.project-overview-section-header {
+    font-size: 2.3ch;
+    color:var(--lavender);
+    font-weight:600;
+    margin: 10px 0;
+}
+
+#project-overview-links-section {
+    color:var(--lavender);
+    font-style:italic;
+    margin:15px 0;
+}
+
+#project-people {
+    grid-area:people;
+}
+
+#project-people-content {
+    display:flex;
+    flex-flow:wrap;
+    gap:10px;
+    margin-top:10px;
+}
+
+.project-contributor {
+    flex: 0 0 calc(50% - 45px);
+    background-color: var(--background-light);
+    display:flex;
+    align-items:center;
+    padding:20px;
+    border-radius:10px;
+}
+
+.project-contributor-profile {
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.project-contributor-info {
+    margin:auto;
+}
+
+#project-people-tabs {
+    display:flex;
+    justify-content:center;
+    gap:10px;
+}
+
+.project-people-tab {
+    border:none;
+    border-radius:30px;
+    background-color: rgba(0, 0, 0, 0);
+    color:var(--lavender);
+    font-size:1.8ch;
+    padding: 5px 10px;
+}
+
+.project-people-tab:hover {
+    background-color: var(--lavender);
+    color: white;
+}
+
+#project-open-positions {
+    grid-area:positions;
 }
 
 /*

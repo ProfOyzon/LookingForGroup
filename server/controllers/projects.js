@@ -48,7 +48,7 @@ const createProject = async (req, res) => {
     const {userId, title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
 
     // Checks
-    if (!userId) {
+    if (!userId || userId < 1) {
         return res.status(400).json({
             status: 400, 
             error: "Missing user id" 
@@ -388,6 +388,14 @@ const updateThumbnail = async (req, res) => {
     // Get id from url
     const { id } = req.params;
 
+    // Checks
+    if (!req.file) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing image file" 
+        });
+    }
+
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
         const fileName = `${id}thumbnail.webp`;
@@ -451,7 +459,7 @@ const addPicture = async (req, res) => {
             status: 400, 
             error: "Missing image file" 
         });
-    } else if (!position) {
+    } else if (!position || Number(position) < 1) {
         return res.status(400).json({
             status: 400, 
             error: "Missing a position for the picture" 

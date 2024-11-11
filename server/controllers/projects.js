@@ -47,6 +47,44 @@ const createProject = async (req, res) => {
     // Get input data
     const {userId, title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
 
+    // Checks
+    if (!userId) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing user id" 
+        });
+    } else if (!title) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a title" 
+        });
+    } else if (!hook) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a hook" 
+        });
+    } else if (!description) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a description" 
+        });
+    } else if (!status) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a project status" 
+        });
+    } else if (tags.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 tag" 
+        });
+    } else if (members.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 member" 
+        });
+    }
+
     try {
         // Add project to database and get back its id
         const sql = "INSERT INTO projects (title, hook, description, purpose, status, audience, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -170,6 +208,39 @@ const updateProject = async (req, res) => {
     // Get input data
     const { id } = req.params;
     const { title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
+
+    // Checks
+    if (!title) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a title" 
+        });
+    } else if (!hook) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a hook" 
+        });
+    } else if (!description) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a description" 
+        });
+    } else if (!status) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a project status" 
+        });
+    } else if (tags.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 tag" 
+        });
+    } else if (members.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 member" 
+        });
+    }
 
     try {
         // Update database with project's new info
@@ -373,6 +444,19 @@ const addPicture = async (req, res) => {
     // Get data
     const { id } = req.params;
     const { position } = req.body
+
+    // Checks
+    if (!req.file) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing image file" 
+        });
+    } else if (!position) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a position for the picture" 
+        });
+    }
     
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
@@ -404,6 +488,14 @@ const updatePicturePositions = async (req, res) => {
     const { id } = req.params;
     const { images } = req.body;
 
+    // Checks
+    if (images.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 picture" 
+        });
+    }
+
     try {
         // Update the picture positions for a project
         for (let image of images) {
@@ -428,6 +520,14 @@ const deletePicture = async (req, res) => {
     // Get input data
     const { id } = req.params;
     const { image } = req.body;
+
+    // Checks
+    if (!image) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing picture name" 
+        });
+    }
 
     try {
         // Remove project's picture from server and database

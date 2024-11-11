@@ -85,7 +85,7 @@ const getUserById = async (req, res) => {
 
     try {
         // Get user data
-        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.username, u.profile_image, u.headline, u.pronouns, 
             jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, s.skills, so.socials
             FROM users u
             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title

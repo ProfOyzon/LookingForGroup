@@ -265,7 +265,7 @@ const updateProfilePicture = async (req, res) => {
         const values = [fileName, id];
         await pool.query(sql, values);
 
-        return res.status(204)
+        return res.sendStatus(204);
     } catch(err) {
         console.log(err);
         return res.status(400).json({

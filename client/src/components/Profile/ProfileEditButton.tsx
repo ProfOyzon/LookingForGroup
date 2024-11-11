@@ -10,7 +10,6 @@ import { majors } from "../../constants/majors";
 
 /* TO DO:
  - GET and PUT profile picture data to and from the server 
- - Make the skills reorderable 
 */
 
 // On click, this button should open the Profile Edit modal 
@@ -91,7 +90,7 @@ const EditButton = ({userData}) => {
         <div className='edit-profile-section-1'>
             {/* Profile Pic */}
             <div className='edit-region photo'>
-                <div className='edit-region-image photo'>
+                <div className='edit-region-image photo' style={{backgroundImage: (userData.profile_image == null ? "none" : "")}}>
                     <div className='edit-region-button-div photo'>
                         <button className='edit-region-button photo'><i className='fa-solid fa-camera'></i></button>
                     </div>
@@ -288,7 +287,7 @@ const EditButton = ({userData}) => {
                     userProjects !== undefined && shownProjects !== undefined ? userProjects.map((project) => {
                         return (<div className='list-project'>
                             {
-                                project.thumbnail == null ? <div className='inner-list-project'>{project.title}</div> : ""
+                                project.thumbnail == null || project.thumbnail == "" ? <div className='inner-list-project'>{project.title}</div> : ""
                             }
                             <div className='list-project-hide-icon'>
                                 <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(project)}}>
@@ -384,7 +383,12 @@ const EditButton = ({userData}) => {
 
     const allowDrop = (ev) => {
         ev.preventDefault();
-        ev.target.style = {backgroundColor: "black"};
+        ev.target.style.borderColor = "black";
+    };
+
+    const disallowDrop = (ev) => {
+        ev.preventDefault();
+        ev.target.style.borderColor = "#00000000";
     };
 
     const drag = (ev) => {
@@ -393,6 +397,7 @@ const EditButton = ({userData}) => {
 
     const drop = (ev) => {
         ev.preventDefault();
+        ev.target.style.borderColor = "#00000000";
         let data = ev.dataTransfer.getData("text");
 
         let theSkill = document.querySelector(`#${data}`);
@@ -403,7 +408,9 @@ const EditButton = ({userData}) => {
         }
     };
 
-    let mySkillsList = [<span className='chosen-gap' id='spot1' onDrop={(e) => {drop(e)}} onDragOver={(e) => {allowDrop(e)}}></span>];
+    let mySkillsList = new Array(0);
+    mySkillsList.push(<span className='chosen-gap' id='spot1' key="key-1"
+        onDrop={(e) => {drop(e)}} onDragOver={(e) => {allowDrop(e)}} onDragLeave={(e) => {disallowDrop(e)}}></span>);
     for (let i = 0; i < currentSkills.length; i++) {
         if (currentSkills[i].skill != "") {
             // Skill 
@@ -418,7 +425,8 @@ const EditButton = ({userData}) => {
             </div>);
 
             // Gap 
-            let newGap = <span className='chosen-gap' id={"spot" + (i + 2)} key={"key" + i} onDrop={(e) => {drop(e)}} onDragOver={(e) => {allowDrop(e)}}></span>;
+            let newGap = <span className='chosen-gap' id={"spot" + (i + 2)} key={"key" + i}
+                onDrop={(e) => {drop(e)}} onDragOver={(e) => {allowDrop(e)}} onDragLeave={(e) => {disallowDrop(e)}}></span>;
             mySkillsList.push(newGap);
         }
     }
@@ -574,7 +582,7 @@ const EditButton = ({userData}) => {
     </div>;
 
     // "Links" 
-    const [currentLinks, setCurrentLinks] = useState(userData.socials);
+    const [currentLinks, setCurrentLinks] = useState(userData.socials == null ? [] : userData.socials);
     const [socialLinks, setSocialLinks] = useState();
 
     const getSocials = async () => {
@@ -597,110 +605,119 @@ const EditButton = ({userData}) => {
     const getWebsiteIcon = (websiteName: string) => {
         switch (websiteName.toLowerCase()) {
             case "instagram":
-                return "&#xf16d;"
+                return <>&#xf16d;</>;
                 break;
             
             case "x":
-                return "&#xe61b;"
+                return <>&#xe61b;</>;
                 break;
             
             case "facebook":
-                return "&#xf39e;"
+                return <>&#xf39e;</>;
                 break;
             
             case "discord":
-                return "&#xf392;"
+                return <>&#xf392;</>;
                 break;
             
             case "bluesky":
-                return "&#xe671;"
+                return <>&#xe671;</>;
                 break;
             
             case "linkedin":
-                return "&#xf08c;"
+                return <>&#xf08c;</>;
                 break;
             
             case "youtube":
-                return "&#xf167;"
+                return <>&#xf167;</>;
                 break;
             
             case "steam":
-                return "&#xf1b6;"
+                return <>&#xf1b6;</>;
                 break;
             
             case "itch":
-                return "&#xf83a;"
+                return <>&#xf83a;</>;
                 break;
             
             case "other":
-                return "&#xf0c1;"
+                return <>&#xf0c1;</>;
                 break;
         }
     };
 
-    const getLinksDropDown = (currentType: string, index: number) => {
+    const getLinksDropDown = (currentSite: string, index: number) => {
         if (socialLinks !== undefined) {
             let socialsList = new Array(0);
             for (let i = 0; i < socialLinks.length; i++) {
                 let tempLink = <option value={socialLinks[i].label.toLowerCase()}>
-                    {`${getWebsiteIcon(socialLinks[i].label)} &nbsp;&nbsp; ${socialLinks[i].label}`}
+                    {getWebsiteIcon(socialLinks[i].label)} &nbsp; {socialLinks[i].label}
                 </option>;
                 socialsList.push(tempLink);
             }
 
-            let dropDownList = <select className='link-options-list' value={currentType} onChange={(e) => {updateType(index, e.target.value)}}>
+            let dropDownList = <select className='link-options-list' value={currentSite.toLowerCase()} onChange={(e) => {updateSite(index, e.target.value)}}>
                 <option value="select">Select</option>
-                {/* <option value="instagram">&#xf16d; &nbsp;&nbsp; Instagram</option>
-                <option value="twitter">&#xe61b; &nbsp;&nbsp; X</option>
-                <option value="facebook">&#xf39e; &nbsp;&nbsp;&nbsp; Facebook</option>
-                <option value="discord">&#xf392; &nbsp; Discord</option>
-                <option value="bluesky">&#xe671; &nbsp; Bluesky</option>
-                <option value="linkedin">&#xf08c; &nbsp;&nbsp; LinkedIn</option>
-                <option value="youtube">&#xf167; &nbsp;&nbsp; YouTube</option>
-                <option value="steam">&#xf1b6; &nbsp;&nbsp; Steam</option>
-                <option value="itch.io">&#xf83a; &nbsp;&nbsp; Itch.io</option>
-                <option value="other">&#xf0c1; &nbsp;&nbsp; Other</option> */}
+                {socialsList}
             </select>;
 
             return dropDownList;
         }
     };
 
-    const addLinkToList = (newLink: { text: string, url: string }) => {
+    const getIdOfWebsite = (theSite: string) => {
+        if (socialLinks !== undefined) {
+            for (let i = 0; i < socialLinks.length; i++) {
+                if (socialLinks[i].label == theSite) {
+                    return socialLinks[i].website_id;
+                }
+            }
+            return 0;
+        }
+        return 0;
+    };
+
+    const addNewLink = () => {
         let tempList = new Array(0);
         for (let i = 0; i < currentLinks.length; i++) {
             tempList.push(currentLinks[i]);
         }
-        tempList.push(newLink);
+        tempList.push({id: 0, website: 'select', url: ''});
         setCurrentLinks(tempList);
-    };
-
-    const addNewLink = () => {
-        addLinkToList({text: 'select', url: ''});
     };
 
     const removeLink = (index: number) => {
         let tempList = new Array(0);
         for (let i = 0; i < currentLinks.length; i++) {
-            if (i != index) {
+            if (i !== index) {
                 tempList.push(currentLinks[i]);
             }
         }
         setCurrentLinks(tempList);
     };
 
-    const updateType = (index: number, newType: string) => {
-        let tempList = [index == 0 ? {text: newType, url: currentLinks[0].url} : currentLinks[0]];
-        for (let i = 1; i < currentLinks.length; i++) {
-            tempList.push(index == i ? {text: newType, url: currentLinks[i].url} : currentLinks[i]);
+    const updateSite = (index: number, newSite: string) => {
+        let tempList = new Array(0);
+        for (let i = 0; i < currentLinks.length; i++) {
+            if (i === index) {
+                tempList.push({id: getIdOfWebsite(newSite), website: newSite, url: currentLinks[i].url});
+            }
+            else {
+                tempList.push(currentLinks[i]);
+            }
         }
         setCurrentLinks(tempList);
     };
 
     const updateURL = (index: number, newURL: string) => {
-        let tempList = [index == 0 ? {text: currentLinks[0].text, url: newURL} : currentLinks[0]];
-        for (let i = 1; i < currentLinks.length; i++) {
-            tempList.push(index == 0 ? {text: currentLinks[i].text, url: newURL} : currentLinks[i]);
+        let tempList = new Array(0);
+        for (let i = 0; i < currentLinks.length; i++) {
+            if (i === index) {
+                tempList.push({id: currentLinks[i].id, website: currentLinks[i].website, url: newURL});
+            }
+            else {
+                tempList.push(currentLinks[i]);
+            }
         }
         setCurrentLinks(tempList);
     };
@@ -712,18 +729,18 @@ const EditButton = ({userData}) => {
                 <div className='edit-region-instruct links'>Provide the links to pages you wish to include on your page.</div>
                 <div className='edit-region-links-list'>
                     {
-                        // currentLinks.map((linkItem: { text: string, url: string }, index: number) => {
-                        //     return (
-                        //         <div className='edit-region-link-item'>
-                        //             {getLinksDropDown(linkItem.text, index)}
-                        //             <div className='edit-region-input links'>
-                        //                 <input type='text' className='edit-region-input-text'
-                        //                     placeholder='URL' value={linkItem.url} onChange={(e) => {updateURL(index, e.target.value)}}></input>
-                        //                 <button className='remove-button' onClick={(e) => {removeLink(index)}}>—</button>
-                        //             </div>
-                        //         </div>
-                        //     );
-                        // })
+                        currentLinks == null ? "" : currentLinks.map((linkItem, index: number) => {
+                            return (
+                                <div className='edit-region-link-item'>
+                                    {getLinksDropDown(linkItem.website, index)}
+                                    <div className='edit-region-input links'>
+                                        <input type='text' className='edit-region-input-text'
+                                            placeholder='URL' value={linkItem.url} onChange={(e) => {updateURL(index, e.target.value)}}></input>
+                                        <button className='remove-button' onClick={(e) => {removeLink(index)}}>—</button>
+                                    </div>
+                                </div>
+                            );
+                        })
                     }
                     <div className='edit-region-button-section links'>
                         <button className='edit-region-button links' onClick={(e) => {addNewLink()}}>+ <em>Add social profile</em></button>
@@ -797,6 +814,14 @@ const EditButton = ({userData}) => {
         return tempList;
     };
 
+    const createLinksList = () => {
+        let tempList = new Array(0);
+        for (let i = 0; i < currentLinks.length; i++) {
+            tempList.push({id: currentLinks[i].id, url: currentLinks[i].url});
+        }
+        return tempList;
+    };
+
     const saveData = () => {
         // User 
         saveUserData();
@@ -830,7 +855,7 @@ const EditButton = ({userData}) => {
                     funFact: currentFunFact,
                     bio: currentAbout,
                     skills: createSkillsList(),
-                    socials: userData.socials
+                    socials: createLinksList(),
                 })
             });
 
@@ -868,7 +893,7 @@ const EditButton = ({userData}) => {
 
     return (
         <div id='profile-edit-button-section'>
-            <button className='profile-edit-button' onClick={() => openClosePopup(showPopup, setShowPopup)}>Edit Profile</button>
+            <button className='profile-edit-button' id='edit-profile-button' onClick={() => openClosePopup(showPopup, setShowPopup)}>Edit Profile</button>
             {/* <PopupButton buttonId={"profile-edit-button"} callback={() => setShowPopup}>Edit Profile</PopupButton> */}
 
             {/* The "Edit Profile" popup */}

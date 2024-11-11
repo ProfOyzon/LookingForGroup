@@ -121,7 +121,6 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
           <img src="images/icons/nav/msg-nav.png" className="navIcon" alt="Messages" /> Messages
         </button>
         <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', `${paths.routes.PROFILE}?userID=1`)}>
-        {/* <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', `${paths.routes.PROFILE}`)}> */}
           <img src="images/icons/nav/profile-white.png" className="navIcon" alt="Profile" /> Profile
         </button>
         <button className={activePage === 'Settings' ? 'active' : ''} onClick={() => handleTextChange('Settings', paths.routes.SETTINGS)}>

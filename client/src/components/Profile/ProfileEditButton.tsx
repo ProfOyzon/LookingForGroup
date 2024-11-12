@@ -7,6 +7,7 @@ import { proficiencies } from "../../constants/skills";
 import { projects } from "../../constants/fakeData";
 import { roles } from "../../constants/roles";
 import { majors } from "../../constants/majors";
+// import * as profilePics from "../../../../server/images/profiles";
 
 /* TO DO:
  - GET and PUT profile picture data to and from the server 
@@ -57,6 +58,7 @@ const EditButton = ({userData}) => {
         getMajors();
     }
 
+    const [currentPFPLink, setCurrentPFPLink] = useState(require(`../../../../server/images/profiles/${userData.profile_image}`));
     const [currentFirstName, setCurrentFirstName] = useState(userData.first_name);
     const [currentLastName, setCurrentLastName] = useState(userData.last_name);
     const [currentPronouns, setCurrentPronouns] = useState(userData.pronouns);
@@ -86,13 +88,46 @@ const EditButton = ({userData}) => {
         yearOptions.push(<option value={getOrdinal(i + 1)}>{getOrdinal(i + 1)}</option>);
     }
 
+    const uploadNewImage = async (theInput) => {
+        let form = document.querySelector(".edit-region-button-wrapper.photo");
+        if (form !== undefined && form !== null) {
+            let fileForm = new FormData(form);
+
+            const url = `http://localhost:8081/api/users/${userData.user_id}/profile-picture`;
+            try {
+                let response = await fetch(url, {
+                    method: "PUT",
+                    body: fileForm,
+                });
+
+                console.log(`User data: Response status: ${response.status}`);
+
+                const file = theInput.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageDataURL = e.target.result;
+                    setCurrentPFPLink(imageDataURL);
+                };
+                reader.readAsDataURL(file);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
     const page1 = <div className='edit-profile-body about'>
         <div className='edit-profile-section-1'>
             {/* Profile Pic */}
             <div className='edit-region photo'>
-                <div className='edit-region-image photo' style={{backgroundImage: (userData.profile_image == null ? "none" : "")}}>
+                <div className='edit-region-image photo'>
+                    <img className='edit-region-photo photo' src={currentPFPLink} alt={`${currentFirstName}'s Profile Pic`}></img>
                     <div className='edit-region-button-div photo'>
-                        <button className='edit-region-button photo'><i className='fa-solid fa-camera'></i></button>
+                        <form className='edit-region-button-wrapper photo'>
+                            <div className='edit-region-fake-button photo'><i className='fa-solid fa-camera'></i></div>
+                            <input type="file" className='edit-region-button photo' name="image" accept="image/*"
+                                onChange={(e) => {uploadNewImage(e.target)}}></input>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -285,18 +320,33 @@ const EditButton = ({userData}) => {
             <div className='edit-region-input projects'>
                 {
                     userProjects !== undefined && shownProjects !== undefined ? userProjects.map((project) => {
-                        return (<div className='list-project'>
-                            {
-                                project.thumbnail == null || project.thumbnail == "" ? <div className='inner-list-project'>{project.title}</div> : ""
-                            }
-                            <div className='list-project-hide-icon'>
-                                <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(project)}}>
-                                    {
-                                        checkIfProjectIsShown(project.project_id) ? <i className='fa-solid fa-eye'></i> : <i className='fa-solid fa-eye-slash'></i>
-                                    }
-                                </button>
-                            </div>
-                        </div>);
+                        if (project.thumbnail === null || project.thumbnail == "") {
+                            return (<div className='list-project'>
+                                <div className='inner-list-project'>{project.title}</div>
+                                <div className='list-project-hide-icon'>
+                                    <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(project)}}>
+                                        {
+                                            checkIfProjectIsShown(project.project_id) ? <i className='fa-solid fa-eye'></i> : <i className='fa-solid fa-eye-slash'></i>
+                                        }
+                                    </button>
+                                </div>
+                            </div>);
+                        }
+                        else {
+                            const projectURL = require(`../../../../server/images/thumbnails/${project.thumbnail}`);
+                            return (<div className='list-project'>
+                                <div className='inner-list-project'>
+                                    <img className='list-project-photo' src={projectURL} alt={`${project.title}'s Thumbnail`}></img>
+                                </div>
+                                <div className='list-project-hide-icon'>
+                                    <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(project)}}>
+                                        {
+                                            checkIfProjectIsShown(project.project_id) ? <i className='fa-solid fa-eye'></i> : <i className='fa-solid fa-eye-slash'></i>
+                                        }
+                                    </button>
+                                </div>
+                            </div>);
+                        }
                     }) : ""
                 }
             </div>
@@ -825,9 +875,6 @@ const EditButton = ({userData}) => {
     const saveData = () => {
         // User 
         saveUserData();
-
-        // Profile Picture 
-        // ---CODE GOES HERE--- 
 
         // Projects 
         saveProjectsPage();

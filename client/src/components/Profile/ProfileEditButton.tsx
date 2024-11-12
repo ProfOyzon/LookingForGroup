@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PagePopup, openClosePopup } from "../PagePopup";
 // import { Popup, PopupContent, PopupButton } from "../Popup";
-import { softSkills } from "../../constants/skills";
-import { hardSkills } from "../../constants/skills";
-import { proficiencies } from "../../constants/skills";
-import { projects } from "../../constants/fakeData";
-import { roles } from "../../constants/roles";
-import { majors } from "../../constants/majors";
-// import * as profilePics from "../../../../server/images/profiles";
-
-/* TO DO:
- - GET and PUT profile picture data to and from the server 
-*/
 
 // On click, this button should open the Profile Edit modal 
 const EditButton = ({userData}) => {

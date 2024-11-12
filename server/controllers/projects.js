@@ -73,6 +73,11 @@ const createProject = async (req, res) => {
             status: 400, 
             error: "Missing a project status" 
         });
+    }  else if (projectTypes.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 project type" 
+        });
     } else if (tags.length < 1) {
         return res.status(400).json({
             status: 400, 
@@ -229,6 +234,11 @@ const updateProject = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "Missing a project status" 
+        });
+    }  else if (projectTypes.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 project type" 
         });
     } else if (tags.length < 1) {
         return res.status(400).json({

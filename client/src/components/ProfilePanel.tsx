@@ -16,7 +16,7 @@ export const ProfilePanel = ({profileData, height}) => {
 
   return (
     <div className={'profile-panel'} style={{height: height}}>
-      <img src={profilePicture} alt={"profile iamge"}/>
+      <img src="images/bannerImages/People Panel 1 Light.png" alt={"profile iamge"}/>
       <h2>{profileData.name}</h2>
       <h3>Major</h3>
       <div>{profileData.bio}</div>

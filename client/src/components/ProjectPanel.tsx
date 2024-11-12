@@ -8,7 +8,7 @@ import profilePicture from "../images/blue_frog.png";
 export const ProjectPanel = ({width}) => {
   return (
     <div className={'project-panel'} style={{width: width}}>
-      <img src={profilePicture} alt={"project iamge"}/>
+      <img src="images/bannerImages/People Panel 1 Light.png" alt={"project iamge"}/>
     </div>
   )
 }

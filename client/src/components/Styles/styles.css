@@ -79,6 +79,14 @@ General style rules
     --tag-light-purple: #E6E6FF;
 }
 
+* {
+    font-family: "Inter", sans-serif;
+}
+
+* {
+    font-family: "Inter", sans-serif;
+}
+
 /*basic rules for hiding/showing certain elements
 used for the more options dropdown menu and notifications
 */
@@ -275,8 +283,9 @@ Project Panel component style rules
 */
 .project-panel {
     height: 200px;
-    border: 2px solid grey;
-    background-color: white;
+    border: none;
+    border-radius: 10px;
+    background-color: #E6E6FF;
 }
 
 .project-panel img{
@@ -296,14 +305,15 @@ Profile Panel component style rules
 .profile-column {
     width: 200px;
     display:flex;
+    /* border: 1px solid black; */
 }
 
 .profile-panel {
     width: 200px;
-    border: 2px solid grey;
-    background-color:white;
-    position:relative;
-    text-align:left;
+    border: none;
+    border-radius: 10px;
+    background-color:#E6E6FF;
+    margin-bottom: 20px;
 }
 
 .profile-panel img{
@@ -452,7 +462,7 @@ Sidebar Nav style rules
     position: fixed;
     top: 0px;
     left: 0px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;
+    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px; */
     z-index: 2;
     color: var(--dark-lighttheme);
     background-color: white;
@@ -477,8 +487,9 @@ Sidebar Nav style rules
     /* justify-content: space-between; */
     justify-content: center;
     align-items: center;
+    text-align: center;
     width: 200px;
-    margin: 30px 0 60px 0;
+    margin: 30px 0 30px 0;
 }
 
 #notif-dot {
@@ -504,8 +515,9 @@ Sidebar Nav style rules
 /* title/logo */
 .headerContainer h1 {
     font-weight: bold;
-    font-size: 24px;
-    margin: 0px 20px;
+    font-size: 45px;
+    margin: 0px 0px 0px 30px;
+    text-align: center;
     color: var(--lavender);
 }
 
@@ -515,35 +527,46 @@ Sidebar Nav style rules
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    gap: 8px;
+    gap: 10px;
     /*background-color: var(--primary-blue);*/
 }
 
 .containerButtonSideBar button {
-    width: 200px;
-    height: 60px;
+    width: 194px;
+    height: 55px;
     /*background-color: var(--primary-blue);*/
     background-color:rgb(0, 0, 0, 0);
     border: none;
     border-radius: 30px;
-    font-size: 18px;
+    font-size: 20px;
     text-align: left;
-    padding-left: 25px;
+    padding-left: 20px;
     padding-right: auto;
     display: flex;
     align-items: center;
     /*color: var(--dark-lighttheme);*/
-    gap: 20px;
+    gap: 15px;
+
+    img {
+        width: 30px;
+        filter: invert(1);
+    }
 }
 
 .containerButtonSideBar button:hover {
     transition-duration: 0.25s;
-    background-color: rgba(255, 255, 255, .5);
+    background-color: rgb(255, 255, 255);
 }
 
 .containerButtonSideBar button.active {
-    background-color: white;
+    background-color:#271D66;
     transition: 0.25s;
+    font-weight: bold;
+    color: white;
+
+    img {
+        filter: invert(0);
+    }
 }
 
 /* Profile picture or avatar */
@@ -609,22 +632,35 @@ Sidebar Nav style rules
 }
 
 .Create button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: white;
     color: var(--lavender);
     position: absolute;
     bottom: 0;
     margin-bottom: 40px;
-    width: 200px;
-    height: 45px;
-    font-size: 18px;
+    width: 194px;
+    height: 55px;
+    font-size: 20px;
+    /* padding-bottom: 5px; */
     border: none;
     border-radius: 30px;
     /* outline: solid var(--orange) 2px; */
-    font-weight: 600;
+    font-weight: bold;
+
+    img {
+        width: 25px;
+        margin-right: 10px;
+    }
 }
 
 .Create button:hover {
-    background-color: rgb(199, 198, 198);
+    background-color: #271D66;
+    color: white;
+     img {
+        filter: invert(1) saturate(0) brightness(2);
+     }
 }
 
 /*responsive stuff for sidebar*/
@@ -865,12 +901,11 @@ Header style rules
     text-align:left;
     margin-right:50px;
     grid-template:
-        'search buttons' 70px / auto 120px;
+        'search blank buttons' 90px / auto 1fr 140px;
 }
 
 #header-searchbar {
     grid-area: search;
-    height: auto;
 }
 
 #header-searchbar > .search-wrapper > .search-bar {
@@ -880,31 +915,70 @@ Header style rules
 #header-buttons {
     grid-area: buttons;
     display:flex;
-    justify-content:flex-end;
-    width:120px;
+    justify-content: flex-end;
+    width:140px;
 }
 
 #header-buttons button {
-    display:flex;
-    background-color: var(--peach);
-    border-radius:40px;
-    margin-left:10px;
+    background-color: #ECECF7;
+    border-radius:50px;
     border:none;
+    margin-left:10px;
+    height: 45px;
+    /* width: auto; */
+
+    /* margin-left:10px;
     height:auto;
     width:auto;
-    padding-top:4px;
-    align-items:center;
+    padding-top:4px; */
 }
 
-#header-buttons img {
+#notif-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+
+    img{
+        width: 34px;
+    }
+}
+
+#profile-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    #profile-img-icon {
+        width: 32px;
+    }
+    
+    #dropdown-arrow {
+        width: 15px;
+        margin-top: 5px;
+    }
+}
+
+/* #header-buttons img {
     filter:none;
     height:auto;
     margin:2px;
-}
+} */
 
 #header-profile-dropdown {
+    margin-top: 10px;
+    width: 165px;
+    height: 230px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.50);
+    border: none;
     padding:10px;
-    color: var(--lavender);
+    /* color: var(--lavender); */
 }
 
 #header-profile-user {
@@ -937,7 +1011,7 @@ Header style rules
 }
 
 #header-profile-dropdown button:hover {
-    background-color: #E0E0E0;
+    background-color: #ECECF7;
 }
 
 /*
@@ -954,28 +1028,37 @@ Search style rules
     flex-direction: row;
     align-content: right;
     justify-self: end;
-    height: auto;
+    /* height: 50px; */
     margin: 1vw 50px;
 }
 
+.fa-search {
+    font-size: 20px;
+}
+
 .search-bar {
-    padding: 2px 5px;
+    height: 25px;
+    width: 400px;
+    padding: 10px 15px;
     /*border: 3px solid gray;*/
-    border-radius: 30px;
-    background-color: var(--peach);
-    font-size: 1vw;
+    border-radius: 40px;
+    background-color: #ECECF7;
+    color: #271D66;
+    font-size: 16px;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
     text-align: left;
     display: flex;
     flex-direction: row;
-    float: right;
-    align-content: center;
-    margin: auto;
+    /* float: right; */
+    /* align-content: center; */
+    /* margin: auto; */
 }
 
 /*text in the bar*/
-.search-input {
+.search-input, .search-input::placeholder {
     background: none;
-    color: inherit;
+    color: #271D66;
     border: none;
     padding: 4px;
     font: inherit;
@@ -986,9 +1069,8 @@ Search style rules
 /*magnifying glass button*/
 .search-button {
     background: none;
-    color: inherit;
     border: none;
-    padding: 4px;
+    /* padding: 4px; */
     font: inherit;
     cursor: pointer;
     outline: inherit;
@@ -1001,7 +1083,8 @@ Search style rules
 
 @media only screen and (max-width: 800px) {
     .search-bar {
-        font-size: 0.5rem;
+        font-size: 16px;
+        width: 200px;
     }
 }
 
@@ -1018,9 +1101,9 @@ Dropdown style rules
 }
 
 .dropdown {
-    border:solid 1px var(--dark-lighttheme);
-    border-radius: 5px;
-    box-shadow: 1px 2px 2px var(--dark-lighttheme);
+    /* border:solid 1px var(--dark-lighttheme); */
+    border-radius: 10px;
+    /* box-shadow: 1px 2px 2px var(--dark-lighttheme); */
     position:absolute;
     background-color:white;
     z-index:1;
@@ -1067,6 +1150,7 @@ Tag Filter style rules
 #tag-filter-list {
     display:flex;
     flex-wrap:wrap;
+    
 }
 
 .tag-filter {
@@ -1195,67 +1279,143 @@ Discover and Meet page style rules
 }
 
 #discover-hero {
+    /* width: 1160px; */
+    /* height: 375px; */
     width: auto;
     height: 20vw;
     margin: 0 50px;
-    background-color: var(--peach);
+    background-image: linear-gradient(white 40%, #D3D3FF);
     border-radius:10px;
 }
 
-#profile-hero {
+#profile-hero, #project-hero {
     display:grid;
     border-radius:10px;
     font-size: 1vw;
+    /* height: 375px; */
     height: calc(20vw - 20px);
-    background-image: linear-gradient(white 40%, transparent);
+    background-image: linear-gradient(white 40%, #D3D3FF);
     padding-bottom:20px;
-    grid-template:
-        'image1 header image3' auto
-        'image1 image2 image3' 1fr
-        'blurb1 blurb2 blurb3' auto /
-        1fr     1fr    1fr
+    grid-template-areas:
+        'blurb1 blurb2 blurb3'
 }
-
+/* 
 #profile-hero-bg1 {
     background-image: linear-gradient(to right, var(--purple-light), var(--peach));
     border-radius:10px;
     width:auto;
-}
+} */
 
-#profile-hero-header {
-    grid-area: header;
-}
-#profile-hero-header h2 {
-    color: var(--lavender);
-}
-
-#profile-hero-img-1 {
-    grid-area: image1;
-}
-#profile-hero-img-2 {
-    grid-area: image2;
-}
-#profile-hero-img-3 {
-    grid-area: image3;
-}
-
-.profile-hero-blurb {
+.profile-hero-blurb, .project-hero-blurb {
     display:flex;
     justify-content:center;
     align-items:flex-end;
 }
 
-#profile-hero-blurb-1 {
+#profile-hero-blurb-1, #project-hero-blurb-1 {
+    /* border: 1px solid black; */
     grid-area: blurb1;
+    /* display:flex; */
+    /* justify-content:center; */
+    /* width: 1fr; */
+    /* height: 100%; */
+    position: relative;
+    width: 100%;
+    height: 20vw;
+
+    div {
+        width: 70%;
+        height: 14%;
+        /* font-size: 16px; */
+        /* font-size: 100%; */
+        position: absolute;
+        bottom: 14px;
+        text-align: center;
+        /* border: 1px solid black;  */
+    }
+
+    img {
+        /* height: 375px; */
+        height: 20vw;
+        /* width: 100%; */
+        /* border: 1px solid black; */
+    }
 }
-#profile-hero-blurb-2 {
+#profile-hero-blurb-2, #project-hero-blurb-2 {
     grid-area: blurb2;
+    /* border: 1px solid greenyellow; */
+    /* width: 1fr; */
+    /* height: 100%; */
+    position:relative;
+
+    width: 100%;
+    height: 20vw;
+
+    .panel-text {
+        /* width: 370px;
+        font-size: 16px; */
+        width: 95%;
+        height: 24%;
+        position: absolute;
+        bottom: 10px;
+        text-align: center;
+        /* border: 1px solid greenyellow; */
+
+        #spacer {
+            height: 10px;
+            width: 100px;
+            /* border: 1px solid greenyellow; */
+        }
+    }
+
+    h2 {
+        color: #271D66;
+        width: 400px;
+        position: absolute;
+        top: 0;
+        margin: 0;
+        /* font-size: 28px; */
+        text-align: center;
+    }
+
+    img {
+        /* height: 375px; */
+        height: 20vw;
+        /* width: 100%; */
+        /* border: 1px solid greenyellow; */
+    }
 }
-#profile-hero-blurb-3 {
+#profile-hero-blurb-3, #project-hero-blurb-3 {
     grid-area: blurb3;
+    /* border: 1px solid hotpink; */
+    /* width: 1fr; */
+    /* height: 100%; */
+    position:relative;
+
+    width: 100%;
+    height: 20vw;
+    
+    div {
+        /* width: 326px; */
+        width: 74%;
+        height: 20%;
+        /* height: 80px; */
+        /* font-size: 16px; */
+        position: absolute;
+        bottom : 14px;
+        text-align: center;
+        /* border: 1px solid hotpink; */
+    }
+
+    img {
+        /* height: 375px; */
+        height: 20vw;
+        /* width: 100%; */
+        /* border: 1px solid hotpink; */
+    }
 }
 
-.profile-hero-highlight {
+.profile-hero-highlight, .project-hero-highlight {
     font-weight:bold;
     color: var(--lavender);
 }
@@ -1264,7 +1424,7 @@ Discover and Meet page style rules
     margin: 20px 50px;
     display:grid;
     grid-template: 
-        "tags filters" auto / 90% auto;
+        "tags filters" auto / 95% auto;
 }
 
 #discover-tag-filters-container {
@@ -1287,27 +1447,31 @@ Discover and Meet page style rules
 }
 
 #filters-left-scroll {
+    font-size: 25px;
     left: 0;
     text-align:left;
-    background-image: linear-gradient(to right, rgba(244,244,244,1), rgba(244,244,244,1), rgba(244,244,244,0));
+    background-image: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,0));
 }
 
 #filters-right-scroll {
+    font-size: 25px;
     right: 0;
     text-align:right;
-    background-image: linear-gradient(to right, rgba(244,244,244,0), rgba(244,244,244,1), rgba(244,244,244,1));
+    background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,1));
 }
 
 #discover-tag-filters {
     height:auto;
     display:flex;
+    /* justify-content: space-between; */
+    gap: 14px;
     overflow-x:hidden;
     scroll-behavior:smooth;
 }
 
 .discover-tag-filter {
-    height: 30px;
-    padding:5px 10px;
+    height: 40px;
+    padding:5px 20px;
     font-size:medium;
     background-color: rgba(0, 0, 0, 0);
     border:none;
@@ -1316,33 +1480,41 @@ Discover and Meet page style rules
     flex-shrink: 0;
 }
 
-.discover-tag-filter:hover {
-    background-color: white;
-    color: var(--lavender);
+.discover-tag-filter:hover, #discover-more-filters:hover {
+    background-color: #ECECF7;
+    color: black;
 }
 
 .discover-tag-filter-selected {
     /*border:4px solid var(--lavender);*/
-    background-color: var(--peach);
-    color: var(--lavender);
+    background-color: #271D66;
+    color: white;
+    font-weight: bold;
     /*margin: 0;*/
 }
 
 .discover-tag-filter-selected:hover {
-    background-color:var(--peach);
+    background-color:#271D66;
+    color: white;
 }
 
 #discover-more-filters {
     grid-area: filters;
-    height: 30px;
-    width:100%;
-    display:block;
-    font-size:medium;
-    padding:5px 10px;
-    background-color: var(--lavender);
-    color: white;
+    height: 40px;
+    width: 40px;
+    /* display:block; */
+    /* font-size:medium; */
+    padding: 5px;
+    margin-left: 25px;
+    background-color: white;
+    /* color: white; */
     border:none;
     border-radius:30px;
+
+    img {
+        height: 30px;
+        width: 30px;
+    }
 }
 
 .filter-category {

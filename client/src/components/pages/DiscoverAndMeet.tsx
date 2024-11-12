@@ -37,7 +37,7 @@ const fullProfileList = profiles; */
 
 //Variable to tell whether or not we are using 'npm run server' (true) or 'npm run client' (false)
 //Manually switch whenever deciding which npm command to run
-let runningServer = true;
+let runningServer = false;
 
 //List that holds project data that will be displayed. Changes along with search parameters
 //Could combine this and profile variants into single variable
@@ -176,7 +176,7 @@ const DiscoverAndMeet = ({category}) => {
   }
 
   //Get a list of tags to use for tag filters (project tags for projects, profession tags for profiles)
-  const tagList = category === 'projects' ? tags.tags : tags.proficiencies;
+  const tagList = category === 'projects' ? tags.tags : tags.peopleTags;
   //list of tabs for the filter popup to use, changes depending on if discover or meet page is being used
   let filterPopupTabs = category === 'projects' ? 
     [
@@ -786,37 +786,66 @@ const DiscoverAndMeet = ({category}) => {
     }
   }
 
+  //Hero banner for project display
+  let projectHero = <>{
+    <div id='project-hero-bg1'>
+      <div id='project-hero'>
+
+        <div id='project-hero-blurb-1' className='project-hero-blurb'>
+        <img id='project-hero-img-1' src="images/bannerImages/Project Panel 1 Light.png"/>
+          <div>
+          <span className='project-hero-highlight'>Discover projects</span> to see what they're about and what roles they're looking for.
+          </div>
+        </div>
+
+        <div id='project-hero-blurb-2' className='project-hero-blurb'>
+        <h2>Look for projects to work on!</h2>
+          <img id='project-hero-img-2' src="images/bannerImages/Project Panel 2 Light.png"/>
+          <div className="panel-text">
+          Interested in joining? <span className='project-hero-highlight'>Send a message!</span> <br/>
+          <div id='spacer'></div>
+          Introduce yourself, share your interest in working together, and what skills you have to offer!
+          </div>
+        </div>
+
+        <div id='project-hero-blurb-3' className='project-hero-blurb'>
+        <img id='project-hero-img-3' src="images/bannerImages/Project Panel 3 Light.png"/>
+          <div>
+          Sort through projects by categories and filter according to your skills or interests to 
+          <span className='project-hero-highlight'> find your group!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }</>
+
   //Hero banner for profile display
   let profileHero = <>{
     <div id='profile-hero-bg1'>
       <div id='profile-hero'>
-        <div id='profile-hero-header'>
-          <h2>Welcome!</h2>
-          Looking for talented people to collaborate with?
-        </div>
-
-        <img id='profile-hero-img-1'/>
-        <img id='profile-hero-img-2'/>
-        <img id='profile-hero-img-3'/>
 
         <div id='profile-hero-blurb-1' className='profile-hero-blurb'>
+        <img id='profile-hero-img-1' src="images/bannerImages/People Panel 1 Light.png"/>
           <div>
-          <span className='profile-hero-highlight'>Explore profiles</span> to see each other's <br/>personality, expertise, and project history.
+          <span className='profile-hero-highlight'>Explore profiles</span> to see each other's personality, expertise, and project history.
           </div>
         </div>
 
         <div id='profile-hero-blurb-2' className='profile-hero-blurb'>
-          <div>
-          Find someone interesting? <span className='profile-hero-highlight'>Send a message!</span>
-          <br/><br/>
-          <span className='profile-hero-highlight'>Introduce yourself</span>, share project ideas, <br/>and show interest in working together!
+        <h2>Look for people to work with!</h2>
+          <img id='profile-hero-img-2' src="images/bannerImages/People Panel 2 Light.png"/>
+          <div className="panel-text">
+          Find someone interesting? <span className='profile-hero-highlight'>Send a message!</span><br/>
+          <div id='spacer'></div>
+          <span className='profile-hero-highlight'>Introduce yourself</span>, share project ideas, and show interest in working together!
           </div>
         </div>
 
         <div id='profile-hero-blurb-3' className='profile-hero-blurb'>
+        <img id='profile-hero-img-3' src="images/bannerImages/People Panel 3 Light.png"/>
           <div>
-          Keep your profile up to date with your <br/>skills, project preferences, and interests to<br/>
-          <span className='profile-hero-highlight'>find your group!</span>
+          Keep your profile up to date with your skills, project preferences, and interests to 
+          <span className='profile-hero-highlight'> find your group!</span>
           </div>
         </div>
       </div>
@@ -926,7 +955,7 @@ const DiscoverAndMeet = ({category}) => {
     }</>
 
   //Decides which 'content' to display on the page
-  let heroContent = category === 'projects' ? <>Nothing yet, sorry</> : profileHero;
+  let heroContent = category === 'projects' ? projectHero : profileHero;
   let panelContent = category === 'projects' ? projectContent : profileContent;
 
   return(
@@ -946,7 +975,7 @@ const DiscoverAndMeet = ({category}) => {
       */}
       <div id='discover-filters'>
         <div id='discover-tag-filters-container'>
-          <button id='filters-left-scroll' className='filters-scroller hide' onClick={() => scrollTags('left')}>&lt;</button>
+          <button id='filters-left-scroll' className='filters-scroller hide' onClick={() => scrollTags('left')}><i className="fa fa-caret-left"></i></button>
           <div id='discover-tag-filters'>
             {
               tagList.map((tag) => (
@@ -954,10 +983,16 @@ const DiscoverAndMeet = ({category}) => {
               ))
             }
           </div>
-          <button id='filters-right-scroll' className='filters-scroller' onClick={() => scrollTags('right')}>&gt;</button>
+          <button id='filters-right-scroll' className='filters-scroller' onClick={() => scrollTags('right')}><i className="fa fa-caret-right"></i></button>
         </div>
         <Popup>
-          <PopupButton buttonId={'discover-more-filters'}>Filters</PopupButton>
+          <PopupButton buttonId={'discover-more-filters'}><img src="images/mynaui_filter.png"></img></PopupButton>
+          {/* When page loads, get all necessary tag lists based on page category
+          Place these lists in an array, along with an identifier for which column they belong
+          map through these lists to construct filter dropdown
+          displayed tags are determined using a state variable, changable w/ searchbar
+          tags have an onClick function that adds their tag to a full tag list 
+          full tag list is only applied when hitting done, which then pushes the info to an active list*/}
           <PopupContent>
             {/*filterPopup*/}
             <div id='discover-filter-popup-bg1'>

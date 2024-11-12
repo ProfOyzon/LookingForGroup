@@ -8,10 +8,15 @@
     height: 100%;
     top: 0px;
     left: 220px;
-    background-color: #F4F4F4;
+    background-color: #FFFFFF;
+    font-family: "Inter", sans-serif;
 
     /* hide horizontal scrollbar, looses scroll functionality */
     overflow-x: hidden;
+
+    .fa {
+        color: #271D66;
+    }
 }
 
 @media only screen and (max-width: 800px) {

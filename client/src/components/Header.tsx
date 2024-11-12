@@ -31,11 +31,12 @@ export const Header = ({dataSets, onSearch}) => {
         </div>
         <div id='header-buttons'>
           <Dropdown>
-            <DropdownButton><img src={bell} className="navIcon" alt="Notifications" /></DropdownButton>
+            <DropdownButton buttonId="notif-btn"><img src="images/bell.png" alt="" />
+            </DropdownButton>
             <DropdownContent rightAlign={true}>This is where notification stuff will be</DropdownContent>
           </Dropdown>
-          <Dropdown>
-            <DropdownButton><img src={profileImage} className="navIcon" alt="User" /><img className="navIcon" alt="V"/></DropdownButton>
+          <Dropdown> 
+            <DropdownButton buttonId="profile-btn"><img src="images/profile.png" alt="" id="profile-img-icon"/><img src="images/dropdown.png" alt="" id="dropdown-arrow"/></DropdownButton>
             <DropdownContent rightAlign={true}>
               <div id='header-profile-dropdown'>
                 <button onClick={() => handlePageChange(paths.routes.PROFILE)} id='header-profile-user'>

@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { Header } from "../Header";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import { Popup, PopupButton, PopupContent } from "../Popup";
+import { ProjectImageCarousel } from "../ProjectImageCarousel";
 import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
 import tallImage from "../../images/tall_img.png";
@@ -28,6 +29,18 @@ let defaultProject = {
     {userName: 'user3', position: 'job3'},
     {userName: 'user4', position: 'job4'},
     {userName: 'user5', position: 'job5'},
+  ],
+  hightlightTags: [
+    {tag: "Action", type: "Creative"},
+    {tag: "Rogue-Like", type: "Games"},
+    {tag: "Sci-Fi", type: "Creative"},
+  ],
+  openPositions: [
+    'Web Developer',
+    'Back-end Developer',
+    '2D Animator',
+    'Composer',
+    'UI/UX Designer'
   ]
 }
 
@@ -65,12 +78,12 @@ const NewProject = () => {
   const [displayedProject, setDisplayedProject] = useState(defaultProject);
 
   //Checks to see whether or not the current user is the maker/owner of the project being displayed
-  const usersProject = false;
+  const usersProject = true;
 
   const buttonContent = usersProject ? <>{
     <>
       <Popup>
-        <PopupButton>Edit Project</PopupButton>
+        <PopupButton buttonId='project-info-edit'>Edit Project</PopupButton>
         <PopupContent>
           Not sure what to put here yet, still working on main page content
         </PopupContent>
@@ -115,8 +128,9 @@ const NewProject = () => {
       <Header dataSets={{data:[]}} onSearch={() => {}}/>
       
       <div id='project-page-content'>
-        <div id='project-image-carrousel'>
-          {/* Carrousel stuff */}
+        {/* May need to adjust width/height styles to account for description/carousel sizes */}
+        <div id='project-image-carousel'>
+          <ProjectImageCarousel/>
         </div>
 
         <div id='project-info-panel'>
@@ -129,14 +143,29 @@ const NewProject = () => {
           </div>
           <div id='project-status'>
             Status: <span className='project-info-highlight'>currentStatus </span> 
-            <button id='project-open-positions'>Open Positions</button>
+            <button id='project-open-positions-button'>Open Positions</button>
           </div>
           <div id='project-creation'>
             Created by: <span className='project-info-highlight'>creator</span><br/>
             Creation date
           </div>
           <div id='project-tags'>
-            {/* tags go here */}
+            {
+              //If more tag types are usable, use commented code for cases
+              //Also, check to see how many additional tags a project has
+              defaultProject.hightlightTags.map((tag) => {
+                /* let category : string;
+                switch (tag.type) {
+
+                } */
+                return (
+                <div className={`project-tag-label label-green`}>
+                  {tag.tag}
+                </div>
+                )
+              })
+            }
+            <div className='project-tag-label label-grey'>+5</div>
           </div>
         </div>
 
@@ -174,9 +203,13 @@ const NewProject = () => {
         </div>
 
         <div id='project-open-positions'>
-          <div>Open Positions</div>
-          <div>
-            {/* positions appear here */}
+          <div id='project-open-positions-header'>Open Positions</div>
+          <div id='project-open-positions-list'>
+            {
+              defaultProject.openPositions.map((position) => (
+                <div className='project-tag-label label-grey'>{position}</div>
+              ))
+            }
           </div>
         </div>
       </div>

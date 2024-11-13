@@ -79,6 +79,7 @@ General style rules
     --tag-light-green: #E5F0DD;
     --tag-light-blue: #DFF1F8;
     --tag-light-purple: #E6E6FF;
+    --tag-grey: #D0D0D0;
 }
 
 /*basic rules for hiding/showing certain elements
@@ -1940,6 +1941,7 @@ New Profile page style rules
 .label-green {background-color:var(--tag-green)}
 .label-blue {background-color:var(--tag-blue)}
 .label-purple {background-color:var(--tag-purple)}
+.label-grey {background-color:var(--tag-grey)}
 
 /* #skill-tags-container .tag-button {
     margin:0;
@@ -2879,7 +2881,7 @@ New Project Page style rules
 #project-page-content {
     display:grid;
     grid-template:
-        'carrousel info' auto
+        'carousel info' 370px
         'overview people' auto
         'overview positions' auto /
         17fr      15fr;
@@ -2887,8 +2889,73 @@ New Project Page style rules
     gap:20px;
 }
 
-#project-image-carrousel {
-    grid-area:carrousel;
+#project-image-carousel {
+    grid-area:carousel;
+}
+
+#project-image-carousel-content {
+    display:flex;
+    flex-wrap:nowrap;
+    overflow:hidden;
+    height:100%;
+    border-radius:10px;
+}
+
+.project-image-carousel-item {
+    background-color:var(--background-light);
+    width:100%;
+    min-width:100%;
+    transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+.project-image-carousel-image {
+    object-fit:contain;
+    width:100%;
+    height:100%;
+}
+
+#project-image-carousel-buttons {
+    display:flex;
+    gap:15px;
+    justify-content: center;
+    align-items: center;
+}
+
+#project-image-carousel-left, #project-image-carousel-right {
+    border:none;
+    width:30px;
+    height:30px;
+    padding:0;
+    background-color:rgba(0, 0, 0, 0);
+}
+
+#project-image-carousel-left img, #project-image-carousel-right img {
+    width:30px;
+    height:30px;
+    /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
+    /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
+    filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+}
+
+#project-image-carousel-right img {
+    transform:rotateY(180deg)
+}
+
+#project-image-carousel-tabs {
+    display:flex;
+    gap:10px;
+}
+
+.project-image-carousel-tab {
+    border:none;
+    border-radius:50%;
+    width: 20px;
+    height: 20px;
+    background-color: var(--purple-light);
+}
+
+.project-image-carousel-tab:hover, .carousel-tab-active{
+    background-color:var(--lavender)
 }
 
 #project-info-panel {
@@ -2905,6 +2972,7 @@ New Project Page style rules
 
 #project-info-header {
     display:flex;
+    align-items:center;
 }
 
 #project-title {
@@ -2930,6 +2998,14 @@ New Project Page style rules
     height: 28px;
 }
 
+#project-info-edit {
+    font-size:1.8ch;
+    border-radius: 30px;
+    background-color: var(--lavender) !important;
+    color: white;
+    padding:5px 20px;
+}
+
 #project-description, #project-status, #project-creation {
     margin:10px 0;
 }
@@ -2939,16 +3015,26 @@ New Project Page style rules
     color: var(--darkGray);
 }
 
-#project-open-positions {
+#project-open-positions-button {
     border:none;
     border-radius: 30px;
     background-color:var(--lavender);
     color:white;
+    font-size: 1.85ch;
+    padding: 5px 20px;
 }
 
 #project-creation {
     font-style:italic;
     color: var(--darkGray);
+}
+
+.project-tag-label {
+    border-radius: 30px;
+    border: none;
+    padding: 5px 10px;
+    font-size: medium;
+    flex-shrink: 0;
 }
 
 #project-overview {
@@ -3029,6 +3115,22 @@ New Project Page style rules
 
 #project-open-positions {
     grid-area:positions;
+}
+
+#project-open-positions-header {
+    background-color:var(--lavender);
+    color:white;
+    padding: 5px 20px;
+    border-radius:30px;
+    width:fit-content;
+    margin: 0 auto;
+}
+
+#project-open-positions-list {
+    display:flex;
+    flex-flow:wrap;
+    gap:10px;
+    margin-top: 10px;
 }
 
 /*

@@ -44,6 +44,11 @@ const NewProfile = () => {
 
   //Function used to get profile data
   const getProfileData = async () => {
+    if (profileID === undefined || profileID === null) {
+      //If no profileID is in search query, automatically set to the current user's id
+      console.log('profileID not found, using default');
+      profileID = '1';
+    }
     const url = `http://localhost:8081/api/users/${profileID}`;
 
     try {
@@ -431,12 +436,12 @@ const NewProfile = () => {
               then use a map function to generate tags to fill this div */
               displayedProfile.skills.map((tag) => {
                 let category : string;
-                if (tags.desSkills.includes(tag)) {category = 'red';}
-                else if (tags.devSkills.includes(tag)) {category = 'yellow';}
-                else if (tags.softSkills.includes(tag)) {category = 'purple';}
+                if (tag.type === 'Design') {category = 'red';}
+                else if (tag.type === 'Developer') {category = 'yellow';}
+                else if (tag.type === 'Soft') {category = 'purple';}
                 else {category = 'grey';}
                 return(
-                  <div className={`skill-tag-label label-${category}`}>{tag}</div>
+                  <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
                 )
               })
             }

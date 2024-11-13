@@ -792,28 +792,43 @@ const DiscoverAndMeet = ({category}) => {
       <div id='project-hero'>
 
         <div id='project-hero-blurb-1' className='project-hero-blurb'>
-        <img id='project-hero-img-1' src="images/bannerImages/Project Panel 1 Light.png"/>
-          <div>
+        <img id='project-hero-img-1' 
+        className='theme-icon'
+        src="assets/bannerImages/project1_dark.png"
+        src-light="assets/bannerImages/project1_light.png"
+        src-dark="assets/bannerImages/project1_dark.png"
+        />
+          {/* <div>
           <span className='project-hero-highlight'>Discover projects</span> to see what they're about and what roles they're looking for.
-          </div>
+          </div> */}
         </div>
 
         <div id='project-hero-blurb-2' className='project-hero-blurb'>
         <h2>Look for projects to work on!</h2>
-          <img id='project-hero-img-2' src="images/bannerImages/Project Panel 2 Light.png"/>
-          <div className="panel-text">
+          <img id='project-hero-img-2' 
+          className='theme-icon'
+          src="assets/bannerImages/project2_dark.png"
+          src-light="assets/bannerImages/project2_light.png"
+          src-dark="assets/bannerImages/project2_dark.png"
+          />
+          {/* <div className="panel-text">
           Interested in joining? <span className='project-hero-highlight'>Send a message!</span> <br/>
           <div id='spacer'></div>
           Introduce yourself, share your interest in working together, and what skills you have to offer!
-          </div>
+          </div> */}
         </div>
 
         <div id='project-hero-blurb-3' className='project-hero-blurb'>
-        <img id='project-hero-img-3' src="images/bannerImages/Project Panel 3 Light.png"/>
-          <div>
+        <img id='project-hero-img-3' 
+        className='theme-icon'
+        src="assets/bannerImages/project3_dark.png"
+        src-light="assets/bannerImages/project3_light.png"
+        src-dark="assets/bannerImages/project3_dark.png"
+        />
+          {/* <div>
           Sort through projects by categories and filter according to your skills or interests to 
           <span className='project-hero-highlight'> find your group!</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
@@ -825,28 +840,43 @@ const DiscoverAndMeet = ({category}) => {
       <div id='profile-hero'>
 
         <div id='profile-hero-blurb-1' className='profile-hero-blurb'>
-        <img id='profile-hero-img-1' src="images/bannerImages/People Panel 1 Light.png"/>
-          <div>
+        <img id='profile-hero-img-1' 
+        className='theme-icon'
+        src="assets/bannerImages/people1_dark.png"
+        src-light="assets/bannerImages/people1_light.png"
+        src-dark="assets/bannerImages/people1_dark.png"
+        />
+          {/* <div>
           <span className='profile-hero-highlight'>Explore profiles</span> to see each other's personality, expertise, and project history.
-          </div>
+          </div> */}
         </div>
 
         <div id='profile-hero-blurb-2' className='profile-hero-blurb'>
         <h2>Look for people to work with!</h2>
-          <img id='profile-hero-img-2' src="images/bannerImages/People Panel 2 Light.png"/>
-          <div className="panel-text">
+          <img id='profile-hero-img-2' 
+          className='theme-icon'
+          src="assets/bannerImages/people2_dark.png"
+          src-light="assets/bannerImages/people2_light.png"
+          src-dark="assets/bannerImages/people2_dark.png"
+          />
+          {/* <div className="panel-text">
           Find someone interesting? <span className='profile-hero-highlight'>Send a message!</span><br/>
           <div id='spacer'></div>
           <span className='profile-hero-highlight'>Introduce yourself</span>, share project ideas, and show interest in working together!
-          </div>
+          </div> */}
         </div>
 
         <div id='profile-hero-blurb-3' className='profile-hero-blurb'>
-        <img id='profile-hero-img-3' src="images/bannerImages/People Panel 3 Light.png"/>
-          <div>
+        <img id='profile-hero-img-3' 
+        className='theme-icon'
+        src="assets/bannerImages/people3_dark.png"
+        src-light="assets/bannerImages/people3_light.png"
+        src-dark="assets/bannerImages/people3_dark.png"
+        />
+          {/* <div>
           Keep your profile up to date with your skills, project preferences, and interests to 
           <span className='profile-hero-highlight'> find your group!</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
@@ -986,7 +1016,13 @@ const DiscoverAndMeet = ({category}) => {
           <button id='filters-right-scroll' className='filters-scroller' onClick={() => scrollTags('right')}><i className="fa fa-caret-right"></i></button>
         </div>
         <Popup>
-          <PopupButton buttonId={'discover-more-filters'}><img src="images/mynaui_filter.png"></img></PopupButton>
+          <PopupButton buttonId={'discover-more-filters'}>
+            <img 
+            className='theme-icon'
+            src="assets/filters_dark.png"
+            src-light="assets/filters_light.png"
+            src-dark="assets/filters_dark.png"
+            ></img></PopupButton>
           {/* When page loads, get all necessary tag lists based on page category
           Place these lists in an array, along with an identifier for which column they belong
           map through these lists to construct filter dropdown

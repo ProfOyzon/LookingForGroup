@@ -23,6 +23,35 @@ export const Header = ({dataSets, onSearch}) => {
     //Navigate to desired page
     navigate(path);
   }
+
+  // toggle light/dark mode
+  const setTheme = () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const themeIcon = document.getElementsByClassName('theme-icon');
+
+    if (currentTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'light');
+
+      // save to local storage
+      localStorage.setItem('theme', 'light');
+
+      // change icons
+      for (let i = 0; i < themeIcon.length; i++) {
+        themeIcon[i].src = themeIcon[i].getAttribute('src-light');
+      }
+    } 
+    else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+
+      // save to local storage
+      localStorage.setItem('theme', 'dark');
+
+      // change icons
+      for (let i = 0; i < themeIcon.length; i++) {
+        themeIcon[i].src = themeIcon[i].getAttribute('src-dark');
+      }
+    }
+  };
   
   return(
     <div id='header'>
@@ -31,22 +60,63 @@ export const Header = ({dataSets, onSearch}) => {
         </div>
         <div id='header-buttons'>
           <Dropdown>
-            <DropdownButton buttonId="notif-btn"><img src="images/bell.png" alt="" />
+            <DropdownButton buttonId="notif-btn">
+              <img 
+              className="theme-icon"
+              src="assets/bell_dark.png"
+              src-light="assets/bell_light.png"
+              src-dark="assets/bell_dark.png"
+               alt="" />
             </DropdownButton>
             <DropdownContent rightAlign={true}>This is where notification stuff will be</DropdownContent>
           </Dropdown>
           <Dropdown> 
-            <DropdownButton buttonId="profile-btn"><img src="images/profile.png" alt="" id="profile-img-icon"/><img src="images/dropdown.png" alt="" id="dropdown-arrow"/></DropdownButton>
+            <DropdownButton buttonId="profile-btn">
+              <img 
+              src="assets/profile_dark.png" 
+              src-light="assets/profile_light.png"
+              src-dark="assets/profile_dark.png"
+              alt="" 
+              id="profile-img-icon"
+              className='theme-icon'
+              />
+              
+              <img 
+              src="assets/dropdown_dark.png" 
+              src-light="assets/dropdown_light.png"
+              src-dark="assets/dropdown_dark.png"
+              alt="" 
+              id="dropdown-arrow"
+              className='theme-icon'/></DropdownButton>
             <DropdownContent rightAlign={true}>
               <div id='header-profile-dropdown'>
                 <button onClick={() => handlePageChange(paths.routes.PROFILE)} id='header-profile-user'>
-                  <img src={profileImage} alt='X'/>
+                  <img src="assets/profile_dark.png" 
+                  src-light="assets/profile_light.png"
+                  src-dark="assets/profile_dark.png"
+                  className="theme-icon"
+                  alt='X'/>
                   <div>Username<br/><span id='header-profile-email'>user@rit.edu</span></div>
                 </button>
                 <hr/>
-                <button onClick={() => {}}><img src={profileImage} alt='X'/>Light Mode</button> {/* Light mode toggle goes here! */}
-                <button onClick={() => handlePageChange(paths.routes.SETTINGS)}><img src={profileImage} alt='X'/>Settings</button>
-                <button onClick={() => {}}><img src={profileImage} alt='X'/>Log out</button>
+                <button onClick={setTheme}>
+                  <img src="assets/white/mode.png"
+                  src-light="assets/black/mode.png"
+                  src-dark="assets/white/mode.png"
+                  className="theme-icon"
+                   alt='X'/>Light Mode</button> {/* Light mode toggle goes here! */}
+                <button onClick={() => handlePageChange(paths.routes.SETTINGS)}>
+                  <img src="assets/white/settings.png"
+                  src-light="assets/black/settings.png"
+                  src-dark="assets/white/settings.png"
+                  className="theme-icon"
+                   alt='X'/>Settings</button>
+                <button onClick={() => {}}>
+                  <img src="assets/white/logout.png" 
+                  src-light="assets/black/logout.png"
+                  src-dark="assets/white/logout.png"
+                  className="theme-icon"
+                  alt='X'/>Log out</button>
               </div>
             </DropdownContent>
           </Dropdown>

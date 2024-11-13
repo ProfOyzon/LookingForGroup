@@ -7,6 +7,53 @@ import { genPlaceholders } from "../utils/sqlUtil.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+const signup = async (req, res) => {
+    const validEmails = ["@rit.edu", "@g.rit.edu"];
+
+    // Get input data
+    const { username, password, confirm, email, firstName, lastName } = req.body;
+
+    // Checks
+    if (!username || !password || !confirm || !email || !firstName || !lastName) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing sign up information" 
+        });
+    } else if (password !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Passwords do not match" 
+        });
+    } else if (email) {
+        const valid = validEmails.some(endingStr => email.endsWith(endingStr));
+        if (!valid) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Use a RIT email" 
+            });
+        }
+    }
+
+    // Hash the password and generate a token for verification
+    const hashPass = await bcrypt.hash(password, 10);
+    const token = crypto.randomUUID();
+
+    try {
+        // Add user information to database, setting up for account activation
+        const sql = "INSERT INTO signups (token, username, primary_email, rit_email, password, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        const values = [token, username, email, email, hashPass, firstName, lastName];
+        await pool.query(sql, values)
+
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred during sign up" 
+        });
+    }
+}
+
 const getUsers = async (req, res) => {
     // Get all users
     try {
@@ -670,7 +717,7 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export default { getUsers, createUser, getUserById, getUserByUsername, login, updateUser, updateProfilePicture, 
+export default { signup, getUsers, createUser, getUserById, getUserByUsername, login, updateUser, updateProfilePicture, 
     addSkill, updateSkillPositions, deleteSkill, 
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 

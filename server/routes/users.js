@@ -4,6 +4,7 @@ import userCtrl from "../controllers/users.js";
 
 const router = Router();
 
+router.post("/api/signup", userCtrl.signup);
 router.get("/api/users", userCtrl.getUsers);
 router.post("/api/users", userCtrl.createUser);
 router.get("/api/users/:id", userCtrl.getUserById);

@@ -44,6 +44,11 @@ const NewProfile = () => {
 
   //Function used to get profile data
   const getProfileData = async () => {
+    if (profileID === undefined || profileID === null) {
+      //If no profileID is in search query, automatically set to the current user's id
+      console.log('profileID not found, using default');
+      profileID = '1';
+    }
     const url = `http://localhost:8081/api/users/${profileID}`;
 
     try {

@@ -69,7 +69,17 @@ let popupTagSelections : string[] = [];
 
 //Main DiscoverAndMeet component
 //category - string variable that determines what layout type to load (defaults to profile if invalid value is given)
-const DiscoverAndMeet = ({category}) => {
+const DiscoverAndMeet = ({category, theme, setTheme}) => {
+
+  // check the current theme and set image src to match
+  useEffect(() => {
+    const themeIcon = document.getElementsByClassName('theme-icon');
+    for (let i = 0; i < themeIcon.length; i++) {
+      const icon = themeIcon[i] as HTMLImageElement;
+      const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
+      icon.src = src;
+    }
+  }, [theme]);
 
   //Use these when testing with 'npm run server'
   //Functions used to retrieve data from the database
@@ -992,7 +1002,8 @@ const DiscoverAndMeet = ({category}) => {
     <div className='page' onScroll={addContent}>
       {/* Search bar and profile/notification buttons */}
       <Header dataSets={[{data: category === 'projects' ? projectSearchData : profileSearchData}]}
-        onSearch={category === 'projects' ? searchProjects : searchProfiles}/>
+        onSearch={category === 'projects' ? searchProjects : searchProfiles}
+        theme={theme} setTheme={setTheme} />
       {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
       <div id='discover-hero'>
       {heroContent}
@@ -1080,28 +1091,30 @@ const DiscoverAndMeet = ({category}) => {
   )
 }
 
+
+
 //2 extra components that only serve as different layouts for the above component
 //Required due to the page failing to re-render when switching between its 2 view via the sidebar
 //Some bugs that may appear may be due to values outside the main component not being reset on a component change
 //If that's the case, simply reset them in here
-export const Discover = () => {
+export const Discover = ({theme, setTheme}) => {
   //Reset tags
   activeTagFilters = [];
   extraTagFilters = [];
   popupTagSelections = [];
   return(
-    <DiscoverAndMeet category={'projects'}/>
+    <DiscoverAndMeet category={'projects'} theme={theme} setTheme={setTheme} />
   )
 }
 
-export const Meet = () => {
+export const Meet = ({theme, setTheme}) => {
   //Reset variables
   activeTagFilters = [];
   extraTagFilters = [];
   popupTagSelections = [];
   displayedProfileList = [];
   return(
-    <DiscoverAndMeet category={'profiles'}/>
+    <DiscoverAndMeet category={'profiles'} theme={theme} setTheme={setTheme}/>
   )
 }
 

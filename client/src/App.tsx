@@ -21,21 +21,39 @@ import CreateProject from './components/pages/CreateProject';
 import CreditsFooter from './components/CreditsFooter';
 import Credits from './components/pages/CreditsPage';
 
+import uselocalstorage from 'use-local-storage';
+import { useEffect } from 'react';
+
 
 function App() {
   const [avatarImage, setAvatarImage] = useState('images/tempProfilePic.png');
   const [profileImage, setProfileImage] = useState('');
 
+  // https://css-tricks.com/easy-dark-mode-and-multiple-color-themes-in-react/
+  const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const [theme, setTheme] = uselocalstorage('theme', defaultDark ? 'dark' : 'light');
+
+  // whenever the theme changes, set the images src for every page
+  useEffect(() => {
+    const themeIcon = document.getElementsByClassName('theme-icon');
+    for (let i = 0; i < themeIcon.length; i++) {
+      const icon = themeIcon[i] as HTMLImageElement;
+      const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
+      icon.src = src;
+    }
+  }, [theme]);
+
+
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="App" data-theme={theme} >
         <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} />
         <Routes>
-          <Route path={paths.routes.DEFAULT} element={<Discover />} />
+          <Route path={paths.routes.DEFAULT} element={<Discover theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.LOGIN} element={<Login />} />
           <Route path={paths.routes.SIGNUP} element={<SignUp avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
-          <Route path={paths.routes.HOME} element={<Discover />} />
-          <Route path={paths.routes.MEET} element={<Meet />} />
+          <Route path={paths.routes.HOME} element={<Discover theme={theme} setTheme={setTheme}/>} />
+          <Route path={paths.routes.MEET} element={<Meet theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />
           <Route path={paths.routes.MYPROJECTS} element={<MyProjects />} />
           <Route path={paths.routes.PROFILE} element={<NewProfile />} />

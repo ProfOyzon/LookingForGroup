@@ -91,7 +91,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
         <div className='containerButtonSideBar'>
           <button className={activePage === 'Discover' ? 'active' : ''} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
             <img
-              // className='theme-icon'
+              className='theme-icon'
               src="assets/black/compass.png"
               src-light="assets/black/compass.png"
               src-dark="assets/white/compass.png"
@@ -99,7 +99,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
           </button>
           <button className={activePage === 'Meet' ? 'active' : ''} onClick={() => handleTextChange('Meet', paths.routes.MEET)}>
             <img
-              // className='theme-icon'
+              className='theme-icon'
               src="assets/black/meet.png"
               src-light="assets/black/meet.png"
               src-dark="assets/white/meet.png"
@@ -107,7 +107,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
           </button>
           <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
             <img
-              // className='theme-icon'
+              className='theme-icon'
               src="assets/black/folder.png"
               src-light="assets/black/folder.png"
               src-dark="assets/white/folder.png"
@@ -115,7 +115,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
           </button>
           <button className={activePage === 'Following' ? 'active' : ''} onClick={() => handleTextChange('Following', paths.routes.SETTINGS)}>
             <img
-              // className='theme-icon'
+              className='theme-icon'
               src="assets/black/following.png"
               src-light="assets/black/following.png"
               src-dark="assets/white/following.png"
@@ -143,7 +143,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
         <div className='Create'>
           <button>
             <img
-              // className='theme-icon'
+              className='theme-icon'
               src="assets/create_dark.png"
               src-light="assets/create_light.png"
               src-dark="assets/create_dark.png"

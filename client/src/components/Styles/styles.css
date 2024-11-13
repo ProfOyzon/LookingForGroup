@@ -44,7 +44,7 @@ General style rules
 */
 /*default color scheme*/
 :root {
-    /* default dark mode is default*/
+    /* default dark mode is default */
     --primary-color: #FEAD81;
     --panel-hover: rgba(254, 173, 129, 0.9);
     --header-color: #1A1921;
@@ -564,7 +564,7 @@ Sidebar Nav style rules
 
     img {
         width: 30px;
-        filter: invert(1);
+        filter: invert(0);
     }
 }
 
@@ -580,7 +580,7 @@ Sidebar Nav style rules
     color: var(--invert-text);
 
     img {
-        filter: invert(0);
+        filter: invert(1);
     }
 }
 
@@ -1142,13 +1142,13 @@ Scrollbar style rules
 
 /* Track */
 ::-webkit-scrollbar-track {
-    border: 2px solid var(--lightGray);
+    border: 2px solid var(--header-color);
     border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: var(--medGray);
+    background: var(--header-color);
     border-radius: 10px;
 }
 

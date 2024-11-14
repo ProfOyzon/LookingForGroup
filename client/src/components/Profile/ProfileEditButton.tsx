@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PagePopup, openClosePopup } from "../PagePopup";
-// import { Popup, PopupContent, PopupButton } from "../Popup";
+// import { Popup, PopupContent, PopupButton } from "../Popup"; // Unused because I got confused while trying to use it and couldn't get it to work 
 
 // On click, this button should open the Profile Edit modal 
 const EditButton = ({userData}) => {
@@ -59,6 +59,8 @@ const EditButton = ({userData}) => {
     const [currentFunFact, setCurrentFunFact] = useState(userData.fun_fact);
     const [currentAbout, setCurrentAbout] = useState(userData.bio);
 
+    // console.log(currentPFPLink);
+
     const getOrdinal = (index: number) => {
         if (index === 1) {
             return "1st";
@@ -94,8 +96,10 @@ const EditButton = ({userData}) => {
                 const file = theInput.files[0];
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const imageDataURL = e.target.result;
-                    setCurrentPFPLink(imageDataURL);
+                    if (e.target !== null) {
+                        const imageDataURL = e.target.result;
+                        setCurrentPFPLink(imageDataURL);
+                    }
                 };
                 reader.readAsDataURL(file);
             }
@@ -266,7 +270,7 @@ const EditButton = ({userData}) => {
         getVisibleProjects();
     }
 
-    const checkIfProjectIsShown = (projectID) => {
+    const checkIfProjectIsShown = (projectID: number) => {
         if (shownProjects !== undefined) {
             for (let i = 0; i < shownProjects.length; i++) {
                 if (shownProjects[i].project_id === projectID) {
@@ -315,7 +319,9 @@ const EditButton = ({userData}) => {
                                 <div className='list-project-hide-icon'>
                                     <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(project)}}>
                                         {
-                                            checkIfProjectIsShown(project.project_id) ? <i className='fa-solid fa-eye'></i> : <i className='fa-solid fa-eye-slash'></i>
+                                            checkIfProjectIsShown(project.project_id)
+                                                ? <i className='fa-solid fa-eye'></i>
+                                                : <i className='fa-solid fa-eye-slash'></i>
                                         }
                                     </button>
                                 </div>
@@ -330,7 +336,9 @@ const EditButton = ({userData}) => {
                                 <div className='list-project-hide-icon'>
                                     <button className='list-project-hide-icon-button' onClick={(e) => {updateHiddenProjects(project)}}>
                                         {
-                                            checkIfProjectIsShown(project.project_id) ? <i className='fa-solid fa-eye'></i> : <i className='fa-solid fa-eye-slash'></i>
+                                            checkIfProjectIsShown(project.project_id)
+                                                ? <i className='fa-solid fa-eye'></i>
+                                                : <i className='fa-solid fa-eye-slash'></i>
                                         }
                                     </button>
                                 </div>
@@ -391,11 +399,9 @@ const EditButton = ({userData}) => {
 
     const editSkillPosition = (index: number, newPos: number) => {
         if (index + 1 === newPos || index + 1 === newPos - 1) {
-            console.log(`Index: ${index} | New Position: ${newPos}`);
             setCurrentSkills(currentSkills);
         }
         else {
-            console.log(`Index: ${index} | New Position: ${newPos}`);
             let tempList = [{id: currentSkills[index].id, type: currentSkills[index].type, skill: currentSkills[index].skill, position: newPos}];
             for (let i = 0; i < currentSkills.length; i++) {
                 if (i != index) {
@@ -415,7 +421,6 @@ const EditButton = ({userData}) => {
                 }
             }
 
-            console.log(tempList);
             setCurrentSkills(tempList);
         }
     }
@@ -856,7 +861,9 @@ const EditButton = ({userData}) => {
     const createLinksList = () => {
         let tempList = new Array(0);
         for (let i = 0; i < currentLinks.length; i++) {
-            tempList.push({id: currentLinks[i].id, url: currentLinks[i].url});
+            if (currentLinks[i].id !== 0) {
+                tempList.push({id: currentLinks[i].id, url: currentLinks[i].url});
+            }
         }
         return tempList;
     };
@@ -913,8 +920,8 @@ const EditButton = ({userData}) => {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            projectId: userProjects.project_id,
-                            visibility: checkIfProjectIsShown(userProjects.project_id) ? "public" : "private"
+                            projectId: userProjects[i].project_id,
+                            visibility: checkIfProjectIsShown(userProjects[i].project_id) ? "public" : "private"
                         })
                     });
 

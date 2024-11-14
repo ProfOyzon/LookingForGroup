@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import arrow from "../icons/s-arrow.png";
 import image1 from "../images/blue_frog.png";
 import image2 from "../images/banner.png";
@@ -16,8 +16,12 @@ export const ProjectImageCarousel = () => {
   //State variable tracking whether or not the user's mouse is hovering over this component
   const [hovering, setHovering] = useState(false);
 
+  const skipAuto = useRef(false);
+
   //Function to handle a change in which image index to use
   const handleIndexChange = (newIndex : number) => {
+    //Skip next autoscroll due to button click
+    skipAuto.current = true;
     if (newIndex > imageList.length - 1) {
       //If new index is greater than max index, set index to 0
       newIndex = 0;
@@ -30,10 +34,47 @@ export const ProjectImageCarousel = () => {
     setCurrentIndex(newIndex);
   }
 
-  return (
+  const handleHover = (hovering) => {
+    if (hovering) {
+      skipAuto.current = true;
+      setHovering(true);
+    } else {
+      setHovering(false);
+    }
+  }
+
+  //Function called regularly to automatically scroll through carousel images
+  const autoScroll = () => {
+    //Is a condition met to skip the next autoscroll?
+    if (skipAuto.current) {
+      //If so, is it caused by hovering?
+      if (hovering) {
+        //If so, skip function as well as next function
+        return;
+      } else {
+        //If not, just skip this funciton
+        skipAuto.current = false;
+        return;
+      }
+    }
+
+    //Otherwise, run function as normal
+    if(currentIndex === imageList.length - 1) {
+      setCurrentIndex(0);
+    } else {
+      setCurrentIndex(currentIndex + 1);
+    }
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {autoScroll()}, 3000);
+    return () => clearInterval(interval);
+  })
+
+  const ProjectImageCarousel = <>{
     <>
     {/* Main image content of carousel */}
-    <div id='project-image-carousel-content' onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
+    <div id='project-image-carousel-content' onMouseEnter={() => handleHover(true)} onMouseLeave={() => handleHover(false)}>
       {
         imageList.map((image, index) => (
           <div className='project-image-carousel-item' key={index} style={{transform: `translate(-${currentIndex * 100}%)`}}>
@@ -64,5 +105,13 @@ export const ProjectImageCarousel = () => {
       </button>
     </div>
     </>
+  }</>
+
+  const DiscoverCarousel = <>{
+    
+  }</>
+
+  return (
+    ProjectImageCarousel
   )
 }

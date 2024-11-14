@@ -85,7 +85,7 @@ const getUserById = async (req, res) => {
 
     try {
         // Get user data
-        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.username, u.profile_image, u.headline, u.pronouns, 
             jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, s.skills, so.socials
             FROM users u
             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
@@ -141,7 +141,35 @@ const updateUser = async (req, res) => {
     // Get input data
     const { id } = req.params;
     const { firstName, lastName, headline, pronouns, jobTitleId, majorId, 
-        academicYear, location, funFact, bio, skills, socials } = req.body
+    academicYear, location, funFact, bio, skills, socials } = req.body;
+    
+    // Checks
+    if (!firstName) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing user's first name" 
+        });
+    } else if (!lastName) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing user's last name" 
+        });
+    } else if (!jobTitleId || jobTitleId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing job title id" 
+        });
+    } else if (!majorId || jobTitleId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing major id" 
+        });
+    } else if (skills.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 skill" 
+        });
+    }
 
     try {
         // Update database with users's new info
@@ -216,6 +244,14 @@ const updateProfilePicture = async (req, res) => {
     // Get id from url
     const { id } = req.params;
 
+    // Checks
+    if (!req.file) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing image file" 
+        });
+    }
+
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
         const fileName = `${id}profile.webp`;
@@ -229,10 +265,7 @@ const updateProfilePicture = async (req, res) => {
         const values = [fileName, id];
         await pool.query(sql, values);
 
-        return res.status(201).json({
-            status: 201,
-            data: [{profile_image: fileName}]
-        });
+        return res.sendStatus(204);
     } catch(err) {
         console.log(err);
         return res.status(400).json({
@@ -402,6 +435,19 @@ const updateProjectVisibility = async (req, res) => {
     const { id } = req.params;
     const { projectId, visibility } = req.body;
 
+    // Checks
+    if (!projectId || projectId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing project id" 
+        });
+    } else if (!visibility) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a visibility" 
+        });
+    }
+
     try {
         // Update a project visibility on user profiles
         const sql = "UPDATE members SET profile_visibility = ? WHERE project_id = ? AND user_id = ?";
@@ -469,6 +515,14 @@ const addProjectFollowing = async (req, res) => {
     const { id } = req.params;
     const { projectId } = req.body
 
+    // Checks
+    if (!projectId || projectId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing project id" 
+        });
+    }
+
     try {
         // Add projet following into database
         await pool.query("INSERT INTO project_followings (user_id, project_id) VALUES (?, ?)", [id, projectId]);
@@ -489,6 +543,14 @@ const deleteProjectFollowing = async (req, res) => {
     // Get input data
     const { id } = req.params;
     const { projectId } = req.body
+
+    // Checks
+    if (!projectId || projectId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing project id" 
+        });
+    }
 
     try {
         // Remove project following from database
@@ -557,6 +619,14 @@ const addUserFollowing = async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body
 
+    // Checks
+    if (!userId || userId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing user id" 
+        });
+    }
+
     try {
         // Add user following into database
         await pool.query("INSERT INTO user_followings (user_id, following_id) VALUES (?, ?)", [id, userId]);
@@ -577,6 +647,14 @@ const deleteUserFollowing = async (req, res) => {
     // Get input data
     const { id } = req.params;
     const { userId } = req.body
+
+    // Checks
+    if (!userId || userId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing user id" 
+        });
+    }
 
     try {
         // Remove user following from database

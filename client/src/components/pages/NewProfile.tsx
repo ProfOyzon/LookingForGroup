@@ -48,7 +48,6 @@ const NewProfile = () => {
       console.log('profileID not found, using default');
       profileID = '1';
     }
-
     const url = `http://localhost:8081/api/users/${profileID}`;
 
     try {

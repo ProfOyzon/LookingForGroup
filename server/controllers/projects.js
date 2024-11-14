@@ -45,12 +45,55 @@ const createProject = async (req, res) => {
     // Create a new project
 
     // Get input data
-    const {userId, title, hook, description, purpose, audience, projectTypes, tags, jobs, members, socials} = req.body;
+    const {userId, title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
+
+    // Checks
+    if (!userId || userId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing user id" 
+        });
+    } else if (!title) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a title" 
+        });
+    } else if (!hook) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a hook" 
+        });
+    } else if (!description) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a description" 
+        });
+    } else if (!status) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a project status" 
+        });
+    }  else if (projectTypes.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 project type" 
+        });
+    } else if (tags.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 tag" 
+        });
+    } else if (members.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 member" 
+        });
+    }
 
     try {
         // Add project to database and get back its id
-        const sql = "INSERT INTO projects (title, hook, description, purpose, audience, user_id) VALUES (?, ?, ?, ?, ?, ?)";
-        const values = [title, hook, description, purpose, audience, userId];
+        const sql = "INSERT INTO projects (title, hook, description, purpose, status, audience, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        const values = [title, hook, description, purpose, status, audience, userId];
         await pool.query(sql, values);
         const [projectId] = await pool.query("SELECT project_id FROM projects WHERE title = ? AND user_id = ?", [title, userId]);
 
@@ -67,8 +110,8 @@ const createProject = async (req, res) => {
 
         // Add project's jobs to database
         for (let job of jobs) {
-            await pool.query("INSERT INTO jobs (project_id, title_id, amount, description) VALUES (?, ?, ?, ?)", 
-                [projectId[0].project_id, job.titleId, job.amount, job.description])
+            await pool.query("INSERT INTO jobs (project_id, title_id, availability, duration, location, compensation, description) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                [projectId[0].project_id, job.titleId, job.availability, job.duration, job.location, job.compensation, job.description])
         }
 
         // Add project's members to database
@@ -104,7 +147,7 @@ const getProjectById = async (req, res) => {
 
     try {
         // Get project data
-        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.purpose, p.audience, g.project_types, 
+        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.purpose, p.status, p.audience, g.project_types, 
             t.tags, j.jobs, m.members, pi.images, so.socials
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
@@ -120,8 +163,8 @@ const getProjectById = async (req, res) => {
                     ON pt.tag_id = t.tag_id
                 GROUP BY pt.project_id) t
             ON p.project_id = t.project_id
-            LEFT JOIN (SELECT j.project_id, JSON_ARRAYAGG(JSON_OBJECT("title_id", j.title_id, "job_title", jt.label, "amount", j.amount, 
-            "description", j.description)) AS jobs
+            LEFT JOIN (SELECT j.project_id, JSON_ARRAYAGG(JSON_OBJECT("title_id", j.title_id, "job_title", jt.label, "availability", j.availability, 
+            "duration", j.duration, "location", j.location, "compensation", j.compensation, "description", j.description)) AS jobs
                 FROM jobs j
                 JOIN job_titles jt
 			        ON j.title_id = jt.title_id
@@ -136,7 +179,7 @@ const getProjectById = async (req, res) => {
 				    ON m.title_id = jt.title_id
                 WHERE m.project_id = ?) m
             ON p.project_id = m.project_id
-            JOIN (SELECT pi.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", pi.image_id, "image", pi.image, "position", pi.position)) AS images
+            LEFT JOIN (SELECT pi.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", pi.image_id, "image", pi.image, "position", pi.position)) AS images
 				FROM project_images pi
 				WHERE pi.project_id = ?) pi
 			ON p.project_id = pi.project_id
@@ -169,12 +212,50 @@ const updateProject = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { title, hook, description, purpose, audience, projectTypes, tags, jobs, members, socials} = req.body;
+    const { title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
+
+    // Checks
+    if (!title) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a title" 
+        });
+    } else if (!hook) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a hook" 
+        });
+    } else if (!description) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a description" 
+        });
+    } else if (!status) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a project status" 
+        });
+    }  else if (projectTypes.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 project type" 
+        });
+    } else if (tags.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 tag" 
+        });
+    } else if (members.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 member" 
+        });
+    }
 
     try {
         // Update database with project's new info
-        let sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, audience = ? WHERE project_id = ?";
-        let values = [title, hook, description, purpose, audience, id];
+        let sql = "UPDATE projects SET title = ?, hook = ?, description = ?, purpose = ?, status = ?, audience = ? WHERE project_id = ?";
+        let values = [title, hook, description, purpose, status, audience, id];
         await pool.query(sql, values);
         
         // ----- UPDATE PROJECT'S TYPES -----
@@ -244,11 +325,11 @@ const updateProject = async (req, res) => {
             await pool.query(sql, values);
         }
         // Add new jobs or update if already in database
-        sql = `INSERT INTO jobs (project_id, title_id, amount, description) VALUES (?, ?, ?, ?) AS new
-        ON DUPLICATE KEY UPDATE project_id = new.project_id, title_id = new.title_id, amount = new.amount, 
-        description = new.description`
+        sql = `INSERT INTO jobs (project_id, title_id, availability, duration, location, compensation, description) VALUES (?, ?, ?, ?, ?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE project_id = new.project_id, title_id = new.title_id, availability = new.availability, duration = new.duration,
+        location = new.location, compensation = new.compensation, description = new.description`
         for (let job of jobs) {
-            await pool.query(sql, [id, job.titleId, job.amount, job.description]);
+            await pool.query(sql, [id, job.titleId, job.availability, job.duration, job.location, job.compensation, job.description]);
         }
 
         // ----- UPDATE PROJECT'S MEMBERS -----
@@ -277,7 +358,6 @@ const updateProject = async (req, res) => {
         // ----- UPDATE PROJECT'S SOCIALS -----
         // Create array from socials
         const newSocials = socials.map((social) => social.id);
-        console.log("Adding", newSocials);
         // Add 0 if empty to allow sql statement to still find exisiting data to be removed
         if (newSocials.length === 0) {
             newSocials.push(0);
@@ -291,7 +371,6 @@ const updateProject = async (req, res) => {
         // Remove socials if any were found
         if (removingSocials[0].socials) {
             placeholders = genPlaceholders(removingSocials[0].socials);
-            console.log("Removing", removingSocials[0].socials);
             sql = `DELETE FROM project_socials WHERE project_id = ? AND website_id IN (${placeholders})`;
             values = [id, ...removingSocials[0].socials];
             await pool.query(sql, values);
@@ -318,6 +397,14 @@ const updateThumbnail = async (req, res) => {
 
     // Get id from url
     const { id } = req.params;
+
+    // Checks
+    if (!req.file) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing image file" 
+        });
+    }
 
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
@@ -375,6 +462,19 @@ const addPicture = async (req, res) => {
     // Get data
     const { id } = req.params;
     const { position } = req.body
+
+    // Checks
+    if (!req.file) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing image file" 
+        });
+    } else if (!position || Number(position) < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a position for the picture" 
+        });
+    }
     
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
@@ -406,6 +506,14 @@ const updatePicturePositions = async (req, res) => {
     const { id } = req.params;
     const { images } = req.body;
 
+    // Checks
+    if (images.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 picture" 
+        });
+    }
+
     try {
         // Update the picture positions for a project
         for (let image of images) {
@@ -430,6 +538,14 @@ const deletePicture = async (req, res) => {
     // Get input data
     const { id } = req.params;
     const { image } = req.body;
+
+    // Checks
+    if (!image) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing picture name" 
+        });
+    }
 
     try {
         // Remove project's picture from server and database

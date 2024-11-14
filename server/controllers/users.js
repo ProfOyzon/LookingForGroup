@@ -3,6 +3,8 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
 import pool from "../config/database.js";
+import { transporter } from "../config/mailer.js"
+import envConfig from "../config/env.js";
 import { genPlaceholders } from "../utils/sqlUtil.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -34,7 +36,7 @@ const signup = async (req, res) => {
         }
     }
 
-    // Hash the password and generate a token for verification
+    // Hash the password and generate a token for account activation
     const hashPass = await bcrypt.hash(password, 10);
     const token = crypto.randomUUID();
 
@@ -42,7 +44,28 @@ const signup = async (req, res) => {
         // Add user information to database, setting up for account activation
         const sql = "INSERT INTO signups (token, username, primary_email, rit_email, password, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
         const values = [token, username, email, email, hashPass, firstName, lastName];
-        await pool.query(sql, values)
+        await pool.query(sql, values);
+
+        // Email content
+        const html = `
+        <p>Hi ${firstName},<br>
+        Thank you for signing up to LFG. To activate your account, click the following link:<br>
+        <a href="http://localhost:8081/api/signup/${token}" target="_blank">http://localhost:8081/api/signup/${token}</a>
+        </p>
+
+        <p>Kind regards,<br>
+        LFG Team</p>
+        `;
+
+        const message = {
+            from: envConfig.mailerEmail,
+            to: email,
+            subject: "Activate Your LFG Account",
+            html: html
+        }
+        
+        // Send account activation email
+        await transporter.sendMail(message);
 
         return res.sendStatus(201);
     } catch (err) {
@@ -90,27 +113,37 @@ const getUsers = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-    // Create a new project
+    // Get token from url
+    const { token } = req.params;
 
-    // Get input data
-    const { username, password, email, firstName, lastName, bio, skills } = req.body
+    try {
+        // Check if user with email already exists
+        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ?", [token]);
+        const [user] = await pool.query("SELECT rit_email FROM users WHERE rit_email = ?", [email[0].rit_email]);
+        if (user.length > 0) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Your account has already been activated" 
+            });
+        }
 
-    let hashPass = await bcrypt.hash(password, 10);
-
-    // Add user to database and get back its id
-    const sql = "INSERT INTO users (username, password, primary_email, rit_email, first_name, last_name, bio) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const values = [username, hashPass, email, email, firstName, lastName, bio];
-    await pool.query(sql, values);
-    
-    // Get skill ids and add user's skills to database 
-    /* const placeholders = genPlaceholders(skills);
-    const skillIds = await pool.query(`SELECT skill_id FROM skills WHERE label IN (${placeholders})`, skills);
-
-    for (let skill of skillIds) {
-        await pool.query("INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)", [user[0].user_id, skill.skill_id]);
-    } */
-
-    return res.sendStatus(201);
+        // Add user officially to database
+        const sql = ` INSERT INTO users (username, primary_email, rit_email, password, first_name, last_name)
+            SELECT username, primary_email, rit_email, password, first_name, last_name
+            FROM signups
+            WHERE token = ?
+        `;
+        const values = [token];
+        await pool.query(sql, values);
+        
+        return res.sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while activating the user's account" 
+        });
+    }
 }
 
 const login = async (req, res) => {

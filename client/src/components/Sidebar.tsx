@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../constants/routes";
 import { useSelector } from 'react-redux';
+import LFGLogoLight from "../images/lfg light mode logo.png";
+import LFGLogoDark from "../images/lfg dark mode logo.png";
 
 import Notifications from './pages/Notifications';
 
@@ -85,7 +87,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
     <div>
       <div className="SideBarContainer">
       <div className='headerContainer'>
-        <h1>Logo</h1>
+        <img id='lfg-logo' src={LFGLogoLight} alt='LFG'/>
 
         {/* notification bell */}
         {/*<div id="notif-dot"></div>

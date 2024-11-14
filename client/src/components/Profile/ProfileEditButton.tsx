@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { PagePopup, openClosePopup } from "../PagePopup";
 // import { Popup, PopupContent, PopupButton } from "../Popup"; // Unused because I got confused while trying to use it and couldn't get it to work 
 
+/*
+TO DO: 
+ - Convert currentPFPLink to a useEffect instead of a useState 
+*/
+
 // On click, this button should open the Profile Edit modal 
 const EditButton = ({userData}) => {
     // console.log(userData);
@@ -108,6 +113,26 @@ const EditButton = ({userData}) => {
             }
         }
     };
+
+    const getCurrentPFP = async () => {
+        const url = `http://localhost:8081/api/users/${userData.user_id}`;
+        try {
+            let response = await fetch(url);
+
+            const rawData = await response.json();
+            // console.log(rawData.data);
+            // setCurrentPFPLink(require(`../../../../server/images/profiles/${rawData.data[0].profile_image}`));
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        // setCurrentPFPLink(require(`../../../../server/images/profiles/${userData.profile_image}`));
+        // console.log("Test");
+        // getCurrentPFP();
+    }, [currentPFPLink]);
 
     const page1 = <div className='edit-profile-body about'>
         <div className='edit-profile-section-1'>

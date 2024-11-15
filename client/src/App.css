@@ -5,6 +5,8 @@
     --header-color: #1A1921;
     --sidebar-gradient: linear-gradient(180deg, #2C2A3A 30%, #FEAD81 100%);
     --hero-gradient: linear-gradient(180deg, #0E0E0E 30%, #2C2A3A 100%);
+    --modal-gradient: linear-gradient(293deg, #0A0A0A 0%, #2C2A3A 100%);
+
     --main-text: white;
     --invert-text: black;
 
@@ -30,6 +32,8 @@
     --header-color: #ECECF7;
     --sidebar-gradient: linear-gradient(180deg, #D3D3FF 0%, #FFCEB4 100%);
     --hero-gradient: linear-gradient(180deg, #FFFFFF 50%, #D3D3FF 100%);
+    --modal-gradient: linear-gradient(113deg, #D3D3FF 0%, #FFF 100%);
+    
     --main-text: black;
     --invert-text: white;
 

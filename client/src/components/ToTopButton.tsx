@@ -33,6 +33,7 @@ const ToTopButton = () => {
                 src="assets/dropdown_dark.png" 
                 src-light="assets/dropdown_light.png"
                 src-dark="assets/dropdown_dark.png"
+                className="theme-icon"
                 alt="" />
             </button>
         </div>

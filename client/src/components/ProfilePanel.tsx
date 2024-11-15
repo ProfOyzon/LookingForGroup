@@ -16,16 +16,43 @@ export const ProfilePanel = ({profileData, height}) => {
 
   return (
     <div className={'profile-panel'} style={{height: height}}>
-      <img src="assets/lfrog.png" alt={"profile iamge"}/>
+      <img src="assets/bannerImages/profile_temp.png" alt={"profile iamge"}/>
       <h2>{profileData.name}</h2>
       <h3>Major</h3>
-      <div>{profileData.bio}</div>
+      <div id="quote">"{profileData.bio}"</div>
       <div className={'profile-panel-hover'} onClick={() => navigate(paths.routes.PROFILE)}>
-        <div className={'profile-panel-hover-item'}><img src="images/role.png"/>Role</div>
-        <div className={'profile-panel-hover-item'}><img src="images/major.png"/>Major & Year</div>
-        <div className={'profile-panel-hover-item'}><img src="images/location.png"/>Location</div>
-        <div className={'profile-panel-hover-item'}><img src="images/pronouns.png"/>Pronouns</div>
-        <div className={'profile-panel-hover-item'}><img src="images/following.png"/>Fun Fact</div>
+        <div className={'profile-panel-hover-item'}>
+          <img src="assets/black/role.png"
+          src-light="assets/white/role.png"
+          src-dark="assets/black/role.png"
+          className="theme-icon"
+          />
+          <p>Role</p>
+          </div>
+        <div className={'profile-panel-hover-item'}>
+          <img src="assets/black/location.png"
+          src-light="assets/white/location.png"
+          src-dark="assets/black/location.png"
+          className="theme-icon"
+          />
+          <p>Location</p>
+          </div>
+        <div className={'profile-panel-hover-item'}>
+          <img src="assets/black/pronouns.png"
+          src-light="assets/white/pronouns.png"
+          src-dark="assets/black/pronouns.png"
+          className="theme-icon"
+          />
+          <p>Pronouns</p>
+          </div>
+        <div className={'profile-panel-hover-item'}>
+          <img src="assets/black/funfact.png"
+          src-light="assets/white/funfact.png"
+          src-dark="assets/black/funfact.png"
+          className="theme-icon"
+          />
+          <p>“I can quote almost every line from the Bee Movie!”</p>
+          </div>
       </div>
     </div>
   )

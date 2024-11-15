@@ -50,8 +50,8 @@ function App() {
         <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} />
         <Routes>
           <Route path={paths.routes.DEFAULT} element={<Discover theme={theme} setTheme={setTheme}/>} />
-          <Route path={paths.routes.LOGIN} element={<Login />} />
-          <Route path={paths.routes.SIGNUP} element={<SignUp avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
+          <Route path={paths.routes.LOGIN} element={<Login theme={theme}/>} />
+          <Route path={paths.routes.SIGNUP} element={<SignUp theme={theme} avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
           <Route path={paths.routes.HOME} element={<Discover theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.MEET} element={<Meet theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />

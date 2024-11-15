@@ -10,7 +10,7 @@ import CompleteProfile from "../SignupProcess/CompleteProfile";
 import GetStarted from "../SignupProcess/GetStarted";
 import { sendPost } from "../../functions/fetch";
 
-const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) => {
+const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileImage }) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
@@ -54,6 +54,16 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
         profileImage: profileImage, // if they upload their own image
     };
 
+    // check theme and set the theme icon
+    useEffect(() => {
+        const themeIcon = document.getElementsByClassName('theme-icon');
+        for (let i = 0; i < themeIcon.length; i++) {
+            const icon = themeIcon[i] as HTMLImageElement;
+            const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
+            icon.src = src;
+        }
+    }, [theme]);
+
     // Function to handle the login button click
     const handleSignup = async () => {
         // Check if any of the fields are empty
@@ -62,7 +72,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
         }
         else {
             // check if email is valid
-            if (!email.includes('rit.edu')){
+            if (!email.includes('rit.edu')) {
                 setError("Not an RIT email");
             }
 
@@ -94,8 +104,8 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
 
                 let bio = "nbasd";
                 let skills = ["Creativity"];
-                sendPost('/api/users', {username, password, email, firstName, lastName, bio, skills});
-                
+                sendPost('/api/users', { username, password, email, firstName, lastName, bio, skills });
+
             }
         }
 
@@ -106,17 +116,6 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     return (
         <div className="background-cover">
             <div className="login-signup-container">
-                {/*************************************************************
-
-                    Welcome Directory
-
-                *************************************************************/}
-                <div className="directory column">
-                    <h1>Welcome!</h1>
-                    <p>Already have an account?</p>
-                    <button onClick={() => navigate(paths.routes.LOGIN)}>Log In</button>
-                </div>
-
                 {/*************************************************************
 
                     Signup Form inputs
@@ -132,7 +131,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                                 className="signup-name-input"
                                 autoComplete="off"
                                 type="text"
-                                placeholder="First Name"
+                                placeholder="First name"
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
                             />
@@ -140,7 +139,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                                 className="signup-name-input"
                                 autoComplete="off"
                                 type="text"
-                                placeholder="Last Name"
+                                placeholder="Last name"
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                             />
@@ -149,7 +148,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                             className="signup-input"
                             autoComplete="off"
                             type="text"
-                            placeholder="Email"
+                            placeholder="School e-mail"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -176,7 +175,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                             className="signup-input"
                             autoComplete="off"
                             type="password"
-                            placeholder="Confirm Password"
+                            placeholder="Re-enter password"
                             value={checkPassword}
                             onChange={(e) => setCheckPassword(e.target.value)}
                         />
@@ -253,6 +252,21 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                         onCreateProject={() => { setShowGetStartedModal(false); navigate(paths.routes.MYPROJECTS); }}
                         onJoinProject={() => { setShowGetStartedModal(false); navigate(paths.routes.HOME); }}
                     />
+                </div>
+                {/*************************************************************
+
+                    Welcome Directory
+
+                *************************************************************/}
+                <div className="directory column">
+                    {/* <h1>Welcome!</h1>
+                    <p>Already have an account?</p> */}
+                    <img src="assets/bannerImages/signup_dark.png"
+                        src-light="assets/bannerImages/signup_light.png"
+                        src-dark="assets/bannerImages/signup_dark.png"
+                        alt=""
+                        className="theme-icon" />
+                    <button onClick={() => navigate(paths.routes.LOGIN)}>Log In</button>
                 </div>
             </div>
         </div>

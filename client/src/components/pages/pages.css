@@ -27,6 +27,7 @@
     left: 220px;
     background-color: var(--bg-color);                
     font-family: "Inter", sans-serif;
+    /* padding-right: 500px; */
 
     /* hide horizontal scrollbar, looses scroll functionality */
     overflow-x: hidden;

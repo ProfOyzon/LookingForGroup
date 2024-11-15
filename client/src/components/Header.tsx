@@ -50,7 +50,8 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
         <SearchBar dataSets={dataSets} onSearch={onSearch} />
       </div>
       <div id='header-buttons'>
-        <Dropdown>
+        {/* Notififcations not being used rn */}
+        {/* <Dropdown>
           <DropdownButton buttonId="notif-btn">
             <img
               className="theme-icon"
@@ -60,7 +61,7 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
               alt="" />
           </DropdownButton>
           <DropdownContent rightAlign={true}>This is where notification stuff will be</DropdownContent>
-        </Dropdown>
+        </Dropdown> */}
         <Dropdown>
           <DropdownButton buttonId="profile-btn">
             <img

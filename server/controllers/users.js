@@ -125,8 +125,15 @@ const createUser = async (req, res) => {
     const { token } = req.params;
 
     try {
-        // Check if user with email already exists
-        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ?", [token]);
+        // Get signup email if token is valid
+        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 HOUR)", [token]);
+        if (email.length < 1) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Your token has expired" 
+            });
+        }
+        // Check if an user with the email already exists
         const [user] = await pool.query("SELECT rit_email FROM users WHERE rit_email = ?", [email[0].rit_email]);
         if (user.length > 0) {
             return res.status(400).json({

@@ -64,8 +64,6 @@ const EditButton = ({userData}) => {
     const [currentFunFact, setCurrentFunFact] = useState(userData.fun_fact);
     const [currentAbout, setCurrentAbout] = useState(userData.bio);
 
-    // console.log(currentPFPLink);
-
     const getOrdinal = (index: number) => {
         if (index === 1) {
             return "1st";
@@ -86,7 +84,7 @@ const EditButton = ({userData}) => {
 
     const uploadNewImage = async (theInput) => {
         let form = document.querySelector(".edit-region-button-wrapper.photo");
-        if (form !== undefined && form !== null) {
+        if (form !== undefined && form !== null && theInput.files !== undefined && theInput.files !== null && theInput.files.length > 0) {
             let fileForm = new FormData(form);
 
             const url = `http://localhost:8081/api/users/${userData.user_id}/profile-picture`;
@@ -113,26 +111,6 @@ const EditButton = ({userData}) => {
             }
         }
     };
-
-    const getCurrentPFP = async () => {
-        const url = `http://localhost:8081/api/users/${userData.user_id}`;
-        try {
-            let response = await fetch(url);
-
-            const rawData = await response.json();
-            // console.log(rawData.data);
-            // setCurrentPFPLink(require(`../../../../server/images/profiles/${rawData.data[0].profile_image}`));
-        }
-        catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        // setCurrentPFPLink(require(`../../../../server/images/profiles/${userData.profile_image}`));
-        // console.log("Test");
-        // getCurrentPFP();
-    }, [currentPFPLink]);
 
     const page1 = <div className='edit-profile-body about'>
         <div className='edit-profile-section-1'>

@@ -49,9 +49,13 @@ const signup = async (req, res) => {
         // Email content
         const html = `
         <p>Hi ${firstName},<br>
-        Thank you for signing up to LFG. To activate your account, click the following link:<br>
-        <a href="http://localhost:8081/api/signup/${token}" target="_blank">http://localhost:8081/api/signup/${token}</a>
+        Thank you for signing up to LFG. To activate your account, click the button below.
         </p>
+        <a style="font-size:1.25rem;color:#FFFFFF;background-color:#271D66;text-align:center;margin-left:25%;padding:1rem;text-decoration:none;"
+        href="http://localhost:8081/api/signup/${token}" target="_blank">Activate Account</a>
+
+        <p>If the button doesn't work, use the following link:</p>
+        <a href="http://localhost:8081/api/signup/${token}" target="_blank">http://localhost:8081/api/signup/${token}</a>
 
         <p>Kind regards,<br>
         LFG Team</p>

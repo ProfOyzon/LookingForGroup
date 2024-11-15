@@ -52,7 +52,8 @@ const EditButton = ({userData}) => {
         getMajors();
     }
 
-    const [currentPFPLink, setCurrentPFPLink] = useState(require(`../../../../server/images/profiles/${userData.profile_image}`));
+    // const [currentPFPLink, setCurrentPFPLink] = useState(require(`../../../../server/images/profiles/${userData.profile_image}`));
+    const [currentPFPLink, setCurrentPFPLink] = useState();
     const [currentFirstName, setCurrentFirstName] = useState(userData.first_name);
     const [currentLastName, setCurrentLastName] = useState(userData.last_name);
     const [currentPronouns, setCurrentPronouns] = useState(userData.pronouns);
@@ -82,6 +83,26 @@ const EditButton = ({userData}) => {
         yearOptions.push(<option value={getOrdinal(i + 1)}>{getOrdinal(i + 1)}</option>);
     }
 
+    const getImage = async (theImageName: string) => {
+        const url = `http://localhost:8081/images/profiles/${theImageName}`;
+        try {
+            let response = await fetch(url);
+            console.log(response);
+
+            const { rawData } = await response.json();
+            const { profile_image } = rawData;
+            console.log(profile_image);
+            // setCurrentPFPLink(rawData.data[0]);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    if (currentPFPLink === undefined) {
+        getImage(userData.profile_image);
+    }
+
     const uploadNewImage = async (theInput) => {
         let form = document.querySelector(".edit-region-button-wrapper.photo");
         if (form !== undefined && form !== null && theInput.files !== undefined && theInput.files !== null && theInput.files.length > 0) {
@@ -96,15 +117,18 @@ const EditButton = ({userData}) => {
 
                 console.log(`User data: Response status: ${response.status}`);
 
-                const file = theInput.files[0];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    if (e.target !== null) {
-                        const imageDataURL = e.target.result;
-                        setCurrentPFPLink(imageDataURL);
-                    }
-                };
-                reader.readAsDataURL(file);
+                const rawData = await response.json();
+                getImage(rawData.data[0].profile_image);
+
+                // const file = theInput.files[0];
+                // const reader = new FileReader();
+                // reader.onload = function(e) {
+                //     if (e.target !== null) {
+                //         const imageDataURL = e.target.result;
+                //         setCurrentPFPLink(imageDataURL);
+                //     }
+                // };
+                // reader.readAsDataURL(file);
             }
             catch (error) {
                 console.log(error);

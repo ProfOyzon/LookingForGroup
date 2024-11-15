@@ -408,7 +408,7 @@ const updateThumbnail = async (req, res) => {
 
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
-        const fileName = `${id}thumbnail.webp`;
+        const fileName = `${id}thumbnail${Date.now()}.webp`;
         const saveTo = join(__dirname, "../images/thumbnails");
         const filePath = join(saveTo, fileName);
         
@@ -419,7 +419,10 @@ const updateThumbnail = async (req, res) => {
         const values = [fileName, id];
         await pool.query(sql, values);
 
-        return res.sendStatus(204);
+        return res.status(201).json({
+            status: 201,
+            data: [{ thumbnail: fileName }]
+        });
     } catch(err) {
         console.log(err);
         return res.status(400).json({

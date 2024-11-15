@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { unlink } from "fs/promises";
 import sharp from "sharp";
 import pool from "../config/database.js";
 import { transporter } from "../config/mailer.js"
@@ -342,10 +343,14 @@ const updateProfilePicture = async (req, res) => {
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
         const fileName = `${id}profile${Date.now()}.webp`;
-        const saveTo = join(__dirname, "../images/profiles");
+        const saveTo = join(__dirname, "../images/profiles/");
         const filePath = join(saveTo, fileName);
         
         await sharp(req.file.buffer).webp({quality: 50}).toFile(filePath);
+
+        // Remove old image from server
+        const [image] = await pool.query("SELECT profile_image FROM users WHERE user_id = ?", [id]);
+        await unlink(saveTo + image[0].profile_image);
 
         // Store file name in database
         const sql = "UPDATE users SET profile_image = ? WHERE user_id = ?";

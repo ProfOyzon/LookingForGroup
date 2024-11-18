@@ -4,7 +4,7 @@ import "./pages.css";
 import { useState } from "react";
 // import { PagePopup, openClosePopup } from "../PagePopup";
 import ToTopButton from "../ToTopButton";
-import { MyProjectsDisplayList } from "../MyProjectsDisplayList";
+import MyProjectsDisplayList from "../MyProjectsDisplayList";
 
 const MyProjects = () => {
     // const [UID, setUID] = useState(profiles[0]._id);
@@ -48,13 +48,20 @@ const MyProjects = () => {
         projectListSection = <>
             {/* Projects List Header */}
             <div className="my-projects-list-header">
-                <div className="project-title-label">Project Title</div>
-                <div className="project-status-label">Status</div>
-                <div className="project-created-label">Date Created</div>
-                <div className="project-options-label"></div>
+                <div className="project-header-label title">Project Title</div>
+                <div className="project-header-label status">Status</div>
+                <div className="project-header-label date">Date Created</div>
+                <div className="project-header-label options"></div>
             </div>
 
             {/* Projects List */}
+            <div className="my-projects-list">
+                {
+                    projectsList === undefined ? "" : projectsList.map((project) => {
+                        return <MyProjectsDisplayList projectData={project}></MyProjectsDisplayList>
+                    })
+                }
+            </div>
         </>;
     }
 
@@ -71,7 +78,7 @@ const MyProjects = () => {
 
                 {/* Sort By Drop Down */}
                 <select className="my-projects-sort-list" value={sortMethod} onChange={(e) => {setSortMethod(e.target.value)}}>
-                    <option value="Sort by" disabled></option>
+                    <option value="sort" disabled>Sort by</option>
                     <option value="newest">Newest</option>
                     <option value="oldest">Oldest</option>
                     <option value="a-z">A-Z</option>
@@ -79,7 +86,7 @@ const MyProjects = () => {
                 </select>
 
                 {/* Display Switch */}
-                <div className="my-projects-display-switch">
+                <div className="my-projects-display-switch" onClick={(e) => {}}>
                     {/* CODE GOES HERE */}
                 </div>
 
@@ -89,6 +96,7 @@ const MyProjects = () => {
 
             <hr />
 
+            {/* Project Grid/List */}
             {projectListSection}
         </div>
     );

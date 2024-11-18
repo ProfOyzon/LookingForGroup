@@ -3155,15 +3155,15 @@ My projects page style rules
     /* responsiveness goes here*/
 }
 
-#my-projects {
-    /* CODE GOES HERE */
-
+.page#my-projects {
+    box-sizing: border-box;
     padding: 22px 60px 0px 64px;
 }
 
 /* CODE GOES HERE */
 
 .my-projects-header-row {
+    box-sizing: border-box;
     width: 100%;
 
     display: grid;
@@ -3172,6 +3172,7 @@ My projects page style rules
 }
 
 .my-projects-all-projects-button {
+    box-sizing: border-box;
     background-color: #271d66;
     border: 0px;
     border-radius: 55px;
@@ -3179,6 +3180,7 @@ My projects page style rules
     color: white;
     padding: 6px 17px;
     text-align: center;
+    font-size: 18px;
     font-family: Arial;
     font-weight: bold;
     line-height: 28px;
@@ -3186,18 +3188,21 @@ My projects page style rules
 }
 
 .my-projects-sort-list {
+    box-sizing: border-box;
     background-color: #ececf7;
     border: 0px;
+    border-right: 15px solid #ececf7;
     border-radius: 10px;
     padding: 13.5px 15px;
     color: black;
     font-size: 13px;
     font-family: Arial;
-    line-height: auto;
+    line-height: normal;
     letter-spacing: 0%;
 }
 
 .my-projects-display-switch {
+    box-sizing: border-box;
     background-color: #ececf7;
     border: 0px;
     border-radius: 100px;
@@ -3205,6 +3210,7 @@ My projects page style rules
 }
 
 .my-projects-new-project-button {
+    box-sizing: border-box;
     background-color: #271d66;
     border: 0px;
     border-radius: 55px;
@@ -3212,6 +3218,41 @@ My projects page style rules
     color: white;
     padding: 6px 17px;
     text-align: center;
+    font-size: 15px;
+    font-family: Arial;
+    font-weight: bold;
+    line-height: 28px;
+    letter-spacing: 0%;
+}
+
+.page#my-projects hr {
+    box-sizing: border-box;
+    border-color: #ececf7;
+}
+
+/* CODE GOES HERE */
+
+.my-projects-list {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.my-projects-list-header {
+    box-sizing: border-box;
+    padding-top: 0px;
+    padding-bottom: 0px;
+
+    display: grid;
+    grid-template-columns: 54.4% 27.6% auto 6.8%;
+}
+
+.project-header-label {
+    color: #271d66;
+    text-align: left;
+    font-size: 18px;
     font-family: Arial;
     font-weight: bold;
     line-height: 28px;
@@ -3220,10 +3261,104 @@ My projects page style rules
 
 /* CODE GOES HERE */
 
-.my-projects-list-header {
+.my-project-list-card {
+    box-sizing: border-box;
+
     display: grid;
-    grid-template-columns: 54.4% 27.6% auto;
+    grid-template-columns: 54.4% 27.6% auto 6.8%;
 }
+
+/* CODE GOES HERE */
+
+.my-project-list-card {
+    box-sizing: border-box;
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 10px;
+    height: fit-content;
+    padding: 10px 20px 10px 10px;
+}
+
+.list-card-section1 {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 20px;
+}
+
+.list-card-image {
+    box-sizing: border-box;
+    border: 0px;
+    border-radius: 10px;
+    width: 150px;
+    height: 70px;
+}
+
+.list-card-title {
+    box-sizing: border-box;
+    color: #271d66;
+    text-align: left;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: bold;
+    line-height: 28px;
+    letter-spacing: 0%;
+}
+
+.list-card-status {
+    box-sizing: border-box;
+    color: black;
+    text-align: left;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: normal;
+    line-height: 28px;
+    letter-spacing: 0%;
+
+    display: flex;
+    align-items: center;
+}
+
+.list-card-date {
+    box-sizing: border-box;
+    color: black;
+    text-align: right;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: normal;
+    line-height: 28px;
+    letter-spacing: 0%;
+
+    display: flex;
+    align-items: center;
+}
+
+.list-card-options-button {
+    box-sizing: border-box;
+    background-color: #00000000;
+    border: 0px;
+    border-radius: 0px;
+    color: #271d66;
+    margin-left: 20px;
+    padding: 0px;
+    text-align: center;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: normal;
+    line-height: 28px;
+    letter-spacing: 2px;
+    /* box-shadow: none; */
+    /* transition: boxShadow 0.2s; */
+}
+
+/* .list-card-options-button:hover {
+    box-shadow: 0px 0px 10px 0px black;
+    transition: boxShadow 0.2s;
+} */
+
+/* CODE GOES HERE */
 
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\

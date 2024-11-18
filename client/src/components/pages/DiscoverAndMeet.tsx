@@ -84,7 +84,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
   //Use these when testing with 'npm run server'
   //Functions used to retrieve data from the database
   const getProjectData = async () => {
-    const url = 'http://localhost:8081/api/projects'
+    const url = '/api/projects'
     try {
       let response = await fetch(url, {
         method: "GET",
@@ -101,7 +101,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
   } 
 
   const getProfileData = async () => {
-    const url = 'http://localhost:8081/api/users'
+    const url = '/api/users'
     try {
       let response = await fetch(url);
   

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../constants/routes";
 import { useSelector } from 'react-redux';
+import LFGLogoLight from "../images/lfg light mode logo.png";
+import LFGLogoDark from "../images/lfg dark mode logo.png";
 
 import Notifications from './pages/Notifications';
 

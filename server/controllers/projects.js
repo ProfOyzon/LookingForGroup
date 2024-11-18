@@ -408,18 +408,25 @@ const updateThumbnail = async (req, res) => {
 
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
-        const fileName = `${id}thumbnail.webp`;
-        const saveTo = join(__dirname, "../images/thumbnails");
+        const fileName = `${id}thumbnail${Date.now()}.webp`;
+        const saveTo = join(__dirname, "../images/thumbnails/");
         const filePath = join(saveTo, fileName);
         
         await sharp(req.file.buffer).webp({quality: 50}).toFile(filePath);
+
+        // Remove old image from server
+        const [image] = await pool.query("SELECT thumbnail FROM projects WHERE project_id = ?", [id]);
+        await unlink(saveTo + image[0].thumbnail);
 
         // Store file name in database
         const sql = "UPDATE projects SET thumbnail = ? WHERE project_id = ?";
         const values = [fileName, id];
         await pool.query(sql, values);
 
-        return res.sendStatus(204);
+        return res.status(201).json({
+            status: 201,
+            data: [{ thumbnail: fileName }]
+        });
     } catch(err) {
         console.log(err);
         return res.status(400).json({

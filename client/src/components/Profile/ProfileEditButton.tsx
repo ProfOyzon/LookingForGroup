@@ -53,7 +53,7 @@ const EditButton = ({userData}) => {
     }
 
     // const [currentPFPLink, setCurrentPFPLink] = useState(require(`../../../../server/images/profiles/${userData.profile_image}`));
-    const [currentPFPLink, setCurrentPFPLink] = useState();
+    const [currentPFPLink, setCurrentPFPLink] = useState(`/images/profiles/${userData.profile_image}`);
     const [currentFirstName, setCurrentFirstName] = useState(userData.first_name);
     const [currentLastName, setCurrentLastName] = useState(userData.last_name);
     const [currentPronouns, setCurrentPronouns] = useState(userData.pronouns);
@@ -84,24 +84,13 @@ const EditButton = ({userData}) => {
     }
 
     const getImage = async (theImageName: string) => {
-        const url = `http://localhost:8081/images/profiles/${theImageName}`;
-        try {
-            let response = await fetch(url);
-            console.log(response);
-
-            const { rawData } = await response.json();
-            const { profile_image } = rawData;
-            console.log(profile_image);
-            // setCurrentPFPLink(rawData.data[0]);
-        }
-        catch (error) {
-            console.log(error);
-        }
+        const url = `/images/profiles/${theImageName}`;
+        setCurrentPFPLink(url);
     };
 
-    if (currentPFPLink === undefined) {
+    /*if (currentPFPLink === undefined) {
         getImage(userData.profile_image);
-    }
+    }*/
 
     const uploadNewImage = async (theInput) => {
         let form = document.querySelector(".edit-region-button-wrapper.photo");
@@ -118,6 +107,7 @@ const EditButton = ({userData}) => {
                 console.log(`User data: Response status: ${response.status}`);
 
                 const rawData = await response.json();
+                console.log(rawData);
                 getImage(rawData.data[0].profile_image);
 
                 // const file = theInput.files[0];

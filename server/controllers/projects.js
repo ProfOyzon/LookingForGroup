@@ -416,7 +416,7 @@ const updateThumbnail = async (req, res) => {
 
         // Remove old image from server
         const [image] = await pool.query("SELECT thumbnail FROM projects WHERE project_id = ?", [id]);
-        if (image[0].profile_image !== null) {
+        if (image[0].thumbnail !== null) {
             await unlink(saveTo + image[0].thumbnail);
         }
 

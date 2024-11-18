@@ -70,6 +70,7 @@ const MyProjects = () => {
             {/* Search Bar and PFP */}
 
             {/* Banner */}
+            <i className="fa-solid fa-border-all"></i>
 
             {/* Header */}
             <div className="my-projects-header-row">

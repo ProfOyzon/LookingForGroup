@@ -147,7 +147,7 @@ const getProjectById = async (req, res) => {
 
     try {
         // Get project data
-        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.purpose, p.status, p.audience, g.project_types, 
+        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.thumbnail, p.purpose, p.status, p.audience, g.project_types, 
             t.tags, j.jobs, m.members, pi.images, so.socials
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
@@ -409,10 +409,16 @@ const updateThumbnail = async (req, res) => {
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
         const fileName = `${id}thumbnail${Date.now()}.webp`;
-        const saveTo = join(__dirname, "../images/thumbnails");
+        const saveTo = join(__dirname, "../images/thumbnails/");
         const filePath = join(saveTo, fileName);
         
         await sharp(req.file.buffer).webp({quality: 50}).toFile(filePath);
+
+        // Remove old image from server
+        const [image] = await pool.query("SELECT thumbnail FROM projects WHERE project_id = ?", [id]);
+        if (image[0].thumbnail !== null) {
+            await unlink(saveTo + image[0].thumbnail);
+        }
 
         // Store file name in database
         const sql = "UPDATE projects SET thumbnail = ? WHERE project_id = ?";

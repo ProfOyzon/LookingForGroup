@@ -32,7 +32,7 @@ const MyProjectsDisplayList = ({projectData}) => {
                 {/* Thumbnail */}
                 {
                     projectData.thumbnail === null || projectData.thumbnail === undefined || projectData.thumbnail === ""
-                        ? <img className="list-card-image" src={thumbnail} alt={`${projectData.title} Thumbnail`} style={{border: "1px solid black"}}></img>
+                        ? <img className="list-card-image" src={thumbnail} alt={`${projectData.title} Thumbnail`} style={{backgroundColor: "white"}}></img>
                         : <img className="list-card-image" src={thumbnail} alt={`${projectData.title} Thumbnail`}></img>
                 }
 

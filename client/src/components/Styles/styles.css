@@ -438,7 +438,7 @@ Profile Panel component style rules
     /* justify-content: start; */
     /* align-items: center; */
     text-align: left;
-    padding: 0 15px;
+    padding: 0 15px 10px 15px;
 
     img {
         width: 240px;
@@ -1467,8 +1467,6 @@ Discover and Meet page style rules
 }
 
 #discover-hero {
-    /* width: 1160px; */
-    /* height: 375px; */
     width: auto;
     height: 20vw;
     margin: 90px 50px 0 50px;
@@ -1481,20 +1479,12 @@ Discover and Meet page style rules
     display: grid;
     border-radius: 10px;
     font-size: 1vw;
-    /* height: 375px; */
     height: calc(20vw - 20px);
-    /* background-image: linear-gradient(white 40%, #D3D3FF);   */
     padding-bottom: 20px;
     grid-template-areas:
         'blurb1 blurb2 blurb3'
 }
 
-/* 
-#profile-hero-bg1 {
-    background-image: linear-gradient(to right, var(--purple-light), var(--peach));
-    border-radius:10px;
-    width:auto;
-} */
 
 .profile-hero-blurb,
 .project-hero-blurb {
@@ -1505,12 +1495,7 @@ Discover and Meet page style rules
 
 #profile-hero-blurb-1,
 #project-hero-blurb-1 {
-    /* border: 1px solid black; */
     grid-area: blurb1;
-    /* display:flex; */
-    /* justify-content:center; */
-    /* width: 1fr; */
-    /* height: 100%; */
     position: relative;
     width: 100%;
     height: 20vw;
@@ -1518,47 +1503,34 @@ Discover and Meet page style rules
     div {
         width: 70%;
         height: 14%;
-        /* font-size: 16px; */
-        /* font-size: 100%; */
         position: absolute;
         bottom: 14px;
         text-align: center;
-        /* border: 1px solid black;  */
     }
 
     img {
-        /* height: 375px; */
         height: 20vw;
-        /* width: 100%; */
-        /* border: 1px solid black; */
     }
 }
 
 #profile-hero-blurb-2,
 #project-hero-blurb-2 {
     grid-area: blurb2;
-    /* border: 1px solid greenyellow; */
-    /* width: 1fr; */
-    /* height: 100%; */
     position: relative;
 
     width: 100%;
     height: 20vw;
 
     .panel-text {
-        /* width: 370px;
-        font-size: 16px; */
         width: 95%;
         height: 24%;
         position: absolute;
         bottom: 10px;
         text-align: center;
-        /* border: 1px solid greenyellow; */
 
         #spacer {
             height: 10px;
             width: 100px;
-            /* border: 1px solid greenyellow; */
         }
     }
 
@@ -1568,46 +1540,33 @@ Discover and Meet page style rules
         position: absolute;
         top: 0;
         margin: 0;
-        /* font-size: 28px; */
         text-align: center;
     }
 
     img {
-        /* height: 375px; */
         height: 20vw;
-        /* width: 100%; */
-        /* border: 1px solid greenyellow; */
     }
 }
 
 #profile-hero-blurb-3,
 #project-hero-blurb-3 {
     grid-area: blurb3;
-    /* border: 1px solid hotpink; */
-    /* width: 1fr; */
-    /* height: 100%; */
     position: relative;
 
     width: 100%;
     height: 20vw;
 
     div {
-        /* width: 326px; */
         width: 74%;
         height: 20%;
-        /* height: 80px; */
-        /* font-size: 16px; */
         position: absolute;
         bottom: 14px;
         text-align: center;
-        /* border: 1px solid hotpink; */
+        
     }
 
     img {
-        /* height: 375px; */
         height: 20vw;
-        /* width: 100%; */
-        /* border: 1px solid hotpink; */
     }
 }
 
@@ -1620,13 +1579,12 @@ Discover and Meet page style rules
 #discover-filters {
     width: auto;
     margin: 20px 50px;
-    display: grid;
-    grid-template:
-        "tags filters" 2fr / 1fr;
+    display: flex;
+    flex-direction: row;
 }
 
 #discover-tag-filters-container {
-    grid-area: tags;
+    width: calc(100% - 40px);
     position: relative;
 }
 
@@ -1634,39 +1592,37 @@ Discover and Meet page style rules
     position: absolute;
     top: 0;
     height: 100%;
-    /* width: 80px; */
     font-size: medium;
     border: none;
     background-color: rgba(0, 0, 0, 0);
 }
 
-/* .filters-scroller:hover {
-    font-weight: bold;
-} */
 
 #filters-left-scroll {
+    width: 80px;
     font-size: 25px;
     left: 0;
     text-align: left;
-    /* background-image: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)); */
-    background-image: linear-gradient(to right, var(--bg-color) 30%, #00000000 100%);
+    background-image: linear-gradient(to right, var(--bg-color) 30%, #00000000 70%);
 }
 
 #filters-right-scroll {
+    width: 80px;
     font-size: 25px;
     right: 0;
     text-align: right;
-    /* background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)); */
-    background-image: linear-gradient(to right, #00000000 60%, var(--bg-color) 100%);
+    background-image: linear-gradient(to right, #00000000 30%, var(--bg-color) 70%);
 }
 
 #discover-tag-filters {
     height: auto;
+    width: auto;
     display: flex;
-    /* justify-content: space-between; */
-    gap: 14px;
-    overflow-x: hidden;
+    /* gap: 14px; */
+    overflow-x: scroll;
     scroll-behavior: smooth;
+
+    scrollbar-width: none;
 }
 
 .discover-tag-filter {
@@ -1676,7 +1632,7 @@ Discover and Meet page style rules
     font-size: medium;
     background-color: rgba(0, 0, 0, 0);
     border: none;
-    margin: 0 4px;
+    margin: 0 5px;
     border-radius: 30px;
     flex-shrink: 0;
 }
@@ -1688,11 +1644,9 @@ Discover and Meet page style rules
 }
 
 .discover-tag-filter-selected {
-    /*border:4px solid var(--primary-color);*/
     background-color: var(--primary-color);
     color: var(--invert-text);
     font-weight: bold;
-    /*margin: 0;*/
 }
 
 .discover-tag-filter-selected:hover {
@@ -1701,15 +1655,10 @@ Discover and Meet page style rules
 }
 
 #discover-more-filters {
-    grid-area: filters;
     height: 40px;
     width: 40px;
-    /* display:block; */
-    /* font-size:medium; */
     padding: 5px;
-    margin-left: 25px;
     background: none;
-    /* color: white; */
     border: none;
     border-radius: 30px;
 

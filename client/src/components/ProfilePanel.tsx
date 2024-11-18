@@ -15,7 +15,7 @@ export const ProfilePanel = ({profileData, height}) => {
   const navigate = useNavigate();
 
   return (
-    <div className={'profile-panel'} style={{height: height}}>
+    <div className={'profile-panel'}>
       <img src="assets/bannerImages/profile_temp.png" alt={"profile iamge"}/>
       <h2>{profileData.name}</h2>
       <h3>Major</h3>

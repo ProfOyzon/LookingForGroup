@@ -14,6 +14,7 @@ Component Style rules
     -Search
     -Scrollbar
     -Tag Filter
+    -Image Carousel
 Page specific style rules
     -Discover page
     -Discover & Meet page
@@ -1095,6 +1096,187 @@ Tag Filter style rules
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
+Image Carousel style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#carousel-tabs {
+    display:flex;
+    gap:10px;
+}
+
+.carousel-tab {
+    border:none;
+    border-radius:50%;
+    width: 20px;
+    height: 20px;
+    background-color: var(--purple-light);
+}
+
+.carousel-tab:hover, .carousel-tab-active{
+    background-color:var(--lavender)
+}
+
+/*
+------------------------------------------------------------------------------------------------
+Project image carousel style rules
+------------------------------------------------------------------------------------------------
+*/
+
+#project-image-carousel-content {
+    display:flex;
+    flex-wrap:nowrap;
+    overflow:hidden;
+    height:100%;
+    border-radius:10px;
+}
+
+.project-image-carousel-item {
+    background-color:var(--background-light);
+    width:100%;
+    min-width:100%;
+    transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+.project-image-carousel-image {
+    object-fit:contain;
+    width:100%;
+    height:100%;
+}
+
+#project-image-carousel-buttons {
+    display:flex;
+    gap:15px;
+    justify-content: center;
+    align-items: center;
+}
+
+#project-image-carousel-left, #project-image-carousel-right {
+    border:none;
+    width:30px;
+    height:30px;
+    padding:0;
+    background-color:rgba(0, 0, 0, 0);
+}
+
+#project-image-carousel-left img, #project-image-carousel-right img {
+    width:30px;
+    height:30px;
+    /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
+    /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
+    filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+}
+
+#project-image-carousel-right img {
+    transform:rotateY(180deg)
+}
+
+/*
+------------------------------------------------------------------------------------------------
+Discover image carousel style rules
+------------------------------------------------------------------------------------------------
+*/
+
+#discover-carousel-bar {
+    display:flex;
+    margin-bottom:10px;
+}
+
+#discover-carousel-left, #discover-carousel-right {
+    border:none;
+    width:60px;
+    height:auto;
+    padding:0;
+    background-color:rgba(0, 0, 0, 0);
+}
+
+#discover-carousel-left img, #discover-carousel-right img {
+    width:60px;
+    height:80px;
+    /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
+    /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
+    filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+}
+
+#discover-carousel-right img {
+    transform:rotateY(180deg);
+}
+
+#discover-carousel-content {
+    display:flex;
+    flex-wrap:nowrap;
+    overflow:hidden;
+    height:100%;
+    border-radius:10px;
+}
+
+.discover-carousel-item {
+    display:grid;
+    text-align:left;
+    column-gap:20px;
+    grid-template:
+        'image title title' 70px
+        'image desc desc' auto
+        'image blank button' 60px /
+        3fr 2fr auto;
+    background-color:var(--background-light);
+    width:100%;
+    min-width:100%;
+    transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+.discover-carousel-image {
+    grid-area: image;
+    object-fit:contain;
+    height:20vw;
+    width: 100%;
+}
+
+.discover-carousel-title {
+    grid-area: title;
+    margin-top:20px;
+    font-size:4ch;
+    font-weight: 700;
+    color: var(--lavender);
+}
+
+.discover-carousel-description {
+    grid-area: desc;
+}
+
+.discover-carousel-link {
+    grid-area: button;
+    display:flex;
+    align-items:center;
+    border:none;
+    border-radius:10px;
+    background-color:rgba(0, 0, 0, 0);
+    color: var(--lavender);
+    font-size:2ch;
+    font-weight:700;
+    margin: 10px;
+}
+
+.discover-carousel-link:hover {
+    background-color: var(--purple-light);
+}
+
+.discover-carousel-link img {
+    transform: rotateY(180deg);
+    width:30px;
+    filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+}
+
+#discover-carousel-tabs {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
 Discover page style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
@@ -1204,8 +1386,8 @@ Discover and Meet page style rules
 #discover-hero {
     width: auto;
     height: 20vw;
-    margin: 0 50px;
-    background-color: var(--peach);
+    margin: 0 50px 35px;
+    background-color: rgba(0, 0, 0, 0);
     border-radius:10px;
 }
 
@@ -2893,73 +3075,10 @@ New Project Page style rules
     grid-area:carousel;
 }
 
-#project-image-carousel-content {
-    display:flex;
-    flex-wrap:nowrap;
-    overflow:hidden;
-    height:100%;
-    border-radius:10px;
-}
-
-.project-image-carousel-item {
-    background-color:var(--background-light);
-    width:100%;
-    min-width:100%;
-    transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
-}
-
-.project-image-carousel-image {
-    object-fit:contain;
-    width:100%;
-    height:100%;
-}
-
-#project-image-carousel-buttons {
-    display:flex;
-    gap:15px;
-    justify-content: center;
-    align-items: center;
-}
-
-#project-image-carousel-left, #project-image-carousel-right {
-    border:none;
-    width:30px;
-    height:30px;
-    padding:0;
-    background-color:rgba(0, 0, 0, 0);
-}
-
-#project-image-carousel-left img, #project-image-carousel-right img {
-    width:30px;
-    height:30px;
-    /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
-    /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
-    filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
-}
-
-#project-image-carousel-right img {
-    transform:rotateY(180deg)
-}
-
-#project-image-carousel-tabs {
-    display:flex;
-    gap:10px;
-}
-
-.project-image-carousel-tab {
-    border:none;
-    border-radius:50%;
-    width: 20px;
-    height: 20px;
-    background-color: var(--purple-light);
-}
-
-.project-image-carousel-tab:hover, .carousel-tab-active{
-    background-color:var(--lavender)
-}
-
 #project-info-panel {
     grid-area:info;
+    display:flex;
+    flex-direction:column;
     background-color: var(--background-light);
     border-radius:10px;
     text-align:left;
@@ -3006,8 +3125,12 @@ New Project Page style rules
     padding:5px 20px;
 }
 
-#project-description, #project-status, #project-creation {
+#project-hook, #project-status, #project-creation {
     margin:10px 0;
+}
+
+#project-hook {
+    flex-grow:1;
 }
 
 #project-status {
@@ -3108,7 +3231,7 @@ New Project Page style rules
     padding: 5px 10px;
 }
 
-.project-people-tab:hover {
+.project-people-tab:hover, .project-people-tab-active {
     background-color: var(--lavender);
     color: white;
 }
@@ -3129,8 +3252,9 @@ New Project Page style rules
 #project-open-positions-list {
     display:flex;
     flex-flow:wrap;
+    justify-content:center;
     gap:10px;
-    margin-top: 10px;
+    margin: 10px 0;
 }
 
 /*

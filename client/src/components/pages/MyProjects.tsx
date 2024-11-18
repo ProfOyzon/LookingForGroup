@@ -10,7 +10,7 @@ const MyProjects = () => {
     // const [UID, setUID] = useState(profiles[0]._id);
     // const [activePage, setActivePage] = useState(0);
 
-    const [displayMode, setDisplayMode] = useState("list");
+    const [displayMode, setDisplayMode] = useState("grid");
     // Can be: 
     // - grid 
     // - list 
@@ -20,7 +20,6 @@ const MyProjects = () => {
     // - oldest 
     // - a-z 
     // - z-a 
-
     const [projectsList, setProjectsList] = useState();
 
     const getProjects = async (userID: number) => {
@@ -30,6 +29,7 @@ const MyProjects = () => {
 
             const rawData = await response.json();
             setProjectsList(rawData.data);
+            sortProjects();
         }
         catch (error) {
             console.log(error);
@@ -39,6 +39,48 @@ const MyProjects = () => {
     if (projectsList === undefined) {
         getProjects(1);
     }
+
+    const sortProjects = () => {
+        if (projectsList !== undefined) {
+            let tempList = new Array(0);
+            for (let i = 0; i < projectsList.length; i++) {
+                tempList.push(projectsList[i]);
+            }
+
+            switch (sortMethod) {
+                case "newest":
+                    {}
+                    break;
+                
+                case "oldest":
+                    {}
+                    break;
+                
+                case "a-z":
+                    {
+                        tempList.sort((a, b) => a.title - b.title);
+                    }
+                    break;
+                
+                case "z-a":
+                    {
+                        tempList.sort((a, b) => b.title - a.title);
+                    }
+                    break;
+            }
+
+            setProjectsList(tempList);
+        }
+    };
+
+    const toggleDisplayMode = () => {
+        if (displayMode === "grid") {
+            setDisplayMode("list");
+        }
+        else if (displayMode === "list") {
+            setDisplayMode("grid");
+        }
+    };
 
     let projectListSection = <></>;
     if (displayMode === "grid") {
@@ -70,7 +112,6 @@ const MyProjects = () => {
             {/* Search Bar and PFP */}
 
             {/* Banner */}
-            <i className="fa-solid fa-border-all"></i>
 
             {/* Header */}
             <div className="my-projects-header-row">
@@ -80,15 +121,20 @@ const MyProjects = () => {
                 {/* Sort By Drop Down */}
                 <select className="my-projects-sort-list" value={sortMethod} onChange={(e) => {setSortMethod(e.target.value)}}>
                     <option value="sort" disabled>Sort by</option>
-                    <option value="newest">Newest</option>
-                    <option value="oldest">Oldest</option>
-                    <option value="a-z">A-Z</option>
-                    <option value="z-a">Z-A</option>
+                    <option value="newest">&#xf017;&nbsp; Newest</option>
+                    <option value="oldest">&#xf017;&nbsp; Oldest</option>
+                    <option value="a-z">&#xf062;&nbsp; A-Z</option>
+                    <option value="z-a">&#xf063;&nbsp; Z-A</option>
                 </select>
 
                 {/* Display Switch */}
-                <div className="my-projects-display-switch" onClick={(e) => {}}>
-                    {/* CODE GOES HERE */}
+                <div className="my-projects-display-switch" onClick={(e) => {toggleDisplayMode()}}>
+                    <div className="display-switch-option list" id={displayMode === "list" ? "selected" : ""}>
+                        <i className="fa-solid fa-bars"></i>
+                    </div>
+                    <div className="display-switch-option grid" id={displayMode === "grid" ? "selected" : ""}>
+                        <i className="fa-solid fa-border-all"></i>
+                    </div>
                 </div>
 
                 {/* New Project Button */}

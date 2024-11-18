@@ -3167,7 +3167,7 @@ My projects page style rules
     width: 100%;
 
     display: grid;
-    grid-template-columns: 57% auto auto auto;
+    grid-template-columns: auto max-content max-content max-content;
     column-gap: 1.46%;
 }
 
@@ -3196,7 +3196,7 @@ My projects page style rules
     padding: 13.5px 15px;
     color: black;
     font-size: 13px;
-    font-family: Arial;
+    font-family: Arial, FontAwesome;
     line-height: normal;
     letter-spacing: 0%;
 }
@@ -3206,7 +3206,28 @@ My projects page style rules
     background-color: #ececf7;
     border: 0px;
     border-radius: 100px;
-    padding: 22px 43px;
+    padding: 0px;
+
+    display: flex;
+}
+
+.my-projects-display-switch .display-switch-option {
+    box-sizing: border-box;
+    background-color: #00000000;
+    border: 0px;
+    border-radius: 100px;
+    width: 44px;
+    height: 44px;
+    color: #271d66;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-projects-display-switch .display-switch-option#selected {
+    background-color: #271d66;
+    color: white;
 }
 
 .my-projects-new-project-button {

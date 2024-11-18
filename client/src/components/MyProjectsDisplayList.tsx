@@ -32,7 +32,7 @@ const MyProjectsDisplayList = ({projectData}) => {
                 {/* Thumbnail */}
                 {
                     projectData.thumbnail === null || projectData.thumbnail === undefined || projectData.thumbnail === ""
-                        ? <img className="list-card-image" src={thumbnail} alt={`${projectData.title} Thumbnail`} style={{backgroundColor: "white"}}></img>
+                        ? <div className="list-card-image" style={{backgroundColor: "white"}}></div>
                         : <img className="list-card-image" src={thumbnail} alt={`${projectData.title} Thumbnail`}></img>
                 }
 
@@ -50,6 +50,7 @@ const MyProjectsDisplayList = ({projectData}) => {
             <button className="list-card-options-button" onClick={(e) => {toggleOptions()}}>•••</button>
 
             {/* Options List */}
+            {/* &#xe66c; &#xf2ed; */}
         </div>
     );
 };

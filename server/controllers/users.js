@@ -357,7 +357,9 @@ const updateProfilePicture = async (req, res) => {
 
         // Remove old image from server
         const [image] = await pool.query("SELECT profile_image FROM users WHERE user_id = ?", [id]);
-        await unlink(saveTo + image[0].profile_image);
+        if (image[0].profile_image !== null) {
+            await unlink(saveTo + image[0].profile_image);
+        }
 
         // Store file name in database
         const sql = "UPDATE users SET profile_image = ? WHERE user_id = ?";

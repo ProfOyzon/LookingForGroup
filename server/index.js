@@ -7,6 +7,7 @@ import usersRouter from "./routes/users.js";
 import projectsRouter from "./routes/projects.js";
 import datasetsRouter from "./routes/datasets.js";
 import envConfig from "./config/env.js";
+import pool from "./config/database.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -19,6 +20,8 @@ app.use("/images", express.static(join(__dirname, "./images")));
 app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Routes
 app.use(usersRouter);
 app.use(projectsRouter);
 app.use(datasetsRouter);
@@ -36,6 +39,12 @@ app.get("/api", (req, res) => {
 app.get("/*", (req, res) => {
     res.sendFile("index.html", {root: join(__dirname, '../client/build/')});
 })
+
+// Clean up signup tokens once a day
+setInterval(async () => {
+    await pool.query("DELETE FROM signups WHERE created_at <= DATE_SUB(NOW(), INTERVAL 1 HOUR)");
+    console.log("Signup cleaning");
+}, 24 * 60 * 60 * 1000)
 
 app.listen(port, (err) => {
     if (err) { throw err; }

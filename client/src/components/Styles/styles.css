@@ -3141,18 +3141,88 @@ My projects page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-#create-proj-btn {
+/* #create-proj-btn {
     padding: 10px 50px;
     font-weight: bold;
     font-size: larger;
     position: fixed;
     bottom: 20px;
     right: 20px;
-}
+} */
 
 @media only screen and (max-width: 800px) {
 
     /* responsiveness goes here*/
+}
+
+#my-projects {
+    /* CODE GOES HERE */
+
+    padding: 22px 60px 0px 64px;
+}
+
+/* CODE GOES HERE */
+
+.my-projects-header-row {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 57% auto auto auto;
+    column-gap: 1.46%;
+}
+
+.my-projects-all-projects-button {
+    background-color: #271d66;
+    border: 0px;
+    border-radius: 55px;
+    width: fit-content;
+    color: white;
+    padding: 6px 17px;
+    text-align: center;
+    font-family: Arial;
+    font-weight: bold;
+    line-height: 28px;
+    letter-spacing: 0%;
+}
+
+.my-projects-sort-list {
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 10px;
+    padding: 13.5px 15px;
+    color: black;
+    font-size: 13px;
+    font-family: Arial;
+    line-height: auto;
+    letter-spacing: 0%;
+}
+
+.my-projects-display-switch {
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 100px;
+    padding: 22px 43px;
+}
+
+.my-projects-new-project-button {
+    background-color: #271d66;
+    border: 0px;
+    border-radius: 55px;
+    width: fit-content;
+    color: white;
+    padding: 6px 17px;
+    text-align: center;
+    font-family: Arial;
+    font-weight: bold;
+    line-height: 28px;
+    letter-spacing: 0%;
+}
+
+/* CODE GOES HERE */
+
+.my-projects-list-header {
+    display: grid;
+    grid-template-columns: 54.4% 27.6% auto;
 }
 
 /*

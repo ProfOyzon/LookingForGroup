@@ -5,6 +5,7 @@ import { useState } from "react";
 // import { PagePopup, openClosePopup } from "../PagePopup";
 import ToTopButton from "../ToTopButton";
 import MyProjectsDisplayList from "../MyProjectsDisplayList";
+import MyProjectsDisplayGrid from "../MyProjectsDisplayGrid";
 
 const MyProjects = () => {
     // const [UID, setUID] = useState(profiles[0]._id);
@@ -29,7 +30,6 @@ const MyProjects = () => {
 
             const rawData = await response.json();
             setProjectsList(rawData.data);
-            sortProjects();
         }
         catch (error) {
             console.log(error);
@@ -49,27 +49,21 @@ const MyProjects = () => {
 
             switch (sortMethod) {
                 case "newest":
-                    {}
+                    return tempList.toSorted((a, b) => a.project_id - b.project_id);
                     break;
                 
                 case "oldest":
-                    {}
+                    return tempList.toSorted((a, b) => b.project_id - a.project_id);
                     break;
                 
                 case "a-z":
-                    {
-                        tempList.sort((a, b) => a.title - b.title);
-                    }
+                    return tempList.toSorted((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
                     break;
                 
                 case "z-a":
-                    {
-                        tempList.sort((a, b) => b.title - a.title);
-                    }
+                    return tempList.toSorted((a, b) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()));
                     break;
             }
-
-            setProjectsList(tempList);
         }
     };
 
@@ -84,9 +78,20 @@ const MyProjects = () => {
 
     let projectListSection = <></>;
     if (displayMode === "grid") {
-        // ---CODE GOES HERE--- 
+        let tempList = sortProjects();
+        projectListSection = <>
+            {/* Projects List */}
+            <div className="my-projects-grid">
+                {
+                    tempList === undefined ? "" : tempList.map((project) => {
+                        return <MyProjectsDisplayGrid projectData={project}></MyProjectsDisplayGrid>
+                    })
+                }
+            </div>
+        </>;
     }
     else if (displayMode === "list") {
+        let tempList = sortProjects();
         projectListSection = <>
             {/* Projects List Header */}
             <div className="my-projects-list-header">
@@ -99,7 +104,7 @@ const MyProjects = () => {
             {/* Projects List */}
             <div className="my-projects-list">
                 {
-                    projectsList === undefined ? "" : projectsList.map((project) => {
+                    tempList === undefined ? "" : tempList.map((project) => {
                         return <MyProjectsDisplayList projectData={project}></MyProjectsDisplayList>
                     })
                 }

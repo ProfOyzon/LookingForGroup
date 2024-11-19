@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const MyProjectsDisplayList = ({projectData}) => {
+const MyProjectsDisplayGrid = ({projectData}) => {
     const [status, setStatus] = useState();
     const [optionsShown, setOptionsShown] = useState(false);
 
@@ -21,7 +21,7 @@ const MyProjectsDisplayList = ({projectData}) => {
         getStatus();
     }
 
-    let optionsClass = "list-card-options-list";
+    let optionsClass = "grid-card-options-list";
     if (optionsShown) {
         optionsClass += " show";
     }
@@ -36,28 +36,20 @@ const MyProjectsDisplayList = ({projectData}) => {
     };
 
     return (
-        <div className="my-project-list-card">
-            <div className="list-card-section1">
-                {/* Thumbnail */}
-                {
-                    projectData.thumbnail === null || projectData.thumbnail === undefined || projectData.thumbnail === ""
-                        ? <div className="list-card-image" style={{backgroundColor: "white"}}></div>
-                        : <img className="list-card-image" src={`/images/thumbnails/${projectData.thumbnail}`} alt={`${projectData.title} Thumbnail`}></img>
-                }
+        <div className="my-project-grid-card">
+            {/* Thumbnail */}
+            {
+                projectData.thumbnail === null || projectData.thumbnail === undefined || projectData.thumbnail === ""
+                    ? <div className="grid-card-image" style={{backgroundColor: "white"}}></div>
+                    : <img className="grid-card-image" src={`/images/thumbnails/${projectData.thumbnail}`} alt={`${projectData.title} Thumbnail`}></img>
+            }
 
-                {/* Title */}
-                <div className="list-card-title">{projectData.title}</div>
-            </div>
-
-            {/* Status */}
-            <div className="list-card-status">{status}</div>
-
-            {/* Data Created */}
-            <div className="list-card-date">{"No data"}</div>
+            {/* Title */}
+            <div className="grid-card-title">{projectData.title}</div>
 
             {/* Options */}
-            <div className="list-card-options">
-                <button className="list-card-options-button" onClick={(e) => {toggleOptions()}}>•••</button>
+            <div className="grid-card-options">
+                <button className="grid-card-options-button" onClick={(e) => {toggleOptions()}}>•••</button>
                 <div className={optionsClass}>
                     <button className="card-leave-button" onClick={(e) => {}}>
                         <i className="fa-slid fa-arrow-right-from-bracket" style={{fontStyle: "normal"}}></i>&nbsp; Leave Project
@@ -71,4 +63,4 @@ const MyProjectsDisplayList = ({projectData}) => {
     );
 };
 
-export default MyProjectsDisplayList;
+export default MyProjectsDisplayGrid;

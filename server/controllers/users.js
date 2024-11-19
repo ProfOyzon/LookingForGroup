@@ -89,7 +89,7 @@ const getUsers = async (req, res) => {
     // Get all users
     try {
         const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
-        jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
+        jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
             FROM users u
             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
                 FROM job_titles jt) jt
@@ -389,7 +389,7 @@ const getMyProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
                 FROM projects p
                 JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
@@ -433,7 +433,7 @@ const getVisibleProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
                 FROM projects p
                 JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
@@ -511,7 +511,7 @@ const getProjectFollowing = async (req, res) => {
 
     try {
         // Get user data
-        const sql = `SELECT p.* 
+        const sql = `SELECT p.*, pf.followed_at
             FROM project_followings pf
             JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
                 FROM projects p
@@ -613,7 +613,7 @@ const getUserFollowing = async (req, res) => {
 
     try {
         // Get user data
-        const sql = `SELECT u.* 
+        const sql = `SELECT u.*, uf.followed_at 
             FROM user_followings uf
             JOIN (SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
             jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
@@ -709,8 +709,7 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export default { signup, getUsers, createUser, getUserById, getUserByUsername, login, updateUser, updateProfilePicture, 
-    addSkill, updateSkillPositions, deleteSkill, 
+export default { signup, getUsers, createUser, getUserById, getUserByUsername, login, updateUser, updateProfilePicture,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const getProjects = async (req, res) => {
     // Get all projects
     try {
-        const sql = `SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
+        const sql = `SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                 FROM project_genres pg 
@@ -78,10 +78,10 @@ const createProject = async (req, res) => {
             status: 400, 
             error: "Missing at least 1 project type" 
         });
-    } else if (tags.length < 1) {
+    } else if (tags.length < 1 || tags.length > 20) {
         return res.status(400).json({
             status: 400, 
-            error: "Missing at least 1 tag" 
+            error: "Missing at least 1 tag or more than 20 tags added" 
         });
     } else if (members.length < 1) {
         return res.status(400).json({
@@ -240,10 +240,10 @@ const updateProject = async (req, res) => {
             status: 400, 
             error: "Missing at least 1 project type" 
         });
-    } else if (tags.length < 1) {
+    } else if (tags.length < 1 || tags.length > 20) {
         return res.status(400).json({
             status: 400, 
-            error: "Missing at least 1 tag" 
+            error: "Missing at least 1 tag or more than 20 tags added" 
         });
     } else if (members.length < 1) {
         return res.status(400).json({

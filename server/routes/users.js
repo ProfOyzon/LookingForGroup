@@ -7,6 +7,8 @@ const router = Router();
 router.post("/api/login", userCtrl.login);
 router.post("/api/signup", userCtrl.signup);
 router.get("/api/signup/:token", userCtrl.createUser);
+router.post("/api/resets/password", userCtrl.requestPasswordReset);
+router.post("/api/resets/password/:token", userCtrl.resetPassword);
 router.get("/api/users", userCtrl.getUsers);
 router.get("/api/users/:username", userCtrl.getUserByUsername);
 router.get("/api/users/:id", userCtrl.getUserById);

@@ -50,7 +50,7 @@ const signup = async (req, res) => {
         // Email content
         const html = `
         <p>Hi ${firstName},<br>
-        Thank you for signing up to LFG. To activate your account, click the button below.
+        Thank you for signing up to LFG. You have 1 hour to activate your account. Click the button below.
         </p>
         
         <div style="margin: 2rem 1rem">
@@ -81,6 +81,43 @@ const signup = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "An error occurred during sign up" 
+        });
+    }
+}
+
+const createUser = async (req, res) => {
+    // Get token from url
+    const { token } = req.params;
+
+    try {
+        // Get signup email if token is valid
+        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 HOUR)", [token]);
+        if (email.length < 1) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Your token has expired" 
+            });
+        }
+        // Check if an user with the email already exists
+        const [user] = await pool.query("SELECT rit_email FROM users WHERE rit_email = ?", [email[0].rit_email]);
+        if (user.length > 0) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Your account has already been activated" 
+            });
+        }
+
+        // Add user officially to database
+        const sql = "UPDATE users SET password = ? WHERE primary_email = ?";
+        const values = [token];
+        await pool.query(sql, values);
+        
+        return res.sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while activating the user's account" 
         });
     }
 }
@@ -120,47 +157,6 @@ const getUsers = async (req, res) => {
     }
 }
 
-const createUser = async (req, res) => {
-    // Get token from url
-    const { token } = req.params;
-
-    try {
-        // Get signup email if token is valid
-        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 HOUR)", [token]);
-        if (email.length < 1) {
-            return res.status(400).json({
-                status: 400, 
-                error: "Your token has expired" 
-            });
-        }
-        // Check if an user with the email already exists
-        const [user] = await pool.query("SELECT rit_email FROM users WHERE rit_email = ?", [email[0].rit_email]);
-        if (user.length > 0) {
-            return res.status(400).json({
-                status: 400, 
-                error: "Your account has already been activated" 
-            });
-        }
-
-        // Add user officially to database
-        const sql = ` INSERT INTO users (username, primary_email, rit_email, password, first_name, last_name)
-            SELECT username, primary_email, rit_email, password, first_name, last_name
-            FROM signups
-            WHERE token = ?
-        `;
-        const values = [token];
-        await pool.query(sql, values);
-        
-        return res.sendStatus(200);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while activating the user's account" 
-        });
-    }
-}
-
 const login = async (req, res) => {
     const { username, password } = req.body;
 
@@ -170,6 +166,120 @@ const login = async (req, res) => {
     const [user] = await pool.query(userQuery, [username]);
 
     console.log(user);
+}
+
+const requestPasswordReset = async (req, res) => {
+    // Get input data
+    const { email } = req.body;
+
+    // Checks
+    if (!email) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing email" 
+        });
+    }
+
+    // Generate a token for password reset
+    const token = crypto.randomUUID();
+
+    try {
+        // Add user information to database, setting up for password reset
+        const sql = "INSERT INTO password_resets (token, primary_email) VALUES (?, ?)";
+        const values = [token, email];
+        await pool.query(sql, values);
+
+        // Email content
+        const html = `
+        <p>Hi,<br>
+        Forgot you password? You have 15 minutes to reset your password. Click the button below.
+        </p>
+        
+        <div style="margin: 2rem 1rem">
+        <a style="font-size:1.25rem; color:#FFFFFF; background-color:#271D66; text-align:center; margin:2rem 0; padding:1rem; text-decoration:none;"
+        href="" target="_blank">Reset Password</a>
+        </div>
+
+        <p>If the button doesn't work, use the following link:</p>
+        <a href="" target="_blank">Need a link</a>
+
+        <p>Kind regards,<br>
+        LFG Team</p>
+        `;
+
+        const message = {
+            from: envConfig.mailerEmail,
+            to: email,
+            subject: "Reset Your LFG Password",
+            html: html
+        }
+        
+        // Send account activation email
+        await transporter.sendMail(message);
+
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred during password reset request" 
+        });
+    }
+}
+
+const resetPassword = async (req, res) => {
+    // Get token from url
+    const { token } = req.params;
+    // Get input data
+    const { password, confirm } = req.body;
+
+    if (!password || !confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing passwords" 
+        });
+    } else if (password !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Passwords do not match" 
+        });
+    }
+
+    // Hash the password
+    const hashPass = await bcrypt.hash(password, 10);
+
+    try {
+        // Get signup email if token is valid 
+        // Add 5 minute leeway to the 15 minutes stated in email, to account for time taken for email to arrive
+        const [email] = await pool.query("SELECT primary_email FROM password_resets WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 20 MINUTE)", [token]);
+        if (email.length < 1) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Your token has expired" 
+            });
+        }
+        // Check if an user with the email exists
+        const [user] = await pool.query("SELECT primary_email FROM users WHERE primary_email = ?", [email[0].rit_email]);
+        if (user.length < 1) {
+            return res.status(400).json({
+                status: 400, 
+                error: "You are resetting the password of an account that does not exist" 
+            });
+        }
+
+        // Update user password
+        const sql = "UPDATE users SET password = ? WHERE primary_email = ?";
+        const values = [hashPass, email[0].rit_email];
+        await pool.query(sql, values);
+        
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while activating the user's account" 
+        });
+    }
 }
 
 const getUserById = async (req, res) => {
@@ -709,7 +819,8 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export default { signup, getUsers, createUser, getUserById, getUserByUsername, login, updateUser, updateProfilePicture,
+export default { login, signup, createUser, requestPasswordReset, resetPassword,
+    getUsers, getUserById, getUserByUsername, updateUser, updateProfilePicture,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

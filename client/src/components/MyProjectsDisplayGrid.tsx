@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 const MyProjectsDisplayGrid = ({projectData}) => {
-    console.log(projectData);
     const [status, setStatus] = useState();
     const [optionsShown, setOptionsShown] = useState(false);
 

@@ -49,11 +49,11 @@ const MyProjects = () => {
 
             switch (sortMethod) {
                 case "newest":
-                    return tempList.toSorted((a, b) => a.project_id - b.project_id);
+                    return tempList.toSorted((a, b) => a.created_at - b.created_at);
                     break;
                 
                 case "oldest":
-                    return tempList.toSorted((a, b) => b.project_id - a.project_id);
+                    return tempList.toSorted((a, b) => b.created_at - a.created_at);
                     break;
                 
                 case "a-z":

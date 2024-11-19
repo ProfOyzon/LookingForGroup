@@ -35,6 +35,12 @@ const MyProjectsDisplayList = ({projectData}) => {
         }
     };
 
+    const createDate = (theDate: string) => {
+        let dataList = theDate.split("T");
+        let dateParts = dataList[0].split("-");
+        return `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+    };
+
     return (
         <div className="my-project-list-card">
             <div className="list-card-section1">
@@ -53,7 +59,13 @@ const MyProjectsDisplayList = ({projectData}) => {
             <div className="list-card-status">{status}</div>
 
             {/* Data Created */}
-            <div className="list-card-date">{"No data"}</div>
+            <div className="list-card-date">
+                {
+                    projectData.created_at === null || projectData.created_at === undefined || projectData.created_at === ""
+                        ? "No data"
+                        : createDate(projectData.created_at)
+                }
+            </div>
 
             {/* Options */}
             <div className="list-card-options">

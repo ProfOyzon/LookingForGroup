@@ -3338,8 +3338,6 @@ My projects page style rules
     flex-direction: column;
 }
 
-/* CODE GOES HERE */
-
 .my-projects-list {
     box-sizing: border-box;
 
@@ -3354,7 +3352,7 @@ My projects page style rules
     padding-bottom: 0px;
 
     display: grid;
-    grid-template-columns: 54.4% 27.6% auto 6.8%;
+    grid-template-columns: 54% 27% auto 6.8%;
 }
 
 .project-header-label {
@@ -3367,16 +3365,12 @@ My projects page style rules
     letter-spacing: 0%;
 }
 
-/* CODE GOES HERE */
-
 .my-project-list-card {
     box-sizing: border-box;
 
     display: grid;
     grid-template-columns: 54.4% 27.6% auto 6.8%;
 }
-
-/* CODE GOES HERE */
 
 .my-project-list-card {
     box-sizing: border-box;

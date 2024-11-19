@@ -3147,6 +3147,143 @@ New Project Page style rules
     padding: 5px 20px;
 }
 
+#project-open-positions-popup {
+    background-image: linear-gradient(120deg, var(--purple-light), white 70%);
+    font-style:normal;
+    display:grid;
+    height: calc(90vh - 90px);
+    width:90vw;
+    max-width:1000px;
+    gap:30px;
+    padding:70px;
+    padding-top:20px;
+    border-radius:4px;
+    grid-template:
+        'header header' 50px
+        'list info' auto
+        'close close' 50px /
+        300px auto;
+}
+
+#positions-popup-header {
+    grid-area:header;
+    text-align:center;
+    font-size:3.5ch;
+    font-weight:600;
+    margin:auto;
+    padding:10px 20px;
+    background-color:var(--lavender);
+    color:white;
+    border-radius:60px;
+}
+
+#positions-popup-list {
+    grid-area:list;
+    text-align:center;
+    background-color:white;
+    box-shadow: 0 0 10px #BBBBBB;
+    border-radius:10px;
+}
+
+#positions-popup-list-header {
+    margin:20px 0 10px;
+    font-size:2.5ch;
+}
+
+#positions-popup-list-buttons {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+}
+
+.positions-popup-list-item {
+    width:max-content;
+    background-color:var(--background-light);
+    color:var(--lavender);
+    border:none;
+    border-radius:30px;
+    font-size:1.9ch;
+    padding:5px 15px;
+}
+
+.positions-popup-list-item:hover {
+    background-color:var(--lavender);
+    color:white;
+}
+
+#positions-popup-info {
+    grid-area:info;
+    display:flex;
+    flex-direction:column;
+    background-color:white;
+    box-shadow: 0 0 10px #BBBBBB;
+    border-radius:10px;
+    padding:20px;
+}
+
+#positions-popup-info-title {
+    color:var(--lavender);
+    font-size:2.5ch;
+    font-weight:600;
+    text-align:center;
+}
+
+#positions-popup-info-description {
+    flex-grow:1;
+}
+
+#position-description-header, .position-detail-indicator {
+    color:var(--lavender);
+    font-weight:600;
+}
+
+#position-description-content {
+    margin: 0 20px;
+}
+
+#position-details {
+    display:grid;
+    grid-template:
+        'availability duration' auto
+        'location compensation' auto /
+        1fr 1fr;
+}
+
+#position-availability {grid-area:availability}
+#position-duration {grid-area:duration}
+#position-location {grid-area:location}
+#position-compensation {grid-area:compensation}
+
+#position-contact {
+    margin-left:auto;
+    margin-top:20px;
+    width:max-content;
+}
+
+#position-contact-link {
+    background-color:var(--background-light);
+    color:var(--lavender);
+    border-radius:30px;
+    padding: 5px 15px;
+}
+
+#position-contact-link img{
+    height:20px;
+}
+
+#positions-popup-close {
+    grid-area:close;
+    border:none;
+    border-radius:30px;
+    width:max-content;
+    margin:auto;
+    font-size:2.1ch;
+    padding:10px 20px;
+    background-color:var(--lavender);
+    color:white;
+}
+
 #project-creation {
     font-style:italic;
     color: var(--darkGray);

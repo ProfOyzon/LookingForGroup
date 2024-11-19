@@ -173,10 +173,10 @@ const NewProject = () => {
   //Variable holding either 'peopleContent' or 'contributorContent', depending on 'displayedPeople' state (seen above)
   const profileContent = displayedPeople === 'People' ? peopleContent : contributorContent;
 
-  //Funciton to handle switching tabs for project contributors
-  //Updates tab display as well as the content underneath
-  const handlePeopleTabChange = (e, newTab) => {
-
+  const openPositionListing = () => {
+    //Set state to position being clicked
+    //Call Popup open function from other button
+    document.getElementById('project-open-positions-button').click();
   }
 
   //Page layout for if project data hasn't been loaded yet
@@ -207,7 +207,46 @@ const NewProject = () => {
           </div>
           <div id='project-status'>
             Status: <span className='project-info-highlight'>{displayedProject.status} </span> 
-            <button id='project-open-positions-button'>Open Positions</button>
+            <Popup>
+              <PopupButton buttonId='project-open-positions-button'>Open Positions</PopupButton>
+              <PopupContent>
+                <div id='project-open-positions-popup'>
+                  <div id='positions-popup-header'>Join The Team</div>
+
+                  <div id='positions-popup-list'>
+                    <div id='positions-popup-list-header'>Open Positions</div>
+                    <div id='positions-popup-list-buttons'>
+                      {
+                        displayedProject.jobs.map((job) => (
+                          <button className='positions-popup-list-item'>{job.job_title}</button>
+                        ))
+                      }
+                    </div>
+                  </div>
+
+                  <div id='positions-popup-info'>
+                    <div id='positions-popup-info-title'>Position name</div>
+                    <div id='positions-popup-info-description'>
+                      <div id='position-description-header'>What we are looking for:</div>
+                      <div id='position-description-content'>
+                        Description text here, etc etc.
+                      </div>
+                    </div>
+                    <div id='position-details'>
+                      <div id='position-availability'><span className='position-detail-indicator'>Availability: </span>bleh</div>
+                      <div id='position-duration'><span className='position-detail-indicator'>Duration: </span>bleh</div>
+                      <div id='position-location'><span className='position-detail-indicator'>Location: </span>bleh</div>
+                      <div id='position-compensation'><span className='position-detail-indicator'>Compensation: </span>bleh</div>
+                    </div>
+                    <div id='position-contact'>
+                      if interested, please contact: <span id='position-contact-link'><img src={profilePicture}/>User Name</span>
+                    </div>
+                  </div>
+
+                  <PopupButton buttonId='positions-popup-close'>Close</PopupButton>
+                </div>
+              </PopupContent>
+            </Popup>
           </div>
           <div id='project-creation'>
             Created by: <span className='project-info-highlight'>creator</span><br/>
@@ -274,7 +313,7 @@ const NewProject = () => {
           <div id='project-open-positions-list'>
             {
               displayedProject.jobs.map((position) => (
-                <div className='project-tag-label label-grey'>{position.job_title}</div>
+                <button className='project-tag-label label-grey' onClick={() => openPositionListing()}>{position.job_title}</button>
               ))
             }
           </div>

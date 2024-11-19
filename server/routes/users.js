@@ -4,11 +4,12 @@ import userCtrl from "../controllers/users.js";
 
 const router = Router();
 
+router.post("/api/login", userCtrl.login);
 router.post("/api/signup", userCtrl.signup);
 router.get("/api/signup/:token", userCtrl.createUser);
 router.get("/api/users", userCtrl.getUsers);
-router.get("/api/users/:id", userCtrl.getUserById);
 router.get("/api/users/:username", userCtrl.getUserByUsername);
+router.get("/api/users/:id", userCtrl.getUserById);
 router.put("/api/users/:id", userCtrl.updateUser);
 router.put("/api/users/:id/profile-picture", mid.checkImageFile, userCtrl.updateProfilePicture);
 router.get("/api/users/:id/projects", userCtrl.getMyProjects);
@@ -20,6 +21,5 @@ router.delete("/api/users/:id/followings/projects", userCtrl.deleteProjectFollow
 router.get("/api/users/:id/followings/people", userCtrl.getUserFollowing);
 router.post("/api/users/:id/followings/people", userCtrl.addUserFollowing);
 router.delete("/api/users/:id/followings/people", userCtrl.deleteUserFollowing);
-router.post("/api/users/login", userCtrl.login);
 
 export default router;

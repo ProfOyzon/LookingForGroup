@@ -35,7 +35,7 @@ const Login = (props) => {
         
         else {
 
-            sendPost('/api/users/login', {username, password});
+            sendPost('/api/login', {username, password});
 
             // Navigate to the home page
             //navigate(paths.routes.HOME);

@@ -13,6 +13,7 @@ router.get("/api/users", userCtrl.getUsers);
 router.get("/api/users/:username", userCtrl.getUserByUsername);
 router.get("/api/users/:id", userCtrl.getUserById);
 router.put("/api/users/:id", userCtrl.updateUser);
+router.put("/api/users/:id/password", userCtrl.updatePassword);
 router.put("/api/users/:id/profile-picture", mid.checkImageFile, userCtrl.updateProfilePicture);
 router.get("/api/users/:id/projects", userCtrl.getMyProjects);
 router.get("/api/users/:id/projects/profile", userCtrl.getVisibleProjects);

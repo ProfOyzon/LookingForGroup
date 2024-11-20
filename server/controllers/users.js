@@ -197,9 +197,8 @@ const requestPasswordReset = async (req, res) => {
 }
 
 const resetPassword = async (req, res) => {
-    // Get token from url
+    // Get data
     const { token } = req.params;
-    // Get input data
     const { password, confirm } = req.body;
 
     if (!password || !confirm) {
@@ -238,7 +237,7 @@ const resetPassword = async (req, res) => {
         console.log(err);
         return res.status(400).json({
             status: 400, 
-            error: "An error occurred while activating the user's account" 
+            error: "An error occurred while updating user's password" 
         });
     }
 }
@@ -435,6 +434,51 @@ const updateUser = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "An error occurred while updating the user's profile" 
+        });
+    }
+}
+
+const updatePassword = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+    const { newPassword, confirm, password } = req.body;
+
+    const [curPassword] = await pool.query("SELECT password FROM users WHERE user_id = ?", [id]);
+    const match = await bcrypt.compare(password, curPassword[0].password);
+
+    // Checks
+    if (!newPassword || !confirm || !password) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing input information" 
+        });
+    } else if (newPassword !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Passwords do not match" 
+        });
+    } else if (!match) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Current password is incorrect" 
+        });
+    }
+
+    // Hash the new password
+    const hashPass = await bcrypt.hash(newPassword, 10);
+
+    try {
+        // Update user password
+        const sql = "UPDATE users SET password = ? WHERE user_id = ?";
+        const values = [hashPass, id];
+        await pool.query(sql, values);
+
+        res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the user's password" 
         });
     }
 }
@@ -816,7 +860,7 @@ const deleteUserFollowing = async (req, res) => {
 }
 
 export default { login, signup, createUser, requestPasswordReset, resetPassword,
-    getUsers, getUserById, getUserByUsername, updateUser, updateProfilePicture,
+    getUsers, getUserById, getUserByUsername, updateUser, updatePassword, updateProfilePicture,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

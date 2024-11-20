@@ -108,7 +108,11 @@ const createUser = async (req, res) => {
         }
 
         // Add user officially to database
-        const sql = "UPDATE users SET password = ? WHERE primary_email = ?";
+        const sql = ` INSERT INTO users (username, primary_email, rit_email, password, first_name, last_name)
+            SELECT username, primary_email, rit_email, password, first_name, last_name
+            FROM signups
+            WHERE token = ?
+        `;
         const values = [token];
         await pool.query(sql, values);
         
@@ -118,41 +122,6 @@ const createUser = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "An error occurred while activating the user's account" 
-        });
-    }
-}
-
-const getUsers = async (req, res) => {
-    // Get all users
-    try {
-        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
-        jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
-            FROM users u
-            LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
-                FROM job_titles jt) jt
-            ON u.job_title_id = jt.title_id
-            LEFT JOIN (SELECT m.major_id, m.label AS major
-                FROM majors m) m
-            ON u.major_id = m.major_id
-            LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
-                "position", us.position)) AS skills
-                FROM user_skills us 
-                JOIN skills s 
-                    ON us.skill_id = s.skill_id
-                GROUP BY us.user_id) s
-            ON u.user_id = s.user_id
-        `;
-        const [users] = await pool.query(sql);
-        
-        return res.status(200).json({
-            status: 200,
-            data: users
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while getting all users" 
         });
     }
 }
@@ -249,7 +218,7 @@ const resetPassword = async (req, res) => {
     const hashPass = await bcrypt.hash(password, 10);
 
     try {
-        // Get signup email if token is valid 
+        // Get email if token is valid 
         // Add 5 minute leeway to the 15 minutes stated in email, to account for time taken for email to arrive
         const [email] = await pool.query("SELECT primary_email FROM password_resets WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 20 MINUTE)", [token]);
         if (email.length < 1) {
@@ -258,18 +227,10 @@ const resetPassword = async (req, res) => {
                 error: "Your token has expired" 
             });
         }
-        // Check if an user with the email exists
-        const [user] = await pool.query("SELECT primary_email FROM users WHERE primary_email = ?", [email[0].rit_email]);
-        if (user.length < 1) {
-            return res.status(400).json({
-                status: 400, 
-                error: "You are resetting the password of an account that does not exist" 
-            });
-        }
 
         // Update user password
         const sql = "UPDATE users SET password = ? WHERE primary_email = ?";
-        const values = [hashPass, email[0].rit_email];
+        const values = [hashPass, email[0].primary_email];
         await pool.query(sql, values);
         
         return res.sendStatus(201);
@@ -278,6 +239,41 @@ const resetPassword = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "An error occurred while activating the user's account" 
+        });
+    }
+}
+
+const getUsers = async (req, res) => {
+    // Get all users
+    try {
+        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+        jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
+            FROM users u
+            LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+                FROM job_titles jt) jt
+            ON u.job_title_id = jt.title_id
+            LEFT JOIN (SELECT m.major_id, m.label AS major
+                FROM majors m) m
+            ON u.major_id = m.major_id
+            LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+                "position", us.position)) AS skills
+                FROM user_skills us 
+                JOIN skills s 
+                    ON us.skill_id = s.skill_id
+                GROUP BY us.user_id) s
+            ON u.user_id = s.user_id
+        `;
+        const [users] = await pool.query(sql);
+        
+        return res.status(200).json({
+            status: 200,
+            data: users
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting all users" 
         });
     }
 }

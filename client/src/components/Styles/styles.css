@@ -3207,7 +3207,7 @@ New Project Page style rules
     padding:5px 15px;
 }
 
-.positions-popup-list-item:hover {
+.positions-popup-list-item:hover, .positions-popup-list-item-active {
     background-color:var(--lavender);
     color:white;
 }
@@ -3259,6 +3259,12 @@ New Project Page style rules
     margin-left:auto;
     margin-top:20px;
     width:max-content;
+    height:50px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-style:italic;
+    color:var(--gray);
 }
 
 #position-contact-link {
@@ -3266,10 +3272,24 @@ New Project Page style rules
     color:var(--lavender);
     border-radius:30px;
     padding: 5px 15px;
+    height:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-style:normal;
+    transition: background-color .1s;
+}
+
+#position-contact-link:hover {
+    cursor:pointer;
+    background-color:#CCCCD7;
+    transition: background-color .1s;
 }
 
 #position-contact-link img{
-    height:20px;
+    height:40px;
+    width:40px;
+    border-radius:50%;
 }
 
 #positions-popup-close {

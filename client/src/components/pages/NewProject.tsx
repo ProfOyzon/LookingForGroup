@@ -2,6 +2,7 @@ import "./pages.css";
 import "../Styles/styles.css";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { Header } from "../Header";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import { Popup, PopupButton, PopupContent } from "../Popup";
@@ -13,6 +14,7 @@ import heart from "../../icons/heart.png";
 import menu from "../../icons/menu.png";
 import menuImage from "../../icons/menu.png";
 import * as tags from "../../constants/tags";
+import * as paths from "../../constants/routes";
 
 //Variable used for checking whether or not we are running a server or not
 //Should be 'true' when using npm run server, 'false' when using npm run client
@@ -46,12 +48,12 @@ let defaultProject = runningServer ? undefined : {
       compensation: "Paid",
     },
     {
-      duration: 'Short-term',
-      location: 'On-site',
+      duration: 'Long-term',
+      location: 'Remote',
       title_id: 51,
       job_title: "2D Artist",
       description: "We are looking for artists who know how to draw bees",
-      availability: "Full-time",
+      availability: "Part-time",
       compensation: "Paid",
     },
   ],
@@ -70,6 +72,9 @@ let defaultProject = runningServer ? undefined : {
 }
 
 const NewProject = () => {
+  //Navigation hook
+  const navigate = useNavigate();
+
   //Get project ID from search parameters
   let urlParams = new URLSearchParams(window.location.search)
   let projectID = urlParams.get('projectID');
@@ -173,11 +178,20 @@ const NewProject = () => {
   //Variable holding either 'peopleContent' or 'contributorContent', depending on 'displayedPeople' state (seen above)
   const profileContent = displayedPeople === 'People' ? peopleContent : contributorContent;
 
-  const openPositionListing = () => {
+  const openPositionListing = (positionNumber : number) => {
     //Set state to position being clicked
     //Call Popup open function from other button
+    setViewedPosition(positionNumber);
     document.getElementById('project-open-positions-button').click();
   }
+
+  const [viewedPosition, setViewedPosition] = useState(0);
+
+  //Find first member with the job title of 'Project Lead'
+  //If no such member exists, use first member in project member list
+  const projectLead = displayedProject === undefined ? {user_id: 0, job_title:'Default guy', first_name:'user', last_name:'name'}
+    : displayedProject.members.some(member => member.job_title === 'Project Lead') ? displayedProject.members.find(member => member.job_title === 'Project Lead')
+    : displayedProject.members[0];
 
   //Page layout for if project data hasn't been loaded yet
   let loadingProject = <>{
@@ -217,29 +231,30 @@ const NewProject = () => {
                     <div id='positions-popup-list-header'>Open Positions</div>
                     <div id='positions-popup-list-buttons'>
                       {
-                        displayedProject.jobs.map((job) => (
-                          <button className='positions-popup-list-item'>{job.job_title}</button>
+                        displayedProject.jobs.map((job, index) => (
+                          <button className={`positions-popup-list-item ${index === viewedPosition ? 'positions-popup-list-item-active' : ''}`} 
+                            onClick={() => setViewedPosition(index)} key={index}>{job.job_title}</button>
                         ))
                       }
                     </div>
                   </div>
 
                   <div id='positions-popup-info'>
-                    <div id='positions-popup-info-title'>Position name</div>
+                    <div id='positions-popup-info-title'>{displayedProject.jobs[viewedPosition].job_title}</div>
                     <div id='positions-popup-info-description'>
                       <div id='position-description-header'>What we are looking for:</div>
                       <div id='position-description-content'>
-                        Description text here, etc etc.
+                        {displayedProject.jobs[viewedPosition].description}
                       </div>
                     </div>
                     <div id='position-details'>
-                      <div id='position-availability'><span className='position-detail-indicator'>Availability: </span>bleh</div>
-                      <div id='position-duration'><span className='position-detail-indicator'>Duration: </span>bleh</div>
-                      <div id='position-location'><span className='position-detail-indicator'>Location: </span>bleh</div>
-                      <div id='position-compensation'><span className='position-detail-indicator'>Compensation: </span>bleh</div>
+                      <div id='position-availability'><span className='position-detail-indicator'>Availability: </span>{displayedProject.jobs[viewedPosition].availability}</div>
+                      <div id='position-duration'><span className='position-detail-indicator'>Duration: </span>{displayedProject.jobs[viewedPosition].duration}</div>
+                      <div id='position-location'><span className='position-detail-indicator'>Location: </span>{displayedProject.jobs[viewedPosition].location}</div>
+                      <div id='position-compensation'><span className='position-detail-indicator'>Compensation: </span>{displayedProject.jobs[viewedPosition].compensation}</div>
                     </div>
                     <div id='position-contact'>
-                      if interested, please contact: <span id='position-contact-link'><img src={profilePicture}/>User Name</span>
+                      if interested, please contact: <span onClick={() => navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)}id='position-contact-link'><img src={profilePicture}/>{projectLead.first_name} {projectLead.last_name}</span>
                     </div>
                   </div>
 
@@ -312,8 +327,8 @@ const NewProject = () => {
           <div id='project-open-positions-header'>Open Positions</div>
           <div id='project-open-positions-list'>
             {
-              displayedProject.jobs.map((position) => (
-                <button className='project-tag-label label-grey' onClick={() => openPositionListing()}>{position.job_title}</button>
+              displayedProject.jobs.map((position, index) => (
+                <button className='project-tag-label label-grey' onClick={() => openPositionListing(index)} key={index}>{position.job_title}</button>
               ))
             }
           </div>

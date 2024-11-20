@@ -171,7 +171,7 @@ const getProjectById = async (req, res) => {
                 WHERE j.project_id = ?) j
             ON p.project_id = j.project_id
             JOIN (SELECT m.project_id, JSON_ARRAYAGG(JSON_OBJECT("user_id", m.user_id, "first_name", u.first_name, 
-            "last_name", u.last_name, "job_title", jt.label)) AS members
+            "last_name", u.last_name, "profile_image", u.profile_image, "job_title", jt.label)) AS members
                 FROM members m
                 JOIN users u 
                     ON m.user_id = u.user_id

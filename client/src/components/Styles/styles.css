@@ -3157,7 +3157,70 @@ My projects page style rules
 
 .page#my-projects {
     box-sizing: border-box;
+    background-color: white;
     padding: 22px 60px 0px 64px;
+}
+
+.my-projects-top-bar {
+    box-sizing: border-box;
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: auto max-content;
+    gap: 10px;
+}
+
+.my-projects-search {
+    box-sizing: border-box;
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 40px;
+    padding: 11px 16px;
+    text-align: left;
+    color: #271d66;
+    font-size: 13px;
+}
+
+.my-projects-searchbar {
+    box-sizing: border-box;
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 0px;
+    width: 97%;
+    padding-left: 13px;
+    color: #271d66;
+    font-size: 14px;
+    line-height: normal;
+}
+
+.my-projects-banner {
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    margin: 33px 0px 16px 0px;
+}
+
+.my-projects-profile {
+    box-sizing: border-box;
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 36px;
+    color: #271d66;
+    padding: 5px;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.my-projects-profile .fa-solid.fa-circle-user {
+    box-sizing: border-box;
+    font-size: 30px;
+}
+
+.my-projects-profile .fa-solid.fa-caret-down {
+    box-sizing: border-box;
+    font-size: 20px;
 }
 
 /* CODE GOES HERE */
@@ -3180,7 +3243,7 @@ My projects page style rules
     color: white;
     padding: 6px 17px;
     text-align: center;
-    font-size: 18px;
+    font-size: 17px;
     font-family: Arial;
     font-weight: bold;
     line-height: 28px;
@@ -3280,6 +3343,7 @@ My projects page style rules
     border-radius: 10px;
     width: 200px;
     height: 200px;
+    object-fit: cover;
     box-shadow: 0px 0px 10px 0px #00000040;
 }
 
@@ -3396,6 +3460,7 @@ My projects page style rules
     border-radius: 10px;
     width: 150px;
     height: 70px;
+    object-fit: cover;
 }
 
 .list-card-title {

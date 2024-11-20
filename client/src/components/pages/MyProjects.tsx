@@ -22,6 +22,8 @@ const MyProjects = () => {
     // - a-z 
     // - z-a 
     const [projectsList, setProjectsList] = useState();
+    const [currentSearch, setCurrentSearch] = useState("");
+    const [bannerImage, setBannerImage] = useState(require("../../images/projects_header_light.png"));
 
     const getProjects = async (userID: number) => {
         const url = `http://localhost:8081/api/users/${userID}/projects`;
@@ -40,11 +42,30 @@ const MyProjects = () => {
         getProjects(1);
     }
 
+    const checkIfAnyWordStartsWith = (title: string, snippit: string) => {
+        let words = title.split(" ");
+        for (let i = 0; i < words.length; i++) {
+            if (words[i].substring(0, snippit.length) == snippit) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     const sortProjects = () => {
         if (projectsList !== undefined) {
             let tempList = new Array(0);
-            for (let i = 0; i < projectsList.length; i++) {
-                tempList.push(projectsList[i]);
+            if (currentSearch === "") {
+                for (let i = 0; i < projectsList.length; i++) {
+                    tempList.push(projectsList[i]);
+                }
+            }
+            else {
+                for (let i = 0; i < projectsList.length; i++) {
+                    if (checkIfAnyWordStartsWith(projectsList[i].title.toLowerCase(), currentSearch.toLowerCase())) {
+                        tempList.push(projectsList[i]);
+                    }
+                }
             }
 
             switch (sortMethod) {
@@ -114,9 +135,24 @@ const MyProjects = () => {
 
     return (
         <div className='page' id="my-projects">
-            {/* Search Bar and PFP */}
+            {/* Top Bar */}
+            <div className="my-projects-top-bar">
+                {/* Search Bar */}
+                <div className="my-projects-search">
+                    <i className="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" className="my-projects-searchbar"
+                        value={currentSearch} onChange={(e) => {setCurrentSearch(e.target.value)}} placeholder="Search"></input>
+                </div>
+
+                {/* Profile */}
+                <div className="my-projects-profile">
+                    <i className="fa-solid fa-circle-user"></i>
+                    <i className="fa-solid fa-caret-down"></i>
+                </div>
+            </div>
 
             {/* Banner */}
+            <img className="my-projects-banner" src={bannerImage} alt="My Projects Banner Light"></img>
 
             {/* Header */}
             <div className="my-projects-header-row">

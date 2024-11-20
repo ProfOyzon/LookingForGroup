@@ -46,6 +46,8 @@ General style rules
 /*default color scheme*/
 :root {
     /* default dark mode is default */
+    --bg-color: #0E0E0E;
+
     --primary-color: #FEAD81;
     --panel-hover: rgba(254, 173, 129, 0.9);
     --header-color: #1A1921;
@@ -59,21 +61,46 @@ General style rules
     --create-bg: #2C2A3A;
     --create-text: white;
 
-    --tag-red: #FFA0B0;
-    --tag-yellow: #FFCF8B;
-    --tag-green: #BED9AA;
-    --tag-blue: #B0DCEE;
-    --tag-purple: #D7BED3;
-    --tag-light-red: #FFD9DF;
-    --tag-light-yellow: #FFEBD0;
-    --tag-light-green: #E5F0DD;
-    --tag-light-blue: #DFF1F8;
-    --tag-light-purple: #E6E6FF;
-    --tag-grey: #D0D0D0;
+    /* tags */
+    --tag-red-selected: #FFA0B0;
+    --tag-orange-selected: #FFA381;
+    --tag-yellow-selected: #FFCF8B;
+    --tag-green-selected: #BED9AA;
+    --tag-blue-selected: #B0DCEE;
+    --tag-purple-selected: #D7BED3;
+    --tag-grey-selected: #D0D0D0;
+
+    --tag-red-unselected: #0E0E0E;
+    --tag-orange-unselected: #0E0E0E;
+    --tag-yellow-unselected: #0E0E0E;
+    --tag-green-unselected: #0E0E0E;
+    --tag-blue-unselected: #0E0E0E;
+    --tag-purple-unselected: #0E0E0E;
+    --tag-grey-unselected: #0E0E0E;
+
+    --tag-red-unselected-border: #FFA0B0;
+    --tag-orange-unselected-border: #FFA381;
+    --tag-yellow-unselected-border: #FFCF8B;
+    --tag-green-unselected-border: #BED9AA;
+    --tag-blue-unselected-border: #B0DCEE;
+    --tag-purple-unselected-border: #D7BED3;
+    --tag-grey-unselected-border: #D0D0D0;
+
+    --tag-text-selected: black;
+
+    --tag-text-unselected-red: #FFA0B0;
+    --tag-text-unselected-orange: #FFA381;
+    --tag-text-unselected-yellow: #FFCF8B;
+    --tag-text-unselected-green: #BED9AA;
+    --tag-text-unselected-blue: #B0DCEE;
+    --tag-text-unselected-purple: #D7BED3;
+    --tag-text-unselected-grey: #D0D0D0;
 }
 
 /*light mode color scheme*/
 [data-theme="light"] {
+    --bg-color: #FFFFFF;
+
     --primary-color: #271D66;
     --panel-hover: rgba(39, 29, 102, 0.9);
     --header-color: #ECECF7;
@@ -86,6 +113,41 @@ General style rules
 
     --create-bg: white;
     --create-text: #271D66;
+
+    /* tags */
+    --tag-red-selected: #FFA0B0;
+    --tag-orange-selected: #FFA381;
+    --tag-yellow-selected: #FFCF8B;
+    --tag-green-selected: #BED9AA;
+    --tag-blue-selected: #B0DCEE;
+    --tag-purple-selected: #D7BED3;
+    --tag-grey-selected: #D0D0D0;
+
+    --tag-red-unselected: #FFD9DF;
+    --tag-orange-unselected: #FFDACD;
+    --tag-yellow-unselected: #FFECD1;
+    --tag-green-unselected: #E5F0DD;
+    --tag-blue-unselected: #DFF1F8;
+    --tag-purple-unselected: #EFE5ED;
+    --tag-grey-unselected: #ECECEC;
+
+    --tag-red-unselected-border: #FFD9DF;
+    --tag-orange-unselected-border: #FFDACD;
+    --tag-yellow-unselected-border: #FFECD1;
+    --tag-green-unselected-border: #E5F0DD;
+    --tag-blue-unselected-border: #DFF1F8;
+    --tag-purple-unselected-border: #EFE5ED;
+    --tag-grey-unselected-border: #ECECEC;
+
+    --tag-text-selected: black;
+
+    --tag-text-unselected-red: black;
+    --tag-text-unselected-orange: black;
+    --tag-text-unselected-yellow: black;
+    --tag-text-unselected-green: black;
+    --tag-text-unselected-blue: black;
+    --tag-text-unselected-purple: black;
+    --tag-text-unselected-grey: black;
 }
 
 
@@ -754,10 +816,10 @@ Sidebar Nav style rules
 #profile-pic {
     height: 140px;
     width: 140px;
-    background-color: white;
+    background-color: var(--header-color);
     border-radius: 4px;
     display: flex;
-    border: 2px solid var(--lightGray);
+    border: none;
     /* box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25); */
     margin-bottom: 14px;
     object-fit: cover;
@@ -1082,7 +1144,7 @@ Header style rules
     text-align: left;
     margin-right: 50px;
     grid-template:
-        'search blank buttons' 90px / auto 1fr 140px;
+        'search buttons' 90px / auto 140px;
     background-color: var(--bg-color);
     width: calc(100% - 280px);
     height: 90px;
@@ -1211,12 +1273,13 @@ Search style rules
 
 /*position on the page*/
 .search-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-content: right;
-    justify-self: end;
+    /* display: flex;
+    flex-direction: row; */
+    /* align-content: right; */
+    /* justify-self: right; */
     /* height: 50px; */
-    margin: 1vw 50px;
+    margin-left: 50px;
+    width: calc(100% - 40px);
 }
 
 .fa-search {
@@ -1225,7 +1288,7 @@ Search style rules
 
 .search-bar {
     height: 25px;
-    width: 400px;
+    width: 100%;
     padding: 10px 15px;
     /*border: 3px solid gray;*/
     border-radius: 40px;
@@ -1246,6 +1309,7 @@ Search style rules
 .search-input,
 .search-input::placeholder {
     background: none;
+    width: 100%;
     color: var(--primary-color);
     border: none;
     padding: 4px;
@@ -1272,7 +1336,7 @@ Search style rules
 @media only screen and (max-width: 800px) {
     .search-bar {
         font-size: 16px;
-        width: 200px;
+        /* width: 200px; */
     }
 }
 
@@ -1790,43 +1854,107 @@ Discover and Meet page style rules
 .tag-button {
     border-radius: 30px;
     border: none;
-    padding: 5px 10px;
+    padding: 5px 15px;
     font-size: medium;
-    margin: 0 4px;
+    /* margin: 0 4px; */
     flex-shrink: 0;
 }
 
-.tag-button-red {
-    background-color: var(--tag-red);
+/* selected tags */
+
+.tag-button-red-selected {
+    background-color: var(--tag-red-selected);
+    border: 2px solid var(--tag-red-selected);
+    color: var(--tag-text-selected);
 }
 
-.tag-button-yellow {
-    background-color: var(--tag-yellow);
+.tag-button-orange-selected {
+    background-color: var(--tag-orange-selected);
+    border: 2px solid var(--tag-orange-selected);
+    color: var(--tag-text-selected);
 }
 
-.tag-button-green {
-    background-color: var(--tag-green);
+.tag-button-yellow-selected {
+    background-color: var(--tag-yellow-selected);
+    border: 2px solid var(--tag-yellow-selected);
+    color: var(--tag-text-selected);
 }
 
-.tag-button-blue {
-    background-color: var(--tag-blue);
+.tag-button-green-selected {
+    background-color: var(--tag-green-selected);
+    border: 2px solid var(--tag-green-selected);
+    color: var(--tag-text-selected);
 }
 
-.tag-button-indigo {
-    background-color: var(--tag-indigo);
+.tag-button-blue-selected {
+    background-color: var(--tag-blue-selected);
+    border: 2px solid var(--tag-blue-selected);
+    color: var(--tag-text-selected);
 }
 
-.tag-button-grey {
-    background-color: var(--tag-grey);
+.tag-button-purple-selected {
+    background-color: var(--tag-purple-selected);
+    border: 2px solid var(--tag-purple-selected);
+    color: var(--tag-text-selected);
+}
+
+.tag-button-grey-selected {
+    background-color: var(--tag-grey-selected);
+    border: 2px solid var(--tag-grey-selected);
+    color: var(--tag-text-selected);
+}
+
+/* unselected tags */
+
+.tag-button-red-unselected {
+    background-color: var(--tag-red-unselected);
+    border: 2px solid var(--tag-red-unselected-border);
+    color: var(--tag-text-unselected-red);
+}
+
+.tag-button-orange-unselected {
+    background-color: var(--tag-orange-unselected);
+    border: 2px solid var(--tag-orange-unselected-border);
+    color: var(--tag-text-unselected-orange);
+}
+
+.tag-button-yellow-unselected {
+    background-color: var(--tag-yellow-unselected);
+    border: 2px solid var(--tag-yellow-unselected-border);
+    color: var(--tag-text-unselected-yellow);
+}
+
+.tag-button-green-unselected {
+    background-color: var(--tag-green-unselected);
+    border: 2px solid var(--tag-green-unselected-border);
+    color: var(--tag-text-unselected-green);
+}
+
+.tag-button-blue-unselected {
+    background-color: var(--tag-blue-unselected);
+    border: 2px solid var(--tag-blue-unselected-border);
+    color: var(--tag-text-unselected-blue);
+}
+
+.tag-button-purple-unselected {
+    background-color: var(--tag-purple-unselected);
+    border: 2px solid var(--tag-purple-unselected-border);
+    color: var(--tag-text-unselected-purple);
+}
+
+.tag-button-grey-unselected {
+    background-color: var(--tag-grey-unselected);
+    border: 2px solid var(--tag-grey-unselected-border);
+    color: var(--tag-text-unselected-grey);
 }
 
 .tag-button:hover {
-    filter: saturate(250%) contrast(120%);
+    cursor: pointer;
 }
 
-.tag-button-selected {
+/* .tag-button-selected {
     filter: saturate(250%) contrast(120%);
-}
+} */
 
 #discover-panel-box {
     display: flex;
@@ -1988,7 +2116,7 @@ New Profile page style rules
 */
 
 #profile-page-content {
-    margin: 0 50px;
+    margin: 90px 50px;
 }
 
 #profile-information-grid {
@@ -1999,11 +2127,12 @@ New Profile page style rules
         'image desc desc' auto
         'image fact fact' auto
         'bio skills skills' auto /
-        350px auto 200px;
-    background-color: #ECEDF7;
-    border-radius: 15px;
+        300px auto 200px;
+    background-color: var(--header-color);
+    border-radius: 10px;
     padding: 30px;
     gap: 10px;
+    color: var(--main-text);
 }
 
 #profile-page-content h2 {
@@ -2011,7 +2140,7 @@ New Profile page style rules
 }
 
 #profile-image {
-    width: 350px;
+    width: 280px;
     grid-area: image;
     object-fit: contain;
     border-radius: 10px;
@@ -2020,24 +2149,27 @@ New Profile page style rules
 #profile-bio {
     grid-area: bio;
     font-style: italic;
-    color: var(--darkGray);
+    color: var(--main-text);
+    width: 280px;
 }
 
 #profile-info-name {
     grid-area: name;
-    align-items: center;
+    align-items: flex-end;
     display: flex;
     font-style: italic;
     font-size: 2ch;
     color: var(--darkGray);
     gap: 10px;
+    text-align: left;
 }
 
 #profile-fullname {
     color: var(--primary-color);
-    font-size: 3ch;
+    font-size: 32px;
     font-weight: bold;
     font-style: normal;
+    text-align: left;
 }
 
 #profile-info-buttons {
@@ -2046,9 +2178,11 @@ New Profile page style rules
 }
 
 #profile-info-extras {
+    font-size: 16px;
     grid-area: extra;
     display: flex;
     align-items: center;
+    justify-content: start;
     gap: 20px;
 }
 
@@ -2073,6 +2207,7 @@ New Profile page style rules
 #fun-fact-start {
     color: var(--primary-color);
     font-weight: bold;
+    margin-right: 5px;
 }
 
 #profile-info-skills {
@@ -2084,7 +2219,8 @@ New Profile page style rules
 .info-extra-image {
     width: 26px;
     height: 26px;
-    margin: 0 10px;
+    object-fit: contain;
+    margin-right: 10px;
 }
 
 /* #profile-discover-column {
@@ -2208,7 +2344,7 @@ New Profile page style rules
 }
 
 #about-me-buttons button:hover {
-    background-color: var(--gray);
+    background-color: var(--bg-color);
 }
 
 #about-me-buttons>div {
@@ -2223,10 +2359,10 @@ New Profile page style rules
     height: 100%;
     width: 120px;
 }
-
+/* 
 #edit-profile-button:hover {
-    background-color: var(--purple) !important;
-}
+    background-color: var(--purple);
+} */
 
 #about-me-buttons img {
     width: 32px;
@@ -2275,34 +2411,57 @@ New Profile page style rules
     gap:5px;
 } */
 
+#testing-tag-styles-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 450px;
+    gap: 10px;
+}
+
 .skill-tag-label {
-    border-radius: 30px;
+    border-radius: 50px;
     border: none;
-    padding: 5px 10px;
+    padding: 5px 15px;
     font-size: medium;
     flex-shrink: 0;
+
+    color: var(--tag-text-selected);
 }
 
 .label-red {
-    background-color: var(--tag-red)
+    background-color: var(--tag-red-selected);
+    border: 2px solid var(--tag-red-selected);
+}
+
+.label-orange {
+    background-color: var(--tag-orange-selected);
+    border: 2px solid var(--tag-orange-selected);
 }
 
 .label-yellow {
-    background-color: var(--tag-yellow)
+    background-color: var(--tag-yellow-selected);
+    border: 2px solid var(--tag-yellow-selected);
 }
 
 .label-green {
-    background-color: var(--tag-green)
+    background-color: var(--tag-green-selected);
+    border: 2px solid var(--tag-green-selected);
 }
 
 .label-blue {
-    background-color: var(--tag-blue)
+    background-color: var(--tag-blue-selected);
+    border: 2px solid var(--tag-blue-selected);
 }
 
 .label-purple {
-    background-color: var(--tag-purple)
+    background-color: var(--tag-purple-selected);
+    border: 2px solid var(--tag-purple-selected);
 }
-.label-grey {background-color:var(--tag-grey)}
+
+.label-grey {
+    background-color: var(--tag-grey-selected);
+    border: 2px solid var(--tag-grey-selected);
+}
 
 /* #skill-tags-container .tag-button {
     margin:0;
@@ -2314,14 +2473,19 @@ New Profile page style rules
 
 #profile-projects {
     grid-area: projects;
+    text-align: left;
+
+    h2 {
+        font-size: 24px;
+    }
 }
 
 #profile-project-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: start;
     grid-gap: 20px;
-    text-align: center;
+    text-align: left;
 }
 
 /*

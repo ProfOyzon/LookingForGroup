@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Header } from "../Header";
 import { ProjectPanel } from "../ProjectPanel";
-import { Popup, PopupButton, PopupContent } from "../Popup"; 
+import { Popup, PopupButton, PopupContent } from "../Popup";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import { profiles, projects } from "../../constants/fakeData";
 import profilePicture from "../../images/blue_frog.png";
@@ -21,13 +21,13 @@ import * as tags from "../../constants/tags";
 let runningServer = true;
 
 let defaultProfile = runningServer ? undefined : {
-  first_name: 'User', 
-  last_name: 'Name', 
+  first_name: 'User',
+  last_name: 'Name',
   bio: `Here's a quick lil blurb about me!`,
-  skills: ['Figma','JavaScript','Visual Studio Code','Flexibility','Krita'],
+  skills: ['Figma', 'JavaScript', 'Visual Studio Code', 'Flexibility', 'Krita'],
 }
 
-const NewProfile = () => {
+const NewProfile = ({ theme, setTheme }) => {
   const location = useLocation();
   //Check to see if database call returned anything
   let [failCheck, setFailCheck] = useState(false);
@@ -57,7 +57,7 @@ const NewProfile = () => {
       console.log(profileData);
       console.log(profileData.data[0]);
 
-      if(profileData.data[0] === undefined){
+      if (profileData.data[0] === undefined) {
         setFailCheck(true);
         return;
       }
@@ -71,7 +71,7 @@ const NewProfile = () => {
   //State that hold info on the profile being displayed
   //use 'defaultProfile' in useState when using 'npm run client'. otherwise leave blank.
   const [displayedProfile, setDisplayedProfile] = useState(defaultProfile);
-  
+
 
   //Runs funciton to get data if we haven't yet
   //Comment out if using 'npm run client' (can't connect to server with it)
@@ -87,30 +87,30 @@ const NewProfile = () => {
   ///const profileData = (/* Some sort of fetch request */);
   //Check whether or not the profile is the current user's
   let usersProfile = false;
-  
+
   if (profileID === '1') {
     usersProfile = true;
-  } 
-  
+  }
+
   //Pull data from profile and place them in variables 
   //(structure depends on database structure, so wait for implementation)
   //data includes...
-    //Profile image
-    //User's name (full name or username?)
-    //Their profession
-    //headline
-    //pronouns, major, location, favorite project, fun fact (may not all be included)
+  //Profile image
+  //User's name (full name or username?)
+  //Their profession
+  //headline
+  //pronouns, major, location, favorite project, fun fact (may not all be included)
 
-    //About Me description
-    //Profile's selected tags
-    //Looking for stuff??
-    //List of projects worked on
-  
+  //About Me description
+  //Profile's selected tags
+  //Looking for stuff??
+  //List of projects worked on
+
 
   //Holds a list of tags that the user selected to represent their skills
   //(How will tag categories be identified for color?)
   //No indicator on data, will need to cross-refrence here
-    //let placeholderTags = ['Figma','Javascript','Visual Studio Code','Flexibility','Krita'];
+  //let placeholderTags = ['Figma','Javascript','Visual Studio Code','Flexibility','Krita'];
 
   //functions & variables used for project rendering
   // ---different sizes, make sure to double-check math used for project rendering
@@ -125,32 +125,32 @@ const NewProfile = () => {
     outer.style.overflow = 'scroll'; // forcing scrollbar to appear
     outer.style.msOverflowStyle = 'scrollbar'; // needed for WinJS apps
     document.body.appendChild(outer);
-    
+
     // Creating inner element and placing it in the container
     const inner = document.createElement('div');
     outer.appendChild(inner);
-    
+
     // Calculating difference between container's full width and the child width
     const scrollbarWidth = (outer.offsetWidth - inner.offsetWidth);
-    
+
     // Removing temporary elements from the DOM
     outer.parentNode.removeChild(outer);
-    
+
     return scrollbarWidth;
   }
 
   //Find out the width of the flexbox container
-  let flexboxWidth : number = window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
-    window.innerWidth - (100  + getScrollbarWidth())
-  ;
+  let flexboxWidth: number = window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
+    window.innerWidth - (100 + getScrollbarWidth())
+    ;
   //tracks the width of items in the current flexbox row
-  let widthTracker : number = -20;
+  let widthTracker: number = -20;
   //tracks the number of "full" flexbox rows
-  let rowTracker : number = 0;
+  let rowTracker: number = 0;
   //tracks the number of project panels that will be placed in a row
-  let projectTracker : number = 0;
+  let projectTracker: number = 0;
   //Tracks the time of the most recent resize call
-  let lastResizeCall : number = 0;
+  let lastResizeCall: number = 0;
 
   //Loads a new set of project panels to render
   //Calls when page first loads & when a new list of projects is being used (e.g. after a search)
@@ -163,7 +163,7 @@ const NewProfile = () => {
 
     //empty list of projects to display
     //(Will also include project data when actual projects are used)
-    let projectsToDisplay : {project, width : number, adjust : number, row : number}[] = [];
+    let projectsToDisplay: { project, width: number, adjust: number, row: number }[] = [];
 
     //Reset variables, if needed
     widthTracker = -20;
@@ -173,7 +173,7 @@ const NewProfile = () => {
     //Set up initial project (ensures first row has something in it)
     let firstPanelWidth = Math.floor((Math.random() * 200) + 200);
     widthTracker += firstPanelWidth + 24;
-    projectsToDisplay.push({project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker});
+    projectsToDisplay.push({ project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker });
     projectListPosition++
     projectTracker++;
 
@@ -232,7 +232,7 @@ const NewProfile = () => {
       }
       //Add current project to list of projects to display
       //(Will include actual projects later)
-      projectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker});
+      projectsToDisplay.push({ project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker });
       projectListPosition++;
       projectTracker++;
     }
@@ -261,7 +261,7 @@ const NewProfile = () => {
   //Adjusts display to fit resized window, called whenever window size is adjusted
   const resizeProjects = () => {
     //Get time this function was called
-    let thisCall : number = new Date().getTime();
+    let thisCall: number = new Date().getTime();
     lastResizeCall = thisCall;
     //Set timer to check whether to continue this call or not
     setTimeout(() => {
@@ -273,7 +273,7 @@ const NewProfile = () => {
       //Similar to initial project panel rendering, just uses all currently displays projects
       //instead of adding new ones
       //Array holding edited project details
-      let resizedProjects : {project, width : number, adjust : number, row : number}[] = [];
+      let resizedProjects: { project, width: number, adjust: number, row: number }[] = [];
       //Calculate new flexbox width
       // ---Different size, check to see what math needs to be done
       flexboxWidth = window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
@@ -287,7 +287,7 @@ const NewProfile = () => {
       //For each project...
       //There is some sort of bug happening here, occasionally more than the max projects are being displayed
       //Issue only seems to occur after saving new code while test server is being hosted, so it may not need to be addressed
-      for (let project of displayedProjects){
+      for (let project of displayedProjects) {
         //Add width to widthTracker
         widthTracker += project.width + 24;
         //If widthTracker > flexbox width...
@@ -309,7 +309,7 @@ const NewProfile = () => {
           projectTracker = 0;
         }
         //Add project to resized projects &  increment projectTracker
-        resizedProjects.push({project: project.project, width: project.width, adjust: 0, row: rowTracker});
+        resizedProjects.push({ project: project.project, width: project.width, adjust: 0, row: rowTracker });
         projectTracker++;
       }
       //Perform width adjustment on last row
@@ -324,14 +324,14 @@ const NewProfile = () => {
           widthRemainder = 0;
         }
       }
-          
+
       //Set displayed projects state
       setDisplayedProjects(resizedProjects);
     }, 100)
   };
 
   //Holds data for currently displayed projects
-  let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number}[]>(firstProjects);
+  let [displayedProjects, setDisplayedProjects] = useState<{ project, width: number, adjust: number, row: number }[]>(firstProjects);
 
   //Runs resizing function whenever window width changes
   //Don't add dependencies to it - it causes state to be reset for some reason (I don't know why)
@@ -357,11 +357,11 @@ const NewProfile = () => {
     }
   }, [location])
 
-  const aboutMeButtons = usersProfile === true ? 
+  const aboutMeButtons = usersProfile === true ?
     <>{
       <div id='about-me-buttons'>
-        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='linkedin'/></button>
-        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='instagram'/></button>
+        <button onClick={() => { window.location.href = 'https://www.w3schools.com' }}><img src={profileImage} alt='linkedin' /></button>
+        <button onClick={() => { window.location.href = 'https://www.w3schools.com' }}><img src={profileImage} alt='instagram' /></button>
         <Popup>
           <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
           <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
@@ -370,11 +370,11 @@ const NewProfile = () => {
     }</> :
     <>{
       <div id='about-me-buttons' className='about-me-buttons-minimal'>
-        <button><img src={profileImage} alt='linkedin'/></button>
-        <button><img src={profileImage} alt='instagram'/></button>
-        <button><img src={profileImage} alt='like'/></button>
+        <button><img src={profileImage} alt='linkedin' /></button>
+        <button><img src={profileImage} alt='instagram' /></button>
+        <button><img src={profileImage} alt='like' /></button>
         <Dropdown>
-          <DropdownButton><img src={menuImage} alt='...'/></DropdownButton>
+          <DropdownButton><img src={menuImage} alt='...' /></DropdownButton>
           <DropdownContent rightAlign={true}>
             <div id='profile-menu-dropdown'>
               <button className='profile-menu-dropdown-button'>Share</button>
@@ -402,71 +402,103 @@ const NewProfile = () => {
 
   return (
     <div className='page'>
-      <Header dataSets={{data: []}} onSearch={() => {}}/>
+      <Header dataSets={{ data: [] }} onSearch={() => { }} theme={theme} setTheme={setTheme} />
 
       {/* Checks if we have profile data to use, then determines what to render */}
       {failCheck === true ? loadingFailed : displayedProfile === undefined ? loadingProfile :
-      <div id='profile-page-content'>
-        {/* New profile display using css grid, will contain all info except for projects */}
-        <div id='profile-information-grid'>
-          <img src={profilePicture} id='profile-image' alt='profile image'/>
-          <div id='profile-bio'>{displayedProfile.bio}</div>
+        <div id='profile-page-content'>
+          {/* New profile display using css grid, will contain all info except for projects */}
+          <div id='profile-information-grid'>
+            <img src={profilePicture} id='profile-image' alt='profile image' />
+            <div id='profile-bio'>"{displayedProfile.bio}"</div>
 
-          <div id='profile-info-name'><span id='profile-fullname'>{displayedProfile.first_name} {displayedProfile.last_name}</span>@{'someguy'}</div>
-          <div id='profile-info-buttons'>{aboutMeButtons}</div>
+            <div id='profile-info-name'><span id='profile-fullname'>{displayedProfile.first_name} {displayedProfile.last_name}</span>@{'someguy'}</div>
+            <div id='profile-info-buttons'>{aboutMeButtons}</div>
 
-          <div id='profile-info-extras'>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='profession'/>{'Profession'}</div>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='major'/>{'Profesional Typer, 13th'}</div>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='location'/>{'Middle of, Nowhere'}</div>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='pronouns'/>{'Was/Were'}</div>
+            <div id='profile-info-extras'>
+              <div className='profile-extra'>
+                <img
+                  src="assets/white/role.png"
+                  src-light="assets/black/role.png"
+                  src-dark="assets/white/role.png"
+                  className='info-extra-image theme-icon'
+                  alt='profession' />
+                {'Profession'}
+              </div>
+              <div className='profile-extra'>
+                <img 
+                src="assets/white/major.png"
+                src-light="assets/black/major.png"
+                src-dark="assets/white/major.png"
+                className='info-extra-image theme-icon' 
+                alt='major' />
+                {'Profesional Typer, 13th'}
+                </div>
+              <div className='profile-extra'>
+                <img 
+                src="assets/white/location.png"
+                src-light="assets/black/location.png"
+                src-dark="assets/white/location.png"
+                className='info-extra-image theme-icon' 
+                alt='location' />
+                {'Middle of, Nowhere'}
+                </div>
+              <div className='profile-extra'>
+                <img 
+                src="assets/white/pronouns.png"
+                src-light="assets/black/pronouns.png"
+                src-dark="assets/white/pronouns.png"
+                className='info-extra-image theme-icon' 
+                alt='pronouns' />
+                {'Was/Were'}
+                </div>
+            </div>
+
+            <div id='profile-info-description'>
+              {'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti, deserunt facilis. A nam neque, unde eligendi officia voluptates porro sint? Tempore debitis laborum, expedita sunt illum magnam maiores eius temporibus amet. Fuga quaerat magnam veritatis facilis ipsa praesentium minus rem sunt in, facere, asperiores corporis quae veniam. Similique possimus neque sit velit earum est deleniti nostrum repellat aut alias sequi assumenda ipsum tempora minus facilis, ex at excepturi libero doloribus.'}
+            </div>
+
+            <div id='profile-info-funfact'>
+              <span id='fun-fact-start'>Fun Fact!   </span>
+              {`I'm not a real person, I'm just a digital representation of one!`}
+            </div>
+
+            <div id='profile-info-skills'>
+              {
+                /* Will take in a list of tags the user has selected,
+                then use a map function to generate tags to fill this div */
+                displayedProfile.skills.map((tag) => {
+                  let category: string;
+                  if (tag.type === 'Design') { category = 'red'; }
+                  else if (tag.type === 'Developer') { category = 'yellow'; }
+                  else if (tag.type === 'Soft') { category = 'purple'; }
+                  else { category = 'grey'; }
+                  return (
+                    <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
+                  )
+                })
+              }
+            </div>
           </div>
 
-          <div id='profile-info-description'>
-            {'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti, deserunt facilis. A nam neque, unde eligendi officia voluptates porro sint? Tempore debitis laborum, expedita sunt illum magnam maiores eius temporibus amet. Fuga quaerat magnam veritatis facilis ipsa praesentium minus rem sunt in, facere, asperiores corporis quae veniam. Similique possimus neque sit velit earum est deleniti nostrum repellat aut alias sequi assumenda ipsum tempora minus facilis, ex at excepturi libero doloribus.'}
-          </div>
-
-          <div id='profile-info-funfact'>
-            <span id='fun-fact-start'>Fun Fact! </span>
-            {`I'm not a real person, I'm just a digital representation of one!`}
-          </div>
-
-          <div id='profile-info-skills'>
-            {
-              /* Will take in a list of tags the user has selected,
-              then use a map function to generate tags to fill this div */
-              displayedProfile.skills.map((tag) => {
-                let category : string;
-                if (tag.type === 'Design') {category = 'red';}
-                else if (tag.type === 'Developer') {category = 'yellow';}
-                else if (tag.type === 'Soft') {category = 'purple';}
-                else {category = 'grey';}
-                return(
-                  <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
-                )
-              })
-            }
-          </div>
-        </div>
-
-        <div id='profile-projects'>
-          <h2>Projects</h2>
-          <div id='profile-project-list'>
-            {/* Will use same rendering system as the discover page, just with projects
+          <div id='profile-projects'>
+            <h2>Projects</h2>
+            <div id='profile-project-list'>
+              {/* Will use same rendering system as the discover page, just with projects
             this user has worked on. Only needs re-rendering on page resizing. maybe. */}
-            <>{
-              displayedProjects.length > 0 ? 
-                //For each project in project display list... (use map)
-                displayedProjects.map((project) => (
-                  //Create a Project Panel component
-                  <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
-                )) :
-                <>This user has not worked on any projects yet.</>
-            }</>
+              <>{
+                displayedProjects.length > 0 ?
+                  //For each project in project display list... (use map)
+                  displayedProjects.map((project) => (
+                    //Create a Project Panel component
+                    <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
+                  )) :
+                  <>This user has not worked on any projects yet.</>
+              }</>
+            </div>
           </div>
         </div>
-      </div>
-      //Old layout goes here
+        //Old layout goes here
       }
     </div>
   )
@@ -474,104 +506,104 @@ const NewProfile = () => {
 
 {
   //Old layout (remove later)
-      /* Left-side column that will contain info found on a discover card
-        Mostly just includes small tidbits about the person 
-        width is set, unchanging*/
-        /* <div id='profile-discover-column'>
-          <img src={profilePicture} id='profile-image' alt='profile image'/>
+  /* Left-side column that will contain info found on a discover card
+    Mostly just includes small tidbits about the person 
+    width is set, unchanging*/
+  /* <div id='profile-discover-column'>
+    <img src={profilePicture} id='profile-image' alt='profile image'/>
 
-          <div id='profile-discover-column-header'>
-            <div id='profile-discover-column-username'><h2>{displayedProfile.first_name} {displayedProfile.last_name}</h2></div>
-            <div id='profile-discover-column-profession'><h3>Profession</h3></div>
-          </div>
+    <div id='profile-discover-column-header'>
+      <div id='profile-discover-column-username'><h2>{displayedProfile.first_name} {displayedProfile.last_name}</h2></div>
+      <div id='profile-discover-column-profession'><h3>Profession</h3></div>
+    </div>
 
-          <div id='profile-discover-column-headline'>
-            <img src={profileImage} className='profile-discover-icon' alt='headline'/>
-            <div>{displayedProfile.bio}</div>
-          </div>
+    <div id='profile-discover-column-headline'>
+      <img src={profileImage} className='profile-discover-icon' alt='headline'/>
+      <div>{displayedProfile.bio}</div>
+    </div>
 
-          <div id='profile-discover-column-extra'>
-            <div className='profile-column-extra-item'>
-              <img src={profileImage} className='profile-discover-icon' alt='pronouns'/> <div>Was/Were</div>
-            </div>
-            <div className='profile-column-extra-item'>
-              <img src={profileImage} className='profile-discover-icon' alt='major'/> <div>Professional Typer, 13th Year</div>
-            </div>
-            <div className='profile-column-extra-item'>
-              <img src={profileImage} className='profile-discover-icon' alt='location'/> <div>Middle, Of Nowhere</div>
-            </div>
-            <div className='profile-column-extra-item'>
-              <img src={profileImage} className='profile-discover-icon' alt='favorite project'/> <div>LFG</div>
-            </div>
-            <div className='profile-column-extra-item'>
-              <img src={profileImage} className='profile-discover-icon' alt='fun fact'/> <div>I'm not a real person, I'm just a digital representation of one!</div>
-            </div>
-          </div>
+    <div id='profile-discover-column-extra'>
+      <div className='profile-column-extra-item'>
+        <img src={profileImage} className='profile-discover-icon' alt='pronouns'/> <div>Was/Were</div>
+      </div>
+      <div className='profile-column-extra-item'>
+        <img src={profileImage} className='profile-discover-icon' alt='major'/> <div>Professional Typer, 13th Year</div>
+      </div>
+      <div className='profile-column-extra-item'>
+        <img src={profileImage} className='profile-discover-icon' alt='location'/> <div>Middle, Of Nowhere</div>
+      </div>
+      <div className='profile-column-extra-item'>
+        <img src={profileImage} className='profile-discover-icon' alt='favorite project'/> <div>LFG</div>
+      </div>
+      <div className='profile-column-extra-item'>
+        <img src={profileImage} className='profile-discover-icon' alt='fun fact'/> <div>I'm not a real person, I'm just a digital representation of one!</div>
+      </div>
+    </div>
+  </div>
+
+  {/* This column contains more in-depth information, including skills and worked-on projects 
+  width readjusts and re-orders based on size*}
+  <div id='profile-about-me-column'>
+    <div id='profile-about-me-header'>
+      <h2 id='about-me-header-text'>About Me</h2>
+      {aboutMeButtons}
+    </div>
+
+    <div id='profile-about-me-content'>
+      <div id='profile-about-me-description'>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti, deserunt facilis. A nam neque, unde eligendi officia voluptates porro sint? Tempore debitis laborum, expedita sunt illum magnam maiores eius temporibus amet. Fuga quaerat magnam veritatis facilis ipsa praesentium minus rem sunt in, facere, asperiores corporis quae veniam. Similique possimus neque sit velit earum est deleniti nostrum repellat aut alias sequi assumenda ipsum tempora minus facilis, ex at excepturi libero doloribus.
+      </div>
+
+      <div id='profile-about-me-skills'>
+        <h2>Skills</h2>
+        <div id='skill-tags-container'>
+          {
+          /* Will take in a list of tags the user has selected,
+          then use a map function to generate tags to fill this div *
+            displayedProfile.skills.map((tag) => {
+              let category : string;
+              /* switch(tag){
+                case 1: category = 'red'; break;
+                case 2: category = 'yellow'; break;
+                case 3: category = 'indigo'; break;
+                default: category = 'grey';
+              } *
+              if (tags.desSkills.includes(tag)) {category = 'red';}
+              else if (tags.devSkills.includes(tag)) {category = 'yellow';}
+              else if (tags.softSkills.includes(tag)) {category = 'purple';}
+              else {category = 'grey';}
+              return(
+                <div className={`skill-tag-label label-${category}`}>{tag}</div>
+              )
+            })
+          }
         </div>
+      </div> 
 
-        {/* This column contains more in-depth information, including skills and worked-on projects 
-        width readjusts and re-orders based on size*}
-        <div id='profile-about-me-column'>
-          <div id='profile-about-me-header'>
-            <h2 id='about-me-header-text'>About Me</h2>
-            {aboutMeButtons}
-          </div>
+      {/*<div id='profile-looking-for'>
+        <h2>Looking for</h2>
+        Looking for... something? I'm not entirely sure what goes here yet.
+      </div>*}
 
-          <div id='profile-about-me-content'>
-            <div id='profile-about-me-description'>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti, deserunt facilis. A nam neque, unde eligendi officia voluptates porro sint? Tempore debitis laborum, expedita sunt illum magnam maiores eius temporibus amet. Fuga quaerat magnam veritatis facilis ipsa praesentium minus rem sunt in, facere, asperiores corporis quae veniam. Similique possimus neque sit velit earum est deleniti nostrum repellat aut alias sequi assumenda ipsum tempora minus facilis, ex at excepturi libero doloribus.
-            </div>
-
-            <div id='profile-about-me-skills'>
-              <h2>Skills</h2>
-              <div id='skill-tags-container'>
-                {
-                /* Will take in a list of tags the user has selected,
-                then use a map function to generate tags to fill this div *
-                  displayedProfile.skills.map((tag) => {
-                    let category : string;
-                    /* switch(tag){
-                      case 1: category = 'red'; break;
-                      case 2: category = 'yellow'; break;
-                      case 3: category = 'indigo'; break;
-                      default: category = 'grey';
-                    } *
-                    if (tags.desSkills.includes(tag)) {category = 'red';}
-                    else if (tags.devSkills.includes(tag)) {category = 'yellow';}
-                    else if (tags.softSkills.includes(tag)) {category = 'purple';}
-                    else {category = 'grey';}
-                    return(
-                      <div className={`skill-tag-label label-${category}`}>{tag}</div>
-                    )
-                  })
-                }
-              </div>
-            </div> 
-
-            {/*<div id='profile-looking-for'>
-              <h2>Looking for</h2>
-              Looking for... something? I'm not entirely sure what goes here yet.
-            </div>*}
-
-            <div id='profile-projects'>
-              <h2>Projects</h2>
-              <div id='profile-project-list'>
-                {/* Will use same rendering system as the discover page, just with projects
-                this user has worked on. Only needs re-rendering on page resizing. maybe. *}
-                <>{
-                  displayedProjects.length > 0 ? 
-                    //For each project in project display list... (use map)
-                    displayedProjects.map((project) => (
-                      //Create a Project Panel component
-                      <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
-                    )) :
-                    <>This user has not worked on any projects yet.</>
-                }</>
-              </div>
-            </div> 
-          </div> 
+      <div id='profile-projects'>
+        <h2>Projects</h2>
+        <div id='profile-project-list'>
+          {/* Will use same rendering system as the discover page, just with projects
+          this user has worked on. Only needs re-rendering on page resizing. maybe. *}
+          <>{
+            displayedProjects.length > 0 ? 
+              //For each project in project display list... (use map)
+              displayedProjects.map((project) => (
+                //Create a Project Panel component
+                <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
+              )) :
+              <>This user has not worked on any projects yet.</>
+          }</>
         </div>
-      </div> */
+      </div> 
+    </div> 
+  </div>
+</div> */
 }
 
 export default NewProfile;

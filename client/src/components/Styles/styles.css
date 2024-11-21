@@ -15,6 +15,7 @@ Component Style rules
     -Scrollbar
     -Tag Filter
     -Image Carousel
+    -Project Creator/Editor
 Page specific style rules
     -Discover page
     -Discover & Meet page
@@ -868,12 +869,12 @@ Header style rules
 */
 
 #header {
-    display:grid;
+    display:flex;
     align-items:center;
     text-align:left;
     margin-right:50px;
-    grid-template:
-        'search buttons' 70px / auto 120px;
+    /* grid-template:
+        'search buttons' 70px / auto 120px; */
 }
 
 #header-searchbar {
@@ -890,6 +891,7 @@ Header style rules
     display:flex;
     justify-content:flex-end;
     width:120px;
+    margin-left:auto;
 }
 
 #header-buttons button {
@@ -1272,6 +1274,61 @@ Discover image carousel style rules
     display:flex;
     align-items:center;
     justify-content:center;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project Creator and Editor style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#project-creator-editor {
+    display:flex;
+    flex-direction:column;
+    background-image: linear-gradient(120deg, var(--purple-light), white 60%);
+    width:90vw;
+    max-width:1000px;
+    height:calc(90vh - 100px);
+    padding:50px;
+    border:none;
+    border-radius:4px;
+}
+
+#project-editor-tabs {
+    display:flex;
+    justify-content: space-between;
+    margin: 0 20px;
+}
+
+.project-editor-tab {
+    border:none;
+    border-radius:30px;
+    padding:10px 20px;
+    background-color: rgba(0, 0, 0, 0) !important;
+    color:var(--lavender);
+    font-size:2ch;
+}
+
+.project-editor-tab:hover, .project-editor-tab-active {
+    background-color:var(--lavender) !important;
+    color:white;
+}
+
+#project-editor-content {
+    flex-grow:1;
+}
+
+#project-editor-save {
+    border:none;
+    border-radius:30px;
+    padding:10px 20px;
+    background-color:var(--lavender) !important;
+    color:white;
+    font-size:2ch;
+    width:max-content;
+    margin:auto;
 }
 
 /*

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Dropdown, DropdownButton, DropdownContent } from "./Dropdown";
 
 const MyProjectsDisplayGrid = ({projectData}) => {
     const [status, setStatus] = useState();
@@ -48,17 +49,19 @@ const MyProjectsDisplayGrid = ({projectData}) => {
             <div className="grid-card-title">{projectData.title}</div>
 
             {/* Options */}
-            <div className="grid-card-options">
-                <button className="grid-card-options-button" onClick={(e) => {toggleOptions()}}>•••</button>
-                <div className={optionsClass}>
-                    <button className="card-leave-button" onClick={(e) => {}}>
-                        <i className="fa-slid fa-arrow-right-from-bracket" style={{fontStyle: "normal"}}></i>&nbsp; Leave Project
-                    </button>
-                    <button className="card-delete-button" onClick={(e) => {}}>
-                        <i className="fa-solid fa-trash-can" style={{fontStyle: "normal", color: "#ff3859"}}></i>&nbsp; Delete Project
-                    </button>
-                </div>
-            </div>
+            <Dropdown>
+                <DropdownButton buttonId="grid-card-options-button">•••</DropdownButton>
+                <DropdownContent rightAlign={true}>
+                    <div className="grid-card-options-list">
+                        <button className="card-leave-button" onClick={(e) => {}}>
+                            <i className="fa-slid fa-arrow-right-from-bracket" style={{fontStyle: "normal"}}></i>&nbsp; Leave Project
+                        </button>
+                        <button className="card-delete-button" onClick={(e) => {}}>
+                            <i className="fa-solid fa-trash-can" style={{fontStyle: "normal", color: "#ff3859"}}></i>&nbsp; Delete Project
+                        </button>
+                    </div>
+                </DropdownContent>
+            </Dropdown>
         </div>
     );
 };

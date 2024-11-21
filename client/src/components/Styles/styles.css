@@ -3366,8 +3366,11 @@ My projects page style rules
     display: inline-block;
 }
 
-.grid-card-options-button {
+.dropdown-container:has(#grid-card-options-button) {
     grid-area: options;
+}
+
+.grid-card-options-button, #grid-card-options-button {
     box-sizing: border-box;
     background-color: #00000000;
     border: 0px;
@@ -3383,24 +3386,31 @@ My projects page style rules
     letter-spacing: 2px;
 }
 
+.dropdown:has(.grid-card-options-list) {
+    box-sizing: border-box;
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #00000040;
+}
+
 .grid-card-options-list {
-    position: absolute;
+    box-sizing: border-box;
     background-color: white;
     border: 0px;
     border-radius: 10px;
     width: max-content;
     height: fit-content;
     padding: 10px 0px;
-    box-shadow: 0px 0px 10px 0px #00000040;
     z-index: 1;
 
-    display: none;
-}
-
-.grid-card-options-list.show {
     display: flex;
     flex-direction: column;
 }
+
+/* .grid-card-options-list.show {
+    display: flex;
+    flex-direction: column;
+} */
 
 .my-projects-list {
     box-sizing: border-box;
@@ -3509,7 +3519,7 @@ My projects page style rules
     display: inline-block;
 }
 
-.list-card-options-button {
+.list-card-options-button, #list-card-options-button {
     box-sizing: border-box;
     background-color: #00000000;
     border: 0px;
@@ -3526,24 +3536,31 @@ My projects page style rules
     letter-spacing: 2px;
 }
 
+.dropdown:has(.list-card-options-list) {
+    box-sizing: border-box;
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #00000040;
+}
+
 .list-card-options-list {
-    position: absolute;
+    box-sizing: border-box;
     background-color: white;
     border: 0px;
     border-radius: 10px;
     width: max-content;
     height: fit-content;
     padding: 10px 0px;
-    box-shadow: 0px 0px 10px 0px #00000040;
     z-index: 1;
 
-    display: none;
-}
-
-.list-card-options-list.show {
     display: flex;
     flex-direction: column;
 }
+
+/* .list-card-options-list.show {
+    display: flex;
+    flex-direction: column;
+} */
 
 .card-leave-button, .card-delete-button {
     box-sizing: border-box;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Dropdown, DropdownButton, DropdownContent } from "./Dropdown";
 
 const MyProjectsDisplayList = ({projectData}) => {
     const [status, setStatus] = useState();
@@ -68,17 +69,19 @@ const MyProjectsDisplayList = ({projectData}) => {
             </div>
 
             {/* Options */}
-            <div className="list-card-options">
-                <button className="list-card-options-button" onClick={(e) => {toggleOptions()}}>•••</button>
-                <div className={optionsClass}>
-                    <button className="card-leave-button" onClick={(e) => {}}>
-                        <i className="fa-slid fa-arrow-right-from-bracket" style={{fontStyle: "normal"}}></i>&nbsp; Leave Project
-                    </button>
-                    <button className="card-delete-button" onClick={(e) => {}}>
-                        <i className="fa-solid fa-trash-can" style={{fontStyle: "normal", color: "#ff3859"}}></i>&nbsp; Delete Project
-                    </button>
-                </div>
-            </div>
+            <Dropdown>
+                <DropdownButton buttonId="list-card-options-button">•••</DropdownButton>
+                <DropdownContent rightAlign={true}>
+                    <div className="list-card-options-list">
+                        <button className="card-leave-button" onClick={(e) => {}}>
+                            <i className="fa-slid fa-arrow-right-from-bracket" style={{fontStyle: "normal"}}></i>&nbsp; Leave Project
+                        </button>
+                        <button className="card-delete-button" onClick={(e) => {}}>
+                            <i className="fa-solid fa-trash-can" style={{fontStyle: "normal", color: "#ff3859"}}></i>&nbsp; Delete Project
+                        </button>
+                    </div>
+                </DropdownContent>
+            </Dropdown>
         </div>
     );
 };

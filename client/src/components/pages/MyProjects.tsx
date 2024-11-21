@@ -6,6 +6,7 @@ import { useState } from "react";
 import ToTopButton from "../ToTopButton";
 import MyProjectsDisplayList from "../MyProjectsDisplayList";
 import MyProjectsDisplayGrid from "../MyProjectsDisplayGrid";
+import { Header } from "../Header";
 
 const MyProjects = () => {
     // const [UID, setUID] = useState(profiles[0]._id);
@@ -136,20 +137,21 @@ const MyProjects = () => {
     return (
         <div className='page' id="my-projects">
             {/* Top Bar */}
-            <div className="my-projects-top-bar">
+            {/* <div className="my-projects-top-bar"> */}
                 {/* Search Bar */}
-                <div className="my-projects-search">
+                {/* <div className="my-projects-search">
                     <i className="fa-solid fa-magnifying-glass"></i>
                     <input type="text" className="my-projects-searchbar"
                         value={currentSearch} onChange={(e) => {setCurrentSearch(e.target.value)}} placeholder="Search"></input>
-                </div>
+                </div> */}
 
                 {/* Profile */}
-                <div className="my-projects-profile">
+                {/* <div className="my-projects-profile">
                     <i className="fa-solid fa-circle-user"></i>
                     <i className="fa-solid fa-caret-down"></i>
-                </div>
-            </div>
+                </div> */}
+            {/* </div> */}
+            <Header dataSets={[{projectsList}]} onSearch={setCurrentSearch}/>
 
             {/* Banner */}
             <img className="my-projects-banner" src={bannerImage} alt="My Projects Banner Light"></img>

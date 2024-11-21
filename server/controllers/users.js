@@ -507,6 +507,48 @@ const getAccount = async (req, res) => {
     }    
 }
 
+const updateEmail = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+    const { email, confirm, password } = req.body;
+
+    const [curPassword] = await pool.query("SELECT password FROM users WHERE user_id = ?", [id]);
+    const match = await bcrypt.compare(password, curPassword[0].password);
+
+    // Checks
+    if (!email || !confirm || !password) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing input information" 
+        });
+    } else if (email !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Emails do not match" 
+        });
+    } else if (!match) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Password is incorrect" 
+        });
+    }
+
+    try {
+        // Update user primary email
+        const sql = "UPDATE users SET primary_email = ? WHERE user_id = ?";
+        const values = [email, id];
+        await pool.query(sql, values);
+        
+        res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the user's primary email" 
+        });
+    }    
+}
+
 const updatePassword = async (req, res) => {
     // Get data
     const { id } = req.params;
@@ -884,7 +926,7 @@ const deleteUserFollowing = async (req, res) => {
 
 export default { login, signup, createUser, requestPasswordReset, resetPassword,
     getUsers, getUserById, getUserByUsername, updateUser, updateProfilePicture,
-    getAccount, updatePassword,
+    getAccount, updateEmail, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

@@ -13,6 +13,7 @@ router.get("/api/users", userCtrl.getUsers);
 router.get("/api/users/:username", userCtrl.getUserByUsername);
 router.get("/api/users/:id", userCtrl.getUserById);
 router.put("/api/users/:id", userCtrl.updateUser);
+router.delete("/api/users/:id", userCtrl.deleteUser);
 router.put("/api/users/:id/profile-picture", mid.checkImageFile, userCtrl.updateProfilePicture);
 router.get("/api/users/:id/account", userCtrl.getAccount);
 router.put("/api/users/:id/email", userCtrl.updateEmail);

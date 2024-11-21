@@ -7,6 +7,7 @@ import { Header } from "../Header";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import { Popup, PopupButton, PopupContent } from "../Popup";
 import { ImageCarousel } from "../ImageCarousel";
+import { ProjectCreatorEditor } from "../ProjectCreatorEditor";
 import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
 import tallImage from "../../images/tall_img.png";
@@ -15,6 +16,7 @@ import menu from "../../icons/menu.png";
 import menuImage from "../../icons/menu.png";
 import * as tags from "../../constants/tags";
 import * as paths from "../../constants/routes";
+import Project from "./Project";
 
 //Variable used for checking whether or not we are running a server or not
 //Should be 'true' when using npm run server, 'false' when using npm run client
@@ -117,12 +119,7 @@ const NewProject = () => {
   //Change depending on who's viewing the project page (Outside user, project member, project owner, etc.)
   const buttonContent = usersProject ? <>{
     <>
-      <Popup>
-        <PopupButton buttonId='project-info-edit'>Edit Project</PopupButton>
-        <PopupContent>
-          Not sure what to put here yet, still working on main page content
-        </PopupContent>
-      </Popup>
+      <ProjectCreatorEditor/>
     </>
   }</> : <>{
     <>

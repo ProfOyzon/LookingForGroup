@@ -438,51 +438,6 @@ const updateUser = async (req, res) => {
     }
 }
 
-const updatePassword = async (req, res) => {
-    // Get data
-    const { id } = req.params;
-    const { newPassword, confirm, password } = req.body;
-
-    const [curPassword] = await pool.query("SELECT password FROM users WHERE user_id = ?", [id]);
-    const match = await bcrypt.compare(password, curPassword[0].password);
-
-    // Checks
-    if (!newPassword || !confirm || !password) {
-        return res.status(400).json({
-            status: 400, 
-            error: "Missing input information" 
-        });
-    } else if (newPassword !== confirm) {
-        return res.status(400).json({
-            status: 400, 
-            error: "Passwords do not match" 
-        });
-    } else if (!match) {
-        return res.status(400).json({
-            status: 400, 
-            error: "Current password is incorrect" 
-        });
-    }
-
-    // Hash the new password
-    const hashPass = await bcrypt.hash(newPassword, 10);
-
-    try {
-        // Update user password
-        const sql = "UPDATE users SET password = ? WHERE user_id = ?";
-        const values = [hashPass, id];
-        await pool.query(sql, values);
-
-        res.sendStatus(204);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while updating the user's password" 
-        });
-    }
-}
-
 const updateProfilePicture = async (req, res) => {
     // Update profile picture for a user
 
@@ -529,6 +484,74 @@ const updateProfilePicture = async (req, res) => {
     }
 }
 
+const getAccount = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+
+    try {
+        // Get account information
+        const sql = "SELECT u.user_id, u.primary_email, u.rit_email, u.username FROM users u WHERE user_id = ?";
+        const values = [id];
+        const [account] = await pool.query(sql, values);
+        
+        return res.status(200).json({
+            status: 200,
+            data: account
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting the user's account information" 
+        });
+    }    
+}
+
+const updatePassword = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+    const { newPassword, confirm, password } = req.body;
+
+    const [curPassword] = await pool.query("SELECT password FROM users WHERE user_id = ?", [id]);
+    const match = await bcrypt.compare(password, curPassword[0].password);
+
+    // Checks
+    if (!newPassword || !confirm || !password) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing input information" 
+        });
+    } else if (newPassword !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Passwords do not match" 
+        });
+    } else if (!match) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Current password is incorrect" 
+        });
+    }
+
+    // Hash the new password
+    const hashPass = await bcrypt.hash(newPassword, 10);
+
+    try {
+        // Update user password
+        const sql = "UPDATE users SET password = ? WHERE user_id = ?";
+        const values = [hashPass, id];
+        await pool.query(sql, values);
+
+        res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the user's password" 
+        });
+    }
+}
+
 const getMyProjects = async (req, res) => {
     // Get projects the user is a member of
 
@@ -556,7 +579,7 @@ const getMyProjects = async (req, res) => {
                 ON p.project_id = t.project_id) p
             ON m.project_id = p.project_id
             WHERE m.user_id = ?
-            `;
+        `;
         const values = [id];
         const [projects] = await pool.query(sql, values);
         
@@ -600,7 +623,7 @@ const getVisibleProjects = async (req, res) => {
                 ON p.project_id = t.project_id) p
             ON m.project_id = p.project_id
             WHERE m.user_id = ? AND profile_visibility = "public"
-            `;
+        `;
         const values = [id];
         const [projects] = await pool.query(sql, values);
         
@@ -680,7 +703,7 @@ const getProjectFollowing = async (req, res) => {
                 ON p.project_id = t.project_id) p
             ON pf.project_id = p.project_id
             WHERE pf.user_id = ?
-            `;
+        `;
         const values = [id];
         const [projects] = await pool.query(sql, values);
         
@@ -860,7 +883,8 @@ const deleteUserFollowing = async (req, res) => {
 }
 
 export default { login, signup, createUser, requestPasswordReset, resetPassword,
-    getUsers, getUserById, getUserByUsername, updateUser, updatePassword, updateProfilePicture,
+    getUsers, getUserById, getUserByUsername, updateUser, updateProfilePicture,
+    getAccount, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

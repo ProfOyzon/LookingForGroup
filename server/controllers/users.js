@@ -438,6 +438,24 @@ const updateUser = async (req, res) => {
     }
 }
 
+const deleteUser = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+
+    try {
+        // Delete user
+        await pool.query("DELETE FROM users WHERE user_id = ?", [id]);
+        
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while deleting the user" 
+        });
+    }
+}
+
 const updateProfilePicture = async (req, res) => {
     // Update profile picture for a user
 
@@ -967,7 +985,7 @@ const deleteUserFollowing = async (req, res) => {
 }
 
 export default { login, signup, createUser, requestPasswordReset, resetPassword,
-    getUsers, getUserById, getUserByUsername, updateUser, updateProfilePicture,
+    getUsers, getUserById, getUserByUsername, updateUser, deleteUser, updateProfilePicture,
     getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 

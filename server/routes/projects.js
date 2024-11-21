@@ -13,5 +13,6 @@ router.get("/api/projects/:id/pictures", projCtrl.getPictures);
 router.post("/api/projects/:id/pictures", mid.checkImageFile, projCtrl.addPicture);
 router.put("/api/projects/:id/pictures", projCtrl.updatePicturePositions);
 router.delete("/api/projects/:id/pictures", projCtrl.deletePicture);
+router.delete("/api/projects/:id/members", projCtrl.deleteMember);
 
 export default router;

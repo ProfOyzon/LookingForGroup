@@ -574,6 +574,26 @@ const deletePicture = async (req, res) => {
     }
 }
 
+const deleteMember = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    try {
+        // Remove project's member from database
+        await pool.query("DELETE FROM members WHERE project_id = ? AND user_id = ?", [id, userId]);
+
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while removing a project's member" 
+        });
+    }
+}
+
 export default { getProjects, createProject, getProjectById, updateProject, 
-    updateThumbnail, getPictures, addPicture, updatePicturePositions, deletePicture
+    updateThumbnail, getPictures, addPicture, updatePicturePositions, deletePicture,
+    deleteMember
 };

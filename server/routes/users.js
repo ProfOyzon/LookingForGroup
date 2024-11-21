@@ -16,6 +16,7 @@ router.put("/api/users/:id", userCtrl.updateUser);
 router.put("/api/users/:id/profile-picture", mid.checkImageFile, userCtrl.updateProfilePicture);
 router.get("/api/users/:id/account", userCtrl.getAccount);
 router.put("/api/users/:id/email", userCtrl.updateEmail);
+router.put("/api/users/:id/username", userCtrl.updateUsername);
 router.put("/api/users/:id/password", userCtrl.updatePassword);
 router.get("/api/users/:id/projects", userCtrl.getMyProjects);
 router.get("/api/users/:id/projects/profile", userCtrl.getVisibleProjects);

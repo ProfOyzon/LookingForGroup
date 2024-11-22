@@ -1155,10 +1155,12 @@ Header style rules
     margin-right: 50px;
     grid-template:
         'search buttons' 90px / auto 140px;
-    background-color: var(--bg-color);
-    width: calc(100% - 280px);
+    background-color: none;
+    background-image: linear-gradient(var(--bg-color) 85%, rgba(0,0,0,0));
+    width: calc(100% - 50px);
     height: 90px;
-    position: fixed;
+    position: sticky;
+    top: 0;
     z-index: 2;
 }
 

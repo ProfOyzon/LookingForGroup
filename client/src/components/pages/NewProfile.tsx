@@ -11,6 +11,7 @@ import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
 import menuImage from "../../icons/menu.png";
 import * as tags from "../../constants/tags";
+import EditButton from "../Profile/ProfileEditButton";
 
 //To-do:
 //Fix profile page not changing when clicking 'profile' sidebar link (specifically for on invalid id pages)
@@ -369,12 +370,13 @@ const NewProfile = ({ theme, setTheme }) => {
   const aboutMeButtons = usersProfile === true ?
     <>{
       <div id='about-me-buttons'>
-        <button onClick={() => { window.location.href = 'https://www.w3schools.com' }}><img src={profileImage} alt='linkedin' /></button>
-        <button onClick={() => { window.location.href = 'https://www.w3schools.com' }}><img src={profileImage} alt='instagram' /></button>
-        <Popup>
+        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='linkedin'/></button>
+        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='instagram'/></button>
+        <EditButton userData={displayedProfile}/>
+        {/* <Popup>
           <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
           <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
-        </Popup>
+        </Popup> */}
       </div>
     }</> :
     <>{

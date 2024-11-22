@@ -19,7 +19,7 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [checkPassword, setCheckPassword] = useState(''); // second password input to check if they match
+    const [confirm, setConfirm] = useState(''); // second password input to check if they match
     const [error, setError] = useState(''); // State variable for error messages
 
     // State variables for modals
@@ -67,7 +67,7 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
     // Function to handle the login button click
     const handleSignup = async () => {
         // Check if any of the fields are empty
-        if (email === '' || password === '' || firstName === '' || lastName === '' || username === '') {
+        if (email === '' || password === '' || confirm === '' || firstName === '' || lastName === '' || username === '') {
             setError('Please fill in all information');
         }
         else {
@@ -86,25 +86,14 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
             // has a capital letter?
 
             // check if the passwords match
-            if (password !== checkPassword) {
+            if (password !== confirm) {
                 setError('Passwords do not match');
 
                 return false;
             }
-
             else {
-                // show the proficiencies modal
-                // from the modal links through the process
-                // skills -> interests -> avatar -> complete profile --> home
-                // At the moment don't think we need proficiencies, 
-                // if we decide to add it in later, change the below to setShowProficienciesModal(true)
-                // and uncomment all the proficiencies code
-                //setShowSkillsModal(true);
-                //sendPost("/api/users", {email, username, password, firstName, lastName});
-
-                let bio = "nbasd";
-                let skills = ["Creativity"];
-                sendPost('/api/users', { username, password, email, firstName, lastName, bio, skills });
+                // Send info to begin account activation
+                sendPost('/api/signup', { username, password, confirm, email, firstName, lastName });
 
             }
         }
@@ -176,8 +165,8 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
                             autoComplete="off"
                             type="password"
                             placeholder="Re-enter password"
-                            value={checkPassword}
-                            onChange={(e) => setCheckPassword(e.target.value)}
+                            value={confirm}
+                            onChange={(e) => setConfirm(e.target.value)}
                         />
                         <div className="mobile-login">
                             <p>Already have an account? </p>

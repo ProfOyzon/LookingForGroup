@@ -6,7 +6,7 @@ const MyProjectsDisplayList = ({projectData}) => {
     const [optionsShown, setOptionsShown] = useState(false);
 
     const getStatus = async () => {
-        const url = `http://localhost:8081/api/projects/${projectData.project_id}`;
+        const url = `/api/projects/${projectData.project_id}`;
         try {
             let response = await fetch(url);
 

@@ -27,7 +27,7 @@ const MyProjects = () => {
     const [bannerImage, setBannerImage] = useState(require("../../images/projects_header_light.png"));
 
     const getProjects = async (userID: number) => {
-        const url = `http://localhost:8081/api/users/${userID}/projects`;
+        const url = `/api/users/${userID}/projects`;
         try {
             let response = await fetch(url);
 

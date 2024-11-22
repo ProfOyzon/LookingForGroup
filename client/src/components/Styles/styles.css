@@ -3316,6 +3316,7 @@ My projects page style rules
 
 .my-projects-grid {
     width: 100%;
+    margin-bottom: 30px;
 
     display: flex;
     gap: 20px;
@@ -3407,13 +3408,9 @@ My projects page style rules
     flex-direction: column;
 }
 
-/* .grid-card-options-list.show {
-    display: flex;
-    flex-direction: column;
-} */
-
 .my-projects-list {
     box-sizing: border-box;
+    margin-bottom: 30px;
 
     display: flex;
     flex-direction: column;
@@ -3582,8 +3579,6 @@ My projects page style rules
     background-color: #00000040;
     transition: background-color .2s;
 }
-
-/* CODE GOES HERE */
 
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\

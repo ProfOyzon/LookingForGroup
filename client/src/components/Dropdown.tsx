@@ -40,6 +40,13 @@ export const DropdownButton = ({children, buttonId = ''}) => {
     setOpen(!open);
   }
 
+  // useEffect(() => {
+  //   if (open) {
+  //     const theme = localStorage.getItem('theme') || 'dark'; // or your default
+  //     updateThemeIcons(theme);
+  //   }
+  // }, [open]);
+
   return(
     <button id={buttonId} onClick={toggleOpen}>{children}</button>
   )
@@ -47,6 +54,14 @@ export const DropdownButton = ({children, buttonId = ''}) => {
 
 export const DropdownContent = ({children, rightAlign = false}) => {
   const { open } = useContext(DropdownContext);
+
+  // useEffect(() => {
+  //   if (open) {
+  //     const theme = localStorage.getItem('theme') || 'dark'; // or your default
+  //     updateThemeIcons(theme);
+  //   }
+  // }, [open]);
+
 
   if (open) {
     if (!rightAlign) {

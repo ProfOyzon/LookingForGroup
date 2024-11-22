@@ -115,14 +115,14 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
               src-dark="assets/white/folder.png"
               alt="" /> My Projects
           </button>
-          <button className={activePage === 'Following' ? 'active' : ''} onClick={() => handleTextChange('Following', paths.routes.SETTINGS)}>
+          {/* <button className={activePage === 'Following' ? 'active' : ''} onClick={() => handleTextChange('Following', paths.routes.SETTINGS)}>
             <img
               className='theme-icon'
               src="assets/black/following.png"
               src-light="assets/black/following.png"
               src-dark="assets/white/following.png"
               alt="" /> Following
-          </button>
+          </button> */}
 
           {/* <button onClick={() => { setShowNotifications(!showNotifications); }}>
           <img src={bell} className="navIcon" alt="Notifications" />

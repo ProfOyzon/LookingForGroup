@@ -4,7 +4,6 @@ import { SearchBar } from "./SearchBar";
 import { Dropdown, DropdownButton, DropdownContent } from "./Dropdown";
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../constants/routes";
-import bell from "../icons/bell.png";
 import profileImage from "../icons/profile-user.png";
 import { useState, useEffect } from "react";
 
@@ -63,7 +62,7 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
           <DropdownContent rightAlign={true}>This is where notification stuff will be</DropdownContent>
         </Dropdown> */}
         <Dropdown>
-          <DropdownButton buttonId="profile-btn">
+          <DropdownButton buttonId="profile-btn" theme={theme}>
             <img
               src="assets/profile_dark.png"
               src-light="assets/profile_light.png"

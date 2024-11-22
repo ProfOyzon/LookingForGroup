@@ -95,7 +95,14 @@ General style rules
     --tag-text-unselected-blue: #B0DCEE;
     --tag-text-unselected-purple: #D7BED3;
     --tag-text-unselected-grey: #D0D0D0;
-}
+    
+    /* 
+    When implemented look into this https://codepen.io/sosuke/pen/Pjoqqp
+    to change the add_tag.svg color in tag selection.
+
+    Should be black for all tags in light mode
+    and match the tag color in dark mode
+    */
 
 /*light mode color scheme*/
 [data-theme="light"] {

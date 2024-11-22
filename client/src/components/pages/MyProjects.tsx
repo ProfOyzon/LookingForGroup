@@ -42,26 +42,26 @@ const MyProjects = () => {
     if (projectsList === undefined) {
         getProjects(1);
     }
-    else {
-        if (projectsList.length < 20) {
-            let tempList = new Array(0);
-            for (let i = 0; i < 20; i++) {
-                if (i < projectsList.length) {
-                    tempList.push(projectsList[i]);
-                }
-                else {
-                    tempList.push({
-                        created_at: "2024-10-01T17:33:11.000Z",
-                        hook: "",
-                        thumbnail: "",
-                        title: "Test",
-                        project_id: 1,
-                    });
-                }
-            }
-            setProjectsList(tempList);
-        }
-    }
+    // else {
+    //     if (projectsList.length < 20) {
+    //         let tempList = new Array(0);
+    //         for (let i = 0; i < 20; i++) {
+    //             if (i < projectsList.length) {
+    //                 tempList.push(projectsList[i]);
+    //             }
+    //             else {
+    //                 tempList.push({
+    //                     created_at: "2024-10-01T17:33:11.000Z",
+    //                     hook: "",
+    //                     thumbnail: "",
+    //                     title: "Test",
+    //                     project_id: 1,
+    //                 });
+    //             }
+    //         }
+    //         setProjectsList(tempList);
+    //     }
+    // }
 
     const checkIfAnyWordStartsWith = (title: string, snippit: string) => {
         let words = title.split(" ");

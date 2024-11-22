@@ -5,9 +5,10 @@ import { ProjectPanel } from "../ProjectPanel";
 import { ProfilePanel } from "../ProfilePanel";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
-import { Header } from "../Header";
+import { Header, grabUserInfo, userInfo } from "../Header";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import { Popup, PopupButton, PopupContent } from "../Popup";
+import { ImageCarousel } from "../ImageCarousel";
 import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
@@ -16,6 +17,7 @@ import { useState, useEffect, useRef } from 'react';
 import ToTopButton from "../ToTopButton";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
+import { sendPost, sendGet, GET } from "../../functions/fetch";
 import e from "express";
 
 //To-do
@@ -110,6 +112,8 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
   
       setFullProfileList(profileData.data);
       setProfileColumns(() => firstProfiles(profileData.data));
+      console.log("THIS IS THE UserInfo() METHOD THING: " + userInfo.username);
+      console.log("THIS IS JUST userInfo.username: " + userInfo.username);
     } catch(error) {
       console.error(error.message)
     }
@@ -127,8 +131,9 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     getProjectData();
   }
   if (fullProfileList === undefined) {
+    console.log("ITS UNDEFIEND!!!!");
     getProfileData();
-  } 
+  }
 
   //List that holds trimmed project data for use in searching
   //Note: Depending on user needs, may need to change or add to what is used in searches
@@ -995,7 +1000,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     }</>
 
   //Decides which 'content' to display on the page
-  let heroContent = category === 'projects' ? projectHero : profileHero;
+  let heroContent = category === 'projects' ? <ImageCarousel carouselType='Discover'/> : profileHero;
   let panelContent = category === 'projects' ? projectContent : profileContent;
 
   return(
@@ -1007,6 +1012,8 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
       <div id='discover-hero'>
       {heroContent}
+      <br></br>
+      {userInfo.username}
       </div>
 
       {/* Contains tag filters & button to access more filters 

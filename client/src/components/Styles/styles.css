@@ -14,6 +14,8 @@ Component Style rules
     -Search
     -Scrollbar
     -Tag Filter
+    -Image Carousel
+    -Project Creator/Editor
 Page specific style rules
     -Discover page
     -Discover & Meet page
@@ -1432,6 +1434,357 @@ Tag Filter style rules
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
+Image Carousel style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#carousel-tabs {
+    display:flex;
+    gap:10px;
+}
+
+.carousel-tab {
+    border:none;
+    border-radius:50%;
+    width: 20px;
+    height: 20px;
+    background-color: var(--purple-light);
+}
+
+.carousel-tab:hover, .carousel-tab-active{
+    background-color:var(--lavender)
+}
+
+/*
+------------------------------------------------------------------------------------------------
+Project image carousel style rules
+------------------------------------------------------------------------------------------------
+*/
+
+#project-image-carousel-content {
+    display:flex;
+    flex-wrap:nowrap;
+    overflow:hidden;
+    height:100%;
+    border-radius:10px;
+}
+
+.project-image-carousel-item {
+    background-color:var(--background-light);
+    width:100%;
+    min-width:100%;
+    transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+.project-image-carousel-image {
+    object-fit:contain;
+    width:100%;
+    height:100%;
+}
+
+#project-image-carousel-buttons {
+    display:flex;
+    gap:15px;
+    justify-content: center;
+    align-items: center;
+}
+
+#project-image-carousel-left, #project-image-carousel-right {
+    border:none;
+    width:30px;
+    height:30px;
+    padding:0;
+    background-color:rgba(0, 0, 0, 0);
+}
+
+#project-image-carousel-left img, #project-image-carousel-right img {
+    width:30px;
+    height:30px;
+    /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
+    /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
+    filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+}
+
+#project-image-carousel-right img {
+    transform:rotateY(180deg)
+}
+
+/*
+------------------------------------------------------------------------------------------------
+Discover image carousel style rules
+------------------------------------------------------------------------------------------------
+*/
+
+#discover-carousel-bar {
+    display:flex;
+    margin-bottom:10px;
+}
+
+#discover-carousel-left, #discover-carousel-right {
+    border:none;
+    width:60px;
+    height:auto;
+    padding:0;
+    background-color:rgba(0, 0, 0, 0);
+}
+
+#discover-carousel-left img, #discover-carousel-right img {
+    width:60px;
+    height:80px;
+    /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
+    /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
+    filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+}
+
+#discover-carousel-right img {
+    transform:rotateY(180deg);
+}
+
+#discover-carousel-content {
+    display:flex;
+    flex-wrap:nowrap;
+    overflow:hidden;
+    height:100%;
+    border-radius:10px;
+}
+
+.discover-carousel-item {
+    display:grid;
+    text-align:left;
+    column-gap:20px;
+    grid-template:
+        'image title title' 70px
+        'image desc desc' auto
+        'image blank button' 60px /
+        3fr 2fr auto;
+    background-color:var(--background-light);
+    width:100%;
+    min-width:100%;
+    transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+.discover-carousel-image {
+    grid-area: image;
+    object-fit:contain;
+    height:20vw;
+    width: 100%;
+}
+
+.discover-carousel-title {
+    grid-area: title;
+    margin-top:20px;
+    font-size:4ch;
+    font-weight: 700;
+    color: var(--lavender);
+}
+
+.discover-carousel-description {
+    grid-area: desc;
+}
+
+.discover-carousel-link {
+    grid-area: button;
+    display:flex;
+    align-items:center;
+    border:none;
+    border-radius:10px;
+    background-color:rgba(0, 0, 0, 0);
+    color: var(--lavender);
+    font-size:2ch;
+    font-weight:700;
+    margin: 10px;
+}
+
+.discover-carousel-link:hover {
+    background-color: var(--purple-light);
+}
+
+.discover-carousel-link img {
+    transform: rotateY(180deg);
+    width:30px;
+    filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+}
+
+#discover-carousel-tabs {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project Creator and Editor style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+
+#project-creator-editor {
+    display:flex;
+    flex-direction:column;
+    background-image: linear-gradient(120deg, var(--purple-light), white 60%);
+    width:90vw;
+    max-width:1000px;
+    height:calc(90vh - 100px);
+    padding:50px;
+    border:none;
+    border-radius:4px;
+}
+
+#project-editor-tabs {
+    display:flex;
+    justify-content: space-between;
+    margin: 0 20px;
+}
+
+.project-editor-tab {
+    border:none;
+    border-radius:30px;
+    padding:10px 20px;
+    background-color: rgba(0, 0, 0, 0) !important;
+    color:var(--lavender);
+    font-size:2ch;
+}
+
+.project-editor-tab:hover, .project-editor-tab-active {
+    background-color:var(--lavender) !important;
+    color:white;
+}
+
+#project-editor-content {
+    flex-grow:1;
+    margin:20px;
+}
+
+#project-editor-save {
+    border:none;
+    border-radius:30px;
+    padding:10px 20px;
+    background-color:var(--lavender) !important;
+    color:white;
+    font-size:2ch;
+    width:max-content;
+    margin:auto;
+}
+
+#project-editor-content label {
+    color:var(--lavender);
+    font-size:2.3ch;
+    font-weight:600;
+}
+
+#project-editor-content select, #project-editor-content input, #project-editor-content textarea {
+    margin: 10px 0;
+    border:none;
+    border-radius: 8px;
+    box-shadow: 0 0 3px var(--gray);
+    width: 100%;
+    flex-grow:1;
+    background-color:white;
+    font-size:2ch;
+}
+
+#project-editor-content textarea {
+    resize:none;
+}
+
+.project-editor-extra-info {
+    font-style:italic;
+    font-size:1.6ch;
+    color:var(--darkGray);
+}
+
+#project-editor-general {
+    display:grid;
+    height: 100%;
+    grid-template:
+        'title title about' 1fr
+        'status purpose about' 1fr
+        'audience audience about' 2fr
+        'desc desc about' 3fr /
+        1fr 1fr 2.5fr;
+    gap:0 20px;
+}
+
+.project-editor-input-item {
+    display:flex;
+    flex-direction: column;
+}
+
+#project-editor-title-input {grid-area:title;}
+#project-editor-status-input {grid-area:status;}
+#project-editor-purpose-input {grid-area:purpose;}
+#project-editor-audience-input {grid-area:audience;}
+#project-editor-description-input {grid-area:desc;}
+#project-editor-long-description-input {grid-area:about;}
+
+#project-editor-image-ui {
+    display:flex;
+    gap:10px;
+    margin: 10px 0;
+}
+
+#project-editor-image-ui > * {
+    width:calc(33% - 10px);
+    height:200px;
+    border-radius: 10px;
+}
+
+#project-editor-add-image {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border: 2px dashed var(--gray);
+}
+
+#project-editor-tags {
+    display:grid;
+    grid-template:
+        'type search' auto
+        'select search' 1fr /
+        1fr 2fr;
+    gap:20px;
+    height:100%;
+}
+
+#project-editor-type-tags {grid-area:type; min-height:80px;}
+#project-editor-selected-tags {grid-area:select;}
+#project-editor-tag-search {grid-area:search;}
+
+#project-editor-type-tags, #project-editor-selected-tags, #project-editor-tag-search {
+    background-color:white;
+    box-shadow: 0 0 3px var(--gray);
+    border-radius:8px;
+    padding:10px;
+}
+
+.project-editor-section-header {
+    color:var(--lavender);
+    font-size:2.3ch;
+    font-weight:600;
+}
+
+#project-editor-tag-search-tabs {
+    display:flex;
+    justify-content:space-between;
+}
+
+.project-editor-tag-search-tab {
+    color:var(--darkGray);
+    font-size:2ch;
+}
+
+.project-editor-tag-search-tab:hover, .tag-search-tab-active {
+    color:var(--lavender);
+    font-weight:600;
+    transition:none;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
 Discover page style rules
 ------------------------------------------------------------------------------------------------
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
@@ -1523,7 +1876,7 @@ Discover and Meet page style rules
 
 /*Arrangement of button sizes may need adjustment, current solution is too hard-coded*/
 #discover-header-buttons button {
-    background-color: var(--peach);
+    background-color: var(--primary-color);
     border-radius: 40px;
     border: none;
     margin-left: 10px;
@@ -3426,73 +3779,10 @@ New Project Page style rules
     grid-area:carousel;
 }
 
-#project-image-carousel-content {
-    display:flex;
-    flex-wrap:nowrap;
-    overflow:hidden;
-    height:100%;
-    border-radius:10px;
-}
-
-.project-image-carousel-item {
-    background-color:var(--background-light);
-    width:100%;
-    min-width:100%;
-    transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
-}
-
-.project-image-carousel-image {
-    object-fit:contain;
-    width:100%;
-    height:100%;
-}
-
-#project-image-carousel-buttons {
-    display:flex;
-    gap:15px;
-    justify-content: center;
-    align-items: center;
-}
-
-#project-image-carousel-left, #project-image-carousel-right {
-    border:none;
-    width:30px;
-    height:30px;
-    padding:0;
-    background-color:rgba(0, 0, 0, 0);
-}
-
-#project-image-carousel-left img, #project-image-carousel-right img {
-    width:30px;
-    height:30px;
-    /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
-    /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
-    filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
-}
-
-#project-image-carousel-right img {
-    transform:rotateY(180deg)
-}
-
-#project-image-carousel-tabs {
-    display:flex;
-    gap:10px;
-}
-
-.project-image-carousel-tab {
-    border:none;
-    border-radius:50%;
-    width: 20px;
-    height: 20px;
-    background-color: var(--purple-light);
-}
-
-.project-image-carousel-tab:hover, .carousel-tab-active{
-    background-color:var(--lavender)
-}
-
 #project-info-panel {
     grid-area:info;
+    display:flex;
+    flex-direction:column;
     background-color: var(--background-light);
     border-radius:10px;
     text-align:left;
@@ -3539,8 +3829,12 @@ New Project Page style rules
     padding:5px 20px;
 }
 
-#project-description, #project-status, #project-creation {
+#project-hook, #project-status, #project-creation {
     margin:10px 0;
+}
+
+#project-hook {
+    flex-grow:1;
 }
 
 #project-status {
@@ -3555,6 +3849,163 @@ New Project Page style rules
     color:white;
     font-size: 1.85ch;
     padding: 5px 20px;
+}
+
+#project-open-positions-popup {
+    background-image: linear-gradient(120deg, var(--purple-light), white 70%);
+    font-style:normal;
+    display:grid;
+    height: calc(90vh - 90px);
+    width:90vw;
+    max-width:1000px;
+    gap:30px;
+    padding:70px;
+    padding-top:20px;
+    border-radius:4px;
+    grid-template:
+        'header header' 50px
+        'list info' auto
+        'close close' 50px /
+        300px auto;
+}
+
+#positions-popup-header {
+    grid-area:header;
+    text-align:center;
+    font-size:3.5ch;
+    font-weight:600;
+    margin:auto;
+    padding:10px 20px;
+    background-color:var(--lavender);
+    color:white;
+    border-radius:60px;
+}
+
+#positions-popup-list {
+    grid-area:list;
+    text-align:center;
+    background-color:white;
+    box-shadow: 0 0 10px #BBBBBB;
+    border-radius:10px;
+}
+
+#positions-popup-list-header {
+    margin:20px 0 10px;
+    font-size:2.5ch;
+}
+
+#positions-popup-list-buttons {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+}
+
+.positions-popup-list-item {
+    width:max-content;
+    background-color:var(--background-light);
+    color:var(--lavender);
+    border:none;
+    border-radius:30px;
+    font-size:1.9ch;
+    padding:5px 15px;
+}
+
+.positions-popup-list-item:hover, .positions-popup-list-item-active {
+    background-color:var(--lavender);
+    color:white;
+}
+
+#positions-popup-info {
+    grid-area:info;
+    display:flex;
+    flex-direction:column;
+    background-color:white;
+    box-shadow: 0 0 10px #BBBBBB;
+    border-radius:10px;
+    padding:20px;
+}
+
+#positions-popup-info-title {
+    color:var(--lavender);
+    font-size:2.5ch;
+    font-weight:600;
+    text-align:center;
+}
+
+#positions-popup-info-description {
+    flex-grow:1;
+}
+
+#position-description-header, .position-detail-indicator {
+    color:var(--lavender);
+    font-weight:600;
+}
+
+#position-description-content {
+    margin: 0 20px;
+}
+
+#position-details {
+    display:grid;
+    grid-template:
+        'availability duration' auto
+        'location compensation' auto /
+        1fr 1fr;
+}
+
+#position-availability {grid-area:availability}
+#position-duration {grid-area:duration}
+#position-location {grid-area:location}
+#position-compensation {grid-area:compensation}
+
+#position-contact {
+    margin-left:auto;
+    margin-top:20px;
+    width:max-content;
+    height:50px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-style:italic;
+    color:var(--gray);
+}
+
+#position-contact-link {
+    background-color:var(--background-light);
+    color:var(--lavender);
+    border-radius:30px;
+    padding: 5px 15px;
+    height:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-style:normal;
+    transition: background-color .1s;
+}
+
+#position-contact-link:hover {
+    cursor:pointer;
+    background-color:#CCCCD7;
+    transition: background-color .1s;
+}
+
+#position-contact-link img{
+    height:40px;
+    width:40px;
+    border-radius:50%;
+}
+
+#positions-popup-close {
+    grid-area:close;
+    border:none;
+    border-radius:30px;
+    width:max-content;
+    margin:auto;
+    font-size:2.1ch;
+    padding:10px 20px;
+    background-color:var(--lavender);
+    color:white;
 }
 
 #project-creation {
@@ -3641,7 +4092,7 @@ New Project Page style rules
     padding: 5px 10px;
 }
 
-.project-people-tab:hover {
+.project-people-tab:hover, .project-people-tab-active {
     background-color: var(--lavender);
     color: white;
 }
@@ -3662,8 +4113,9 @@ New Project Page style rules
 #project-open-positions-list {
     display:flex;
     flex-flow:wrap;
+    justify-content:center;
     gap:10px;
-    margin-top: 10px;
+    margin: 10px 0;
 }
 
 /*
@@ -3674,18 +4126,443 @@ My projects page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-#create-proj-btn {
+/* #create-proj-btn {
     padding: 10px 50px;
     font-weight: bold;
     font-size: larger;
     position: fixed;
     bottom: 20px;
     right: 20px;
-}
+} */
 
 @media only screen and (max-width: 800px) {
 
     /* responsiveness goes here*/
+}
+
+.page#my-projects {
+    box-sizing: border-box;
+    background-color: white;
+    padding: 22px 60px 0px 64px;
+}
+
+.my-projects-top-bar {
+    box-sizing: border-box;
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: auto max-content;
+    gap: 10px;
+}
+
+.my-projects-search {
+    box-sizing: border-box;
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 40px;
+    padding: 11px 16px;
+    text-align: left;
+    color: #271d66;
+    font-size: 13px;
+}
+
+.my-projects-searchbar {
+    box-sizing: border-box;
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 0px;
+    width: 97%;
+    padding-left: 13px;
+    color: #271d66;
+    font-size: 14px;
+    line-height: normal;
+}
+
+.my-projects-banner {
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    margin: 33px 0px 16px 0px;
+}
+
+.my-projects-profile {
+    box-sizing: border-box;
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 36px;
+    color: #271d66;
+    padding: 5px;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.my-projects-profile .fa-solid.fa-circle-user {
+    box-sizing: border-box;
+    font-size: 30px;
+}
+
+.my-projects-profile .fa-solid.fa-caret-down {
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+/* CODE GOES HERE */
+
+.my-projects-header-row {
+    box-sizing: border-box;
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: auto max-content max-content max-content;
+    column-gap: 1.46%;
+}
+
+.my-projects-all-projects-button {
+    box-sizing: border-box;
+    background-color: #271d66;
+    border: 0px;
+    border-radius: 55px;
+    width: fit-content;
+    color: white;
+    padding: 6px 17px;
+    text-align: center;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: bold;
+    line-height: 28px;
+    letter-spacing: 0%;
+}
+
+.my-projects-sort-list {
+    box-sizing: border-box;
+    background-color: #ececf7;
+    border: 0px;
+    border-right: 15px solid #ececf7;
+    border-radius: 10px;
+    padding: 13.5px 15px;
+    color: black;
+    font-size: 13px;
+    font-family: Arial, FontAwesome;
+    line-height: normal;
+    letter-spacing: 0%;
+}
+
+.my-projects-display-switch {
+    box-sizing: border-box;
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 100px;
+    padding: 0px;
+
+    display: flex;
+}
+
+.my-projects-display-switch .display-switch-option {
+    box-sizing: border-box;
+    background-color: #00000000;
+    border: 0px;
+    border-radius: 100px;
+    width: 44px;
+    height: 44px;
+    color: #271d66;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-projects-display-switch .display-switch-option#selected {
+    background-color: #271d66;
+    color: white;
+}
+
+.my-projects-new-project-button {
+    box-sizing: border-box;
+    background-color: #271d66;
+    border: 0px;
+    border-radius: 55px;
+    width: fit-content;
+    color: white;
+    padding: 6px 17px;
+    text-align: center;
+    font-size: 15px;
+    font-family: Arial;
+    font-weight: bold;
+    line-height: 28px;
+    letter-spacing: 0%;
+}
+
+.page#my-projects hr {
+    box-sizing: border-box;
+    border-color: #ececf7;
+}
+
+.my-projects-grid {
+    width: 100%;
+    margin-bottom: 30px;
+
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.my-project-grid-card {
+    box-sizing: border-box;
+    border: 0px;
+    border-radius: 0px;
+    width: fit-content;
+    height: fit-content;
+
+    display: grid;
+    grid-template-areas: 
+        "image image"
+        "title options";
+    row-gap: 5px;
+}
+
+.grid-card-image {
+    grid-area: image;
+    box-sizing: border-box;
+    border: 2px solid white;
+    border-radius: 10px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    box-shadow: 0px 0px 10px 0px #00000040;
+}
+
+.grid-card-title {
+    grid-area: title;
+    box-sizing: border-box;
+    color: #271d66;
+    text-align: left;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: bold;
+    line-height: 28px;
+    letter-spacing: 0%;
+}
+
+.grid-card-options {
+    position: relative;
+    text-align: right;
+
+    display: inline-block;
+}
+
+.dropdown-container:has(#grid-card-options-button) {
+    grid-area: options;
+}
+
+.grid-card-options-button, #grid-card-options-button {
+    box-sizing: border-box;
+    background-color: #00000000;
+    border: 0px;
+    border-radius: 0px;
+    color: #271d66;
+    margin: 0px;
+    padding: 0px;
+    text-align: right;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: normal;
+    line-height: 28px;
+    letter-spacing: 2px;
+}
+
+.dropdown:has(.grid-card-options-list) {
+    box-sizing: border-box;
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #00000040;
+}
+
+.grid-card-options-list {
+    box-sizing: border-box;
+    background-color: white;
+    border: 0px;
+    border-radius: 10px;
+    width: max-content;
+    height: fit-content;
+    padding: 10px 0px;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.my-projects-list {
+    box-sizing: border-box;
+    margin-bottom: 30px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.my-projects-list-header {
+    box-sizing: border-box;
+    padding-top: 0px;
+    padding-bottom: 0px;
+
+    display: grid;
+    grid-template-columns: 54% 27% auto 6.8%;
+}
+
+.project-header-label {
+    color: #271d66;
+    text-align: left;
+    font-size: 18px;
+    font-family: Arial;
+    font-weight: bold;
+    line-height: 28px;
+    letter-spacing: 0%;
+}
+
+.my-project-list-card {
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns: 54.4% 27.6% auto 6.8%;
+}
+
+.my-project-list-card {
+    box-sizing: border-box;
+    background-color: #ececf7;
+    border: 0px;
+    border-radius: 10px;
+    height: fit-content;
+    padding: 10px 20px 10px 10px;
+}
+
+.list-card-section1 {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 20px;
+}
+
+.list-card-image {
+    box-sizing: border-box;
+    border: 0px;
+    border-radius: 10px;
+    width: 150px;
+    height: 70px;
+    object-fit: cover;
+}
+
+.list-card-title {
+    box-sizing: border-box;
+    color: #271d66;
+    text-align: left;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: bold;
+    line-height: 28px;
+    letter-spacing: 0%;
+}
+
+.list-card-status {
+    box-sizing: border-box;
+    color: black;
+    text-align: left;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: normal;
+    line-height: 28px;
+    letter-spacing: 0%;
+
+    display: flex;
+    align-items: center;
+}
+
+.list-card-date {
+    box-sizing: border-box;
+    color: black;
+    text-align: right;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: normal;
+    line-height: 28px;
+    letter-spacing: 0%;
+
+    display: flex;
+    align-items: center;
+}
+
+.list-card-options {
+    position: relative;
+    text-align: left;
+
+    display: inline-block;
+}
+
+.list-card-options-button, #list-card-options-button {
+    box-sizing: border-box;
+    background-color: #00000000;
+    border: 0px;
+    border-radius: 0px;
+    color: #271d66;
+    margin-top: 20px;
+    margin-left: 20px;
+    padding: 0px;
+    text-align: center;
+    font-size: 17px;
+    font-family: Arial;
+    font-weight: normal;
+    line-height: 28px;
+    letter-spacing: 2px;
+}
+
+.dropdown:has(.list-card-options-list) {
+    box-sizing: border-box;
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #00000040;
+}
+
+.list-card-options-list {
+    box-sizing: border-box;
+    background-color: white;
+    border: 0px;
+    border-radius: 10px;
+    width: max-content;
+    height: fit-content;
+    padding: 10px 0px;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* .list-card-options-list.show {
+    display: flex;
+    flex-direction: column;
+} */
+
+.card-leave-button, .card-delete-button {
+    box-sizing: border-box;
+    background-color: #00000000;
+    border: 0px;
+    border-radius: 0px;
+    margin: 0px;
+    padding: 5px 15px;
+    text-align: left;
+    font-family: Arial, FontAwesome;
+    transition: background-color .2s;
+}
+
+.card-delete-button {
+    color: #ff4563;
+}
+
+.card-leave-button:hover, .card-delete-button:hover {
+    background-color: #00000040;
+    transition: background-color .2s;
 }
 
 /*

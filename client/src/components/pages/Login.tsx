@@ -2,7 +2,7 @@ import "./pages.css";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
-import { handleError, sendPost, hideError } from "../../functions/fetch.js";
+import { handleError, sendPost, sendGet, hideError } from "../../functions/fetch.js";
 
 const Login = ({ theme }) => {
     const navigate = useNavigate(); // Hook for navigation
@@ -45,7 +45,7 @@ const Login = ({ theme }) => {
 
         else {
 
-            sendPost('/api/users/login', { username, password });
+            sendPost('/api/login', { username, password });
 
             // Navigate to the home page
             //navigate(paths.routes.HOME);

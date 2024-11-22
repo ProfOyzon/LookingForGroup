@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const getProjects = async (req, res) => {
     // Get all projects
     try {
-        const sql = `SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
+        const sql = `SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                 FROM project_genres pg 
@@ -78,10 +78,10 @@ const createProject = async (req, res) => {
             status: 400, 
             error: "Missing at least 1 project type" 
         });
-    } else if (tags.length < 1) {
+    } else if (tags.length < 1 || tags.length > 20) {
         return res.status(400).json({
             status: 400, 
-            error: "Missing at least 1 tag" 
+            error: "Missing at least 1 tag or more than 20 tags added" 
         });
     } else if (members.length < 1) {
         return res.status(400).json({
@@ -147,7 +147,7 @@ const getProjectById = async (req, res) => {
 
     try {
         // Get project data
-        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.purpose, p.status, p.audience, g.project_types, 
+        const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.thumbnail, p.purpose, p.status, p.audience, g.project_types, 
             t.tags, j.jobs, m.members, pi.images, so.socials
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
@@ -171,7 +171,7 @@ const getProjectById = async (req, res) => {
                 WHERE j.project_id = ?) j
             ON p.project_id = j.project_id
             JOIN (SELECT m.project_id, JSON_ARRAYAGG(JSON_OBJECT("user_id", m.user_id, "first_name", u.first_name, 
-            "last_name", u.last_name, "job_title", jt.label)) AS members
+            "last_name", u.last_name, "profile_image", u.profile_image, "job_title", jt.label)) AS members
                 FROM members m
                 JOIN users u 
                     ON m.user_id = u.user_id
@@ -240,10 +240,10 @@ const updateProject = async (req, res) => {
             status: 400, 
             error: "Missing at least 1 project type" 
         });
-    } else if (tags.length < 1) {
+    } else if (tags.length < 1 || tags.length > 20) {
         return res.status(400).json({
             status: 400, 
-            error: "Missing at least 1 tag" 
+            error: "Missing at least 1 tag or more than 20 tags added" 
         });
     } else if (members.length < 1) {
         return res.status(400).json({
@@ -416,7 +416,9 @@ const updateThumbnail = async (req, res) => {
 
         // Remove old image from server
         const [image] = await pool.query("SELECT thumbnail FROM projects WHERE project_id = ?", [id]);
-        await unlink(saveTo + image[0].thumbnail);
+        if (image[0].thumbnail !== null) {
+            await unlink(saveTo + image[0].thumbnail);
+        }
 
         // Store file name in database
         const sql = "UPDATE projects SET thumbnail = ? WHERE project_id = ?";
@@ -572,229 +574,8 @@ const deletePicture = async (req, res) => {
     }
 }
 
-const addProjectType = async (req, res) => {
-    // Add a project type to a project
-
-    // Get input data
-    const { id } = req.params;
-    const { typeId } = req.body;
-
-    try {
-        await pool.query("INSERT INTO project_genres (project_id, type_id) VALUES (?, ?)", [id, typeId]);
-
-        return res.sendStatus(201);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while adding a project's project type" 
-        });
-    }
-}
-
-const deleteProjectType = async (req, res) => {
-    // Delete project type from a project
-
-    // Get input data
-    const { id } = req.params;
-    const { typeId } = req.body;
-
-    try {
-        await pool.query("DELETE FROM project_genres WHERE project_id = ? AND type_id = ?", [id, typeId]);
-
-        return res.sendStatus(204);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while removing a project's project type" 
-        });
-    }
-}
-
-const addTag = async (req, res) => {
-    // Add a tag to a project
-
-    // Get input data
-    const { id } = req.params;
-    const { tagId, position } = req.body;
-
-    try {
-        // Add project's tag into database
-        await pool.query("INSERT INTO project_tags (project_id, tag_id, position) VALUES (?, ?, ?)", [id, tagId, position]);
-
-        return res.sendStatus(201);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while adding a project's tag" 
-        });
-    }
-}
-
-const updateTagPositions = async (req, res) => {
-    // Update tag order for a project
-
-    // Get input data 
-    const { id } = req.params;
-    const { tags } = req.body;
-
-    try {
-        for (let tag of tags) {
-            const sql = "UPDATE project_tags SET position = ? WHERE project_id = ? AND tag_id = ?";
-            const values = [tag.position, id, tag.id];
-            await pool.query(sql, values);
-        }
-        
-        return res.sendStatus(204);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while updating the tag order for a project" 
-        });
-    }
-}
-
-const deleteTag = async (req, res) => {
-    // Delete tag from a project
-
-    // Get input data
-    const { id } = req.params;
-    const { tagId } = req.body;
-
-    try {
-        // Remove project's tag from database
-        await pool.query("DELETE FROM project_tags WHERE project_id = ? AND tag_id = ?", [id, tagId]);
-
-        return res.sendStatus(204);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while removing a project's tag" 
-        });
-    }
-}
-
-const addJob = async (req, res) => {
-    // Add a job to a project
-
-    // Get input data
-    const { id } = req.params;
-    const { titleId, amount, description } = req.body;
-
-    try {
-        // Add project's job into database
-        const sql = "INSERT INTO jobs (title_id, amount, description, project_id) VALUES (?, ?, ?, ?)";
-        const values = [titleId, amount, description, id];
-        await pool.query(sql, values);
-
-        return res.sendStatus(201);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while adding a job to a project" 
-        });
-    }
-}
-
-const updateJob = async (req, res) => {
-    // Update a project's job
-
-    // Get input data
-    const { id } = req.params;
-    const { titleId, amount, description } = req.body;
-
-    try {
-        // Update a project's job
-        const sql = "UPDATE jobs SET amount = ?, description = ? WHERE title_id = ? AND project_id = ?";
-        const values = [amount, description, titleId, id];
-        await pool.query(sql, values);
-        
-        return res.sendStatus(204);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while updating a project's job" 
-        });
-    }
-}
-
-const deleteJob = async (req, res) => {
-    // Delete job from a project
-
-    // Get input data
-    const { id } = req.params;
-    const { titleId } = req.body;
-
-    try {
-        // Remove project's job from database
-        await pool.query("DELETE FROM jobs WHERE title_id = ? AND project_id = ?", [titleId, id]);
-
-        return res.sendStatus(204);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while deleting a project's job" 
-        });
-    }
-}
-
-const addMember = async (req, res) => {
-    // Add a member to a project
-
-    // Get input data
-    const { id } = req.params;
-    const { userId, titleId } = req.body;
-
-    try {
-        // Add project's member into database
-        const sql = "INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?)";
-        const values = [id, userId, titleId];
-        await pool.query(sql, values);
-
-        return res.sendStatus(201);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while adding a new member to the project" 
-        });
-    }
-}
-
-const updateMember = async (req, res) => {
-    // Update a member of a project
-
-    // Get input data
-    const { id } = req.params;
-    const { userId, titleId } = req.body;
-
-    try {
-        // Update a project's job
-        const sql = "UPDATE members SET title_id = ? WHERE project_id = ? AND user_id = ?";
-        const values = [titleId, id, userId];
-        await pool.query(sql, values);
-        
-        return res.sendStatus(204);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while updating a project's member" 
-        });
-    }
-}
-
 const deleteMember = async (req, res) => {
-    // Delete a member from a project
-
-    // Get input data
+    // Get data
     const { id } = req.params;
     const { userId } = req.body;
 
@@ -814,8 +595,5 @@ const deleteMember = async (req, res) => {
 
 export default { getProjects, createProject, getProjectById, updateProject, 
     updateThumbnail, getPictures, addPicture, updatePicturePositions, deletePicture,
-    addProjectType, deleteProjectType, 
-    addTag, updateTagPositions, deleteTag, 
-    addJob, updateJob, deleteJob,
-    addMember, updateMember, deleteMember
+    deleteMember
 };

@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { useEffect } from 'react' ;
 import CreditsFooter from '../CreditsFooter';
 import ToTopButton from "../ToTopButton";
+import { sendPost, sendGet, GET } from "../../functions/fetch";
 
 //These values need to be outside the component, otherwise they get reset every time it re-renders
 //List that holds project data that will be displayed. Changes along with search parameters
@@ -34,6 +35,50 @@ let heightTrackers : number[];
 
 //the main discover page- see a list of people and projects
 const Home = (props) => {
+
+    let username = "placeholder";
+
+    /* useEffect(() => {
+        console.log("edfsefgsergf");
+        const fetchUsername = async () => {
+            console.log("fetchUsername launched");
+            try {
+                console.log("gobbledegook");
+                const response = await fetch("/api/users/get-username-session");
+                console.log("gobbledegook 2");
+                console.log(response);
+                // The response was commented out
+                if (!response.ok) {
+                    throw new Error("Bad response");
+                }
+                console.log("gobbledegook 3");
+                const data = await response.json();
+                console.log(data);
+                username = data;
+                console.log(username);
+            }   catch (err) {
+                if (err instanceof Error) {
+                    
+                }
+            }
+        }
+
+        // This block was commented out
+        fetch("api/users/get-username-session")
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                username = data;
+            })
+
+        sendGet("/api/users/get-username-sessio");
+
+        //username = GET("api/users/get-username-session");
+        fetchUsername();
+        console.log(username);
+    }, []); */
 
     // Sets the default content of the page to be 'projects' and 
     // listens to changes in the tab
@@ -194,7 +239,7 @@ const Home = (props) => {
 
         if (scrollTop + clientHeight >= scrollHeight) {
             //calls profile adding instead if on profile tab, may change if pages are separated
-            if (selectedTab === 'People') {
+            if (selectedTab === 'eee') {
                 addProfiles();
                 return;
             }
@@ -521,12 +566,14 @@ const Home = (props) => {
 
     return (
         <div className="page" onScroll={addContent}>
-            <h1 className="page-title">Discover</h1>
+            <h1 className="page-title">{username}</h1>
+
+            <h2>{username}</h2>
 
             {/* Discover Buttons change the content of the page based on which one is highlighted */}
             <div id="discover-button-wrapper">
                 <DiscoverButton isActive={selectedTab === 'Projects'} onClick={() => handleButtonClick('Projects')}>Projects</DiscoverButton>
-                <DiscoverButton isActive={selectedTab === 'People'} onClick={() => handleButtonClick('People')}>People</DiscoverButton>
+                <DiscoverButton isActive={selectedTab === 'People'} onClick={() => handleButtonClick('People')}>Peopleeee</DiscoverButton>
                 <SearchBar dataSets={[{ data: projects }, { data: profiles }]} onSearch={HandleSearch}></SearchBar>
             </div>
 

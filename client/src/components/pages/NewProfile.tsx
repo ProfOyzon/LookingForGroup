@@ -434,7 +434,7 @@ const NewProfile = ({ theme, setTheme }) => {
                   src-dark="assets/white/role.png"
                   className='info-extra-image theme-icon'
                   alt='profession' />
-                {'Profession'}
+                {displayedProfile.job_title}
               </div>
               <div className='profile-extra'>
                 <img 
@@ -443,7 +443,7 @@ const NewProfile = ({ theme, setTheme }) => {
                 src-dark="assets/white/major.png"
                 className='info-extra-image theme-icon' 
                 alt='major' />
-                {'Profesional Typer, 13th'}
+                {displayedProfile.major}, {displayedProfile.academic_year}
                 </div>
               <div className='profile-extra'>
                 <img 
@@ -452,7 +452,7 @@ const NewProfile = ({ theme, setTheme }) => {
                 src-dark="assets/white/location.png"
                 className='info-extra-image theme-icon' 
                 alt='location' />
-                {'Middle of, Nowhere'}
+                {displayedProfile.location}
                 </div>
               <div className='profile-extra'>
                 <img 
@@ -461,7 +461,7 @@ const NewProfile = ({ theme, setTheme }) => {
                 src-dark="assets/white/pronouns.png"
                 className='info-extra-image theme-icon' 
                 alt='pronouns' />
-                {'Was/Were'}
+                {displayedProfile.pronouns}
                 </div>
             </div>
 

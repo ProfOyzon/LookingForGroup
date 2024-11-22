@@ -345,7 +345,7 @@ const EditButton = ({userData}) => {
                             </div>);
                         }
                         else {
-                            const projectURL = require(`../../../../server/images/thumbnails/${project.thumbnail}`);
+                            const projectURL = `/images/thumbnails/${project.thumbnail}`;
                             return (<div className='list-project'>
                                 <div className='inner-list-project'>
                                     <img className='list-project-photo' src={projectURL} alt={`${project.title}'s Thumbnail`}></img>

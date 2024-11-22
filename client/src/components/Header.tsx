@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import * as paths from "../constants/routes";
 import profileImage from "../icons/profile-user.png";
-import { useState, useEffect } from "react";
 
 
 //Header component to be used in pages
@@ -90,7 +89,7 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
           <DropdownContent rightAlign={true}>This is where notification stuff will be</DropdownContent>
         </Dropdown> */}
         <Dropdown>
-          <DropdownButton buttonId="profile-btn" theme={theme}>
+          <DropdownButton buttonId="profile-btn" >
             <img
               src="assets/profile_dark.png"
               src-light="assets/profile_light.png"

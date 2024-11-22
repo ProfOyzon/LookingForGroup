@@ -1000,7 +1000,9 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     }</>
 
   //Decides which 'content' to display on the page
-  let heroContent = category === 'projects' ? <ImageCarousel carouselType='Discover'/> : profileHero;
+  
+  // let heroContent = category === 'projects' ? <ImageCarousel carouselType='Discover'/> : profileHero;
+  let heroContent = category === 'projects' ? projectHero : profileHero;
   let panelContent = category === 'projects' ? projectContent : profileContent;
 
   return(

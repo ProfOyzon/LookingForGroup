@@ -56,7 +56,7 @@ function App() {
           <Route path={paths.routes.HOME} element={<Discover theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.MEET} element={<Meet theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />
-          <Route path={paths.routes.MYPROJECTS} element={<MyProjects />} />
+          <Route path={paths.routes.MYPROJECTS} element={<MyProjects theme={theme} setTheme={setTheme} />} />
           <Route path={paths.routes.PROFILE} element={<NewProfile theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.NEWPROFILE} element={<NewProfile theme={theme} setTheme={setTheme} />} />
           <Route path={paths.routes.PROJECT} element={<Project />}/>

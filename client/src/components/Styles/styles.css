@@ -4142,7 +4142,7 @@ My projects page style rules
 
 .page#my-projects {
     box-sizing: border-box;
-    background-color: white;
+    /* background-color:; */
     padding: 22px 60px 0px 64px;
 }
 
@@ -4155,18 +4155,18 @@ My projects page style rules
     gap: 10px;
 }
 
-.my-projects-search {
+/* .my-projects-search {
     box-sizing: border-box;
     background-color: #ececf7;
     border: 0px;
     border-radius: 40px;
     padding: 11px 16px;
     text-align: left;
-    color: #271d66;
+    color: var(--primary-color);
     font-size: 13px;
-}
+} */
 
-.my-projects-searchbar {
+/* .my-projects-searchbar {
     box-sizing: border-box;
     background-color: #ececf7;
     border: 0px;
@@ -4176,16 +4176,16 @@ My projects page style rules
     color: #271d66;
     font-size: 14px;
     line-height: normal;
-}
+} */
 
 .my-projects-banner {
     box-sizing: border-box;
     width: 100%;
     height: auto;
-    margin: 33px 0px 16px 0px;
+    margin: 90px 0px 16px 0px;
 }
 
-.my-projects-profile {
+/* .my-projects-profile {
     box-sizing: border-box;
     background-color: #ececf7;
     border: 0px;
@@ -4196,9 +4196,9 @@ My projects page style rules
     display: flex;
     align-items: center;
     gap: 5px;
-}
+} */
 
-.my-projects-profile .fa-solid.fa-circle-user {
+/* .my-projects-profile .fa-solid.fa-circle-user {
     box-sizing: border-box;
     font-size: 30px;
 }
@@ -4206,7 +4206,7 @@ My projects page style rules
 .my-projects-profile .fa-solid.fa-caret-down {
     box-sizing: border-box;
     font-size: 20px;
-}
+} */
 
 /* CODE GOES HERE */
 
@@ -4221,15 +4221,14 @@ My projects page style rules
 
 .my-projects-all-projects-button {
     box-sizing: border-box;
-    background-color: #271d66;
+    background-color: var(--primary-color);
     border: 0px;
     border-radius: 55px;
     width: fit-content;
-    color: white;
+    color: var(--invert-text);
     padding: 6px 17px;
     text-align: center;
-    font-size: 17px;
-    font-family: Arial;
+    font-size: 18px;
     font-weight: bold;
     line-height: 28px;
     letter-spacing: 0%;
@@ -4237,21 +4236,21 @@ My projects page style rules
 
 .my-projects-sort-list {
     box-sizing: border-box;
-    background-color: #ececf7;
+    background-color: var(--header-color);
     border: 0px;
-    border-right: 15px solid #ececf7;
+    border-right: 15px solid var(--header-color);
     border-radius: 10px;
     padding: 13.5px 15px;
-    color: black;
-    font-size: 13px;
-    font-family: Arial, FontAwesome;
+    color: var(--main-text);
+    font-size: 16px;
+    font-family: Inter, FontAwesome;
     line-height: normal;
     letter-spacing: 0%;
 }
 
 .my-projects-display-switch {
     box-sizing: border-box;
-    background-color: #ececf7;
+    background-color: var(--header-color);
     border: 0px;
     border-radius: 100px;
     padding: 0px;
@@ -4266,7 +4265,7 @@ My projects page style rules
     border-radius: 100px;
     width: 44px;
     height: 44px;
-    color: #271d66;
+    color: var(--primary-color);
 
     display: flex;
     justify-content: center;
@@ -4274,21 +4273,21 @@ My projects page style rules
 }
 
 .my-projects-display-switch .display-switch-option#selected {
-    background-color: #271d66;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--main-text);
 }
 
 .my-projects-new-project-button {
     box-sizing: border-box;
-    background-color: #271d66;
+    background-color: var(--primary-color);
     border: 0px;
     border-radius: 55px;
     width: fit-content;
-    color: white;
+    color: var(--invert-text);
     padding: 6px 17px;
     text-align: center;
-    font-size: 15px;
-    font-family: Arial;
+    font-size: 18px;
+    font-family: Inter;
     font-weight: bold;
     line-height: 28px;
     letter-spacing: 0%;
@@ -4296,7 +4295,7 @@ My projects page style rules
 
 .page#my-projects hr {
     box-sizing: border-box;
-    border-color: #ececf7;
+    border-color: var(--header-color);
 }
 
 .my-projects-grid {
@@ -4336,10 +4335,10 @@ My projects page style rules
 .grid-card-title {
     grid-area: title;
     box-sizing: border-box;
-    color: #271d66;
+    color: var(--primary-color);
     text-align: left;
-    font-size: 17px;
-    font-family: Arial;
+    font-size: 16px;
+    font-family: Inter;
     font-weight: bold;
     line-height: 28px;
     letter-spacing: 0%;
@@ -4361,12 +4360,12 @@ My projects page style rules
     background-color: #00000000;
     border: 0px;
     border-radius: 0px;
-    color: #271d66;
+    color: var(--primary-color);
     margin: 0px;
     padding: 0px;
     text-align: right;
-    font-size: 17px;
-    font-family: Arial;
+    font-size: 18px;
+    font-family: Inter;
     font-weight: normal;
     line-height: 28px;
     letter-spacing: 2px;
@@ -4381,7 +4380,7 @@ My projects page style rules
 
 .grid-card-options-list {
     box-sizing: border-box;
-    background-color: white;
+    background-color: var(--bg-color);
     border: 0px;
     border-radius: 10px;
     width: max-content;
@@ -4412,10 +4411,10 @@ My projects page style rules
 }
 
 .project-header-label {
-    color: #271d66;
+    color: var(--primary-color);
     text-align: left;
     font-size: 18px;
-    font-family: Arial;
+    font-family: Inter;
     font-weight: bold;
     line-height: 28px;
     letter-spacing: 0%;
@@ -4430,7 +4429,7 @@ My projects page style rules
 
 .my-project-list-card {
     box-sizing: border-box;
-    background-color: #ececf7;
+    background-color: var(--header-color);
     border: 0px;
     border-radius: 10px;
     height: fit-content;
@@ -4457,10 +4456,10 @@ My projects page style rules
 
 .list-card-title {
     box-sizing: border-box;
-    color: #271d66;
+    color: var(--primary-color);
     text-align: left;
-    font-size: 17px;
-    font-family: Arial;
+    font-size: 18px;
+    font-family: Inter;
     font-weight: bold;
     line-height: 28px;
     letter-spacing: 0%;
@@ -4468,10 +4467,10 @@ My projects page style rules
 
 .list-card-status {
     box-sizing: border-box;
-    color: black;
+    color: var(--invert-text);
     text-align: left;
-    font-size: 17px;
-    font-family: Arial;
+    font-size: 16px;
+    font-family: Inter;
     font-weight: normal;
     line-height: 28px;
     letter-spacing: 0%;
@@ -4482,10 +4481,10 @@ My projects page style rules
 
 .list-card-date {
     box-sizing: border-box;
-    color: black;
+    color: var(--invert-text);
     text-align: right;
-    font-size: 17px;
-    font-family: Arial;
+    font-size: 16px;
+    font-family: Inter;
     font-weight: normal;
     line-height: 28px;
     letter-spacing: 0%;
@@ -4506,13 +4505,13 @@ My projects page style rules
     background-color: #00000000;
     border: 0px;
     border-radius: 0px;
-    color: #271d66;
+    color: var(--primary-color);
     margin-top: 20px;
     margin-left: 20px;
     padding: 0px;
     text-align: center;
-    font-size: 17px;
-    font-family: Arial;
+    font-size: 18px;
+    font-family: Inter;
     font-weight: normal;
     line-height: 28px;
     letter-spacing: 2px;
@@ -4527,7 +4526,7 @@ My projects page style rules
 
 .list-card-options-list {
     box-sizing: border-box;
-    background-color: white;
+    background-color: var(--bg-color);
     border: 0px;
     border-radius: 10px;
     width: max-content;
@@ -4552,7 +4551,7 @@ My projects page style rules
     margin: 0px;
     padding: 5px 15px;
     text-align: left;
-    font-family: Arial, FontAwesome;
+    font-family: Inter, FontAwesome;
     transition: background-color .2s;
 }
 

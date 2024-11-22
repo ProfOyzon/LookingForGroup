@@ -151,23 +151,21 @@ const getUserByUsername = async (req, res) => {
 }
 
 const getUsernameBySession = async (req, res) => {
-    console.log("HELOOOOOO");
-    let username;
-    console.log("HELO)OOOOOOOOO");
-    //username = await req.session.user.first_name;
     try {
-        console.log(req.session.user.first_name);
-        username = await req.session.user.first_name;
+        let data = { 
+            username: await req.session.user.username,
+            email: await req.session.user.primary_email,
+            first_name: await req.session.user.first_name,
+            last_name: await req.session.user.last_name
+        };
         return res.status(201).json({
             status: 201,
-            data: username
+            data: data
         });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ error: 'Error finding session!' });
     }
-    console.log("HELO)OOOOOOOOO");
-    return res.status(201).json({ username: username });
 }
 
 const updateUser = async (req, res) => {

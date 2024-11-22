@@ -35,7 +35,7 @@ const Login = (props) => {
         
         else {
 
-            sendGet("api/users/get-username-session");
+            //sendGet("api/users/get-username-session");
             sendPost('/api/users/login', {username, password});
 
             // Navigate to the home page

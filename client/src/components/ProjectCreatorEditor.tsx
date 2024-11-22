@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Popup, PopupButton, PopupContent } from "./Popup";
 import { SearchBar } from "./SearchBar";
 import profileImage from "../icons/profile-user.png";
+import editIcon from "../icons/edit.png";
 
 export const ProjectCreatorEditor = () => {
 
@@ -16,42 +17,57 @@ export const ProjectCreatorEditor = () => {
   //General
   const generalTab = <>{
     <div id='project-editor-general'>
-      <label>Title*</label>
-      <input type='text'></input>
-
-      <label>Status*</label>
-      <select>
-        <option>In Development</option>
-        <option>Finished</option>
-      </select>
-
-      <label>Purpose</label>
-      <select>
-        <option>Passion project</option>
-        <option>Academic</option>
-      </select>
-
-      <label>Target Audience</label>
-      <div className='project-editor-extra-info'>
-        Define who this project is intended for--consider age group,
-        interest, industry, or specific user needs
+      <div id='project-editor-title-input' className='project-editor-input-item'>
+        <label>Title*</label>
+        <br/>
+        <input type='text'></input>
       </div>
-      <textarea/>
 
-      <label>Short Description*</label>
-      <div className='project-editor-extra-info'>
-        Share a brief summary of your project. 
-        This will be displayed in your project's discover card.
+      <div id='project-editor-status-input' className='project-editor-input-item'>
+        <label>Status*</label>
+        <br/>
+        <select>
+          <option>In Development</option>
+          <option>Finished</option>
+        </select>
       </div>
-      <textarea/>
 
-      <label>About This Project*</label>
-      <div className='project-editor-extra-info'>
-        Use this space to go into detail about your project! Feel free to share 
-        it's inspirations and goals, outline key features, 
-        and describe this impact you hope it brings to others
+      <div id='project-editor-purpose-input' className='project-editor-input-item'>
+        <label>Purpose</label>
+        <br/>
+        <select>
+          <option>Passion project</option>
+          <option>Academic</option>
+        </select>
       </div>
-      <textarea/>
+
+      <div id='project-editor-audience-input' className='project-editor-input-item'>
+        <label>Target Audience</label>
+        <div className='project-editor-extra-info'>
+          Define who this project is intended for--consider age group,
+          interest, industry, or specific user needs.
+        </div>
+        <textarea maxLength={100}/>
+      </div>
+
+      <div id='project-editor-description-input' className='project-editor-input-item'>
+        <label>Short Description*</label>
+        <div className='project-editor-extra-info'>
+          Share a brief summary of your project. 
+          This will be displayed in your project's discover card.
+        </div>
+        <textarea maxLength={300}/>
+      </div>
+
+      <div id='project-editor-long-description-input' className='project-editor-input-item'>
+        <label>About This Project*</label>
+        <div className='project-editor-extra-info'>
+          Use this space to go into detail about your project! Feel free to share 
+          it's inspirations and goals, outline key features, 
+          and describe this impact you hope it brings to others.
+        </div>
+        <textarea maxLength={2000}/>
+      </div>
     </div>
   }</>
 
@@ -79,44 +95,123 @@ export const ProjectCreatorEditor = () => {
 
   const tagsTab = <>{
     <div id='project-editor-tags'>
-    <div id='project-editor-type-tags'>
-      <div className='project-editor-section-header'>Project Type</div>
-      <div id='project-editor-type-tags-container'>
-        {/* Add type tags here */}
+      <div id='project-editor-type-tags'>
+        <div className='project-editor-section-header'>Project Type</div>
+        <div id='project-editor-type-tags-container'>
+          {/* Add type tags here */}
+        </div>
       </div>
-    </div>
-    
-    <div id='project-editor-selected-tags'>
-      <div className='project-editor-section-header'>Selected Tags</div>
-      <div className='project-editor-warning'>*At least 1 tag is required</div>
-      <div className='project-editor-extra-info'>
-        Drag and drop to reorder. The first 2 tags will be displayed on your project's discover card.
+      
+      <div id='project-editor-selected-tags'>
+        <div className='project-editor-section-header'>Selected Tags</div>
+        <div className='project-editor-warning'>*At least 1 tag is required</div>
+        <div className='project-editor-extra-info'>
+          Drag and drop to reorder. The first 2 tags will be displayed on your project's discover card.
+        </div>
+        <div id='project-editor-selected-tags-container'>
+          {/* Add tags here, separate top 2 from others */}
+        </div>
       </div>
-      <div id='project-editor-selected-tags-container'>
-        {/* Add tags here, separate top 2 from others */}
-      </div>
-    </div>
 
-    <div id='project-editor-tag-search'>
-      <SearchBar dataSets={{}} onSearch={() => {}}/>
-      <div id='project-editor-tag-search-tabs'>
-        <button className={`project-editor-tag-search-tab ${currentTagsTab === 0 ? 'tag-search-tab-active' : ''}`}>Project Type</button>
-        <button className={`project-editor-tag-search-tab ${currentTagsTab === 1 ? 'tag-search-tab-active' : ''}`}>Genre</button>
-        <button className={`project-editor-tag-search-tab ${currentTagsTab === 2 ? 'tag-search-tab-active' : ''}`}>Developer Skills</button>
-        <button className={`project-editor-tag-search-tab ${currentTagsTab === 3 ? 'tag-search-tab-active' : ''}`}>Designer Skills</button>
-        <button className={`project-editor-tag-search-tab ${currentTagsTab === 4 ? 'tag-search-tab-active' : ''}`}>Soft Skills</button>
+      <div id='project-editor-tag-search'>
+        <SearchBar dataSets={{}} onSearch={() => {}}/>
+        <div id='project-editor-tag-search-tabs'>
+          <button onClick={() => setCurrentTagsTab(0)} className={`project-editor-tag-search-tab ${currentTagsTab === 0 ? 'tag-search-tab-active' : ''}`}>Project Type</button>
+          <button onClick={() => setCurrentTagsTab(1)} className={`project-editor-tag-search-tab ${currentTagsTab === 1 ? 'tag-search-tab-active' : ''}`}>Genre</button>
+          <button onClick={() => setCurrentTagsTab(2)} className={`project-editor-tag-search-tab ${currentTagsTab === 2 ? 'tag-search-tab-active' : ''}`}>Developer Skills</button>
+          <button onClick={() => setCurrentTagsTab(3)} className={`project-editor-tag-search-tab ${currentTagsTab === 3 ? 'tag-search-tab-active' : ''}`}>Designer Skills</button>
+          <button onClick={() => setCurrentTagsTab(4)} className={`project-editor-tag-search-tab ${currentTagsTab === 4 ? 'tag-search-tab-active' : ''}`}>Soft Skills</button>
+        </div>
+        <hr/>
+        <div id='project-editor-tag-search-container'>
+          {/* Insert current tab's tags here */}
+        </div>
       </div>
-      <hr/>
-      <div id='project-editor-tag-search-container'>
-        {/* Insert current tab's tags here */}
-      </div>
-    </div>
     </div>
   }</>
 
   //State variable tracking which team tab is currently being viewed
   //0 - current team, 1 - open positions
   const [currentTeamTab, setCurrentTeamTab] = useState(0);
+
+  //State variable tracking whether position view is in edit mode or not
+  const [editMode, setEditMode] = useState(false);
+
+  const positionViewWindow = <>{
+    <>
+    <div id='project-editor-position-title'>Title</div>
+    <button onClick={() => setEditMode(true)} id='project-editor-position-edit'><img src={editIcon}/></button>
+    <div id='project-editor-position-description'>
+      <div id='position-description-header'>What we are looking for:</div>
+      <div id='position-description-content'>
+        Description text etc. etc.
+      </div>
+    </div>
+    <div id='position-details'>
+      <div id='position-availability'><span className='position-detail-indicator'>Availability: </span>bleh</div>
+      <div id='position-duration'><span className='position-detail-indicator'>Duration: </span>bleh</div>
+      <div id='position-location'><span className='position-detail-indicator'>Location: </span>bleh</div>
+      <div id='position-compensation'><span className='position-detail-indicator'>Compensation: </span>bleh</div>
+    </div>
+    <div id='position-contact'>
+      if interested, please contact: <span /* onClick={() => navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)} */id='position-contact-link'><img/>user name</span>
+    </div>
+    <button id='delete-position-button'>delete</button>
+    </>
+  }</>
+
+  const savePosition = () => {
+    //Save current inputs in position editing window
+    setEditMode(false);
+  }
+
+  const positionEditWindow = <>{
+    <>
+    <label>Role*</label>
+    <select>
+      <option>option 1</option>
+      <option>option 2</option>
+    </select>
+
+    <button onClick={savePosition} id='position-edit-save'>Save</button>
+    <button onClick={() => setEditMode(false)} id='position-edit-cancel'>Cancel</button>
+
+    <label>Role Description*</label>
+    <textarea></textarea>
+
+    <label>Availability</label>
+    <select>
+      <option>option 1</option>
+      <option>option 2</option>
+    </select>
+
+    <label>Duration</label>
+    <select>
+      <option>option 1</option>
+      <option>option 2</option>
+    </select>
+
+    <label>Location</label>
+    <select>
+      <option>option 1</option>
+      <option>option 2</option>
+    </select>
+
+    <label>Compensation</label>
+    <select>
+      <option>option 1</option>
+      <option>option 2</option>
+    </select>
+
+    <label>Main Contact</label>
+    <select>
+      <option>option 1</option>
+      <option>option 2</option>
+    </select>
+    </>
+  }</>
+
+  const positionWindow = editMode === true ? positionEditWindow : positionViewWindow
 
   const teamTabContent = currentTeamTab === 0 ? <>{
     <div id='project-editor-project-members'>
@@ -144,7 +239,7 @@ export const ProjectCreatorEditor = () => {
       </div>
 
       <div id='project-editor-open-position-details'>
-
+        {positionWindow}
       </div>
     </div>
   }</> : <></>
@@ -152,8 +247,8 @@ export const ProjectCreatorEditor = () => {
   const teamTab = <>{
     <div id='project-editor-team'>
       <div id='project-editor-team-tabs'>
-        <button className={`project-editor-team-tab ${currentTeamTab === 0 ? 'team-tab-active':''}`}>Current Team</button>
-        <button className={`project-editor-team-tab ${currentTeamTab === 1 ? 'team-tab-active':''}`}>Open Positions</button>
+        <button onClick={() => setCurrentTeamTab(0)} className={`project-editor-team-tab ${currentTeamTab === 0 ? 'team-tab-active':''}`}>Current Team</button>
+        <button onClick={() => setCurrentTeamTab(1)} className={`project-editor-team-tab ${currentTeamTab === 1 ? 'team-tab-active':''}`}>Open Positions</button>
       </div>
 
       <div id='project-editor-team-content'>
@@ -162,21 +257,46 @@ export const ProjectCreatorEditor = () => {
     </div>
   }</>
 
+  const linksTab = <>{
+    <div id='project-editor-links'>
+      <label>Social Links</label>
+      <div className='project-editor-extra-info'>
+        Provide the links to pages you wish to include on your page.
+      </div>
+
+      <div id='project-editor-link-list'>
+        {/* insert list of link elements/componenets here */}
+        <button id='project-editor-add-link'>+ Add Social Profile</button>
+      </div>
+    </div>
+  }</>
+
+  //Checks to see which tab we are currently rendering
+  let currentTabContent;
+  switch(currentTab) {
+    case 0: currentTabContent = generalTab; break;
+    case 1: currentTabContent = mediaTab; break;
+    case 2: currentTabContent = tagsTab; break;
+    case 3: currentTabContent = teamTab; break;
+    case 4: currentTabContent = linksTab; break;
+    default: currentTabContent = generalTab;
+  }
+
   return (
     <Popup>
       <PopupButton buttonId='project-info-edit'>Edit Project</PopupButton>
       <PopupContent>
         <div id='project-creator-editor'>
           <div id='project-editor-tabs'>
-            <button className={`project-editor-tab ${currentTab === 0 ? 'project-editor-tab-active':''}`}>General</button>
-            <button className={`project-editor-tab ${currentTab === 1 ? 'project-editor-tab-active':''}`}>Media</button>
-            <button className={`project-editor-tab ${currentTab === 2 ? 'project-editor-tab-active':''}`}>Tags</button>
-            <button className={`project-editor-tab ${currentTab === 3 ? 'project-editor-tab-active':''}`}>Team</button>
-            <button className={`project-editor-tab ${currentTab === 4 ? 'project-editor-tab-active':''}`}>Links</button>
+            <button onClick={() => setCurrentTab(0)} className={`project-editor-tab ${currentTab === 0 ? 'project-editor-tab-active':''}`}>General</button>
+            <button onClick={() => setCurrentTab(1)} className={`project-editor-tab ${currentTab === 1 ? 'project-editor-tab-active':''}`}>Media</button>
+            <button onClick={() => setCurrentTab(2)} className={`project-editor-tab ${currentTab === 2 ? 'project-editor-tab-active':''}`}>Tags</button>
+            <button onClick={() => setCurrentTab(3)} className={`project-editor-tab ${currentTab === 3 ? 'project-editor-tab-active':''}`}>Team</button>
+            <button onClick={() => setCurrentTab(4)} className={`project-editor-tab ${currentTab === 4 ? 'project-editor-tab-active':''}`}>Links</button>
           </div>
 
           <div id='project-editor-content'>
-            {/* Insert current tab contents here */}
+            {currentTabContent}
           </div>
 
           <button id='project-editor-save'>Save Changes</button>

@@ -896,7 +896,7 @@ Header style rules
 
 #header-buttons button {
     display:flex;
-    background-color: var(--peach);
+    background-color: var(--purple-light);
     border-radius:40px;
     margin-left:10px;
     border:none;
@@ -972,7 +972,7 @@ Search style rules
     padding: 2px 5px;
     /*border: 3px solid gray;*/
     border-radius: 30px;
-    background-color: var(--peach);
+    background-color: var(--purple-light);
     font-size: 1vw;
     text-align: left;
     display: flex;
@@ -1318,6 +1318,7 @@ Project Creator and Editor style rules
 
 #project-editor-content {
     flex-grow:1;
+    margin:20px;
 }
 
 #project-editor-save {
@@ -1329,6 +1330,120 @@ Project Creator and Editor style rules
     font-size:2ch;
     width:max-content;
     margin:auto;
+}
+
+#project-editor-content label {
+    color:var(--lavender);
+    font-size:2.3ch;
+    font-weight:600;
+}
+
+#project-editor-content select, #project-editor-content input, #project-editor-content textarea {
+    margin: 10px 0;
+    border:none;
+    border-radius: 8px;
+    box-shadow: 0 0 3px var(--gray);
+    width: 100%;
+    flex-grow:1;
+    background-color:white;
+    font-size:2ch;
+}
+
+#project-editor-content textarea {
+    resize:none;
+}
+
+.project-editor-extra-info {
+    font-style:italic;
+    font-size:1.6ch;
+    color:var(--darkGray);
+}
+
+#project-editor-general {
+    display:grid;
+    height: 100%;
+    grid-template:
+        'title title about' 1fr
+        'status purpose about' 1fr
+        'audience audience about' 2fr
+        'desc desc about' 3fr /
+        1fr 1fr 2.5fr;
+    gap:0 20px;
+}
+
+.project-editor-input-item {
+    display:flex;
+    flex-direction: column;
+}
+
+#project-editor-title-input {grid-area:title;}
+#project-editor-status-input {grid-area:status;}
+#project-editor-purpose-input {grid-area:purpose;}
+#project-editor-audience-input {grid-area:audience;}
+#project-editor-description-input {grid-area:desc;}
+#project-editor-long-description-input {grid-area:about;}
+
+#project-editor-image-ui {
+    display:flex;
+    gap:10px;
+    margin: 10px 0;
+}
+
+#project-editor-image-ui > * {
+    width:calc(33% - 10px);
+    height:200px;
+    border-radius: 10px;
+}
+
+#project-editor-add-image {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border: 2px dashed var(--gray);
+}
+
+#project-editor-tags {
+    display:grid;
+    grid-template:
+        'type search' auto
+        'select search' 1fr /
+        1fr 2fr;
+    gap:20px;
+    height:100%;
+}
+
+#project-editor-type-tags {grid-area:type; min-height:80px;}
+#project-editor-selected-tags {grid-area:select;}
+#project-editor-tag-search {grid-area:search;}
+
+#project-editor-type-tags, #project-editor-selected-tags, #project-editor-tag-search {
+    background-color:white;
+    box-shadow: 0 0 3px var(--gray);
+    border-radius:8px;
+    padding:10px;
+}
+
+.project-editor-section-header {
+    color:var(--lavender);
+    font-size:2.3ch;
+    font-weight:600;
+}
+
+#project-editor-tag-search-tabs {
+    display:flex;
+    justify-content:space-between;
+}
+
+.project-editor-tag-search-tab {
+    color:var(--darkGray);
+    font-size:2ch;
+}
+
+.project-editor-tag-search-tab:hover, .tag-search-tab-active {
+    color:var(--lavender);
+    font-weight:600;
+    transition:none;
 }
 
 /*
@@ -1425,7 +1540,7 @@ Discover and Meet page style rules
 
 /*Arrangement of button sizes may need adjustment, current solution is too hard-coded*/
 #discover-header-buttons button {
-    background-color: var(--peach);
+    background-color: var(--purple-light);
     border-radius:40px;
     border:none;
     margin-left:10px;

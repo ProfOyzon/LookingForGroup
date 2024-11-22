@@ -11,6 +11,7 @@ import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
 import menuImage from "../../icons/menu.png";
 import * as tags from "../../constants/tags";
+import EditButton from "../Profile/ProfileEditButton";
 
 //To-do:
 //Fix profile page not changing when clicking 'profile' sidebar link (specifically for on invalid id pages)
@@ -23,7 +24,16 @@ let runningServer = true;
 let defaultProfile = runningServer ? undefined : {
   first_name: 'User', 
   last_name: 'Name', 
-  bio: `Here's a quick lil blurb about me!`,
+  username: 'someguy',
+  profile_image: profilePicture,
+  headline: `Here's a quick lil blurb about me!`,
+  pronouns: 'Was/Were',
+  job_title: 'Profession',
+  major: 'Professional Typer',
+  academic_year: '13th',
+  location: 'Middle of, Nowhere',
+  fun_fact: `I'm not a real person, I'm just a digital representation of one!`,
+  bio: 'A bunch of Lorem Ipsum text, not bothering to type it out.',
   skills: ['Figma','JavaScript','Visual Studio Code','Flexibility','Krita'],
 }
 
@@ -48,7 +58,7 @@ const NewProfile = () => {
       console.log('profileID not found, using default');
       profileID = '1';
     }
-    const url = `http://localhost:8081/api/users/${profileID}`;
+    const url = `/api/users/${profileID}`;
 
     try {
       let response = await fetch(url);
@@ -362,10 +372,11 @@ const NewProfile = () => {
       <div id='about-me-buttons'>
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='linkedin'/></button>
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='instagram'/></button>
-        <Popup>
+        <EditButton userData={displayedProfile}/>
+        {/* <Popup>
           <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
           <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
-        </Popup>
+        </Popup> */}
       </div>
     }</> :
     <>{
@@ -409,26 +420,26 @@ const NewProfile = () => {
       <div id='profile-page-content'>
         {/* New profile display using css grid, will contain all info except for projects */}
         <div id='profile-information-grid'>
-          <img src={profilePicture} id='profile-image' alt='profile image'/>
+          <img src={`/images/profiles/${displayedProfile.profile_image}`} id='profile-image' alt='profile image'/>
           <div id='profile-bio'>{displayedProfile.bio}</div>
 
           <div id='profile-info-name'><span id='profile-fullname'>{displayedProfile.first_name} {displayedProfile.last_name}</span>@{'someguy'}</div>
           <div id='profile-info-buttons'>{aboutMeButtons}</div>
 
           <div id='profile-info-extras'>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='profession'/>{'Profession'}</div>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='major'/>{'Profesional Typer, 13th'}</div>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='location'/>{'Middle of, Nowhere'}</div>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='pronouns'/>{'Was/Were'}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='profession'/>{displayedProfile.job_title}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='major'/>{`${displayedProfile.major}, ${displayedProfile.academic_year}`}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='location'/>{displayedProfile.location}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='pronouns'/>{displayedProfile.pronouns}</div>
           </div>
 
           <div id='profile-info-description'>
-            {'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti, deserunt facilis. A nam neque, unde eligendi officia voluptates porro sint? Tempore debitis laborum, expedita sunt illum magnam maiores eius temporibus amet. Fuga quaerat magnam veritatis facilis ipsa praesentium minus rem sunt in, facere, asperiores corporis quae veniam. Similique possimus neque sit velit earum est deleniti nostrum repellat aut alias sequi assumenda ipsum tempora minus facilis, ex at excepturi libero doloribus.'}
+            {displayedProfile.headline}
           </div>
 
           <div id='profile-info-funfact'>
             <span id='fun-fact-start'>Fun Fact! </span>
-            {`I'm not a real person, I'm just a digital representation of one!`}
+            {displayedProfile.fun_fact}
           </div>
 
           <div id='profile-info-skills'>

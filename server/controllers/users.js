@@ -55,11 +55,11 @@ const signup = async (req, res) => {
         
         <div style="margin: 2rem 1rem">
         <a style="font-size:1.25rem; color:#FFFFFF; background-color:#271D66; text-align:center; margin:2rem 0; padding:1rem; text-decoration:none;"
-        href="http://localhost:8081/api/signup/${token}" target="_blank">Activate Account</a>
+        href="https://lookingforgrp.com/api/signup/${token}" target="_blank">Activate Account</a>
         </div>
 
         <p>If the button doesn't work, use the following link:</p>
-        <a href="http://localhost:8081/api/signup/${token}" target="_blank">http://localhost:8081/api/signup/${token}</a>
+        <a href="https://lookingforgrp.com/api/signup/${token}" target="_blank">https://lookingforgrp.com/api/signup/${token}</a>
 
         <p>Kind regards,<br>
         LFG Team</p>

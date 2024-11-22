@@ -13,8 +13,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = envConfig.port;
 
-import { v4 as uuidv4 } from 'uuid';
-
 // Serve frontend files and images
 app.use(express.static(join(__dirname, "../client/build")));
 app.use("/images", express.static(join(__dirname, "./images")));

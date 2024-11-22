@@ -171,7 +171,7 @@ const getProjectById = async (req, res) => {
                 WHERE j.project_id = ?) j
             ON p.project_id = j.project_id
             JOIN (SELECT m.project_id, JSON_ARRAYAGG(JSON_OBJECT("user_id", m.user_id, "first_name", u.first_name, 
-            "last_name", u.last_name, "job_title", jt.label)) AS members
+            "last_name", u.last_name, "profile_image", u.profile_image, "job_title", jt.label)) AS members
                 FROM members m
                 JOIN users u 
                     ON m.user_id = u.user_id
@@ -574,6 +574,26 @@ const deletePicture = async (req, res) => {
     }
 }
 
+const deleteMember = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    try {
+        // Remove project's member from database
+        await pool.query("DELETE FROM members WHERE project_id = ? AND user_id = ?", [id, userId]);
+
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while removing a project's member" 
+        });
+    }
+}
+
 export default { getProjects, createProject, getProjectById, updateProject, 
-    updateThumbnail, getPictures, addPicture, updatePicturePositions, deletePicture
+    updateThumbnail, getPictures, addPicture, updatePicturePositions, deletePicture,
+    deleteMember
 };

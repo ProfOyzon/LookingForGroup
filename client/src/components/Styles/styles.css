@@ -4875,7 +4875,7 @@ My projects page style rules
 .page#my-projects {
     box-sizing: border-box;
     /* background-color:; */
-    padding: 22px 60px 0px 64px;
+    /* padding: 22px 0px 0px 0px; */
 }
 
 .my-projects-top-bar {
@@ -4915,6 +4915,8 @@ My projects page style rules
     width: 100%;
     height: auto;
     margin: 90px 0px 16px 0px;
+    padding-left: 60px;
+    padding-right: 64px;
 }
 
 /* .my-projects-profile {
@@ -4940,11 +4942,11 @@ My projects page style rules
     font-size: 20px;
 } */
 
-/* CODE GOES HERE */
-
 .my-projects-header-row {
     box-sizing: border-box;
     width: 100%;
+    padding-left: 60px;
+    padding-right: 64px;
 
     display: grid;
     grid-template-columns: auto max-content max-content max-content;
@@ -5028,11 +5030,15 @@ My projects page style rules
 .page#my-projects hr {
     box-sizing: border-box;
     border-color: var(--header-color);
+    margin-left: 60px;
+    margin-right: 64px;
 }
 
 .my-projects-grid {
     width: 100%;
     margin-bottom: 30px;
+    padding-left: 60px;
+    padding-right: 64px;
 
     display: flex;
     gap: 20px;
@@ -5127,6 +5133,8 @@ My projects page style rules
 .my-projects-list {
     box-sizing: border-box;
     margin-bottom: 30px;
+    padding-left: 60px;
+    padding-right: 64px;
 
     display: flex;
     flex-direction: column;
@@ -5137,6 +5145,8 @@ My projects page style rules
     box-sizing: border-box;
     padding-top: 0px;
     padding-bottom: 0px;
+    padding-left: 60px;
+    padding-right: 64px;
 
     display: grid;
     grid-template-columns: 54% 27% auto 6.8%;

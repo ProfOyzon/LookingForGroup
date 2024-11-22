@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../constants/routes";
 import { useSelector } from 'react-redux';
+import LFGLogoLight from "../images/lfg light mode logo.png";
+import LFGLogoDark from "../images/lfg dark mode logo.png";
 
 import Notifications from './pages/Notifications';
 
@@ -85,7 +87,7 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
     <div>
       <div className="SideBarContainer">
       <div className='headerContainer'>
-        <h1>Logo</h1>
+        <img id='lfg-logo' src={LFGLogoLight} alt='LFG'/>
 
         {/* notification bell */}
         {/*<div id="notif-dot"></div>
@@ -117,12 +119,12 @@ const SideBar = ({ avatarImage, setAvatarImage }) => {
           <img src={bell} className="navIcon" alt="Notifications" />
         </button> */}
 
-        <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
+{/*         <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
           <img src="images/icons/nav/msg-nav.png" className="navIcon" alt="Messages" /> Messages
         </button>
         <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', `${paths.routes.PROFILE}?userID=1`)}>
           <img src="images/icons/nav/profile-white.png" className="navIcon" alt="Profile" /> Profile
-        </button>
+        </button> */}
         <button className={activePage === 'Settings' ? 'active' : ''} onClick={() => handleTextChange('Settings', paths.routes.SETTINGS)}>
           <img src="images/icons/nav/settings.png" className="navIcon" alt="Setting" /> Settings
         </button>

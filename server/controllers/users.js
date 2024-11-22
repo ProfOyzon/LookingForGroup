@@ -1,17 +1,264 @@
 import bcrypt from "bcrypt";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { unlink } from "fs/promises";
 import sharp from "sharp";
 import pool from "../config/database.js";
+import { transporter } from "../config/mailer.js"
+import envConfig from "../config/env.js";
 import { genPlaceholders } from "../utils/sqlUtil.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const signup = async (req, res) => {
+    const validEmails = ["@rit.edu", "@g.rit.edu"];
+
+    // Get input data
+    const { username, password, confirm, email, firstName, lastName } = req.body;
+
+    // Checks
+    if (!username || !password || !confirm || !email || !firstName || !lastName) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing sign up information" 
+        });
+    } else if (password !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Passwords do not match" 
+        });
+    } else if (email) {
+        const valid = validEmails.some(endingStr => email.endsWith(endingStr));
+        if (!valid) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Use a RIT email" 
+            });
+        }
+    }
+
+    // Hash the password and generate a token for account activation
+    const hashPass = await bcrypt.hash(password, 10);
+    const token = crypto.randomUUID();
+
+    try {
+        // Add user information to database, setting up for account activation
+        const sql = "INSERT INTO signups (token, username, primary_email, rit_email, password, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        const values = [token, username, email, email, hashPass, firstName, lastName];
+        await pool.query(sql, values);
+
+        // Email content
+        const html = `
+        <p>Hi ${firstName},<br>
+        Thank you for signing up to LFG. You have 1 hour to activate your account. Click the button below.
+        </p>
+        
+        <div style="margin: 2rem 1rem">
+        <a style="font-size:1.25rem; color:#FFFFFF; background-color:#271D66; text-align:center; margin:2rem 0; padding:1rem; text-decoration:none;"
+        href="http://localhost:8081/api/signup/${token}" target="_blank">Activate Account</a>
+        </div>
+
+        <p>If the button doesn't work, use the following link:</p>
+        <a href="http://localhost:8081/api/signup/${token}" target="_blank">http://localhost:8081/api/signup/${token}</a>
+
+        <p>Kind regards,<br>
+        LFG Team</p>
+        `;
+
+        const message = {
+            from: envConfig.mailerEmail,
+            to: email,
+            subject: "Activate Your LFG Account",
+            html: html
+        }
+        
+        // Send account activation email
+        await transporter.sendMail(message);
+
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred during sign up" 
+        });
+    }
+}
+
+const createUser = async (req, res) => {
+    // Get token from url
+    const { token } = req.params;
+
+    try {
+        // Get signup email if token is valid
+        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 HOUR)", [token]);
+        if (email.length < 1) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Your token has expired" 
+            });
+        }
+        // Check if an user with the email already exists
+        const [user] = await pool.query("SELECT rit_email FROM users WHERE rit_email = ?", [email[0].rit_email]);
+        if (user.length > 0) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Your account has already been activated" 
+            });
+        }
+
+        // Add user officially to database
+        const sql = ` INSERT INTO users (username, primary_email, rit_email, password, first_name, last_name)
+            SELECT username, primary_email, rit_email, password, first_name, last_name
+            FROM signups
+            WHERE token = ?
+        `;
+        const values = [token];
+        await pool.query(sql, values);
+        
+        return res.sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while activating the user's account" 
+        });
+    }
+}
+
+const login = async (req, res) => {
+    const { username, password } = req.body;
+
+    const userQuery = "SELECT * FROM users WHERE username = ?";
+    const [userResult] = await pool.query(userQuery, [username]);
+    const user = userResult[0];
+
+    const match = await bcrypt.compare(password, user.password);
+
+    if (user == null || !match) {
+        return res.status(400).json({ error: 'Wrong username or password' });
+    }
+    
+    req.session.user = user;
+    req.session.authorized = true;
+
+    console.log(req.session.authorized);
+    console.log("logged in mf");
+    console.log(req.session.user);
+
+    return res.json({ redirect: '/' });
+}
+
+const requestPasswordReset = async (req, res) => {
+    // Get input data
+    const { email } = req.body;
+
+    // Checks
+    if (!email) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing email" 
+        });
+    }
+
+    // Generate a token for password reset
+    const token = crypto.randomUUID();
+
+    try {
+        // Add user information to database, setting up for password reset
+        const sql = "INSERT INTO password_resets (token, primary_email) VALUES (?, ?)";
+        const values = [token, email];
+        await pool.query(sql, values);
+
+        // Email content
+        const html = `
+        <p>Hi,<br>
+        Forgot you password? You have 15 minutes to reset your password. Click the button below.
+        </p>
+        
+        <div style="margin: 2rem 1rem">
+        <a style="font-size:1.25rem; color:#FFFFFF; background-color:#271D66; text-align:center; margin:2rem 0; padding:1rem; text-decoration:none;"
+        href="" target="_blank">Reset Password</a>
+        </div>
+
+        <p>If the button doesn't work, use the following link:</p>
+        <a href="" target="_blank">Need a link</a>
+
+        <p>Kind regards,<br>
+        LFG Team</p>
+        `;
+
+        const message = {
+            from: envConfig.mailerEmail,
+            to: email,
+            subject: "Reset Your LFG Password",
+            html: html
+        }
+        
+        // Send account activation email
+        await transporter.sendMail(message);
+
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred during password reset request" 
+        });
+    }
+}
+
+const resetPassword = async (req, res) => {
+    // Get data
+    const { token } = req.params;
+    const { password, confirm } = req.body;
+
+    if (!password || !confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing passwords" 
+        });
+    } else if (password !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Passwords do not match" 
+        });
+    }
+
+    // Hash the password
+    const hashPass = await bcrypt.hash(password, 10);
+
+    try {
+        // Get email if token is valid 
+        // Add 5 minute leeway to the 15 minutes stated in email, to account for time taken for email to arrive
+        const [email] = await pool.query("SELECT primary_email FROM password_resets WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 20 MINUTE)", [token]);
+        if (email.length < 1) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Your token has expired" 
+            });
+        }
+
+        // Update user password
+        const sql = "UPDATE users SET password = ? WHERE primary_email = ?";
+        const values = [hashPass, email[0].primary_email];
+        await pool.query(sql, values);
+        
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating user's password" 
+        });
+    }
+}
 
 const getUsers = async (req, res) => {
     // Get all users
     try {
         const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
-        jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
+        jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
             FROM users u
             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
                 FROM job_titles jt) jt
@@ -42,53 +289,6 @@ const getUsers = async (req, res) => {
     }
 }
 
-const createUser = async (req, res) => {
-    // Create a new project
-
-    // Get input data
-    const { username, password, email, firstName, lastName, bio, skills } = req.body
-
-    let hashPass = await bcrypt.hash(password, 10);
-
-    // Add user to database and get back its id
-    const sql = "INSERT INTO users (username, password, primary_email, rit_email, first_name, last_name, bio) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const values = [username, hashPass, email, email, firstName, lastName, bio];
-    await pool.query(sql, values);
-    
-    // Get skill ids and add user's skills to database 
-    /* const placeholders = genPlaceholders(skills);
-    const skillIds = await pool.query(`SELECT skill_id FROM skills WHERE label IN (${placeholders})`, skills);
-
-    for (let skill of skillIds) {
-        await pool.query("INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)", [user[0].user_id, skill.skill_id]);
-    } */
-
-    return res.sendStatus(201);
-}
-
-const login = async (req, res) => {
-    const { username, password } = req.body;
-
-    const userQuery = "SELECT * FROM users WHERE username = ?";
-    const [userResult] = await pool.query(userQuery, [username]);
-    const user = userResult[0];
-
-    const match = await bcrypt.compare(password, user.password);
-
-    if (user == null || !match) {
-        return res.status(400).json({ error: 'Wrong username or password' });
-    }
-    
-    req.session.user = user;
-    req.session.authorized = true;
-
-    console.log(req.session.authorized);
-    console.log("logged in mf");
-    console.log(req.session.user);
-
-    return res.json({ redirect: '/' });
-}
-
 const getUserById = async (req, res) => {
     // Get users using id
 
@@ -97,7 +297,7 @@ const getUserById = async (req, res) => {
 
     try {
         // Get user data
-        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.username, u.profile_image, u.headline, u.pronouns, 
             jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, s.skills, so.socials
             FROM users u
             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
@@ -173,7 +373,36 @@ const updateUser = async (req, res) => {
 
     // Get input data
     const { id } = req.params;
-    const { firstName, lastName, bio } = req.body
+    const { firstName, lastName, headline, pronouns, jobTitleId, majorId, 
+    academicYear, location, funFact, bio, skills, socials } = req.body;
+    
+    // Checks
+    if (!firstName) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing user's first name" 
+        });
+    } else if (!lastName) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing user's last name" 
+        });
+    } else if (!jobTitleId || jobTitleId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing job title id" 
+        });
+    } else if (!majorId || jobTitleId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing major id" 
+        });
+    } else if (skills.length < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing at least 1 skill" 
+        });
+    }
 
     try {
         // Update database with users's new info
@@ -242,19 +471,51 @@ const updateUser = async (req, res) => {
     }
 }
 
+const deleteUser = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+
+    try {
+        // Delete user
+        await pool.query("DELETE FROM users WHERE user_id = ?", [id]);
+        
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while deleting the user" 
+        });
+    }
+}
+
 const updateProfilePicture = async (req, res) => {
     // Update profile picture for a user
 
     // Get id from url
     const { id } = req.params;
 
+    // Checks
+    if (!req.file) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing image file" 
+        });
+    }
+
     try {
         // Download user's uploaded image. Convert to webp and reduce file size
-        const fileName = `${id}profile.webp`;
-        const saveTo = join(__dirname, "../images/profiles");
+        const fileName = `${id}profile${Date.now()}.webp`;
+        const saveTo = join(__dirname, "../images/profiles/");
         const filePath = join(saveTo, fileName);
         
         await sharp(req.file.buffer).webp({quality: 50}).toFile(filePath);
+
+        // Remove old image from server
+        const [image] = await pool.query("SELECT profile_image FROM users WHERE user_id = ?", [id]);
+        if (image[0].profile_image !== null) {
+            await unlink(saveTo + image[0].profile_image);
+        }
 
         // Store file name in database
         const sql = "UPDATE users SET profile_image = ? WHERE user_id = ?";
@@ -263,7 +524,7 @@ const updateProfilePicture = async (req, res) => {
 
         return res.status(201).json({
             status: 201,
-            data: [{profile_image: fileName}]
+            data: [{ profile_image: fileName }]
         });
     } catch(err) {
         console.log(err);
@@ -274,67 +535,154 @@ const updateProfilePicture = async (req, res) => {
     }
 }
 
-const addSkill = async (req, res) => {
-    // Add a skill to a user
-
-    // Get input data
+const getAccount = async (req, res) => {
+    // Get data
     const { id } = req.params;
-    const { skillId, position } = req.body
 
     try {
-        await pool.query("INSERT INTO user_skills (user_id, skill_id, position) VALUES (?, ?, ?)", [id, skillId, position]);
-
-        return res.sendStatus(201);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while adding a new skill for the user" 
-        });
-    }
-}
-
-const updateSkillPositions = async (req, res) => {
-    // Update skill order for a user
-
-    // Get input data 
-    const { id } = req.params;
-    const { skills } = req.body;
-
-    try {
-        for (let skill of skills) {
-            const sql = "UPDATE user_skills SET position = ? WHERE user_id = ? AND skill_id = ?";
-            const values = [skill.position, id, skill.id];
-            await pool.query(sql, values);
-        }
+        // Get account information
+        const sql = "SELECT u.user_id, u.primary_email, u.rit_email, u.username FROM users u WHERE user_id = ?";
+        const values = [id];
+        const [account] = await pool.query(sql, values);
         
-        return res.sendStatus(204);
+        return res.status(200).json({
+            status: 200,
+            data: account
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
             status: 400, 
-            error: "An error occurred while updating the skill order for a user" 
+            error: "An error occurred while getting the user's account information" 
         });
-    }
+    }    
 }
 
-const deleteSkill = async (req, res) => {
-    // Delete skill from a user
-
-    // Get input data
+const updateEmail = async (req, res) => {
+    // Get data
     const { id } = req.params;
-    const { skillId } = req.body
+    const { email, confirm, password } = req.body;
+
+    const [curPassword] = await pool.query("SELECT password FROM users WHERE user_id = ?", [id]);
+    const match = await bcrypt.compare(password, curPassword[0].password);
+
+    // Checks
+    if (!email || !confirm || !password) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing input information" 
+        });
+    } else if (email !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Emails do not match" 
+        });
+    } else if (!match) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Password is incorrect" 
+        });
+    }
 
     try {
-        // Remove user's skill from database
-        await pool.query("DELETE FROM user_skills WHERE user_id = ? AND skill_id = ?", [id, skillId]);
-
-        return res.sendStatus(204);
+        // Update user primary email
+        const sql = "UPDATE users SET primary_email = ? WHERE user_id = ?";
+        const values = [email, id];
+        await pool.query(sql, values);
+        
+        res.sendStatus(204);
     } catch (err) {
         console.log(err);
         return res.status(400).json({
             status: 400, 
-            error: "An error occurred while removing a skill from the user" 
+            error: "An error occurred while updating the user's primary email" 
+        });
+    }    
+}
+
+const updateUsername = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+    const { username, confirm, password } = req.body;
+
+    const [curPassword] = await pool.query("SELECT password FROM users WHERE user_id = ?", [id]);
+    const match = await bcrypt.compare(password, curPassword[0].password);
+
+    // Checks
+    if (!username || !confirm || !password) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing input information" 
+        });
+    } else if (username !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Usernames do not match" 
+        });
+    } else if (!match) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Password is incorrect" 
+        });
+    }
+
+    try {
+        // Update user's username
+        const sql = "UPDATE users SET username = ? WHERE user_id = ?";
+        const values = [username, id];
+        await pool.query(sql, values);
+        
+        res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the user's username" 
+        });
+    }    
+}
+
+const updatePassword = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+    const { newPassword, confirm, password } = req.body;
+
+    const [curPassword] = await pool.query("SELECT password FROM users WHERE user_id = ?", [id]);
+    const match = await bcrypt.compare(password, curPassword[0].password);
+
+    // Checks
+    if (!newPassword || !confirm || !password) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing input information" 
+        });
+    } else if (newPassword !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Passwords do not match" 
+        });
+    } else if (!match) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Current password is incorrect" 
+        });
+    }
+
+    // Hash the new password
+    const hashPass = await bcrypt.hash(newPassword, 10);
+
+    try {
+        // Update user password
+        const sql = "UPDATE users SET password = ? WHERE user_id = ?";
+        const values = [hashPass, id];
+        await pool.query(sql, values);
+
+        res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the user's password" 
         });
     }
 }
@@ -349,7 +697,7 @@ const getMyProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, p.user_id, p.created_at, g.project_types, t.tags
                 FROM projects p
                 JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
@@ -366,7 +714,7 @@ const getMyProjects = async (req, res) => {
                 ON p.project_id = t.project_id) p
             ON m.project_id = p.project_id
             WHERE m.user_id = ?
-            `;
+        `;
         const values = [id];
         const [projects] = await pool.query(sql, values);
         
@@ -393,7 +741,7 @@ const getVisibleProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
                 FROM projects p
                 JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
@@ -410,7 +758,7 @@ const getVisibleProjects = async (req, res) => {
                 ON p.project_id = t.project_id) p
             ON m.project_id = p.project_id
             WHERE m.user_id = ? AND profile_visibility = "public"
-            `;
+        `;
         const values = [id];
         const [projects] = await pool.query(sql, values);
         
@@ -433,6 +781,19 @@ const updateProjectVisibility = async (req, res) => {
     // Get input data 
     const { id } = req.params;
     const { projectId, visibility } = req.body;
+
+    // Checks
+    if (!projectId || projectId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing project id" 
+        });
+    } else if (!visibility) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing a visibility" 
+        });
+    }
 
     try {
         // Update a project visibility on user profiles
@@ -458,7 +819,7 @@ const getProjectFollowing = async (req, res) => {
 
     try {
         // Get user data
-        const sql = `SELECT p.* 
+        const sql = `SELECT p.*, pf.followed_at
             FROM project_followings pf
             JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
                 FROM projects p
@@ -477,7 +838,7 @@ const getProjectFollowing = async (req, res) => {
                 ON p.project_id = t.project_id) p
             ON pf.project_id = p.project_id
             WHERE pf.user_id = ?
-            `;
+        `;
         const values = [id];
         const [projects] = await pool.query(sql, values);
         
@@ -501,6 +862,14 @@ const addProjectFollowing = async (req, res) => {
     const { id } = req.params;
     const { projectId } = req.body
 
+    // Checks
+    if (!projectId || projectId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing project id" 
+        });
+    }
+
     try {
         // Add projet following into database
         await pool.query("INSERT INTO project_followings (user_id, project_id) VALUES (?, ?)", [id, projectId]);
@@ -521,6 +890,14 @@ const deleteProjectFollowing = async (req, res) => {
     // Get input data
     const { id } = req.params;
     const { projectId } = req.body
+
+    // Checks
+    if (!projectId || projectId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing project id" 
+        });
+    }
 
     try {
         // Remove project following from database
@@ -544,7 +921,7 @@ const getUserFollowing = async (req, res) => {
 
     try {
         // Get user data
-        const sql = `SELECT u.* 
+        const sql = `SELECT u.*, uf.followed_at 
             FROM user_followings uf
             JOIN (SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
             jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
@@ -589,6 +966,14 @@ const addUserFollowing = async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body
 
+    // Checks
+    if (!userId || userId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing user id" 
+        });
+    }
+
     try {
         // Add user following into database
         await pool.query("INSERT INTO user_followings (user_id, following_id) VALUES (?, ?)", [id, userId]);
@@ -609,6 +994,14 @@ const deleteUserFollowing = async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body
 
+    // Checks
+    if (!userId || userId < 1) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing user id" 
+        });
+    }
+
     try {
         // Remove user following from database
         await pool.query("DELETE FROM user_followings WHERE user_id = ? AND following_id = ?", [id, userId]);
@@ -623,8 +1016,9 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export default { getUsers, createUser, getUserById, getUserByUsername, getUsernameBySession, login, updateUser, updateProfilePicture, 
-    addSkill, updateSkillPositions, deleteSkill, 
+export default { login, signup, createUser, requestPasswordReset, resetPassword,
+    getUsers, getUserById, getUserByUsername, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
+    getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

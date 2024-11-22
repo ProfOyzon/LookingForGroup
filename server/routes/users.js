@@ -4,17 +4,21 @@ import userCtrl from "../controllers/users.js";
 
 const router = Router();
 
-router.post("/api/users/login", userCtrl.login);
+router.post("/api/login", userCtrl.login);
+router.post("/api/signup", userCtrl.signup);
+router.get("/api/signup/:token", userCtrl.createUser);
+router.post("/api/resets/password", userCtrl.requestPasswordReset);
+router.post("/api/resets/password/:token", userCtrl.resetPassword);
 router.get("/api/users/get-username-session", userCtrl.getUsernameBySession);
 router.get("/api/users", userCtrl.getUsers);
-router.post("/api/users", userCtrl.createUser);
 router.get("/api/users/:id", userCtrl.getUserById);
-router.get("/api/users/:username", userCtrl.getUserByUsername);
 router.put("/api/users/:id", userCtrl.updateUser);
+router.delete("/api/users/:id", userCtrl.deleteUser);
 router.put("/api/users/:id/profile-picture", mid.checkImageFile, userCtrl.updateProfilePicture);
-router.post("/api/users/:id/skills", userCtrl.addSkill);
-router.put("/api/users/:id/skills", userCtrl.updateSkillPositions);
-router.delete("/api/users/:id/skills", userCtrl.deleteSkill);
+router.get("/api/users/:id/account", userCtrl.getAccount);
+router.put("/api/users/:id/email", userCtrl.updateEmail);
+router.put("/api/users/:id/username", userCtrl.updateUsername);
+router.put("/api/users/:id/password", userCtrl.updatePassword);
 router.get("/api/users/:id/projects", userCtrl.getMyProjects);
 router.get("/api/users/:id/projects/profile", userCtrl.getVisibleProjects);
 router.put("/api/users/:id/projects/visibility", userCtrl.updateProjectVisibility);

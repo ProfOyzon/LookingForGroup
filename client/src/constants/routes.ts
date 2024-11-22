@@ -9,6 +9,7 @@ export const routes = {
     "PROFILE": "/profile",
     "NEWPROFILE": "/newProfile",
     "PROJECT": "/project",
+    "NEWPROJECT": "/newProject",
     "PROJECTPOST": "/projectPost",
     "CREATEPROJECT":"/createProject",
     "MESSAGEHISTORY":"/messageHistory",

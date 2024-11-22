@@ -23,7 +23,16 @@ let runningServer = true;
 let defaultProfile = runningServer ? undefined : {
   first_name: 'User', 
   last_name: 'Name', 
-  bio: `Here's a quick lil blurb about me!`,
+  username: 'someguy',
+  profile_image: profilePicture,
+  headline: `Here's a quick lil blurb about me!`,
+  pronouns: 'Was/Were',
+  job_title: 'Profession',
+  major: 'Professional Typer',
+  academic_year: '13th',
+  location: 'Middle of, Nowhere',
+  fun_fact: `I'm not a real person, I'm just a digital representation of one!`,
+  bio: 'A bunch of Lorem Ipsum text, not bothering to type it out.',
   skills: ['Figma','JavaScript','Visual Studio Code','Flexibility','Krita'],
 }
 
@@ -35,7 +44,6 @@ const NewProfile = () => {
   //Get url parameters to tell what user we are looking for
   let urlParams = new URLSearchParams(window.location.search);
   let profileID = urlParams.get('userID');
-  console.log(profileID);
   if (profileID === undefined || profileID === null) {
     //If no profileID is in search query, automatically set to the current user's id
     console.log('profileID not found, using default');
@@ -44,7 +52,12 @@ const NewProfile = () => {
 
   //Function used to get profile data
   const getProfileData = async () => {
-    const url = `http://localhost:8081/api/users/${profileID}`;
+    if (profileID === undefined || profileID === null) {
+      //If no profileID is in search query, automatically set to the current user's id
+      console.log('profileID not found, using default');
+      profileID = '1';
+    }
+    const url = `/api/users/${profileID}`;
 
     try {
       let response = await fetch(url);
@@ -348,7 +361,9 @@ const NewProfile = () => {
       profileID = '1';
     }
 
-    getProfileData();
+    if (runningServer) {
+      getProfileData();
+    }
   }, [location])
 
   const aboutMeButtons = usersProfile === true ? 
@@ -403,26 +418,26 @@ const NewProfile = () => {
       <div id='profile-page-content'>
         {/* New profile display using css grid, will contain all info except for projects */}
         <div id='profile-information-grid'>
-          <img src={profilePicture} id='profile-image' alt='profile image'/>
+          <img src={`/images/profiles/${displayedProfile.profile_image}`} id='profile-image' alt='profile image'/>
           <div id='profile-bio'>{displayedProfile.bio}</div>
 
           <div id='profile-info-name'><span id='profile-fullname'>{displayedProfile.first_name} {displayedProfile.last_name}</span>@{'someguy'}</div>
           <div id='profile-info-buttons'>{aboutMeButtons}</div>
 
           <div id='profile-info-extras'>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='profession'/>{'Profession'}</div>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='major'/>{'Profesional Typer, 13th'}</div>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='location'/>{'Middle of, Nowhere'}</div>
-            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='pronouns'/>{'Was/Were'}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='profession'/>{displayedProfile.job_title}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='major'/>{`${displayedProfile.major}, ${displayedProfile.academic_year}`}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='location'/>{displayedProfile.location}</div>
+            <div className='profile-extra'><img src={profileImage} className='info-extra-image' alt='pronouns'/>{displayedProfile.pronouns}</div>
           </div>
 
           <div id='profile-info-description'>
-            {'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti, deserunt facilis. A nam neque, unde eligendi officia voluptates porro sint? Tempore debitis laborum, expedita sunt illum magnam maiores eius temporibus amet. Fuga quaerat magnam veritatis facilis ipsa praesentium minus rem sunt in, facere, asperiores corporis quae veniam. Similique possimus neque sit velit earum est deleniti nostrum repellat aut alias sequi assumenda ipsum tempora minus facilis, ex at excepturi libero doloribus.'}
+            {displayedProfile.headline}
           </div>
 
           <div id='profile-info-funfact'>
             <span id='fun-fact-start'>Fun Fact! </span>
-            {`I'm not a real person, I'm just a digital representation of one!`}
+            {displayedProfile.fun_fact}
           </div>
 
           <div id='profile-info-skills'>
@@ -431,12 +446,12 @@ const NewProfile = () => {
               then use a map function to generate tags to fill this div */
               displayedProfile.skills.map((tag) => {
                 let category : string;
-                if (tags.desSkills.includes(tag)) {category = 'red';}
-                else if (tags.devSkills.includes(tag)) {category = 'yellow';}
-                else if (tags.softSkills.includes(tag)) {category = 'purple';}
+                if (tag.type === 'Design') {category = 'red';}
+                else if (tag.type === 'Developer') {category = 'yellow';}
+                else if (tag.type === 'Soft') {category = 'purple';}
                 else {category = 'grey';}
                 return(
-                  <div className={`skill-tag-label label-${category}`}>{tag}</div>
+                  <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
                 )
               })
             }

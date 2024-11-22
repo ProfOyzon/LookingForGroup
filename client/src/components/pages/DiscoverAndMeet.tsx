@@ -8,6 +8,7 @@ import { SearchBar } from "../SearchBar";
 import { Header, grabUserInfo, userInfo } from "../Header";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import { Popup, PopupButton, PopupContent } from "../Popup";
+import { ImageCarousel } from "../ImageCarousel";
 import "../Styles/styles.css";
 import { projects } from "../../constants/fakeData";
 import { profiles } from "../../constants/fakeData";
@@ -799,9 +800,9 @@ const DiscoverAndMeet = ({category}) => {
           Looking for talented people to collaborate with?
         </div>
 
-        <img id='profile-hero-img-1'/>
-        <img id='profile-hero-img-2'/>
-        <img id='profile-hero-img-3'/>
+        <img id='profile-hero-img-1' className='profile-hero-img'/>
+        <img id='profile-hero-img-2' className='profile-hero-img'/>
+        <img id='profile-hero-img-3' className='profile-hero-img'/>
 
         <div id='profile-hero-blurb-1' className='profile-hero-blurb'>
           <div>
@@ -930,7 +931,7 @@ const DiscoverAndMeet = ({category}) => {
     }</>
 
   //Decides which 'content' to display on the page
-  let heroContent = category === 'projects' ? <>Nothing yet, sorry</> : profileHero;
+  let heroContent = category === 'projects' ? <ImageCarousel carouselType='Discover'/> : profileHero;
   let panelContent = category === 'projects' ? projectContent : profileContent;
 
   return(

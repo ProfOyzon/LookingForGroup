@@ -7,6 +7,7 @@ import usersRouter from "./routes/users.js";
 import projectsRouter from "./routes/projects.js";
 import datasetsRouter from "./routes/datasets.js";
 import envConfig from "./config/env.js";
+import pool from "./config/database.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -52,6 +53,13 @@ app.get("/api", (req, res) => {
 app.get("/*", (req, res) => {
     res.sendFile("index.html", {root: join(__dirname, '../client/build/')});
 })
+
+// Clean up tokens once a day
+setInterval(async () => {
+    await pool.query("DELETE FROM signups WHERE created_at <= DATE_SUB(NOW(), INTERVAL 1 HOUR)");
+    await pool.query("DELETE FROM password_resets WHERE created_at <= DATE_SUB(NOW(), INTERVAL 20 MINUTE)");
+    console.log("Tokens clean up");
+}, 24 * 60 * 60 * 1000)
 
 app.listen(port, (err) => {
     if (err) { throw err; }

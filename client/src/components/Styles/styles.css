@@ -4875,7 +4875,7 @@ My projects page style rules
 .page#my-projects {
     box-sizing: border-box;
     /* background-color:; */
-    /* padding: 22px 0px 0px 0px; */
+    padding: 0px 0px 0px 0px;
 }
 
 .my-projects-top-bar {
@@ -5209,7 +5209,7 @@ My projects page style rules
 
 .list-card-status {
     box-sizing: border-box;
-    color: var(--invert-text);
+    color: var(--main-text);
     text-align: left;
     font-size: 16px;
     font-family: Inter;
@@ -5223,7 +5223,7 @@ My projects page style rules
 
 .list-card-date {
     box-sizing: border-box;
-    color: var(--invert-text);
+    color: var(--main--text);
     text-align: right;
     font-size: 16px;
     font-family: Inter;

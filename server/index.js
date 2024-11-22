@@ -13,6 +13,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = envConfig.port;
 
+import { v4 as uuidv4 } from 'uuid';
+
 // Serve frontend files and images
 app.use(express.static(join(__dirname, "../client/build")));
 app.use("/images", express.static(join(__dirname, "./images")));
@@ -21,16 +23,28 @@ app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Routes
+/* app.use(session({
+    name: 'SessionCookie',
+    genid: function(req) {
+        console.log('session id created');
+        return uuidv4();
+    },
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false,expires:60000 }
+})); */
+
+app.use(session({
+    secret: 'blahblahblah',
+    cookie: {
+        sameSite: 'strict'
+    }
+}));
+
 app.use(usersRouter);
 app.use(projectsRouter);
 app.use(datasetsRouter);
-
-app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: false
-}));
 
 app.get("/api", (req, res) => {
     return res.json({ message: "You Reached The Looking For Group API" });

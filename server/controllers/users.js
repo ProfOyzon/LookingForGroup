@@ -129,12 +129,24 @@ const createUser = async (req, res) => {
 const login = async (req, res) => {
     const { username, password } = req.body;
 
-    console.log("USERNAME IS: " + username);
+    const userQuery = "SELECT * FROM users WHERE username = ?";
+    const [userResult] = await pool.query(userQuery, [username]);
+    const user = userResult[0];
 
-    const userQuery = "SELECT user_id FROM users WHERE username = ?";
-    const [user] = await pool.query(userQuery, [username]);
+    const match = await bcrypt.compare(password, user.password);
 
-    console.log(user);
+    if (user == null || !match) {
+        return res.status(400).json({ error: 'Wrong username or password' });
+    }
+    
+    req.session.user = user;
+    req.session.authorized = true;
+
+    console.log(req.session.authorized);
+    console.log("logged in mf");
+    console.log(req.session.user);
+
+    return res.json({ redirect: '/' });
 }
 
 const requestPasswordReset = async (req, res) => {
@@ -326,13 +338,34 @@ const getUserById = async (req, res) => {
 }
 
 const getUserByUsername = async (req, res) => {
+    
     // Get user's id by username
+    const userQuery = "SELECT * FROM users WHERE username = ?";
+    const [user] = await pool.query(userQuery, [username]);
 
     // Get username from url
     const { id } = req.params;
 
     // Get user data
     //const sql =
+}
+
+const getUsernameBySession = async (req, res) => {
+    try {
+        let data = { 
+            username: await req.session.user.username,
+            email: await req.session.user.primary_email,
+            first_name: await req.session.user.first_name,
+            last_name: await req.session.user.last_name
+        };
+        return res.status(201).json({
+            status: 201,
+            data: data
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: 'Error finding session!' });
+    }
 }
 
 const updateUser = async (req, res) => {
@@ -957,7 +990,6 @@ const addUserFollowing = async (req, res) => {
 
 const deleteUserFollowing = async (req, res) => {
     // Delete the person the user was following
-
     // Get input data
     const { id } = req.params;
     const { userId } = req.body
@@ -985,7 +1017,7 @@ const deleteUserFollowing = async (req, res) => {
 }
 
 export default { login, signup, createUser, requestPasswordReset, resetPassword,
-    getUsers, getUserById, getUserByUsername, updateUser, deleteUser, updateProfilePicture,
+    getUsers, getUserById, getUserByUsername, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
     getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 

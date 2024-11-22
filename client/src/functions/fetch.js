@@ -38,6 +38,32 @@ const sendPost = async (url, data, handler) => {
     }
 };
 
+const sendGet = async (url, handler) => {
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    const result = await response.json();
+    //document.getElementById('bitMessage').classList.add('hidden');
+    //document.getElementById('errorMessage').classList.add('hidden');
+    console.log(result);
+
+    if(result.redirect) {
+        window.location = result.redirect;
+    }
+
+    if(result.error) {
+        handleError(result.error);
+    }
+
+    if(handler) {
+        handler(result);
+    }
+};
+
 const hideError = () => {
     document.getElementById('errorMessage').classList.add('hidden');
 };
@@ -72,4 +98,4 @@ const GET = async (url) => {
     }
 }
 
-export { POST, GET, handleError, sendPost, hideError };
+export { POST, GET, handleError, sendPost, sendGet, hideError };

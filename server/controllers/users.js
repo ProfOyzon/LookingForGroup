@@ -50,7 +50,7 @@ const signup = async (req, res) => {
         // Email content
         const html = `
         <p>Hi ${firstName},<br>
-        Thank you for signing up to LFG. To activate your account, click the button below.
+        Thank you for signing up to LFG. You have 1 hour to activate your account. Click the button below.
         </p>
         
         <div style="margin: 2rem 1rem">
@@ -81,41 +81,6 @@ const signup = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "An error occurred during sign up" 
-        });
-    }
-}
-
-const getUsers = async (req, res) => {
-    // Get all users
-    try {
-        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
-        jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
-            FROM users u
-            LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
-                FROM job_titles jt) jt
-            ON u.job_title_id = jt.title_id
-            LEFT JOIN (SELECT m.major_id, m.label AS major
-                FROM majors m) m
-            ON u.major_id = m.major_id
-            LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
-                "position", us.position)) AS skills
-                FROM user_skills us 
-                JOIN skills s 
-                    ON us.skill_id = s.skill_id
-                GROUP BY us.user_id) s
-            ON u.user_id = s.user_id
-        `;
-        const [users] = await pool.query(sql);
-        
-        return res.status(200).json({
-            status: 200,
-            data: users
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while getting all users" 
         });
     }
 }
@@ -170,6 +135,146 @@ const login = async (req, res) => {
     const [user] = await pool.query(userQuery, [username]);
 
     console.log(user);
+}
+
+const requestPasswordReset = async (req, res) => {
+    // Get input data
+    const { email } = req.body;
+
+    // Checks
+    if (!email) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing email" 
+        });
+    }
+
+    // Generate a token for password reset
+    const token = crypto.randomUUID();
+
+    try {
+        // Add user information to database, setting up for password reset
+        const sql = "INSERT INTO password_resets (token, primary_email) VALUES (?, ?)";
+        const values = [token, email];
+        await pool.query(sql, values);
+
+        // Email content
+        const html = `
+        <p>Hi,<br>
+        Forgot you password? You have 15 minutes to reset your password. Click the button below.
+        </p>
+        
+        <div style="margin: 2rem 1rem">
+        <a style="font-size:1.25rem; color:#FFFFFF; background-color:#271D66; text-align:center; margin:2rem 0; padding:1rem; text-decoration:none;"
+        href="" target="_blank">Reset Password</a>
+        </div>
+
+        <p>If the button doesn't work, use the following link:</p>
+        <a href="" target="_blank">Need a link</a>
+
+        <p>Kind regards,<br>
+        LFG Team</p>
+        `;
+
+        const message = {
+            from: envConfig.mailerEmail,
+            to: email,
+            subject: "Reset Your LFG Password",
+            html: html
+        }
+        
+        // Send account activation email
+        await transporter.sendMail(message);
+
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred during password reset request" 
+        });
+    }
+}
+
+const resetPassword = async (req, res) => {
+    // Get data
+    const { token } = req.params;
+    const { password, confirm } = req.body;
+
+    if (!password || !confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing passwords" 
+        });
+    } else if (password !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Passwords do not match" 
+        });
+    }
+
+    // Hash the password
+    const hashPass = await bcrypt.hash(password, 10);
+
+    try {
+        // Get email if token is valid 
+        // Add 5 minute leeway to the 15 minutes stated in email, to account for time taken for email to arrive
+        const [email] = await pool.query("SELECT primary_email FROM password_resets WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 20 MINUTE)", [token]);
+        if (email.length < 1) {
+            return res.status(400).json({
+                status: 400, 
+                error: "Your token has expired" 
+            });
+        }
+
+        // Update user password
+        const sql = "UPDATE users SET password = ? WHERE primary_email = ?";
+        const values = [hashPass, email[0].primary_email];
+        await pool.query(sql, values);
+        
+        return res.sendStatus(201);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating user's password" 
+        });
+    }
+}
+
+const getUsers = async (req, res) => {
+    // Get all users
+    try {
+        const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+        jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
+            FROM users u
+            LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+                FROM job_titles jt) jt
+            ON u.job_title_id = jt.title_id
+            LEFT JOIN (SELECT m.major_id, m.label AS major
+                FROM majors m) m
+            ON u.major_id = m.major_id
+            LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+                "position", us.position)) AS skills
+                FROM user_skills us 
+                JOIN skills s 
+                    ON us.skill_id = s.skill_id
+                GROUP BY us.user_id) s
+            ON u.user_id = s.user_id
+        `;
+        const [users] = await pool.query(sql);
+        
+        return res.status(200).json({
+            status: 200,
+            data: users
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while getting all users" 
+        });
+    }
 }
 
 const getUserById = async (req, res) => {
@@ -333,6 +438,24 @@ const updateUser = async (req, res) => {
     }
 }
 
+const deleteUser = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+
+    try {
+        // Delete user
+        await pool.query("DELETE FROM users WHERE user_id = ?", [id]);
+        
+        return res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while deleting the user" 
+        });
+    }
+}
+
 const updateProfilePicture = async (req, res) => {
     // Update profile picture for a user
 
@@ -379,67 +502,154 @@ const updateProfilePicture = async (req, res) => {
     }
 }
 
-const addSkill = async (req, res) => {
-    // Add a skill to a user
-
-    // Get input data
+const getAccount = async (req, res) => {
+    // Get data
     const { id } = req.params;
-    const { skillId, position } = req.body
 
     try {
-        await pool.query("INSERT INTO user_skills (user_id, skill_id, position) VALUES (?, ?, ?)", [id, skillId, position]);
-
-        return res.sendStatus(201);
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            status: 400, 
-            error: "An error occurred while adding a new skill for the user" 
-        });
-    }
-}
-
-const updateSkillPositions = async (req, res) => {
-    // Update skill order for a user
-
-    // Get input data 
-    const { id } = req.params;
-    const { skills } = req.body;
-
-    try {
-        for (let skill of skills) {
-            const sql = "UPDATE user_skills SET position = ? WHERE user_id = ? AND skill_id = ?";
-            const values = [skill.position, id, skill.id];
-            await pool.query(sql, values);
-        }
+        // Get account information
+        const sql = "SELECT u.user_id, u.primary_email, u.rit_email, u.username FROM users u WHERE user_id = ?";
+        const values = [id];
+        const [account] = await pool.query(sql, values);
         
-        return res.sendStatus(204);
+        return res.status(200).json({
+            status: 200,
+            data: account
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
             status: 400, 
-            error: "An error occurred while updating the skill order for a user" 
+            error: "An error occurred while getting the user's account information" 
         });
-    }
+    }    
 }
 
-const deleteSkill = async (req, res) => {
-    // Delete skill from a user
-
-    // Get input data
+const updateEmail = async (req, res) => {
+    // Get data
     const { id } = req.params;
-    const { skillId } = req.body
+    const { email, confirm, password } = req.body;
+
+    const [curPassword] = await pool.query("SELECT password FROM users WHERE user_id = ?", [id]);
+    const match = await bcrypt.compare(password, curPassword[0].password);
+
+    // Checks
+    if (!email || !confirm || !password) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing input information" 
+        });
+    } else if (email !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Emails do not match" 
+        });
+    } else if (!match) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Password is incorrect" 
+        });
+    }
 
     try {
-        // Remove user's skill from database
-        await pool.query("DELETE FROM user_skills WHERE user_id = ? AND skill_id = ?", [id, skillId]);
-
-        return res.sendStatus(204);
+        // Update user primary email
+        const sql = "UPDATE users SET primary_email = ? WHERE user_id = ?";
+        const values = [email, id];
+        await pool.query(sql, values);
+        
+        res.sendStatus(204);
     } catch (err) {
         console.log(err);
         return res.status(400).json({
             status: 400, 
-            error: "An error occurred while removing a skill from the user" 
+            error: "An error occurred while updating the user's primary email" 
+        });
+    }    
+}
+
+const updateUsername = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+    const { username, confirm, password } = req.body;
+
+    const [curPassword] = await pool.query("SELECT password FROM users WHERE user_id = ?", [id]);
+    const match = await bcrypt.compare(password, curPassword[0].password);
+
+    // Checks
+    if (!username || !confirm || !password) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing input information" 
+        });
+    } else if (username !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Usernames do not match" 
+        });
+    } else if (!match) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Password is incorrect" 
+        });
+    }
+
+    try {
+        // Update user's username
+        const sql = "UPDATE users SET username = ? WHERE user_id = ?";
+        const values = [username, id];
+        await pool.query(sql, values);
+        
+        res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the user's username" 
+        });
+    }    
+}
+
+const updatePassword = async (req, res) => {
+    // Get data
+    const { id } = req.params;
+    const { newPassword, confirm, password } = req.body;
+
+    const [curPassword] = await pool.query("SELECT password FROM users WHERE user_id = ?", [id]);
+    const match = await bcrypt.compare(password, curPassword[0].password);
+
+    // Checks
+    if (!newPassword || !confirm || !password) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Missing input information" 
+        });
+    } else if (newPassword !== confirm) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Passwords do not match" 
+        });
+    } else if (!match) {
+        return res.status(400).json({
+            status: 400, 
+            error: "Current password is incorrect" 
+        });
+    }
+
+    // Hash the new password
+    const hashPass = await bcrypt.hash(newPassword, 10);
+
+    try {
+        // Update user password
+        const sql = "UPDATE users SET password = ? WHERE user_id = ?";
+        const values = [hashPass, id];
+        await pool.query(sql, values);
+
+        res.sendStatus(204);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400, 
+            error: "An error occurred while updating the user's password" 
         });
     }
 }
@@ -454,7 +664,7 @@ const getMyProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, p.user_id, p.created_at, g.project_types, t.tags
                 FROM projects p
                 JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
@@ -471,7 +681,7 @@ const getMyProjects = async (req, res) => {
                 ON p.project_id = t.project_id) p
             ON m.project_id = p.project_id
             WHERE m.user_id = ?
-            `;
+        `;
         const values = [id];
         const [projects] = await pool.query(sql, values);
         
@@ -498,7 +708,7 @@ const getVisibleProjects = async (req, res) => {
         // Get projects' data
         const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
                 FROM projects p
                 JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
@@ -515,7 +725,7 @@ const getVisibleProjects = async (req, res) => {
                 ON p.project_id = t.project_id) p
             ON m.project_id = p.project_id
             WHERE m.user_id = ? AND profile_visibility = "public"
-            `;
+        `;
         const values = [id];
         const [projects] = await pool.query(sql, values);
         
@@ -576,7 +786,7 @@ const getProjectFollowing = async (req, res) => {
 
     try {
         // Get user data
-        const sql = `SELECT p.* 
+        const sql = `SELECT p.*, pf.followed_at
             FROM project_followings pf
             JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
                 FROM projects p
@@ -595,7 +805,7 @@ const getProjectFollowing = async (req, res) => {
                 ON p.project_id = t.project_id) p
             ON pf.project_id = p.project_id
             WHERE pf.user_id = ?
-            `;
+        `;
         const values = [id];
         const [projects] = await pool.query(sql, values);
         
@@ -678,7 +888,7 @@ const getUserFollowing = async (req, res) => {
 
     try {
         // Get user data
-        const sql = `SELECT u.* 
+        const sql = `SELECT u.*, uf.followed_at 
             FROM user_followings uf
             JOIN (SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
             jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, s.skills
@@ -774,8 +984,9 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export default { signup, getUsers, createUser, getUserById, getUserByUsername, login, updateUser, updateProfilePicture, 
-    addSkill, updateSkillPositions, deleteSkill, 
+export default { login, signup, createUser, requestPasswordReset, resetPassword,
+    getUsers, getUserById, getUserByUsername, updateUser, deleteUser, updateProfilePicture,
+    getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 
     getUserFollowing, addUserFollowing, deleteUserFollowing

@@ -1,30 +1,15 @@
 //tags used for projects
 //Many are temporary, as they are just what was in the data
 export const tags = [
-  "Game Development",
-  "Roguelike",
-  "FPS",
-  "So Retro",
-  "Rock",
-  "Cooking",
-  "Birthday",
-  "Dirt",
-  "2.5D",
-  "Sandbox",
-  "Adventure",
-  "Shared1",
-  "Shared2",
-  "Wah",
-  "Waah",
-  "Waaah",
-  "Waaaah",
-  "Boring",
-  "BlahBlahBlah",
-  "abc",
-  "12345",
-  "Class Project",
-  "pls help",
-  "idk",
+  "New",
+  "Video Game",
+  "Analog Game",
+  "Mobile App",
+  "Website",
+  "Animation",
+  "Film",
+  "Software",
+  "Other"
 ]
 
 export const projectTypes = [
@@ -140,6 +125,13 @@ export const desSkills = [
   "Photography",
   "Adobe After Effects",
   "Clip Studio Paint",
+]
+
+export const peopleTags = [
+  "All",
+  "Developers",
+  "Designers",
+  "Other"
 ]
 
 //Used for profiles and position listings on projects

@@ -20,12 +20,22 @@ const ToTopButton = () => {
     };
 
     useEffect(() => {
-        document.querySelector(".page").addEventListener("scroll", () => toggleVisible(document.querySelector(".page")));
+        const pageElement = document.querySelector(".page");
+        if (pageElement) {
+            pageElement.addEventListener("scroll", () => toggleVisible(pageElement));
+        }
     });
 
     return (
         <div className="ToTopContainer">
-            <button className={"to-top-button"} onClick={() => scrollToTop(document.querySelector(".page"))} style={{display: visible ? "inline" : "none"}}>{"^"}</button>
+            <button className={"to-top-button"} onClick={() => scrollToTop(document.querySelector(".page"))} style={{display: visible ? "inline" : "none"}}>
+                <img 
+                src="assets/dropdown_dark.png" 
+                src-light="assets/dropdown_light.png"
+                src-dark="assets/dropdown_dark.png"
+                className="theme-icon"
+                alt="" />
+            </button>
         </div>
     );
 };

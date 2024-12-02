@@ -17,4 +17,5 @@ export const routes = {
     "SETTINGS": "/settings",
     "CREDITS": "/credits",
     "NOTFOUND": "/notFound",
+    "EMAILCONFIRM": "/emailConfirmation",
 }

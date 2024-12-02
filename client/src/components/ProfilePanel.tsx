@@ -12,22 +12,24 @@ import * as paths from "../constants/routes";
 //Takes in a 'profile' value which contains info on the project it will display
 //Replace extra content with actual data using 'profileData' later
 export const ProfilePanel = ({profileData, height}) => {
+  console.log(profileData);
   const navigate = useNavigate();
+  const profileURL = `${paths.routes.NEWPROFILE}?userID=${profileData.user_id}`
 
   return (
     <div className={'profile-panel'}>
-      <img src="assets/bannerImages/profile_temp.png" alt={"profile iamge"}/>
-      <h2>{profileData.name}</h2>
-      <h3>Major</h3>
-      <div id="quote">"{profileData.bio}"</div>
-      <div className={'profile-panel-hover'} onClick={() => navigate(paths.routes.PROFILE)}>
+      <img src={`images/profiles/${profileData.profile_image}`} alt={"profile image"}/>
+      <h2>{profileData.first_name} {profileData.last_name}</h2>
+      <h3>{profileData.major}</h3>
+      <div id="quote">"{profileData.headline}"</div>
+      <div className={'profile-panel-hover'} onClick={() => navigate(profileURL)}>
         <div className={'profile-panel-hover-item'}>
           <img src="assets/black/role.png"
           src-light="assets/white/role.png"
           src-dark="assets/black/role.png"
           className="theme-icon"
           />
-          <p>Role</p>
+          <p>{profileData.job_title}</p>
           </div>
         <div className={'profile-panel-hover-item'}>
           <img src="assets/black/location.png"
@@ -35,7 +37,7 @@ export const ProfilePanel = ({profileData, height}) => {
           src-dark="assets/black/location.png"
           className="theme-icon"
           />
-          <p>Location</p>
+          <p>{profileData.location}</p>
           </div>
         <div className={'profile-panel-hover-item'}>
           <img src="assets/black/pronouns.png"
@@ -43,7 +45,7 @@ export const ProfilePanel = ({profileData, height}) => {
           src-dark="assets/black/pronouns.png"
           className="theme-icon"
           />
-          <p>Pronouns</p>
+          <p>{profileData.pronouns}</p>
           </div>
         <div className={'profile-panel-hover-item'}>
           <img src="assets/black/funfact.png"
@@ -51,7 +53,7 @@ export const ProfilePanel = ({profileData, height}) => {
           src-dark="assets/black/funfact.png"
           className="theme-icon"
           />
-          <p>“I can quote almost every line from the Bee Movie!”</p>
+          <p>{profileData.fun_fact}</p>
           </div>
       </div>
     </div>

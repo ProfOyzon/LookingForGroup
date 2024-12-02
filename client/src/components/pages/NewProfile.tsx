@@ -64,8 +64,6 @@ const NewProfile = ({ theme, setTheme }) => {
       let response = await fetch(url);
 
       const profileData = await response.json();
-      console.log(profileData);
-      console.log(profileData.data[0]);
 
       if (profileData.data[0] === undefined) {
         setFailCheck(true);
@@ -88,8 +86,6 @@ const NewProfile = ({ theme, setTheme }) => {
   if (displayedProfile === undefined) {
     getProfileData();
   }
-
-  console.log(displayedProfile);
 
   //Variables used to represent profile data (only placeholders are used for now until backend is integrated)
 
@@ -502,7 +498,7 @@ const NewProfile = ({ theme, setTheme }) => {
                   //For each project in project display list... (use map)
                   displayedProjects.map((project) => (
                     //Create a Project Panel component
-                    <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
+                    <ProjectPanel width={project.width + project.adjust} projectData={project}></ProjectPanel>
                   )) :
                   <>This user has not worked on any projects yet.</>
               }</>

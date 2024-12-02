@@ -82,7 +82,7 @@ const signup = async (req, res) => {
     } else {
         url = `http://localhost:8081/api/signup/${token}`;
     }
-
+    
     try {
         // Add user information to database, setting up for account activation
         const sql = "INSERT INTO signups (token, username, primary_email, rit_email, password, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -133,7 +133,7 @@ const createUser = async (req, res) => {
 
     try {
         // Get signup email if token is valid
-        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 HOUR)", [token]);
+        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY)", [token]);
         if (email.length < 1) {
             return res.status(400).json({
                 status: 400, 

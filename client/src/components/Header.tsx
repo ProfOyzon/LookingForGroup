@@ -114,7 +114,7 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
                   src-dark="assets/profile_dark.png"
                   className="theme-icon"
                   alt='X' />
-                <div>Username<br /><span id='header-profile-email'>user@rit.edu</span></div>
+                <div>{userInfo.username}<br /><span id='header-profile-email'>{userInfo.email}</span></div>
               </button>
               <hr />
               <button onClick={switchTheme}>

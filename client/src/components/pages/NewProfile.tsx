@@ -64,8 +64,6 @@ const NewProfile = ({ theme, setTheme }) => {
       let response = await fetch(url);
 
       const profileData = await response.json();
-      console.log(profileData);
-      console.log(profileData.data[0]);
 
       if (profileData.data[0] === undefined) {
         setFailCheck(true);
@@ -88,8 +86,6 @@ const NewProfile = ({ theme, setTheme }) => {
   if (displayedProfile === undefined) {
     getProfileData();
   }
-
-  console.log(displayedProfile);
 
   //Variables used to represent profile data (only placeholders are used for now until backend is integrated)
 
@@ -370,8 +366,18 @@ const NewProfile = ({ theme, setTheme }) => {
   const aboutMeButtons = usersProfile === true ?
     <>{
       <div id='about-me-buttons'>
-        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='linkedin'/></button>
-        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='instagram'/></button>
+        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}>
+          <img src="assets/profile_dark.png"
+          src-light="assets/profile_light.png"
+          src-dark="assets/profile_dark.png"
+          className='theme-icon'
+          alt='linkedin'/></button>
+        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}>
+          <img src="assets/profile_dark.png"
+          src-light="assets/profile_light.png"
+          src-dark="assets/profile_dark.png"
+          className='theme-icon'
+          alt='instagram'/></button>
         <EditButton userData={displayedProfile}/>
         {/* <Popup>
           <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
@@ -381,9 +387,21 @@ const NewProfile = ({ theme, setTheme }) => {
     }</> :
     <>{
       <div id='about-me-buttons' className='about-me-buttons-minimal'>
-        <button><img src={profileImage} alt='linkedin' /></button>
-        <button><img src={profileImage} alt='instagram' /></button>
-        <button><img src={profileImage} alt='like' /></button>
+        <button><img src="assets/profile_dark.png"
+          src-light="assets/profile_light.png"
+          src-dark="assets/profile_dark.png"
+          className='theme-icon'
+          alt='linkedin' /></button>
+        <button><img src="assets/profile_dark.png"
+          src-light="assets/profile_light.png"
+          src-dark="assets/profile_dark.png"
+          className='theme-icon'
+          alt='instagram' /></button>
+        <button><img src="assets/profile_dark.png"
+          src-light="assets/profile_light.png"
+          src-dark="assets/profile_dark.png"
+          className='theme-icon'
+          alt='like' /></button>
         <Dropdown>
           <DropdownButton><img src={menuImage} alt='...' /></DropdownButton>
           <DropdownContent rightAlign={true}>
@@ -480,7 +498,7 @@ const NewProfile = ({ theme, setTheme }) => {
                 then use a map function to generate tags to fill this div */
                 displayedProfile.skills.map((tag) => {
                   let category: string;
-                  if (tag.type === 'Design') { category = 'red'; }
+                  if (tag.type === 'Designer') { category = 'red'; }
                   else if (tag.type === 'Developer') { category = 'yellow'; }
                   else if (tag.type === 'Soft') { category = 'purple'; }
                   else { category = 'grey'; }
@@ -502,7 +520,7 @@ const NewProfile = ({ theme, setTheme }) => {
                   //For each project in project display list... (use map)
                   displayedProjects.map((project) => (
                     //Create a Project Panel component
-                    <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
+                    <ProjectPanel width={project.width + project.adjust} projectData={project}></ProjectPanel>
                   )) :
                   <>This user has not worked on any projects yet.</>
               }</>

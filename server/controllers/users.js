@@ -75,6 +75,14 @@ const signup = async (req, res) => {
     const hashPass = await bcrypt.hash(password, 10);
     const token = crypto.randomUUID();
 
+    // Change url based on environment to allow for signups to your local database
+    let url = ``;
+    if (envConfig.env === "production") {
+        url = `https://lookingforgrp.com/api/signup/${token}`;
+    } else {
+        url = `http://localhost:8081/api/signup/${token}`;
+    }
+
     try {
         // Add user information to database, setting up for account activation
         const sql = "INSERT INTO signups (token, username, primary_email, rit_email, password, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -89,11 +97,11 @@ const signup = async (req, res) => {
         
         <div style="margin: 2rem 1rem">
         <a style="font-size:1.25rem; color:#FFFFFF; background-color:#271D66; text-align:center; margin:2rem 0; padding:1rem; text-decoration:none;"
-        href="https://lookingforgrp.com/api/signup/${token}" target="_blank">Activate Account</a>
+        href="${url}" target="_blank">Activate Account</a>
         </div>
 
         <p>If the button doesn't work, use the following link:</p>
-        <a href="https://lookingforgrp.com/api/signup/${token}" target="_blank">https://lookingforgrp.com/api/signup/${token}</a>
+        <a href="${url}" target="_blank">${url}</a>
 
         <p>Kind regards,<br>
         LFG Team</p>
@@ -346,19 +354,6 @@ const getUserById = async (req, res) => {
             error: "An error occurred while getting the user" 
         });
     }
-}
-
-const getUserByUsername = async (req, res) => {
-    
-    // Get user's id by username
-    const userQuery = "SELECT * FROM users WHERE username = ?";
-    const [user] = await pool.query(userQuery, [username]);
-
-    // Get username from url
-    const { id } = req.params;
-
-    // Get user data
-    //const sql =
 }
 
 const getUsernameBySession = async (req, res) => {
@@ -1025,7 +1020,7 @@ const deleteUserFollowing = async (req, res) => {
 }
 
 export default { login, getAuth, signup, createUser, requestPasswordReset, resetPassword,
-    getUsers, getUserById, getUserByUsername, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
+    getUsers, getUserById, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
     getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 

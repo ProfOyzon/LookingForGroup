@@ -2487,6 +2487,10 @@ Profile page style rules
     background-color: #271D66;
 }
 
+#popup-container-0 {
+    border-radius: 12px;
+}
+
 #popup-container-0:has(#edit-profile-modal) #popup-close {
     background-color: auto;
     border: none;
@@ -2498,13 +2502,15 @@ Profile page style rules
 }
 
 #edit-profile-modal {
-    height: 80vh;
+    height: 850px;
+    width: 1120px;
+    border-radius: 10px;
     /* background-image: linear-gradient(315deg, #ffceb4, #d3d3ff); */
     /* background-image: linear-gradient(-52deg, #ececf7, #d4d5ff); */
     background-image: var(--modal-gradient);
 
     display: grid;
-    grid-template-rows: 14% auto 10%;
+    grid-template-rows: 12% auto 10%;
 }
 
 #edit-profile-header {
@@ -2512,7 +2518,8 @@ Profile page style rules
     margin-top: 25px;
 
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 80px;
 }
 
 #edit-profile-modal #edit-profile-header button {
@@ -2573,15 +2580,35 @@ Profile page style rules
 
     display: grid;
     gap: 10px;
-    grid-template-columns: 33% auto 33%;
+    grid-template-columns: 37% 37% 10%;
+
+    .first-name input, .last-name input {
+        width: 290px;
+        height: 45px;
+    }
+
+    .pronouns input {
+        width: 165px;
+        height: 45px;
+    }
 }
 
 .about-row.row-2 {
     grid-area: row2;
 
     display: grid;
-    gap: 8px;
-    grid-template-columns: 40% auto 18%;
+    gap: 10px;
+    grid-template-columns: 37% 47% 10%;
+
+    .role input, .major input {
+        width: 290px;
+        height: 45px;
+    }
+
+    .year input {
+        width: 165px;
+        height: 45px;
+    }
 }
 
 .edit-region.photo {
@@ -2598,10 +2625,10 @@ Profile page style rules
     border: 2px solid white;
     border-radius: 10px;
     aspect-ratio: 1 / 1;
-    width: 210px;
-    max-width: 200px;
-    height: 210px;
-    max-height: 200px;
+    width: 250px;
+    /* max-width: 200px; */
+    height: 250px;
+    /* max-height: 200px; */
     margin: 0px 12.5%;
     padding: 0px;
     flex-shrink: 0;
@@ -2639,13 +2666,13 @@ Profile page style rules
     border-radius: 50px;
     /* width: min-content;
     height: auto; */
-    padding: 4px;
+    padding: 8px;
     color: var(--main-text);
     font-size: 25px;
     font-weight: normal;
 
     img {
-        width: 36px;
+        width: 26px;
         height: auto;
     }
 }
@@ -2698,7 +2725,7 @@ Profile page style rules
     box-sizing: border-box;
     border: 2px solid var(--header-color);
     border-radius: 8px;
-    width: 100%;
+    /* width: 100%; */
     /* height: 45px; */
     margin: 8px 5px 10px 0;
     padding: 8px 15px;
@@ -2719,7 +2746,8 @@ select.edit-region-input {
 }
 
 .edit-region-input.location {
-    width: 40%;
+    width: 290px;
+    height: 45px;
 }
 
 .edit-profile-body.about .edit-profile-section-2 {
@@ -2728,7 +2756,7 @@ select.edit-region-input {
 
     display: flex;
     justify-content: center;
-    column-gap: 8px;
+    column-gap: 10px;
 }
 
 .edit-region.quote, .edit-region.fact {
@@ -2743,8 +2771,8 @@ select.edit-region-input {
 
 .edit-region-input.big {
     box-sizing: border-box;
-    height: 100%;
-    padding-top: 11px;
+    width: 100%;
+    padding: 10px 14px;
     margin-top: 0px;
     font-family: Inter;
     resize: none;
@@ -2754,7 +2782,7 @@ select.edit-region-input {
     box-sizing: border-box;
     position: absolute;
     right: 10px;
-    bottom: 7px;
+    bottom: 24px;
     color: var(--neutral-gray);
     font-size: 14px;
     font-style: italic;
@@ -2766,15 +2794,20 @@ select.edit-region-input {
 }
 
 .edit-region.you {
-    height: 100%;
+    /* height: 100%; */
 }
 
 .edit-region-text-area.you {
-    height: calc(100% - 27px - 19px - 8px - 10px);
+    /* height: calc(100% - 27px - 19px - 8px - 10px); */
 }
 
-.edit-region-input.you {
-    height: 100%;
+.edit-region-input.big.quote,
+.edit-region-input.big.fact {
+    height: 100px;
+}
+
+.edit-region-input.big.you {
+    height: 140px;
 }
 
 /* ----- Projects Page ----- */
@@ -2875,8 +2908,12 @@ select.edit-region-input {
 }
 
 /* ----- Skills Page ----- */
+#edit-profile-content {
+    height: 100%;
+}
+
 .edit-profile-body.skills {
-    height: 57vh;
+    height: 100%;
 
     display: grid;
     grid-template-rows: 100%;
@@ -2884,8 +2921,8 @@ select.edit-region-input {
 }
 
 .edit-profile-skills-section {
-    height: 57vh;
-    margin: 0px 59px;
+    height: 98%;
+    margin: 0px 70px;
 
     display: grid;
     grid-template-columns: 32% auto;
@@ -2898,7 +2935,7 @@ select.edit-region-input {
     background-color: var(--bg-color);
     border: 0px;
     border-radius: 10px;
-    height: 57vh;
+    height: 100%;
     padding: 25px 5px 25px 26px;
     text-align: start;
     /* box-shadow: 0px 0px 10px 0px #00000040; */
@@ -2981,7 +3018,7 @@ select.edit-region-input {
     border: 0px;
     border-radius: 10px;
     /* height: 100%; */
-    height: 57vh;
+    height: 100%;
     padding: 26px 31px;
     /* box-shadow: 0px 0px 10px 0px #00000040; */
 
@@ -3023,7 +3060,7 @@ select.edit-region-input {
 
 .skills-header {
     box-sizing: border-box;
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid var(--header-color);
     width: 100%;
 
     display: flex;
@@ -3138,6 +3175,8 @@ select.edit-region-input {
 
 .link-options-list {
     box-sizing: border-box;
+    background-color: var(--bg-color);
+    color: var(--main-text);
     border: 0px;
     border-radius: 10px;
     width: 100%;
@@ -3161,11 +3200,13 @@ select.edit-region-input {
 }
 
 .edit-region-input-text {
+    background-color: var(--bg-color);
     box-sizing: border-box;
     border: 0px;
     margin: 0px;
     padding: 0px;
-    font-size: 14px;
+    font-size: 16px;
+    outline: none;
 }
 
 #edit-profile-modal .edit-region-input.links .remove-button {

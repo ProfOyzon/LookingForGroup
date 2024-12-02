@@ -10,8 +10,7 @@ import profileImage from "../icons/profile-user.png";
 
 //Header component to be used in pages
 
-//export let loggedInUsername, loggedInEmail, loggedInFirst_name, loggedInLast_name;
-export let userInfo = { username: "tegdghy", email: null, first_name: null, last_name: null };
+let userInfo = { username: null, email: null, first_name: null, last_name: null};
 
 //dataSets - list of data for the searchbar to use
 //onSearch - function for the searchbar to run when searching
@@ -29,9 +28,10 @@ export const Header = ({dataSets, onSearch}) => {
           try {
               const response = await fetch("/api/users/get-username-session");
               const { data } = await response.json();
-              const { username, email, first_name, last_name } = await data;
+              console.log(data);
+              const { username, primary_email, first_name, last_name } = await data;
               userInfo.username = await username;
-              userInfo.email = await email;
+              userInfo.email = await primary_email;
               userInfo.first_name = await first_name;
               userInfo.last_name = await last_name;
               console.log("userInfo: " + userInfo);
@@ -82,18 +82,3 @@ export const Header = ({dataSets, onSearch}) => {
       </div>
   )
 }
-
-export const grabUserInfo = () => {
-  delay(2000);
-  return userInfo;
-}
-
-export const grbUserInfo = () => {
-  return userInfo;
-}
-
-const delay = (delay) => {
-  return new Promise(resolve => setTimeout(resolve, delay));
-}
-
-export default { grabUserInfo, userInfo };

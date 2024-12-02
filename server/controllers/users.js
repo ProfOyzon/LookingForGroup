@@ -10,6 +10,40 @@ import { genPlaceholders } from "../utils/sqlUtil.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+const login = async (req, res) => {
+    const { username, password } = req.body;
+
+    const userQuery = "SELECT user_id, password FROM users WHERE username = ?";
+    const [userResult] = await pool.query(userQuery, [username]);
+    const user = userResult[0];
+
+    const match = await bcrypt.compare(password, user.password);
+
+    if (user == null || !match) {
+        return res.status(400).json({ error: 'Wrong username or password' });
+    }
+    
+    req.session.userId = user.user_id;
+
+    return res.json({ redirect: '/' });
+}
+
+const getAuth = (req, res) => {
+    if (!req.session.userId){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    }
+
+    else {
+        return res.status(200).json({
+            status: 200,
+            data: [{ user_id: req.session.userId }]
+        });
+    }
+}
+
 const signup = async (req, res) => {
     const validEmails = ["@rit.edu", "@g.rit.edu"];
 
@@ -124,29 +158,6 @@ const createUser = async (req, res) => {
             error: "An error occurred while activating the user's account" 
         });
     }
-}
-
-const login = async (req, res) => {
-    const { username, password } = req.body;
-
-    const userQuery = "SELECT * FROM users WHERE username = ?";
-    const [userResult] = await pool.query(userQuery, [username]);
-    const user = userResult[0];
-
-    const match = await bcrypt.compare(password, user.password);
-
-    if (user == null || !match) {
-        return res.status(400).json({ error: 'Wrong username or password' });
-    }
-    
-    req.session.user = user;
-    req.session.authorized = true;
-
-    console.log(req.session.authorized);
-    console.log("logged in mf");
-    console.log(req.session.user);
-
-    return res.json({ redirect: '/' });
 }
 
 const requestPasswordReset = async (req, res) => {
@@ -352,19 +363,16 @@ const getUserByUsername = async (req, res) => {
 
 const getUsernameBySession = async (req, res) => {
     try {
-        let data = { 
-            username: await req.session.user.username,
-            email: await req.session.user.primary_email,
-            first_name: await req.session.user.first_name,
-            last_name: await req.session.user.last_name
-        };
-        return res.status(201).json({
-            status: 201,
-            data: data
+        const [user] = await pool.query(`SELECT first_name, last_name, username, primary_email FROM users WHERE user_id = ?`, [req.session.userId]);
+        return res.status(200).json({
+            status: 200,
+            data: user[0]
         });
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ error: 'Error finding session!' });
+        return res.status(400).json({ 
+            status: 400,
+            error: "An error occurred while getting the user" });
     }
 }
 
@@ -1016,7 +1024,7 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export default { login, signup, createUser, requestPasswordReset, resetPassword,
+export default { login, getAuth, signup, createUser, requestPasswordReset, resetPassword,
     getUsers, getUserById, getUserByUsername, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
     getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 

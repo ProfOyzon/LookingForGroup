@@ -23,24 +23,19 @@ app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-/* app.use(session({
-    name: 'SessionCookie',
-    genid: function(req) {
-        console.log('session id created');
-        return uuidv4();
-    },
+app.use(session({
     secret: 'your-secret-key',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false,expires:60000 }
-})); */
+    saveUninitialized: false,
+    cookie: { secure: false,maxAge:60*60*6*1000 }
+}));
 
-app.use(session({
+/* app.use(session({
     secret: 'blahblahblah',
     cookie: {
         sameSite: 'strict'
     }
-}));
+})); */
 
 app.use(usersRouter);
 app.use(projectsRouter);

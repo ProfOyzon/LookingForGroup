@@ -53,12 +53,14 @@ General style rules
     --primary-color: #FEAD81;
     --panel-hover: rgba(254, 173, 129, 0.9);
     --header-color: #1A1921;
+    --dropdown-color: #1A1921;
     --sidebar-gradient: linear-gradient(180deg, #2C2A3A 30%, #FEAD81 100%);
     --hero-gradient: linear-gradient(180deg, #0E0E0E 30%, #2C2A3A 100%);
     --modal-gradient: linear-gradient(293deg, #0A0A0A 0%, #2C2A3A 100%);
 
     --main-text: white;
     --invert-text: black;
+    --neutral-gray: #9D9D9D;
 
     --create-bg: #2C2A3A;
     --create-text: white;
@@ -114,12 +116,14 @@ General style rules
     --primary-color: #271D66;
     --panel-hover: rgba(39, 29, 102, 0.9);
     --header-color: #ECECF7;
+    --dropdown-color: #FFFFFF;
     --sidebar-gradient: linear-gradient(180deg, #D3D3FF 0%, #FFCEB4 100%);
     --hero-gradient: linear-gradient(180deg, #FFFFFF 50%, #D3D3FF 100%);
     --modal-gradient: linear-gradient(113deg, #D3D3FF 0%, #FFF 100%);
 
     --main-text: black;
     --invert-text: white;
+    --neutral-gray: #636363;
 
     --create-bg: white;
     --create-text: #271D66;
@@ -1104,6 +1108,7 @@ Page popup style rules
     width: 100%;
     height: 100%;
     z-index: 3;
+    border-radius: 10px;
 }
 
 #popup-close {
@@ -1111,6 +1116,7 @@ Page popup style rules
     border-radius: 4px;
     top: 10px;
     right: 10px;
+
 }
 
 .popup-close {
@@ -1161,8 +1167,8 @@ Header style rules
     margin-right: 50px;
     grid-template:
         'search buttons' 90px / auto 140px;
-    background-color: none;
-    background-image: linear-gradient(var(--bg-color) 85%, rgba(0,0,0,0));
+    background-color: var(--bg-color);
+    /* background-image: linear-gradient(var(--bg-color) 85%, rgba(0,0,0,0)); */
     width: calc(100% - 50px);
     height: 90px;
     position: sticky;
@@ -1240,7 +1246,7 @@ Header style rules
     width: 165px;
     height: 200px;
     border-radius: 10px;
-    background-color: var(--bg-color);
+    background-color: var(--dropdown-color);
     box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.50);
     border: none;
     padding: 10px;
@@ -2481,10 +2487,14 @@ Profile page style rules
     background-color: #271D66;
 }
 
+#popup-container-0 {
+    border-radius: 12px;
+}
+
 #popup-container-0:has(#edit-profile-modal) #popup-close {
     background-color: auto;
     border: none;
-    border-radius: auto;
+    border-radius: 10px;
     font-size: auto;
     font-weight: auto;
     height: auto;
@@ -2492,21 +2502,24 @@ Profile page style rules
 }
 
 #edit-profile-modal {
-    height: 80vh;
+    height: 850px;
+    width: 1120px;
+    border-radius: 10px;
     /* background-image: linear-gradient(315deg, #ffceb4, #d3d3ff); */
     /* background-image: linear-gradient(-52deg, #ececf7, #d4d5ff); */
-    background-image: linear-gradient(to bottom right, #d4d5ff, #ececf7, #ececf7);
+    background-image: var(--modal-gradient);
 
     display: grid;
-    grid-template-rows: 14% auto 10%;
+    grid-template-rows: 12% auto 10%;
 }
 
 #edit-profile-header {
     height: fit-content;
-    margin-top: 35px;
+    margin-top: 25px;
 
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 80px;
 }
 
 #edit-profile-modal #edit-profile-header button {
@@ -2514,36 +2527,37 @@ Profile page style rules
     background-color: #00000000;
     border: 0px;
     border-radius: 35px;
-    width: 185px;
+    /* width: 100px; */
+    padding: 0px 20px;
     height: 45px;
-    color: black;
-    font-size: 20px;
+    color: var(--main--text);
+    font-size: 18px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
 
 #edit-profile-modal #edit-profile-header button:hover {
-    background-color: #271d6680;
-    color: white;
+    background-color: var(--bg-color);
+    color: var(--main-text);
 }
 
 #edit-profile-modal #edit-profile-header button:active {
-    background-color: #271d66;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--invert-text);
 }
 
 #edit-profile-modal #edit-profile-header button#selected {
-    background-color: #271d66;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--invert-text);
     font-weight: 700;
 }
 
 /* ----- About Page ----- */
 .edit-profile-body.about {
     box-sizing: border-box;
-    height: calc(100% - 28px - 10px);
-    margin: 28px 71px 0px 71px;
+    /* height: calc(100% - 28px - 10px); */
+    margin: 0px 45px;
 
     display: flex;
     flex-direction: column;
@@ -2565,16 +2579,36 @@ Profile page style rules
     grid-area: row1;
 
     display: grid;
-    gap: 8px;
-    grid-template-columns: 33% auto 33%;
+    gap: 10px;
+    grid-template-columns: 37% 37% 10%;
+
+    .first-name input, .last-name input {
+        width: 290px;
+        height: 45px;
+    }
+
+    .pronouns input {
+        width: 165px;
+        height: 45px;
+    }
 }
 
 .about-row.row-2 {
     grid-area: row2;
 
     display: grid;
-    gap: 8px;
-    grid-template-columns: 40% auto 18%;
+    gap: 10px;
+    grid-template-columns: 37% 47% 10%;
+
+    .role input, .major input {
+        width: 290px;
+        height: 45px;
+    }
+
+    .year input {
+        width: 165px;
+        height: 45px;
+    }
 }
 
 .edit-region.photo {
@@ -2591,14 +2625,14 @@ Profile page style rules
     border: 2px solid white;
     border-radius: 10px;
     aspect-ratio: 1 / 1;
-    width: 210px;
-    max-width: 200px;
-    height: 210px;
-    max-height: 200px;
+    width: 250px;
+    /* max-width: 200px; */
+    height: 250px;
+    /* max-height: 200px; */
     margin: 0px 12.5%;
     padding: 0px;
     flex-shrink: 0;
-    box-shadow: 0px 0px 10px 0px #00000040;
+    /* box-shadow: 0px 0px 10px 0px #00000040; */
 }
 
 #edit-profile-modal .edit-region-photo.photo {
@@ -2630,19 +2664,25 @@ Profile page style rules
     background-color: #00000000;
     border: 0px;
     border-radius: 50px;
-    width: min-content;
-    height: auto;
-    padding: 0px 6px 3px 6px;
-    color: white;
+    /* width: min-content;
+    height: auto; */
+    padding: 8px;
+    color: var(--main-text);
     font-size: 25px;
     font-weight: normal;
+
+    img {
+        width: 26px;
+        height: auto;
+    }
 }
 
 #edit-profile-modal .edit-region-fake-button.photo:hover,
 #edit-profile-modal:has(.edit-region-button.photo:hover) .edit-region-fake-button.photo,
 #edit-profile-modal:has(.edit-region-button.photo:hover) .edit-region-fake-button.photo:hover {
-    background-color: #ffffff40;
-    box-shadow: 0px 0px 10px 0px #00000040;
+    /* background-color: var(--primary-color); */
+    /* box-shadow: 0px 0px 10px 0px #00000040; */
+    cursor: pointer;
 }
 
 #edit-profile-modal .edit-region-button.photo {
@@ -2667,7 +2707,7 @@ Profile page style rules
 
 .edit-region-header {
     box-sizing: border-box;
-    color: #271d66;
+    color: var(--primary-color);
     font-size: 20px;
     font-weight: 500;
     letter-spacing: 0;
@@ -2675,7 +2715,7 @@ Profile page style rules
 
 .edit-region-instruct {
     box-sizing: border-box;
-    color: gray;
+    color: var(--neutral-gray);
     font-size: 14px;
     font-style: italic;
     letter-spacing: 0%;
@@ -2683,18 +2723,22 @@ Profile page style rules
 
 .edit-region-input {
     box-sizing: border-box;
-    border: 0px;
-    border-radius: 10px;
-    width: 100%;
-    margin-top: 8px;
-    padding: 5px 17px;
+    border: 2px solid var(--header-color);
+    border-radius: 8px;
+    /* width: 100%; */
+    /* height: 45px; */
+    margin: 8px 5px 10px 0;
+    padding: 8px 15px;
     font-size: 16px;
     line-height: 150%;
-    box-shadow: 0px 0px 10px 0px #00000040;
+    color: var(--main-text);
+    background-color: var(--bg-color);
+    outline: none;
+    /* box-shadow: 0px 0px 10px 0px #00000040; */
 }
 
 select.edit-region-input {
-    padding: 7.5px 17px;
+    padding: 8px 15px;
 }
 
 .edit-region.location {
@@ -2702,7 +2746,8 @@ select.edit-region-input {
 }
 
 .edit-region-input.location {
-    width: 40%;
+    width: 290px;
+    height: 45px;
 }
 
 .edit-profile-body.about .edit-profile-section-2 {
@@ -2711,7 +2756,7 @@ select.edit-region-input {
 
     display: flex;
     justify-content: center;
-    column-gap: 8px;
+    column-gap: 10px;
 }
 
 .edit-region.quote, .edit-region.fact {
@@ -2726,10 +2771,10 @@ select.edit-region-input {
 
 .edit-region-input.big {
     box-sizing: border-box;
-    height: 100%;
-    padding-top: 11px;
+    width: 100%;
+    padding: 10px 14px;
     margin-top: 0px;
-    font-family: Arial;
+    font-family: Inter;
     resize: none;
 }
 
@@ -2737,8 +2782,8 @@ select.edit-region-input {
     box-sizing: border-box;
     position: absolute;
     right: 10px;
-    bottom: 7px;
-    color: #636363;
+    bottom: 24px;
+    color: var(--neutral-gray);
     font-size: 14px;
     font-style: italic;
     letter-spacing: 0%;
@@ -2749,15 +2794,20 @@ select.edit-region-input {
 }
 
 .edit-region.you {
-    height: 100%;
+    /* height: 100%; */
 }
 
 .edit-region-text-area.you {
-    height: calc(100% - 27px - 19px - 8px - 10px);
+    /* height: calc(100% - 27px - 19px - 8px - 10px); */
 }
 
-.edit-region-input.you {
-    height: 100%;
+.edit-region-input.big.quote,
+.edit-region-input.big.fact {
+    height: 100px;
+}
+
+.edit-region-input.big.you {
+    height: 140px;
 }
 
 /* ----- Projects Page ----- */
@@ -2782,6 +2832,7 @@ select.edit-region-input {
     padding-top: 10px;
     text-align: start;
     text-indent: 0;
+    background: none;
 }
 
 .list-project {
@@ -2794,7 +2845,7 @@ select.edit-region-input {
     margin-bottom: 16px;
     font-size: 18px;
     font-weight: 700;
-    box-shadow: 0px 0px 10px 0px #00000040;
+    /* box-shadow: 0px 0px 10px 0px #00000040; */
 
     display: inline-block;
 }
@@ -2836,7 +2887,7 @@ select.edit-region-input {
 #edit-profile-modal .list-project-hide-icon-button {
     box-sizing: border-box;
     position: absolute;
-    background-color: #271d66;
+    background-color: var(--primary-color);
     border: 0px;
     border-radius: 50px;
     bottom: 9px;
@@ -2846,7 +2897,7 @@ select.edit-region-input {
     aspect-ratio: 1 / 1;
     padding: 5px;
     color: white;
-    font-family: Arial;
+    font-family: Inter;
     font-size: 18px;
     font-weight: normal;
     line-height: 24px;
@@ -2857,8 +2908,12 @@ select.edit-region-input {
 }
 
 /* ----- Skills Page ----- */
+#edit-profile-content {
+    height: 100%;
+}
+
 .edit-profile-body.skills {
-    height: 57vh;
+    height: 100%;
 
     display: grid;
     grid-template-rows: 100%;
@@ -2866,8 +2921,8 @@ select.edit-region-input {
 }
 
 .edit-profile-skills-section {
-    height: 57vh;
-    margin: 0px 59px;
+    height: 98%;
+    margin: 0px 70px;
 
     display: grid;
     grid-template-columns: 32% auto;
@@ -2877,13 +2932,13 @@ select.edit-region-input {
 
 .selected-skills-region {
     box-sizing: border-box;
-    background-color: white;
+    background-color: var(--bg-color);
     border: 0px;
     border-radius: 10px;
-    height: 57vh;
+    height: 100%;
     padding: 25px 5px 25px 26px;
     text-align: start;
-    box-shadow: 0px 0px 10px 0px #00000040;
+    /* box-shadow: 0px 0px 10px 0px #00000040; */
 }
 
 .chosen-skills-list {
@@ -2896,7 +2951,7 @@ select.edit-region-input {
 
 .chosen-item {
     background-color: #00000000;
-    font-family: Arial;
+    font-family: Inter;
     font-size: 13px;
     line-height: 15px;
     margin: 0px;
@@ -2921,21 +2976,28 @@ select.edit-region-input {
     border-radius: 55px;
     margin-left: 5px;
     padding: 5px 12px;
+    font-size: 16px;
 }
 
 .skill-item.chosen.soft,
 #edit-profile-modal .skill-item-button.soft.chosen {
-    background-color: #c1c1ff;
+    background-color: var(--tag-purple-selected);
+    border: 1px solid var(--tag-purple-selected);
+    color: var(--tag-text-selected);
 }
 
 .skill-item.chosen.hard, .skill-item.chosen.deve, 
 #edit-profile-modal .skill-item-button.hard.chosen, #edit-profile-modal .skill-item-button.deve.chosen {
-    background-color: #ffcf8b;
+    background-color: var(--tag-yellow-selected);
+    border: 1px solid var(--tag-yellow-selected);
+    color: var(--tag-text-selected);
 }
 
 .skill-item.chosen.prof, .skill-item.chosen.desi,
 #edit-profile-modal .skill-item-button.prof.chosen, #edit-profile-modal .skill-item-button.desi.chosen {
-    background-color: #ffa0b0;
+    background-color: var(--tag-red-selected);
+    border: 1px solid var(--tag-red-selected);
+    color: var(--tag-text-selected);
 }
 
 #edit-profile-modal .chosen-button {
@@ -2952,13 +3014,13 @@ select.edit-region-input {
 
 .skills-list-region {
     box-sizing: border-box;
-    background-color: white;
+    background-color: var(--bg-color);
     border: 0px;
     border-radius: 10px;
     /* height: 100%; */
-    height: 57vh;
+    height: 100%;
     padding: 26px 31px;
-    box-shadow: 0px 0px 10px 0px #00000040;
+    /* box-shadow: 0px 0px 10px 0px #00000040; */
 
     display: flex;
     flex-direction: column;
@@ -2968,7 +3030,7 @@ select.edit-region-input {
 
 .skills-search {
     box-sizing: border-box;
-    background-color: #ececf7;
+    background-color: var(--header-color);
     border: 0px;
     border-radius: 55px;
     width: 78%;
@@ -2980,7 +3042,7 @@ select.edit-region-input {
 }
 
 .skills-search i {
-    color: #271d66;
+    color: var(--primary-color);
     font-size: 13px;
 }
 
@@ -2992,12 +3054,13 @@ select.edit-region-input {
     /* height: 100%; */
     margin-left: 9px;
     padding: 8px 0px 8px 10px;
-    color: #271d66;
+    color: var(--primary-color);
+    outline: none;
 }
 
 .skills-header {
     box-sizing: border-box;
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid var(--header-color);
     width: 100%;
 
     display: flex;
@@ -3007,24 +3070,24 @@ select.edit-region-input {
 
 #edit-profile-modal .skills-filter-button {
     box-sizing: border-box;
-    background-color: white;
+    background-color: none;
     border: 0px;
     border-radius: 0px;
     height: auto;
     margin: 0px;
     padding-top: 1px;
     padding-bottom: 10px;
-    color: #636363;
+    color: var(--neutral-gray);
     font-size: 14px;
     font-weight: normal;
 }
 
 #edit-profile-modal .skills-filter-button:hover {
-    background-color: #dddddd;
+    /* background-color: #dddddd; */
 }
 
 #edit-profile-modal .skills-filter-button#selected {
-    color: #261d66;
+    color: var(--primary-color);
     font-weight: 700;
 }
 
@@ -3052,15 +3115,21 @@ select.edit-region-input {
 }
 
 #edit-profile-modal .skill-item-button.soft {
-    background-color: #e7e5ff;
+    background-color: var(--tag-purple-unselected);
+    border: 1px solid var(--tag-purple-unselected-border);
+    color: var(--tag-purple-unselected-border);
 }
 
 #edit-profile-modal .skill-item-button.hard, #edit-profile-modal .skill-item-button.deve {
-    background-color: #ffecd1;
+    background-color: var(--tag-yellow-unselected);
+    border: 1px solid var(--tag-yellow-unselected-border);
+    color: var(--tag-yellow-unselected-border);
 }
 
 #edit-profile-modal .skill-item-button.prof, #edit-profile-modal .skill-item-button.desi {
-    background-color: #ffd9df;
+    background-color: var(--tag-red-unselected);
+    border: 1px solid var(--tag-red-unselected-border);
+    color: var(--tag-red-unselected-border);
 }
 
 /* ----- Links Page ----- */
@@ -3106,11 +3175,13 @@ select.edit-region-input {
 
 .link-options-list {
     box-sizing: border-box;
+    background-color: var(--bg-color);
+    color: var(--main-text);
     border: 0px;
     border-radius: 10px;
     width: 100%;
     padding: 5px 17px;
-    font-family: Arial, FontAwesome;
+    font-family: Inter, FontAwesome;
     font-size: 14px;
     line-height: 150%;
     box-shadow: 0px 0px 10px 0px #00000040;
@@ -3118,7 +3189,7 @@ select.edit-region-input {
 
 .edit-region-input.links {
     box-sizing: border-box;
-    background-color: white;
+    background-color: var(--bg-color);
     width: 100%;
     height: min-content;
     margin: 0px;
@@ -3129,22 +3200,24 @@ select.edit-region-input {
 }
 
 .edit-region-input-text {
+    background-color: var(--bg-color);
     box-sizing: border-box;
     border: 0px;
     margin: 0px;
     padding: 0px;
-    font-size: 14px;
+    font-size: 16px;
+    outline: none;
 }
 
 #edit-profile-modal .edit-region-input.links .remove-button {
     box-sizing: border-box;
-    background-color: #271d66;
+    background-color: var(--primary-color);
     border: 0px;
     border-radius: 50px;
     aspect-ratio: 1 / 1;
     height: auto;
     padding: 0px;
-    color: white;
+    color: var(--invert-text);
     text-align: center;
     font-size: medium;
     font-weight: normal;
@@ -3166,7 +3239,7 @@ select.edit-region-input {
     border-radius: 10px;
     height: auto;
     padding: 0px 6px;
-    color: #636363;
+    color: var(--neutral-gray);
     font-size: 14px;
     font-weight: normal;
     line-height: 28px;
@@ -3181,18 +3254,19 @@ select.edit-region-input {
 #edit-profile-save {
     position: absolute;
     bottom: 25px;
+    margin-top: 25px;
     left: calc(50% - (151px / 2));
 }
 
 #edit-profile-save .edit-region-save-button {
     box-sizing: border-box;
-    background-color: #271d66;
+    background-color: var(--primary-color);
     border: 0px;
     border-radius: 55px;
-    width: 151px;
-    height: auto;
-    padding: 3px 17px;
-    color: white;
+    width: auto;
+    height: 45px;
+    padding: 0px 17px;
+    color: var(--invert-text);
     text-align: center;
     font-size: 17px;
     font-style: normal;
@@ -3200,13 +3274,11 @@ select.edit-region-input {
     line-height: 28px;
 }
 
-#edit-profile-save .edit-region-save-button:hover {
-    background-color: #17113d;
+#edit-profile-save .edit-region-save-button:hover,
+#edit-profile-save .edit-region-save-button:active {
+    background-color: var(--primary-color);
 }
 
-#edit-profile-save .edit-region-save-button:active {
-    background-color: #0e0a24;
-}
 
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
@@ -3217,7 +3289,7 @@ New Profile page style rules
 */
 
 #profile-page-content {
-    margin: 90px 50px;
+    margin: 0px 50px;
 }
 
 #profile-information-grid {
@@ -3242,9 +3314,11 @@ New Profile page style rules
 
 #profile-image {
     width: 280px;
+    height: 280px;
     grid-area: image;
     object-fit: contain;
     border-radius: 10px;
+    border: 2px solid white;
 }
 
 #profile-bio {
@@ -4922,7 +4996,7 @@ My projects page style rules
     box-sizing: border-box;
     width: 100%;
     height: auto;
-    margin: 90px 0px 16px 0px;
+    margin: 0px 0px 16px 0px;
     padding-left: 60px;
     padding-right: 64px;
 }
@@ -5044,7 +5118,7 @@ My projects page style rules
 
 .my-projects-grid {
     width: 100%;
-    margin-bottom: 30px;
+    margin: 30px 0;
     padding-left: 60px;
     padding-right: 64px;
 
@@ -5126,7 +5200,7 @@ My projects page style rules
 
 .grid-card-options-list {
     box-sizing: border-box;
-    background-color: var(--bg-color);
+    background-color: var(--dropdown-color);
     border: 0px;
     border-radius: 10px;
     width: max-content;

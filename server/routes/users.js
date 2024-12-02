@@ -5,6 +5,7 @@ import userCtrl from "../controllers/users.js";
 const router = Router();
 
 router.post("/api/login", userCtrl.login);
+router.get("/api/auth", userCtrl.getAuth);
 router.post("/api/signup", userCtrl.signup);
 router.get("/api/signup/:token", userCtrl.createUser);
 router.post("/api/resets/password", userCtrl.requestPasswordReset);

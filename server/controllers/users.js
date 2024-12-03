@@ -44,6 +44,14 @@ const getAuth = (req, res) => {
     }
 }
 
+const logout = async (req, res) => {
+    if (req.session) {
+        req.session.destroy();
+    }
+
+    return res.json({ redirect: '/' });
+}
+
 const signup = async (req, res) => {
     const validEmails = ["@rit.edu", "@g.rit.edu"];
 
@@ -1019,7 +1027,7 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export default { login, getAuth, signup, createUser, requestPasswordReset, resetPassword,
+export default { login, getAuth, logout, signup, createUser, requestPasswordReset, resetPassword,
     getUsers, getUserById, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
     getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 

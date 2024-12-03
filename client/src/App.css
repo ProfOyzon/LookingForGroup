@@ -1,3 +1,46 @@
+:root {
+    /* default dark mode is default*/
+    --primary-color: #FEAD81;
+    --panel-hover: rgba(254, 173, 129, 0.9);
+    --header-color: #1A1921;
+    --sidebar-gradient: linear-gradient(180deg, #2C2A3A 30%, #FEAD81 100%);
+    --hero-gradient: linear-gradient(180deg, #0E0E0E 30%, #2C2A3A 100%);
+    --modal-gradient: linear-gradient(293deg, #0A0A0A 0%, #2C2A3A 100%);
+
+    --main-text: white;
+    --invert-text: black;
+
+    --create-bg: #2C2A3A;
+    --create-text: white;
+
+    --tag-red: #FFA0B0;
+    --tag-yellow: #FFCF8B;
+    --tag-green: #BED9AA;
+    --tag-blue: #B0DCEE;
+    --tag-purple: #D7BED3;
+    --tag-light-red: #FFD9DF;
+    --tag-light-yellow: #FFEBD0;
+    --tag-light-green: #E5F0DD;
+    --tag-light-blue: #DFF1F8;
+    --tag-light-purple: #E6E6FF;
+}
+
+/*light mode color scheme*/
+[data-theme="light"] {
+    --primary-color: #271D66;
+    --panel-hover: rgba(39, 29, 102, 0.9);
+    --header-color: #ECECF7;
+    --sidebar-gradient: linear-gradient(180deg, #D3D3FF 0%, #FFCEB4 100%);
+    --hero-gradient: linear-gradient(180deg, #FFFFFF 50%, #D3D3FF 100%);
+    --modal-gradient: linear-gradient(113deg, #D3D3FF 0%, #FFF 100%);
+    
+    --main-text: black;
+    --invert-text: white;
+
+    --create-bg: white;
+    --create-text: #271D66;
+}
+
 .App {
   text-align: center;
 }

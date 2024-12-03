@@ -18,7 +18,7 @@ const EditButton = ({userData}) => {
     const [majorsList, setMajorsList] = useState();
 
     const getJobTitles = async () => {
-        const url = 'http://localhost:8081/api/datasets/job-titles';
+        const url = '/api/datasets/job-titles';
 
         try {
             let response = await fetch(url);
@@ -32,7 +32,7 @@ const EditButton = ({userData}) => {
     };
 
     const getMajors = async () => {
-        const url = 'http://localhost:8081/api/datasets/majors';
+        const url = '/api/datasets/majors';
 
         try {
             let response = await fetch(url);
@@ -97,7 +97,7 @@ const EditButton = ({userData}) => {
         if (form !== undefined && form !== null && theInput.files !== undefined && theInput.files !== null && theInput.files.length > 0) {
             let fileForm = new FormData(form);
 
-            const url = `http://localhost:8081/api/users/${userData.user_id}/profile-picture`;
+            const url = `/api/users/${userData.user_id}/profile-picture`;
             try {
                 let response = await fetch(url, {
                     method: "PUT",
@@ -134,7 +134,9 @@ const EditButton = ({userData}) => {
                     <img className='edit-region-photo photo' src={currentPFPLink} alt={`${currentFirstName}'s Profile Pic`}></img>
                     <div className='edit-region-button-div photo'>
                         <form className='edit-region-button-wrapper photo'>
-                            <div className='edit-region-fake-button photo'><i className='fa-solid fa-camera'></i></div>
+                            <div className='edit-region-fake-button photo'>
+                                <img src="assets/white/upload_image.png" alt="upload image"/>
+                            </div>
                             <input type="file" className='edit-region-button photo' name="image" accept="image/*"
                                 onChange={(e) => {uploadNewImage(e.target)}}></input>
                         </form>
@@ -252,7 +254,7 @@ const EditButton = ({userData}) => {
     const [shownProjects, setShownProjects] = useState();
 
     const getUsersProjects = async () => {
-        const url = `http://localhost:8081/api/users/${userData.user_id}/projects`;
+        const url = `/api/users/${userData.user_id}/projects`;
         try {
             let response = await fetch(url, {
                 method: "GET",
@@ -268,7 +270,7 @@ const EditButton = ({userData}) => {
     };
 
     const getVisibleProjects = async () => {
-        const url = `http://localhost:8081/api/users/${userData.user_id}/projects/profile`;
+        const url = `/api/users/${userData.user_id}/projects/profile`;
         try {
             let response = await fetch(url);
 
@@ -345,7 +347,7 @@ const EditButton = ({userData}) => {
                             </div>);
                         }
                         else {
-                            const projectURL = require(`../../../../server/images/thumbnails/${project.thumbnail}`);
+                            const projectURL = `/images/thumbnails/${project.thumbnail}`;
                             return (<div className='list-project'>
                                 <div className='inner-list-project'>
                                     <img className='list-project-photo' src={projectURL} alt={`${project.title}'s Thumbnail`}></img>
@@ -499,7 +501,7 @@ const EditButton = ({userData}) => {
 
     const getSkillsList = async (type: String) => {
         if (type.toLowerCase() === "developer" || type.toLowerCase() === "designer" || type.toLowerCase() === "soft") {
-            const url = `http://localhost:8081/api/datasets/skills?type=${type.toLowerCase()}`;
+            const url = `/api/datasets/skills?type=${type.toLowerCase()}`;
             try {
                 let response = await fetch(url);
 
@@ -519,7 +521,7 @@ const EditButton = ({userData}) => {
             }
         }
         else {
-            const url = `http://localhost:8081/api/datasets/skills`;
+            const url = `/api/datasets/skills`;
             try {
                 let response = await fetch(url);
 
@@ -647,7 +649,7 @@ const EditButton = ({userData}) => {
     const [socialLinks, setSocialLinks] = useState();
 
     const getSocials = async () => {
-        const url = `http://localhost:8081/api/datasets/socials`;
+        const url = `/api/datasets/socials`;
         try {
             let response = await fetch(url);
 
@@ -896,7 +898,7 @@ const EditButton = ({userData}) => {
     };
 
     const saveUserData = async () => {
-        const url = `http://localhost:8081/api/users/${userData.user_id}`;
+        const url = `/api/users/${userData.user_id}`;
         try {
             let response = await fetch(url, {
                 method: "PUT",
@@ -929,7 +931,7 @@ const EditButton = ({userData}) => {
     const saveProjectsPage = async () => {
         if (userProjects !== undefined) {
             for (let i = 0; i < userProjects.length; i++) {
-                const url = `http://localhost:8081/api/users/${userData.user_id}/projects/visibility`;
+                const url = `/api/users/${userData.user_id}/projects/visibility`;
                 try {
                     let response = await fetch(url, {
                         method: "PUT",
@@ -957,7 +959,7 @@ const EditButton = ({userData}) => {
             {/* <PopupButton buttonId={"profile-edit-button"} callback={() => setShowPopup}>Edit Profile</PopupButton> */}
 
             {/* The "Edit Profile" popup */}
-            <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup}>
+            <PagePopup width={'1120px'} height={'850px'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup}>
                 <div id='edit-profile-modal'>
                     <div id='edit-profile-header'>
                         {button1}

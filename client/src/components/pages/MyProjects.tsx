@@ -8,7 +8,7 @@ import MyProjectsDisplayList from "../MyProjectsDisplayList";
 import MyProjectsDisplayGrid from "../MyProjectsDisplayGrid";
 import { Header } from "../Header";
 
-const MyProjects = () => {
+const MyProjects = ({theme, setTheme}) => {
     // const [UID, setUID] = useState(profiles[0]._id);
     // const [activePage, setActivePage] = useState(0);
 
@@ -24,7 +24,7 @@ const MyProjects = () => {
     // - z-a 
     const [projectsList, setProjectsList] = useState();
     const [currentSearch, setCurrentSearch] = useState("");
-    const [bannerImage, setBannerImage] = useState(require("../../images/projects_header_light.png"));
+    // const [bannerImage, setBannerImage] = useState(require("../../images/projects_header_light.png"));
 
     const getProjects = async (userID: number) => {
         const url = `/api/users/${userID}/projects`;
@@ -42,26 +42,26 @@ const MyProjects = () => {
     if (projectsList === undefined) {
         getProjects(1);
     }
-    else {
-        if (projectsList.length < 20) {
-            let tempList = new Array(0);
-            for (let i = 0; i < 20; i++) {
-                if (i < projectsList.length) {
-                    tempList.push(projectsList[i]);
-                }
-                else {
-                    tempList.push({
-                        created_at: "2024-10-01T17:33:11.000Z",
-                        hook: "",
-                        thumbnail: "",
-                        title: "Test",
-                        project_id: 1,
-                    });
-                }
-            }
-            setProjectsList(tempList);
-        }
-    }
+    // else {
+    //     if (projectsList.length < 20) {
+    //         let tempList = new Array(0);
+    //         for (let i = 0; i < 20; i++) {
+    //             if (i < projectsList.length) {
+    //                 tempList.push(projectsList[i]);
+    //             }
+    //             else {
+    //                 tempList.push({
+    //                     created_at: "2024-10-01T17:33:11.000Z",
+    //                     hook: "",
+    //                     thumbnail: "",
+    //                     title: "Test",
+    //                     project_id: 1,
+    //                 });
+    //             }
+    //         }
+    //         setProjectsList(tempList);
+    //     }
+    // }
 
     const checkIfAnyWordStartsWith = (title: string, snippit: string) => {
         let words = title.split(" ");
@@ -171,10 +171,14 @@ const MyProjects = () => {
                     <i className="fa-solid fa-caret-down"></i>
                 </div> */}
             {/* </div> */}
-            <Header dataSets={[{projectsList}]} onSearch={setCurrentSearch}/>
+            <Header dataSets={[{projectsList}]} onSearch={setCurrentSearch} theme={theme} setTheme={setTheme}/>
 
             {/* Banner */}
-            <img className="my-projects-banner" src={bannerImage} alt="My Projects Banner Light"></img>
+            <img className="my-projects-banner theme-icon" 
+            src="assets/projects_header_dark.png"
+            src-light="assets/projects_header_light.png"
+            src-dark="assets/projects_header_dark.png"
+            alt="My Projects Banner Light"></img>
 
             {/* Header */}
             <div className="my-projects-header-row">

@@ -51,10 +51,10 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
           <div className="setting-in-page">
             <h3>My Avatar</h3>
             <div className="setting-content">
-              <div className="displayProfilePic">
+              {/* <div className="displayProfilePic">
                 <img src={avatarImage} alt="Profile Pic" />
-              </div>
-              <button className="settingsBtns" onClick={() => { setShowAvatarModal(true); }}>Edit Avatar</button>
+              </div> */}
+              {/* <button className="settingsBtns" onClick={() => { setShowAvatarModal(true); }}>Edit Avatar</button>
               <MakeAvatarModal
                 show={showAvatarModal}
                 onClose={() => { setShowAvatarModal(false); }}
@@ -62,7 +62,32 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
                 mode="edit"
                 onBack
                 onNext
-              />
+              /> */}
+              <div id="testing-tag-styles-container" >
+                <div className={`skill-tag-label label-red`}>Designer Skills</div>
+                <div className={`skill-tag-label label-orange`}>Major</div>
+                <div className={`skill-tag-label label-yellow`}>Developer Skills</div>
+                <div className={`skill-tag-label label-green`}>Genre</div>
+                <div className={`skill-tag-label label-blue`}>Project Type</div>
+                <div className={`skill-tag-label label-purple`}>Soft Skills</div>
+                <div className={`skill-tag-label label-grey`}>Other</div>
+
+                <div className={`tag-button tag-button-red-selected`}>Designer Skills</div>
+                <div className={`tag-button tag-button-orange-selected`}>Major</div>
+                <div className={`tag-button tag-button-yellow-selected`}>Developer Skills</div>
+                <div className={`tag-button tag-button-green-selected`}>Genre</div>
+                <div className={`tag-button tag-button-blue-selected`}>Project Type</div>
+                <div className={`tag-button tag-button-purple-selected`}>Soft Skills</div>
+                <div className={`tag-button tag-button-grey-selected`}>Other</div>
+
+                <div className={`tag-button tag-button-red-unselected`}>Designer Skills</div>
+                <div className={`tag-button tag-button-orange-unselected`}>Major</div>
+                <div className={`tag-button tag-button-yellow-unselected`}>Developer Skills</div>
+                <div className={`tag-button tag-button-green-unselected`}>Genre</div>
+                <div className={`tag-button tag-button-blue-unselected`}>Project Type</div>
+                <div className={`tag-button tag-button-purple-unselected`}>Soft Skills</div>
+                <div className={`tag-button tag-button-grey-unselected`}>Other</div>
+              </div>
             </div>
           </div>
 
@@ -187,7 +212,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
               <span>Are you sure you want to logout?</span>
             </h3>
             <div className="setting-content">
-            <button className='settingsBtns' onClick={() => { navigate(paths.routes.LOGIN) }}>Log Out</button>
+              <button className='settingsBtns' onClick={() => { navigate(paths.routes.LOGIN) }}>Log Out</button>
             </div>
           </div>
 
@@ -245,7 +270,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
               <button className="settingsBtns" >Delete Account</button>
             </div>
           </div>
-          
+
           {/* Space at the bottom of the page
               mostly for mobile so the last setting isn't hidden by the nav bar
           */}

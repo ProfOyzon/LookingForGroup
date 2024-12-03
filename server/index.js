@@ -13,8 +13,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = envConfig.port;
 
-import { v4 as uuidv4 } from 'uuid';
-
 // Serve frontend files and images
 app.use(express.static(join(__dirname, "../client/build")));
 app.use("/images", express.static(join(__dirname, "./images")));
@@ -23,24 +21,19 @@ app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-/* app.use(session({
-    name: 'SessionCookie',
-    genid: function(req) {
-        console.log('session id created');
-        return uuidv4();
-    },
+app.use(session({
     secret: 'your-secret-key',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false,expires:60000 }
-})); */
+    saveUninitialized: false,
+    cookie: { secure: false,maxAge:60*60*6*1000 }
+}));
 
-app.use(session({
+/* app.use(session({
     secret: 'blahblahblah',
     cookie: {
         sameSite: 'strict'
     }
-}));
+})); */
 
 app.use(usersRouter);
 app.use(projectsRouter);
@@ -56,7 +49,7 @@ app.get("/*", (req, res) => {
 
 // Clean up tokens once a day
 setInterval(async () => {
-    await pool.query("DELETE FROM signups WHERE created_at <= DATE_SUB(NOW(), INTERVAL 1 HOUR)");
+    await pool.query("DELETE FROM signups WHERE created_at <= DATE_SUB(NOW(), INTERVAL 1 DAY)");
     await pool.query("DELETE FROM password_resets WHERE created_at <= DATE_SUB(NOW(), INTERVAL 20 MINUTE)");
     console.log("Tokens clean up");
 }, 24 * 60 * 60 * 1000)

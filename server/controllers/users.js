@@ -10,6 +10,40 @@ import { genPlaceholders } from "../utils/sqlUtil.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+const login = async (req, res) => {
+    const { username, password } = req.body;
+
+    const userQuery = "SELECT user_id, password FROM users WHERE username = ?";
+    const [userResult] = await pool.query(userQuery, [username]);
+    const user = userResult[0];
+
+    const match = await bcrypt.compare(password, user.password);
+
+    if (user == null || !match) {
+        return res.status(400).json({ error: 'Wrong username or password' });
+    }
+    
+    req.session.userId = user.user_id;
+
+    return res.json({ redirect: '/' });
+}
+
+const getAuth = (req, res) => {
+    if (!req.session.userId){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    }
+
+    else {
+        return res.status(200).json({
+            status: 200,
+            data: [{ user_id: req.session.userId }]
+        });
+    }
+}
+
 const signup = async (req, res) => {
     const validEmails = ["@rit.edu", "@g.rit.edu"];
 
@@ -41,6 +75,14 @@ const signup = async (req, res) => {
     const hashPass = await bcrypt.hash(password, 10);
     const token = crypto.randomUUID();
 
+    // Change url based on environment to allow for signups to your local database
+    let url = ``;
+    if (envConfig.env === "production") {
+        url = `https://lookingforgrp.com/api/signup/${token}`;
+    } else {
+        url = `http://localhost:8081/api/signup/${token}`;
+    }
+    
     try {
         // Add user information to database, setting up for account activation
         const sql = "INSERT INTO signups (token, username, primary_email, rit_email, password, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -55,11 +97,11 @@ const signup = async (req, res) => {
         
         <div style="margin: 2rem 1rem">
         <a style="font-size:1.25rem; color:#FFFFFF; background-color:#271D66; text-align:center; margin:2rem 0; padding:1rem; text-decoration:none;"
-        href="http://localhost:8081/api/signup/${token}" target="_blank">Activate Account</a>
+        href="${url}" target="_blank">Activate Account</a>
         </div>
 
         <p>If the button doesn't work, use the following link:</p>
-        <a href="http://localhost:8081/api/signup/${token}" target="_blank">http://localhost:8081/api/signup/${token}</a>
+        <a href="${url}" target="_blank">${url}</a>
 
         <p>Kind regards,<br>
         LFG Team</p>
@@ -91,7 +133,7 @@ const createUser = async (req, res) => {
 
     try {
         // Get signup email if token is valid
-        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 HOUR)", [token]);
+        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY)", [token]);
         if (email.length < 1) {
             return res.status(400).json({
                 status: 400, 
@@ -124,29 +166,6 @@ const createUser = async (req, res) => {
             error: "An error occurred while activating the user's account" 
         });
     }
-}
-
-const login = async (req, res) => {
-    const { username, password } = req.body;
-
-    const userQuery = "SELECT * FROM users WHERE username = ?";
-    const [userResult] = await pool.query(userQuery, [username]);
-    const user = userResult[0];
-
-    const match = await bcrypt.compare(password, user.password);
-
-    if (user == null || !match) {
-        return res.status(400).json({ error: 'Wrong username or password' });
-    }
-    
-    req.session.user = user;
-    req.session.authorized = true;
-
-    console.log(req.session.authorized);
-    console.log("logged in mf");
-    console.log(req.session.user);
-
-    return res.json({ redirect: '/' });
 }
 
 const requestPasswordReset = async (req, res) => {
@@ -337,34 +356,18 @@ const getUserById = async (req, res) => {
     }
 }
 
-const getUserByUsername = async (req, res) => {
-    
-    // Get user's id by username
-    const userQuery = "SELECT * FROM users WHERE username = ?";
-    const [user] = await pool.query(userQuery, [username]);
-
-    // Get username from url
-    const { id } = req.params;
-
-    // Get user data
-    //const sql =
-}
-
 const getUsernameBySession = async (req, res) => {
     try {
-        let data = { 
-            username: await req.session.user.username,
-            email: await req.session.user.primary_email,
-            first_name: await req.session.user.first_name,
-            last_name: await req.session.user.last_name
-        };
-        return res.status(201).json({
-            status: 201,
-            data: data
+        const [user] = await pool.query(`SELECT first_name, last_name, username, primary_email FROM users WHERE user_id = ?`, [req.session.userId]);
+        return res.status(200).json({
+            status: 200,
+            data: user[0]
         });
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ error: 'Error finding session!' });
+        return res.status(400).json({ 
+            status: 400,
+            error: "An error occurred while getting the user" });
     }
 }
 
@@ -1016,8 +1019,8 @@ const deleteUserFollowing = async (req, res) => {
     }
 }
 
-export default { login, signup, createUser, requestPasswordReset, resetPassword,
-    getUsers, getUserById, getUserByUsername, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
+export default { login, getAuth, signup, createUser, requestPasswordReset, resetPassword,
+    getUsers, getUserById, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
     getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 

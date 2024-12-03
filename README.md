@@ -2,6 +2,8 @@
 Looking for Group
 
 # How To Run
-- use 'npm i' in the outer folder as well as the client folder
-- then in the outer folder use 'npm run dev'
-- if you want to use mongoDB, make sure you have the .env file in the outer folder
+- Use 'npm i' in the root folder as well as the client folder to install dependencies
+- If working with html and css only, you can use 'npm run client'
+- If you need to work with the backend, database or need the api to work then you can use 'npm run server'
+- 'npm run server' requires running a 'npm run build' each time you want to see an updated version of the frontend
+- Using 'npm run dev' will launch both in separate browser tabs

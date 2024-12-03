@@ -959,7 +959,7 @@ const EditButton = ({userData}) => {
             {/* <PopupButton buttonId={"profile-edit-button"} callback={() => setShowPopup}>Edit Profile</PopupButton> */}
 
             {/* The "Edit Profile" popup */}
-            <PagePopup width={'80vw'} height={'80vh'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup}>
+            <PagePopup width={'1120px'} height={'850px'} popupId={0} zIndex={3} show={showPopup} setShow={setShowPopup}>
                 <div id='edit-profile-modal'>
                     <div id='edit-profile-header'>
                         {button1}

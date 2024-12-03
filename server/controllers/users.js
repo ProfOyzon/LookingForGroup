@@ -20,7 +20,10 @@ const login = async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
 
     if (user == null || !match) {
-        return res.status(400).json({ error: 'Wrong username or password' });
+        return res.status(400).json({ 
+            status: 400,
+            error: 'Wrong username or password' 
+        });
     }
     
     req.session.userId = user.user_id;
@@ -90,7 +93,7 @@ const signup = async (req, res) => {
     } else {
         url = `http://localhost:8081/api/signup/${token}`;
     }
-
+    
     try {
         // Add user information to database, setting up for account activation
         const sql = "INSERT INTO signups (token, username, primary_email, rit_email, password, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -141,7 +144,7 @@ const createUser = async (req, res) => {
 
     try {
         // Get signup email if token is valid
-        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 HOUR)", [token]);
+        const [email] = await pool.query("SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY)", [token]);
         if (email.length < 1) {
             return res.status(400).json({
                 status: 400, 
@@ -388,7 +391,12 @@ const updateUser = async (req, res) => {
     academicYear, location, funFact, bio, skills, socials } = req.body;
     
     // Checks
-    if (!firstName) {
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } else if (!firstName) {
         return res.status(400).json({
             status: 400, 
             error: "Missing user's first name" 
@@ -486,6 +494,14 @@ const deleteUser = async (req, res) => {
     // Get data
     const { id } = req.params;
 
+    // Checks
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    }
+
     try {
         // Delete user
         await pool.query("DELETE FROM users WHERE user_id = ?", [id]);
@@ -507,7 +523,12 @@ const updateProfilePicture = async (req, res) => {
     const { id } = req.params;
 
     // Checks
-    if (!req.file) {
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } else if (!req.file) {
         return res.status(400).json({
             status: 400, 
             error: "Missing image file" 
@@ -550,6 +571,14 @@ const getAccount = async (req, res) => {
     // Get data
     const { id } = req.params;
 
+    // Checks
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    }
+
     try {
         // Get account information
         const sql = "SELECT u.user_id, u.primary_email, u.rit_email, u.username FROM users u WHERE user_id = ?";
@@ -578,7 +607,12 @@ const updateEmail = async (req, res) => {
     const match = await bcrypt.compare(password, curPassword[0].password);
 
     // Checks
-    if (!email || !confirm || !password) {
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } else if (!email || !confirm || !password) {
         return res.status(400).json({
             status: 400, 
             error: "Missing input information" 
@@ -620,7 +654,12 @@ const updateUsername = async (req, res) => {
     const match = await bcrypt.compare(password, curPassword[0].password);
 
     // Checks
-    if (!username || !confirm || !password) {
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } else if (!username || !confirm || !password) {
         return res.status(400).json({
             status: 400, 
             error: "Missing input information" 
@@ -662,7 +701,12 @@ const updatePassword = async (req, res) => {
     const match = await bcrypt.compare(password, curPassword[0].password);
 
     // Checks
-    if (!newPassword || !confirm || !password) {
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } else if (!newPassword || !confirm || !password) {
         return res.status(400).json({
             status: 400, 
             error: "Missing input information" 
@@ -703,6 +747,14 @@ const getMyProjects = async (req, res) => {
 
     // Get id from url 
     const { id } = req.params;
+
+    // Checks
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    }
 
     try {
         // Get projects' data
@@ -794,7 +846,12 @@ const updateProjectVisibility = async (req, res) => {
     const { projectId, visibility } = req.body;
 
     // Checks
-    if (!projectId || projectId < 1) {
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } else if (!projectId || projectId < 1) {
         return res.status(400).json({
             status: 400, 
             error: "Missing project id" 
@@ -874,7 +931,12 @@ const addProjectFollowing = async (req, res) => {
     const { projectId } = req.body
 
     // Checks
-    if (!projectId || projectId < 1) {
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } else if (!projectId || projectId < 1) {
         return res.status(400).json({
             status: 400, 
             error: "Missing project id" 
@@ -903,7 +965,12 @@ const deleteProjectFollowing = async (req, res) => {
     const { projectId } = req.body
 
     // Checks
-    if (!projectId || projectId < 1) {
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } else if (!projectId || projectId < 1) {
         return res.status(400).json({
             status: 400, 
             error: "Missing project id" 
@@ -978,7 +1045,12 @@ const addUserFollowing = async (req, res) => {
     const { userId } = req.body
 
     // Checks
-    if (!userId || userId < 1) {
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } else if (!userId || userId < 1) {
         return res.status(400).json({
             status: 400, 
             error: "Missing user id" 
@@ -1006,7 +1078,12 @@ const deleteUserFollowing = async (req, res) => {
     const { userId } = req.body
 
     // Checks
-    if (!userId || userId < 1) {
+    if (req.session.userId !== id){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } else if (!userId || userId < 1) {
         return res.status(400).json({
             status: 400, 
             error: "Missing user id" 

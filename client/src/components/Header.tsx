@@ -26,7 +26,8 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
   const [username, setUsername] = useState<String | null>(null);
   const [email, setEmail] = useState(null);
 
-  const [modeToggle, setModeToggle] = useState('Light Mode'); //Text for light mode toggle
+  //Text for light mode toggle button should be opposite of current theme
+  const [modeToggle, setModeToggle] = useState(theme === 'dark' ? 'Light Mode' : 'Dark Mode');
   // check the current theme and set image src to match
   // also set the text of the button to match the current theme
   useEffect(() => {

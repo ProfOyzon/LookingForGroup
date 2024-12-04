@@ -61,7 +61,7 @@ function App() {
           <Route path={paths.routes.PROFILE} element={<NewProfile theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.NEWPROFILE} element={<NewProfile theme={theme} setTheme={setTheme} />} />
           <Route path={paths.routes.PROJECT} element={<Project />}/>
-          <Route path={paths.routes.NEWPROJECT} element={<NewProject />} />
+          <Route path={paths.routes.NEWPROJECT} element={<NewProject theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.CREATEPROJECT} element={<CreateProject />}/>
           <Route path={paths.routes.PROJECTPOST} element={<ProjectPostPage />} />
           <Route path={paths.routes.SETTINGS} element={<Settings avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />

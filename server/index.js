@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(session({
-    secret: 'your-secret-key',
+    secret: envConfig.sessionSecret,
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false,maxAge:60*60*6*1000 }

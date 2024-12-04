@@ -529,7 +529,7 @@ const NewProfile = ({ theme, setTheme }) => {
 
             <div id='profile-info-skills'>
               {
-                displayedProfile.skills.length > 0 ? 
+                displayedProfile.skills != null ? 
                 /* Will take in a list of tags the user has selected,
                 then use a map function to generate tags to fill this div */
                 displayedProfile.skills.map((tag) => {

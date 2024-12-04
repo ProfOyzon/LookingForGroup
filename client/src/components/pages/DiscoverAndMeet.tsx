@@ -390,6 +390,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
               //Divide difference evenly amongst all project's widths
               project.adjust = widthAdjustment + widthAdjustmentRemainder;
               widthAdjustmentRemainder = 0;
+              //If this is the last item of the row, note it as such
+              if (project = newProjectsToDisplay[newProjectsToDisplay.length - 1]) {
+                project.rightMost = true;
+              }
             }
           }
           rowTracker++;
@@ -453,6 +457,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
             if (rowProject.row === rowTracker) {
               rowProject.adjust = widthAdjustment + widthRemainder;
               widthRemainder = 0;
+              //If this is the last item of the row, note it as such
+              if (rowProject = resizedProjects[resizedProjects.length - 1]) {
+                rowProject.rightMost = true;
+              }
             }
           }
           //Increment & reset tracker variables
@@ -474,6 +482,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         if (rowProject.row === rowTracker) {
           rowProject.adjust = widthAdjustment + widthRemainder;
           widthRemainder = 0;
+          //If this is the last item of the row, note it as such
+          if (rowProject = resizedProjects[resizedProjects.length - 1]) {
+            rowProject.rightMost = true;
+          }
         }
       }
           

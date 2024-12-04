@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../constants/routes";
+import placeholderThumbnail from "../images/project_temp.png";
 //Component that will contain info about a project, used in the discovery page
 //Smaller and more concise than ProjectCard.tsx
 
@@ -14,9 +15,9 @@ export const ProjectPanel = ({ width, projectData, rightAlign = false }) => {
   const projectURL = `${paths.routes.NEWPROJECT}?projectID=${projectData.project.project_id}`;
   return (
     <div className={'project-panel'} style={{ width: width }}>
-      <img src={`images/thumbnails/${projectData.project.thumbnail}`} alt={"project image"} />
+      <img src={projectData.project.thumbnail != null ? `images/thumbnails/${projectData.project.thumbnail}` : placeholderThumbnail} alt={"project image"} />
       <div className={'project-panel-hover'} onClick={() => navigate(projectURL)} style={rightAlign ? { width: width, right: 0 } : { width: width }}>
-        <img src={`images/thumbnails/${projectData.project.thumbnail}`} alt={"project image"} />
+        <img src={projectData.project.thumbnail != null ? `images/thumbnails/${projectData.project.thumbnail}` : placeholderThumbnail} alt={"project image"} />
         <h2>{projectData.project.title}</h2>
         <div id='project-panel-tags'>
           {

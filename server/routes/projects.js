@@ -5,14 +5,14 @@ import projCtrl from "../controllers/projects.js";
 const router = Router();
 
 router.get("/api/projects", projCtrl.getProjects);
-router.post("/api/projects", projCtrl.createProject);
+router.post("/api/projects", mid.checkLogin, projCtrl.createProject);
 router.get("/api/projects/:id", projCtrl.getProjectById);
-router.put("/api/projects/:id", projCtrl.updateProject);
-router.put("/api/projects/:id/thumbnail", mid.checkImageFile, projCtrl.updateThumbnail);
+router.put("/api/projects/:id", mid.checkLogin, projCtrl.updateProject);
+router.put("/api/projects/:id/thumbnail", mid.checkLogin, mid.checkImageFile, projCtrl.updateThumbnail);
 router.get("/api/projects/:id/pictures", projCtrl.getPictures);
-router.post("/api/projects/:id/pictures", mid.checkImageFile, projCtrl.addPicture);
-router.put("/api/projects/:id/pictures", projCtrl.updatePicturePositions);
-router.delete("/api/projects/:id/pictures", projCtrl.deletePicture);
-router.delete("/api/projects/:id/members", projCtrl.deleteMember);
+router.post("/api/projects/:id/pictures", mid.checkLogin, mid.checkImageFile, projCtrl.addPicture);
+router.put("/api/projects/:id/pictures", mid.checkLogin, projCtrl.updatePicturePositions);
+router.delete("/api/projects/:id/pictures", mid.checkLogin, projCtrl.deletePicture);
+router.delete("/api/projects/:id/members", mid.checkLogin, projCtrl.deleteMember);
 
 export default router;

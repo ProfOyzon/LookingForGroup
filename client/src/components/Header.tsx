@@ -12,6 +12,8 @@ import profileImage from "../icons/profile-user.png";
 
 let userInfo = { username: null, email: null, first_name: null, last_name: null};
 
+let loggedIn;
+
 //dataSets - list of data for the searchbar to use
 //onSearch - function for the searchbar to run when searching
 //These are directly used in the searchbar of this component, and funciton identically so
@@ -19,7 +21,11 @@ let userInfo = { username: null, email: null, first_name: null, last_name: null}
 //to-do: allow click function of searchbar to be re-defineable
 //Add functions to buttons (profile/settings = navigate to those pages; light mode: toggle light/dark mode)
 //(logout = logout the user and send them to home page or equivalent)
+
 export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
+  const [username, setUsername] = useState<String | null>(null);
+  const [email, setEmail] = useState(null);
+
   const [modeToggle, setModeToggle] = useState('Light Mode'); //Text for light mode toggle
   // check the current theme and set image src to match
   // also set the text of the button to match the current theme
@@ -38,21 +44,36 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
   useEffect(() => {
       const fetchUsername = async () => {
           try {
+
+            const response2 = await fetch("/api/auth");
+            console.log("Auth response: " + response2.status);
+
+            if(response2.status != 401) {
+              loggedIn = true;
               const response = await fetch("/api/users/get-username-session");
               const { data } = await response.json();
               console.log(data);
               const { username, primary_email, first_name, last_name } = await data;
+  
               userInfo.username = await username;
               userInfo.email = await primary_email;
               userInfo.first_name = await first_name;
               userInfo.last_name = await last_name;
+              setUsername(await username);
+              setEmail(await primary_email);
               console.log("userInfo: " + userInfo);
               console.log("userInfo.username: " + userInfo.username);
               console.log("userInfo.email: " + userInfo.email);
               console.log("userInfo.first_name: " + userInfo.first_name);
               console.log("userInfo.last_name: " + (userInfo.last_name));
+            }
+
+            else {
+              setUsername("Guest");
+            }
+            
           }   catch (err) {
-              console.log("Error fetching username: " + err);
+            console.log("Error fetching username: " + err);
           }
       }
 
@@ -114,7 +135,7 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
                   src-dark="assets/profile_dark.png"
                   className="theme-icon"
                   alt='X' />
-                <div>Username<br /><span id='header-profile-email'>user@rit.edu</span></div>
+                <div>{username}<br /><span id='header-profile-email'>{email}</span></div>
               </button>
               <hr />
               <button onClick={switchTheme}>
@@ -129,12 +150,20 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
                   src-dark="assets/white/settings.png"
                   className="theme-icon"
                   alt='X' />Settings</button>
-              <button onClick={() => { }}>
-                <img src="assets/white/logout.png"
-                  src-light="assets/black/logout.png"
-                  src-dark="assets/white/logout.png"
-                  className="theme-icon"
-                  alt='X' />Log out</button>
+                  { (!loggedIn)
+                    ? <button onClick={() => handlePageChange(paths.routes.LOGIN)}>
+                    <img src="assets/white/logout.png"
+                      src-light="assets/black/logout.png"
+                      src-dark="assets/white/logout.png"
+                      className="theme-icon"
+                      alt='X' />Log In</button>
+                      : <button onClick={() => fetch("/api/logout")}>
+                      <img src="assets/white/logout.png"
+                        src-light="assets/black/logout.png"
+                        src-dark="assets/white/logout.png"
+                        className="theme-icon"
+                        alt='X' />Log Out</button>
+                  }
             </div>
           </DropdownContent>
         </Dropdown>

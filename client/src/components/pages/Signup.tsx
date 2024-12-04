@@ -20,7 +20,7 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState(''); // second password input to check if they match
-    const [error, setError] = useState(''); // State variable for error messages
+    const [message, setMessage] = useState(''); // State variable for messages
 
     // State variables for modals
     const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -68,33 +68,37 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
     const handleSignup = async () => {
         // Check if any of the fields are empty
         if (email === '' || password === '' || confirm === '' || firstName === '' || lastName === '' || username === '') {
-            setError('Please fill in all information');
+            setMessage('Please fill in all information');
         }
         else {
             // check if email is valid
             if (!email.includes('rit.edu')) {
-                setError("Not an RIT email");
+                setMessage("Not an RIT email");
             }
-
-            // check if username is unique (??? depends on if we want unique usernames)
-
-            // Check password requirements
-            // TODO: discuss password requirements
-            // at least 6 characters long?
-            // has a number? 
-            // has a special character?
-            // has a capital letter?
 
             // check if the passwords match
             if (password !== confirm) {
-                setError('Passwords do not match');
+                setMessage('Passwords do not match');
 
                 return false;
             }
             else {
                 // Send info to begin account activation
-                sendPost('/api/signup', { username, password, confirm, email, firstName, lastName });
-
+                await fetch("/api/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ 
+                    email: email,
+                    password: password,
+                    confirm: confirm,
+                    firstName: firstName,
+                    lastName: lastName,
+                    username: username
+                    }),
+                });
+                setMessage('An account activation email has been sent');
             }
         }
 
@@ -114,7 +118,7 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
                     <h2>Sign Up</h2>
 
                     <div className="signup-form-inputs">
-                        <div className="error">{error}</div>
+                        <div className="error">{message}</div>
                         <div className="row">
                             <input
                                 className="signup-name-input"

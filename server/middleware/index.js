@@ -1,6 +1,18 @@
 import multer from "multer";
 import multerConfig from "../config/multerConfig.js";
 
+const checkLogin = (req, res, next) => {
+	// Prevent access to route if user isn't logged in
+	if (!req.session.userId){
+        return res.status(401).json({
+            status: 401, 
+            error: "Unauthorized" 
+        });
+    } 
+
+	return next();
+}
+
 const checkImageFile = (req, res, next) => {
 	const upload = multer(multerConfig).single("image");
 
@@ -31,4 +43,4 @@ const checkImageFile = (req, res, next) => {
 	});
 };
 
-export default { checkImageFile }
+export default { checkLogin, checkImageFile }

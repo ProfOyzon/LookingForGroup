@@ -21,14 +21,11 @@ import { sendPost, sendGet, GET } from "../../functions/fetch";
 import e from "express";
 
 //To-do
-//Add carosel to project view
-//Ensure we can pull from the database
-//Add actual images to panels/ensure images can work
-//Add images to profile hero
-//Add light/dark mode functionality
-//Add more icons to various places in ui
-//Add checks for filters used in filter popup
-
+//Ensure search bar works with project
+//Fix base tag filters
+//Add/finish additional tag filter popup
+//Have arrow buttons disappear if length is too wide to warrant them
+//Possibly finish & add image carousel (use ImageCarousel component, import found above)
 
 //These values need to be outside the component, otherwise they get reset every time it re-renders
 //Lists that hold the original list of projects and profiles, only updates on page reload
@@ -108,7 +105,6 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       let response = await fetch(url);
   
       const profileData = await response.json();
-      console.log(profileData);
   
       setFullProfileList(profileData.data);
       setProfileColumns(() => firstProfiles(profileData.data));
@@ -241,8 +237,22 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     rowTracker = 0;
     projectTracker = 0;
 
+    let firstThumbnail = new Image();
+    firstThumbnail.src = `images/thumbnails/${projectList[projectListPosition].thumbnail}`;
+
     //Set up initial project (ensures first row has something in it)
-    let firstPanelWidth = Math.floor((Math.random() * 200) + 200);
+
+    //Calculates panel width based on aspect ratio of thumbnail image
+    //If no thumbnail is found, randomizes width
+    /* 
+    Note: for some reason, reaching this page with a new tab/window using a url sometimes causes
+    height values of thumbnails to be 0, and as we all know, computers don't like dividing by 0.
+    For this reason, an extra check is added to ensure height does not equal 0. In the event it does,
+    we randomize width instead of calculating an accurate width.
+    */
+    let firstPanelWidth = projectList[projectListPosition].thumbnail != null && firstThumbnail.height != 0 ? 
+      firstThumbnail.width * (200 / firstThumbnail.height) :
+      Math.floor((Math.random() * 200) + 200);
     widthTracker += firstPanelWidth + 24;
     projectsToDisplay.push({project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker});
     projectListPosition++
@@ -251,64 +261,70 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     //Start iterating through projects
     //(For testing purposes, will just loop until break condition is met)
     while (rowTracker <= 5 && projectListPosition < projectList.length) {
-        //Get a width value based on the project's display image's aspect ratio
-        //Formula for getting width from image: 
-        /*
-        (image height) / X = 100px
-        (image height) = 100px * X
-        X = (image height) / 100px;
-        (image width) / X = final width
+      //Get thumbnail and its width & height
+      let thumbnail = new Image();
+      thumbnail.src = `images/thumbnails/${projectList[projectListPosition].thumbnail}`;
+      //Get a width value based on the project's display image's aspect ratio
+      //Formula for getting width from image: 
+      /*
+      (image height) / X = 100px
+      (image height) = 100px * X
+      X = (image height) / 100px;
+      (image width) / X = final width
 
-        (image width) / ((image height) / 100px) = final width
+      (image width) / ((image height) / 100px) = final width
 
-        (image height) * X = 100px
-        X = 100px / (image height)
+      (image height) * X = 100px
+      X = 100px / (image height)
 
-        (image width) * (100px / (image height)) = final width [we'll use this one]
-        */
-        //(For testing's sake, width will be randomized)
-        ///let panelWidth = imageWidth * (100 / imageHeight); [Use this when images are integrated]
-        //Add use case for if width is too wide for window
-        let panelWidth = Math.floor((Math.random() * 200) + 200);
-        //Add (width value + flexbox gap value + borders) to width tracker
-        //Note - borders & other factors may add extra width, double check calculations using inspector
-        widthTracker += panelWidth + 24;
-        //if width tracker > flexbox width, make final adjustments to row before moving to next
-        if (widthTracker > flexboxWidth) {
-            //Calculate flexboxWidth - total width of all projects
-            let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
-            //Divide difference to split among project panels' widths (and the remainder);
-            let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
-            let widthAdjustmentRemainder = flexboxDifference % projectTracker;
-            //Loop through all projects inside the most recently completed row
-            for (let project of projectsToDisplay) {
-                //Find projects of the current row being adjusted
-                if (project.row === rowTracker) {
-                    //Divide difference evenly amongst all project's widths
-                    //project.width += widthAdjustment + widthAdjustmentRemainder;
-                    project.adjust = widthAdjustment + widthAdjustmentRemainder;
-                    //remove remainder once it is used once
-                    widthAdjustmentRemainder = 0;
-                }
-            }
-            //Increment row tracker
-            rowTracker++;
-            //Reset width tracker to negative of the flexbox gap value
-            widthTracker = panelWidth + 4;
-            //Reset project tracker
-            projectTracker = 0;
+      (image width) * (100px / (image height)) = final width [we'll use this one]
+      */
+
+      //Calculates panel width based on aspect ratio of thumbnail image
+      //If no thumbnail is found, randomizes width
+      console.log(thumbnail.width, thumbnail.height);
+      let panelWidth = projectList[projectListPosition].thumbnail != null && thumbnail.height != 0 ? 
+        thumbnail.width * (200 / thumbnail.height) :
+        Math.floor((Math.random() * 200) + 200);
+      //Add (width value + flexbox gap value + borders) to width tracker
+      //Note - borders & other factors may add extra width, double check calculations using inspector
+      widthTracker += panelWidth + 24;
+      //if width tracker > flexbox width, make final adjustments to row before moving to next
+      if (widthTracker > flexboxWidth) {
+        //Calculate flexboxWidth - total width of all projects
+        let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
+        //Divide difference to split among project panels' widths (and the remainder);
+        let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
+        let widthAdjustmentRemainder = flexboxDifference % projectTracker;
+        //Loop through all projects inside the most recently completed row
+        for (let project of projectsToDisplay) {
+          //Find projects of the current row being adjusted
+          if (project.row === rowTracker) {
+            //Divide difference evenly amongst all project's widths
+            //project.width += widthAdjustment + widthAdjustmentRemainder;
+            project.adjust = widthAdjustment + widthAdjustmentRemainder;
+            //remove remainder once it is used once
+            widthAdjustmentRemainder = 0;
+          }
         }
-        //if row tracker < a designated row count...
-        if (rowTracker < 5) {
-            //Add current project to list of projects to display
-            //(Will include actual projects later)
-            projectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker});
-            projectListPosition++;
-            projectTracker++;
-        } else { //otherwise...
-            //Break project iteration loop
-            break;
-        }  
+        //Increment row tracker
+        rowTracker++;
+        //Reset width tracker to negative of the flexbox gap value
+        widthTracker = panelWidth + 4;
+        //Reset project tracker
+        projectTracker = 0;
+      }
+      //if row tracker < a designated row count...
+      if (rowTracker < 5) {
+        //Add current project to list of projects to display
+        //(Will include actual projects later)
+        projectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker});
+        projectListPosition++;
+        projectTracker++;
+      } else { //otherwise...
+        //Break project iteration loop
+        break;
+      }  
     }
 
     //Perform width adjustments on last row
@@ -319,14 +335,14 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     let widthAdjustmentRemainder = flexboxDifference % projectTracker;
     //Loop through all projects inside the most recently completed row
     for (let project of projectsToDisplay) {
-        //Find projects of the current row being adjusted
-        if (project.row === rowTracker) {
-            //Divide difference evenly amongst all project's widths
-            //project.width += widthAdjustment + widthAdjustmentRemainder;
-            project.adjust = widthAdjustment + widthAdjustmentRemainder;
-            //remove remainder once it is used once
-            widthAdjustmentRemainder = 0;
-        }
+      //Find projects of the current row being adjusted
+      if (project.row === rowTracker) {
+        //Divide difference evenly amongst all project's widths
+        //project.width += widthAdjustment + widthAdjustmentRemainder;
+        project.adjust = widthAdjustment + widthAdjustmentRemainder;
+        //remove remainder once it is used once
+        widthAdjustmentRemainder = 0;
+      }
     }
 
     return (projectsToDisplay);
@@ -510,7 +526,6 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 
   //Calls when page first loads & when a new list of profiles is being used (e.g. after a search)
   const firstProfiles = (newProfileList) => {
-    console.log(newProfileList);
     if (newProfileList === undefined) {
       return([[]]);
     }
@@ -538,7 +553,6 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       //Calculate height based off of image + any extra space for info
       //(For testing purposes, height is randomized)
       let panelHeight = Math.floor((Math.random() * 300) + 200) + getProfilePanelTextHeight(profileList[i]);
-      console.log(panelHeight, getProfilePanelTextHeight(profileList[i]));
       //Check which column has the least height currently (if multiple have same, use first)
       let shortestColumn = 0;
       for (let j = 1; j < heightTrackers.length; j++){
@@ -893,7 +907,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       </div>
     </div>
   }</>
-
+  
   //Displays a set of project panels
   let projectContent = <>{
     projectList.length > 0 ? 

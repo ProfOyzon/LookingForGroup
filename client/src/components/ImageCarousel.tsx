@@ -4,6 +4,9 @@ import image1 from "../images/blue_frog.png";
 import image2 from "../images/banner.png";
 import image3 from "../images/tall_img.png";
 
+//To-do:
+//Finish Discover page version of this component
+
 const imageList = [image1, image2, image3];
 
 let runningServer = true;

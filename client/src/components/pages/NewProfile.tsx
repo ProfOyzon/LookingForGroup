@@ -14,10 +14,11 @@ import * as tags from "../../constants/tags";
 import EditButton from "../Profile/ProfileEditButton";
 
 //To-do:
-//Fix profile page not changing when clicking 'profile' sidebar link (specifically for on invalid id pages)
-//(If viewing another's profile, should switch to user's profile when clicking such)
-//Ensure all tag types function correctly
-//Fix weird sidebar breakpoint styling
+//Fix profile page breaking when switching to current user's profile (via the header) from another user's profile
+//Ensure light/dark mode colors work properly
+//Maybe switch profile edit button to use popup component, for consistency across site
+//Double check project panel rendering math
+//Ensure page elements elegantly handle window resizes (mainly the profile information panel and profile edit popup)
 
 let runningServer = true;
 
@@ -76,15 +77,45 @@ const NewProfile = ({ theme, setTheme }) => {
     }
   }
 
+  //Function used to get projects the user has worked on
+  const getProfileProjectData = async () => {
+    if (profileID === undefined || profileID === null) {
+      //If no profileID is in search query, automatically set to the current user's id
+      console.log('profileID not found, using default');
+      profileID = '1';
+    }
+    const url = `/api/users/${profileID}/projects`;
+
+    try {
+      let response = await fetch(url);
+
+      const projectData = await response.json();
+
+      setFullProjectList(projectData.data);
+      setDisplayedProjects(() => firstProjects(projectData.data));
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   //State that hold info on the profile being displayed
   //use 'defaultProfile' in useState when using 'npm run client'. otherwise leave blank.
   const [displayedProfile, setDisplayedProfile] = useState(defaultProfile);
+
+  //State that holds info on projects the user is a part of
+  //Uses a default if not running on a server
+  let defaultProjectList = runningServer ? undefined : projects;
+
+  const [fullProjectList, setFullProjectList] = useState(defaultProjectList);
 
 
   //Runs funciton to get data if we haven't yet
   //Comment out if using 'npm run client' (can't connect to server with it)
   if (displayedProfile === undefined) {
     getProfileData();
+  }
+  if (fullProjectList === undefined) {
+    getProfileProjectData();
   }
 
   //Variables used to represent profile data (only placeholders are used for now until backend is integrated)
@@ -97,21 +128,6 @@ const NewProfile = ({ theme, setTheme }) => {
   if (profileID === '1') {
     usersProfile = true;
   }
-
-  //Pull data from profile and place them in variables 
-  //(structure depends on database structure, so wait for implementation)
-  //data includes...
-  //Profile image
-  //User's name (full name or username?)
-  //Their profession
-  //headline
-  //pronouns, major, location, favorite project, fun fact (may not all be included)
-
-  //About Me description
-  //Profile's selected tags
-  //Looking for stuff??
-  //List of projects worked on
-
 
   //Holds a list of tags that the user selected to represent their skills
   //(How will tag categories be identified for color?)
@@ -160,10 +176,11 @@ const NewProfile = ({ theme, setTheme }) => {
 
   //Loads a new set of project panels to render
   //Calls when page first loads & when a new list of projects is being used (e.g. after a search)
-  const firstProjects = () => {
-    //Set new project list to run through
-    //Later, use project list exclusive to the user
-    let projectList = projects;
+  const firstProjects = (projectList) => {
+    console.log(projectList);
+    if (projectList === undefined) {
+      return [];
+    }
     //Reset projectListPosition
     let projectListPosition = 0;
 
@@ -337,7 +354,7 @@ const NewProfile = ({ theme, setTheme }) => {
   };
 
   //Holds data for currently displayed projects
-  let [displayedProjects, setDisplayedProjects] = useState<{ project, width: number, adjust: number, row: number }[]>(firstProjects);
+  let [displayedProjects, setDisplayedProjects] = useState<{ project, width: number, adjust: number, row: number }[]>(firstProjects(fullProjectList));
 
   //Runs resizing function whenever window width changes
   //Don't add dependencies to it - it causes state to be reset for some reason (I don't know why)
@@ -369,7 +386,8 @@ const NewProfile = ({ theme, setTheme }) => {
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='linkedin'/></button>
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}><img src={profileImage} alt='instagram'/></button>
         <EditButton userData={displayedProfile}/>
-        {/* <Popup>
+        {/* PLEASE USE THIS, I DIDN'T MAKE THE POPUP COMPONENT FOR NOTHING -M-
+        <Popup>
           <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
           <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
         </Popup> */}
@@ -472,6 +490,7 @@ const NewProfile = ({ theme, setTheme }) => {
 
             <div id='profile-info-skills'>
               {
+                displayedProfile.skills.length > 0 ? 
                 /* Will take in a list of tags the user has selected,
                 then use a map function to generate tags to fill this div */
                 displayedProfile.skills.map((tag) => {
@@ -483,7 +502,8 @@ const NewProfile = ({ theme, setTheme }) => {
                   return (
                     <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
                   )
-                })
+                }) :
+                <></>
               }
             </div>
           </div>
@@ -505,112 +525,9 @@ const NewProfile = ({ theme, setTheme }) => {
             </div>
           </div>
         </div>
-        //Old layout goes here
       }
     </div>
   )
-}
-
-{
-  //Old layout (remove later)
-  /* Left-side column that will contain info found on a discover card
-    Mostly just includes small tidbits about the person 
-    width is set, unchanging*/
-  /* <div id='profile-discover-column'>
-    <img src={profilePicture} id='profile-image' alt='profile image'/>
-
-    <div id='profile-discover-column-header'>
-      <div id='profile-discover-column-username'><h2>{displayedProfile.first_name} {displayedProfile.last_name}</h2></div>
-      <div id='profile-discover-column-profession'><h3>Profession</h3></div>
-    </div>
-
-    <div id='profile-discover-column-headline'>
-      <img src={profileImage} className='profile-discover-icon' alt='headline'/>
-      <div>{displayedProfile.bio}</div>
-    </div>
-
-    <div id='profile-discover-column-extra'>
-      <div className='profile-column-extra-item'>
-        <img src={profileImage} className='profile-discover-icon' alt='pronouns'/> <div>Was/Were</div>
-      </div>
-      <div className='profile-column-extra-item'>
-        <img src={profileImage} className='profile-discover-icon' alt='major'/> <div>Professional Typer, 13th Year</div>
-      </div>
-      <div className='profile-column-extra-item'>
-        <img src={profileImage} className='profile-discover-icon' alt='location'/> <div>Middle, Of Nowhere</div>
-      </div>
-      <div className='profile-column-extra-item'>
-        <img src={profileImage} className='profile-discover-icon' alt='favorite project'/> <div>LFG</div>
-      </div>
-      <div className='profile-column-extra-item'>
-        <img src={profileImage} className='profile-discover-icon' alt='fun fact'/> <div>I'm not a real person, I'm just a digital representation of one!</div>
-      </div>
-    </div>
-  </div>
-
-  {/* This column contains more in-depth information, including skills and worked-on projects 
-  width readjusts and re-orders based on size*}
-  <div id='profile-about-me-column'>
-    <div id='profile-about-me-header'>
-      <h2 id='about-me-header-text'>About Me</h2>
-      {aboutMeButtons}
-    </div>
-
-    <div id='profile-about-me-content'>
-      <div id='profile-about-me-description'>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti, deserunt facilis. A nam neque, unde eligendi officia voluptates porro sint? Tempore debitis laborum, expedita sunt illum magnam maiores eius temporibus amet. Fuga quaerat magnam veritatis facilis ipsa praesentium minus rem sunt in, facere, asperiores corporis quae veniam. Similique possimus neque sit velit earum est deleniti nostrum repellat aut alias sequi assumenda ipsum tempora minus facilis, ex at excepturi libero doloribus.
-      </div>
-
-      <div id='profile-about-me-skills'>
-        <h2>Skills</h2>
-        <div id='skill-tags-container'>
-          {
-          /* Will take in a list of tags the user has selected,
-          then use a map function to generate tags to fill this div *
-            displayedProfile.skills.map((tag) => {
-              let category : string;
-              /* switch(tag){
-                case 1: category = 'red'; break;
-                case 2: category = 'yellow'; break;
-                case 3: category = 'indigo'; break;
-                default: category = 'grey';
-              } *
-              if (tags.desSkills.includes(tag)) {category = 'red';}
-              else if (tags.devSkills.includes(tag)) {category = 'yellow';}
-              else if (tags.softSkills.includes(tag)) {category = 'purple';}
-              else {category = 'grey';}
-              return(
-                <div className={`skill-tag-label label-${category}`}>{tag}</div>
-              )
-            })
-          }
-        </div>
-      </div> 
-
-      {/*<div id='profile-looking-for'>
-        <h2>Looking for</h2>
-        Looking for... something? I'm not entirely sure what goes here yet.
-      </div>*}
-
-      <div id='profile-projects'>
-        <h2>Projects</h2>
-        <div id='profile-project-list'>
-          {/* Will use same rendering system as the discover page, just with projects
-          this user has worked on. Only needs re-rendering on page resizing. maybe. *}
-          <>{
-            displayedProjects.length > 0 ? 
-              //For each project in project display list... (use map)
-              displayedProjects.map((project) => (
-                //Create a Project Panel component
-                <ProjectPanel width={project.width + project.adjust}></ProjectPanel>
-              )) :
-              <>This user has not worked on any projects yet.</>
-          }</>
-        </div>
-      </div> 
-    </div> 
-  </div>
-</div> */
 }
 
 export default NewProfile;

@@ -18,6 +18,11 @@ import * as tags from "../../constants/tags";
 import * as paths from "../../constants/routes";
 import Project from "./Project";
 
+//To-do
+//Ensure light/dark mode colors work properly on this page
+//Have team member listings link to their respective profiles
+//Ensure 'ProjectCreatorEditor' component is complete and works on this page for project editing
+
 //Variable used for checking whether or not we are running a server or not
 //Should be 'true' when using npm run server, 'false' when using npm run client
 let runningServer = true;

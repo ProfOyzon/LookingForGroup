@@ -193,18 +193,33 @@ const NewProfile = ({ theme, setTheme }) => {
     rowTracker = 0;
     projectTracker = 0;
 
+    //Get first panel's thumbnail and its width/height
+    let firstThumbnail = new Image();
+    firstThumbnail.src = `images/thumbnails/${projectList[projectListPosition].thumbnail}`;
+
     //Set up initial project (ensures first row has something in it)
-    let firstPanelWidth = Math.floor((Math.random() * 200) + 200);
-    widthTracker += firstPanelWidth + 24;
+
+    //Calculates panel width based on aspect ratio of thumbnail image
+    //If no thumbnail is found, randomizes width
+    /* 
+    Note: for some reason, reaching this page with a new tab/window using a url sometimes causes
+    height values of thumbnails to be 0, and as we all know, computers don't like dividing by 0.
+    For this reason, an extra check is added to ensure height does not equal 0. In the event it does,
+    we randomize width instead of calculating an accurate width.
+    */
+    let firstPanelWidth = projectList[projectListPosition].thumbnail != null && firstThumbnail.height != 0 ? 
+      firstThumbnail.width * (200 / firstThumbnail.height) :
+      Math.floor((Math.random() * 200) + 200);
+    widthTracker += firstPanelWidth + 20;
     projectsToDisplay.push({ project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker });
     projectListPosition++
     projectTracker++;
 
     //Start iterating through projects
     while (projectListPosition < projectList.length) {
-      //Get thumbnail image of current project
-      //const img = new Image();
-      //img.src = profilePicture;
+      //Get thumbnail and its width & height
+      let thumbnail = new Image();
+      thumbnail.src = `images/thumbnails/${projectList[projectListPosition].thumbnail}`;
 
       //Get a width value based on the project's display image's aspect ratio
       //Formula for getting width from image: 
@@ -224,14 +239,16 @@ const NewProfile = ({ theme, setTheme }) => {
 
       //(For testing's sake, width will be randomized)
       //let panelWidth = (img.naturalWidth * 100) / img.naturalHeight; [Use this when images are integrated]
-      let panelWidth = Math.floor((Math.random() * 200) + 200);
+      let panelWidth = projectList[projectListPosition].thumbnail != null && thumbnail.height != 0 ? 
+        thumbnail.width * (200 / thumbnail.height) :
+        Math.floor((Math.random() * 200) + 200);
       //Add (width value + flexbox gap value + borders) to width tracker
       //Note - borders & other factors may add extra width, double check calculations using inspector
-      widthTracker += panelWidth + 24;
+      widthTracker += panelWidth + 20;
       //if width tracker > flexbox width, make final adjustments to row before moving to next
       if (widthTracker > flexboxWidth) {
         //Calculate flexboxWidth - total width of all projects
-        let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
+        let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 20));
         //Divide difference to split among project panels' widths (and the remainder);
         let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
         let widthAdjustmentRemainder = flexboxDifference % projectTracker;
@@ -249,7 +266,7 @@ const NewProfile = ({ theme, setTheme }) => {
         //Increment row tracker
         rowTracker++;
         //Reset width tracker to negative of the flexbox gap value
-        widthTracker = panelWidth + 4;
+        widthTracker = panelWidth;
         //Reset project tracker
         projectTracker = 0;
       }
@@ -312,11 +329,11 @@ const NewProfile = ({ theme, setTheme }) => {
       //Issue only seems to occur after saving new code while test server is being hosted, so it may not need to be addressed
       for (let project of displayedProjects) {
         //Add width to widthTracker
-        widthTracker += project.width + 24;
+        widthTracker += project.width + 20;
         //If widthTracker > flexbox width...
         if (widthTracker > flexboxWidth) {
           //Calculate remaining width (minus current project, that moves to next row)
-          let flexboxDifference = flexboxWidth - (widthTracker - (project.width + 24));
+          let flexboxDifference = flexboxWidth - (widthTracker - (project.width + 20));
           //Divide remaining width amongst current row's project panels (add remainder to first panel)
           let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
           let widthRemainder = flexboxDifference % projectTracker;
@@ -328,7 +345,7 @@ const NewProfile = ({ theme, setTheme }) => {
           }
           //Increment & reset tracker variables
           rowTracker++;
-          widthTracker = project.width + 4;
+          widthTracker = project.width;
           projectTracker = 0;
         }
         //Add project to resized projects &  increment projectTracker

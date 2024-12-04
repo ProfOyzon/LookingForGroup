@@ -3,6 +3,9 @@ import * as paths from "../constants/routes";
 //Component that will contain info about a project, used in the discovery page
 //Smaller and more concise than ProjectCard.tsx
 
+//to-do:
+//Add function that adjust hover panel to left if it's the right-most panel
+
 //Currently, this component serves as a placeholder
 
 //Takes in a 'project' value which contains info on the project it will display

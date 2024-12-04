@@ -224,7 +224,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       return [];
     }
     //Set new project list to run through
-    projectList = newProjectList;
+    projectList = newProjectList.concat(newProjectList).concat(newProjectList).concat(newProjectList);
     //Reset projectListPosition
     projectListPosition = 0;
 
@@ -237,6 +237,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     rowTracker = 0;
     projectTracker = 0;
 
+    //Get first panel's thumbnail and its width/height
     let firstThumbnail = new Image();
     firstThumbnail.src = `images/thumbnails/${projectList[projectListPosition].thumbnail}`;
 
@@ -253,13 +254,12 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     let firstPanelWidth = projectList[projectListPosition].thumbnail != null && firstThumbnail.height != 0 ? 
       firstThumbnail.width * (200 / firstThumbnail.height) :
       Math.floor((Math.random() * 200) + 200);
-    widthTracker += firstPanelWidth + 24;
+    widthTracker += firstPanelWidth + 20;
     projectsToDisplay.push({project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker});
     projectListPosition++
     projectTracker++;
 
     //Start iterating through projects
-    //(For testing purposes, will just loop until break condition is met)
     while (rowTracker <= 5 && projectListPosition < projectList.length) {
       //Get thumbnail and its width & height
       let thumbnail = new Image();
@@ -288,11 +288,11 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         Math.floor((Math.random() * 200) + 200);
       //Add (width value + flexbox gap value + borders) to width tracker
       //Note - borders & other factors may add extra width, double check calculations using inspector
-      widthTracker += panelWidth + 24;
+      widthTracker += panelWidth + 20;
       //if width tracker > flexbox width, make final adjustments to row before moving to next
       if (widthTracker > flexboxWidth) {
         //Calculate flexboxWidth - total width of all projects
-        let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
+        let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 20));
         //Divide difference to split among project panels' widths (and the remainder);
         let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
         let widthAdjustmentRemainder = flexboxDifference % projectTracker;
@@ -310,7 +310,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         //Increment row tracker
         rowTracker++;
         //Reset width tracker to negative of the flexbox gap value
-        widthTracker = panelWidth + 4;
+        widthTracker = panelWidth;
         //Reset project tracker
         projectTracker = 0;
       }
@@ -370,9 +370,9 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         //let panelWidth = imageWidth * (100 / imageHeight); [Use this when images are integrated]
         let panelWidth = Math.floor((Math.random() * 200) + 200);
         //Add (width value + flexbox gap value + borders) to width tracker
-        widthTracker += panelWidth + 24;
+        widthTracker += panelWidth + 20;
         if (widthTracker > flexboxWidth) {
-          let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 24));
+          let flexboxDifference = flexboxWidth - (widthTracker - (panelWidth + 20));
           //Divide difference to split among project panels' widths (and the remainder);
           let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
           let widthAdjustmentRemainder = flexboxDifference % projectTracker;
@@ -385,7 +385,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
             }
           }
           rowTracker++;
-          widthTracker = panelWidth + 4;
+          widthTracker = panelWidth;
           projectTracker = 0;
         }
         if (rowTracker < lastRow + 5) {
@@ -433,11 +433,11 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       //Issue only seems to occur after saving new code while test server is being hosted, so it may not need to be addressed
       for (let project of displayedProjects){
         //Add width to widthTracker
-        widthTracker += project.width + 24;
+        widthTracker += project.width + 20;
         //If widthTracker > flexbox width...
         if (widthTracker > flexboxWidth) {
           //Calculate remaining width (minus current project, that moves to next row)
-          let flexboxDifference = flexboxWidth - (widthTracker - (project.width + 24));
+          let flexboxDifference = flexboxWidth - (widthTracker - (project.width + 20));
           //Divide remaining width amongst current row's project panels (add remainder to first panel)
           let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
           let widthRemainder = flexboxDifference % projectTracker;
@@ -449,7 +449,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
           }
           //Increment & reset tracker variables
           rowTracker++;
-          widthTracker = project.width + 4;
+          widthTracker = project.width;
           projectTracker = 0;
         }
         //Add project to resized projects &  increment projectTracker

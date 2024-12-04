@@ -7,14 +7,13 @@ import * as paths from "../constants/routes";
 
 //Takes in a 'project' value which contains info on the project it will display
 export const ProjectPanel = ({ width, projectData }) => {
-  console.log(projectData);
   const navigate = useNavigate();
   const projectURL = `${paths.routes.NEWPROJECT}?projectID=${projectData.project.project_id}`;
   return (
     <div className={'project-panel'} style={{ width: width }}>
-      <img src="assets/bannerImages/project_temp.png" alt={"project image"} />
-      <div className={'project-panel-hover'} onClick={() => navigate(projectURL)}>
-        <img src="assets/bannerImages/project_temp.png" alt={"project image"} />
+      <img src={`images/thumbnails/${projectData.project.thumbnail}`} alt={"project image"} />
+      <div className={'project-panel-hover'} onClick={() => navigate(projectURL)} style={{ width: width }}>
+        <img src={`images/thumbnails/${projectData.project.thumbnail}`} alt={"project image"} />
         <h2>{projectData.project.title}</h2>
         <div id='project-panel-tags'>
           {

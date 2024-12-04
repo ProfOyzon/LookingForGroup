@@ -10,9 +10,7 @@ import * as paths from "../constants/routes";
 //Note: data names may need changing when using data from the server and not fakeData.ts
 
 //Takes in a 'profile' value which contains info on the project it will display
-//Replace extra content with actual data using 'profileData' later
 export const ProfilePanel = ({profileData, height}) => {
-  console.log(profileData);
   const navigate = useNavigate();
   const profileURL = `${paths.routes.NEWPROFILE}?userID=${profileData.user_id}`
 

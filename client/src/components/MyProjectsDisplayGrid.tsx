@@ -1,7 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import * as paths from "../constants/routes";
 import { Dropdown, DropdownButton, DropdownContent } from "./Dropdown";
 
 const MyProjectsDisplayGrid = ({projectData}) => {
+    //Navigation hook
+    const navigate = useNavigate();
+
     const [status, setStatus] = useState();
     const [optionsShown, setOptionsShown] = useState(false);
 
@@ -36,17 +41,20 @@ const MyProjectsDisplayGrid = ({projectData}) => {
         }
     };
 
+    //Constructs url linking to relevant project page
+    const projectURL = `${paths.routes.NEWPROJECT}?projectID=${projectData.project_id}`;
+
     return (
         <div className="my-project-grid-card">
             {/* Thumbnail */}
             {
                 projectData.thumbnail === null || projectData.thumbnail === undefined || projectData.thumbnail === ""
-                    ? <div className="grid-card-image" style={{backgroundColor: "white"}}></div>
-                    : <img className="grid-card-image" src={`/images/thumbnails/${projectData.thumbnail}`} alt={`${projectData.title} Thumbnail`}></img>
+                    ? <div className="grid-card-image" style={{backgroundColor: "white"}} onClick={() => navigate(projectURL)}></div>
+                    : <img className="grid-card-image" src={`/images/thumbnails/${projectData.thumbnail}`} alt={`${projectData.title} Thumbnail`} onClick={() => navigate(projectURL)}></img>
             }
 
             {/* Title */}
-            <div className="grid-card-title">{projectData.title}</div>
+            <div className="grid-card-title" onClick={() => navigate(projectURL)}>{projectData.title}</div>
 
             {/* Options */}
             <Dropdown>

@@ -3,18 +3,20 @@ import * as paths from "../constants/routes";
 //Component that will contain info about a project, used in the discovery page
 //Smaller and more concise than ProjectCard.tsx
 
+//to-do:
+//Add function that adjust hover panel to left if it's the right-most panel
+
 //Currently, this component serves as a placeholder
 
 //Takes in a 'project' value which contains info on the project it will display
-export const ProjectPanel = ({ width, projectData }) => {
-  console.log(projectData);
+export const ProjectPanel = ({ width, projectData, rightAlign = false }) => {
   const navigate = useNavigate();
   const projectURL = `${paths.routes.NEWPROJECT}?projectID=${projectData.project.project_id}`;
   return (
     <div className={'project-panel'} style={{ width: width }}>
-      <img src="assets/bannerImages/project_temp.png" alt={"project image"} />
-      <div className={'project-panel-hover'} onClick={() => navigate(projectURL)}>
-        <img src="assets/bannerImages/project_temp.png" alt={"project image"} />
+      <img src={`images/thumbnails/${projectData.project.thumbnail}`} alt={"project image"} />
+      <div className={'project-panel-hover'} onClick={() => navigate(projectURL)} style={rightAlign ? { width: width, right: 0 } : { width: width }}>
+        <img src={`images/thumbnails/${projectData.project.thumbnail}`} alt={"project image"} />
         <h2>{projectData.project.title}</h2>
         <div id='project-panel-tags'>
           {

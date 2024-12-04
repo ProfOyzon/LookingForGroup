@@ -1172,8 +1172,13 @@ Header style rules
     margin-right: 50px;
     grid-template:
         'search buttons' 90px / auto 140px;
-    background-color: var(--bg-color);
-    /* background-image: linear-gradient(var(--bg-color) 85%, rgba(0,0,0,0)); */
+    background-color: rgba(0, 0, 0, 0);
+    /* 
+        Please don't comment the background-image rule out unless there is a good reason for it
+        It makes a smooth color transition for the header to the page content, and works with light/dark mode
+        from what I've tested. I see no reason to not use it.
+    */
+    background-image: linear-gradient(var(--bg-color) 85%, rgba(0,0,0,0));
     width: calc(100% - 50px);
     height: 90px;
     position: sticky;

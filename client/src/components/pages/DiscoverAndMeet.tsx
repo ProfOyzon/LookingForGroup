@@ -224,13 +224,13 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       return [];
     }
     //Set new project list to run through
-    projectList = newProjectList.concat(newProjectList).concat(newProjectList).concat(newProjectList);
+    projectList = newProjectList;
     //Reset projectListPosition
     projectListPosition = 0;
 
     //empty list of projects to display
     //(Will also include project data when actual projects are used)
-    let projectsToDisplay : {project, width : number, adjust : number, row : number}[] = [];
+    let projectsToDisplay : {project, width : number, adjust : number, row : number, rightMost : boolean}[] = [];
 
     //Reset variables, if needed
     widthTracker = -20;
@@ -255,7 +255,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       firstThumbnail.width * (200 / firstThumbnail.height) :
       Math.floor((Math.random() * 200) + 200);
     widthTracker += firstPanelWidth + 20;
-    projectsToDisplay.push({project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker});
+    projectsToDisplay.push({project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker, rightMost: false});
     projectListPosition++
     projectTracker++;
 
@@ -305,6 +305,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
             project.adjust = widthAdjustment + widthAdjustmentRemainder;
             //remove remainder once it is used once
             widthAdjustmentRemainder = 0;
+            //If this is the last item of the row, note it as such
+            if (project = projectsToDisplay[projectsToDisplay.length - 1]) {
+              project.rightMost = true;
+            }
           }
         }
         //Increment row tracker
@@ -318,7 +322,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       if (rowTracker < 5) {
         //Add current project to list of projects to display
         //(Will include actual projects later)
-        projectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker});
+        projectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker, rightMost: false});
         projectListPosition++;
         projectTracker++;
       } else { //otherwise...
@@ -342,6 +346,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         project.adjust = widthAdjustment + widthAdjustmentRemainder;
         //remove remainder once it is used once
         widthAdjustmentRemainder = 0;
+        //If this is the last item of the row, note it as such
+        if (project = projectsToDisplay[projectsToDisplay.length - 1]) {
+          project.rightMost = true;
+        }
       }
     }
 
@@ -357,7 +365,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     } = document.querySelector(".page");
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      let newProjectsToDisplay : {project, width : number, adjust : number, row : number}[] = [];
+      let newProjectsToDisplay : {project, width : number, adjust : number, row : number, rightMost : boolean}[] = [];
 
       //Reset calculation values
       widthTracker = -20;
@@ -390,7 +398,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         }
         if (rowTracker < lastRow + 5) {
           //Add current project to list of projects to display
-          newProjectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker});
+          newProjectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker, rightMost: false});
           projectListPosition++;
           projectTracker++;
         } else { 
@@ -418,7 +426,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       //Similar to initial project panel rendering, just uses all currently displays projects
       //instead of adding new ones
       //Array holding edited project details
-      let resizedProjects : {project, width : number, adjust : number, row : number}[] = [];
+      let resizedProjects : {project, width : number, adjust : number, row : number, rightMost : boolean}[] = [];
       //Calculate new flexbox width
       flexboxWidth = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
         : window.innerWidth - (100 + getScrollbarWidth())
@@ -429,8 +437,8 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       projectTracker = 0;
       //Iterate through all currently displayed projects
       //For each project...
-      //There is some sort of bug happening here, occasionally more than the max projects are being displayed
-      //Issue only seems to occur after saving new code while test server is being hosted, so it may not need to be addressed
+      ///There is some sort of bug happening here, occasionally more than the max projects are being displayed
+      ///Issue only seems to occur after saving new code while test server is being hosted, so it may not need to be addressed
       for (let project of displayedProjects){
         //Add width to widthTracker
         widthTracker += project.width + 20;
@@ -453,7 +461,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
           projectTracker = 0;
         }
         //Add project to resized projects &  increment projectTracker
-        resizedProjects.push({project: project.project, width: project.width, adjust: 0, row: rowTracker});
+        resizedProjects.push({project: project.project, width: project.width, adjust: 0, row: rowTracker, rightMost: false});
         projectTracker++;
       }
       //Perform width adjustment on last row
@@ -733,7 +741,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 
   //Can possibly merge these two into a single useState? mostly concerned with different variable types
   //Holds data for currently displayed projects
-  let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number}[]>(() => firstProjects(fullProjectList));
+  let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number, rightMost : boolean}[]>(() => firstProjects(fullProjectList));
   //Holds data for currently displayed profiles
   let [profileColumns, setProfileColumns] = useState<{profile, height : number}[][]>(() => firstProfiles(fullProfileList));
 
@@ -914,7 +922,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       //For each project in project display list... (use map)
       displayedProjects.map((project) => (
         //Create a Project Panel component
-        <ProjectPanel width={project.width + project.adjust} projectData={project}></ProjectPanel>
+        <ProjectPanel width={project.width + project.adjust} projectData={project} rightAlign={project.rightMost}></ProjectPanel>
       )) :
       <>Sorry, no projects here</>
   }</>

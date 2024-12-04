@@ -9,13 +9,13 @@ import * as paths from "../constants/routes";
 //Currently, this component serves as a placeholder
 
 //Takes in a 'project' value which contains info on the project it will display
-export const ProjectPanel = ({ width, projectData }) => {
+export const ProjectPanel = ({ width, projectData, rightAlign = false }) => {
   const navigate = useNavigate();
   const projectURL = `${paths.routes.NEWPROJECT}?projectID=${projectData.project.project_id}`;
   return (
     <div className={'project-panel'} style={{ width: width }}>
       <img src={`images/thumbnails/${projectData.project.thumbnail}`} alt={"project image"} />
-      <div className={'project-panel-hover'} onClick={() => navigate(projectURL)} style={{ width: width }}>
+      <div className={'project-panel-hover'} onClick={() => navigate(projectURL)} style={rightAlign ? { width: width, right: 0 } : { width: width }}>
         <img src={`images/thumbnails/${projectData.project.thumbnail}`} alt={"project image"} />
         <h2>{projectData.project.title}</h2>
         <div id='project-panel-tags'>

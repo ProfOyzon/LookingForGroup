@@ -11,10 +11,18 @@ import { genPlaceholders } from "../utils/sqlUtil.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
+    const { loginInput, password } = req.body;
 
-    const userQuery = "SELECT user_id, password FROM users WHERE username = ?";
-    const [userResult] = await pool.query(userQuery, [username]);
+    // Checks
+    if (!loginInput || !password) {
+        return res.status(400).json({ 
+            status: 400,
+            error: "Missing login credentials" 
+        });
+    }
+
+    const userQuery = "SELECT user_id, password FROM users WHERE username = ? OR primary_email = ?";
+    const [userResult] = await pool.query(userQuery, [loginInput, loginInput]);
     const user = userResult[0];
 
     const match = await bcrypt.compare(password, user.password);

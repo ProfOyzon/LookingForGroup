@@ -28,13 +28,6 @@ app.use(session({
     cookie: { secure: false,maxAge:60*60*6*1000 }
 }));
 
-/* app.use(session({
-    secret: 'blahblahblah',
-    cookie: {
-        sameSite: 'strict'
-    }
-})); */
-
 app.use(usersRouter);
 app.use(projectsRouter);
 app.use(datasetsRouter);

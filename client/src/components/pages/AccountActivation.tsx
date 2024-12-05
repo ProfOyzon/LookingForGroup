@@ -19,13 +19,7 @@ const EmailConfirmation = (props) => {
     const path = location.pathname;
 
     // Function that fetches to the server so it can check if the authorization token is correct
-    // *NOTE*: Was having issues with this function in particular, kept giving me this error:
-    // Uncaught (in promise) SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
-    // Not entirely sure what is causing it, I searched it up, tried solutions, tried fixes myself, but nothing stopped it
-    // Seems to originate from the "await response.json()" line
-    // My hypothesis is that it isn't working due to me not having a local database
-    // I don't know why this would cause it, but when I tried to fetch projects or users it gave the same error
-    const getUserCreationStatusCode = async () => {
+    /*const getUserCreationStatusCode = async () => {
         const url = `/api/signup/${path.substring(path.lastIndexOf("/")+1, path.length)}`;
 
         try {
@@ -39,29 +33,46 @@ const EmailConfirmation = (props) => {
             const responseJSON = await response.json();
 
             setResponseData(responseJSON);
+            return;
         } catch (err) {
             console.error(err);
             setResponseData(undefined);
         }
-    }
+    }*/
+
+    useEffect(() => {
+        const getUserCreationStatus = async () => {
+            const url = `/api/signup/${path.substring(path.lastIndexOf("/")+1, path.length)}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                console.log(`Status: ${data.status}`);
+                if(data.error) {
+                console.log(`Error: ${data.error}`);
+                }
+                setResponseData(data);
+            } catch(err) {
+                console.error(err)
+            }
+        };
+        getUserCreationStatus();
+    }, [props.reloadResponseData]);
 
     // Hook for navigation
     const navigate = useNavigate();
 
-    getUserCreationStatusCode();
+    //getUserCreationStatusCode();
 
     // Sets default h1Text and redirect destination
     let h1Text = "Error Fetching";
-    let redirectDest = paths.routes.SIGNUP;
 
     if(responseData != undefined) {
         // Changes h1Text and redirect destination dependent on the status code returned by server
         switch(responseData.status) {
             case 200:
                 h1Text = "Your email has been confirmed!";
-                redirectDest = paths.routes.HOME;
                 break;
-        case 400:
+            case 400:
                 h1Text = responseData.error;
                 break;
         }
@@ -70,13 +81,13 @@ const EmailConfirmation = (props) => {
 
     // Function to handle redirecting from the current page
     const redirect = () => {
-        navigate(redirectDest); // Navigate to the home page
+        navigate(paths.routes.HOME); // Navigate to the home page
     };
 
     // Function that calls redirect after 5 seconds
     useEffect(() => {
-        //const interval = setInterval(() => {redirect()}, 5000);
-        //return () => clearInterval(interval);
+        const interval = setInterval(() => {redirect()}, 5000);
+        return () => clearInterval(interval);
     });
 
 

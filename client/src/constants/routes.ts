@@ -17,5 +17,5 @@ export const routes = {
     "SETTINGS": "/settings",
     "CREDITS": "/credits",
     "NOTFOUND": "/notFound",
-    "EMAILAUTH": "/authorization/:token",
+    "ACCOUNTACTIVATE": "/activation/:token",
 }

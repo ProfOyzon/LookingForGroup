@@ -37,6 +37,15 @@ let defaultProfile = runningServer ? undefined : {
   skills: ['Figma','JavaScript','Visual Studio Code','Flexibility','Krita'],
 }
 
+const fetchUserID = async () => {
+  const response = await fetch("/api/auth");
+  //const { data: {userID} } = await response.json();
+  const { data } = await response.json();
+  return data;
+}
+
+const userID = await fetchUserID();
+
 const NewProfile = ({ theme, setTheme }) => {
   const location = useLocation();
   //Check to see if database call returned anything
@@ -44,11 +53,15 @@ const NewProfile = ({ theme, setTheme }) => {
 
   //Get url parameters to tell what user we are looking for
   let urlParams = new URLSearchParams(window.location.search);
-  let profileID = urlParams.get('userID');
+  //const [profileID, setProfileID] = useState<String | null>(null);
+  let profileID;
+  profileID = urlParams.get('userID');
   if (profileID === undefined || profileID === null) {
     //If no profileID is in search query, automatically set to the current user's id
     console.log('profileID not found, using default');
-    profileID = '1';
+    (async () => {
+      profileID = userID;
+    })();
   }
 
   //Function used to get profile data
@@ -56,7 +69,7 @@ const NewProfile = ({ theme, setTheme }) => {
     if (profileID === undefined || profileID === null) {
       //If no profileID is in search query, automatically set to the current user's id
       console.log('profileID not found, using default');
-      profileID = '1';
+      profileID = userID;
     }
     const url = `/api/users/${profileID}`;
 
@@ -66,7 +79,7 @@ const NewProfile = ({ theme, setTheme }) => {
       const profileData = await response.json();
 
       if (profileData.data[0] === undefined) {
-        setFailCheck(true);
+        //setFailCheck(true);
         return;
       }
 
@@ -94,7 +107,12 @@ const NewProfile = ({ theme, setTheme }) => {
   //Check whether or not the profile is the current user's
   let usersProfile = false;
 
-  if (profileID === '1') {
+  console.log("profileID is: " + profileID);
+  console.log("fetchUserID() is: " + fetchUserID());
+
+  if (profileID === userID) {
+    console.log("profileID is: " + profileID);
+    console.log("fetchUserID() is: " + fetchUserID());
     usersProfile = true;
   }
 
@@ -494,18 +512,20 @@ const NewProfile = ({ theme, setTheme }) => {
 
             <div id='profile-info-skills'>
               {
+                displayedProfile.skills != null ?
                 /* Will take in a list of tags the user has selected,
                 then use a map function to generate tags to fill this div */
                 displayedProfile.skills.map((tag) => {
                   let category: string;
-                  if (tag.type === 'Designer') { category = 'red'; }
+                  if (tag.type === 'Design') { category = 'red'; }
                   else if (tag.type === 'Developer') { category = 'yellow'; }
                   else if (tag.type === 'Soft') { category = 'purple'; }
                   else { category = 'grey'; }
                   return (
                     <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
                   )
-                })
+                }) :
+                <></>
               }
             </div>
           </div>

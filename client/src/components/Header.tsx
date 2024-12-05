@@ -6,11 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import * as paths from "../constants/routes";
 import profileImage from "../icons/profile-user.png";
+import { sendPost } from "../functions/fetch";
 
 
 //Header component to be used in pages
-
-let userInfo = { username: null, email: null, first_name: null, last_name: null};
 
 let loggedIn;
 
@@ -54,18 +53,9 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
               const { data } = await response.json();
               console.log(data);
               const { username, primary_email, first_name, last_name } = await data;
-  
-              userInfo.username = await username;
-              userInfo.email = await primary_email;
-              userInfo.first_name = await first_name;
-              userInfo.last_name = await last_name;
+
               setUsername(await username);
               setEmail(await primary_email);
-              console.log("userInfo: " + userInfo);
-              console.log("userInfo.username: " + userInfo.username);
-              console.log("userInfo.email: " + userInfo.email);
-              console.log("userInfo.first_name: " + userInfo.first_name);
-              console.log("userInfo.last_name: " + (userInfo.last_name));
             }
 
             else {
@@ -157,7 +147,7 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
                       src-dark="assets/white/logout.png"
                       className="theme-icon"
                       alt='X' />Log In</button>
-                      : <button onClick={() => fetch("/api/logout")}>
+                      : <button onClick={() => sendPost("/api/logout")}>
                       <img src="assets/white/logout.png"
                         src-light="assets/black/logout.png"
                         src-dark="assets/white/logout.png"

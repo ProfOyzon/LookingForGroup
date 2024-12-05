@@ -6,18 +6,35 @@ import { ProfileInterests } from "../Profile/ProfileInterests";
 import { ProfileSkills } from "../Profile/ProfileSkills";
 import { ProfileEndorsements } from "../Profile/ProfileEndorsements";
 import { ProfileProjects } from "../Profile/ProfileProjects";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ToTopButton from "../ToTopButton";
 import EditButton from "../Profile/ProfileEditButton";
+import { sendGet } from "../../functions/fetch";
+
+const fetchUserID = async () => {
+  const response = await fetch("/api/auth");
+  const { data: {userID} } = await response.json();
+  return userID;
+}
 
 const Profile = (props) => {
+
+  const [profileID, setProfileID] = useState<String | null>(null);
+
   //Get profile id from search query
   let urlParams = new URLSearchParams(window.location.search);
-  let profileID = urlParams.get('profID');
+  setProfileID(urlParams.get('profID'));
 
   //If nothing is found, use a default id
   if (profileID === null) {
-    profileID = '0';
+    useEffect(() => {
+      (async () => {
+        const userID = await fetchUserID();
+        setProfileID(userID);
+        console.log("userID is: " + userID);
+        console.log("profileID is: " + profileID);
+      })();
+    }, []);
   }
 
   //Find profile data using id & assign it to a value to use

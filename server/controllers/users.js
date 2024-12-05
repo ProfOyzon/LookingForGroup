@@ -42,7 +42,7 @@ const getAuth = (req, res) => {
     else {
         return res.status(200).json({
             status: 200,
-            data: [{ user_id: req.session.userId }]
+            data: req.session.userId
         });
     }
 }

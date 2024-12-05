@@ -39,6 +39,9 @@ const sendPost = async (url, data, handler) => {
 };
 
 const sendGet = async (url, handler) => {
+
+    console.log(`URL: ${url}`);
+
     const response = await fetch(url, {
         method: 'GET',
         headers: {

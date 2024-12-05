@@ -21,7 +21,7 @@ import MessageHistory from './components/pages/MessageHistory';
 import CreateProject from './components/pages/CreateProject';
 import CreditsFooter from './components/CreditsFooter';
 import Credits from './components/pages/CreditsPage';
-import EmailConfirmPage from './components/pages/EmailConfirmPage';
+import AccountActivation from './components/pages/AccountActivation';
 
 import uselocalstorage from 'use-local-storage';
 import { useEffect } from 'react';
@@ -68,7 +68,7 @@ function App() {
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
           <Route path={paths.routes.CREDITS} element={<Credits />} />
-          <Route path={paths.routes.EMAILCONFIRM} element={<EmailConfirmPage />}/>
+          <Route path={paths.routes.ACCOUNTACTIVATE} element={<AccountActivation />}/>
         </Routes>
         {/* <CreditsFooter /> */}
       </div>

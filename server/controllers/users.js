@@ -96,9 +96,9 @@ const signup = async (req, res) => {
     // Change url based on environment to allow for signups to your local database
     let url = ``;
     if (envConfig.env === "production") {
-        url = `https://lookingforgrp.com/api/signup/${token}`;
+        url = `https://lookingforgrp.com/activation/${token}`;
     } else {
-        url = `http://localhost:8081/api/signup/${token}`;
+        url = `http://localhost:8081/activation/${token}`;
     }
     
     try {

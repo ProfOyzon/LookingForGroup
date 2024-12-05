@@ -1,8 +1,7 @@
 import pool from "../config/database.js";
 
 const getSkills = async (req, res) => {
-    // Get all skills
-
+    // Get search query
     const { type } = req.query;
 
     try {
@@ -17,6 +16,7 @@ const getSkills = async (req, res) => {
             });
         }
 
+        // Get all skills
         const sql = `SELECT * FROM skills`;
         const [skills] = await pool.query(sql);
 
@@ -34,8 +34,7 @@ const getSkills = async (req, res) => {
 }
 
 const getTags = async (req, res) => {
-    // Get all tags
-
+    // Get search query
     const { type } = req.query;
 
     try {
@@ -50,6 +49,7 @@ const getTags = async (req, res) => {
             });
         }
 
+        // Get all tags
         const sql = `SELECT * FROM tags`;
         const [tags] = await pool.query(sql);
 
@@ -67,9 +67,8 @@ const getTags = async (req, res) => {
 }
 
 const getJobTitles = async (req, res) => {
-    // Get all job titles
-
     try {
+        // Get all job titles
         const sql = `SELECT * FROM job_titles`;
         const [jobTitles] = await pool.query(sql);
 
@@ -87,9 +86,8 @@ const getJobTitles = async (req, res) => {
 }
 
 const getMajors = async (req, res) => {
-    // Get all majors
-
     try {
+        // Get all majors
         const sql = `SELECT * FROM majors`;
         const [majors] = await pool.query(sql);
 
@@ -107,9 +105,8 @@ const getMajors = async (req, res) => {
 }
 
 const getProjectTypes = async (req, res) => {
-    // Get all project types
-
     try {
+        // Get all project types
         const sql = `SELECT * FROM genres`;
         const [projectTypes] = await pool.query(sql);
 
@@ -127,9 +124,8 @@ const getProjectTypes = async (req, res) => {
 }
 
 const getSocials = async (req, res) => {
-    // Get all project types
-
     try {
+        // Get all social sites
         const sql = `SELECT * FROM socials`;
         const [socials] = await pool.query(sql);
 

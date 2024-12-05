@@ -40,14 +40,13 @@ const login = async (req, res) => {
 }
 
 const getAuth = (req, res) => {
+    // Allow frontend to check if user is logged in
     if (!req.session.userId){
         return res.status(401).json({
             status: 401, 
             error: "Unauthorized" 
         });
-    }
-
-    else {
+    } else {
         return res.status(200).json({
             status: 200,
             data: [{ user_id: req.session.userId }]
@@ -293,8 +292,8 @@ const resetPassword = async (req, res) => {
 }
 
 const getUsers = async (req, res) => {
-    // Get all users
     try {
+        // Get data on all users
         const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
         jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
             FROM users u
@@ -328,13 +327,11 @@ const getUsers = async (req, res) => {
 }
 
 const getUserById = async (req, res) => {
-    // Get users using id
-
     // Get id from url 
     const { id } = req.params;
 
     try {
-        // Get user data
+        // Get data of a user
         const sql = `SELECT u.user_id, u.first_name, u.last_name, u.username, u.profile_image, u.headline, u.pronouns, 
             jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, s.skills, so.socials
             FROM users u
@@ -391,8 +388,6 @@ const getUsernameBySession = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    // Update a user
-
     // Get input data
     const { id } = req.params;
     const { firstName, lastName, headline, pronouns, jobTitleId, majorId, 
@@ -525,8 +520,6 @@ const deleteUser = async (req, res) => {
 }
 
 const updateProfilePicture = async (req, res) => {
-    // Update profile picture for a user
-
     // Get id from url
     const { id } = req.params;
 
@@ -751,8 +744,6 @@ const updatePassword = async (req, res) => {
 }
 
 const getMyProjects = async (req, res) => {
-    // Get projects the user is a member of
-
     // Get id from url 
     const { id } = req.params;
 
@@ -765,7 +756,7 @@ const getMyProjects = async (req, res) => {
     }
 
     try {
-        // Get projects' data
+        // Get projects the user is a member of
         const sql = `SELECT p.* 
             FROM members m
             JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, p.user_id, p.created_at, g.project_types, t.tags
@@ -803,13 +794,11 @@ const getMyProjects = async (req, res) => {
 }
 
 const getVisibleProjects = async (req, res) => {
-    // Get projects the user is a member and is set to be publicly visible
-
     // Get id from url 
     const { id } = req.params;
 
     try {
-        // Get projects' data
+        // Get projects the user is a member and is set to be publicly visible
         const sql = `SELECT p.* 
             FROM members m
             JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
@@ -847,8 +836,6 @@ const getVisibleProjects = async (req, res) => {
 }
 
 const updateProjectVisibility = async (req, res) => {
-    // Update profile visibility on projects the user is a member of
-
     // Get input data 
     const { id } = req.params;
     const { projectId, visibility } = req.body;
@@ -888,13 +875,11 @@ const updateProjectVisibility = async (req, res) => {
 }
 
 const getProjectFollowing = async (req, res) => {
-    // Get projects the user is following
-
     // Get id from url 
     const { id } = req.params;
 
     try {
-        // Get user data
+        // Get projects the user is following
         const sql = `SELECT p.*, pf.followed_at
             FROM project_followings pf
             JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, g.project_types, t.tags
@@ -932,8 +917,6 @@ const getProjectFollowing = async (req, res) => {
 }
 
 const addProjectFollowing = async (req, res) => {
-    // Add a project the user decided to follow 
-
     // Get input data
     const { id } = req.params;
     const { projectId } = req.body
@@ -952,7 +935,7 @@ const addProjectFollowing = async (req, res) => {
     }
 
     try {
-        // Add projet following into database
+        // Add a project the user decided to follow
         await pool.query("INSERT INTO project_followings (user_id, project_id) VALUES (?, ?)", [id, projectId]);
 
         return res.sendStatus(201);
@@ -966,8 +949,6 @@ const addProjectFollowing = async (req, res) => {
 }
 
 const deleteProjectFollowing = async (req, res) => {
-    // Delete a project the user was following
-
     // Get input data
     const { id } = req.params;
     const { projectId } = req.body
@@ -986,7 +967,7 @@ const deleteProjectFollowing = async (req, res) => {
     }
 
     try {
-        // Remove project following from database
+        // Delete a project the user was following
         await pool.query("DELETE FROM project_followings WHERE user_id = ? AND project_id = ?", [id, projectId]);
 
         return res.sendStatus(204);
@@ -1000,13 +981,11 @@ const deleteProjectFollowing = async (req, res) => {
 }
 
 const getUserFollowing = async (req, res) => {
-    // Get people the user is following
-
-    // Get id from url 
+    // Get id from url
     const { id } = req.params;
 
     try {
-        // Get user data
+        // Get people the user is following
         const sql = `SELECT u.*, uf.followed_at 
             FROM user_followings uf
             JOIN (SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
@@ -1046,8 +1025,6 @@ const getUserFollowing = async (req, res) => {
 }
 
 const addUserFollowing = async (req, res) => {
-    // Add the person the user decided to follow 
-
     // Get input data
     const { id } = req.params;
     const { userId } = req.body
@@ -1066,7 +1043,7 @@ const addUserFollowing = async (req, res) => {
     }
 
     try {
-        // Add user following into database
+        // Add entry to track user following a person
         await pool.query("INSERT INTO user_followings (user_id, following_id) VALUES (?, ?)", [id, userId]);
 
         return res.sendStatus(201);
@@ -1080,7 +1057,6 @@ const addUserFollowing = async (req, res) => {
 }
 
 const deleteUserFollowing = async (req, res) => {
-    // Delete the person the user was following
     // Get input data
     const { id } = req.params;
     const { userId } = req.body
@@ -1099,7 +1075,7 @@ const deleteUserFollowing = async (req, res) => {
     }
 
     try {
-        // Remove user following from database
+        // Delete entry tracking the user following a person
         await pool.query("DELETE FROM user_followings WHERE user_id = ? AND following_id = ?", [id, userId]);
 
         return res.sendStatus(204);

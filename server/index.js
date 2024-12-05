@@ -21,6 +21,7 @@ app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Setup sessions
 app.use(session({
     secret: envConfig.sessionSecret,
     resave: false,
@@ -28,6 +29,7 @@ app.use(session({
     cookie: { secure: false,maxAge:60*60*6*1000 }
 }));
 
+// Routes
 app.use(usersRouter);
 app.use(projectsRouter);
 app.use(datasetsRouter);

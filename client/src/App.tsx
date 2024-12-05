@@ -68,7 +68,7 @@ function App() {
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
           <Route path={paths.routes.CREDITS} element={<Credits />} />
-          <Route path={paths.routes.EMAILCONFIRM} element={<EmailConfirmPage />}/>
+          <Route path={paths.routes.EMAILAUTH} element={<EmailConfirmPage />}/>
         </Routes>
         {/* <CreditsFooter /> */}
       </div>

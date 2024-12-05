@@ -8,7 +8,7 @@ const Login = ({ theme }) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
-    const [username, setUsername] = useState('');
+    const [loginInput, setLoginInput] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(''); // Error message for missing or incorrect information
 
@@ -24,11 +24,10 @@ const Login = ({ theme }) => {
 
     // Function to handle the login button click
     const handleLogin = () => {
-        //hideError();
-        // Check if the email and password are not empty
-        if (username === '' || password === '') {
+        
+        // Check if the loginInput and password are not empty
+        if (loginInput === '' || password === '') {
             setError('Please fill in all information');
-            //handleError('Username or password is empty!');
         }
 
         // if the email is valid and associated with an account
@@ -45,7 +44,7 @@ const Login = ({ theme }) => {
 
         else {
 
-            sendPost('/api/login', { username, password });
+            sendPost('/api/login', { loginInput, password });
 
             // Navigate to the home page
             //navigate(paths.routes.HOME);
@@ -69,9 +68,9 @@ const Login = ({ theme }) => {
                         <input
                             className="login-input"
                             type="text"
-                            placeholder="Username or school e-mail"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Username or e-mail"
+                            value={loginInput}
+                            onChange={(e) => setLoginInput(e.target.value)}
                         />
                         <input
                             className="login-input"

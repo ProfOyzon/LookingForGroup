@@ -9,6 +9,7 @@ const envConfig = {
     dbName: process.env.DB_NAME,
     mailerEmail: process.env.MAILER_EMAIL,
     mailerPass: process.env.MAILER_PASS,
+    sessionSecret: process.env.SESSION_SECRET,
     port: process.env.PORT
 }
 

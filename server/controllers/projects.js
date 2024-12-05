@@ -8,8 +8,8 @@ import { genPlaceholders } from "../utils/sqlUtil.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const getProjects = async (req, res) => {
-    // Get all projects
     try {
+        // Get all projects
         const sql = `SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
@@ -42,8 +42,6 @@ const getProjects = async (req, res) => {
 }
 
 const createProject = async (req, res) => {
-    // Create a new project
-
     // Get input data
     const {userId, title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
 
@@ -140,13 +138,11 @@ const createProject = async (req, res) => {
 }
 
 const getProjectById = async (req, res) => {
-    // Get a project using its id
-
     // Get id from url 
     const { id } = req.params;
 
     try {
-        // Get project data
+        // Get data of a project
         const sql = `SELECT p.project_id, p.title, p.hook, p.description, p.thumbnail, p.purpose, p.status, p.audience, g.project_types, 
             t.tags, j.jobs, m.members, pi.images, so.socials
             FROM projects p
@@ -208,8 +204,6 @@ const getProjectById = async (req, res) => {
 }
 
 const updateProject = async (req, res) => {
-    // Update a project
-
     // Get input data
     const { id } = req.params;
     const { title, hook, description, purpose, status, audience, projectTypes, tags, jobs, members, socials} = req.body;
@@ -393,8 +387,6 @@ const updateProject = async (req, res) => {
 }
 
 const updateThumbnail = async (req, res) => {
-    // Update thumbnail for a project
-
     // Get id from url
     const { id } = req.params;
 
@@ -439,12 +431,11 @@ const updateThumbnail = async (req, res) => {
 }
 
 const getPictures = async (req, res) => {
-    // Get a project's pictures
-
     // Get id from url 
     const { id } = req.params;
 
     try {
+        // Get project's pictures
         const sql = `SELECT pi.image_id, pi.image, pi.position
 			FROM project_images pi
 			WHERE pi.project_id = ?
@@ -466,8 +457,6 @@ const getPictures = async (req, res) => {
 }
 
 const addPicture = async (req, res) => {
-    // Update picture for a project
-
     // Get data
     const { id } = req.params;
     const { position } = req.body
@@ -509,8 +498,6 @@ const addPicture = async (req, res) => {
 }
 
 const updatePicturePositions = async (req, res) => {
-    // Update picture order for a project
-
     // Get input data
     const { id } = req.params;
     const { images } = req.body;
@@ -542,8 +529,6 @@ const updatePicturePositions = async (req, res) => {
 }
 
 const deletePicture = async (req, res) => {
-    // Delete picture from a project
-
     // Get input data
     const { id } = req.params;
     const { image } = req.body;
@@ -580,7 +565,7 @@ const deleteMember = async (req, res) => {
     const { userId } = req.body;
 
     try {
-        // Remove project's member from database
+        // Remove member from a project
         await pool.query("DELETE FROM members WHERE project_id = ? AND user_id = ?", [id, userId]);
 
         return res.sendStatus(204);

@@ -21,20 +21,15 @@ app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Setup sessions
 app.use(session({
-    secret: 'your-secret-key',
+    secret: envConfig.sessionSecret,
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false,maxAge:60*60*6*1000 }
 }));
 
-/* app.use(session({
-    secret: 'blahblahblah',
-    cookie: {
-        sameSite: 'strict'
-    }
-})); */
-
+// Routes
 app.use(usersRouter);
 app.use(projectsRouter);
 app.use(datasetsRouter);

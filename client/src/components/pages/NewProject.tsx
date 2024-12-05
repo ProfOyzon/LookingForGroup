@@ -18,6 +18,11 @@ import * as tags from "../../constants/tags";
 import * as paths from "../../constants/routes";
 import Project from "./Project";
 
+//To-do
+//Ensure light/dark mode colors work properly on this page
+//Have team member listings link to their respective profiles
+//Ensure 'ProjectCreatorEditor' component is complete and works on this page for project editing
+
 //Variable used for checking whether or not we are running a server or not
 //Should be 'true' when using npm run server, 'false' when using npm run client
 let runningServer = true;
@@ -32,12 +37,12 @@ let defaultProject = runningServer ? undefined : {
   status: 'currentStatus',
   audience: 'Insert target audience here',
   project_types: [
-    {id: 1, project_type: 'Video Game'},
+    { id: 1, project_type: 'Video Game' },
   ],
   tags: [
-    {id: 6, tag: "Action", type: "Creative", position: 1},
-    {id: 40, tag: "Rogue-Like", type: "Games", position: 2},
-    {id: 1, tag: "Sci-Fi", type: "Creative", position: 3},
+    { id: 6, tag: "Action", type: "Creative", position: 1 },
+    { id: 40, tag: "Rogue-Like", type: "Games", position: 2 },
+    { id: 1, tag: "Sci-Fi", type: "Creative", position: 3 },
   ],
   jobs: [
     {
@@ -60,20 +65,30 @@ let defaultProject = runningServer ? undefined : {
     },
   ],
   members: [
-    {user_id: 1, job_title: 'Project Lead', first_name: 'Lily', last_name: 'Carter'},
-    {user_id: 2, job_title: '2D Artist', first_name: 'Maya', last_name: 'Bennett'},
-    {user_id: 3, job_title: 'Video Game Developer', first_name: 'Aiden', last_name: 'Brooks'},
-    {user_id: 4, job_title: 'Philosopher', first_name: 'Aris', last_name: 'Tottle'},
-    {user_id: 5, job_title: 'Impersonator', first_name: 'Imi', last_name: 'Tatter'},
+    { user_id: 1, job_title: 'Project Lead', first_name: 'Lily', last_name: 'Carter' },
+    { user_id: 2, job_title: '2D Artist', first_name: 'Maya', last_name: 'Bennett' },
+    { user_id: 3, job_title: 'Video Game Developer', first_name: 'Aiden', last_name: 'Brooks' },
+    { user_id: 4, job_title: 'Philosopher', first_name: 'Aris', last_name: 'Tottle' },
+    { user_id: 5, job_title: 'Impersonator', first_name: 'Imi', last_name: 'Tatter' },
   ],
   images: [
-    {id: 1, image: profilePicture, position: 1},
-    {id: 2, image: tallImage, position: 2},
-    {id: 3, image: heart, position: 3},
+    { id: 1, image: profilePicture, position: 1 },
+    { id: 2, image: tallImage, position: 2 },
+    { id: 3, image: heart, position: 3 },
   ]
 }
 
-const NewProject = () => {
+const NewProject = (theme, setTheme) => {
+  // check the current theme and set image src to match
+  useEffect(() => {
+    const themeIcon = document.getElementsByClassName('theme-icon');
+    for (let i = 0; i < themeIcon.length; i++) {
+      const icon = themeIcon[i] as HTMLImageElement;
+      const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
+      icon.src = src;
+    }
+  }, [theme]);
+
   //Navigation hook
   const navigate = useNavigate();
 
@@ -93,7 +108,7 @@ const NewProject = () => {
 
       const projectData = await response.json();
 
-      if(projectData.data[0] === undefined){
+      if (projectData.data[0] === undefined) {
         setFailCheck(true);
         return;
       }
@@ -119,13 +134,13 @@ const NewProject = () => {
   //Change depending on who's viewing the project page (Outside user, project member, project owner, etc.)
   const buttonContent = usersProject ? <>{
     <>
-      <ProjectCreatorEditor/>
+      <ProjectCreatorEditor />
     </>
   }</> : <>{
     <>
-      <button><img src={heart}/></button>
+      <button><img src={heart} /></button>
       <Dropdown>
-        <DropdownButton><img src={menu}/></DropdownButton>
+        <DropdownButton><img src={menu} /></DropdownButton>
         <DropdownContent rightAlign={true}>
           <button>Share</button>
           <button>Report</button>
@@ -147,10 +162,10 @@ const NewProject = () => {
   const peopleContent = projectMembers.length > 0 ? <>{
     projectMembers.map((user) => (
       <div className='project-contributor'>
-        <img className='project-contributor-profile' src={profilePicture}/>
+        <img className='project-contributor-profile' src={profilePicture} />
         <div className='project-contributor-info'>
-          <div>{user.first_name} {user.last_name}</div>
-          <div>{user.job_title}</div>
+          <div className="team-member-name">{user.first_name} {user.last_name}</div>
+          <div className="team-member-role">{user.job_title}</div>
         </div>
       </div>
     ))
@@ -160,7 +175,7 @@ const NewProject = () => {
   const contributorContent = projectContributors != undefined ? projectContributors.length > 0 ? <>{
     projectContributors.map((user) => (
       <div className='project-contributor'>
-        <img className='project-contributor-profile' src={profilePicture}/>
+        <img className='project-contributor-profile' src={profilePicture} />
         <div className='project-contributor-info'>
           <div>{user.first_name} {user.last_name}</div>
           <div>{user.job_title}</div>
@@ -175,7 +190,7 @@ const NewProject = () => {
   //Variable holding either 'peopleContent' or 'contributorContent', depending on 'displayedPeople' state (seen above)
   const profileContent = displayedPeople === 'People' ? peopleContent : contributorContent;
 
-  const openPositionListing = (positionNumber : number) => {
+  const openPositionListing = (positionNumber: number) => {
     //Set state to position being clicked
     //Call Popup open function from other button
     setViewedPosition(positionNumber);
@@ -186,9 +201,9 @@ const NewProject = () => {
 
   //Find first member with the job title of 'Project Lead'
   //If no such member exists, use first member in project member list
-  const projectLead = displayedProject === undefined ? {user_id: 0, job_title:'Default guy', first_name:'user', last_name:'name'}
+  const projectLead = displayedProject === undefined ? { user_id: 0, job_title: 'Default guy', first_name: 'user', last_name: 'name' }
     : displayedProject.members.some(member => member.job_title === 'Project Lead') ? displayedProject.members.find(member => member.job_title === 'Project Lead')
-    : displayedProject.members[0];
+      : displayedProject.members[0];
 
   //Page layout for if project data hasn't been loaded yet
   let loadingProject = <>{
@@ -199,138 +214,138 @@ const NewProject = () => {
 
   return (
     <div className='page'>
-      <Header dataSets={{data:[]}} onSearch={() => {}}/>
-      
-      {displayedProject === undefined ? loadingProject : 
-      <div id='project-page-content'>
-        {/* May need to adjust width/height styles to account for description/carousel sizes */}
-        <div id='project-image-carousel'>
-          <ImageCarousel carouselType='Project' dataList={displayedProject.images}/>
-        </div>
+      <Header dataSets={{ data: [] }} onSearch={() => { }} theme setTheme />
 
-        <div id='project-info-panel'>
-          <div id='project-info-header'>
-            <div id='project-title'>{displayedProject.title}</div>
-            <div id='project-info-buttons'>{buttonContent}</div>
+      {displayedProject === undefined ? loadingProject :
+        <div id='project-page-content'>
+          {/* May need to adjust width/height styles to account for description/carousel sizes */}
+          <div id='project-image-carousel'>
+            <ImageCarousel carouselType='Project' dataList={displayedProject.images} />
           </div>
-          <div id='project-hook'>
-            {displayedProject.hook}
-          </div>
-          <div id='project-status'>
-            Status: <span className='project-info-highlight'>{displayedProject.status} </span> 
-            <Popup>
-              <PopupButton buttonId='project-open-positions-button'>Open Positions</PopupButton>
-              <PopupContent>
-                <div id='project-open-positions-popup'>
-                  <div id='positions-popup-header'>Join The Team</div>
 
-                  <div id='positions-popup-list'>
-                    <div id='positions-popup-list-header'>Open Positions</div>
-                    <div id='positions-popup-list-buttons'>
-                      {
-                        displayedProject.jobs.map((job, index) => (
-                          <button className={`positions-popup-list-item ${index === viewedPosition ? 'positions-popup-list-item-active' : ''}`} 
-                            onClick={() => setViewedPosition(index)} key={index}>{job.job_title}</button>
-                        ))
-                      }
-                    </div>
-                  </div>
+          <div id='project-info-panel'>
+            <div id='project-info-header'>
+              <div id='project-title'>{displayedProject.title}</div>
+              <div id='project-info-buttons'>{buttonContent}</div>
+            </div>
+            <div id='project-hook'>
+              {displayedProject.hook}
+            </div>
+            <div id='project-status'>
+              Status: <span className='project-info-highlight'>{displayedProject.status} </span>
+              <Popup>
+                <PopupButton buttonId='project-open-positions-button'>Open Positions</PopupButton>
+                <PopupContent>
+                  <div id='project-open-positions-popup'>
+                    <div id='positions-popup-header'>Join The Team</div>
 
-                  <div id='positions-popup-info'>
-                    <div id='positions-popup-info-title'>{displayedProject.jobs[viewedPosition].job_title}</div>
-                    <div id='positions-popup-info-description'>
-                      <div id='position-description-header'>What we are looking for:</div>
-                      <div id='position-description-content'>
-                        {displayedProject.jobs[viewedPosition].description}
+                    <div id='positions-popup-list'>
+                      <div id='positions-popup-list-header'>Open Positions</div>
+                      <div id='positions-popup-list-buttons'>
+                        {
+                          displayedProject.jobs.map((job, index) => (
+                            <button className={`positions-popup-list-item ${index === viewedPosition ? 'positions-popup-list-item-active' : ''}`}
+                              onClick={() => setViewedPosition(index)} key={index}>{job.job_title}</button>
+                          ))
+                        }
                       </div>
                     </div>
-                    <div id='position-details'>
-                      <div id='position-availability'><span className='position-detail-indicator'>Availability: </span>{displayedProject.jobs[viewedPosition].availability}</div>
-                      <div id='position-duration'><span className='position-detail-indicator'>Duration: </span>{displayedProject.jobs[viewedPosition].duration}</div>
-                      <div id='position-location'><span className='position-detail-indicator'>Location: </span>{displayedProject.jobs[viewedPosition].location}</div>
-                      <div id='position-compensation'><span className='position-detail-indicator'>Compensation: </span>{displayedProject.jobs[viewedPosition].compensation}</div>
+
+                    <div id='positions-popup-info'>
+                      <div id='positions-popup-info-title'>{displayedProject.jobs[viewedPosition].job_title}</div>
+                      <div id='positions-popup-info-description'>
+                        <div id='position-description-header'>What we are looking for:</div>
+                        <div id='position-description-content'>
+                          {displayedProject.jobs[viewedPosition].description}
+                        </div>
+                      </div>
+                      <div id='position-details'>
+                        <div id='position-availability'><span className='position-detail-indicator'>Availability: </span>{displayedProject.jobs[viewedPosition].availability}</div>
+                        <div id='position-duration'><span className='position-detail-indicator'>Duration: </span>{displayedProject.jobs[viewedPosition].duration}</div>
+                        <div id='position-location'><span className='position-detail-indicator'>Location: </span>{displayedProject.jobs[viewedPosition].location}</div>
+                        <div id='position-compensation'><span className='position-detail-indicator'>Compensation: </span>{displayedProject.jobs[viewedPosition].compensation}</div>
+                      </div>
+                      <div id='position-contact'>
+                        if interested, please contact: <span onClick={() => navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)} id='position-contact-link'><img src={profilePicture} />{projectLead.first_name} {projectLead.last_name}</span>
+                      </div>
                     </div>
-                    <div id='position-contact'>
-                      if interested, please contact: <span onClick={() => navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)}id='position-contact-link'><img src={profilePicture}/>{projectLead.first_name} {projectLead.last_name}</span>
-                    </div>
+
+                    <PopupButton buttonId='positions-popup-close'>Close</PopupButton>
                   </div>
+                </PopupContent>
+              </Popup>
+            </div>
+            <div id='project-creation'>
+              Created by: <span className='project-info-highlight'>creator</span><br />
+              Creation date
+            </div>
+            <div id='project-tags'>
+              {
+                //If more tag types are usable, use commented code for cases
+                //Also, check to see how many additional tags a project has
+                displayedProject.tags.map((tag, index) => {
+                  /* let category : string;
+                  switch (tag.type) {
+                  } */
+                  if (index < 3) {
+                    return (
+                      <div className={`project-tag-label label-green`} key={index}>
+                        {tag.tag}
+                      </div>)
+                  } else if (index === 3) {
+                    return (
+                      <div className='project-tag-label label-position' key={index}>+{displayedProject.tags.length - 3}</div>
+                    )
+                  }
+                })
+              }
+            </div>
+          </div>
 
-                  <PopupButton buttonId='positions-popup-close'>Close</PopupButton>
-                </div>
-              </PopupContent>
-            </Popup>
-          </div>
-          <div id='project-creation'>
-            Created by: <span className='project-info-highlight'>creator</span><br/>
-            Creation date
-          </div>
-          <div id='project-tags'>
-            {
-              //If more tag types are usable, use commented code for cases
-              //Also, check to see how many additional tags a project has
-              displayedProject.tags.map((tag, index) => {
-                /* let category : string;
-                switch (tag.type) {
-                } */
-                if (index < 3) {
-                  return (
-                    <div className={`project-tag-label label-green`} key={index}>
-                      {tag.tag}
-                    </div> )
-                } else if (index === 3) {
-                  return (
-                    <div className='project-tag-label label-grey' key={index}>+{displayedProject.tags.length - 3}</div>
-                  )
-                }
-              })
-            }
-          </div>
-        </div>
-
-        <div id='project-overview'>
-          <div id='project-overview-title'>About This Project</div>
-          <div id='project-overview-text'>
-            {displayedProject.description}
-          </div>
-          {/* Sections could also be added with some extra function, 
+          <div id='project-overview'>
+            <div id='project-overview-title'>About This Project</div>
+            <div id='project-overview-text'>
+              {displayedProject.description}
+            </div>
+            {/* Sections could also be added with some extra function, 
           title and content can be assigned to similar elements */}
-          <div className='project-overview-section-header'>Purpose</div>
-          <div>
-            {displayedProject.purpose}
+            <div className='project-overview-section-header'>Purpose</div>
+            <div>
+              {displayedProject.purpose}
+            </div>
+            <div className='project-overview-section-header'>Target Audience</div>
+            <div>
+              {displayedProject.audience}
+            </div>
+            <div id='project-overview-links-section'>
+              Keep up with us!
+              <div id='project-overview-links'>
+                {/* Use function to insert various links here */}
+              </div>
+            </div>
           </div>
-          <div className='project-overview-section-header'>Target Audience</div>
-          <div>
-            {displayedProject.audience}
+
+          <div id='project-people'>
+            <div id='project-people-tabs'>
+              <button className={`project-people-tab ${displayedPeople === 'People' ? 'project-people-tab-active' : ''}`} onClick={(e) => setDisplayedPeople('People')}>The Team</button>
+              <button className={`project-people-tab ${displayedPeople === 'Contributors' ? 'project-people-tab-active' : ''}`} onClick={(e) => setDisplayedPeople('Contributors')}>Contributors</button>
+            </div>
+            <div id='project-people-content'>
+              {profileContent}
+            </div>
           </div>
-          <div id='project-overview-links-section'>
-            Keep up with us!
-            <div id='project-overview-links'>
-              {/* Use function to insert various links here */}
+
+          <div id='project-open-positions'>
+            <div id='project-open-positions-header'>Open Positions</div>
+            <div id='project-open-positions-list'>
+              {
+                displayedProject.jobs.map((position, index) => (
+                  <button className='project-tag-label label-grey' onClick={() => openPositionListing(index)} key={index}>{position.job_title}</button>
+                ))
+              }
             </div>
           </div>
         </div>
-
-        <div id='project-people'>
-          <div id='project-people-tabs'>
-            <button className={`project-people-tab ${displayedPeople === 'People' ? 'project-people-tab-active': ''}`} onClick={(e) => setDisplayedPeople('People')}>The Team</button>
-            <button className={`project-people-tab ${displayedPeople === 'Contributors' ? 'project-people-tab-active': ''}`} onClick={(e) => setDisplayedPeople('Contributors')}>Contributors</button>
-          </div>
-          <div id='project-people-content'>
-            {profileContent}
-          </div>
-        </div>
-
-        <div id='project-open-positions'>
-          <div id='project-open-positions-header'>Open Positions</div>
-          <div id='project-open-positions-list'>
-            {
-              displayedProject.jobs.map((position, index) => (
-                <button className='project-tag-label label-grey' onClick={() => openPositionListing(index)} key={index}>{position.job_title}</button>
-              ))
-            }
-          </div>
-        </div>
-      </div>
       }
     </div>
   )

@@ -135,7 +135,9 @@ const signup = async (req, res) => {
         // Send account activation email
         await transporter.sendMail(message);
 
-        return res.sendStatus(201);
+        return res.status(201).json({
+            status: 201
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -176,7 +178,9 @@ const createUser = async (req, res) => {
         const values = [token];
         await pool.query(sql, values);
         
-        return res.sendStatus(200);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -235,7 +239,9 @@ const requestPasswordReset = async (req, res) => {
         // Send account activation email
         await transporter.sendMail(message);
 
-        return res.sendStatus(201);
+        return res.status(201).json({
+            status: 201
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -281,7 +287,9 @@ const resetPassword = async (req, res) => {
         const values = [hashPass, email[0].primary_email];
         await pool.query(sql, values);
         
-        return res.sendStatus(201);
+        return res.status(201).json({
+            status: 201
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -483,7 +491,9 @@ const updateUser = async (req, res) => {
             await pool.query(sql, [id, social.id, social.url]);
         }
         
-        return res.sendStatus(204)
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -509,7 +519,9 @@ const deleteUser = async (req, res) => {
         // Delete user
         await pool.query("DELETE FROM users WHERE user_id = ?", [id]);
         
-        return res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -636,7 +648,9 @@ const updateEmail = async (req, res) => {
         const values = [email, id];
         await pool.query(sql, values);
         
-        res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -683,7 +697,9 @@ const updateUsername = async (req, res) => {
         const values = [username, id];
         await pool.query(sql, values);
         
-        res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -733,7 +749,9 @@ const updatePassword = async (req, res) => {
         const values = [hashPass, id];
         await pool.query(sql, values);
 
-        res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -864,7 +882,9 @@ const updateProjectVisibility = async (req, res) => {
         const values = [visibility, projectId, id];
         await pool.query(sql, values);
         
-        return res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -938,7 +958,9 @@ const addProjectFollowing = async (req, res) => {
         // Add a project the user decided to follow
         await pool.query("INSERT INTO project_followings (user_id, project_id) VALUES (?, ?)", [id, projectId]);
 
-        return res.sendStatus(201);
+        return res.status(201).json({
+            status: 201
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -970,7 +992,9 @@ const deleteProjectFollowing = async (req, res) => {
         // Delete a project the user was following
         await pool.query("DELETE FROM project_followings WHERE user_id = ? AND project_id = ?", [id, projectId]);
 
-        return res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -1046,7 +1070,9 @@ const addUserFollowing = async (req, res) => {
         // Add entry to track user following a person
         await pool.query("INSERT INTO user_followings (user_id, following_id) VALUES (?, ?)", [id, userId]);
 
-        return res.sendStatus(201);
+        return res.status(201).json({
+            status: 201
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -1078,7 +1104,9 @@ const deleteUserFollowing = async (req, res) => {
         // Delete entry tracking the user following a person
         await pool.query("DELETE FROM user_followings WHERE user_id = ? AND following_id = ?", [id, userId]);
 
-        return res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({

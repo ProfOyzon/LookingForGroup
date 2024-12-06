@@ -70,7 +70,7 @@ const EmailConfirmation = (props) => {
         // Changes h1Text and redirect destination dependent on the status code returned by server
         switch(responseData.status) {
             case 200:
-                h1Text = "Your email has been confirmed!";
+                h1Text = "Your LFG account has been activated!";
                 break;
             case 400:
                 h1Text = responseData.error;

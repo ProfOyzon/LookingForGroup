@@ -294,7 +294,7 @@ const NewProject = ({theme, setTheme}) => {
                       </div>)
                   } else if (index === 3) {
                     return (
-                      <div className='project-tag-label label-position' key={index}>+{displayedProject.tags.length - 3}</div>
+                      <div className='project-tag-label label-grey' key={index}>+{displayedProject.tags.length - 3}</div>
                     )
                   }
                 })
@@ -328,7 +328,7 @@ const NewProject = ({theme, setTheme}) => {
           <div id='project-people'>
             <div id='project-people-tabs'>
               <button className={`project-people-tab ${displayedPeople === 'People' ? 'project-people-tab-active' : ''}`} onClick={(e) => setDisplayedPeople('People')}>The Team</button>
-              <button className={`project-people-tab ${displayedPeople === 'Contributors' ? 'project-people-tab-active' : ''}`} onClick={(e) => setDisplayedPeople('Contributors')}>Contributors</button>
+              {/* <button className={`project-people-tab ${displayedPeople === 'Contributors' ? 'project-people-tab-active' : ''}`} onClick={(e) => setDisplayedPeople('Contributors')}>Contributors</button> */}
             </div>
             <div id='project-people-content'>
               {profileContent}
@@ -340,7 +340,7 @@ const NewProject = ({theme, setTheme}) => {
             <div id='project-open-positions-list'>
               {
                 displayedProject.jobs.map((position, index) => (
-                  <button className='project-tag-label label-grey' onClick={() => openPositionListing(index)} key={index}>{position.job_title}</button>
+                  <button className='project-tag-label label-position' onClick={() => openPositionListing(index)} key={index}>{position.job_title}</button>
                 ))
               }
             </div>

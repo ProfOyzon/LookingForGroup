@@ -74,6 +74,9 @@ General style rules
     --create-bg: #2C2A3A;
     --create-text: white;
 
+    /* don't invert black image */
+    --image-filter: invert(1);
+
     /* tags */
     --tag-red-selected: #FFA0B0;
     --tag-orange-selected: #FFA381;
@@ -136,6 +139,9 @@ General style rules
 
     --create-bg: white;
     --create-text: #271D66;
+
+    /* invert black image */
+    --image-filter: invert(0);
 
     /* tags */
     --tag-red-selected: #FFA0B0;
@@ -1127,7 +1133,7 @@ Page popup style rules
     border-radius: 4px;
     top: 10px;
     right: 10px;
-
+    background: none;
 }
 
 .popup-close {
@@ -1138,7 +1144,7 @@ Page popup style rules
     right: 0px;
     width: 40px !important;
     height: 40px !important;
-    background-color: white !important;
+    background: none !important;
     margin: 4px 4px 0 0 !important;
 }
 
@@ -1146,15 +1152,18 @@ Page popup style rules
     width: 100%;
     height: 32px;
     margin-top: 3px;
+    filter: var(--image-filter);
 }
 
 .popup-close:hover {
-    background-color: var(--lightGray) !important;
+    /* background-color: var(--lightGray) !important; */
+    cursor: pointer;
 }
 
 #popup-close img {
     width: 40px;
     height: 40px;
+    filter: var(--image-filter);
 }
 
 /*rules used to prevent page scrolling while a popup is open*/
@@ -1477,8 +1486,8 @@ Image Carousel style rules
 .carousel-tab {
     border: none;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
     background-color: var(--header-color);
 }
 
@@ -1788,8 +1797,9 @@ Project Creator and Editor style rules
 #project-editor-type-tags,
 #project-editor-selected-tags,
 #project-editor-tag-search {
-    background-color: white;
-    box-shadow: 0 0 3px var(--gray);
+    background-color: var(--bg-color);
+    /* box-shadow: 0 0 3px var(--gray); */
+    border: 1px solid var(--header-color)
     border-radius: 8px;
     padding: 10px;
 }
@@ -2738,7 +2748,7 @@ Profile page style rules
 
 .edit-region-input {
     box-sizing: border-box;
-    border: 1px solid #D3D3FF;
+    border: 1px solid var(--header-color);
     border-radius: 10px;
     /* width: 100%; */
     /* height: 45px; */
@@ -2951,7 +2961,7 @@ select.edit-region-input {
 .selected-skills-region {
     box-sizing: border-box;
     background-color: var(--bg-color);
-    border: 1px solid #D3D3FF;
+    border: 1px solid var(--header-color);
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
     height: 100%;
@@ -3038,7 +3048,7 @@ select.edit-region-input {
 .skills-list-region {
     box-sizing: border-box;
     background-color: var(--bg-color);
-    border: 1px solid #D3D3FF;
+    border: 1px solid var(--header-color);
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
     /* height: 100%; */
@@ -3204,7 +3214,7 @@ select.edit-region-input {
     box-sizing: border-box;
     background-color: var(--bg-color);
     color: var(--main-text);
-    border: 1px solid #D3D3FF;
+    border: 1px solid var(--header-color);
     border-radius: 10px;
     width: 100%;
     padding: 5px 17px;
@@ -4444,7 +4454,7 @@ plus a follow button & a more options button*/
 /*rules for the area containing the main content of the post*/
 #post-content {
     grid-area: post;
-    border: 1px solid grey;
+    border: 1px solid var(--neutral-gray);
     margin: 10px;
 }
 
@@ -4475,7 +4485,7 @@ plus a follow button & a more options button*/
 
 /*rules for the area containing comments and replies*/
 #comments-content {
-    border: 1px solid grey;
+    border: 1px solid var(--neutral-gray);
     height: calc(100vh - 300px);
     padding: 10px;
     overflow-y: auto;
@@ -4669,6 +4679,7 @@ New Project Page style rules
     background-color: var(--primary-color) !important;
     color: var(--invert-text);
     padding: 5px 20px;
+    font-weight: 700;
 }
 
 #project-hook,
@@ -4694,10 +4705,12 @@ New Project Page style rules
     font-size: 16px;
     font-weight: 700;
     padding: 10px 20px;
+    margin-top: 10px;
 }
 
 #project-open-positions-popup {
     background-image: var(--modal-gradient);
+    border-radius: 10px;
     font-style: normal;
     display: grid;
     height: calc(90vh - 90px);
@@ -4717,67 +4730,72 @@ New Project Page style rules
 #positions-popup-header {
     grid-area: header;
     text-align: center;
-    font-size: 3.5ch;
+    font-size: 20px;
     font-weight: 600;
     margin: auto;
     padding: 10px 20px;
-    background-color: var(--modal-gradient);
-    color: var(--main--text);
-    border-radius: 10px;
+    background-color: var(--primary-color);
+    color: var(--invert-text);
+    border-radius: 100px;
 }
 
 #positions-popup-list {
     grid-area: list;
     text-align: center;
-    background-color: white;
-    box-shadow: 0 0 10px #BBBBBB;
+    background-color: var(--bg-color);
+    /* box-shadow: 0 0 10px #BBBBBB; */
     border-radius: 10px;
 }
 
 #positions-popup-list-header {
-    margin: 20px 0 10px;
-    font-size: 2.5ch;
+    margin: 20px 0 20px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
 #positions-popup-list-buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
 }
 
 .positions-popup-list-item {
     width: max-content;
-    background-color: var(--bg-color);
-    color: var(--primary-color);
+    background-color: var(--header-color);
+    color: var(--main-text);
     border: none;
-    border-radius: 30px;
-    font-size: 1.9ch;
+    border-radius: 50px;
+    font-size: 16px;
     padding: 5px 15px;
+    font-weight: 400;
 }
 
 .positions-popup-list-item:hover,
 .positions-popup-list-item-active {
-    /* background-color: var(--primary-color);
-    color: white; */
+    background-color: var(--primary-color);
+    color: var(--invert-text);
     cursor: pointer;
+    font-weight: 700;
 }
 
 #positions-popup-info {
     grid-area: info;
     display: flex;
     flex-direction: column;
-    background-color: white;
-    box-shadow: 0 0 10px #BBBBBB;
+    background-color: var(--bg-color);
+    /* box-shadow: 0 0 10px #BBBBBB; */
     border-radius: 10px;
     padding: 20px;
 }
 
 #positions-popup-info-title {
     color: var(--primary-color);
-    font-size: 2.5ch;
+    font-size: 20px;
     font-weight: 600;
     text-align: center;
+    margin-bottom: 20px;
 }
 
 #positions-popup-info-description {
@@ -4788,6 +4806,7 @@ New Project Page style rules
 .position-detail-indicator {
     color: var(--primary-color);
     font-weight: 600;
+    margin-bottom: 10px;
 }
 
 #position-description-content {
@@ -4827,7 +4846,7 @@ New Project Page style rules
     align-items: center;
     gap: 10px;
     font-style: italic;
-    color: var(--gray);
+    color: var(--neutral-gray);
 }
 
 #position-contact-link {
@@ -4865,6 +4884,7 @@ New Project Page style rules
     padding: 10px 20px;
     background-color: var(--primary-color);
     color: var(--invert-text);
+    font-weight: 700;
 }
 
 #project-creation {
@@ -4966,6 +4986,7 @@ New Project Page style rules
     color: var(--invert-text);
     font-size: 16px;
     padding: 5px 10px;
+    font-weight: 700;
 }
 
 .project-people-tab:hover,

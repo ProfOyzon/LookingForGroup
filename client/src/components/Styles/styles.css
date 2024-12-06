@@ -711,7 +711,7 @@ Sidebar Nav style rules
     /* box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px; */
     z-index: 2;
     color: var(--dark-lighttheme);
-    background-color: white;
+    background-color: var(--bg-color);
     /*background-image: url("../../../public/images/nav-background.png");*/
     background-image: var(--sidebar-gradient);
     background-position: center;
@@ -922,8 +922,8 @@ Sidebar Nav style rules
         height: 50px;
         /*border: solid black 2px;*/
         position: fixed;
-        bottom: 0;
-        background-color: white;
+        bottom: 10px;
+        background-color: var(--header-color);
         z-index: 1;
         /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
     }
@@ -935,14 +935,36 @@ Sidebar Nav style rules
     .containerButtonSideBar {
         display: flex;
         flex-direction: row;
-        cursor: pointer;
+        /* cursor: pointer; */
+        gap: 20px;
+        align-items: center;
+        justify-content: space-evenly;
+        height: 80px;
+        background-color: var(--header-color);
     }
 
     .containerButtonSideBar button {
         width: 20vw;
-        height: 50px;
+        height: 45px;
+        margin: 0 5px 20px 5px;
         padding-left: calc((100vw - 160px) / 10);
         padding-right: auto;
+    }
+
+    .containerButtonSideBar button:hover {
+        transition-duration: 0.25s;
+        background-color: var(--invert-text);
+    }
+    
+    .containerButtonSideBar button.active {
+        background-color: var(--primary-color);
+        transition: 0.25s;
+        font-weight: bold;
+        color: var(--invert-text);
+    
+        img {
+            filter: invert(1);
+        }
     }
 }
 

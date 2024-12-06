@@ -49,7 +49,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App" data-theme={theme} >
-        <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} />
+        <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} theme={theme} />
         <Routes>
           <Route path={paths.routes.DEFAULT} element={<Discover theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.LOGIN} element={<Login theme={theme}/>} />

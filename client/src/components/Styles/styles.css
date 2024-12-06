@@ -48,15 +48,22 @@ General style rules
 /*default color scheme*/
 :root {
     /* default dark mode is default */
-    --bg-color: #0E0E0E; /* background color */
+    --bg-color: #0E0E0E;
+    /* background color */
 
-    --primary-color: #FEAD81; /* primary color for buttons, etc. */
-    --panel-hover: rgba(254, 173, 129, 0.9); /* hover color for profile cards */
-    --header-color: #1A1921; /* search bar, header button background, profile page background, etc. */
-    --dropdown-color: #1A1921; /* dropdown/small modal background color */
+    --primary-color: #FEAD81;
+    /* primary color for buttons, etc. */
+    --panel-hover: rgba(254, 173, 129, 0.9);
+    /* hover color for profile cards */
+    --header-color: #1A1921;
+    /* search bar, header button background, profile page background, etc. */
+    --dropdown-color: #1A1921;
+    /* dropdown/small modal background color */
     --sidebar-gradient: linear-gradient(180deg, #2C2A3A 30%, #FEAD81 100%);
-    --hero-gradient: linear-gradient(180deg, #0E0E0E 30%, #2C2A3A 100%); /* gradient for  discover hero section */
-    --modal-gradient: linear-gradient(293deg, #0A0A0A 0%, #2C2A3A 100%); /* gradient for bigger modals (project/profile settings, etc.) */
+    --hero-gradient: linear-gradient(180deg, #0E0E0E 30%, #2C2A3A 100%);
+    /* gradient for  discover hero section */
+    --modal-gradient: linear-gradient(293deg, #0A0A0A 0%, #2C2A3A 100%);
+    /* gradient for bigger modals (project/profile settings, etc.) */
 
     /* text colors */
     --main-text: white;
@@ -1155,7 +1162,7 @@ Header style rules
         It makes a smooth color transition for the header to the page content, and works with light/dark mode
         from what I've tested. I see no reason to not use it.
     */
-    background-image: linear-gradient(var(--bg-color) 85%, rgba(0,0,0,0));
+    background-image: linear-gradient(var(--bg-color) 85%, rgba(0, 0, 0, 0));
     width: calc(100% - 50px);
     height: 90px;
     position: sticky;
@@ -1756,11 +1763,13 @@ Project Creator and Editor style rules
     grid-area: audience;
 }
 
-#project-editor-type-tags, #project-editor-selected-tags, #project-editor-tag-search {
-    background-color:white;
+#project-editor-type-tags,
+#project-editor-selected-tags,
+#project-editor-tag-search {
+    background-color: white;
     box-shadow: 0 0 3px var(--gray);
-    border-radius:8px;
-    padding:10px;
+    border-radius: 8px;
+    padding: 10px;
 }
 
 #project-editor-long-description-input {
@@ -2801,11 +2810,12 @@ select.edit-region-input {
     margin: 0px 45px;
 }
 
-.edit-region-header.projects, .edit-region-instruct.projects {
+.edit-region-header.projects,
+.edit-region-instruct.projects {
     margin-left: 10px;
-} *
+}
 
-.edit-region-input.projects {
+* .edit-region-input.projects {
     box-sizing: border-box;
     border: 0px;
     border-radius: 0px;
@@ -4669,12 +4679,12 @@ New Project Page style rules
     font-style: normal;
     display: grid;
     height: calc(90vh - 90px);
-    width:90vw;
-    max-width:1000px;
-    gap:30px;
-    padding:70px;
-    padding-top:20px;
-    border-radius:4px;
+    width: 90vw;
+    max-width: 1000px;
+    gap: 30px;
+    padding: 70px;
+    padding-top: 20px;
+    border-radius: 4px;
     grid-template:
         'header header' 50px
         'list info' auto
@@ -4695,11 +4705,11 @@ New Project Page style rules
 }
 
 #positions-popup-list {
-    grid-area:list;
-    text-align:center;
-    background-color:white;
+    grid-area: list;
+    text-align: center;
+    background-color: white;
     box-shadow: 0 0 10px #BBBBBB;
-    border-radius:10px;
+    border-radius: 10px;
 }
 
 #positions-popup-list-header {
@@ -4732,13 +4742,13 @@ New Project Page style rules
 }
 
 #positions-popup-info {
-    grid-area:info;
-    display:flex;
-    flex-direction:column;
-    background-color:white;
+    grid-area: info;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
     box-shadow: 0 0 10px #BBBBBB;
-    border-radius:10px;
-    padding:20px;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 #positions-popup-info-title {
@@ -4858,7 +4868,7 @@ New Project Page style rules
 
 #project-overview-title {
     font-size: 24px;
-    color: var(--primary-color); 
+    color: var(--primary-color);
     font-weight: 600;
     margin-bottom: 20px;
 }
@@ -5035,7 +5045,7 @@ My projects page style rules
     box-sizing: border-box;
     width: 100%;
     height: auto;
-    margin:  0 0 16px;
+    margin: 0 0 16px;
     padding-left: 60px;
     padding-right: 64px;
 }
@@ -6499,16 +6509,34 @@ Credits style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-#gerrit {
-    color: purple;
-    font-weight: bold;
-    font-size: 20px;
-    cursor: pointer;
+#credits-title {
+    color: var(--primary-color);
+    text-align: left;
+    margin-left: 50px;
+    font-size: 24px;
+    font-weight: 600;
 }
 
-#gerrit:hover {
-    visibility: hidden;
-    transition: 0.1s ease-in-out;
+#credit-members-container {
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    /* gap: 10px; */
+    align-self: stretch;
+    flex-wrap: wrap;
+    margin: 20px 50px;
+
+    .lfg-contributor {
+        width: 255px;
+        background-color: var(--header-color);
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        border-radius: 10px;
+        margin: 15px 35px;
+
+        scale: 1.2;
+    }
 }
 
 /*
@@ -6586,8 +6614,8 @@ Email Confirmation page style rules
     left: 50%;
     width: 100%;
     height: 100%;
-    -ms-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     gap: 2%;
 }
 

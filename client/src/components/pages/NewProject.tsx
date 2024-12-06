@@ -78,7 +78,7 @@ let defaultProject = runningServer ? undefined : {
   ]
 }
 
-const NewProject = (theme, setTheme) => {
+const NewProject = ({theme, setTheme}) => {
   // check the current theme and set image src to match
   useEffect(() => {
     const themeIcon = document.getElementsByClassName('theme-icon');
@@ -214,7 +214,7 @@ const NewProject = (theme, setTheme) => {
 
   return (
     <div className='page'>
-      <Header dataSets={{ data: [] }} onSearch={() => { }} theme setTheme />
+      <Header dataSets={{ data: [] }} onSearch={() => { }} theme={theme} setTheme={setTheme} />
 
       {displayedProject === undefined ? loadingProject :
         <div id='project-page-content'>

@@ -110,7 +110,7 @@ const signup = async (req, res) => {
         // Email content
         const html = `
         <p>Hi ${firstName},<br>
-        Thank you for signing up to LFG. You have 1 hour to activate your account. Click the button below.
+        Thank you for signing up to LFG. You have 1 day to activate your account. Click the button below.
         </p>
         
         <div style="margin: 2rem 1rem">

@@ -1112,7 +1112,8 @@ Page popup style rules
     display: block;
     position: fixed;
     background-color: white;
-    border-radius: 4px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
     max-width: 95vw;
     max-height: 95vh;
     opacity: 100%;
@@ -1680,7 +1681,7 @@ Project Creator and Editor style rules
     height: calc(90vh - 100px);
     padding: 50px;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     color: var(--main-text);
 }
 

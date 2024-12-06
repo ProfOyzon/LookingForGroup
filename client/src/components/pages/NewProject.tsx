@@ -21,7 +21,7 @@ import Project from "./Project";
 //To-do
 //Ensure light/dark mode colors work properly on this page
 //Have team member listings link to their respective profiles
-//Ensure 'ProjectCreatorEditor' component is complete and works on this page for project editing
+//Ensure 'ProjectCreatorEditor' component is complete and works on this page for project editing (import found above)
 
 //Variable used for checking whether or not we are running a server or not
 //Should be 'true' when using npm run server, 'false' when using npm run client

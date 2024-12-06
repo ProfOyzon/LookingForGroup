@@ -49,7 +49,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App" data-theme={theme} >
-        <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} />
+        <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} theme={theme} />
         <Routes>
           <Route path={paths.routes.DEFAULT} element={<Discover theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.LOGIN} element={<Login theme={theme}/>} />
@@ -67,7 +67,7 @@ function App() {
           <Route path={paths.routes.SETTINGS} element={<Settings avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
-          <Route path={paths.routes.CREDITS} element={<Credits />} />
+          <Route path={paths.routes.CREDITS} element={<Credits theme={theme} setTheme={setTheme} />} />
           <Route path={paths.routes.ACCOUNTACTIVATE} element={<AccountActivation />}/>
         </Routes>
         {/* <CreditsFooter /> */}

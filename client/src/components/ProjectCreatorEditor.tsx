@@ -6,6 +6,15 @@ import { SearchBar } from "./SearchBar";
 import profileImage from "../icons/profile-user.png";
 import editIcon from "../icons/edit.png";
 
+//THIS COMPONENT NEEDS TO BE WORKED ON
+
+/*
+  This component is in an unfinished state. Not all css styling rules have been implemented/fine-tuned yet, 
+  and javascript functionality is at a bare minimum.
+  When completed, this component should allow for either editing existing projects or creating new projects entirely,
+  accessed via the ‘edit project’ button on project pages or the ‘create’ button on the sidebar, respectively.
+*/
+
 export const ProjectCreatorEditor = () => {
 
   //State variable denoting current tab

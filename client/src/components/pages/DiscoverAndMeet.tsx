@@ -1,9 +1,6 @@
 import "./pages.css";
-import { ProjectCard } from "../ProjectCard";
-import { ProfileCard } from "../ProfileCard";
 import { ProjectPanel } from "../ProjectPanel";
 import { ProfilePanel } from "../ProfilePanel";
-import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
 import { Header } from "../Header";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";

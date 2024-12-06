@@ -328,6 +328,7 @@ const NewProject = ({theme, setTheme}) => {
           <div id='project-people'>
             <div id='project-people-tabs'>
               <button className={`project-people-tab ${displayedPeople === 'People' ? 'project-people-tab-active' : ''}`} onClick={(e) => setDisplayedPeople('People')}>The Team</button>
+              {/* If contributors are added as a site feature, use the commented code below */}
               {/* <button className={`project-people-tab ${displayedPeople === 'Contributors' ? 'project-people-tab-active' : ''}`} onClick={(e) => setDisplayedPeople('Contributors')}>Contributors</button> */}
             </div>
             <div id='project-people-content'>

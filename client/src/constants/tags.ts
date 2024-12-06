@@ -4,7 +4,7 @@ export const tags = [
   "New",
   "Video Game",
   "Analog Game",
-  "Mobile App",
+  "Mobile Application",
   "Website",
   "Animation",
   "Film",
@@ -19,9 +19,7 @@ export const projectTypes = [
   "Website",
   "Animation",
   "Film",
-  "Art",
-  "Music",
-  "Story",
+  "Software",
   "Other",
 ]
 

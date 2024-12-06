@@ -4,12 +4,8 @@ import placeholderThumbnail from "../images/project_temp.png";
 //Component that will contain info about a project, used in the discovery page
 //Smaller and more concise than ProjectCard.tsx
 
-//to-do:
-//Add function that adjust hover panel to left if it's the right-most panel
-
-//Currently, this component serves as a placeholder
-
 //Takes in a 'project' value which contains info on the project it will display
+//Also takes in width (the width of this panel), and rightAlign, which determines which side the hover panel aligns with
 export const ProjectPanel = ({ width, projectData, rightAlign = false }) => {
   const navigate = useNavigate();
   const projectURL = `${paths.routes.NEWPROJECT}?projectID=${projectData.project.project_id}`;

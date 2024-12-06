@@ -21,7 +21,7 @@ import MessageHistory from './components/pages/MessageHistory';
 import CreateProject from './components/pages/CreateProject';
 import CreditsFooter from './components/CreditsFooter';
 import Credits from './components/pages/CreditsPage';
-import EmailConfirmPage from './components/pages/EmailConfirmPage';
+import AccountActivation from './components/pages/AccountActivation';
 
 import uselocalstorage from 'use-local-storage';
 import { useEffect } from 'react';
@@ -49,7 +49,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App" data-theme={theme} >
-        <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} />
+        <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} theme={theme} />
         <Routes>
           <Route path={paths.routes.DEFAULT} element={<Discover theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.LOGIN} element={<Login theme={theme}/>} />
@@ -67,8 +67,8 @@ function App() {
           <Route path={paths.routes.SETTINGS} element={<Settings avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
-          <Route path={paths.routes.CREDITS} element={<Credits />} />
-          <Route path={paths.routes.EMAILCONFIRM} element={<EmailConfirmPage />}/>
+          <Route path={paths.routes.CREDITS} element={<Credits theme={theme} setTheme={setTheme} />} />
+          <Route path={paths.routes.ACCOUNTACTIVATE} element={<AccountActivation />}/>
         </Routes>
         {/* <CreditsFooter /> */}
       </div>

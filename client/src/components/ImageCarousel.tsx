@@ -7,8 +7,13 @@ import image3 from "../images/tall_img.png";
 //To-do:
 //Finish Discover page version of this component
 
+//Default list of images to use
 const imageList = [image1, image2, image3];
 
+
+//Variable is identical in function to pages.
+//warnings about this variable can be found in Joseph Dunne's page documentation
+//All warnings shown about this variable in pages also applies to this one
 let runningServer = true;
 
 //This post was used to help create this component (found by Ben Gomez)

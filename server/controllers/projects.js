@@ -376,7 +376,9 @@ const updateProject = async (req, res) => {
             await pool.query(sql, [id, social.id, social.url]);
         }
         
-        return res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -487,7 +489,9 @@ const addPicture = async (req, res) => {
         const values = [fileName, Number(position), id];
         await pool.query(sql, values);
 
-        return res.sendStatus(201);
+        return res.status(201).json({
+            status: 201
+        });
     } catch(err) {
         console.log(err);
         return res.status(400).json({
@@ -518,7 +522,9 @@ const updatePicturePositions = async (req, res) => {
             await pool.query(sql, values);
         }
         
-        return res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -548,7 +554,9 @@ const deletePicture = async (req, res) => {
 
         await pool.query("DELETE FROM project_images WHERE image = ? AND project_id = ?", [image, id]);
 
-        return res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -568,7 +576,9 @@ const deleteMember = async (req, res) => {
         // Remove member from a project
         await pool.query("DELETE FROM members WHERE project_id = ? AND user_id = ?", [id, userId]);
 
-        return res.sendStatus(204);
+        return res.status(200).json({
+            status: 200
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({

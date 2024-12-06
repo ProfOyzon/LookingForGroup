@@ -21,18 +21,13 @@ import { sendPost, sendGet, GET } from "../../functions/fetch";
 import e from "express";
 
 //To-do
-//Ensure search bar works with project
-//Fix base tag filters
 //Add/finish additional tag filter popup
 //Have arrow buttons disappear if length is too wide to warrant them
 //Possibly finish & add image carousel (use ImageCarousel component, import found above)
+//Fix panels displaying when no items match searchbar input (should show NO projects if that's the case)
 
 //These values need to be outside the component, otherwise they get reset every time it re-renders
 //Lists that hold the original list of projects and profiles, only updates on page reload
-
-//Use this when testing with 'npm run client'
-/* const fullProjectList = projects;
-const fullProfileList = profiles; */
 
 //Variable to tell whether or not we are using 'npm run server' (true) or 'npm run client' (false)
 //Manually switch whenever deciding which npm command to run
@@ -131,7 +126,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
   //List that holds trimmed project data for use in searching
   //Note: Depending on user needs, may need to change or add to what is used in searches
   const projectSearchData = fullProjectList != undefined ? fullProjectList.map((project) => {
-    return({name: project.title, description: project.description});
+    return({name: project.title, description: project.hook});
   }) : [];
 
   //List that holds trimmed profile data for use in searching
@@ -220,7 +215,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
   //Loads a new set of project panels to render
   //Calls when page first loads & when a new list of projects is being used (e.g. after a search)
   const firstProjects = (newProjectList) => {
-    if (newProjectList === undefined) {
+    if (newProjectList === undefined || newProjectList.length === 0) {
       return [];
     }
     //Set new project list to run through
@@ -239,7 +234,9 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 
     //Get first panel's thumbnail and its width/height
     let firstThumbnail = new Image();
-    firstThumbnail.src = `images/thumbnails/${projectList[projectListPosition].thumbnail}`;
+    firstThumbnail.src = projectList[projectListPosition].thumbnail != null ? 
+      `images/thumbnails/${projectList[projectListPosition].thumbnail}` :
+      profileImage;
 
     //Set up initial project (ensures first row has something in it)
 
@@ -263,7 +260,9 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     while (rowTracker <= 5 && projectListPosition < projectList.length) {
       //Get thumbnail and its width & height
       let thumbnail = new Image();
-      thumbnail.src = `images/thumbnails/${projectList[projectListPosition].thumbnail}`;
+      thumbnail.src = projectList[projectListPosition].thumbnail != null ? 
+        `images/thumbnails/${projectList[projectListPosition].thumbnail}` :
+        profileImage;
       //Get a width value based on the project's display image's aspect ratio
       //Formula for getting width from image: 
       /*
@@ -524,11 +523,12 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
   const updateProjectList = () => {
     //Note: tags are not included in current mySQL database for projects
     let tagFilteredList = filteredProjectList.filter((project) => {
+      console.log(project);
       //Filter check to ensure if we include an item or not
       let tagFilterCheck = true;
       //Sets all tags to lowercase, for easier tag reading
       let lowercaseProjectTags = project.tags.map((tag) => {
-        return tag.toLowerCase();
+        return tag.tag.toLowerCase();
       })
       //if project in filtered list contains all tags in taglist, include it
       for (let tag of activeTagFilters) {
@@ -540,6 +540,12 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 
       return(tagFilterCheck);
     })
+
+    //If no tags are currently selected, render all projects
+    // !! Needs to be skipped if searchbar has any input !!
+    if (tagFilteredList.length === 0 && activeTagFilters.length === 0) {
+      tagFilteredList = JSON.parse(JSON.stringify(fullProjectList));
+    }
     //set displayed projects using firstProjects
     setDisplayedProjects(() => firstProjects(tagFilteredList));
   }
@@ -720,8 +726,16 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         }*/
       }
 
+      
+
       return(tagFilterCheck);
     })
+
+    //If no tags are currently selected, render all projects
+    // !! Needs to be skipped if searchbar has any input !!
+    if (tagFilteredList.length === 0 && activeTagFilters.length === 0) {
+      tagFilteredList = JSON.parse(JSON.stringify(fullProfileList));
+    }
 
     setProfileColumns(() => firstProfiles(tagFilteredList));
   }
@@ -780,6 +794,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
     //Also, toggle the tag filter's display
     e.target.classList.toggle('discover-tag-filter-selected');
 
+    console.log(activeTagFilters);
     updateItemList();
   }
 

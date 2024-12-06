@@ -6580,6 +6580,16 @@ Credits style rules
 
         scale: 1.2;
     }
+
+    .og-lfg-contributor {
+        width: 200px;
+        background-color: var(--header-color);
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        border-radius: 10px;
+        margin: 10px 0 0 10px;
+    }
 }
 
 /*

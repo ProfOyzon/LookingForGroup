@@ -18,29 +18,8 @@ const EmailConfirmation = (props) => {
     //Gets pathname from current location
     const path = location.pathname;
 
-    // Function that fetches to the server so it can check if the authorization token is correct
-    /*const getUserCreationStatusCode = async () => {
-        const url = `/api/signup/${path.substring(path.lastIndexOf("/")+1, path.length)}`;
-
-        try {
-            let response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            const responseJSON = await response.json();
-
-            setResponseData(responseJSON);
-            return;
-        } catch (err) {
-            console.error(err);
-            setResponseData(undefined);
-        }
-    }*/
-
     useEffect(() => {
+        // Function that fetches to the server so it can check if the authorization token is correct
         const getUserCreationStatus = async () => {
             const url = `/api/signup/${path.substring(path.lastIndexOf("/")+1, path.length)}`;
             try {
@@ -48,11 +27,11 @@ const EmailConfirmation = (props) => {
                 const data = await response.json();
                 console.log(`Status: ${data.status}`);
                 if(data.error) {
-                console.log(`Error: ${data.error}`);
+                    console.log(`Error: ${data.error}`);
                 }
                 setResponseData(data);
             } catch(err) {
-                console.error(err)
+                console.error(err);
             }
         };
         getUserCreationStatus();
@@ -60,8 +39,6 @@ const EmailConfirmation = (props) => {
 
     // Hook for navigation
     const navigate = useNavigate();
-
-    //getUserCreationStatusCode();
 
     // Sets default h1Text and redirect destination
     let h1Text = "Error Fetching";
@@ -78,7 +55,6 @@ const EmailConfirmation = (props) => {
         }
     }
     
-
     // Function to handle redirecting from the current page
     const redirect = () => {
         navigate(paths.routes.HOME); // Navigate to the home page
@@ -90,14 +66,12 @@ const EmailConfirmation = (props) => {
         return () => clearInterval(interval);
     });
 
-
-
     return (
         <div id="email-confirmation-page" className="background-cover">
             <div className="confirmation-container">
                 <div className="text-container">
                     <h1 id="confirmation-text">{h1Text}</h1><br></br>
-                    <h2 id="auto-redirect-text">You will be automatically redirected soon</h2><br></br>
+                    <h2 id="auto-redirect-text">You will be automatically redirected in 5s</h2><br></br>
                     <h3 id="manual-redirect-text">If you are not automatically redirected, click <span id="manual-redirect-link" onClick={() => redirect()}><i>here</i></span></h3>
                 </div>
             </div>

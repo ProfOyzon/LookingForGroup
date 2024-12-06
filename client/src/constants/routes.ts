@@ -18,4 +18,5 @@ export const routes = {
     "CREDITS": "/credits",
     "NOTFOUND": "/notFound",
     "ACCOUNTACTIVATE": "/activation/:token",
+    "PASSWORDRESET": "/passwordReset/:token",
 }

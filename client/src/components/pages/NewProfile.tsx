@@ -95,7 +95,7 @@ const NewProfile = ({ theme, setTheme }) => {
     if (profileID === undefined || profileID === null) {
       //If no profileID is in search query, automatically set to the current user's id
       console.log('profileID not found, using default');
-      profileID = '1';
+      profileID = userID;
     }
     const url = `/api/users/${profileID}/projects`;
 
@@ -127,9 +127,11 @@ const NewProfile = ({ theme, setTheme }) => {
   if (displayedProfile === undefined) {
     getProfileData();
   }
-  if (fullProjectList === undefined) {
-    getProfileProjectData();
-  }
+  //if (fullProjectList === undefined) {
+    //getProfileProjectData();
+  //}
+
+  //getProfileProjectData();
 
   //Variables used to represent profile data (only placeholders are used for now until backend is integrated)
 
@@ -138,12 +140,7 @@ const NewProfile = ({ theme, setTheme }) => {
   //Check whether or not the profile is the current user's
   let usersProfile = false;
 
-  console.log("profileID is: " + profileID);
-  console.log("fetchUserID() is: " + fetchUserID());
-
   if (profileID === userID) {
-    console.log("profileID is: " + profileID);
-    console.log("fetchUserID() is: " + fetchUserID());
     usersProfile = true;
   }
 

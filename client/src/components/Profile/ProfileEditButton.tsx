@@ -370,31 +370,38 @@ const EditButton = ({userData}) => {
     </div>
 
     // "Skills" 
+    if (userData.skills == null) {
+        userData.skills = [];
+    }
+
     const [currentSkills, setCurrentSkills] = useState(userData.skills.toSorted((a, b) => a.position - b.position));
 
     const addToSkillsList = (newSkill) => {
-        let found = false;
-        for (let i = 0; i < currentSkills.length; i++) {
-            if (currentSkills[i].type == newSkill.type && currentSkills[i].skill == newSkill.skill) {
-                found = true;
-            }
-        }
+        if (userData.skills != null) {
 
-        if (!found) {
-            let tempList = new Array(0);
+            let found = false;
             for (let i = 0; i < currentSkills.length; i++) {
-                tempList.push(currentSkills[i]);
-            }
-            tempList.push(newSkill);
-            tempList.sort((a, b) => a.position - b.position);
-
-            for (let i = 0; i < tempList.length; i++) {
-                if (tempList[i].position > i + 1) {
-                    tempList[i].position = i + 1;
+                if (currentSkills[i].type == newSkill.type && currentSkills[i].skill == newSkill.skill) {
+                    found = true;
                 }
             }
 
-            setCurrentSkills(tempList);
+            if (!found) {
+                let tempList = new Array(0);
+                for (let i = 0; i < currentSkills.length; i++) {
+                    tempList.push(currentSkills[i]);
+                }
+                tempList.push(newSkill);
+                tempList.sort((a, b) => a.position - b.position);
+
+                for (let i = 0; i < tempList.length; i++) {
+                    if (tempList[i].position > i + 1) {
+                        tempList[i].position = i + 1;
+                    }
+                }
+
+                setCurrentSkills(tempList);
+            }
         }
     };
 
@@ -895,9 +902,12 @@ const EditButton = ({userData}) => {
         saveProjectsPage();
 
         openClosePopup(showPopup, setShowPopup);
+
+        window.location.reload();
     };
 
     const saveUserData = async () => {
+        console.log("I'M BEING RAN HAHAHAAHAHAHAHAHAHH");
         const url = `/api/users/${userData.user_id}`;
         try {
             let response = await fetch(url, {

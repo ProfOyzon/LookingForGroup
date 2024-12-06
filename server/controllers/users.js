@@ -392,9 +392,12 @@ const updateUser = async (req, res) => {
     const { id } = req.params;
     const { firstName, lastName, headline, pronouns, jobTitleId, majorId, 
     academicYear, location, funFact, bio, skills, socials } = req.body;
+
+    console.log("ID is: " + id);
+    console.log("sessionID is: " + req.session.userId);
     
     // Checks
-    if (req.session.userId !== id){
+    if (req.session.userId != id){
         return res.status(401).json({
             status: 401, 
             error: "Unauthorized" 
@@ -483,7 +486,7 @@ const updateUser = async (req, res) => {
             await pool.query(sql, [id, social.id, social.url]);
         }
         
-        return res.sendStatus(204)
+        return res.sendStatus(204);
     } catch (err) {
         console.log(err);
         return res.status(400).json({

@@ -120,14 +120,24 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
               className='theme-icon' /></DropdownButton>
           <DropdownContent rightAlign={true}>
             <div id='header-profile-dropdown'>
-              <button onClick={() => handlePageChange(paths.routes.PROFILE)} id='header-profile-user'>
+              { (!loggedIn)
+                ? <button id='header-profile-user'>
+                  <img src="assets/profile_dark.png"
+                  src-light="assets/profile_light.png"
+                  src-dark="assets/profile_dark.png"
+                  className="theme-icon"
+                  alt='X' />
+                  <div>{username}<br /><span id='header-profile-email'>{email}</span></div>
+                  </button>
+                  : <button onClick={() => handlePageChange(paths.routes.PROFILE)} id='header-profile-user'>
                 <img src="assets/profile_dark.png"
                   src-light="assets/profile_light.png"
                   src-dark="assets/profile_dark.png"
                   className="theme-icon"
                   alt='X' />
                 <div>{username}<br /><span id='header-profile-email'>{email}</span></div>
-              </button>
+                </button>
+              }
               <hr />
               <button onClick={switchTheme}>
                 <img src="assets/white/mode.png"

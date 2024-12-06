@@ -64,6 +64,10 @@ General style rules
     /* gradient for  discover hero section */
     --modal-gradient: linear-gradient(293deg, #0A0A0A 0%, #2C2A3A 100%);
     /* gradient for bigger modals (project/profile settings, etc.) */
+    --border-color: #2B2939;
+    /* border for elements like textboxes that are on top of gradients for better visibility */
+    --error-delete-color: #FF3859;
+    /* for error messages and delete buttons */
 
     /* text colors */
     --main-text: white;
@@ -132,6 +136,8 @@ General style rules
     --sidebar-gradient: linear-gradient(180deg, #D3D3FF 0%, #FFCEB4 100%);
     --hero-gradient: linear-gradient(180deg, #FFFFFF 50%, #D3D3FF 100%);
     --modal-gradient: linear-gradient(113deg, #D3D3FF 0%, #FFF 100%);
+    --border-color: #D3D3FF;
+    --error-delete-color: #FF3859;
 
     --main-text: black;
     --invert-text: white;
@@ -1799,8 +1805,8 @@ Project Creator and Editor style rules
 #project-editor-tag-search {
     background-color: var(--bg-color);
     /* box-shadow: 0 0 3px var(--gray); */
-    border: 1px solid var(--header-color);
-    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
     padding: 10px;
 }
 
@@ -2532,6 +2538,7 @@ Profile page style rules
 
     display: grid;
     grid-template-rows: 10% 80% 10%;
+    grid-template-columns: 100%;
     justify-content: center;
     align-content: space-between;
 }
@@ -2580,11 +2587,11 @@ Profile page style rules
 .edit-profile-body.about {
     box-sizing: border-box;
     /* height: calc(100% - 28px - 10px); */
-    margin: 0px 45px;
-
+    /* margin: 0px 45px; */
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
+    margin: 0px 45px;
 }
 
 .edit-profile-body.about .edit-profile-section-1 {
@@ -2595,24 +2602,24 @@ Profile page style rules
         "image row3";
     grid-template-columns: 25% auto;
     column-gap: 20px;
-    row-gap: 5px;
+    row-gap: 10px;
 }
 
 .about-row.row-1 {
     grid-area: row1;
 
     display: grid;
+    grid-template-columns: 4fr 4fr 2fr;
     gap: 10px;
-    grid-template-columns: 37% 37% 10%;
 
     .first-name input,
     .last-name input {
-        width: 290px;
+        width: 100%;
         height: 45px;
     }
 
     .pronouns input {
-        width: 165px;
+        width: 100%;
         height: 45px;
     }
 }
@@ -2622,16 +2629,16 @@ Profile page style rules
 
     display: grid;
     gap: 10px;
-    grid-template-columns: 37% 47% 10%;
+    grid-template-columns: 4fr 4fr 2fr;
 
     .role input,
     .major input {
-        width: 290px;
+        width: 100%;
         height: 45px;
     }
 
     .year input {
-        width: 165px;
+        width: 100%;
         height: 45px;
     }
 }
@@ -2654,7 +2661,7 @@ Profile page style rules
     /* max-width: 200px; */
     height: 250px;
     /* max-height: 200px; */
-    margin: 0px 12.5%;
+    /* margin: 0px 12.5%; */
     padding: 0px;
     flex-shrink: 0;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
@@ -2748,12 +2755,12 @@ Profile page style rules
 
 .edit-region-input {
     box-sizing: border-box;
-    border: 1px solid var(--header-color);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     /* width: 100%; */
     /* height: 45px; */
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
-    margin: 8px 5px 10px 0;
+    margin-top: 8px;
     padding: 8px 15px;
     font-size: 15px;
     line-height: 150%;
@@ -2765,6 +2772,8 @@ Profile page style rules
 
 select.edit-region-input {
     padding: 8px 15px;
+    height: 45px;
+    width: 100%;
 }
 
 .edit-region.location {
@@ -2842,10 +2851,10 @@ select.edit-region-input {
     margin: 0px 45px;
 }
 
-.edit-region-header.projects,
+/* .edit-region-header.projects,
 .edit-region-instruct.projects {
     margin-left: 10px;
-}
+} */
 
 * .edit-region-input.projects {
     box-sizing: border-box;
@@ -2938,6 +2947,7 @@ select.edit-region-input {
 /* ----- Skills Page ----- */
 #edit-profile-content {
     height: 100%;
+    overflow-y: auto;
 }
 
 .edit-profile-body.skills {
@@ -2949,19 +2959,18 @@ select.edit-region-input {
 }
 
 .edit-profile-skills-section {
-    height: 98%;
-    margin: 0px 70px;
+    margin: 0px 45px;
 
     display: grid;
-    grid-template-columns: 32% auto;
-    column-gap: 23px;
+    grid-template-columns: 30% auto;
+    column-gap: 20px;
     align-items: start;
 }
 
 .selected-skills-region {
     box-sizing: border-box;
     background-color: var(--bg-color);
-    border: 1px solid var(--header-color);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
     height: 100%;
@@ -3048,7 +3057,7 @@ select.edit-region-input {
 .skills-list-region {
     box-sizing: border-box;
     background-color: var(--bg-color);
-    border: 1px solid var(--header-color);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
     /* height: 100%; */
@@ -3067,7 +3076,7 @@ select.edit-region-input {
     background-color: var(--header-color);
     border: 0px;
     border-radius: 55px;
-    width: 78%;
+    width: 100%;
     padding: 0px 20px;
     text-align: start;
 
@@ -3084,10 +3093,10 @@ select.edit-region-input {
     box-sizing: border-box;
     background-color: #00000000;
     border: 0px;
-    width: 93%;
+    width: 100%;
     /* height: 100%; */
     margin-left: 9px;
-    padding: 8px 0px 8px 10px;
+    padding: 10px 10px 10px 10px;
     color: var(--primary-color);
     outline: none;
 }
@@ -3186,15 +3195,14 @@ select.edit-region-input {
     height: 100%;
 }
 
-.edit-region-header.links,
+/* .edit-region-header.links,
 .edit-region-instruct.links {
     margin-left: 8px;
-}
+} */
 
 .edit-region-links-list {
     width: 100%;
-    height: 85%;
-    padding: 15px 8px;
+    padding: 15px 0px;
     overflow-y: auto;
 
     display: flex;
@@ -3214,7 +3222,7 @@ select.edit-region-input {
     box-sizing: border-box;
     background-color: var(--bg-color);
     color: var(--main-text);
-    border: 1px solid var(--header-color);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     width: 100%;
     padding: 5px 17px;
@@ -5820,11 +5828,12 @@ Login and Signup page style rules
 */
 
 .error {
-    color: var(--primary-color);
+    color: var(--error-delete-color);
     font-weight: 500;
     height: 24px;
     font-size: 14px;
     margin-bottom: 4px;
+    font-style: italic;
 }
 
 .background-cover {

@@ -1799,7 +1799,7 @@ Project Creator and Editor style rules
 #project-editor-tag-search {
     background-color: var(--bg-color);
     /* box-shadow: 0 0 3px var(--gray); */
-    border: 1px solid var(--header-color)
+    border: 1px solid var(--header-color);
     border-radius: 8px;
     padding: 10px;
 }

@@ -513,12 +513,22 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         }
       }
     } 
-    
-    updateProjectList();
+
+    // if no projects were found
+    if (filteredProjectList.length === 0) {
+      projectList = filteredProjectList;
+      setDisplayedProjects([]);  // clear the displayed list
+      console.log("No matching projects found.");
+    } else {
+      // if projects are found, update the list 
+      updateProjectList();
+    }
+  
   }
 
   //Make new list of projects by mapping new filtered list
   const updateProjectList = () => {
+    console.log('length: ' + projectList.length);
     //Note: tags are not included in current mySQL database for projects
     let tagFilteredList = filteredProjectList.filter((project) => {
       console.log(project);

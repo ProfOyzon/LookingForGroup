@@ -1,8 +1,7 @@
 import { hardSkills, proficiencies, softSkills } from "./skills";
 import { interests } from "./interests";
 
-// No comments - GL!
-
+// same as projects in db
 export const projects = [
     {
         _id: 0,
@@ -209,6 +208,7 @@ export const projects = [
     },
 ]
 
+// same data format as users in db
 export const profiles = [
     {
         _id: 0,
@@ -479,6 +479,7 @@ export const profiles = [
     },
 ]
 
+// not in db
 export const messages = [
     {
         _id: 0,
@@ -538,6 +539,7 @@ export const messages = [
     },
 ]
 
+// not in db
 export const posts = [
     {
         _id: 0,
@@ -606,6 +608,7 @@ export const posts = [
     },
 ]
 
+// not in db
 export const comments = [
     {
         _id: 0,

@@ -1,6 +1,6 @@
 import profilePlaceholder from "../../icons/profile-user.png";
 import { useNavigate } from 'react-router-dom';
-// import { profiles } from '../../constants/fakeData'
+// import { profiles } from '../../constants/fakeData' // FIXME: use user data in db
 import * as paths from "../../constants/routes";
 
 //This component is used in the project page of the site

@@ -5,7 +5,7 @@ import { GeneralSettings } from "./GeneralSettings";
 import { MemberSettings } from "./MemberSettings";
 import { RoleListing } from "./RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
-import { projects } from "../../constants/fakeData";
+import { projects } from "../../constants/fakeData";// FIXME: use data in db
 import profilePlaceholder from "../../icons/profile-user.png";
 import menu from "../../icons/menu.png";
 

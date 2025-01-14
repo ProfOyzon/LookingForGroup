@@ -6,7 +6,7 @@ import { Header } from "../Header";
 import { ProjectPanel } from "../ProjectPanel";
 import { Popup, PopupButton, PopupContent } from "../Popup";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
-import { profiles, projects } from "../../constants/fakeData";
+import { profiles, projects } from "../../constants/fakeData"; // FIXME: use user and project data in db
 import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
 import menuImage from "../../icons/menu.png";

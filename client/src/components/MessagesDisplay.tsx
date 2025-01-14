@@ -1,6 +1,6 @@
 import React from "react";
 import { MessageCard } from "./MessageCard";
-import { messages, profiles } from "../constants/fakeData";
+import { messages, profiles } from "../constants/fakeData";// FIXME: use data in db
 import { SearchBar } from "./SearchBar";
 import { useState, useCallback } from "react";
 

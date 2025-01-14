@@ -2,7 +2,7 @@ import "../Styles/styles.css";
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 import profilePlaceholder from "../../icons/profile-user.png";
-import { profiles, comments } from "../../constants/fakeData";
+import { profiles, comments } from "../../constants/fakeData";// FIXME: use data in db
 
 
 //This component is used in the Project Post page, and contains code for structuring the full length of a comment

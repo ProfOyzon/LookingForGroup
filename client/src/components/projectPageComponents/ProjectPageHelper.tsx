@@ -1,4 +1,4 @@
-import { projects } from "../../constants/fakeData";
+import { projects } from "../../constants/fakeData"; // FIXME: use project data in db
 import * as paths from "../../constants/routes";
 
 //Folder containing various functions that are used in the Project page

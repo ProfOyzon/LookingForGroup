@@ -1,5 +1,5 @@
 import { PostComment } from "./PostComment";
-import { profiles, comments } from "../../constants/fakeData";
+import { profiles, comments } from "../../constants/fakeData";// FIXME: use data in db
 
 //Component that renders the full list of post comments & replies
 //Renders multiple 'PostComment' components within itself, more details can be found in the PostComment.tsx file

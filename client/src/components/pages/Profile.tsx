@@ -1,6 +1,6 @@
 import "./pages.css";
 import "../Styles/styles.css";
-import {profiles} from "../../constants/fakeData";
+import {profiles} from "../../constants/fakeData"; // FIXME: use user data in db
 import { ProfileHeader } from "../Profile/ProfileHeader";
 import { ProfileInterests } from "../Profile/ProfileInterests";
 import { ProfileSkills } from "../Profile/ProfileSkills";

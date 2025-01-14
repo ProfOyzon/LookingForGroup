@@ -8,8 +8,8 @@ import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
 import { TagFilter } from "../TagFilter";
 import "../Styles/styles.css";
-import { projects } from "../../constants/fakeData";
-import { profiles } from "../../constants/fakeData";
+import { projects } from "../../constants/fakeData";// FIXME: use project data in db
+import { profiles } from "../../constants/fakeData";// FIXME: use user data in db
 import { Children, useCallback } from "react";
 import { sortItems } from "../../functions/itemSort";
 import { useState } from 'react';

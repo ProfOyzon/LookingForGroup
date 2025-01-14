@@ -7,8 +7,8 @@ import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import { Popup, PopupButton, PopupContent } from "../Popup";
 import { ImageCarousel } from "../ImageCarousel";
 import "../Styles/styles.css";
-import { projects } from "../../constants/fakeData";
-import { profiles } from "../../constants/fakeData";
+import { projects } from "../../constants/fakeData"; // FIXME: use project data in db
+import { profiles } from "../../constants/fakeData"; // FIXME: use user data in db
 import * as tags from "../../constants/tags";
 import { useState, useEffect, useRef } from 'react';
 import ToTopButton from "../ToTopButton";

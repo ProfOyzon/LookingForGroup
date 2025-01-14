@@ -1,6 +1,6 @@
 import { MemberListing } from "./MemberListing";
 import { SearchBar } from "../SearchBar";
-import { projects, profiles } from "../../constants/fakeData";
+import { projects, profiles } from "../../constants/fakeData";// FIXME: use data in db
 import { useState } from 'react';
 
 //This component is used in the project member view of the Project page

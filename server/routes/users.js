@@ -16,7 +16,7 @@ router.get("/api/users", userCtrl.getUsers);
 router.get("/api/users/:id", userCtrl.getUserById);
 router.put("/api/users/:id", mid.checkLogin, userCtrl.updateUser);
 router.delete("/api/users/:id", mid.checkLogin, userCtrl.deleteUser);
-router.get("/api/users/check-username/:username", userCtrl.getUserByUsername);
+router.get("/api/users/search/:username", userCtrl.getUserByUsername);
 router.put("/api/users/:id/profile-picture", mid.checkLogin, mid.checkImageFile, userCtrl.updateProfilePicture);
 router.get("/api/users/:id/account", mid.checkLogin, userCtrl.getAccount);
 router.put("/api/users/:id/email", mid.checkLogin, userCtrl.updateEmail);

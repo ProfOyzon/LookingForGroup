@@ -389,12 +389,11 @@ const getUserByUsername = async (req, res) => {
         const sql = `SELECT * FROM users WHERE username = ?`;
         const [user] = await pool.query(sql, [username]);
 
-        // if the query contains a value, the username exists
-        if (user.length > 0) {
-            return res.status(200).json({ exists: true });
-        } else {
-            return res.status(200).json({ exists: false });
-        }
+        return res.status(200).json({
+            status: 200,
+            data: user[0]
+        });
+
     } catch (err) {
         console.log(err);
         return res.status(400).json({

@@ -75,9 +75,9 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
 
         // check if username in use
         try {
-            const response = await fetch(`/api/users/check-username/${username}`);
+            const response = await fetch(`/api/users/search/${username}`);
             const data = await response.json();
-            if (data.exists) {
+            if (data.data.username === username) {
                 setMessage('Username already in use');
                 return false;
             }

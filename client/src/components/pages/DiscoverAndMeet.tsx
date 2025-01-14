@@ -12,6 +12,7 @@ import { profiles } from "../../constants/fakeData";
 import * as tags from "../../constants/tags";
 import { useState, useEffect, useRef } from 'react';
 import ToTopButton from "../ToTopButton";
+import CreditsFooter from "../CreditsFooter";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
 import { sendPost, sendGet, GET } from "../../functions/fetch";
@@ -1137,6 +1138,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       {panelContent}
       </div>
 
+      <CreditsFooter />
       <ToTopButton/>
     </div>
   )

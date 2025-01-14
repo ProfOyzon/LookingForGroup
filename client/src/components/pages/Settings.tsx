@@ -8,6 +8,7 @@ import VolumeSettings from "../SettingsPageComponents/VolumeSetting";
 import NotificationSettings from "../SettingsPageComponents/NotificationSetting";
 import ProfileVisibilitySetting from "../SettingsPageComponents/ProfileVisibilitySetting";
 import ToTopButton from "../ToTopButton";
+import CreditsFooter from "../CreditsFooter";
 
 
 const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }) => {
@@ -280,6 +281,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
       </div>
 
       {/* Scroll To Top button */}
+      <CreditsFooter />
       <ToTopButton />
     </div>
   );

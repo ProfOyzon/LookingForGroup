@@ -6544,6 +6544,8 @@ Credits link footer style rules
 */
 
 .FooterContainer {
+    position: relative;
+
     height: 100px;
     z-index: 2;
     background-color: var(--primary-blue);

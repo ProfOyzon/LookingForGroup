@@ -70,7 +70,7 @@ function App() {
           <Route path={paths.routes.CREDITS} element={<Credits theme={theme} setTheme={setTheme} />} />
           <Route path={paths.routes.ACCOUNTACTIVATE} element={<AccountActivation />}/>
         </Routes>
-        {/* <CreditsFooter /> */}
+        <CreditsFooter />
       </div>
     </BrowserRouter>
   );

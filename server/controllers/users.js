@@ -380,6 +380,30 @@ const getUserById = async (req, res) => {
     }
 }
 
+const getUserByUsername = async (req, res) => {
+    // Get username from url 
+    const { username } = req.params;
+
+    try {
+        // Find same username in database
+        const sql = `SELECT * FROM users WHERE username = ?`;
+        const [user] = await pool.query(sql, [username]);
+
+        // if the query contains a value, the username exists
+        if (user.length > 0) {
+            return res.status(200).json({ exists: true });
+        } else {
+            return res.status(200).json({ exists: false });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400,
+            error: "An error occurred while getting the username"
+        });
+    }
+}
+
 const getUsernameBySession = async (req, res) => {
     try {
         const [user] = await pool.query(`SELECT first_name, last_name, username, primary_email FROM users WHERE user_id = ?`, [req.session.userId]);
@@ -1120,7 +1144,7 @@ const deleteUserFollowing = async (req, res) => {
 }
 
 export default { login, getAuth, logout, signup, createUser, requestPasswordReset, resetPassword,
-    getUsers, getUserById, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
+    getUsers, getUserById, getUserByUsername, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
     getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 

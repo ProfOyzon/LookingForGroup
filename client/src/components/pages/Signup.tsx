@@ -65,44 +65,58 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
     }, [theme]);
 
     // Function to handle the login button click
-    const handleSignup = async () => {
+    const handleSignup = async () => { 
+
         // Check if any of the fields are empty
         if (email === '' || password === '' || confirm === '' || firstName === '' || lastName === '' || username === '') {
             setMessage('Please fill in all information');
+            return false;
         }
-        else {
-            // check if email is valid
-            if (!email.includes('rit.edu')) {
-                setMessage("Not an RIT email");
-            }
 
-            // check if the passwords match
-            if (password !== confirm) {
-                setMessage('Passwords do not match');
-
+        // check if username in use
+        try {
+            const response = await fetch(`/api/users/check-username/${username}`);
+            const data = await response.json();
+            if (data.exists) {
+                setMessage('Username already in use');
                 return false;
             }
-            else {
-                // Send info to begin account activation
-                await fetch("/api/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ 
-                    email: email,
-                    password: password,
-                    confirm: confirm,
-                    firstName: firstName,
-                    lastName: lastName,
-                    username: username
-                    }),
-                });
-                setMessage('An account activation email has been sent');
-            }
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+        
+        // check if email is valid
+        if (!email.includes('rit.edu')) {
+            setMessage("Not an RIT email");
+            return false;
         }
 
+        // check if the passwords match
+        if (password !== confirm) {
+            setMessage('Passwords do not match');
+            return false;
+        }
 
+        // no errors, send email
+        else {
+            // Send info to begin account activation
+            await fetch("/api/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ 
+                email: email,
+                password: password,
+                confirm: confirm,
+                firstName: firstName,
+                lastName: lastName,
+                username: username
+                }),
+            });
+            setMessage('An account activation email has been sent');
+        }
     };
 
     // Render the sign up page
@@ -265,5 +279,7 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
         </div>
     );
 };
+
+// helper function to check for existing username
 
 export default SignUp;

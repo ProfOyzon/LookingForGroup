@@ -1,6 +1,5 @@
 import "./pages.css";
 import "../Styles/styles.css";
-import {profiles} from "../../constants/fakeData"; // FIXME: use user data in db
 import { ProfileHeader } from "../Profile/ProfileHeader";
 import { ProfileInterests } from "../Profile/ProfileInterests";
 import { ProfileSkills } from "../Profile/ProfileSkills";
@@ -17,30 +16,45 @@ const fetchUserID = async () => {
   return userID;
 }
 
+const getProfiles = async () => {
+  const response = await fetch("/api/users");
+  const { data: {users} } = await response.json();
+  return users;
+};
+
 const Profile = (props) => {
 
   const [profileID, setProfileID] = useState<String | null>(null);
+  const [profiles, setProfiles] = useState<{ _id: number; username: string }[]>([]);
 
   //Get profile id from search query
   let urlParams = new URLSearchParams(window.location.search);
   setProfileID(urlParams.get('profID'));
 
   //If nothing is found, use a default id
-  if (profileID === null) {
-    useEffect(() => {
+  useEffect(() => {
+    if (profileID === null) {
       (async () => {
+        // Get profile ID from API
         const userID = await fetchUserID();
         setProfileID(userID);
         console.log("userID is: " + userID);
         console.log("profileID is: " + profileID);
       })();
-    }, []);
-  }
+    }
+
+    // Get all profiles
+    const fetchProfiles = async () => {
+      const profileData = await getProfiles();
+      setProfiles(profileData);
+    };
+    fetchProfiles();
+  }, [profileID]);
 
   //Find profile data using id & assign it to a value to use
   const profileData = profiles.find(p => p._id === Number(profileID)) || profiles[0];
 
-  {/*usestates for selectors*/}
+  /*usestates for selectors*/
   const [UID, setUID] = useState(profileData._id);
   const user = profiles[UID];
 

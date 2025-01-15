@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 import { handleError, sendPost, sendGet, hideError } from "../../functions/fetch.js";
 
-const Login = ({ theme }) => {
+const ForgotPassword = ({ theme }) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
     const [loginInput, setLoginInput] = useState('');
-    const [password, setPassword] = useState('');
     const [error, setError] = useState(''); // Error message for missing or incorrect information
 
     // check theme and set the theme icon
@@ -26,15 +25,12 @@ const Login = ({ theme }) => {
     const handleLogin = () => {
         
         // Check if the loginInput and password are not empty
-        if (loginInput === '' || password === '') {
+        if (loginInput === '') {
             setError('Please fill in all information');
         }
 
         // if the email is valid and associated with an account
         // check if the password is correct
-
-        // if the password is incorrect
-        // setError('Incorrect password');
 
         // if the email is not associated with an account
         // setError('Email not associated with an account');
@@ -43,18 +39,19 @@ const Login = ({ theme }) => {
         // setError('Invalid email');
 
         else {
+            // TODO: Sync this with the Reset Password page later
 
-            sendPost('/api/login', { loginInput, password });
+            // sendPost('/api/login', { loginInput });
 
-            // Navigate to the home page
-            //navigate(paths.routes.HOME);
+            // Navigate to the Reset Password page
+            //navigate(paths.routes.RESETPASSWORD);
         }
     };
 
     // Function to handle the forgot pass button click
-    const handleForgotPass = () => {
+    const handleBackToLogin = () => {
         // Navigate to the Forgot Password Page
-        navigate(paths.routes.FORGOTPASSWORD);
+        navigate(paths.routes.LOGIN);
     }
 
     // render the login page
@@ -63,36 +60,32 @@ const Login = ({ theme }) => {
             <div className="login-signup-container">
                 {/*************************************************************
 
-                    Login Form inputs
+                    Forgot Password Form inputs
 
                 *************************************************************/}
                 <div className="login-form column">
-                    <h2>Log In</h2>
+                    <h2>Forgot password?</h2>
+                    <p>No worries! We'll send you reset instructions.</p>
                     <div className="login-form-inputs">
                         <div className="error">{error}</div>
                         <span id="errorMessage"></span>
                         <input
                             className="login-input"
                             type="text"
-                            placeholder="Username or e-mail"
+                            placeholder="Enter your e-mail"
                             value={loginInput}
                             onChange={(e) => setLoginInput(e.target.value)}
                         />
-                        <input
-                            className="login-input"
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <button id="forgot-password" onClick={handleForgotPass}>Forgot Password</button>
+                        {/* TODO: Fix this */}
+                        <button id="forgot-password" onClick={handleBackToLogin}>Back to Login</button>
 
+                        {/* TODO: Not sure what to do here for mobile */}
                         <div className="mobile-signup">
                             <p>No account? </p>
                             <p id="signup-btn-mobile" onClick={() => navigate(paths.routes.SIGNUP)}>Sign Up</p>
                         </div>
                     </div>
-                    <button id="main-loginsignup-btn" onClick={handleLogin}>Log In</button>
+                    <button id="main-loginsignup-btn" onClick={handleLogin}>Send</button>
                 </div>
                 {/*************************************************************
 
@@ -114,4 +107,4 @@ const Login = ({ theme }) => {
     );
 };
 
-export default Login;
+export default ForgotPassword;

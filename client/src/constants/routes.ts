@@ -2,6 +2,7 @@ export const routes = {
     "DEFAULT": "/",
     "LOGIN": "/login",
     "SIGNUP": "/signup",
+    "FORGOTPASSWORD": "/forgotPassword",
     "HOME": "/discover",
     "MEET": "/meet",
     "MESSAGES": "/messages",

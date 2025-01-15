@@ -5,6 +5,7 @@ import * as paths from "./constants/routes";
 import React, { useState } from 'react';
 import Login from './components/pages/Login';
 import SignUp from './components/pages/Signup';
+import ForgotPassword from './components/pages/ForgotPassword';
 import Home from "./components/pages/Home";
 import Messages from "./components/pages/Messages";
 import MyProjects from "./components/pages/MyProjects";
@@ -54,6 +55,7 @@ function App() {
           <Route path={paths.routes.DEFAULT} element={<Discover theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.LOGIN} element={<Login theme={theme}/>} />
           <Route path={paths.routes.SIGNUP} element={<SignUp theme={theme} avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
+          <Route path={paths.routes.FORGOTPASSWORD} element={<ForgotPassword theme={theme}/>} />
           <Route path={paths.routes.HOME} element={<Discover theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.MEET} element={<Meet theme={theme} setTheme={setTheme}/>} />
           <Route path={paths.routes.MESSAGES} element={<Messages />} />

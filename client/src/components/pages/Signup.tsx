@@ -77,7 +77,8 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
         try {
             const response = await fetch(`/api/users/search-username/${username}`);
             const data = await response.json();
-            if (data.data.username === username) {
+            // if there is a result, a match is found
+            if (data.data.length > 0) {
                 setMessage('Username already in use');
                 return false;
             }
@@ -86,22 +87,23 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
             return false;
         }
 
+        // check if email is valid
+        if (!email.includes('rit.edu')) {
+            setMessage("Not an RIT email");
+            return false;
+        }
+
         // check if the email is in use
         try {
             const response = await fetch(`/api/users/search-email/${email}`);
             const data = await response.json();
-            if (data.data.email === email) {
+            // if there is a result, a match is found
+            if (data.data.length > 0) {
                 setMessage('Email already in use');
                 return false;
             }
         } catch (err) {
             console.log(err);
-            return false;
-        }
-        
-        // check if email is valid
-        if (!email.includes('rit.edu')) {
-            setMessage("Not an RIT email");
             return false;
         }
 

@@ -722,6 +722,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 
   const updateProfileList = () => {
     //Note: tags are not included in current mySQL database for profiles
+
     let tagFilterCheck = true;
     let tagFilteredList = filteredProfileList.filter((profile) => {
       //if project in filtered list contains all tags in taglist, include it
@@ -733,8 +734,6 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
           break;
         }*/
       }
-
-      
 
       return(tagFilterCheck);
     })
@@ -765,7 +764,16 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       }
     }
         
-    updateProfileList();
+
+    // if no profiles were found
+    if (filteredProfileList.length === 0) {
+      profileList = filteredProfileList;
+        setProfileColumns([]);  // clear the profile  columns
+      console.log("No matching profiles found.");
+    } else {
+      // if profiles are found, update the list 
+      updateProfileList();
+    }
   }
 
   //Choose which functions to use based on what we are displaying
@@ -964,7 +972,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 
   //Displays a set of profile panels
   let profileContent = <>{
-    profileColumns[0].length > 0 ?
+    profileList.length > 0 ?
       //For each array in profileColumns...
       profileColumns.map((column) => (
         //Create a column element & map through profiles in array

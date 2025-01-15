@@ -3,9 +3,10 @@
    end in an error.
 */
 const handleError = (message) => {
-    document.getElementById('errorMessage').textContent = message;
-    document.getElementById('errorMessage').classList.remove('hidden');
-    //document.getElementById('bitMessage').classList.remove('hidden');
+    console.log('Error: ', message);
+    // const errorElement = document.querySelector('.error');
+    // errorElement.textContent = message;
+    // errorElement.classList.remove('hidden');
 };
 
 /* Sends post requests to the server using fetch. Will look for various
@@ -31,6 +32,7 @@ const sendPost = async (url, data, handler) => {
 
     if(result.error) {
         handleError(result.error);
+        return result.error;
     }
 
     if(handler) {
@@ -50,8 +52,7 @@ const sendGet = async (url, handler) => {
     });
 
     const result = await response.json();
-    //document.getElementById('bitMessage').classList.add('hidden');
-    //document.getElementById('errorMessage').classList.add('hidden');
+    document.querySelector('error').classList.add('hidden');
     console.log(result);
 
     if(result.redirect) {

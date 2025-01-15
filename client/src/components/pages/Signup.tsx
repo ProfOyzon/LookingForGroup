@@ -75,10 +75,23 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
 
         // check if username in use
         try {
-            const response = await fetch(`/api/users/search/${username}`);
+            const response = await fetch(`/api/users/search-username/${username}`);
             const data = await response.json();
             if (data.data.username === username) {
                 setMessage('Username already in use');
+                return false;
+            }
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+
+        // check if the email is in use
+        try {
+            const response = await fetch(`/api/users/search-email/${email}`);
+            const data = await response.json();
+            if (data.data.email === email) {
+                setMessage('Email already in use');
                 return false;
             }
         } catch (err) {

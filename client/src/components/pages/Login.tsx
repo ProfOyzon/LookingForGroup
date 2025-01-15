@@ -2,7 +2,7 @@ import "./pages.css";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
-import { handleError, sendPost, sendGet, hideError } from "../../functions/fetch.js";
+import { sendPost, sendGet } from "../../functions/fetch.js";
 
 const Login = ({ theme }) => {
     const navigate = useNavigate(); // Hook for navigation
@@ -23,15 +23,53 @@ const Login = ({ theme }) => {
     }, [theme]);
 
     // Function to handle the login button click
-    const handleLogin = () => {
+    const handleLogin = async () => {
         
         // Check if the loginInput and password are not empty
         if (loginInput === '' || password === '') {
             setError('Please fill in all information');
+            return false;
         }
 
-        // if the email is valid and associated with an account
-        // check if the password is correct
+        // Check if the login credentials are associated with an account
+
+        // search input as email
+        if (loginInput.includes('@')) {
+            try {
+                const response = await fetch(`/api/users/search-email/${loginInput}`);
+                const data = await response.json();
+                if (data.data.username === loginInput) {
+                    // check if the password is correct
+                    if (data.data.password !== password) {
+                        setError('Incorrect username or password');
+                        return false;
+                    }
+                    setError('Incorrect username or password');
+                    return false;
+                }
+            } catch (err) {
+                console.log(err);
+                return false;
+            }
+        }
+
+        // search input as username
+        try {
+            const response = await fetch(`/api/users/search-username/${loginInput}`);
+            const data = await response.json();
+            if (data.data.username === loginInput) {
+                // check if the password is correct
+                if (data.data.password !== password) {
+                    setError('Incorrect username or password');
+                    return false;
+                }
+                setError('Incorrect username or password');
+                return false;
+            }
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
 
         // if the password is incorrect
         // setError('Incorrect password');
@@ -39,16 +77,19 @@ const Login = ({ theme }) => {
         // if the email is not associated with an account
         // setError('Email not associated with an account');
 
-        // if the email is not a valid email
-        // setError('Invalid email');
-
-        else {
-
-            sendPost('/api/login', { loginInput, password });
-
-            // Navigate to the home page
-            //navigate(paths.routes.HOME);
+        // no errors, send login request
+        try {
+            const response = await sendPost('/api/login', { loginInput, password });
+            if (response.error) {
+                setError(response.error);
+            }
+        } catch (err) {
+            setError('An error occurred during login');
+            console.log(err);
         }
+
+        // Navigate to the home page
+        //navigate(paths.routes.HOME);
     };
 
     // Function to handle the forgot pass button click

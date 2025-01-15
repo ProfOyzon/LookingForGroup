@@ -391,7 +391,7 @@ const getUserByUsername = async (req, res) => {
 
         return res.status(200).json({
             status: 200,
-            data: user[0]
+            data: user
         });
 
     } catch (err) {
@@ -399,6 +399,29 @@ const getUserByUsername = async (req, res) => {
         return res.status(400).json({
             status: 400,
             error: "An error occurred while getting the username"
+        });
+    }
+}
+
+const getUserByEmail = async (req, res) => {
+    // Get email from url 
+    const { email } = req.params;
+
+    try {
+        // Find same username in database
+        const sql = `SELECT * FROM users WHERE primary_email = ? OR rit_email = ?`;
+        const [user] = await pool.query(sql, [email, email]);
+
+        return res.status(200).json({
+            status: 200,
+            data: user
+        });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400,
+            error: "An error occurred while getting the email"
         });
     }
 }
@@ -1143,7 +1166,7 @@ const deleteUserFollowing = async (req, res) => {
 }
 
 export default { login, getAuth, logout, signup, createUser, requestPasswordReset, resetPassword,
-    getUsers, getUserById, getUserByUsername, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
+    getUsers, getUserById, getUserByUsername, getUserByEmail, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
     getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 

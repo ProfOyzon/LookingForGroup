@@ -159,10 +159,10 @@ const NewProject = ({theme, setTheme}) => {
   //const [peopleList, setPeopleList] = useState(displayedProject === undefined ? [] : displayedProject.members);
 
   //HTML containing info on the members of the project
-  const peopleContent = projectMembers.length > 0 ? <>{
+  const peopleContent = (projectMembers.length > 0) ? <>{
     projectMembers.map((user) => (
-      <div className='project-contributor'>
-        <img className='project-contributor-profile' src={profilePicture} />
+      <div className='project-contributor' onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}>
+        <img className='project-contributor-profile' src={profilePicture} alt='profile'/>
         <div className='project-contributor-info'>
           <div className="team-member-name">{user.first_name} {user.last_name}</div>
           <div className="team-member-role">{user.job_title}</div>
@@ -172,10 +172,10 @@ const NewProject = ({theme, setTheme}) => {
   }</> : <div>Somehow, there are no team members.</div>
 
   //HTML containing info on people who have contributed to the project (not necessarily members)
-  const contributorContent = projectContributors != undefined ? projectContributors.length > 0 ? <>{
+  const contributorContent = projectContributors !== undefined ? projectContributors.length > 0 ? <>{
     projectContributors.map((user) => (
-      <div className='project-contributor'>
-        <img className='project-contributor-profile' src={profilePicture} />
+      <div className='project-contributor' onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}>
+        <img className='project-contributor-profile' src={profilePicture} alt='profile'/>
         <div className='project-contributor-info'>
           <div>{user.first_name} {user.last_name}</div>
           <div>{user.job_title}</div>
@@ -194,7 +194,8 @@ const NewProject = ({theme, setTheme}) => {
     //Set state to position being clicked
     //Call Popup open function from other button
     setViewedPosition(positionNumber);
-    document.getElementById('project-open-positions-button').click();
+    const button = document.getElementById('project-open-positions-button');
+    if (button) button.click();
   }
 
   const [viewedPosition, setViewedPosition] = useState(0);

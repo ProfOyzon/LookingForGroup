@@ -417,7 +417,7 @@ Project Panel component style rules
 .project-panel:hover {
     transition: 0.2s;
 
-    .project-panel-hover {
+    .project-panel-hover{
         opacity: 1;
         z-index: 1;
         cursor: pointer;
@@ -492,6 +492,10 @@ Project Panel component style rules
     display: flex;
     gap: 10px;
     padding: 0 20px;
+}
+
+.project-contributor:hover {
+    cursor: pointer;
 }
 
 /*

@@ -115,6 +115,7 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
 
         // no errors, send email
         else {
+            setMessage('Please wait...');
             // Send info to begin account activation
             await fetch("/api/signup", {
             method: "POST",

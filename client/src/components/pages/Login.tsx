@@ -24,11 +24,11 @@ const Login = ({ theme }) => {
 
     // Function to handle the login button click
     const handleLogin = async () => {
-        
+
         // Check if the loginInput and password are not empty
         if (loginInput === '' || password === '') {
             setError('Please fill in all information');
-            return false;
+            return;
         }
 
         // Check if the login credentials are associated with an account
@@ -63,7 +63,7 @@ const Login = ({ theme }) => {
                     setError('Incorrect username or password');
                     return false;
                 }
-                setError('Incorrect username or password');
+                // setError('Incorrect username or password');
                 return false;
             }
         } catch (err) {
@@ -79,9 +79,15 @@ const Login = ({ theme }) => {
 
         // no errors, send login request
         try {
+            // Success message
+            setError('Trying to log in');
             const response = await sendPost('/api/login', { loginInput, password });
             if (response.error) {
                 setError(response.error);
+            }
+            else {
+                // Success message
+                setError('Logging in');
             }
         } catch (err) {
             setError('An error occurred during login');

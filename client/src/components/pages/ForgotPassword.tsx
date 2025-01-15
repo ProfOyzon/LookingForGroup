@@ -39,12 +39,11 @@ const ForgotPassword = ({ theme }) => {
         // setError('Invalid email');
 
         else {
-            // TODO: Sync this with the Reset Password page later
 
             // sendPost('/api/login', { loginInput });
 
             // Navigate to the Reset Password page
-            //navigate(paths.routes.RESETPASSWORD);
+            navigate(paths.routes.RESETPASSWORD);
         }
     };
 
@@ -76,7 +75,7 @@ const ForgotPassword = ({ theme }) => {
                             value={loginInput}
                             onChange={(e) => setLoginInput(e.target.value)}
                         />
-                        {/* TODO: Fix this */}
+                        
                         <button id="forgot-password" onClick={handleBackToLogin}>Back to Login</button>
 
                         {/* TODO: Not sure what to do here for mobile */}

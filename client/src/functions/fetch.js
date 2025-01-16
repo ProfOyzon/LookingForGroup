@@ -22,9 +22,7 @@ const sendPost = async (url, data, handler) => {
     });
 
     const result = await response.json();
-    //document.getElementById('bitMessage').classList.add('hidden');
     //document.getElementById('errorMessage').classList.add('hidden');
-    console.log(result);
 
     if(result.redirect) {
         window.location = result.redirect;
@@ -68,6 +66,7 @@ const sendGet = async (url, handler) => {
     }
 };
 
+// removed errorMessage element from login and signup pages
 const hideError = () => {
     document.getElementById('errorMessage').classList.add('hidden');
 };

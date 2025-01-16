@@ -32,50 +32,53 @@ const Login = ({ theme }) => {
         }
 
         // Check if the login credentials are associated with an account
-
         // search input as email
-        if (loginInput.includes('@')) {
-            try {
+        if (loginInput.includes('@') && loginInput.includes('.')) {
+            try {   
                 const response = await fetch(`/api/users/search-email/${loginInput}`);
                 const data = await response.json();
-                if (data.data.username === loginInput) {
-                    // check if the password is correct
-                    if (data.data.password !== password) {
-                        setError('Incorrect username or password');
+                if (data) {
+                    // try login
+                    try {
+                        const response = await sendPost('/api/login', { loginInput, password });
+                        
+                        const data = await response.json();
+                        if (data.error) {
+                            setError(data.error);
+                            return false;
+                        }
+                    } catch (err) {
+                        setError('An error occurred during login');
+                        console.log(err);
                         return false;
                     }
-                    setError('Incorrect username or password');
-                    return false;
                 }
             } catch (err) {
+                setError('An error occurred during login');
                 console.log(err);
                 return false;
             }
         }
-
         // search input as username
         try {
             const response = await fetch(`/api/users/search-username/${loginInput}`);
             const data = await response.json();
-            if (data.data.username === loginInput) {
-                // check if the password is correct
-                if (data.data.password !== password) {
-                    setError('Incorrect username or password');
+            if (data) {
+                // try login
+                try {
+                    const response = await sendPost('/api/login', { loginInput, password });
+                    setError(response);
+                } catch (err) {
+                    setError('An error occurred during login');
+                    console.log(err);
                     return false;
                 }
-                setError('Incorrect username or password');
-                return false;
             }
         } catch (err) {
+            setError('An error occurred during login');
             console.log(err);
             return false;
         }
-
-        // if the password is incorrect
-        // setError('Incorrect password');
-
-        // if the email is not associated with an account
-        // setError('Email not associated with an account');
 
         // no errors, send login request
         try {
@@ -86,14 +89,14 @@ const Login = ({ theme }) => {
         } catch (err) {
             setError('An error occurred during login');
             console.log(err);
+            return false;
         }
-
-        // Navigate to the home page
-        //navigate(paths.routes.HOME);
     };
 
     // Function to handle the forgot pass button click
     const handleForgotPass = () => {
+        // remove error message
+        setError('');
         // Navigate to the Forgot Password Page
         navigate(paths.routes.FORGOTPASSWORD);
     }

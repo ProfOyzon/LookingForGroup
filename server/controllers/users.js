@@ -21,22 +21,29 @@ const login = async (req, res) => {
         });
     }
 
-    const userQuery = "SELECT user_id, password FROM users WHERE username = ? OR primary_email = ?";
-    const [userResult] = await pool.query(userQuery, [loginInput, loginInput]);
-    const user = userResult[0];
+    const userQuery = "SELECT user_id, password FROM users WHERE username = ? OR primary_email = ? OR rit_email = ?";
+    const [userResult] = await pool.query(userQuery, [loginInput, loginInput, loginInput]);
 
-    const match = await bcrypt.compare(password, user.password);
-
-    if (user == null || !match) {
+    // check for user with matching loginInput
+    if (!userResult[0]) {// no user found
         return res.status(400).json({ 
             status: 400,
-            error: 'Wrong username or password' 
+            error: "Wrong username or password" 
         });
     }
-    
-    req.session.userId = user.user_id;
+    else { // user found, check password
+        const match = await bcrypt.compare(password, userResult[0].password);
+        if (!match) {
+            return res.status(400).json({
+                status: 400,
+                error: 'Wrong username or password' 
+            });
+        }
+    }
 
-    return res.json({ redirect: '/' });
+    req.session.userId = userResult[0].user_id;
+
+    return res.json({ status: 200, redirect: '/' });
 }
 
 const getAuth = (req, res) => {

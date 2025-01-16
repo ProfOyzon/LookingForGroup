@@ -160,10 +160,12 @@ const NewProfile = ({ theme, setTheme }) => {
   //Get a profile based on searchParam userId given
   ///const profileData = (/* Some sort of fetch request */);
   //Check whether or not the profile is the current user's
-  let usersProfile = false;
+  let isUsersProfile = false;
 
-  if (profileID === userID) {
-    usersProfile = true;
+  if (profileID === `${userID}`) {
+    isUsersProfile = true;
+    console.log('this is the users profile');
+    
   }
 
   //Holds a list of tags that the user selected to represent their skills
@@ -214,7 +216,7 @@ const NewProfile = ({ theme, setTheme }) => {
   //Loads a new set of project panels to render
   //Calls when page first loads & when a new list of projects is being used (e.g. after a search)
   const firstProjects = (projectList) => {
-    console.log(projectList);
+    // console.log(projectList);
     if (projectList === undefined) {
       return [];
     }
@@ -434,7 +436,7 @@ const NewProfile = ({ theme, setTheme }) => {
     }
   }, [location])
 
-  const aboutMeButtons = usersProfile === true ?
+  const aboutMeButtons = isUsersProfile ?
     <>{
       <div id='about-me-buttons'>
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}>
@@ -445,12 +447,12 @@ const NewProfile = ({ theme, setTheme }) => {
           <img src={imageSrc}
           className="theme-icon"
           alt='instagram'/></button>
-        <EditButton userData={displayedProfile}/>
-        {/* PLEASE USE THIS, I DIDN'T MAKE THE POPUP COMPONENT FOR NOTHING -M-
+        {/* <EditButton userData={displayedProfile}/> */}
+        {/* PLEASE USE THIS, I DIDN'T MAKE THE POPUP COMPONENT FOR NOTHING -M- */}
         <Popup>
           <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
           <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
-        </Popup> */}
+        </Popup>
       </div>
     }</> :
     <>{

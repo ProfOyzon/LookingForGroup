@@ -92,7 +92,7 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
     // navigate to Profile, attach userID
     const response = await fetch("/api/auth");
     const { data } = await response.json();
-    navigate(`${paths.routes.PROFILE}/?userID=${data}`);
+    navigate(`${paths.routes.PROFILE}?userID=${data}`);
   }
 
   const switchTheme = () => {

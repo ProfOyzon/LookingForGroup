@@ -1,5 +1,16 @@
-import "./pages/pages.css";
-import "./Styles/styles.css";
+//Styles
+import './Styles/credits.css';
+import './Styles/discoverMeet.css';
+import './Styles/emailConfirmation.css';
+import './Styles/general.css';
+import './Styles/loginSignup.css';
+import './Styles/messages.css';
+import './Styles/notification.css';
+import './Styles/profile.css';
+import './Styles/projects.css';
+import './Styles/settings.css';
+import './Styles/pages.css';
+
 import { SearchBar } from "./SearchBar";
 import { Dropdown, DropdownButton, DropdownContent } from "./Dropdown";
 import { useNavigate } from 'react-router-dom';
@@ -82,6 +93,13 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
     navigate(path);
   }
 
+  const handleProfileAccess = async () => {
+    // navigate to Profile, attach userID
+    const response = await fetch("/api/auth");
+    const { data } = await response.json();
+    navigate(`${paths.routes.PROFILE}/?userID=${data}`);
+  }
+
   const switchTheme = () => {
     setModeToggle(theme === 'dark' ? 'Light Mode' : 'Dark Mode');
     setRealTheme(theme === 'dark' ? 'light' : 'dark');
@@ -129,7 +147,7 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
                   />
                   <div>{username}<br /><span id='header-profile-email'>{email}</span></div>
                   </button>
-                  : <button onClick={() => handlePageChange(paths.routes.PROFILE)} id='header-profile-user'>
+                  : <button onClick={() => handleProfileAccess()} id='header-profile-user'>
                 <ThemeIcon 
                     light={"assets/profile_light.png"}
                     dark={"assets/profile_dark.png"}

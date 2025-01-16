@@ -48,6 +48,7 @@ const login = async (req, res) => {
 
 const getAuth = (req, res) => {
     // Allow frontend to check if user is logged in
+    
     if (!req.session.userId){
         return res.status(401).json({
             status: 401, 

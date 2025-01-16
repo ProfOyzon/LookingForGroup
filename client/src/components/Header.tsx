@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 import * as paths from "../constants/routes";
 import profileImage from "../icons/profile-user.png";
 import { sendPost } from "../functions/fetch";
+import { ThemeIcon } from "./ThemeIcon";
 
 
 //Header component to be used in pages
@@ -102,6 +103,10 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
         </Dropdown> */}
         <Dropdown>
           <DropdownButton buttonId="profile-btn" >
+            <ThemeIcon 
+              light={'assets/profile_light.png'} 
+              dark={'assets/profile_dark.png'}>
+            </ThemeIcon>
             <img
               src="assets/profile_dark.png"
               src-light="assets/profile_light.png"

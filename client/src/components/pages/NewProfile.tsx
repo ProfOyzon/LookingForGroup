@@ -47,7 +47,29 @@ const fetchUserID = async () => {
 
 const userID = await fetchUserID();
 
+
 const NewProfile = ({ theme, setTheme }) => {
+
+  const [imageSrc, setProfileImage] = useState("assets/profile_dark.png");
+  const [roleImage, setRoleImage] = useState("assets/black/role.png");
+  const [majorImage, setMajorImage] = useState("assets/black/major.png");
+  const [locationImage, setLocationImage] = useState("assets/black/location.png");
+  const [pronounsImage, setPronounsImage] = useState("assets/black/pronouns.png");
+
+ 
+
+  useEffect(() => {
+    const newProfileImage = `assets/profile_${theme}.png`;
+    setProfileImage(newProfileImage);
+
+    setRoleImage(theme === 'light' ? "assets/black/role.png" : "assets/white/role.png");
+    setMajorImage(theme === 'light' ? "assets/black/major.png" : "assets/white/major.png");
+    setLocationImage(theme === 'light' ? "assets/black/location.png" : "assets/white/location.png");
+    setPronounsImage(theme === 'light' ? "assets/black/pronouns.png" : "assets/white/pronouns.png");
+
+  }, [theme]);
+  
+  
   const location = useLocation();
   //Check to see if database call returned anything
   let [failCheck, setFailCheck] = useState(false);
@@ -416,16 +438,12 @@ const NewProfile = ({ theme, setTheme }) => {
     <>{
       <div id='about-me-buttons'>
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}>
-          <img src="assets/profile_dark.png"
-          src-light="assets/profile_light.png"
-          src-dark="assets/profile_dark.png"
-          className='theme-icon'
+          <img src={imageSrc}
+          className="theme-icon"
           alt='linkedin'/></button>
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}>
-          <img src="assets/profile_dark.png"
-          src-light="assets/profile_light.png"
-          src-dark="assets/profile_dark.png"
-          className='theme-icon'
+          <img src={imageSrc}
+          className="theme-icon"
           alt='instagram'/></button>
         <EditButton userData={displayedProfile}/>
         {/* PLEASE USE THIS, I DIDN'T MAKE THE POPUP COMPONENT FOR NOTHING -M-
@@ -437,20 +455,14 @@ const NewProfile = ({ theme, setTheme }) => {
     }</> :
     <>{
       <div id='about-me-buttons' className='about-me-buttons-minimal'>
-        <button><img src="assets/profile_dark.png"
-          src-light="assets/profile_light.png"
-          src-dark="assets/profile_dark.png"
-          className='theme-icon'
+        <button><img src={imageSrc}
+          className="theme-icon"
           alt='linkedin' /></button>
-        <button><img src="assets/profile_dark.png"
-          src-light="assets/profile_light.png"
-          src-dark="assets/profile_dark.png"
-          className='theme-icon'
+        <button><img src={imageSrc}
+          className="theme-icon"
           alt='instagram' /></button>
-        <button><img src="assets/profile_dark.png"
-          src-light="assets/profile_light.png"
-          src-dark="assets/profile_dark.png"
-          className='theme-icon'
+        <button><img src={imageSrc}
+          className="theme-icon"
           alt='like' /></button>
         <Dropdown>
           <DropdownButton><img src={menuImage} alt='...' /></DropdownButton>
@@ -497,36 +509,28 @@ const NewProfile = ({ theme, setTheme }) => {
             <div id='profile-info-extras'>
               <div className='profile-extra'>
                 <img
-                  src="assets/white/role.png"
-                  src-light="assets/black/role.png"
-                  src-dark="assets/white/role.png"
+                  src={roleImage}
                   className='info-extra-image theme-icon'
                   alt='profession' />
                 {displayedProfile.job_title}
               </div>
               <div className='profile-extra'>
                 <img 
-                src="assets/white/major.png"
-                src-light="assets/black/major.png"
-                src-dark="assets/white/major.png"
+                src={majorImage}
                 className='info-extra-image theme-icon' 
                 alt='major' />
                 {displayedProfile.major}, {displayedProfile.academic_year}
                 </div>
               <div className='profile-extra'>
                 <img 
-                src="assets/white/location.png"
-                src-light="assets/black/location.png"
-                src-dark="assets/white/location.png"
+                src={locationImage}
                 className='info-extra-image theme-icon' 
                 alt='location' />
                 {displayedProfile.location}
                 </div>
               <div className='profile-extra'>
                 <img 
-                src="assets/white/pronouns.png"
-                src-light="assets/black/pronouns.png"
-                src-dark="assets/white/pronouns.png"
+                src={pronounsImage}
                 className='info-extra-image theme-icon' 
                 alt='pronouns' />
                 {displayedProfile.pronouns}

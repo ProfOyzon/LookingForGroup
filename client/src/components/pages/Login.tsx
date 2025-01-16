@@ -107,10 +107,17 @@ const Login = ({ theme }) => {
         navigate(paths.routes.FORGOTPASSWORD);
     }
 
+    // Function to handle Enter key press
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter') {
+            handleLogin();
+        }
+    };
+
     // render the login page
     return (
         <div className="background-cover">
-            <div className="login-signup-container">
+            <div className="login-signup-container" onKeyDown={handleKeyPress}>
                 {/*************************************************************
 
                     Login Form inputs

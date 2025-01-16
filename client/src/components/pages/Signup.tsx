@@ -135,10 +135,17 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
         }
     };
 
+    // Function to handle Enter key press
+        const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === 'Enter') {
+                handleSignup();
+            }
+        };
+
     // Render the sign up page
     return (
         <div className="background-cover">
-            <div className="login-signup-container">
+            <div className="login-signup-container" onKeyDown={handleKeyPress}>
                 {/*************************************************************
 
                     Signup Form inputs

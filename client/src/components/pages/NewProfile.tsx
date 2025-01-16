@@ -1,5 +1,16 @@
-import "./pages.css";
-import "../Styles/styles.css";
+//Styles
+import '../Styles/credits.css';
+import '../Styles/discoverMeet.css';
+import '../Styles/emailConfirmation.css';
+import '../Styles/general.css';
+import '../Styles/loginSignup.css';
+import '../Styles/messages.css';
+import '../Styles/notification.css';
+import '../Styles/profile.css';
+import '../Styles/projects.css';
+import '../Styles/settings.css';
+import '../Styles/pages.css';
+
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Header } from "../Header";

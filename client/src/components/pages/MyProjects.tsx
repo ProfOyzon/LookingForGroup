@@ -1,4 +1,5 @@
-import "./pages.css";
+import '../Styles/pages.css';
+
 // import { MyProjectsDisplay } from "../MyProjectsDisplay";
 // import { profiles } from "../../constants/fakeData";
 import { useState } from "react";

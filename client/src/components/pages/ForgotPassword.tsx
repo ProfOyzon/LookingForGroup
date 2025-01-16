@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 import { handleError, sendPost, sendGet, hideError } from "../../functions/fetch.js";
 
-const Login = ({ theme }) => {
+const ForgotPassword = ({ theme }) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
-    const [loginInput, setLoginInput] = useState('');
-    const [password, setPassword] = useState('');
+    const [emailInput, setEmailInput] = useState('');
     const [error, setError] = useState(''); // Error message for missing or incorrect information
 
     // check theme and set the theme icon
@@ -22,34 +21,59 @@ const Login = ({ theme }) => {
         }
     }, [theme]);
 
-    // Function to handle the login button click
-    const handleLogin = () => {
-        
-        // Check if the loginInput and password are not empty
-        if (loginInput === '' || password === '') {
+    // Function to handle the send button click
+    const handleSend = async () => {
+
+        // Check if the emailInput and password are not empty
+        if (emailInput === '') {
             setError('Please fill in all information');
+            return;
+        }
+        // if the email is not a valid email
+        else if (!emailInput.includes('@')) {
+            setError('Invalid email');
+            return;
         }
 
-        // if the email is valid and associated with an account
-        // check if the password is correct
+        try {
+            // if the email is not associated with an account
+            const response = await fetch(`/api/users/search-email/${emailInput}`);
+            const data = await response.json();
 
-        // if the password is incorrect
-        // setError('Incorrect password');
+            if (!data) {
+                setError('Email not associated with an account');
+                return;
+            }
+            else {
+                // Success message
+                setError('Sending email...');
 
-        // if the email is not associated with an account
-        // setError('Email not associated with an account');
+                // All checks passed, issue a password change request
+                const response = await sendPost('/api/resets/password', { email: emailInput });
+                if (response && response.error) {
+                    setError(response.error);
+                }
+                else {
+                    // Success message
+                    setError('Email sent');
+                }
 
-        // if the email is not a valid email
-        // setError('Invalid email');
-
-        else {
-
-            sendPost('/api/login', { loginInput, password });
-
-            // Navigate to the home page
-            //navigate(paths.routes.HOME);
+                // Navigate back to LOGIN
+                navigate(paths.routes.LOGIN);
+            }
+        }
+        catch (err) {
+            console.log('Something went wrong....');
+            console.log(err);
+            return false;
         }
     };
+
+    // Function to handle the forgot pass button click
+    const handleBackToLogin = () => {
+        // Navigate to the Forgot Password Page
+        navigate(paths.routes.LOGIN);
+    }
 
     // render the login page
     return (
@@ -57,36 +81,27 @@ const Login = ({ theme }) => {
             <div className="login-signup-container">
                 {/*************************************************************
 
-                    Login Form inputs
+                    Forgot Password Form inputs
 
                 *************************************************************/}
                 <div className="login-form column">
-                    <h2>Log In</h2>
+                    <h2>Forgot password?</h2>
+                    <p>No worries! We'll send you reset instructions.</p>
                     <div className="login-form-inputs">
                         <div className="error">{error}</div>
                         <span id="errorMessage"></span>
                         <input
                             className="login-input"
                             type="text"
-                            placeholder="Username or e-mail"
-                            value={loginInput}
-                            onChange={(e) => setLoginInput(e.target.value)}
+                            placeholder="Enter your e-mail"
+                            value={emailInput}
+                            onChange={(e) => setEmailInput(e.target.value)}
                         />
-                        <input
-                            className="login-input"
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <button id="forgot-password">Forgot Password</button>
 
-                        <div className="mobile-signup">
-                            <p>No account? </p>
-                            <p id="signup-btn-mobile" onClick={() => navigate(paths.routes.SIGNUP)}>Sign Up</p>
-                        </div>
+                        <button id="forgot-password" onClick={handleBackToLogin}>Back to Login</button>
+
                     </div>
-                    <button id="main-loginsignup-btn" onClick={handleLogin}>Log In</button>
+                    <button id="main-loginsignup-btn" onClick={handleSend}>Send</button>
                 </div>
                 {/*************************************************************
 
@@ -108,4 +123,4 @@ const Login = ({ theme }) => {
     );
 };
 
-export default Login;
+export default ForgotPassword;

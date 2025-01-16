@@ -1,4 +1,15 @@
-import "./pages.css";
+//Styles
+import '../Styles/credits.css';
+import '../Styles/discoverMeet.css';
+import '../Styles/emailConfirmation.css';
+import '../Styles/general.css';
+import '../Styles/loginSignup.css';
+import '../Styles/messages.css';
+import '../Styles/notification.css';
+import '../Styles/profile.css';
+import '../Styles/settings.css';
+import '../Styles/pages.css';
+
 import { ProjectCard } from "../ProjectCard";
 import { ProfileCard } from "../ProfileCard";
 import { ProjectPanel } from "../ProjectPanel";
@@ -7,9 +18,8 @@ import { DiscoverButton } from "../DiscoverButton";
 import { NotifButton } from "../NotificationButton";
 import { SearchBar } from "../SearchBar";
 import { TagFilter } from "../TagFilter";
-import "../Styles/styles.css";
-import { projects } from "../../constants/fakeData";
-import { profiles } from "../../constants/fakeData";
+import { projects } from "../../constants/fakeData";// FIXME: use project data in db
+import { profiles } from "../../constants/fakeData";// FIXME: use user data in db
 import { Children, useCallback } from "react";
 import { sortItems } from "../../functions/itemSort";
 import { useState } from 'react';

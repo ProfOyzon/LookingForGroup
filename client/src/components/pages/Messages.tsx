@@ -1,4 +1,4 @@
-import "./pages.css";
+import '../Styles/pages.css';
 import { MessagesDisplay } from "../MessagesDisplay";
 import { profiles } from "../../constants/fakeData";
 import { useState } from "react";

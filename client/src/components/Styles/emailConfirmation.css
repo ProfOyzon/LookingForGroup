@@ -1,0 +1,54 @@
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Email Confirmation page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+/* Utilizes background-cover class styling above for the white background */
+
+.confirmation-container {
+  margin: 0;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+  width: 45vw;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  background-color: var(--bg-color);
+  box-shadow: 0px 4px 10px rgb(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+
+.text-container {
+  margin: 0;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  gap: 2%;
+}
+
+#confirmation-text {
+  margin-bottom: 0;
+}
+
+#auto-redirect-text {
+  margin: 0;
+}
+
+#manual-redirect-text {
+  margin-top: 0;
+}
+
+#manual-redirect-link {
+  color: #271D66;
+}

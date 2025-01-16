@@ -7,6 +7,7 @@ import '../Styles/loginSignup.css';
 import '../Styles/messages.css';
 import '../Styles/notification.css';
 import '../Styles/profile.css';
+import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 

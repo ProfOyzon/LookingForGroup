@@ -1,5 +1,5 @@
 import React from "react";
-import { messages, profiles } from "../constants/fakeData";
+import { messages, profiles } from "../constants/fakeData";// FIXME: use data in db
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../constants/routes";
 

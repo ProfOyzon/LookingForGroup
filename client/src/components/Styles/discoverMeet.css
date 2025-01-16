@@ -1,108 +1,4 @@
 /*
-------------------------------------------------------------------------------------------------
-Discover image carousel style rules
-------------------------------------------------------------------------------------------------
-*/
-
-#discover-carousel-bar {
-  display: flex;
-  margin-bottom: 10px;
-}
-
-#discover-carousel-left,
-#discover-carousel-right {
-  border: none;
-  width: 60px;
-  height: auto;
-  padding: 0;
-  background-color: rgba(0, 0, 0, 0);
-}
-
-#discover-carousel-left img,
-#discover-carousel-right img {
-  width: 60px;
-  height: 80px;
-  /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
-  /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
-  filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
-}
-
-#discover-carousel-right img {
-  transform: rotateY(180deg);
-}
-
-#discover-carousel-content {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  height: 100%;
-  border-radius: 10px;
-}
-
-.discover-carousel-item {
-  display: grid;
-  text-align: left;
-  column-gap: 20px;
-  grid-template:
-      'image title title' 70px
-      'image desc desc' auto
-      'image blank button' 60px /
-      3fr 2fr auto;
-  background-color: var(--background-light);
-  width: 100%;
-  min-width: 100%;
-  transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
-}
-
-.discover-carousel-image {
-  grid-area: image;
-  object-fit: contain;
-  height: 20vw;
-  width: 100%;
-}
-
-.discover-carousel-title {
-  grid-area: title;
-  margin-top: 20px;
-  font-size: 4ch;
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
-.discover-carousel-description {
-  grid-area: desc;
-}
-
-.discover-carousel-link {
-  grid-area: button;
-  display: flex;
-  align-items: center;
-  border: none;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0);
-  color: var(--primary-color);
-  font-size: 2ch;
-  font-weight: 700;
-  margin: 10px;
-}
-
-.discover-carousel-link:hover {
-  background-color: var(--purple-light);
-}
-
-.discover-carousel-link img {
-  transform: rotateY(180deg);
-  width: 30px;
-  filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
-}
-
-#discover-carousel-tabs {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
 Discover and Meet page style rules
@@ -576,4 +472,108 @@ Discover and Meet page style rules
   justify-content: center;
   grid-gap: 20px;
   margin: 0 50px 50px 50px;
+}
+
+/*
+------------------------------------------------------------------------------------------------
+Discover image carousel style rules
+------------------------------------------------------------------------------------------------
+*/
+
+#discover-carousel-bar {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+#discover-carousel-left,
+#discover-carousel-right {
+  border: none;
+  width: 60px;
+  height: auto;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+#discover-carousel-left img,
+#discover-carousel-right img {
+  width: 60px;
+  height: 80px;
+  /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
+  /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
+  filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+}
+
+#discover-carousel-right img {
+  transform: rotateY(180deg);
+}
+
+#discover-carousel-content {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.discover-carousel-item {
+  display: grid;
+  text-align: left;
+  column-gap: 20px;
+  grid-template:
+      'image title title' 70px
+      'image desc desc' auto
+      'image blank button' 60px /
+      3fr 2fr auto;
+  background-color: var(--background-light);
+  width: 100%;
+  min-width: 100%;
+  transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+.discover-carousel-image {
+  grid-area: image;
+  object-fit: contain;
+  height: 20vw;
+  width: 100%;
+}
+
+.discover-carousel-title {
+  grid-area: title;
+  margin-top: 20px;
+  font-size: 4ch;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.discover-carousel-description {
+  grid-area: desc;
+}
+
+.discover-carousel-link {
+  grid-area: button;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0);
+  color: var(--primary-color);
+  font-size: 2ch;
+  font-weight: 700;
+  margin: 10px;
+}
+
+.discover-carousel-link:hover {
+  background-color: var(--purple-light);
+}
+
+.discover-carousel-link img {
+  transform: rotateY(180deg);
+  width: 30px;
+  filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+}
+
+#discover-carousel-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

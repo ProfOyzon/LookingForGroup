@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import * as paths from "../../constants/routes";
 import { PostReplies } from "../ProjectPostPageComponents/PostReplies"
-import { projects, profiles, posts, comments } from "../../constants/fakeData";
+import { projects, profiles, posts, comments } from "../../constants/fakeData"; // FIXME: use data in db
 
 //To-do
 // - encode reply inputs to prevent code injection (if data upload doesn't automatically do that)

@@ -1,5 +1,5 @@
 import React from "react";
-import { profiles } from "../constants/fakeData";
+import { profiles } from "../constants/fakeData";// FIXME: use data in db
 import profilePicture from "../images/blue_frog.png";
 
 //used on the Messages page to show the user's individual dms

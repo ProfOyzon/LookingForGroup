@@ -23,6 +23,7 @@ import { profiles } from "../../constants/fakeData"; // FIXME: use user data in 
 import * as tags from "../../constants/tags";
 import { useState, useEffect, useRef } from 'react';
 import ToTopButton from "../ToTopButton";
+import CreditsFooter from "../CreditsFooter";
 import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
 import { sendPost, sendGet, GET } from "../../functions/fetch";
@@ -523,12 +524,22 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         }
       }
     } 
-    
-    updateProjectList();
+
+    // if no projects were found
+    if (filteredProjectList.length === 0) {
+      projectList = filteredProjectList;
+      setDisplayedProjects([]);  // clear the displayed list
+      console.log("No matching projects found.");
+    } else {
+      // if projects are found, update the list 
+      updateProjectList();
+    }
+  
   }
 
   //Make new list of projects by mapping new filtered list
   const updateProjectList = () => {
+    console.log('length: ' + projectList.length);
     //Note: tags are not included in current mySQL database for projects
     let tagFilteredList = filteredProjectList.filter((project) => {
       console.log(project);
@@ -722,6 +733,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 
   const updateProfileList = () => {
     //Note: tags are not included in current mySQL database for profiles
+
     let tagFilterCheck = true;
     let tagFilteredList = filteredProfileList.filter((profile) => {
       //if project in filtered list contains all tags in taglist, include it
@@ -733,8 +745,6 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
           break;
         }*/
       }
-
-      
 
       return(tagFilterCheck);
     })
@@ -765,7 +775,16 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       }
     }
         
-    updateProfileList();
+
+    // if no profiles were found
+    if (filteredProfileList.length === 0) {
+      profileList = filteredProfileList;
+        setProfileColumns([]);  // clear the profile  columns
+      console.log("No matching profiles found.");
+    } else {
+      // if profiles are found, update the list 
+      updateProfileList();
+    }
   }
 
   //Choose which functions to use based on what we are displaying
@@ -964,7 +983,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 
   //Displays a set of profile panels
   let profileContent = <>{
-    profileColumns[0].length > 0 ?
+    profileList.length > 0 ?
       //For each array in profileColumns...
       profileColumns.map((column) => (
         //Create a column element & map through profiles in array
@@ -1148,6 +1167,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       {panelContent}
       </div>
 
+      <CreditsFooter />
       <ToTopButton/>
     </div>
   )

@@ -1,7 +1,7 @@
 import React from "react";
-import { messages } from "../../constants/fakeData";
+import { messages } from "../../constants/fakeData"; // FIXME: use data in db
 import { MessageLine } from "../MessageLine";
-import { profiles } from "../../constants/fakeData";
+import { profiles } from "../../constants/fakeData"; // FIXME: use user data in db
 
 //message history for a single user- accessed by clicking on a message card
 const MessageHistory = (props) => {

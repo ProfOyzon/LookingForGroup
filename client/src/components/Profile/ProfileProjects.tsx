@@ -1,5 +1,5 @@
 import { ProjectCard } from "../ProjectCard";
-import{projects} from "../../constants/fakeData";
+import{projects} from "../../constants/fakeData";// FIXME: use data in db
 import { ProfileProjectCard } from "./ProfileProjectCard";
 import edit from '../../icons/edit.png';
 import { useState } from 'react';

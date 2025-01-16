@@ -5,6 +5,7 @@ import '../Styles/pages.css';
 import { useState } from "react";
 // import { PagePopup, openClosePopup } from "../PagePopup";
 import ToTopButton from "../ToTopButton";
+import CreditsFooter from "../CreditsFooter";
 import MyProjectsDisplayList from "../MyProjectsDisplayList";
 import MyProjectsDisplayGrid from "../MyProjectsDisplayGrid";
 import { Header } from "../Header";
@@ -213,6 +214,7 @@ const MyProjects = ({theme, setTheme}) => {
 
             {/* Project Grid/List */}
             {projectListSection}
+            <CreditsFooter />
         </div>
     );
 }

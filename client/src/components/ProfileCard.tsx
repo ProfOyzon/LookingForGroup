@@ -6,7 +6,7 @@ import * as paths from "../constants/routes";
 import profilePicture from "../images/blue_frog.png";
 import followPicture from "../images/heart.png";
 
-import { projects } from "../constants/fakeData";
+import { projects } from "../constants/fakeData";// FIXME: use data in db
 
 
 

@@ -18,7 +18,7 @@ import { ProjectPost } from "../projectPageComponents/ProjectPost";
 import { ProjectMember } from "../projectPageComponents/ProjectMember";
 import { ProjectMemberPopup } from "../projectPageComponents/ProjectMemberPopup";
 import { PagePopup, openClosePopup } from "../PagePopup";
-import { projects, posts, profiles } from "../../constants/fakeData";
+import { projects, posts, profiles } from "../../constants/fakeData"; // FIXME: use data in db
 
 //Styling changes needed:
 /*

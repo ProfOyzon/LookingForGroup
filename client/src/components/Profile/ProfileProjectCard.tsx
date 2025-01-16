@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 
 import profilePicture from "../../images/blue_frog.png";
-import { projects } from "../../constants/fakeData";
-import { profiles } from "../../constants/fakeData";
+import { projects } from "../../constants/fakeData";// FIXME: use project data in db
+import { profiles } from "../../constants/fakeData";// FIXME: use user data in db
 
 //used in the profile page under the "projects" section
 //displays the project name and the person's role

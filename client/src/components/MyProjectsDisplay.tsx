@@ -1,7 +1,7 @@
 import React from "react";
 import { ProjectCard } from "./ProjectCard";
-import { profiles } from "../constants/fakeData";
-import { projects } from "../constants/fakeData";
+import { profiles } from "../constants/fakeData";// FIXME: use data in db
+import { projects } from "../constants/fakeData";// FIXME: use data in db
 import { SearchBar } from "./SearchBar";
 import { useState, useCallback } from "react"; 
 

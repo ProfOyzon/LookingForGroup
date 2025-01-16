@@ -17,7 +17,7 @@ import { Header } from "../Header";
 import { ProjectPanel } from "../ProjectPanel";
 import { Popup, PopupButton, PopupContent } from "../Popup";
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
-import { profiles, projects } from "../../constants/fakeData";
+import { profiles, projects } from "../../constants/fakeData"; // FIXME: use user and project data in db
 import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
 import menuImage from "../../icons/menu.png";
@@ -58,7 +58,29 @@ const fetchUserID = async () => {
 
 const userID = await fetchUserID();
 
+
 const NewProfile = ({ theme, setTheme }) => {
+
+  const [imageSrc, setProfileImage] = useState("assets/profile_dark.png");
+  const [roleImage, setRoleImage] = useState("assets/black/role.png");
+  const [majorImage, setMajorImage] = useState("assets/black/major.png");
+  const [locationImage, setLocationImage] = useState("assets/black/location.png");
+  const [pronounsImage, setPronounsImage] = useState("assets/black/pronouns.png");
+
+ 
+
+  useEffect(() => {
+    const newProfileImage = `assets/profile_${theme}.png`;
+    setProfileImage(newProfileImage);
+
+    setRoleImage(theme === 'light' ? "assets/black/role.png" : "assets/white/role.png");
+    setMajorImage(theme === 'light' ? "assets/black/major.png" : "assets/white/major.png");
+    setLocationImage(theme === 'light' ? "assets/black/location.png" : "assets/white/location.png");
+    setPronounsImage(theme === 'light' ? "assets/black/pronouns.png" : "assets/white/pronouns.png");
+
+  }, [theme]);
+  
+  
   const location = useLocation();
   //Check to see if database call returned anything
   let [failCheck, setFailCheck] = useState(false);
@@ -149,10 +171,12 @@ const NewProfile = ({ theme, setTheme }) => {
   //Get a profile based on searchParam userId given
   ///const profileData = (/* Some sort of fetch request */);
   //Check whether or not the profile is the current user's
-  let usersProfile = false;
+  let isUsersProfile = false;
 
-  if (profileID === userID) {
-    usersProfile = true;
+  if (profileID === `${userID}`) {
+    isUsersProfile = true;
+    console.log('this is the users profile');
+    
   }
 
   //Holds a list of tags that the user selected to represent their skills
@@ -203,7 +227,7 @@ const NewProfile = ({ theme, setTheme }) => {
   //Loads a new set of project panels to render
   //Calls when page first loads & when a new list of projects is being used (e.g. after a search)
   const firstProjects = (projectList) => {
-    console.log(projectList);
+    // console.log(projectList);
     if (projectList === undefined) {
       return [];
     }
@@ -423,45 +447,35 @@ const NewProfile = ({ theme, setTheme }) => {
     }
   }, [location])
 
-  const aboutMeButtons = usersProfile === true ?
+  const aboutMeButtons = isUsersProfile ?
     <>{
       <div id='about-me-buttons'>
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}>
-          <img src="assets/profile_dark.png"
-          src-light="assets/profile_light.png"
-          src-dark="assets/profile_dark.png"
-          className='theme-icon'
+          <img src={imageSrc}
+          className="theme-icon"
           alt='linkedin'/></button>
         <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}>
-          <img src="assets/profile_dark.png"
-          src-light="assets/profile_light.png"
-          src-dark="assets/profile_dark.png"
-          className='theme-icon'
+          <img src={imageSrc}
+          className="theme-icon"
           alt='instagram'/></button>
-        <EditButton userData={displayedProfile}/>
-        {/* PLEASE USE THIS, I DIDN'T MAKE THE POPUP COMPONENT FOR NOTHING -M-
+        {/* <EditButton userData={displayedProfile}/> */}
+        {/* PLEASE USE THIS, I DIDN'T MAKE THE POPUP COMPONENT FOR NOTHING -M- */}
         <Popup>
           <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
           <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
-        </Popup> */}
+        </Popup>
       </div>
     }</> :
     <>{
       <div id='about-me-buttons' className='about-me-buttons-minimal'>
-        <button><img src="assets/profile_dark.png"
-          src-light="assets/profile_light.png"
-          src-dark="assets/profile_dark.png"
-          className='theme-icon'
+        <button><img src={imageSrc}
+          className="theme-icon"
           alt='linkedin' /></button>
-        <button><img src="assets/profile_dark.png"
-          src-light="assets/profile_light.png"
-          src-dark="assets/profile_dark.png"
-          className='theme-icon'
+        <button><img src={imageSrc}
+          className="theme-icon"
           alt='instagram' /></button>
-        <button><img src="assets/profile_dark.png"
-          src-light="assets/profile_light.png"
-          src-dark="assets/profile_dark.png"
-          className='theme-icon'
+        <button><img src={imageSrc}
+          className="theme-icon"
           alt='like' /></button>
         <Dropdown>
           <DropdownButton><img src={menuImage} alt='...' /></DropdownButton>
@@ -508,36 +522,28 @@ const NewProfile = ({ theme, setTheme }) => {
             <div id='profile-info-extras'>
               <div className='profile-extra'>
                 <img
-                  src="assets/white/role.png"
-                  src-light="assets/black/role.png"
-                  src-dark="assets/white/role.png"
+                  src={roleImage}
                   className='info-extra-image theme-icon'
                   alt='profession' />
                 {displayedProfile.job_title}
               </div>
               <div className='profile-extra'>
                 <img 
-                src="assets/white/major.png"
-                src-light="assets/black/major.png"
-                src-dark="assets/white/major.png"
+                src={majorImage}
                 className='info-extra-image theme-icon' 
                 alt='major' />
                 {displayedProfile.major}, {displayedProfile.academic_year}
                 </div>
               <div className='profile-extra'>
                 <img 
-                src="assets/white/location.png"
-                src-light="assets/black/location.png"
-                src-dark="assets/white/location.png"
+                src={locationImage}
                 className='info-extra-image theme-icon' 
                 alt='location' />
                 {displayedProfile.location}
                 </div>
               <div className='profile-extra'>
                 <img 
-                src="assets/white/pronouns.png"
-                src-light="assets/black/pronouns.png"
-                src-dark="assets/white/pronouns.png"
+                src={pronounsImage}
                 className='info-extra-image theme-icon' 
                 alt='pronouns' />
                 {displayedProfile.pronouns}

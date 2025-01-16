@@ -1,6 +1,6 @@
 import '../Styles/pages.css';
 import { MessagesDisplay } from "../MessagesDisplay";
-import { profiles } from "../../constants/fakeData";
+import { profiles } from "../../constants/fakeData"; // FIXME: use user data in db
 import { useState } from "react";
 
 //list of all the messages available to a user

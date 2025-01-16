@@ -21,26 +21,36 @@ const login = async (req, res) => {
         });
     }
 
-    const userQuery = "SELECT user_id, password FROM users WHERE username = ? OR primary_email = ?";
-    const [userResult] = await pool.query(userQuery, [loginInput, loginInput]);
-    const user = userResult[0];
+    const userQuery = "SELECT user_id, password FROM users WHERE username = ? OR primary_email = ? OR rit_email = ?";
+    const [userResult] = await pool.query(userQuery, [loginInput, loginInput, loginInput]);
 
-    const match = await bcrypt.compare(password, user.password);
-
-    if (user == null || !match) {
+    // check for user with matching loginInput
+    if (!userResult[0]) {// no user found
         return res.status(400).json({ 
             status: 400,
-            error: 'Wrong username or password' 
+            error: "Wrong username or password" 
         });
     }
-    
-    req.session.userId = user.user_id;
+    else { // user found, check password
+        const match = await bcrypt.compare(password, userResult[0].password);
+        if (!match) {
+            return res.status(400).json({
+                status: 400,
+                error: 'Wrong username or password' 
+            });
+        }
+    }
 
-    return res.json({ redirect: '/' });
+    req.session.userId = userResult[0].user_id;
+
+    return res.json({ status: 200, redirect: '/' });
 }
 
 const getAuth = (req, res) => {
     // Allow frontend to check if user is logged in
+    console.log('req.session: ');
+    console.log(req.session);
+    
     if (!req.session.userId){
         return res.status(401).json({
             status: 401, 
@@ -205,6 +215,14 @@ const requestPasswordReset = async (req, res) => {
     // Generate a token for password reset
     const token = crypto.randomUUID();
 
+    // Change url based on environment to allow for changes to your local database
+    let url = ``;
+    if (envConfig.env === "production") {
+        url = `https://lookingforgrp.com/resetPassword/${token}`;
+    } else {
+        url = `http://localhost:8081/resetPassword/${token}`;
+    }
+
     try {
         // Add user information to database, setting up for password reset
         const sql = "INSERT INTO password_resets (token, primary_email) VALUES (?, ?)";
@@ -219,11 +237,11 @@ const requestPasswordReset = async (req, res) => {
         
         <div style="margin: 2rem 1rem">
         <a style="font-size:1.25rem; color:#FFFFFF; background-color:#271D66; text-align:center; margin:2rem 0; padding:1rem; text-decoration:none;"
-        href="" target="_blank">Reset Password</a>
+        href="${url}" target="_blank">Reset Password</a>
         </div>
 
         <p>If the button doesn't work, use the following link:</p>
-        <a href="" target="_blank">Need a link</a>
+        <a href="${url}" target="_blank">Need a link</a>
 
         <p>Kind regards,<br>
         LFG Team</p>
@@ -376,6 +394,52 @@ const getUserById = async (req, res) => {
         return res.status(400).json({
             status: 400, 
             error: "An error occurred while getting the user" 
+        });
+    }
+}
+
+const getUserByUsername = async (req, res) => {
+    // Get username from url 
+    const { username } = req.params;
+
+    try {
+        // Find same username in database
+        const sql = `SELECT * FROM users WHERE username = ?`;
+        const [user] = await pool.query(sql, [username]);
+
+        return res.status(200).json({
+            status: 200,
+            data: user
+        });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400,
+            error: "An error occurred while getting the username"
+        });
+    }
+}
+
+const getUserByEmail = async (req, res) => {
+    // Get email from url 
+    const { email } = req.params;
+
+    try {
+        // Find same username in database
+        const sql = `SELECT * FROM users WHERE primary_email = ? OR rit_email = ?`;
+        const [user] = await pool.query(sql, [email, email]);
+
+        return res.status(200).json({
+            status: 200,
+            data: user
+        });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            status: 400,
+            error: "An error occurred while getting the email"
         });
     }
 }
@@ -1120,7 +1184,7 @@ const deleteUserFollowing = async (req, res) => {
 }
 
 export default { login, getAuth, logout, signup, createUser, requestPasswordReset, resetPassword,
-    getUsers, getUserById, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
+    getUsers, getUserById, getUserByUsername, getUserByEmail, getUsernameBySession, updateUser, deleteUser, updateProfilePicture,
     getAccount, updateEmail, updateUsername, updatePassword,
     getMyProjects, getVisibleProjects, updateProjectVisibility, 
     getProjectFollowing, addProjectFollowing, deleteProjectFollowing, 

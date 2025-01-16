@@ -1,5 +1,5 @@
-import { projects } from "../constants/fakeData";
-import { profiles } from "../constants/fakeData";
+import { projects } from "../constants/fakeData";// FIXME: use data in db
+import { profiles } from "../constants/fakeData";// FIXME: use data in db
 import profilePicture from "../images/blue_frog.png";
 import { Tags } from "./Tags";
 

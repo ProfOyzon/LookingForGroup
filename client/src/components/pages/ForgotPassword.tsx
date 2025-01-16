@@ -8,7 +8,7 @@ const ForgotPassword = ({ theme }) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
-    const [loginInput, setLoginInput] = useState('');
+    const [emailInput, setEmailInput] = useState('');
     const [error, setError] = useState(''); // Error message for missing or incorrect information
 
     // check theme and set the theme icon
@@ -21,29 +21,51 @@ const ForgotPassword = ({ theme }) => {
         }
     }, [theme]);
 
-    // Function to handle the login button click
-    const handleLogin = () => {
-        
-        // Check if the loginInput and password are not empty
-        if (loginInput === '') {
+    // Function to handle the send button click
+    const handleSend = async () => {
+
+        // Check if the emailInput and password are not empty
+        if (emailInput === '') {
             setError('Please fill in all information');
+            return;
+        }
+        // if the email is not a valid email
+        else if (!emailInput.includes('@')) {
+            setError('Invalid email');
+            return;
         }
 
-        // if the email is valid and associated with an account
-        // check if the password is correct
+        try {
+            // if the email is not associated with an account
+            const response = await fetch(`/api/users/search-email/${emailInput}`);
+            const data = await response.json();
 
-        // if the email is not associated with an account
-        // setError('Email not associated with an account');
+            if (!data) {
+                setError('Email not associated with an account');
+                return;
+            }
+            else {
+                // Success message
+                setError('Sending email...');
 
-        // if the email is not a valid email
-        // setError('Invalid email');
+                // All checks passed, issue a password change request
+                const response = await sendPost('/api/resets/password', { email: emailInput });
+                if (response && response.error) {
+                    setError(response.error);
+                }
+                else {
+                    // Success message
+                    setError('Email sent');
+                }
 
-        else {
-
-            // sendPost('/api/login', { loginInput });
-
-            // Navigate to the Reset Password page
-            navigate(paths.routes.RESETPASSWORD);
+                // Navigate back to LOGIN
+                navigate(paths.routes.LOGIN);
+            }
+        }
+        catch (err) {
+            console.log('Something went wrong....');
+            console.log(err);
+            return false;
         }
     };
 
@@ -72,19 +94,14 @@ const ForgotPassword = ({ theme }) => {
                             className="login-input"
                             type="text"
                             placeholder="Enter your e-mail"
-                            value={loginInput}
-                            onChange={(e) => setLoginInput(e.target.value)}
+                            value={emailInput}
+                            onChange={(e) => setEmailInput(e.target.value)}
                         />
-                        
+
                         <button id="forgot-password" onClick={handleBackToLogin}>Back to Login</button>
 
-                        {/* TODO: Not sure what to do here for mobile */}
-                        <div className="mobile-signup">
-                            <p>No account? </p>
-                            <p id="signup-btn-mobile" onClick={() => navigate(paths.routes.SIGNUP)}>Sign Up</p>
-                        </div>
                     </div>
-                    <button id="main-loginsignup-btn" onClick={handleLogin}>Send</button>
+                    <button id="main-loginsignup-btn" onClick={handleSend}>Send</button>
                 </div>
                 {/*************************************************************
 

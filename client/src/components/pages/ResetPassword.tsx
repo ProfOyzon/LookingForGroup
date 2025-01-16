@@ -1,15 +1,16 @@
 import "./pages.css";
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 import { handleError, sendPost, sendGet, hideError } from "../../functions/fetch.js";
 
 const ResetPassword = ({ theme }) => {
     const navigate = useNavigate(); // Hook for navigation
+    const location = useLocation(); 
 
     // State variables
-    const [loginInput, setLoginInput] = useState('');
-    const [password, setPassword] = useState('');
+    const [passwordInput, setPasswordInput] = useState('');
+    const [confirmInput, setConfirmInput] = useState('');
     const [error, setError] = useState(''); // Error message for missing or incorrect information
 
     // check theme and set the theme icon
@@ -22,32 +23,39 @@ const ResetPassword = ({ theme }) => {
         }
     }, [theme]);
 
-    // Function to handle the login button click
-    const handleLogin = () => {
+    // Function to handle the Set button click
+    const handleResetPassword = async () => {
 
         // Check if the loginInput and password are not empty
-        if (loginInput === '' || password === '') {
+        if (passwordInput === '' || confirmInput === '') {
             setError('Please fill in all information');
+            return;
         }
 
-        // if the email is valid and associated with an account
-        // check if the password is correct
-
-        // if the password is incorrect
-        // setError('Incorrect password');
-
-        // if the email is not associated with an account
-        // setError('Email not associated with an account');
-
-        // if the email is not a valid email
-        // setError('Invalid email');
-
+        // Check if the passwords match
+        else if(passwordInput !== confirmInput){
+            setError('The passwords do not match');
+            return;
+        }
         else {
-
-            // sendPost('/api/login', { loginInput, password });
+            // Success message
+            setError('Updating password...');
+            // Login for the user
+            const path = location.pathname;
+            const token = path.substring(path.lastIndexOf("/")+1, path.length);
+            const data = { password: passwordInput, confirm: confirmInput };
+            console.log(data);
+            const response = await sendPost(`/api/resets/password/${token}`, data);
+            if (response.error) {
+                setError(response.error);
+            }
+            else {
+                // Success message
+                setError('Logging in');
+            }
 
             // Navigate to the home page
-            navigate(paths.routes.HOME);
+            // navigate(paths.routes.HOME);
         }
     };
 
@@ -67,21 +75,21 @@ const ResetPassword = ({ theme }) => {
                     <span id="errorMessage"></span>
                     <input
                         className="login-input"
-                        type="text"
-                        placeholder="Username or e-mail"
-                        value={loginInput}
-                        onChange={(e) => setLoginInput(e.target.value)}
+                        type="password"
+                        placeholder="New password"
+                        value={passwordInput}
+                        onChange={(e) => setPasswordInput(e.target.value)}
                     />
                     <input
                         className="login-input"
                         type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Confirm password"
+                        value={confirmInput}
+                        onChange={(e) => setConfirmInput(e.target.value)}
                     />
                     <button id="forgot-password" onClick={handleBackToLogin}>Back to Login</button>
                 </div>
-                <button id="main-loginsignup-btn" onClick={handleLogin}>Set</button>
+                <button id="main-loginsignup-btn" onClick={handleResetPassword}>Set</button>
             </div>
         </div>
     );

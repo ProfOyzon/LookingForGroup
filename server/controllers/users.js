@@ -212,6 +212,14 @@ const requestPasswordReset = async (req, res) => {
     // Generate a token for password reset
     const token = crypto.randomUUID();
 
+    // Change url based on environment to allow for changes to your local database
+    let url = ``;
+    if (envConfig.env === "production") {
+        url = `https://lookingforgrp.com/resetPassword/${token}`;
+    } else {
+        url = `http://localhost:8081/resetPassword/${token}`;
+    }
+
     try {
         // Add user information to database, setting up for password reset
         const sql = "INSERT INTO password_resets (token, primary_email) VALUES (?, ?)";
@@ -226,11 +234,11 @@ const requestPasswordReset = async (req, res) => {
         
         <div style="margin: 2rem 1rem">
         <a style="font-size:1.25rem; color:#FFFFFF; background-color:#271D66; text-align:center; margin:2rem 0; padding:1rem; text-decoration:none;"
-        href="" target="_blank">Reset Password</a>
+        href="${url}" target="_blank">Reset Password</a>
         </div>
 
         <p>If the button doesn't work, use the following link:</p>
-        <a href="" target="_blank">Need a link</a>
+        <a href="${url}" target="_blank">Need a link</a>
 
         <p>Kind regards,<br>
         LFG Team</p>

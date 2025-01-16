@@ -77,6 +77,13 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
     navigate(path);
   }
 
+  const handleProfileAccess = async () => {
+    // navigate to Profile, attach userID
+    const response = await fetch("/api/auth");
+    const { data } = await response.json();
+    navigate(`${paths.routes.PROFILE}/?userID=${data}`);
+  }
+
   const switchTheme = () => {
     setModeToggle(theme === 'dark' ? 'Light Mode' : 'Dark Mode');
     setTheme(theme === 'dark' ? 'light' : 'dark');
@@ -129,7 +136,7 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
                   alt='X' />
                   <div>{username}<br /><span id='header-profile-email'>{email}</span></div>
                   </button>
-                  : <button onClick={() => handlePageChange(paths.routes.PROFILE)} id='header-profile-user'>
+                  : <button onClick={() => handleProfileAccess()} id='header-profile-user'>
                 <img src="assets/profile_dark.png"
                   src-light="assets/profile_light.png"
                   src-dark="assets/profile_dark.png"

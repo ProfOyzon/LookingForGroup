@@ -23,8 +23,8 @@ import EditButton from "../Profile/ProfileEditButton";
 let runningServer = true;
 
 let defaultProfile = runningServer ? undefined : {
-  first_name: 'User', 
-  last_name: 'Name', 
+  first_name: 'User',
+  last_name: 'Name',
   username: 'someguy',
   profile_image: profilePicture,
   headline: `Here's a quick lil blurb about me!`,
@@ -35,7 +35,7 @@ let defaultProfile = runningServer ? undefined : {
   location: 'Middle of, Nowhere',
   fun_fact: `I'm not a real person, I'm just a digital representation of one!`,
   bio: 'A bunch of Lorem Ipsum text, not bothering to type it out.',
-  skills: ['Figma','JavaScript','Visual Studio Code','Flexibility','Krita'],
+  skills: ['Figma', 'JavaScript', 'Visual Studio Code', 'Flexibility', 'Krita'],
 }
 
 const fetchUserID = async () => {
@@ -56,7 +56,7 @@ const NewProfile = ({ theme, setTheme }) => {
   const [locationImage, setLocationImage] = useState("assets/black/location.png");
   const [pronounsImage, setPronounsImage] = useState("assets/black/pronouns.png");
 
- 
+
 
   useEffect(() => {
     const newProfileImage = `assets/profile_${theme}.png`;
@@ -68,8 +68,8 @@ const NewProfile = ({ theme, setTheme }) => {
     setPronounsImage(theme === 'light' ? "assets/black/pronouns.png" : "assets/white/pronouns.png");
 
   }, [theme]);
-  
-  
+
+
   const location = useLocation();
   //Check to see if database call returned anything
   let [failCheck, setFailCheck] = useState(false);
@@ -78,14 +78,20 @@ const NewProfile = ({ theme, setTheme }) => {
   let urlParams = new URLSearchParams(window.location.search);
   //const [profileID, setProfileID] = useState<String | null>(null);
   let profileID;
-  profileID = urlParams.get('userID');
-  if (profileID === undefined || profileID === null) {
-    //If no profileID is in search query, automatically set to the current user's id
-    console.log('profileID not found, using default');
-    (async () => {
-      profileID = userID;
-    })();
+
+  const setUpProfileID = async () => {
+    profileID = urlParams.get('userID');
+    if (profileID === undefined || profileID === null) {
+      //If no profileID is in search query, automatically set to the current user's id
+      console.log('profileID not found, using default');
+      profileID = await fetchUserID();
+      console.log(`profileID: ${profileID}`);
+      // (async () => {
+      //   profileID = userID;
+      // })();
+    }
   }
+  setUpProfileID();
 
   //Function used to get profile data
   const getProfileData = async () => {
@@ -150,7 +156,7 @@ const NewProfile = ({ theme, setTheme }) => {
     getProfileData();
   }
   //if (fullProjectList === undefined) {
-    //getProfileProjectData();
+  //getProfileProjectData();
   //}
 
   //getProfileProjectData();
@@ -165,7 +171,7 @@ const NewProfile = ({ theme, setTheme }) => {
   if (profileID === `${userID}`) {
     isUsersProfile = true;
     console.log('this is the users profile');
-    
+
   }
 
   //Holds a list of tags that the user selected to represent their skills
@@ -246,7 +252,7 @@ const NewProfile = ({ theme, setTheme }) => {
     For this reason, an extra check is added to ensure height does not equal 0. In the event it does,
     we randomize width instead of calculating an accurate width.
     */
-    let firstPanelWidth = projectList[projectListPosition].thumbnail != null && firstThumbnail.height != 0 ? 
+    let firstPanelWidth = projectList[projectListPosition].thumbnail != null && firstThumbnail.height != 0 ?
       firstThumbnail.width * (200 / firstThumbnail.height) :
       Math.floor((Math.random() * 200) + 200);
     widthTracker += firstPanelWidth + 20;
@@ -278,7 +284,7 @@ const NewProfile = ({ theme, setTheme }) => {
 
       //(For testing's sake, width will be randomized)
       //let panelWidth = (img.naturalWidth * 100) / img.naturalHeight; [Use this when images are integrated]
-      let panelWidth = projectList[projectListPosition].thumbnail != null && thumbnail.height != 0 ? 
+      let panelWidth = projectList[projectListPosition].thumbnail != null && thumbnail.height != 0 ?
         thumbnail.width * (200 / thumbnail.height) :
         Math.floor((Math.random() * 200) + 200);
       //Add (width value + flexbox gap value + borders) to width tracker
@@ -439,14 +445,14 @@ const NewProfile = ({ theme, setTheme }) => {
   const aboutMeButtons = isUsersProfile ?
     <>{
       <div id='about-me-buttons'>
-        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}>
+        <button onClick={() => { window.location.href = 'https://www.w3schools.com' }}>
           <img src={imageSrc}
-          className="theme-icon"
-          alt='linkedin'/></button>
-        <button onClick={() => {window.location.href = 'https://www.w3schools.com'}}>
+            className="theme-icon"
+            alt='linkedin' /></button>
+        <button onClick={() => { window.location.href = 'https://www.w3schools.com' }}>
           <img src={imageSrc}
-          className="theme-icon"
-          alt='instagram'/></button>
+            className="theme-icon"
+            alt='instagram' /></button>
         {/* <EditButton userData={displayedProfile}/> */}
         {/* PLEASE USE THIS, I DIDN'T MAKE THE POPUP COMPONENT FOR NOTHING -M- */}
         <Popup>
@@ -499,11 +505,11 @@ const NewProfile = ({ theme, setTheme }) => {
 
       {/* Checks if we have profile data to use, then determines what to render */}
       {failCheck === true ? loadingFailed : displayedProfile === undefined ? loadingProfile :
-      <div id='profile-page-content'>
-        {/* New profile display using css grid, will contain all info except for projects */}
-        <div id='profile-information-grid'>
-          <img src={`/images/profiles/${displayedProfile.profile_image}`} id='profile-image' alt='profile image'/>
-          <div id='profile-bio'>{displayedProfile.bio}</div>
+        <div id='profile-page-content'>
+          {/* New profile display using css grid, will contain all info except for projects */}
+          <div id='profile-information-grid'>
+            <img src={`/images/profiles/${displayedProfile.profile_image}`} id='profile-image' alt='profile image' />
+            <div id='profile-bio'>{displayedProfile.bio}</div>
 
             <div id='profile-info-name'><span id='profile-fullname'>{displayedProfile.first_name} {displayedProfile.last_name}</span>@{'someguy'}</div>
             <div id='profile-info-buttons'>{aboutMeButtons}</div>
@@ -517,53 +523,53 @@ const NewProfile = ({ theme, setTheme }) => {
                 {displayedProfile.job_title}
               </div>
               <div className='profile-extra'>
-                <img 
-                src={majorImage}
-                className='info-extra-image theme-icon' 
-                alt='major' />
+                <img
+                  src={majorImage}
+                  className='info-extra-image theme-icon'
+                  alt='major' />
                 {displayedProfile.major}, {displayedProfile.academic_year}
-                </div>
+              </div>
               <div className='profile-extra'>
-                <img 
-                src={locationImage}
-                className='info-extra-image theme-icon' 
-                alt='location' />
+                <img
+                  src={locationImage}
+                  className='info-extra-image theme-icon'
+                  alt='location' />
                 {displayedProfile.location}
-                </div>
+              </div>
               <div className='profile-extra'>
-                <img 
-                src={pronounsImage}
-                className='info-extra-image theme-icon' 
-                alt='pronouns' />
+                <img
+                  src={pronounsImage}
+                  className='info-extra-image theme-icon'
+                  alt='pronouns' />
                 {displayedProfile.pronouns}
-                </div>
+              </div>
             </div>
 
-          <div id='profile-info-description'>
-            {displayedProfile.headline}
-          </div>
+            <div id='profile-info-description'>
+              {displayedProfile.headline}
+            </div>
 
-          <div id='profile-info-funfact'>
-            <span id='fun-fact-start'>Fun Fact! </span>
-            {displayedProfile.fun_fact}
-          </div>
+            <div id='profile-info-funfact'>
+              <span id='fun-fact-start'>Fun Fact! </span>
+              {displayedProfile.fun_fact}
+            </div>
 
             <div id='profile-info-skills'>
               {
-                displayedProfile.skills != null ? 
-                /* Will take in a list of tags the user has selected,
-                then use a map function to generate tags to fill this div */
-                displayedProfile.skills.map((tag) => {
-                  let category: string;
-                  if (tag.type === 'Design') { category = 'red'; }
-                  else if (tag.type === 'Developer') { category = 'yellow'; }
-                  else if (tag.type === 'Soft') { category = 'purple'; }
-                  else { category = 'grey'; }
-                  return (
-                    <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
-                  )
-                }) :
-                <></>
+                displayedProfile.skills != null ?
+                  /* Will take in a list of tags the user has selected,
+                  then use a map function to generate tags to fill this div */
+                  displayedProfile.skills.map((tag) => {
+                    let category: string;
+                    if (tag.type === 'Design') { category = 'red'; }
+                    else if (tag.type === 'Developer') { category = 'yellow'; }
+                    else if (tag.type === 'Soft') { category = 'purple'; }
+                    else { category = 'grey'; }
+                    return (
+                      <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
+                    )
+                  }) :
+                  <></>
               }
             </div>
           </div>

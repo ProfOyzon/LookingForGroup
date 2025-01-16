@@ -1,0 +1,273 @@
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Settings page style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.text {
+  width: 180px;
+  text-align: left;
+  /* margin-left: 30px; */
+}
+
+#language-select {
+  width: 200px;
+  height: 40px;
+  padding: 5px 10px;
+}
+
+#settings-page {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  /* border: 1px solid lightsalmon; */
+  height: auto;
+  margin-bottom: 200px;
+  /* https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+#settings-page::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera*/
+}
+
+.settings-page-tabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  /* border: 1px solid lightgreen; */
+  width: 80%;
+  border-bottom: 2px solid black;
+  margin: 20px 0;
+}
+
+.settings-page-tab-links {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 90px;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.settings-page-tab-links.settings-page-active-link {
+  font-weight: 700;
+}
+
+.settings-page-tab-contents {
+  display: none;
+  flex-direction: column;
+  width: 80%;
+  gap: 18px;
+  /* border: 1px solid lightcoral; */
+}
+
+.setting-in-page {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* align-items: center; */
+  width: 100%;
+  /* border: 1px solid lightblue; */
+}
+
+.settings-page-active-tab {
+  display: flex;
+}
+
+.setting-in-page h3 {
+  margin-right: 20px;
+  width: 200px;
+  text-align: left;
+  /* border: 1px solid lightseagreen; */
+}
+
+.setting-in-page h3 span {
+  font-size: 14px;
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+.setting-content {
+  margin: auto 0px;
+  padding: 5px;
+  /* border: 1px solid lightcoral; */
+
+}
+
+.settingsBtns {
+  background-color: var(--primary-color);
+  color: var(--primary-blue);
+  width: fit-content;
+  height: 40px;
+  padding: 5px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  outline: solid var(--primary-blue) 2px;
+  font-weight: 900;
+}
+
+.settingsBtns:hover {
+  background-color: var(--primary-blue);
+  color: var(--main-text);
+  transition: .2s;
+}
+
+.displayName {
+  input {
+      width: 180px;
+      height: 30px;
+      padding: 5px;
+      margin-right: 10px;
+      border-bottom: 1px solid var(--medGray);
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      background-color: var(--primary-color);
+      font-size: 16px;
+      text-align: left;
+      font-weight: 600;
+      outline: none;
+  }
+
+  img {
+      width: 25px;
+      height: 25px;
+  }
+}
+
+.textInput {
+  width: 200px;
+  height: 30px;
+  padding: 5px 20px;
+  border: 1px solid var(--medGray);
+  background-color: var(--primary-color);
+  border-radius: 12px;
+  font-size: 15px;
+  text-align: left;
+  margin: 14px 0;
+}
+
+/* From: https://www.w3schools.com/howto/howto_css_switch.asp */
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 28px;
+
+  /* margin-left: 10px; */
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* The switch slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #D0D0D0;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: var(--primary-color);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked+.slider {
+  background-color: var(--primary-blue);
+}
+
+input:focus+.slider {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+}
+
+input:checked+.slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.volumeSlider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 350px;
+  height: 10px;
+  border-radius: 5px;
+  outline: none;
+}
+
+.volumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  outline: 2px solid var(--primary-color);
+  background: var(--primary-blue);
+  cursor: pointer;
+}
+
+.volumeSlider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  outline: 2px solid var(--primary-color);
+  background: var(--primary-blue);
+  cursor: pointer;
+}
+
+#setting-spacer {
+  height: 100px;
+}
+
+@media only screen and (max-width: 800px) {
+
+  /*responsiveness goes here*/
+}

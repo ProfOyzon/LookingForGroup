@@ -1,0 +1,68 @@
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Credits link footer style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+.FooterContainer {
+  height: 100px;
+  width: 100%;
+  z-index: 1;
+  background-color: var(--primary-blue);
+}
+
+.FooterContainer button {
+  margin-top: 50px;
+  border: 0px;
+  background: 0px;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Credits style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+
+#credits-title {
+  color: var(--primary-color);
+  text-align: left;
+  margin-left: 50px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+#credit-members-container {
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  /* gap: 10px; */
+  align-self: stretch;
+  flex-wrap: wrap;
+  margin: 20px 50px;
+
+  .lfg-contributor {
+      width: 255px;
+      background-color: var(--header-color);
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin: 15px 35px;
+
+      scale: 1.2;
+  }
+
+  .og-lfg-contributor {
+      width: 200px;
+      background-color: var(--header-color);
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin: 10px 0 0 10px;
+  }
+}

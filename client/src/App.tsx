@@ -4,12 +4,14 @@ import './App.css';
 import './components/Styles/credits.css';
 import './components/Styles/discoverMeet.css';
 import './components/Styles/emailConfirmation.css';
-import './components/Styles/general.css';
+import './components/Styles/styles.css';
 import './components/Styles/loginSignup.css';
 import './components/Styles/messages.css';
 import './components/Styles/notification.css';
 import './components/Styles/profile.css';
 import './components/Styles/settings.css';
+// temp recovery
+import './components/Styles/styles.css';
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import * as paths from "./constants/routes";

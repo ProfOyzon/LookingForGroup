@@ -975,7 +975,6 @@ Search style rules
     /* align-content: right; */
     /* justify-self: right; */
     /* height: 50px; */
-    margin-left: 50px;
     width: calc(100% - 40px);
 }
 

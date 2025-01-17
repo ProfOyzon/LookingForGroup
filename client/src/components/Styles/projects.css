@@ -199,7 +199,7 @@ Project Creator and Editor style rules
 
 #project-editor-tabs {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0 20px;
 }
 
@@ -220,11 +220,6 @@ Project Creator and Editor style rules
   font-weight: 700;
 }
 
-#project-editor-content {
-  flex-grow: 1;
-  margin: 20px;
-}
-
 #project-editor-save {
   border: none;
   border-radius: 30px;
@@ -237,6 +232,11 @@ Project Creator and Editor style rules
   font-weight: 700;
 }
 
+#project-editor-content {
+  flex-grow: 1;
+  margin: 35px 56px 40px 56px;
+}
+
 #project-editor-content label {
   color: var(--primary-color);
   font-size: 2.3ch;
@@ -247,15 +247,27 @@ Project Creator and Editor style rules
 #project-editor-content input,
 #project-editor-content textarea {
   margin: 10px 0;
-  border: none;
-  border-radius: 8px;
-  /* box-shadow: 0 0 3px var(--gray); */
-  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 15px 15px;
   flex-grow: 1;
   background-color: var(--bg-color);
   color: var(--main-text);
-  font-size: 2ch;
+  font-size: 15px;
   outline: none;
+}
+
+#project-editor-content select {
+  appearance: none;
+  background-image: url('../../../build/assets/dropdown_dark.png');
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position-x: 150px;
+  background-position-y: 20px;
+}
+
+#project-editor-content input[type='text'] {
+  padding: 8px 15px;
 }
 
 #project-editor-content textarea {
@@ -268,6 +280,11 @@ Project Creator and Editor style rules
   color: var(--neutral-gray);
 }
 
+.project-editor-extra-info > input[type='file'] {
+  display: none;
+  color: var(--orange);
+}
+
 #project-editor-general {
   display: grid;
   height: 100%;
@@ -277,12 +294,13 @@ Project Creator and Editor style rules
       'audience audience about' 2fr
       'desc desc about' 3fr /
       1fr 1fr 2.5fr;
-  gap: 0 20px;
+  gap: 15px 15px;
 }
 
 .project-editor-input-item {
   display: flex;
   flex-direction: column;
+  position: relative;
 
   input {
       background-color: var(--bg-color);
@@ -295,6 +313,36 @@ Project Creator and Editor style rules
   select {
       background-color: var(--bg-color);
   }
+}
+
+.project-editor-input-item > select * {
+  margin: 10px 0;
+  padding: 15px;
+}
+
+.project-editor-input-item > select > option:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.project-editor-input-item > select > option:last-child{
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.project-editor-input-item > select > option:hover {
+  background-color: var(--orange);
+  color: var(--bg-color);
+}
+
+.character-count {
+  font-style: italic;
+  font-size: 1.6ch;
+  position: absolute;
+  margin: 10px 0;
+  bottom: 7px;
+  right: 14px;
+  color: var(--neutral-gray);
 }
 
 #project-editor-title-input {
@@ -311,6 +359,10 @@ Project Creator and Editor style rules
 
 #project-editor-audience-input {
   grid-area: audience;
+}
+
+#project-editor-description-input {
+  grid-area: desc;
 }
 
 #project-editor-type-tags,
@@ -344,7 +396,8 @@ Project Creator and Editor style rules
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px dashed var(--neutral-gray);
+  border: 2px dashed #424242;
+  gap: 10px;
 }
 
 #project-editor-tags {
@@ -1370,8 +1423,8 @@ New Project Page style rules
 }
 
 #project-info-buttons img {
-  width: 28px;
-  height: 28px;
+  width: 50px;
+  height: 50px;
 }
 
 #project-info-edit {

@@ -39,13 +39,11 @@ export const ProjectCreatorEditor = () => {
     <div id='project-editor-general'>
       <div id='project-editor-title-input' className='project-editor-input-item'>
         <label>Title*</label>
-        <br/>
         <input type='text'></input>
       </div>
 
       <div id='project-editor-status-input' className='project-editor-input-item'>
         <label>Status*</label>
-        <br/>
         <select>
           <option>In Development</option>
           <option>Finished</option>
@@ -54,7 +52,6 @@ export const ProjectCreatorEditor = () => {
 
       <div id='project-editor-purpose-input' className='project-editor-input-item'>
         <label>Purpose</label>
-        <br/>
         <select>
           <option>Passion project</option>
           <option>Academic</option>
@@ -67,7 +64,8 @@ export const ProjectCreatorEditor = () => {
           Define who this project is intended for--consider age group,
           interest, industry, or specific user needs.
         </div>
-        <textarea maxLength={100}/>
+        <span className='character-count'>0/100</span> {/*FIXME: update counter to use realtime entry*/}
+        <textarea maxLength={100} />
       </div>
 
       <div id='project-editor-description-input' className='project-editor-input-item'>
@@ -76,7 +74,8 @@ export const ProjectCreatorEditor = () => {
           Share a brief summary of your project. 
           This will be displayed in your project's discover card.
         </div>
-        <textarea maxLength={300}/>
+        <span className='character-count'>0/300</span> {/*FIXME: update counter to use realtime entry*/}
+        <textarea maxLength={300} />
       </div>
 
       <div id='project-editor-long-description-input' className='project-editor-input-item'>
@@ -86,6 +85,7 @@ export const ProjectCreatorEditor = () => {
           it's inspirations and goals, outline key features, 
           and describe this impact you hope it brings to others.
         </div>
+        <span className='character-count'>0/2000</span> {/*FIXME: update counter to use realtime entry*/}
         <textarea maxLength={2000}/>
       </div>
     </div>
@@ -99,11 +99,11 @@ export const ProjectCreatorEditor = () => {
         Select one image to be used as the main thumbnail on the project's discover card.
       </div>
       <div id='project-editor-image-ui'>
-        {/* Add image elements/components here based on currently uploaded images */}
+        {/* TODO: Add image elements/components here based on currently uploaded images */}
         <div id='project-editor-add-image'>
-          <img/>
-          <div>Drop your image here, or browse</div>
-          <div>Supports: JPEG, PNG</div>
+          <img src='assets/white/upload_image.png' alt=''/>
+          <div className='project-editor-extra-info'>Drop your image here, or {/*TODO: click to upload file<input type="file">*/}browse{/*</input>*/}</div>
+          <div className='project-editor-extra-info'>Supports: JPEG, PNG</div>
         </div>
       </div>
     </div>

@@ -20,9 +20,9 @@ import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import { profiles, projects } from "../../constants/fakeData"; // FIXME: use user and project data in db
 import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
-import menuImage from "../../icons/menu.png";
 import * as tags from "../../constants/tags";
 import EditButton from "../Profile/ProfileEditButton";
+import { ThemeIcon } from '../ThemeIcon';
 
 //To-do:
 //Fix profile page breaking when switching to current user's profile (via the header) from another user's profile
@@ -59,28 +59,7 @@ const fetchUserID = async () => {
 const userID = await fetchUserID();
 
 
-const NewProfile = ({ theme, setTheme }) => {
-
-  const [imageSrc, setProfileImage] = useState("assets/profile_dark.png");
-  const [roleImage, setRoleImage] = useState("assets/black/role.png");
-  const [majorImage, setMajorImage] = useState("assets/black/major.png");
-  const [locationImage, setLocationImage] = useState("assets/black/location.png");
-  const [pronounsImage, setPronounsImage] = useState("assets/black/pronouns.png");
-
-
-
-  useEffect(() => {
-    const newProfileImage = `assets/profile_${theme}.png`;
-    setProfileImage(newProfileImage);
-
-    setRoleImage(theme === 'light' ? "assets/black/role.png" : "assets/white/role.png");
-    setMajorImage(theme === 'light' ? "assets/black/major.png" : "assets/white/major.png");
-    setLocationImage(theme === 'light' ? "assets/black/location.png" : "assets/white/location.png");
-    setPronounsImage(theme === 'light' ? "assets/black/pronouns.png" : "assets/white/pronouns.png");
-
-  }, [theme]);
-
-
+const NewProfile = () => {
   const location = useLocation();
   //Check to see if database call returned anything
   let [failCheck, setFailCheck] = useState(false);
@@ -457,29 +436,54 @@ const NewProfile = ({ theme, setTheme }) => {
     <>{
       <div id='about-me-buttons'>
         <button onClick={() => { window.location.href = 'https://www.w3schools.com' }}>
-          <img src={imageSrc}
-            className="theme-icon"
-            alt='linkedin' /></button>
+          <ThemeIcon 
+            light={'assets/profile_light.png'}
+            dark={'assets/profile_dark.png'}
+            alt={'LinkedIn'}
+          />
+        </button>
         <button onClick={() => { window.location.href = 'https://www.w3schools.com' }}>
-          <img src={imageSrc}
-            className="theme-icon"
-            alt='instagram' /></button>
+          <ThemeIcon 
+            light={'assets/profile_light.png'}
+            dark={'assets/profile_dark.png'}
+            alt={'Instagram'}
+          />
+        </button>
         <ProfileEditPopup/>
       </div>
     }</> :
     <>{
       <div id='about-me-buttons' className='about-me-buttons-minimal'>
-        <button><img src={imageSrc}
-          className="theme-icon"
-          alt='linkedin' /></button>
-        <button><img src={imageSrc}
-          className="theme-icon"
-          alt='instagram' /></button>
-        <button><img src={imageSrc}
-          className="theme-icon"
-          alt='like' /></button>
+        <button>
+          <ThemeIcon 
+            light={'assets/profile_light.png'}
+            dark={'assets/profile_dark.png'}
+            alt={'LinkedIn'}
+          />
+        </button>
+        <button>
+          <ThemeIcon 
+            light={'assets/profile_light.png'}
+            dark={'assets/profile_dark.png'}
+            alt={'Instagram'}
+          />
+        </button>
+        <button>
+          <ThemeIcon 
+            light={'assets/profile_light.png'}
+            dark={'assets/profile_dark.png'}
+            alt={'Like'}
+          />
+        </button>
         <Dropdown>
-          <DropdownButton><img src={menuImage} alt='...' /></DropdownButton>
+          <DropdownButton>
+            <ThemeIcon 
+              light={'assets/menu_light.png'}
+              dark={'assets/menu_dark.png'}
+              alt={'...'}
+              addClass={'dropdown-menu'}
+            />
+          </DropdownButton>
           <DropdownContent rightAlign={true}>
             <div id='profile-menu-dropdown'>
               <button className='profile-menu-dropdown-button'>Share</button>
@@ -507,7 +511,7 @@ const NewProfile = ({ theme, setTheme }) => {
 
   return (
     <div className='page'>
-      <Header dataSets={{ data: [] }} onSearch={() => { }} theme={theme} setTheme={setTheme} />
+      <Header dataSets={{ data: [] }} onSearch={() => { }} />
 
       {/* Checks if we have profile data to use, then determines what to render */}
       {failCheck === true ? loadingFailed : displayedProfile === undefined ? loadingProfile :
@@ -522,31 +526,35 @@ const NewProfile = ({ theme, setTheme }) => {
 
             <div id='profile-info-extras'>
               <div className='profile-extra'>
-                <img
-                  src={roleImage}
-                  className='info-extra-image theme-icon'
-                  alt='profession' />
+                <ThemeIcon 
+                  light={'assets/black/role.png'}
+                  dark={'assets/white/role.png'}
+                  alt={'Profession'}
+                />
                 {displayedProfile.job_title}
               </div>
               <div className='profile-extra'>
-                <img
-                  src={majorImage}
-                  className='info-extra-image theme-icon'
-                  alt='major' />
+                <ThemeIcon 
+                  light={'assets/black/major.png'}
+                  dark={'assets/white/major.png'}
+                  alt={'Major'}
+                />
                 {displayedProfile.major}, {displayedProfile.academic_year}
               </div>
               <div className='profile-extra'>
-                <img
-                  src={locationImage}
-                  className='info-extra-image theme-icon'
-                  alt='location' />
+                <ThemeIcon 
+                  light={'assets/black/location.png'}
+                  dark={'assets/white/location.png'}
+                  alt={'Location'}
+                />
                 {displayedProfile.location}
               </div>
               <div className='profile-extra'>
-                <img
-                  src={pronounsImage}
-                  className='info-extra-image theme-icon'
-                  alt='pronouns' />
+                <ThemeIcon 
+                  light={'assets/black/pronouns.png'}
+                  dark={'assets/white/pronouns.png'}
+                  alt={'Pronouns'}
+                />
                 {displayedProfile.pronouns}
               </div>
             </div>

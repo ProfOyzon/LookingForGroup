@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 import { handleError, sendPost, sendGet, hideError } from "../../functions/fetch.js";
 
-const ResetPassword = ({ theme }) => {
+const ResetPassword = ({ }) => {
     const navigate = useNavigate(); // Hook for navigation
     const location = useLocation(); 
 
@@ -12,16 +12,6 @@ const ResetPassword = ({ theme }) => {
     const [passwordInput, setPasswordInput] = useState('');
     const [confirmInput, setConfirmInput] = useState('');
     const [error, setError] = useState(''); // Error message for missing or incorrect information
-
-    // check theme and set the theme icon
-    useEffect(() => {
-        const themeIcon = document.getElementsByClassName('theme-icon');
-        for (let i = 0; i < themeIcon.length; i++) {
-            const icon = themeIcon[i] as HTMLImageElement;
-            const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
-            icon.src = src;
-        }
-    }, [theme]);
 
     // Function to handle the Set button click
     const handleResetPassword = async () => {

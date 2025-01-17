@@ -9,8 +9,9 @@ import ChooseInterests from "../SignupProcess/ChooseInterests";
 import CompleteProfile from "../SignupProcess/CompleteProfile";
 import GetStarted from "../SignupProcess/GetStarted";
 import { sendPost } from "../../functions/fetch";
+import { ThemeIcon } from '../ThemeIcon';
 
-const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileImage }) => {
+const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
@@ -53,16 +54,6 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
         avatarImage: avatarImage,
         profileImage: profileImage, // if they upload their own image
     };
-
-    // check theme and set the theme icon
-    useEffect(() => {
-        const themeIcon = document.getElementsByClassName('theme-icon');
-        for (let i = 0; i < themeIcon.length; i++) {
-            const icon = themeIcon[i] as HTMLImageElement;
-            const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
-            icon.src = src;
-        }
-    }, [theme]);
 
     // Function to handle the login button click
     const handleSignup = async () => { 
@@ -291,11 +282,10 @@ const SignUp = ({ theme, setAvatarImage, avatarImage, profileImage, setProfileIm
                 <div className="directory column">
                     {/* <h1>Welcome!</h1>
                     <p>Already have an account?</p> */}
-                    <img src="assets/bannerImages/signup_dark.png"
-                        src-light="assets/bannerImages/signup_light.png"
-                        src-dark="assets/bannerImages/signup_dark.png"
-                        alt=""
-                        className="theme-icon" />
+                    <ThemeIcon 
+                        light={'assets/bannerImages/signup_light.png'}
+                        dark={'assets/bannerImages/signup_dark.png'}
+                    />
                     <button onClick={() => navigate(paths.routes.LOGIN)}>Log In</button>
                 </div>
             </div>

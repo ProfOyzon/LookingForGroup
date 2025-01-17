@@ -23,11 +23,10 @@ import profilePicture from "../../images/blue_frog.png";
 import profileImage from "../../icons/profile-user.png";
 import tallImage from "../../images/tall_img.png";
 import heart from "../../icons/heart.png";
-import menu from "../../icons/menu.png";
-import menuImage from "../../icons/menu.png";
 import * as tags from "../../constants/tags";
 import * as paths from "../../constants/routes";
 import Project from "./Project";
+import { ThemeIcon } from '../ThemeIcon';
 
 //To-do
 //Ensure light/dark mode colors work properly on this page
@@ -89,17 +88,7 @@ let defaultProject = runningServer ? undefined : {
   ]
 }
 
-const NewProject = ({theme, setTheme}) => {
-  // check the current theme and set image src to match
-  useEffect(() => {
-    const themeIcon = document.getElementsByClassName('theme-icon');
-    for (let i = 0; i < themeIcon.length; i++) {
-      const icon = themeIcon[i] as HTMLImageElement;
-      const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
-      icon.src = src;
-    }
-  }, [theme]);
-
+const NewProject = () => {
   //Navigation hook
   const navigate = useNavigate();
 
@@ -151,7 +140,13 @@ const NewProject = ({theme, setTheme}) => {
     <>
       <button><img src={heart} /></button>
       <Dropdown>
-        <DropdownButton><img src={menu} /></DropdownButton>
+        <DropdownButton>
+          <ThemeIcon 
+            light={'assets/menu_light.png'}
+            dark={'assets/menu_dark.png'}
+            alt={'...'}
+          />
+        </DropdownButton>
         <DropdownContent rightAlign={true}>
           <button>Share</button>
           <button>Report</button>
@@ -226,7 +221,7 @@ const NewProject = ({theme, setTheme}) => {
 
   return (
     <div className='page'>
-      <Header dataSets={{ data: [] }} onSearch={() => { }} theme={theme} setTheme={setTheme} />
+      <Header dataSets={{ data: [] }} onSearch={() => { }} />
 
       {displayedProject === undefined ? loadingProject :
         <div id='project-page-content'>

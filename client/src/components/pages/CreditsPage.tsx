@@ -14,7 +14,7 @@ import '../Styles/pages.css';
 import { useState } from 'react';
 import { Header } from "../Header";
 
-const Credits = ({ theme, setTheme }) => {
+const Credits = () => {
     // THINGS TO DO:
     // ADD A LIST OF ALL OF US 
     // MAKE PAGE MOBILE FRIENDLY 
@@ -27,7 +27,7 @@ const Credits = ({ theme, setTheme }) => {
 
     return (
         <div className='page' id="my-projects">
-            <Header dataSets={[]} onSearch={[]} theme={theme} setTheme={setTheme} />
+            <Header dataSets={[]} onSearch={[]} />
 
             <h1 id="credits-title">Meet The LFG Team</h1>
 

@@ -12,12 +12,12 @@ import '../Styles/settings.css';
 import '../Styles/pages.css';
 
 import profilePlaceholder from "../../icons/profile-user.png";
-import menu from "../../icons/menu.png"
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import * as paths from "../../constants/routes";
 import { PostReplies } from "../ProjectPostPageComponents/PostReplies"
 import { projects, profiles, posts, comments } from "../../constants/fakeData"; // FIXME: use data in db
+import { ThemeIcon } from '../ThemeIcon';
 
 //To-do
 // - encode reply inputs to prevent code injection (if data upload doesn't automatically do that)
@@ -145,7 +145,13 @@ const ProjectPostPage = (props) => {
         <img id='post-project-image' src={profilePlaceholder} alt='project image'/>
         <h2 id='post-project-name'>{projects[projectId].name}</h2>
         <button className='orange-button'>Follow</button>
-        <button className='icon-button'><img src = {menu}></img></button>
+        <button className='icon-button'>
+          <ThemeIcon 
+            light={'/assets/menu_light.png'}
+            dark={'/assets/menu_dark.png'}
+            alt={'...'}
+          />
+        </button>
       </div>
 
       <hr/>
@@ -153,7 +159,13 @@ const ProjectPostPage = (props) => {
       <div id='post-page-content'>
         <div id='post'>
           <h3 id='post-name'>{postData.title}</h3>
-          <button id='post-options' className='icon-button'><img src = {menu}></img></button>
+          <button id='post-options' className='icon-button'>
+            <ThemeIcon 
+              light={'/assets/menu_light.png'}
+              dark={'/assets/menu_dark.png'}
+              alt={'...'}
+            />
+          </button>
 
           <div id='post-content'>
             {postData.postText}

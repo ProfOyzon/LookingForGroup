@@ -3,9 +3,9 @@ import discordImg from '../../icons/discord.png';
 import twitterImg from '../../icons/x.png';
 import messageImg from '../../icons/message.png';
 import resumeImg from '../../icons/resume.png';
-import menu from '../../icons/menu.png';
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { useState } from 'react';
+import { ThemeIcon } from '../ThemeIcon';
 
 {/* toggle the popup for the menu that appears next to a users name*/}
 const toggleUserOptions = () => {
@@ -26,7 +26,13 @@ export const ProfileHeader = ({user}) => {
             {/*together for styling purposes*/}
             <div className = "profile-name-button">
               <h2 id="profile-name">{user.name}</h2>
-              <button className="icon-button" onClick = {toggleUserOptions}><img src = {menu}/></button>
+              <button className="icon-button" onClick = {toggleUserOptions}>
+                <ThemeIcon 
+                  light={'assets/menu_light.png'}
+                  dark={'assets/menu_dark.png'}
+                  alt={'...'}
+                />
+              </button>
               {/*div for the popup window for user options*/}
               <div id='user-options-popup' className='hide'>
                 <button className='white-button'>Share Profile</button>

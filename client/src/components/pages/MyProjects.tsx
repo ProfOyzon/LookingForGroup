@@ -9,8 +9,9 @@ import CreditsFooter from "../CreditsFooter";
 import MyProjectsDisplayList from "../MyProjectsDisplayList";
 import MyProjectsDisplayGrid from "../MyProjectsDisplayGrid";
 import { Header } from "../Header";
+import { ThemeIcon } from '../ThemeIcon';
 
-const MyProjects = ({theme, setTheme}) => {
+const MyProjects = () => {
     // const [UID, setUID] = useState(profiles[0]._id);
     // const [activePage, setActivePage] = useState(0);
 
@@ -173,14 +174,15 @@ const MyProjects = ({theme, setTheme}) => {
                     <i className="fa-solid fa-caret-down"></i>
                 </div> */}
             {/* </div> */}
-            <Header dataSets={[{projectsList}]} onSearch={setCurrentSearch} theme={theme} setTheme={setTheme}/>
+            <Header dataSets={[{projectsList}]} onSearch={setCurrentSearch} />
 
             {/* Banner */}
-            <img className="my-projects-banner theme-icon" 
-            src="assets/projects_header_dark.png"
-            src-light="assets/projects_header_light.png"
-            src-dark="assets/projects_header_dark.png"
-            alt="My Projects Banner Light"></img>
+            <ThemeIcon 
+                light={'assets/projects_header_light.png'}
+                dark={'assets/projects_header_dark.png'}
+                alt={'My Projects Banner Light'}
+                addClass={'my-projects-banner'}
+            />
 
             {/* Header */}
             <div className="my-projects-header-row">

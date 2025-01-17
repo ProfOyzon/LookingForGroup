@@ -1340,6 +1340,10 @@ New Profile page style rules
   height: 32px;
 }
 
+#about-me-buttons .dropdown-menu {
+  width: auto !important;
+}
+
 #profile-menu-dropdown {
   text-align: left;
   padding: 8px;

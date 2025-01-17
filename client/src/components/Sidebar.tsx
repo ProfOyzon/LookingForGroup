@@ -6,6 +6,7 @@ import LFGLogoLight from "../images/lfg light mode logo.png";
 import LFGLogoDark from "../images/lfg dark mode logo.png";
 
 import Notifications from './pages/Notifications';
+import { ThemeIcon } from './ThemeIcon';
 
 //Style changes to do:
 //Remove blue background image, replace with single color (or gradient?)
@@ -46,14 +47,6 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
 
   React.useEffect(() => {
     window.addEventListener('resize', () => setWidth(window.innerWidth));
-
-    // reset images to the theme
-    const themeIcon = document.getElementsByClassName('theme-icon');
-    for (let i = 0; i < themeIcon.length; i++) {
-      const icon = themeIcon[i] as HTMLImageElement;
-      const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
-      icon.src = src;
-    }
   })
 
   // Mobile layout
@@ -64,36 +57,28 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
           <div className='containerButtonSideBar'>
           <div className='containerButtonSideBar'>
           <button className={activePage === 'Discover' ? 'active' : ''} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
-            <img
-              className='theme-icon'
-              src="assets/black/compass.png"
-              src-light="assets/black/compass.png"
-              src-dark="assets/white/compass.png"
-              alt="" /> 
+            <ThemeIcon 
+              light={'assets/black/compass.png'}
+              dark={'assets/white/compass.png'}
+            />
           </button>
           <button className={activePage === 'Meet' ? 'active' : ''} onClick={() => handleTextChange('Meet', paths.routes.MEET)}>
-            <img
-              className='theme-icon'
-              src="assets/black/meet.png"
-              src-light="assets/black/meet.png"
-              src-dark="assets/white/meet.png"
-              alt="" /> 
+            <ThemeIcon 
+              light={'assets/black/meet.png'}
+              dark={'assets/white/meet.png'}
+            />
           </button>
           <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
-            <img
-              className='theme-icon'
-              src="assets/black/folder.png"
-              src-light="assets/black/folder.png"
-              src-dark="assets/white/folder.png"
-              alt="" />
+            <ThemeIcon 
+              light={'assets/black/folder.png'}
+              dark={'assets/white/folder.png'}
+            />
           </button>
           <button className={activePage === 'My Profile' ? 'active' : ''} onClick={() => handleTextChange('My Profile', paths.routes.NEWPROFILE)}>
-            <img
-              className='theme-icon'
-              src="assets/black/profile.png"
-              src-light="assets/black/profile.png"
-              src-dark="assets/white/profile.png"
-              alt="" />
+            <ThemeIcon 
+              light={'assets/black/profile.png'}
+              dark={'assets/white/profile.png'}
+            />
           </button>
           </div>
         </div>
@@ -114,28 +99,22 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
 
         <div className='containerButtonSideBar'>
           <button className={activePage === 'Discover' ? 'active' : ''} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
-            <img
-              className='theme-icon'
-              src="assets/black/compass.png"
-              src-light="assets/black/compass.png"
-              src-dark="assets/white/compass.png"
-              alt="" /> Discover
+            <ThemeIcon 
+              light={'assets/black/compass.png'}
+              dark={'assets/white/compass.png'}
+            /> Discover
           </button>
           <button className={activePage === 'Meet' ? 'active' : ''} onClick={() => handleTextChange('Meet', paths.routes.MEET)}>
-            <img
-              className='theme-icon'
-              src="assets/black/meet.png"
-              src-light="assets/black/meet.png"
-              src-dark="assets/white/meet.png"
-              alt="" /> Meet
+              <ThemeIcon 
+                light={'assets/black/meet.png'}
+                dark={'assets/white/meet.png'}
+              /> Meet
           </button>
           <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
-            <img
-              className='theme-icon'
-              src="assets/black/folder.png"
-              src-light="assets/black/folder.png"
-              src-dark="assets/white/folder.png"
-              alt="" /> My Projects
+              <ThemeIcon 
+                light={'assets/black/folder.png'}
+                dark={'assets/white/folder.png'}
+              /> My Projects
           </button>
           {/* <button className={activePage === 'Following' ? 'active' : ''} onClick={() => handleTextChange('Following', paths.routes.SETTINGS)}>
             <img
@@ -166,12 +145,11 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
       </div> */}
         <div className='Create'>
           <button>
-            <img
-              className='theme-icon'
-              src="assets/create_dark.png"
-              src-light="assets/create_light.png"
-              src-dark="assets/create_dark.png"
-              alt="" /> Create</button>
+            <ThemeIcon 
+              light={'assets/create_light.png'}
+              dark={'assets/create_dark.png'}
+            /> Create
+          </button>
         </div>
       </div>
 

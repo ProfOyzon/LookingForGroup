@@ -15,7 +15,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Header } from "../Header";
 import { ProjectPanel } from "../ProjectPanel";
-import { Popup, PopupButton, PopupContent } from "../Popup";
+import { ProfileEditPopup } from '../Profile/ProfileEditPopup';
 import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
 import { profiles, projects } from "../../constants/fakeData"; // FIXME: use user and project data in db
 import profilePicture from "../../images/blue_frog.png";
@@ -464,12 +464,7 @@ const NewProfile = ({ theme, setTheme }) => {
           <img src={imageSrc}
             className="theme-icon"
             alt='instagram' /></button>
-        {/* <EditButton userData={displayedProfile}/> */}
-        {/* PLEASE USE THIS, I DIDN'T MAKE THE POPUP COMPONENT FOR NOTHING -M- */}
-        <Popup>
-          <PopupButton buttonId='edit-profile-button'>Edit Profile</PopupButton>
-          <PopupContent>This is where the form will go, which ben is probably working on?</PopupContent>
-        </Popup>
+        <ProfileEditPopup/>
       </div>
     }</> :
     <>{

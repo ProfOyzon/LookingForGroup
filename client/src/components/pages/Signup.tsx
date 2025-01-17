@@ -10,6 +10,7 @@ import CompleteProfile from "../SignupProcess/CompleteProfile";
 import GetStarted from "../SignupProcess/GetStarted";
 import { sendPost } from "../../functions/fetch";
 import { ThemeIcon } from '../ThemeIcon';
+import passwordValidator from 'password-validator';
 
 const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) => {
     const navigate = useNavigate(); // Hook for navigation
@@ -22,6 +23,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState(''); // second password input to check if they match
     const [message, setMessage] = useState(''); // State variable for messages
+    const [passwordMessage, setPasswordMessage] = useState(''); // State variable for password requirements
 
     // State variables for modals
     const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -56,7 +58,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     };
 
     // Function to handle the login button click
-    const handleSignup = async () => { 
+    const handleSignup = async () => {
 
         // Check if any of the fields are empty
         if (email === '' || password === '' || confirm === '' || firstName === '' || lastName === '' || username === '') {
@@ -98,6 +100,12 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
             return false;
         }
 
+        // Check if password meets the requirements
+        if (passwordMessage !== '') {
+            setMessage('Password does not meet requirements');
+            return false;
+        }
+
         // check if the passwords match
         if (password !== confirm) {
             setMessage('Passwords do not match');
@@ -109,29 +117,62 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
             setMessage('Please wait...');
             // Send info to begin account activation
             await fetch("/api/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ 
-                email: email,
-                password: password,
-                confirm: confirm,
-                firstName: firstName,
-                lastName: lastName,
-                username: username
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    confirm: confirm,
+                    firstName: firstName,
+                    lastName: lastName,
+                    username: username
                 }),
             });
             setMessage('An account activation email has been sent');
         }
     };
 
-    // Function to handle Enter key press
-        const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-            if (e.key === 'Enter') {
-                handleSignup();
+    const validatePassword = (pass) => {
+        // Don't check password if there's nothing there
+        if (pass === '') {
+            return '';
+        }
+
+        const schema = new passwordValidator();
+        schema
+            .is().min(8, 'be 8 or more characters')
+            .is().max(20, 'be 20 or less characters')
+            .has().uppercase(1, 'have an uppercase letter')
+            .has().lowercase(1, 'have a lowercase letter')
+            .has().digits(1, 'have a number')
+            .has().symbols(1, 'have a symbol')
+            .has().not().spaces(1, 'have no spaces')
+            .has().not('[^\x00-\x7F]+', 'have no non-ASCII characters');
+
+        const output = schema.validate(pass, { details: true });
+        let passMsg = '';
+
+        if (output.length > 0) {
+            passMsg += `Password must `;
+
+            for (let i = 0; i < output.length - 1; i++) {
+                passMsg += `${output[i].message}, `;
             }
-        };
+            passMsg += `${(output.length > 1) ? 'and ' : ''}${output[output.length - 1].message}.`; 
+        }
+
+        console.log(passMsg);
+        return passMsg;
+    }
+
+    // Function to handle Enter key press
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter') {
+            handleSignup();
+        }
+    };
 
     // Render the sign up page
     return (
@@ -190,8 +231,19 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                             type="password"
                             placeholder="Password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => {
+                                setPassword(e.target.value)
+                                let passMsg = validatePassword(e.target.value);
+                                setMessage(passMsg);
+                                setPasswordMessage(passMsg);
+                            }}
+                            // onBlur={(e) => setPasswordMessage(validatePassword(e.target.value))}
                         />
+                        {/* {(passwordMessage !== '') ? (
+                            <div className="error">{passwordMessage}</div>
+                        ) : (
+                            <></>
+                        )} */}
                         <input
                             className="signup-input"
                             autoComplete="off"
@@ -282,7 +334,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
                 <div className="directory column">
                     {/* <h1>Welcome!</h1>
                     <p>Already have an account?</p> */}
-                    <ThemeIcon 
+                    <ThemeIcon
                         light={'assets/bannerImages/signup_light.png'}
                         dark={'assets/bannerImages/signup_dark.png'}
                     />

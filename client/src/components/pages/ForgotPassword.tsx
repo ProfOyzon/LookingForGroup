@@ -2,24 +2,15 @@ import '../Styles/pages.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
+import { ThemeIcon } from '../ThemeIcon';
 import { handleError, sendPost, sendGet, hideError } from "../../functions/fetch.js";
 
-const ForgotPassword = ({ theme }) => {
+const ForgotPassword = ({ }) => {
     const navigate = useNavigate(); // Hook for navigation
 
     // State variables
     const [emailInput, setEmailInput] = useState('');
     const [error, setError] = useState(''); // Error message for missing or incorrect information
-
-    // check theme and set the theme icon
-    useEffect(() => {
-        const themeIcon = document.getElementsByClassName('theme-icon');
-        for (let i = 0; i < themeIcon.length; i++) {
-            const icon = themeIcon[i] as HTMLImageElement;
-            const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
-            icon.src = src;
-        }
-    }, [theme]);
 
     // Function to handle the send button click
     const handleSend = async () => {
@@ -111,11 +102,10 @@ const ForgotPassword = ({ theme }) => {
                 <div className="directory column">
                     {/* <h1>Welcome!</h1>
                     <p>Don't have an account?</p> */}
-                    <img src="assets/bannerImages/login_dark.png"
-                        src-light="assets/bannerImages/login_light.png"
-                        src-dark="assets/bannerImages/login_dark.png"
-                        alt=""
-                        className="theme-icon" />
+                    <ThemeIcon 
+                        light={'assets/bannerImages/login_light.png'}
+                        dark={'assets/bannerImages/login_dark.png'}
+                    />
                     <button onClick={() => navigate(paths.routes.SIGNUP)}>Sign Up</button>
                 </div>
             </div>

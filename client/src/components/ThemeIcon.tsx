@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { ThemeContext } from "../Contexts"
 
-export const ThemeIcon = ({light, dark, alt="", id=""}) => {
+export const ThemeIcon = ({light, dark, alt="", id="", addClass=""}) => {
     const theme = useContext(ThemeContext)["theme"];
     
     return (
@@ -11,7 +11,7 @@ export const ThemeIcon = ({light, dark, alt="", id=""}) => {
            src-dark={dark}
            alt={alt}
            id={id}
-           className="theme-icon"
+           className={`theme-icon ${addClass}`}
         />
     )
 }

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import image1 from "../images/blue_frog.png";
 import image2 from "../images/banner.png";
 import image3 from "../images/tall_img.png";
+import { ThemeIcon } from "./ThemeIcon";
 
 //To-do:
 //Finish Discover page version of this component
@@ -100,11 +101,11 @@ export const ImageCarousel = ({carouselType, dataList = imageList}) => {
     {/* Buttons for controlling carousel images */}
     <div id='project-image-carousel-buttons'>
       <button onClick={() => handleIndexChange(currentIndex - 1)} id='project-image-carousel-left'>
-        <img src='assets/arrow_dark.png'
-        src-light='assets/arrow_light.png'
-        src-dark='assets/arrow_dark.png'
-        className='theme-icon'
-        alt='<'/>
+        <ThemeIcon 
+          light={'assets/arrow_light.png'}
+          dark={'assets/arrow_dark.png'}
+          alt={'<'}
+        />
       </button>
       <div id='carousel-tabs'>
         {
@@ -118,11 +119,11 @@ export const ImageCarousel = ({carouselType, dataList = imageList}) => {
         }
       </div>
       <button onClick={() => handleIndexChange(currentIndex + 1)} id='project-image-carousel-right'>
-        <img src='assets/arrow_dark.png'
-        src-light='assets/arrow_light.png'
-        src-dark='assets/arrow_dark.png'
-        className='theme-icon' 
-        alt='>'/>
+        <ThemeIcon 
+          light={'assets/arrow_light.png'}
+          dark={'assets/arrow_dark.png'}
+          alt={'>'}
+        />
       </button>
     </div>
     </>
@@ -132,10 +133,11 @@ export const ImageCarousel = ({carouselType, dataList = imageList}) => {
     <>
     <div id='discover-carousel-bar'>
       <button onClick={() => handleIndexChange(currentIndex - 1)} id='discover-carousel-left'>
-        <img src='assets/arrow_dark.png'
-        src-light='assets/arrow_light.png'
-        src-dark='assets/arrow_dark.png'
-        className='theme-icon' alt='>'/>
+        <ThemeIcon 
+          light={'assets/arrow_light.png'}
+          dark={'assets/arrow_dark.png'}
+          alt={'>'}
+        />
       </button>
       <div id='discover-carousel-content' onMouseEnter={() => handleHover(true)} onMouseLeave={() => handleHover(false)}>
         {
@@ -146,19 +148,24 @@ export const ImageCarousel = ({carouselType, dataList = imageList}) => {
               <div className='discover-carousel-description'>
                 Description here Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, quidem? Fugit deleniti reiciendis doloremque assumenda neque rem repudiandae hic odit quaerat. Debitis dicta fugit expedita, quaerat autem animi quia voluptatum quam magni minus ducimus, aliquam obcaecati numquam. Quisquam similique laudantium doloremque pariatur expedita dicta suscipit eligendi molestiae, harum iusto sequi.
               </div>
-              <button className='discover-carousel-link'>Learn More <img src='assets/arrow_dark.png'
-        src-light='assets/arrow_light.png'
-        src-dark='assets/arrow_dark.png'
-        className='theme-icon' alt='>'/></button>
+              <button className='discover-carousel-link'>
+                Learn More 
+                <ThemeIcon 
+                  light={'assets/arrow_light.png'}
+                  dark={'assets/arrow_dark.png'}
+                  alt={'>'}
+                />
+              </button>
             </div>
           ))
         }
       </div>
       <button onClick={() => handleIndexChange(currentIndex + 1)} id='discover-carousel-right'>
-        <img src='assets/arrow_dark.png'
-        src-light='assets/arrow_light.png'
-        src-dark='assets/arrow_dark.png'
-        className='theme-icon' alt='>'/>
+        <ThemeIcon 
+          light={'assets/arrow_light.png'}
+          dark={'assets/arrow_dark.png'}
+          alt={'>'}
+        />
       </button>
     </div>
 

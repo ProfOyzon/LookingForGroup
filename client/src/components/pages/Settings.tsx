@@ -1,6 +1,6 @@
 import '../Styles/pages.css';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 import MakeAvatarModal from "../AvatarCreation/MakeAvatarModal";
@@ -9,13 +9,17 @@ import NotificationSettings from "../SettingsPageComponents/NotificationSetting"
 import ProfileVisibilitySetting from "../SettingsPageComponents/ProfileVisibilitySetting";
 import ToTopButton from "../ToTopButton";
 import CreditsFooter from "../CreditsFooter";
-
+import { ThemeContext } from '../../Contexts';
 
 const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }) => {
   // state variables
   const [activeTab, setActiveTab] = useState("general");
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const navigate = useNavigate(); // Hook for navigation
+
+  // Pull the theme and setTheme function from useState() via a context
+  const theme = useContext(ThemeContext)["theme"];
+  const setTheme = useContext(ThemeContext)["setTheme"];
 
   return (
     <div className="page">
@@ -120,7 +124,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
             </h3>
             <div className="setting-content">
               <label className="switch">
-                <input type="checkbox" />
+                <input type="checkbox" checked={theme === 'dark'} onChange={(e) => setTheme(theme === 'dark' ? 'light' : 'dark')} />
                 <span className="slider round"></span>
               </label>
             </div>

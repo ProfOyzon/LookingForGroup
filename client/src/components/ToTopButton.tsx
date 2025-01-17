@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import { ThemeIcon } from './ThemeIcon';
 
 const ToTopButton = () => {
     let [visible, setVisible] = useState(false);
@@ -29,12 +30,10 @@ const ToTopButton = () => {
     return (
         <div className="ToTopContainer">
             <button className={"to-top-button"} onClick={() => scrollToTop(document.querySelector(".page"))} style={{display: visible ? "inline" : "none"}}>
-                <img 
-                src="assets/dropdown_dark.png" 
-                src-light="assets/dropdown_light.png"
-                src-dark="assets/dropdown_dark.png"
-                className="theme-icon"
-                alt="" />
+                <ThemeIcon 
+                    light={'assets/dropdown_light.png'}
+                    dark={'assets/dropdown_dark.png'}
+                />
             </button>
         </div>
     );

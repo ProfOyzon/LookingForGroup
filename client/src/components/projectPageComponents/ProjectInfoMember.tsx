@@ -7,7 +7,7 @@ import { RoleListing } from "./RoleListing";
 import { PagePopup, openClosePopup } from "../PagePopup";
 import { projects } from "../../constants/fakeData";// FIXME: use data in db
 import profilePlaceholder from "../../icons/profile-user.png";
-import menu from "../../icons/menu.png";
+import { ThemeIcon } from '../ThemeIcon';
 
 // Page header that displays for users that are members of the project
 // Includes options to access project settings, leave the project, and edit what is displayed in the 'looking for' window
@@ -300,7 +300,12 @@ export const ProjectInfoMember = (props) => {
         <div id='header-buttons'>
           <div id='more-options'>
             <button id='more-options-button' className='icon-button' onClick={projectPageHelper.toggleOptionDisplay}>
-            <img src = {menu}></img></button>
+              <ThemeIcon 
+                light={'assets/menu_light.png'}
+                dark={'assets/menu_dark.png'}
+                alt={'...'}
+              />
+            </button>
             <div id='more-options-popup' className='hide'>
               <button className='white-button' onClick={openSettings}>Project Settings</button>
               <button className='white-button' onClick={projectPageHelper.leaveProject}>Leave Project</button>

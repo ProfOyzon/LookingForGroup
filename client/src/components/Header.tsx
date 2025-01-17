@@ -34,26 +34,16 @@ let loggedIn;
 //Add functions to buttons (profile/settings = navigate to those pages; light mode: toggle light/dark mode)
 //(logout = logout the user and send them to home page or equivalent)
 
-export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
+export const Header = ({ dataSets, onSearch }) => {
   const [username, setUsername] = useState<String | null>(null);
   const [email, setEmail] = useState(null);
 
-  const realTheme = useContext(ThemeContext)["theme"];
-  const setRealTheme = useContext(ThemeContext)["setTheme"];
+  // Pull the theme and setTheme function from useState() via a context
+  const theme = useContext(ThemeContext)["theme"];
+  const setTheme = useContext(ThemeContext)["setTheme"];
 
   //Text for light mode toggle button should be opposite of current theme
   const [modeToggle, setModeToggle] = useState(theme === 'dark' ? 'Light Mode' : 'Dark Mode');
-  // check the current theme and set image src to match
-  // also set the text of the button to match the current theme
-  // useEffect(() => {
-  //   const themeIcon = document.getElementsByClassName('theme-icon');
-  //   for (let i = 0; i < themeIcon.length; i++) {
-  //     const icon = themeIcon[i] as HTMLImageElement;
-  //     const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
-  //     icon.src = src;
-  //   }
-  //   setModeToggle(theme === 'dark' ? 'Light Mode' : 'Dark Mode');
-  // }, [theme]);
 
   const navigate = useNavigate(); //Hook for navigation
 
@@ -102,7 +92,7 @@ export const Header = ({ dataSets, onSearch, setTheme, theme }) => {
 
   const switchTheme = () => {
     setModeToggle(theme === 'dark' ? 'Light Mode' : 'Dark Mode');
-    setRealTheme(theme === 'dark' ? 'light' : 'dark');
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   return (

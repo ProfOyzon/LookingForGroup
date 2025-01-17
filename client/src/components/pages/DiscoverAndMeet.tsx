@@ -28,6 +28,7 @@ import bell from "../../icons/bell.png";
 import profileImage from "../../icons/profile-user.png";
 import { sendPost, sendGet, GET } from "../../functions/fetch";
 import e from "express";
+import { ThemeIcon } from '../ThemeIcon';
 
 //To-do
 //Add/finish additional tag filter popup
@@ -72,18 +73,7 @@ let popupTagSelections : string[] = [];
 
 //Main DiscoverAndMeet component
 //category - string variable that determines what layout type to load (defaults to profile if invalid value is given)
-const DiscoverAndMeet = ({category, theme, setTheme}) => {
-
-  // check the current theme and set image src to match
-  useEffect(() => {
-    const themeIcon = document.getElementsByClassName('theme-icon');
-    for (let i = 0; i < themeIcon.length; i++) {
-      const icon = themeIcon[i] as HTMLImageElement;
-      const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
-      icon.src = src;
-    }
-  }, [theme]);
-
+const DiscoverAndMeet = ({category}) => {
   //Use these when testing with 'npm run server'
   //Functions used to retrieve data from the database
   const getProjectData = async () => {
@@ -880,11 +870,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       <div id='project-hero'>
 
         <div id='project-hero-blurb-1' className='project-hero-blurb'>
-        <img id='project-hero-img-1' 
-        className='theme-icon'
-        src="assets/bannerImages/project1_dark.png"
-        src-light="assets/bannerImages/project1_light.png"
-        src-dark="assets/bannerImages/project1_dark.png"
+        <ThemeIcon 
+          light={'assets/bannerImages/project1_light.png'}
+          dark={'assets/bannerImages/project1_dark.png'}
+          id={'project-hero-img-1'}
         />
           {/* <div>
           <span className='project-hero-highlight'>Discover projects</span> to see what they're about and what roles they're looking for.
@@ -893,11 +882,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 
         <div id='project-hero-blurb-2' className='project-hero-blurb'>
         <h2>Look for projects to work on!</h2>
-          <img id='project-hero-img-2' 
-          className='theme-icon'
-          src="assets/bannerImages/project2_dark.png"
-          src-light="assets/bannerImages/project2_light.png"
-          src-dark="assets/bannerImages/project2_dark.png"
+          <ThemeIcon 
+            light={'assets/bannerImages/project2_light.png'}
+            dark={'assets/bannerImages/project2_dark.png'}
+            id={'project-hero-img-2'}
           />
           {/* <div className="panel-text">
           Interested in joining? <span className='project-hero-highlight'>Send a message!</span> <br/>
@@ -907,11 +895,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         </div>
 
         <div id='project-hero-blurb-3' className='project-hero-blurb'>
-        <img id='project-hero-img-3' 
-        className='theme-icon'
-        src="assets/bannerImages/project3_dark.png"
-        src-light="assets/bannerImages/project3_light.png"
-        src-dark="assets/bannerImages/project3_dark.png"
+        <ThemeIcon 
+          light={'assets/bannerImages/project3_light.png'}
+          dark={'assets/bannerImages/project3_dark.png'}
+          id={'project-hero-img-3'}
         />
           {/* <div>
           Sort through projects by categories and filter according to your skills or interests to 
@@ -928,11 +915,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       <div id='profile-hero'>
 
         <div id='profile-hero-blurb-1' className='profile-hero-blurb'>
-        <img id='profile-hero-img-1' 
-        className='theme-icon'
-        src="assets/bannerImages/people1_dark.png"
-        src-light="assets/bannerImages/people1_light.png"
-        src-dark="assets/bannerImages/people1_dark.png"
+        <ThemeIcon 
+          light={'assets/bannerImages/people1_light.png'}
+          dark={'assets/bannerImages/people1_dark.png'}
+          id={'profile-hero-img-1'}
         />
           {/* <div>
           <span className='profile-hero-highlight'>Explore profiles</span> to see each other's personality, expertise, and project history.
@@ -941,11 +927,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 
         <div id='profile-hero-blurb-2' className='profile-hero-blurb'>
         <h2>Look for people to work with!</h2>
-          <img id='profile-hero-img-2' 
-          className='theme-icon'
-          src="assets/bannerImages/people2_dark.png"
-          src-light="assets/bannerImages/people2_light.png"
-          src-dark="assets/bannerImages/people2_dark.png"
+          <ThemeIcon 
+            light={'assets/bannerImages/people2_light.png'}
+            dark={'assets/bannerImages/people2_dark.png'}
+            id={'profile-hero-img-2'}
           />
           {/* <div className="panel-text">
           Find someone interesting? <span className='profile-hero-highlight'>Send a message!</span><br/>
@@ -955,11 +940,10 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         </div>
 
         <div id='profile-hero-blurb-3' className='profile-hero-blurb'>
-        <img id='profile-hero-img-3' 
-        className='theme-icon'
-        src="assets/bannerImages/people3_dark.png"
-        src-light="assets/bannerImages/people3_light.png"
-        src-dark="assets/bannerImages/people3_dark.png"
+        <ThemeIcon 
+          light={'assets/bannerImages/people3_light.png'}
+          dark={'assets/bannerImages/people3_dark.png'}
+          id={'profile-hero-img-3'}
         />
           {/* <div>
           Keep your profile up to date with your skills, project preferences, and interests to 
@@ -1083,7 +1067,7 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
       {/* Search bar and profile/notification buttons */}
       <Header dataSets={[{data: category === 'projects' ? projectSearchData : profileSearchData}]}
         onSearch={category === 'projects' ? searchProjects : searchProfiles}
-        theme={theme} setTheme={setTheme} />
+      />
       {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
       <div id='discover-hero'>
       {heroContent}
@@ -1109,12 +1093,11 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
         </div>
         <Popup>
           <PopupButton buttonId={'discover-more-filters'}>
-            <img 
-            className='theme-icon'
-            src="assets/filters_dark.png"
-            src-light="assets/filters_light.png"
-            src-dark="assets/filters_dark.png"
-            ></img></PopupButton>
+            <ThemeIcon 
+              light={'assets/filters_light.png'}
+              dark={'assets/filters_dark.png'}
+            />
+          </PopupButton>
           {/* When page loads, get all necessary tag lists based on page category
           Place these lists in an array, along with an identifier for which column they belong
           map through these lists to construct filter dropdown
@@ -1179,24 +1162,24 @@ const DiscoverAndMeet = ({category, theme, setTheme}) => {
 //Required due to the page failing to re-render when switching between its 2 view via the sidebar
 //Some bugs that may appear may be due to values outside the main component not being reset on a component change
 //If that's the case, simply reset them in here
-export const Discover = ({theme, setTheme}) => {
+export const Discover = () => {
   //Reset tags
   activeTagFilters = [];
   extraTagFilters = [];
   popupTagSelections = [];
   return(
-    <DiscoverAndMeet category={'projects'} theme={theme} setTheme={setTheme} />
+    <DiscoverAndMeet category={'projects'} />
   )
 }
 
-export const Meet = ({theme, setTheme}) => {
+export const Meet = () => {
   //Reset variables
   activeTagFilters = [];
   extraTagFilters = [];
   popupTagSelections = [];
   displayedProfileList = [];
   return(
-    <DiscoverAndMeet category={'profiles'} theme={theme} setTheme={setTheme}/>
+    <DiscoverAndMeet category={'profiles'} />
   )
 }
 

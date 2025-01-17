@@ -1,7 +1,7 @@
 import profilePlaceholder from "../../icons/profile-user.png";
-import menu from "../../icons/menu.png";
 import * as projectPageHelper from "./ProjectPageHelper";
 import { Tags } from "../Tags";
+import { ThemeIcon } from "../ThemeIcon";
 
 // Page header that displays for users that are not members of the project
 // Includes options to follow, block, report, or show interest in joining the project
@@ -35,7 +35,13 @@ export const ProjectInfo = (props) => {
         <div id='header-buttons'>
           <button id='follow-project' className='orange-button' onClick={projectPageHelper.followProject}>Follow</button>
           <div id='more-options'>
-            <button id='more-options-button' className='icon-button' onClick={projectPageHelper.toggleOptionDisplay}><img src = {menu}></img></button>
+            <button id='more-options-button' className='icon-button' onClick={projectPageHelper.toggleOptionDisplay}>
+              <ThemeIcon 
+                light={'assets/menu_light.png'}
+                dark={'assets/menu_dark.png'}
+                alt={'...'}
+              />
+            </button>
             <div id='more-options-popup' className='hide'>
               <button className='white-button' onClick={projectPageHelper.blockProject}>Block</button>
               <button className='white-button' onClick={projectPageHelper.reportProject}>Report</button>

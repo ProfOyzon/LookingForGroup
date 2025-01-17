@@ -36,7 +36,7 @@ import AccountActivation from './components/pages/AccountActivation';
 import { ThemeContext } from './Contexts';
 
 import uselocalstorage from 'use-local-storage';
-import { useEffect, createContext } from 'react';
+import { useEffect } from 'react';
 
 
 function App() {
@@ -47,43 +47,32 @@ function App() {
   const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const [theme, setTheme] = uselocalstorage('theme', defaultDark ? 'dark' : 'light');
 
-  // whenever the theme changes, set the images src for every page
-  useEffect(() => {
-    const themeIcon = document.getElementsByClassName('theme-icon');
-    for (let i = 0; i < themeIcon.length; i++) {
-      const icon = themeIcon[i] as HTMLImageElement;
-      const src = themeIcon[i].getAttribute('src-' + theme) || 'default-' + theme + '-src.png';
-      icon.src = src;
-    }
-  }, [theme]);
-
-
   return (
     <BrowserRouter>
       <ThemeContext.Provider value={{ theme, setTheme }}>
         <div className="App" data-theme={theme} >
           <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} theme={theme} />
           <Routes>
-            <Route path={paths.routes.DEFAULT} element={<Discover theme={theme} setTheme={setTheme} />} />
-            <Route path={paths.routes.LOGIN} element={<Login theme={theme} />} />
-            <Route path={paths.routes.SIGNUP} element={<SignUp theme={theme} avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
-            <Route path={paths.routes.FORGOTPASSWORD} element={<ForgotPassword theme={theme} />} />
-            <Route path={paths.routes.RESETPASSWORD} element={<ResetPassword theme={theme} />} />
+            <Route path={paths.routes.DEFAULT} element={<Discover/>} />
+            <Route path={paths.routes.LOGIN} element={<Login />} />
+            <Route path={paths.routes.SIGNUP} element={<SignUp avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
+            <Route path={paths.routes.FORGOTPASSWORD} element={<ForgotPassword />} />
+            <Route path={paths.routes.RESETPASSWORD} element={<ResetPassword />} />
 
-            <Route path={paths.routes.HOME} element={<Discover theme={theme} setTheme={setTheme} />} />
-            <Route path={paths.routes.MEET} element={<Meet theme={theme} setTheme={setTheme} />} />
+            <Route path={paths.routes.HOME} element={<Discover />} />
+            <Route path={paths.routes.MEET} element={<Meet />} />
             <Route path={paths.routes.MESSAGES} element={<Messages />} />
-            <Route path={paths.routes.MYPROJECTS} element={<MyProjects theme={theme} setTheme={setTheme} />} />
-            <Route path={paths.routes.PROFILE} element={<NewProfile theme={theme} setTheme={setTheme} />} />
-            <Route path={paths.routes.NEWPROFILE} element={<NewProfile theme={theme} setTheme={setTheme} />} />
+            <Route path={paths.routes.MYPROJECTS} element={<MyProjects />} />
+            <Route path={paths.routes.PROFILE} element={<NewProfile />} />
+            <Route path={paths.routes.NEWPROFILE} element={<NewProfile />} />
             <Route path={paths.routes.PROJECT} element={<Project />} />
-            <Route path={paths.routes.NEWPROJECT} element={<NewProject theme={theme} setTheme={setTheme} />} />
+            <Route path={paths.routes.NEWPROJECT} element={<NewProject />} />
             <Route path={paths.routes.CREATEPROJECT} element={<CreateProject />} />
             <Route path={paths.routes.PROJECTPOST} element={<ProjectPostPage />} />
             <Route path={paths.routes.SETTINGS} element={<Settings avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
             <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
             <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
-            <Route path={paths.routes.CREDITS} element={<Credits theme={theme} setTheme={setTheme} />} />
+            <Route path={paths.routes.CREDITS} element={<Credits />} />
             <Route path={paths.routes.ACCOUNTACTIVATE} element={<AccountActivation />} />
           </Routes>
           {/* <CreditsFooter /> */}

@@ -39,7 +39,7 @@ export const ProjectCreatorEditor = () => {
     <div id='project-editor-general'>
       <div id='project-editor-title-input' className='project-editor-input-item'>
         <label>Title*</label>
-        <input type='text'></input>
+        <input type='text' className='title-input'></input>
       </div>
 
       <div id='project-editor-status-input' className='project-editor-input-item'>
@@ -117,34 +117,38 @@ export const ProjectCreatorEditor = () => {
     <div id='project-editor-tags'>
       <div id='project-editor-type-tags'>
         <div className='project-editor-section-header'>Project Type</div>
+        <div className='error'>*At least 1 type is required</div> {/* FIXME: determine error from project information*/}
         <div id='project-editor-type-tags-container'>
-          {/* Add type tags here */}
+          {/* TODO: Add type tags here */}
         </div>
       </div>
       
       <div id='project-editor-selected-tags'>
         <div className='project-editor-section-header'>Selected Tags</div>
-        <div className='project-editor-warning'>*At least 1 tag is required</div>
         <div className='project-editor-extra-info'>
           Drag and drop to reorder. The first 2 tags will be displayed on your project's discover card.
         </div>
+        <div className='error'>*At least 1 tag is required</div> {/* FIXME: determine error from project information*/}
+        <hr id='selected-tag-divider'/>
         <div id='project-editor-selected-tags-container'>
-          {/* Add tags here, separate top 2 from others */}
+          {/* TODO: Add tags here, separate top 2 from others */}
         </div>
       </div>
 
       <div id='project-editor-tag-search'>
         <SearchBar dataSets={{}} onSearch={() => {}}/>
-        <div id='project-editor-tag-search-tabs'>
-          <button onClick={() => setCurrentTagsTab(0)} className={`project-editor-tag-search-tab ${currentTagsTab === 0 ? 'tag-search-tab-active' : ''}`}>Project Type</button>
-          <button onClick={() => setCurrentTagsTab(1)} className={`project-editor-tag-search-tab ${currentTagsTab === 1 ? 'tag-search-tab-active' : ''}`}>Genre</button>
-          <button onClick={() => setCurrentTagsTab(2)} className={`project-editor-tag-search-tab ${currentTagsTab === 2 ? 'tag-search-tab-active' : ''}`}>Developer Skills</button>
-          <button onClick={() => setCurrentTagsTab(3)} className={`project-editor-tag-search-tab ${currentTagsTab === 3 ? 'tag-search-tab-active' : ''}`}>Designer Skills</button>
-          <button onClick={() => setCurrentTagsTab(4)} className={`project-editor-tag-search-tab ${currentTagsTab === 4 ? 'tag-search-tab-active' : ''}`}>Soft Skills</button>
+        <div id='project-editor-tag-wrapper'>
+          <div id='project-editor-tag-search-tabs'>
+            <button onClick={() => setCurrentTagsTab(0)} className={`project-editor-tag-search-tab ${currentTagsTab === 0 ? 'tag-search-tab-active' : ''}`}>Project Type</button>
+            <button onClick={() => setCurrentTagsTab(1)} className={`project-editor-tag-search-tab ${currentTagsTab === 1 ? 'tag-search-tab-active' : ''}`}>Genre</button>
+            <button onClick={() => setCurrentTagsTab(2)} className={`project-editor-tag-search-tab ${currentTagsTab === 2 ? 'tag-search-tab-active' : ''}`}>Developer Skills</button>
+            <button onClick={() => setCurrentTagsTab(3)} className={`project-editor-tag-search-tab ${currentTagsTab === 3 ? 'tag-search-tab-active' : ''}`}>Designer Skills</button>
+            <button onClick={() => setCurrentTagsTab(4)} className={`project-editor-tag-search-tab ${currentTagsTab === 4 ? 'tag-search-tab-active' : ''}`}>Soft Skills</button>
+          </div>
+          <hr id='tag-search-divider'/>
         </div>
-        <hr/>
         <div id='project-editor-tag-search-container'>
-          {/* Insert current tab's tags here */}
+          {/* TODO: Insert current tab's tags here */}
         </div>
       </div>
     </div>
@@ -160,7 +164,7 @@ export const ProjectCreatorEditor = () => {
   const positionViewWindow = <>{
     <>
     <div id='project-editor-position-title'>Title</div>
-    <button onClick={() => setEditMode(true)} id='project-editor-position-edit'><img src={editIcon}/></button>
+    <button onClick={() => setEditMode(true)} id='project-editor-position-edit'><img src={editIcon} alt=''/></button>
     <div id='project-editor-position-description'>
       <div id='position-description-header'>What we are looking for:</div>
       <div id='position-description-content'>
@@ -238,7 +242,7 @@ export const ProjectCreatorEditor = () => {
       {/* List out project members */}
       <Popup>
         <PopupButton buttonId="project-editor-add-member">
-          <img src={profileImage}/>Add Member
+          <img src={profileImage} alt=''/>Add Member
         </PopupButton>
         <PopupContent>
           <div>Add Member</div>

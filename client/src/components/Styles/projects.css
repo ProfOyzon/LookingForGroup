@@ -189,7 +189,7 @@ Project Creator and Editor style rules
   flex-direction: column;
   background-image: var(--modal-gradient);
   width: 90vw;
-  max-width: 1000px;
+  max-width: 1120px;
   height: calc(90vh - 100px);
   padding: 50px;
   border: none;
@@ -239,12 +239,12 @@ Project Creator and Editor style rules
 
 #project-editor-content label {
   color: var(--primary-color);
-  font-size: 2.3ch;
+  font-size: 2ch;
   font-weight: 700;
 }
 
 #project-editor-content select,
-#project-editor-content input,
+#project-editor-general input,
 #project-editor-content textarea {
   margin: 10px 0;
   border: 1px solid var(--border-color);
@@ -253,7 +253,7 @@ Project Creator and Editor style rules
   flex-grow: 1;
   background-color: var(--bg-color);
   color: var(--main-text);
-  font-size: 15px;
+  font-size: 1.6ch;
   outline: none;
 }
 
@@ -266,7 +266,7 @@ Project Creator and Editor style rules
   background-position-y: 20px;
 }
 
-#project-editor-content input[type='text'] {
+#project-editor-content .title-input {
   padding: 8px 15px;
 }
 
@@ -276,7 +276,7 @@ Project Creator and Editor style rules
 
 .project-editor-extra-info {
   font-style: italic;
-  font-size: 1.6ch;
+  font-size: 1.4ch;
   color: var(--neutral-gray);
 }
 
@@ -313,6 +313,12 @@ Project Creator and Editor style rules
   select {
       background-color: var(--bg-color);
   }
+}
+
+.project-editor-input-item > .project-editor-extra-info,
+#project-editor-media > .project-editor-extra-info,
+#project-editor-selected-tags > .project-editor-extra-info {
+  margin-top: 2px;
 }
 
 .project-editor-input-item > select * {
@@ -366,13 +372,46 @@ Project Creator and Editor style rules
 }
 
 #project-editor-type-tags,
-#project-editor-selected-tags,
-#project-editor-tag-search {
+#project-editor-selected-tags {
   background-color: var(--bg-color);
   /* box-shadow: 0 0 3px var(--gray); */
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  padding: 10px;
+  padding: 20px;
+}
+
+#project-editor-tag-search {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 31px;
+  gap: 17px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+#project-editor-tag-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+/* FIXME: line to be proper color */
+#tag-search-divider, #selected-tag-divider {
+  /* color: var(--header-color); */
+  height: 1px;
+  background-color: var(--header-color);
+  /* color: var(--neutral-gray, #1A1921); */
+  width: 100%;
+}
+#selected-tag-divider {
+  margin: 15px 0;
+}
+
+.search-wrapper > .search-bar > .search-input {
+  background-color: none;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 #project-editor-long-description-input {
@@ -429,12 +468,16 @@ Project Creator and Editor style rules
   background-color: var(--bg-color);
   /* box-shadow: 0 0 3px var(--gray); */
   border-radius: 8px;
-  padding: 10px;
+}
+
+#project-editor-selected-tags > .error,
+#project-editor-type-tags > .error {
+  margin-top: 15px;
 }
 
 .project-editor-section-header {
   color: var(--primary-color);
-  font-size: 2.3ch;
+  font-size: 2ch;
   font-weight: 600;
 }
 
@@ -444,8 +487,9 @@ Project Creator and Editor style rules
 }
 
 .project-editor-tag-search-tab {
+  padding: 0;
   color: var(--neutral-gray);
-  font-size: 2ch;
+  font-size: 1.6ch;
 }
 
 .project-editor-tag-search-tab:hover,

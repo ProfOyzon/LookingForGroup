@@ -23,86 +23,129 @@ const tagTabs = ['Dev Skills', 'Design Skills', 'Soft Skills'];
 // Tab Pages
 const AboutTab = () => {
   return (
-    <div id='project-editor-general'>
-      <div id='project-editor-title-input' className='project-editor-input-item'>
-        <label>Title*</label>
-        <br />
-        <input type='text'></input>
-      </div>
-
-      <div id='project-editor-status-input' className='project-editor-input-item'>
-        <label>Status*</label>
-        <br />
-        <select>
-          <option>In Development</option>
-          <option>Finished</option>
-        </select>
-      </div>
-
-      <div id='project-editor-purpose-input' className='project-editor-input-item'>
-        <label>Purpose</label>
-        <br />
-        <select>
-          <option>Passion project</option>
-          <option>Academic</option>
-        </select>
-      </div>
-
-      <div id='project-editor-audience-input' className='project-editor-input-item'>
-        <label>Target Audience</label>
-        <div className='project-editor-extra-info'>
-          Define who this project is intended for--consider age group,
-          interest, industry, or specific user needs.
+    <div id='profile-editor-about'>
+      <div id='profile-editor-about-top'>
+        <div id='profile-editor-image-ui'>
+          {/* TODO: Add image elements/components here based on currently uploaded images */}
+          <div id='project-editor-add-image'>
+            <img src='assets/white/upload_image.png' alt='' />
+            <div className='project-editor-extra-info'>Drop your image here, or {/*TODO: click to upload file<input type="file">*/}browse{/*</input>*/}</div>
+            <div className='project-editor-extra-info'>Supports: JPEG, PNG</div>
+          </div>
         </div>
-        <textarea maxLength={100} />
-      </div>
-
-      <div id='project-editor-description-input' className='project-editor-input-item'>
-        <label>Short Description*</label>
-        <div className='project-editor-extra-info'>
-          Share a brief summary of your project.
-          This will be displayed in your project's discover card.
+        <div id='profile-editor-firstName-input' className='project-editor-input-item'>
+          <label>First Name*</label>
+          <br />
+          <input type='text'></input>
         </div>
-        <textarea maxLength={300} />
-      </div>
-
-      <div id='project-editor-long-description-input' className='project-editor-input-item'>
-        <label>About This Project*</label>
-        <div className='project-editor-extra-info'>
-          Use this space to go into detail about your project! Feel free to share
-          it's inspirations and goals, outline key features,
-          and describe this impact you hope it brings to others.
+        <div id='profile-editor-lastName-input' className='project-editor-input-item'>
+          <label>Last Name*</label>
+          <br />
+          <input type='text'></input>
         </div>
-        <textarea maxLength={2000} />
+        <div id='profile-editor-pronouns-input' className='project-editor-input-item'>
+          <label>Pronouns</label>
+          <br />
+          <input type='text'></input>
+        </div>
+        <div id='profile-editor-role-input' className='project-editor-input-item'>
+          <label>Role*</label>
+          <br />
+          <select>
+            <option>UI Designer</option>
+            <option>Programmer</option>
+          </select>
+        </div>
+        <div id='profile-editor-major-input' className='project-editor-input-item'>
+          <label>Major*</label>
+          <br />
+          <select>
+            <option>Game Design & Development</option>
+            <option>New Media Design</option>
+          </select>
+        </div>
+        <div id='profile-editor-year-input' className='project-editor-input-item'>
+          <label>Year</label>
+          <br />
+          <select>
+            <option>1st</option>
+            <option>2nd</option>
+            <option>3rd</option>
+            <option>4th</option>
+          </select>
+        </div>
+
+        <div id='profile-editor-location-input' className='project-editor-input-item'>
+          <label>Location</label>
+          <br />
+          <input type='text'></input>
+        </div>
+      </div>
+      <div id='profile-editor-about-middle'>
+        <div id='profile-editor-personal-quote-input' className='project-editor-input-item'>
+          <label>Personal Quote</label>
+          <div className='project-editor-extra-info'>
+            Write a fun and catchy phrase that captures your unique personality!
+          </div>
+          <textarea maxLength={100} />
+        </div>
+
+        <div id='profile-editor-fun-fact-input' className='project-editor-input-item'>
+          <label>Fun Fact</label>
+          <div className='project-editor-extra-info'>
+            Share a fun fact about yourself that will surprise others!
+          </div>
+          <textarea maxLength={100} />
+        </div>
+      </div>
+      <div id='profile-editor-about-bottom'>
+        <div id='project-editor-long-description-input' className='project-editor-input-item'>
+          <label>About you*</label>
+          <div className='project-editor-extra-info'>
+            Share a brief overview of who you are, your interests, and what drives you!
+          </div>
+          <textarea maxLength={2000} />
+        </div>
       </div>
     </div>
+  );
+}
 
+const ProjectsTab = () => {
+  return (
+    <div id='profile-editor-projects'>
+      <div className='project-editor-section-header'>Projects</div>
+      <div className='project-editor-extra-info'>
+        Choose to hide/show projects you've worked on.
+      </div>
+      <div id='profile-editor-project-selection'>
+        {/* Insert user projects here, as blocks */}
+        <ul>
+          <li>You</li>
+          <li>Haven't worked</li>
+          <li>on a project yet!</li>
+        </ul>
+      </div>
+    </div>
   );
 }
 
 const SkillsTab = () => {
   const [currentTagsTab, setCurrentTagsTab] = useState(0);
   let tagSearchTabs = tagTabs.map((tag, i) => {
-    return <button onClick={() => setCurrentTagsTab(i)} 
-    className={`project-editor-tag-search-tab ${currentTagsTab === i ? 'tag-search-tab-active' : ''}`}>
-    {tag}
+    return <button onClick={() => setCurrentTagsTab(i)}
+      className={`project-editor-tag-search-tab ${currentTagsTab === i ? 'tag-search-tab-active' : ''}`}>
+      {tag}
     </button>;
   });
 
   return (
     <div id='project-editor-tags'>
-      <div id='project-editor-type-tags'>
-        <div className='project-editor-section-header'>Skills</div>
-        <div id='project-editor-type-tags-container'>
-          {/* Add type tags here */}
-        </div>
-      </div>
-
       <div id='project-editor-selected-tags'>
         <div className='project-editor-section-header'>Selected Tags</div>
-        <div className='project-editor-warning'>*At least 1 tag is required</div>
+        {/* <div className='project-editor-warning'>*At least 1 tag is required</div> */}
         <div className='project-editor-extra-info'>
-          Drag and drop to reorder. The first 2 tags will be displayed on your project's discover card.
+          Drag and drop to reorder
         </div>
         <div id='project-editor-selected-tags-container'>
           {/* Add tags here, separate top 2 from others */}
@@ -153,8 +196,8 @@ export const ProfileEditPopup = () => {
       currentTabContent = <AboutTab />;
       break;
     case 'Projects':
-      // currentTabContent = <ProjectsTab/>;
-      currentTabContent = <h1>Project tab test</h1>;
+      currentTabContent = <ProjectsTab/>;
+      // currentTabContent = <h1>Project tab test</h1>;
       break;
     case 'Skills':
       currentTabContent = <SkillsTab />;

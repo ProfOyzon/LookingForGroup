@@ -8,7 +8,7 @@ const Messages = (props) => {
   const [uID, setUID] = useState(profiles[0]._id);
 
   return (
-    <div>
+    <div className='page'>
       { /* User selection */}
       <select onChange={e => {
         setUID(Number(e.target.value));

@@ -225,7 +225,7 @@ input:checked+.slider {
 }
 
 input:focus+.slider {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 input:checked+.slider:before {

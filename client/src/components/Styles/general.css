@@ -39,7 +39,7 @@ General style rules
     /* hover color for profile cards */
     --header-color: #1A1921;
     /* search bar, header button background, profile page background, etc. */
-    --dropdown-color: #1A1921;
+    --dropdown-color: #0E0E0E;
     /* dropdown/small modal background color */
     --sidebar-gradient: linear-gradient(180deg, #2C2A3A 30%, #FEAD81 100%);
     --hero-gradient: linear-gradient(180deg, #0E0E0E 30%, #2C2A3A 100%);
@@ -50,6 +50,8 @@ General style rules
     /* border for elements like textboxes that are on top of gradients for better visibility */
     --error-delete-color: #FF3859;
     /* for error messages and delete buttons */
+    --shadow-color: rgba(255, 255, 255, 0.20);
+    /* for shadows */
 
     /* text colors */
     --main-text: white;
@@ -109,17 +111,18 @@ General style rules
 
 /*light mode color scheme*/
 [data-theme="light"] {
-    --bg-color: #FFFFFF;
+    --bg-color: #FFF;
 
     --primary-color: #271D66;
     --panel-hover: rgba(39, 29, 102, 0.9);
     --header-color: #ECECF7;
-    --dropdown-color: #FFFFFF;
+    --dropdown-color: #FFF;
     --sidebar-gradient: linear-gradient(180deg, #D3D3FF 0%, #FFCEB4 100%);
     --hero-gradient: linear-gradient(180deg, #FFFFFF 50%, #D3D3FF 100%);
     --modal-gradient: linear-gradient(113deg, #D3D3FF 0%, #FFF 100%);
     --border-color: #D3D3FF;
     --error-delete-color: #FF3859;
+    --shadow-color: rgba(0, 0, 0, 0.20);
 
     --main-text: black;
     --invert-text: white;
@@ -752,15 +755,16 @@ Page popup style rules
 .popup {
     display: block;
     position: fixed;
-    background-color: white;
+    background-color: var(--bg-color);
     border-radius: 10px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+    box-shadow: 0px 0px 10px 0px var(--shadow-color);
     max-width: 95vw;
     max-height: 95vh;
     opacity: 100%;
     z-index: 3;
     width: auto;
     height: auto;
+    padding: 10px;
 }
 
 .popup-container {
@@ -924,7 +928,7 @@ Header style rules
     height: 200px;
     border-radius: 10px;
     background-color: var(--dropdown-color);
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+    box-shadow: 0px 0px 10px 0px var(--shadow-color);
     border: none;
     padding: 10px;
     /* color: var(--primary-color); */

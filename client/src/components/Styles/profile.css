@@ -170,7 +170,7 @@ Profile page style rules
 }
 
 #profile-pfp {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   height: 24vh;
   width: auto;
 }
@@ -178,7 +178,7 @@ Profile page style rules
 #user-options-popup {
   position: absolute;
   background-color: var(--bg-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 
   width: 200px;
   height: 200px;
@@ -285,7 +285,7 @@ Profile page style rules
   /* background-image: linear-gradient(315deg, #ffceb4, #d3d3ff); */
   /* background-image: linear-gradient(-52deg, #ececf7, #d4d5ff); */
   background-image: var(--modal-gradient);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 
   display: grid;
   grid-template-rows: 10% 80% 10%;
@@ -415,7 +415,7 @@ Profile page style rules
   /* margin: 0px 12.5%; */
   padding: 0px;
   flex-shrink: 0;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 #edit-profile-modal .edit-region-photo.photo {
@@ -1021,7 +1021,7 @@ select.edit-region-input {
 }
 
 #edit-profile-modal .edit-region-input.links .remove-button:hover {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 .edit-region-button-section.links {
@@ -1043,7 +1043,7 @@ select.edit-region-input {
 }
 
 #edit-profile-modal .edit-region-button.links:hover {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 /* ----- Save Button ----- */

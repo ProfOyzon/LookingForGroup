@@ -1183,7 +1183,7 @@ const DiscoverAndMeet = ({category}) => {
                     {
                       /* map something out here, add onClick function */
                       filterPopupTabs.map((tab) => (
-                        <button onClick={() => {}}>{tab.categoryName}</button>
+                        <button className='discover-tag-filter' onClick={() => {}}>{tab.categoryName}</button>
                       ))
                     }
                   </div>

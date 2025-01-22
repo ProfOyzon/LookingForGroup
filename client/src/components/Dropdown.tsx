@@ -1,4 +1,6 @@
-import {useEffect, useState, createContext, useContext, useRef} from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
+import { DropdownContext } from '../contexts/DropdownContext';
+import { DropdownButtonProps, DropdownContentProps, DropdownProps } from '../interfaces/DropdownProps';
 //This is a reusable component that can be used to create dropdown menus and windows
 //This article was used to help create this component:
 //https://www.codemzy.com/blog/reactjs-dropdown-component
@@ -25,15 +27,8 @@ import {useEffect, useState, createContext, useContext, useRef} from 'react';
 //I thought about making it do this dynamically, but chose this route as it:
 //1. was easier to implement, 2. is less code intensive, and 3. I trust the team to know how to use it like this
 
-//Context that will be shared through all components in dropdown
-//Contains info on whether the dropdown is open or not
-const DropdownContext = createContext({
-  open: false,
-  setOpen: () => {},
-});
-
 //Button component that will open/close dropdown
-export const DropdownButton = ({children, buttonId = ''}) => {
+export const DropdownButton: React.FC<DropdownButtonProps> = ({ children, buttonId = '' }) => {
   const { open, setOpen } = useContext(DropdownContext);
 
   const toggleOpen = () => {
@@ -47,12 +42,14 @@ export const DropdownButton = ({children, buttonId = ''}) => {
   //   }
   // }, [open]);
 
-  return(
-    <button id={buttonId} onClick={toggleOpen}>{children}</button>
-  )
+  return (
+    <button id={buttonId} onClick={toggleOpen}>
+      {children}
+    </button>
+  );
 }
 
-export const DropdownContent = ({children, rightAlign = false}) => {
+export const DropdownContent: React.FC<DropdownContentProps> = ({ children, rightAlign = false }) => {
   const { open } = useContext(DropdownContext);
 
   // useEffect(() => {
@@ -72,28 +69,28 @@ export const DropdownContent = ({children, rightAlign = false}) => {
       )
     } else {
       return (
-        <div className='dropdown' style={{right: 0}}>
+        <div className='dropdown' style={{ right: 0 }}>
           {children}
         </div>
       )
     }
   } else {
-    return(
+    return (
       <></>
     )
   }
-  
+
 }
 
 //Full dropdown component
-export const Dropdown = ({children}) => {
+export const Dropdown: React.FC<DropdownProps> = ({ children }) => {
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
 
-    let close = (e) => {
-      if (!dropdownRef.current.contains(e.target)) {
+    let close = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     }
@@ -107,8 +104,8 @@ export const Dropdown = ({children}) => {
     };
   }, [open]);
 
-  return(
-    <DropdownContext.Provider value={{open, setOpen}}>
+  return (
+    <DropdownContext.Provider value={{ open, setOpen }}>
       <div className='dropdown-container' ref={dropdownRef}>{children}</div>
     </DropdownContext.Provider>
   )

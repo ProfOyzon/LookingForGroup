@@ -50,7 +50,7 @@ Project Panel component style rules
   transition: 0.2s;
   border-radius: 10px;
   background-color: var(--bg-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   z-index: 1;
   color: var(--main-text);
   opacity: 0;
@@ -668,7 +668,7 @@ Project page style rules
 #more-options-popup {
   position: absolute;
   background-color: var(--primary-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 
   width: 200px;
   height: 100px;
@@ -705,7 +705,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 /*rules for the 'looking for roles' window on the right of the header*/
 #project-listings {
   grid-area: listing;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   margin: 20px 60px;
   padding: 0px 10px;
 }
@@ -891,7 +891,7 @@ used to help wrap the lines around the word 'Members'*/
 
 /*rules for the individual post items*/
 .project-post {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   width: 95%;
   max-width: 260px;
   height: 310px;
@@ -1175,7 +1175,7 @@ Project page member settings style rules
   position: absolute;
   width: 200px;
   background-color: var(--primary-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   right: 10px;
   z-index: 2;
 }
@@ -2051,7 +2051,7 @@ My projects page style rules
   width: 200px;
   height: 200px;
   object-fit: cover;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   cursor: pointer;
 }
 
@@ -2100,7 +2100,7 @@ My projects page style rules
   box-sizing: border-box;
   border: 0px;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 .grid-card-options-list {
@@ -2251,7 +2251,7 @@ My projects page style rules
   box-sizing: border-box;
   border: 0px;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 .list-card-options-list {

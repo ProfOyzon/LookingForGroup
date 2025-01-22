@@ -429,7 +429,7 @@ Project Panel component style rules
   transition: 0.2s;
   border-radius: 10px;
   background-color: var(--bg-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   z-index: 1;
   color: var(--main-text);
   opacity: 0;
@@ -1117,7 +1117,7 @@ Page popup style rules
   position: fixed;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   max-width: 95vw;
   max-height: 95vh;
   opacity: 100%;
@@ -1283,7 +1283,7 @@ Header style rules
   height: 200px;
   border-radius: 10px;
   background-color: var(--dropdown-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   border: none;
   padding: 10px;
   /* color: var(--primary-color); */
@@ -2424,7 +2424,7 @@ Profile page style rules
 }
 
 #profile-pfp {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   height: 24vh;
   width: auto;
 }
@@ -2432,7 +2432,7 @@ Profile page style rules
 #user-options-popup {
   position: absolute;
   background-color: var(--bg-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 
   width: 200px;
   height: 200px;
@@ -2539,7 +2539,7 @@ Profile page style rules
   /* background-image: linear-gradient(315deg, #ffceb4, #d3d3ff); */
   /* background-image: linear-gradient(-52deg, #ececf7, #d4d5ff); */
   background-image: var(--modal-gradient);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 
   display: grid;
   grid-template-rows: 10% 80% 10%;
@@ -2669,7 +2669,7 @@ Profile page style rules
   /* margin: 0px 12.5%; */
   padding: 0px;
   flex-shrink: 0;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 #edit-profile-modal .edit-region-photo.photo {
@@ -3275,7 +3275,7 @@ select.edit-region-input {
 }
 
 #edit-profile-modal .edit-region-input.links .remove-button:hover {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 .edit-region-button-section.links {
@@ -3297,7 +3297,7 @@ select.edit-region-input {
 }
 
 #edit-profile-modal .edit-region-button.links:hover {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 /* ----- Save Button ----- */
@@ -3875,7 +3875,7 @@ Project page style rules
 #more-options-popup {
   position: absolute;
   background-color: var(--primary-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 
   width: 200px;
   height: 100px;
@@ -3912,7 +3912,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 /*rules for the 'looking for roles' window on the right of the header*/
 #project-listings {
   grid-area: listing;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   margin: 20px 60px;
   padding: 0px 10px;
 }
@@ -4098,7 +4098,7 @@ used to help wrap the lines around the word 'Members'*/
 
 /*rules for the individual post items*/
 .project-post {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   width: 95%;
   max-width: 260px;
   height: 310px;
@@ -4382,7 +4382,7 @@ Project page member settings style rules
   position: absolute;
   width: 200px;
   background-color: var(--primary-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   right: 10px;
   z-index: 2;
 }
@@ -5258,7 +5258,7 @@ My projects page style rules
   width: 200px;
   height: 200px;
   object-fit: cover;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   cursor: pointer;
 }
 
@@ -5307,7 +5307,7 @@ My projects page style rules
   box-sizing: border-box;
   border: 0px;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 .grid-card-options-list {
@@ -5458,7 +5458,7 @@ My projects page style rules
   box-sizing: border-box;
   border: 0px;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 .list-card-options-list {
@@ -5781,7 +5781,7 @@ input:checked+.slider {
 }
 
 input:focus+.slider {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 input:checked+.slider:before {
@@ -5867,7 +5867,7 @@ Login and Signup page style rules
   height: 525px;
   width: 880px;
   background-color: var(--bg-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   border-radius: 10px;
 }
 
@@ -6139,7 +6139,7 @@ Signup process modal style rules
   height: 820px;
   width: 1000px;
   border-radius: 4px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 
   flex-direction: column;
   z-index: 1;
@@ -6306,7 +6306,7 @@ Signup process modal style rules
       color: black;
       font-weight: 600;
       text-align: center;
-      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+      box-shadow: 0px 0px 10px 0px var(--shadow-color);
   }
 
   label {
@@ -6322,7 +6322,7 @@ Signup process modal style rules
       color: black;
       font-weight: 700;
       text-align: center;
-      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+      box-shadow: 0px 0px 10px 0px var(--shadow-color);
       transition: 0.2s;
   }
 
@@ -6455,7 +6455,7 @@ Signup process modal style rules
   background-color: var(--primary-color);
   color: black;
   font-weight: 600;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
   display: flex;
   flex-direction: column;
   justify-content: center;

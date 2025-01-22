@@ -1130,6 +1130,9 @@ const DiscoverAndMeet = ({category}) => {
   let heroContent = category === 'projects' ? projectHero : profileHero;
   let panelContent = category === 'projects' ? projectContent : profileContent;
 
+  // determine if screen width big enough to hide right scroll button
+  const toHideRight = window.innerWidth >= 1450 ? 'hide' : '';
+
   return(
     <div className='page' onScroll={addContent}>
       {/* Search bar and profile/notification buttons */}
@@ -1157,7 +1160,7 @@ const DiscoverAndMeet = ({category}) => {
               ))
             }
           </div>
-          <button id='filters-right-scroll' className='filters-scroller' onClick={() => scrollTags('right')}><i className="fa fa-caret-right"></i></button>
+          <button id='filters-right-scroll' className={`filters-scroller ${toHideRight}`} onClick={() => scrollTags('right')}><i className="fa fa-caret-right"></i></button>
         </div>
         <Popup>
           <PopupButton buttonId={'discover-more-filters'}>

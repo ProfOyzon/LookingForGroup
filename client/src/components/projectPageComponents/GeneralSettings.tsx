@@ -1,4 +1,4 @@
-import profilePlaceholder from "../../icons/profile-user.png";
+import profilePlaceholder from '../../icons/profile-user.png';
 
 //This component is used in the project member view of the project page
 //Contains the layout of the 'General' tab of the project settings menu
@@ -15,22 +15,29 @@ import profilePlaceholder from "../../icons/profile-user.png";
 // tempSettings is also pulled, containing the current settings inputs
 
 export const GeneralSettings = (props) => {
-  return(
-    <div id='general-settings'>
-      <img id='picture-edit' src={profilePlaceholder} alt='project'/>
-      <button id='edit-button' className='white-button'>Edit Picture</button>
-      <input id='name-edit' name='project-name' type='text' defaultValue={props.tempSettings.projectName}></input>
-      <select id='theme-select'>
-        <option value='classic'>Classic</option>
-        <option value='cute'>Cute</option>
-        <option value='western'>Western</option>
-        <option value='fantasy'>Fantasy</option>
-        <option value='cyberpunk'>Cyberpunk</option>
+  return (
+    <div id="general-settings">
+      <img id="picture-edit" src={profilePlaceholder} alt="project" />
+      <button id="edit-button" className="white-button">
+        Edit Picture
+      </button>
+      <input
+        id="name-edit"
+        name="project-name"
+        type="text"
+        defaultValue={props.tempSettings.projectName}
+      ></input>
+      <select id="theme-select">
+        <option value="classic">Classic</option>
+        <option value="cute">Cute</option>
+        <option value="western">Western</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="cyberpunk">Cyberpunk</option>
       </select>
-      <div id='hiring-checkbox'>
-          <label>Is Hiring: </label>
-          <input name='is-hiring' type='checkbox' id='is-hiring'/>
-        </div>
+      <div id="hiring-checkbox">
+        <label>Is Hiring: </label>
+        <input name="is-hiring" type="checkbox" id="is-hiring" />
+      </div>
     </div>
-  )
-}
+  );
+};

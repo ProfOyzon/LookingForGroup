@@ -7,17 +7,20 @@ export const ProjectMemberPopup = (props) => {
   let key = 0; //not required, but react will give errors if key isn't used in .map function
   return (
     <>
-    <h1>Members</h1>
-    <hr/>
-    <div id='project-member-chart'>
-      {
-        props.projectData.members.map(member => {
+      <h1>Members</h1>
+      <hr />
+      <div id="project-member-chart">
+        {props.projectData.members.map((member) => {
           return (
-            <ProjectMember onClick={() => window.location.href="profile"} memberId={member.userID} role={member.role}  key={key++}/>
+            <ProjectMember
+              onClick={() => (window.location.href = 'profile')}
+              memberId={member.userID}
+              role={member.role}
+              key={key++}
+            />
           );
-        })
-      }
-    </div>
+        })}
+      </div>
     </>
-  )
-}
+  );
+};

@@ -1,7 +1,7 @@
 :root {
-  --orange: #F35835;
-  --medGray: #E3E3E3;
-  --lightGray: #EEEEEE;
+  --orange: #f35835;
+  --medGray: #e3e3e3;
+  --lightGray: #eeeeee;
   --gray: #969696;
 }
 
@@ -173,7 +173,6 @@
   position: relative;
   top: 10px;
 }
-
 
 /*
   Avatar Customization
@@ -379,7 +378,6 @@
   display: flex;
   justify-content: space-between;
 }
-
 
 @media screen and (max-width: 1020px) {
   .MakeAvatar {

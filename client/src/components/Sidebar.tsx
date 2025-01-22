@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as paths from "../constants/routes";
+import * as paths from '../constants/routes';
 import { useSelector } from 'react-redux';
-import LFGLogoLight from "../images/lfg light mode logo.png";
-import LFGLogoDark from "../images/lfg dark mode logo.png";
+import LFGLogoLight from '../images/lfg light mode logo.png';
+import LFGLogoDark from '../images/lfg dark mode logo.png';
 
 import Notifications from './pages/Notifications';
 import { ThemeIcon } from './ThemeIcon';
@@ -25,13 +25,26 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
 
   // Check to see what page we are on
   switch (window.location.pathname) {
-    case '/discover': startingPage = 'Discover'; break;
-    case '/meet': startingPage = 'Meet'; break;
-    case '/myProjects': startingPage = 'My Projects'; break;
-    case '/messages': startingPage = 'Messages'; break;
-    case '/profile': startingPage = 'Profile'; break;
-    case '/settings': startingPage = 'Settings'; break;
-    default: startingPage = 'Discover';
+    case '/discover':
+      startingPage = 'Discover';
+      break;
+    case '/meet':
+      startingPage = 'Meet';
+      break;
+    case '/myProjects':
+      startingPage = 'My Projects';
+      break;
+    case '/messages':
+      startingPage = 'Messages';
+      break;
+    case '/profile':
+      startingPage = 'Profile';
+      break;
+    case '/settings':
+      startingPage = 'Settings';
+      break;
+    default:
+      startingPage = 'Discover';
   }
 
   const [activePage, setActivePage] = useState(startingPage); // State to manage the active page [Discover, Meet, My Projects, Messages, Profile, Settings]
@@ -47,41 +60,41 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
 
   React.useEffect(() => {
     window.addEventListener('resize', () => setWidth(window.innerWidth));
-  })
+  });
 
   // Mobile layout
   if (width < breakpoint) {
     return (
       <div>
         <div className="sideBarContainer">
-          <div className='containerButtonSideBar'>
-          <div className='containerButtonSideBar'>
-          <button className={activePage === 'Discover' ? 'active' : ''} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
-            <ThemeIcon 
-              light={'assets/black/compass.png'}
-              dark={'assets/white/compass.png'}
-            />
-          </button>
-          <button className={activePage === 'Meet' ? 'active' : ''} onClick={() => handleTextChange('Meet', paths.routes.MEET)}>
-            <ThemeIcon 
-              light={'assets/black/meet.png'}
-              dark={'assets/white/meet.png'}
-            />
-          </button>
-          <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
-            <ThemeIcon 
-              light={'assets/black/folder.png'}
-              dark={'assets/white/folder.png'}
-            />
-          </button>
-          <button className={activePage === 'My Profile' ? 'active' : ''} onClick={() => handleTextChange('My Profile', paths.routes.NEWPROFILE)}>
-            <ThemeIcon 
-              light={'assets/black/profile.png'}
-              dark={'assets/white/profile.png'}
-            />
-          </button>
+          <div className="containerButtonSideBar">
+            <div className="containerButtonSideBar">
+              <button
+                className={activePage === 'Discover' ? 'active' : ''}
+                onClick={() => handleTextChange('Discover', paths.routes.HOME)}
+              >
+                <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} />
+              </button>
+              <button
+                className={activePage === 'Meet' ? 'active' : ''}
+                onClick={() => handleTextChange('Meet', paths.routes.MEET)}
+              >
+                <ThemeIcon light={'assets/black/meet.png'} dark={'assets/white/meet.png'} />
+              </button>
+              <button
+                className={activePage === 'My Projects' ? 'active' : ''}
+                onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}
+              >
+                <ThemeIcon light={'assets/black/folder.png'} dark={'assets/white/folder.png'} />
+              </button>
+              <button
+                className={activePage === 'My Profile' ? 'active' : ''}
+                onClick={() => handleTextChange('My Profile', paths.routes.NEWPROFILE)}
+              >
+                <ThemeIcon light={'assets/black/profile.png'} dark={'assets/white/profile.png'} />
+              </button>
+            </div>
           </div>
-        </div>
         </div>
 
         {/* <Notifications show={showNotifications} onClose={() => { setShowNotifications(!showNotifications); }} /> */}
@@ -93,28 +106,30 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
   return (
     <div>
       <div className="SideBarContainer">
-        <div className='headerContainer'>
+        <div className="headerContainer">
           <h1>lfg.</h1>
         </div>
 
-        <div className='containerButtonSideBar'>
-          <button className={activePage === 'Discover' ? 'active' : ''} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
-            <ThemeIcon 
-              light={'assets/black/compass.png'}
-              dark={'assets/white/compass.png'}
-            /> Discover
+        <div className="containerButtonSideBar">
+          <button
+            className={activePage === 'Discover' ? 'active' : ''}
+            onClick={() => handleTextChange('Discover', paths.routes.HOME)}
+          >
+            <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} />{' '}
+            Discover
           </button>
-          <button className={activePage === 'Meet' ? 'active' : ''} onClick={() => handleTextChange('Meet', paths.routes.MEET)}>
-              <ThemeIcon 
-                light={'assets/black/meet.png'}
-                dark={'assets/white/meet.png'}
-              /> Meet
+          <button
+            className={activePage === 'Meet' ? 'active' : ''}
+            onClick={() => handleTextChange('Meet', paths.routes.MEET)}
+          >
+            <ThemeIcon light={'assets/black/meet.png'} dark={'assets/white/meet.png'} /> Meet
           </button>
-          <button className={activePage === 'My Projects' ? 'active' : ''} onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}>
-              <ThemeIcon 
-                light={'assets/black/folder.png'}
-                dark={'assets/white/folder.png'}
-              /> My Projects
+          <button
+            className={activePage === 'My Projects' ? 'active' : ''}
+            onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}
+          >
+            <ThemeIcon light={'assets/black/folder.png'} dark={'assets/white/folder.png'} /> My
+            Projects
           </button>
           {/* <button className={activePage === 'Following' ? 'active' : ''} onClick={() => handleTextChange('Following', paths.routes.SETTINGS)}>
             <img
@@ -129,7 +144,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
           <img src={bell} className="navIcon" alt="Notifications" />
         </button> */}
 
-{/*           {/* <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
+          {/*           {/* <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
           <img src="images/icons/nav/msg-nav.png" className="navIcon" alt="Messages" /> Messages
         </button> */}
           {/* <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', paths.routes.PROFILE)}>
@@ -143,17 +158,19 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
         {/* <div className='Logout'>
         <button onClick={() => { navigate(paths.routes.LOGIN) }}>Log Out</button>
       </div> */}
-        <div className='Create'>
+        <div className="Create">
           <button>
-            <ThemeIcon 
-              light={'assets/create_light.png'}
-              dark={'assets/create_dark.png'}
-            /> Create
+            <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} /> Create
           </button>
         </div>
       </div>
 
-      <Notifications show={showNotifications} onClose={() => { setShowNotifications(false); }} />
+      <Notifications
+        show={showNotifications}
+        onClose={() => {
+          setShowNotifications(false);
+        }}
+      />
     </div>
   );
 };

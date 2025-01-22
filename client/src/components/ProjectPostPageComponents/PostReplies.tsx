@@ -1,5 +1,5 @@
-import { PostComment } from "./PostComment";
-import { profiles, comments } from "../../constants/fakeData";// FIXME: use data in db
+import { PostComment } from './PostComment';
+import { profiles, comments } from '../../constants/fakeData'; // FIXME: use data in db
 
 //Component that renders the full list of post comments & replies
 //Renders multiple 'PostComment' components within itself, more details can be found in the PostComment.tsx file
@@ -14,7 +14,7 @@ export const PostReplies = (props) => {
   //targetId - the id of the new comment that the user will reply to
   //Called whenever a 'reply' button is clicked in the comment section
   const changeReplyTarget = (targetId) => {
-    if (props.replyingToPost){
+    if (props.replyingToPost) {
       //Change values to indicate the user is not replying directly to the post
       props.setReplyingToPost(false);
       let promptButton = document.getElementById('reply-prompt-reset');
@@ -26,28 +26,24 @@ export const PostReplies = (props) => {
     //Change display to show the owner of the comment being replied to
     //If comment data can't be found, use a default name
     let replyPrompt = document.getElementById('reply-prompt-display');
-    let replyTargetAuthor = comments.find(currentComment => currentComment._id === targetId) || comments[0];
-    replyPrompt ? replyPrompt.innerHTML = "Replying to " + profiles[replyTargetAuthor.author].username :
-      console.log('element not found');
-  }
+    let replyTargetAuthor =
+      comments.find((currentComment) => currentComment._id === targetId) || comments[0];
+    replyPrompt
+      ? (replyPrompt.innerHTML = 'Replying to ' + profiles[replyTargetAuthor.author].username)
+      : console.log('element not found');
+  };
 
-  if (props.postComments.length !== 0){
-    return(
-      <div id='comments-container'>
-        {
-          props.postComments.map(comment => {
-            key++;
-            return(
-              <PostComment commentId={comment} callback={changeReplyTarget} key={key}/>
-            )
-          })
-        }
+  if (props.postComments.length !== 0) {
+    return (
+      <div id="comments-container">
+        {props.postComments.map((comment) => {
+          key++;
+          return <PostComment commentId={comment} callback={changeReplyTarget} key={key} />;
+        })}
       </div>
-    )
+    );
   } else {
     console.log('no comment found');
-    return(
-      <div>No comments</div>
-    );
+    return <div>No comments</div>;
   }
-}
+};

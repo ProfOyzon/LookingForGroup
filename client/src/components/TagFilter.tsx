@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { sortItems } from '../functions/itemSort';
-import { tags } from "../constants/tags";
+import { tags } from '../constants/tags';
 import { SearchBar } from './SearchBar';
-import { interests } from "../constants/interests";
-import { softSkills, hardSkills, proficiencies } from "../constants/skills";
+import { interests } from '../constants/interests';
+import { softSkills, hardSkills, proficiencies } from '../constants/skills';
 
 //This component will contain a list of tag buttons that can be used to filter projects and profiles
 
@@ -18,20 +18,21 @@ import { softSkills, hardSkills, proficiencies } from "../constants/skills";
 //create empty array, which will be filled with tags selected by user
 //This needs to be placed outside the main component
 //Placing it inside causes it to be reset whenever 'setUseState' in 'filter' is run
-let selectedTags : string[] = [];
+let selectedTags: string[] = [];
 
-//props used: 
+//props used:
 //projectFilter - boolean, if true this filters projects, if false this filters profiles
 //setUseState - useState function to set states using filtered datasets
-export const TagFilter = ({projectFilter, setUseState}) => {
+export const TagFilter = ({ projectFilter, setUseState }) => {
   //Determine what we are filtering for; this tells what set of tags to use
   //create empty tag array to be filled based on this
-  let tagsList : string[];
+  let tagsList: string[];
   //if projects...
   if (projectFilter) {
     //fill array using 'tags'
     tagsList = tags;
-  } else { //if people...
+  } else {
+    //if people...
     //fill array using 'softSkills', 'hardSkills', & 'proficiencies'
     tagsList = interests.concat(softSkills).concat(hardSkills).concat(proficiencies);
     /* for (let item of softSkills) {
@@ -52,7 +53,7 @@ export const TagFilter = ({projectFilter, setUseState}) => {
   //takes in searchResults, which is the data filtered by the search function
   const tagSearch = (searchResults) => {
     //Get the 'correct' data out of the weird structuring of searchResults
-    let realSearchResults = searchResults[0]
+    let realSearchResults = searchResults[0];
     //set displayedTags state
     setDisplayedTags(realSearchResults);
     //run through all selected tags & update their displays if present
@@ -71,22 +72,25 @@ export const TagFilter = ({projectFilter, setUseState}) => {
           //Update their displays to match
           let tagElement = document.getElementById(`tag-id-${result}`);
           console.log(tagElement);
-          tagElement ? tagElement.classList.toggle('tag-filter-selected') : console.log('error updating display');
+          tagElement
+            ? tagElement.classList.toggle('tag-filter-selected')
+            : console.log('error updating display');
         }
       }
     }, 1);
-  }
+  };
 
   //toggle tag function
   //Runs when a tag item is clicked, either adds or removes tag from selected tag array
   //takes in a string representing the tag being selected
-  const toggleTag = (e, tag : string) => {
+  const toggleTag = (e, tag: string) => {
     //First, check if tag is included in selected tag array
     //if the tag is not there...
     if (!selectedTags.includes(tag)) {
       //push the tag of the current selected tag in question
       selectedTags.push(tag);
-    } else { //otherwise (if the tag IS there)...
+    } else {
+      //otherwise (if the tag IS there)...
       //remove the tag from the array
       selectedTags.splice(selectedTags.indexOf(tag), 1);
     }
@@ -94,8 +98,7 @@ export const TagFilter = ({projectFilter, setUseState}) => {
     //Undetermined on how to set up display functions yet, will save for later
     console.log(selectedTags);
     e.target.classList.toggle('tag-filter-selected');
-  }
-  
+  };
 
   //filter funciton
   //Also utilizes itemSort.tsx for sorting code (for now, ugh.)
@@ -105,30 +108,30 @@ export const TagFilter = ({projectFilter, setUseState}) => {
     //Use returned data with the setUseState function passed into this component
     setUseState(filteredData); //May need adjustments due to same-name useState stuff
     //Additional stuff - if component is part of a popup or dropdown, have this function close it as well
-  }
-
+  };
 
   //component HTML
   return (
     <>
       {/*Include searchbar component (check what searchbar needs to run correctly)*/}
-      <SearchBar dataSets={[{data: tagsList}]} onSearch={tagSearch}/>
+      <SearchBar dataSets={[{ data: tagsList }]} onSearch={tagSearch} />
 
-      <div id='tag-filter-list'>
+      <div id="tag-filter-list">
         {
           //For each item in the tag array...
-          displayedTags.map(tag => {
+          displayedTags.map((tag) => {
             //Create an element containing the name of the tag
             //Make it clickable, assign toggle tag function to it
             //If tag is already in selected tags...
-              //Use selected tag classname
+            //Use selected tag classname
             //Otherwise...
-              //Use unselected tag classname
+            //Use unselected tag classname
             return (
-              <div className={'tag-filter'} id={`tag-id-${tag}`}onClick={(e) => toggleTag(e, tag)}>{tag}</div>
-            )
+              <div className={'tag-filter'} id={`tag-id-${tag}`} onClick={(e) => toggleTag(e, tag)}>
+                {tag}
+              </div>
+            );
           })
-       
         }
       </div>
 
@@ -136,5 +139,5 @@ export const TagFilter = ({projectFilter, setUseState}) => {
       <button onClick={filter}>Filter</button>
       <button onClick={() => console.log(selectedTags)}>show selected tags</button>
     </>
-  )
-}
+  );
+};

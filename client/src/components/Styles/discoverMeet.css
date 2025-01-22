@@ -10,8 +10,7 @@ Discover and Meet page style rules
   display: grid;
   align-items: center;
   margin-right: 50px;
-  grid-template:
-      'search blank buttons' 70px / auto 1fr 140px;
+  grid-template: 'search blank buttons' 70px / auto 1fr 140px;
 }
 
 #discover-searchbar {
@@ -55,10 +54,8 @@ Discover and Meet page style rules
   font-size: 1vw;
   height: calc(20vw - 20px);
   padding-bottom: 20px;
-  grid-template-areas:
-      'blurb1 blurb2 blurb3'
+  grid-template-areas: 'blurb1 blurb2 blurb3';
 }
-
 
 .profile-hero-blurb,
 .project-hero-blurb {
@@ -75,15 +72,15 @@ Discover and Meet page style rules
   height: 20vw;
 
   div {
-      width: 70%;
-      height: 14%;
-      position: absolute;
-      bottom: 14px;
-      text-align: center;
+    width: 70%;
+    height: 14%;
+    position: absolute;
+    bottom: 14px;
+    text-align: center;
   }
 
   img {
-      height: 20vw;
+    height: 20vw;
   }
 }
 
@@ -96,29 +93,29 @@ Discover and Meet page style rules
   height: 20vw;
 
   .panel-text {
-      width: 95%;
-      height: 24%;
-      position: absolute;
-      bottom: 10px;
-      text-align: center;
+    width: 95%;
+    height: 24%;
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
 
-      #spacer {
-          height: 10px;
-          width: 100px;
-      }
+    #spacer {
+      height: 10px;
+      width: 100px;
+    }
   }
 
   h2 {
-      color: var(--primary-color);
-      width: 400px;
-      position: absolute;
-      top: 0;
-      margin: 0;
-      text-align: center;
+    color: var(--primary-color);
+    width: 400px;
+    position: absolute;
+    top: 0;
+    margin: 0;
+    text-align: center;
   }
 
   img {
-      height: 20vw;
+    height: 20vw;
   }
 }
 
@@ -131,16 +128,15 @@ Discover and Meet page style rules
   height: 20vw;
 
   div {
-      width: 74%;
-      height: 20%;
-      position: absolute;
-      bottom: 14px;
-      text-align: center;
-
+    width: 74%;
+    height: 20%;
+    position: absolute;
+    bottom: 14px;
+    text-align: center;
   }
 
   img {
-      height: 20vw;
+    height: 20vw;
   }
 }
 
@@ -170,7 +166,6 @@ Discover and Meet page style rules
   border: none;
   background-color: rgba(0, 0, 0, 0);
 }
-
 
 #filters-left-scroll {
   width: 80px;
@@ -225,7 +220,7 @@ Discover and Meet page style rules
 
 .discover-tag-filter-selected:hover {
   background-color: var(--primary-color);
-  color: var(--invert-text)
+  color: var(--invert-text);
 }
 
 #discover-more-filters {
@@ -237,8 +232,8 @@ Discover and Meet page style rules
   border-radius: 30px;
 
   img {
-      height: 30px;
-      width: 30px;
+    height: 30px;
+    width: 30px;
   }
 }
 
@@ -285,10 +280,10 @@ Discover and Meet page style rules
   margin: 40px;
   display: grid;
   grid-template:
-      'categories' 1fr
-      'genres' 1fr
-      'misc' 1fr /
-      auto;
+    'categories' 1fr
+    'genres' 1fr
+    'misc' 1fr /
+    auto;
   overflow: auto;
 }
 
@@ -310,13 +305,13 @@ Discover and Meet page style rules
   min-height: 420px;
   max-height: 620px;
   grid-template:
-      'devskills roles' 1fr
-      'devskills roles' 1fr
-      'devskills majors' 1fr
-      'desskills majors' 1fr
-      'desskills softskills' 1fr
-      'desskills softskills' 1fr /
-      auto auto;
+    'devskills roles' 1fr
+    'devskills roles' 1fr
+    'devskills majors' 1fr
+    'desskills majors' 1fr
+    'desskills softskills' 1fr
+    'desskills softskills' 1fr /
+    auto auto;
   gap: 10px;
   margin: 0 10px;
   overflow: auto;
@@ -520,14 +515,14 @@ Discover image carousel style rules
   text-align: left;
   column-gap: 20px;
   grid-template:
-      'image title title' 70px
-      'image desc desc' auto
-      'image blank button' 60px /
-      3fr 2fr auto;
+    'image title title' 70px
+    'image desc desc' auto
+    'image blank button' 60px /
+    3fr 2fr auto;
   background-color: var(--background-light);
   width: 100%;
   min-width: 100%;
-  transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
+  transition: 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 
 .discover-carousel-image {

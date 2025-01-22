@@ -18,31 +18,31 @@ Project Panel component style rules
   position: relative;
 
   img {
-      /* using 'object-fit:cover' risks cutting off important parts of the image */
-      /* recommended using 'object-fit:contain' if image cutoff is undesired*/
-      object-fit: cover;
-      max-height: 200px;
-      height: 100%;
-      width: 100%;
-      border-radius: 10px;
-      align-self: center;
-      background-color: var(--header-color);
+    /* using 'object-fit:cover' risks cutting off important parts of the image */
+    /* recommended using 'object-fit:contain' if image cutoff is undesired*/
+    object-fit: cover;
+    max-height: 200px;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    align-self: center;
+    background-color: var(--header-color);
   }
 
   .project-panel-hover {
-      z-index: -1;
-      /* transition: 0.2s; */
+    z-index: -1;
+    /* transition: 0.2s; */
   }
 }
 
 .project-panel:hover {
   transition: 0.2s;
 
-  .project-panel-hover{
-      opacity: 1;
-      z-index: 1;
-      cursor: pointer;
-      /* transition: 0.2s; */
+  .project-panel-hover {
+    opacity: 1;
+    z-index: 1;
+    cursor: pointer;
+    /* transition: 0.2s; */
   }
 }
 
@@ -57,7 +57,7 @@ Project Panel component style rules
   position: absolute;
   height: 400px;
   min-width: 420px;
-  transition: opacity .2s;
+  transition: opacity 0.2s;
   top: -100px;
 
   /* bottom: 0; */
@@ -69,43 +69,43 @@ Project Panel component style rules
   text-align: left;
 
   img {
-      /* width: 100%; */
-      height: 180px;
-      /* align-self: flex-start; */
-      /* background-color: var(--primary-color); */
-      border-radius: 10px 10px 0 0;
+    /* width: 100%; */
+    height: 180px;
+    /* align-self: flex-start; */
+    /* background-color: var(--primary-color); */
+    border-radius: 10px 10px 0 0;
   }
 
   /* Name */
   h2 {
-      padding: 0 20px;
-      margin: 14px 0;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--primary-color);
-      line-height: normal;
+    padding: 0 20px;
+    margin: 14px 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: normal;
   }
 
   /* Major */
   h3 {
-      padding: 0 20px;
-      margin: 0;
-      color: var(--main-text);
-      font-size: 16px;
-      font-weight: 400;
-      line-height: normal;
+    padding: 0 20px;
+    margin: 0;
+    color: var(--main-text);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
   }
 
   /* Quote */
   #quote {
-      padding: 0 20px;
-      margin: 14px 0;
-      color: var(--main-text);
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 28px;
+    padding: 0 20px;
+    margin: 14px 0;
+    color: var(--main-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 28px;
 
-      overflow-y: scroll;
+    overflow-y: scroll;
   }
 }
 
@@ -148,7 +148,7 @@ Project image carousel style rules
   background-color: var(--background-light);
   width: 100%;
   min-width: 100%;
-  transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
+  transition: 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 
 .project-image-carousel-image {
@@ -159,14 +159,14 @@ Project image carousel style rules
 
 #project-image-carousel-buttons {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   position: absolute;
   top: 50%;
   left: 0;
   right: 0;
   width: 100%;
-  transform: translateY(-50%); 
-  z-index: 10; 
+  transform: translateY(-50%);
+  z-index: 10;
 }
 
 #project-image-carousel-left,
@@ -187,12 +187,12 @@ Project image carousel style rules
 
 #project-image-carousel-left {
   position: absolute;
-  left: -40px; 
+  left: -40px;
 }
 
 #project-image-carousel-right {
   position: absolute;
-  right: -40px; 
+  right: -40px;
 }
 
 #project-image-carousel-left img,
@@ -206,7 +206,7 @@ Project image carousel style rules
 }
 
 #project-image-carousel-left img {
-  transform: rotateY(180deg)
+  transform: rotateY(180deg);
 }
 
 /*
@@ -334,11 +334,11 @@ Project Creator and Editor style rules
   display: grid;
   height: 100%;
   grid-template:
-      'title title about' 1fr
-      'status purpose about' 1fr
-      'audience audience about' 2fr
-      'desc desc about' 3fr /
-      1fr 1fr 2.5fr;
+    'title title about' 1fr
+    'status purpose about' 1fr
+    'audience audience about' 2fr
+    'desc desc about' 3fr /
+    1fr 1fr 2.5fr;
   gap: 15px 15px;
 }
 
@@ -348,15 +348,15 @@ Project Creator and Editor style rules
   position: relative;
 
   input {
-      background-color: var(--bg-color);
+    background-color: var(--bg-color);
   }
 
   textarea {
-      background-color: var(--bg-color);
+    background-color: var(--bg-color);
   }
 
   select {
-      background-color: var(--bg-color);
+    background-color: var(--bg-color);
   }
 }
 
@@ -376,7 +376,7 @@ Project Creator and Editor style rules
   border-top-right-radius: 10px;
 }
 
-.project-editor-input-item > select > option:last-child{
+.project-editor-input-item > select > option:last-child {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -441,7 +441,8 @@ Project Creator and Editor style rules
 }
 
 /* FIXME: line to be proper color */
-#tag-search-divider, #selected-tag-divider {
+#tag-search-divider,
+#selected-tag-divider {
   /* color: var(--header-color); */
   height: 1px;
   background-color: var(--header-color);
@@ -469,7 +470,7 @@ Project Creator and Editor style rules
   margin: 10px 0;
 }
 
-#project-editor-image-ui>* {
+#project-editor-image-ui > * {
   width: calc(33% - 10px);
   height: 200px;
   border-radius: 10px;
@@ -487,9 +488,9 @@ Project Creator and Editor style rules
 #project-editor-tags {
   display: grid;
   grid-template:
-      'type search' auto
-      'select search' 1fr /
-      1fr 2fr;
+    'type search' auto
+    'select search' 1fr /
+    1fr 2fr;
   gap: 20px;
   height: 100%;
 }
@@ -567,7 +568,7 @@ Project Creator and Editor style rules
   align-items: flex-start;
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  background: #0A0A0A;
+  background: #0a0a0a;
 }
 
 #project-editor-project-member {
@@ -579,11 +580,10 @@ Project Creator and Editor style rules
   background-color: var(--header-color);
   border-radius: 10px;
   align-items: center;
-
 }
 
 .project-member-image {
-  border: 2px solid #FFF;
+  border: 2px solid #fff;
   border-radius: 100%;
   width: 74px;
   height: 74px;
@@ -636,18 +636,20 @@ Project page style rules
 /*used for the header section of the page (with the project title, description & other options)*/
 #project-info {
   display: grid;
-  grid-template: 0.3fr 1fr auto / .2fr 1.5fr 550px;
-  grid-template-areas: 'blank blank listing'
-      'picture header listing'
-      'desc desc listing'
+  grid-template: 0.3fr 1fr auto / 0.2fr 1.5fr 550px;
+  grid-template-areas:
+    'blank blank listing'
+    'picture header listing'
+    'desc desc listing';
 }
 
 /*rules for the header used when a project member is viewing the page*/
 #project-info-member {
   display: grid;
-  grid-template: 1fr 1fr / .2fr 1fr 200px 400px;
-  grid-template-areas: 'picture header buttons listing'
-      'desc desc buttons listing';
+  grid-template: 1fr 1fr / 0.2fr 1fr 200px 400px;
+  grid-template-areas:
+    'picture header buttons listing'
+    'desc desc buttons listing';
 }
 
 /*rules for the 'enter virtual space' and 'new post' buttons on the header view for members*/
@@ -672,9 +674,10 @@ Project page style rules
   text-align: left;
   display: grid;
   grid-template: auto auto auto/ auto auto auto;
-  grid-template-areas: 'title status buttons'
-      'owner count buttons'
-      'tags members buttons';
+  grid-template-areas:
+    'title status buttons'
+    'owner count buttons'
+    'tags members buttons';
   gap: 5px;
 }
 
@@ -689,7 +692,7 @@ Project page style rules
 }
 
 #project-owner {
-  grid-area: owner
+  grid-area: owner;
 }
 
 #project-member-count {
@@ -828,7 +831,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 }
 
 #interested-button:hover {
-  background-color: #D0D0D0;
+  background-color: #d0d0d0;
 }
 
 /*rules for the editing roles popup*/
@@ -837,10 +840,11 @@ includes 'enter virtual space' and 'make post' buttons*/
   gap: 10px;
   padding: 10px;
   text-align: left;
-  grid-template: 1fr 3fr .5fr / 120px 80px auto;
-  grid-template-areas: 'name number list'
-      'desc desc list'
-      'button button list'
+  grid-template: 1fr 3fr 0.5fr / 120px 80px auto;
+  grid-template-areas:
+    'name number list'
+    'desc desc list'
+    'button button list';
 }
 
 #role-name-input {
@@ -951,7 +955,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 used to help wrap the lines around the word 'Members'*/
 #member-divider hr {
   display: inline-block;
-  width: calc((100% - 140px)/2);
+  width: calc((100% - 140px) / 2);
 }
 
 #member-divider span {
@@ -985,7 +989,7 @@ used to help wrap the lines around the word 'Members'*/
 }
 
 .member-role {
-  color: #F76902;
+  color: #f76902;
 }
 
 /*rules for the element containing posts for the project*/
@@ -1102,7 +1106,7 @@ used to help wrap the lines around the word 'Members'*/
 
 #project-delete-final:hover {
   background-color: #af0000;
-  color: #a0a0a0
+  color: #a0a0a0;
 }
 
 /*rules for the area containing actual settings*/
@@ -1125,39 +1129,41 @@ used to help wrap the lines around the word 'Members'*/
 
 @media only screen and (max-width: 800px) {
   #project-page {
-      width: calc(100% - 30px);
+    width: calc(100% - 30px);
   }
 
   #project-info {
-      display: grid;
-      grid-template: 1fr .5fr 1fr / .2fr 2fr;
-      grid-template-areas: 'picture header'
-          'desc desc'
-          'listing listing';
+    display: grid;
+    grid-template: 1fr 0.5fr 1fr / 0.2fr 2fr;
+    grid-template-areas:
+      'picture header'
+      'desc desc'
+      'listing listing';
   }
 
   #project-info-member {
-      grid-template: 1fr .5fr 1fr / .2fr 2fr;
-      grid-template-areas: 'picture header'
-          'buttons buttons'
-          'desc desc'
-          'listing listing';
+    grid-template: 1fr 0.5fr 1fr / 0.2fr 2fr;
+    grid-template-areas:
+      'picture header'
+      'buttons buttons'
+      'desc desc'
+      'listing listing';
   }
 
   #member-buttons {
-      flex-direction: row;
-      align-items: center;
+    flex-direction: row;
+    align-items: center;
   }
 
   /*re-sizes 'enter virtual space' button to fit with narrower width*/
   #virtual-space-entrance {
-      width: 40vw;
-      max-width: 200px;
+    width: 40vw;
+    max-width: 200px;
   }
 
   /*shifts the options dropdown on the header view for members so that it doesn't go offscreen*/
   #more-options-popup {
-      right: 16px;
+    right: 16px;
   }
 }
 
@@ -1173,9 +1179,10 @@ Project page general settings style rules
 #general-settings {
   display: grid;
   grid-template: 1fr 1fr 1fr / 1fr 3fr;
-  grid-template-areas: 'image name'
-      'image theme'
-      'pic-edit hiring';
+  grid-template-areas:
+    'image name'
+    'image theme'
+    'pic-edit hiring';
   grid-gap: 10px;
   height: 200px;
 }
@@ -1346,9 +1353,10 @@ plus a follow button & a more options button*/
   width: 45%;
   min-width: 500px;
   grid-template: 40px auto 40px / auto 32px;
-  grid-template-areas: 'name options'
-      'post post'
-      'info share';
+  grid-template-areas:
+    'name options'
+    'post post'
+    'info share';
 }
 
 /*rules for the 'comments & replies' half of the page*/
@@ -1413,11 +1421,11 @@ plus a follow button & a more options button*/
 .post-comment {
   display: grid;
   grid-template: 20px auto 20px auto / 50px auto 25px;
-  grid-template-areas: 'profile header options'
-      'profile body like'
-      'profile reply reply'
-      'profile replies replies'
-  ;
+  grid-template-areas:
+    'profile header options'
+    'profile body like'
+    'profile reply reply'
+    'profile replies replies';
   margin: 10px 0;
 }
 
@@ -1429,7 +1437,7 @@ plus a follow button & a more options button*/
 }
 
 .post-comment button:hover {
-  background-color: #D0D0D0;
+  background-color: #d0d0d0;
 }
 
 .comment-profile {
@@ -1483,9 +1491,10 @@ plus a follow button & a more options button*/
   display: grid;
   height: 100px;
   grid-template: 1fr 2fr 1fr / 3fr 1fr;
-  grid-template-areas: 'prompt prompt'
-      'input input'
-      'buttons submit'
+  grid-template-areas:
+    'prompt prompt'
+    'input input'
+    'buttons submit';
 }
 
 #reply-prompt {
@@ -1511,18 +1520,17 @@ plus a follow button & a more options button*/
 }
 
 @media only screen and (max-width: 800px) {
-
   #post {
-      min-width: 0;
-      max-width: 500px;
-      width: 95%;
+    min-width: 0;
+    max-width: 500px;
+    width: 95%;
   }
 
   #comments {
-      min-width: 0;
-      max-width: 500px;
-      width: 95%;
-      padding-bottom: 60px;
+    min-width: 0;
+    max-width: 500px;
+    width: 95%;
+    padding-bottom: 60px;
   }
 }
 
@@ -1537,10 +1545,10 @@ New Project Page style rules
 #project-page-content {
   display: grid;
   grid-template:
-      'carousel info' 370px
-      'overview people' auto
-      'overview positions' auto /
-      17fr 15fr;
+    'carousel info' 370px
+    'overview people' auto
+    'overview positions' auto /
+    17fr 15fr;
   margin: 0 50px;
   gap: 20px;
 }
@@ -1639,10 +1647,10 @@ New Project Page style rules
   padding-top: 20px;
   border-radius: 4px;
   grid-template:
-      'header header' 50px
-      'list info' auto
-      'close close' 50px /
-      300px auto;
+    'header header' 50px
+    'list info' auto
+    'close close' 50px /
+    300px auto;
 }
 
 #positions-popup-header {
@@ -1734,25 +1742,25 @@ New Project Page style rules
 #position-details {
   display: grid;
   grid-template:
-      'availability duration' auto
-      'location compensation' auto /
-      1fr 1fr;
+    'availability duration' auto
+    'location compensation' auto /
+    1fr 1fr;
 }
 
 #position-availability {
-  grid-area: availability
+  grid-area: availability;
 }
 
 #position-duration {
-  grid-area: duration
+  grid-area: duration;
 }
 
 #position-location {
-  grid-area: location
+  grid-area: location;
 }
 
 #position-compensation {
-  grid-area: compensation
+  grid-area: compensation;
 }
 
 #position-contact {
@@ -1777,13 +1785,13 @@ New Project Page style rules
   align-items: center;
   gap: 10px;
   font-style: normal;
-  transition: background-color .1s;
+  transition: background-color 0.1s;
 }
 
 #position-contact-link:hover {
   cursor: pointer;
   /* background-color: #CCCCD7; */
-  transition: background-color .1s;
+  transition: background-color 0.1s;
 }
 
 #position-contact-link img {
@@ -1878,16 +1886,16 @@ New Project Page style rules
   margin: auto;
 
   .team-member-name {
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--primary-color)
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--primary-color);
   }
 
   .team-member-role {
-      font-style: italic;
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--neutral-gray);
+    font-style: italic;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--neutral-gray);
   }
 }
 
@@ -1960,7 +1968,6 @@ My projects page style rules
 } */
 
 @media only screen and (max-width: 800px) {
-
   /* responsiveness goes here*/
 }
 
@@ -2146,8 +2153,8 @@ My projects page style rules
 
   display: grid;
   grid-template-areas:
-      "image image"
-      "title options";
+    'image image'
+    'title options';
   row-gap: 5px;
 }
 
@@ -2391,7 +2398,7 @@ My projects page style rules
   padding: 5px 15px;
   text-align: left;
   font-family: Inter, FontAwesome;
-  transition: background-color .2s;
+  transition: background-color 0.2s;
 }
 
 .card-delete-button {
@@ -2401,7 +2408,7 @@ My projects page style rules
 .card-leave-button:hover,
 .card-delete-button:hover {
   background-color: #00000040;
-  transition: background-color .2s;
+  transition: background-color 0.2s;
 }
 
 /*

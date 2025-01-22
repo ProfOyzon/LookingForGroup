@@ -1,6 +1,10 @@
 import { useEffect, useState, useContext, useRef } from 'react';
 import { DropdownContext } from '../contexts/DropdownContext';
-import { DropdownButtonProps, DropdownContentProps, DropdownProps } from '../interfaces/DropdownProps';
+import {
+  DropdownButtonProps,
+  DropdownContentProps,
+  DropdownProps,
+} from '../interfaces/DropdownProps';
 //This is a reusable component that can be used to create dropdown menus and windows
 //This article was used to help create this component:
 //https://www.codemzy.com/blog/reactjs-dropdown-component
@@ -21,7 +25,7 @@ import { DropdownButtonProps, DropdownContentProps, DropdownProps } from '../int
 </Dropdown>
 */
 //Classes for the <DropdownButton> component are not implemented yet, but can be if necessary (let Joseph Dunne know)
-//If you want your dropdown to align with the right side of the element... 
+//If you want your dropdown to align with the right side of the element...
 //add a 'rightAlign' prop to the <DropdownContent> component with a boolean value of 'true'
 //This is meant to help prevent dropdowns from going off the screen, but it can just be used for styling too.
 //I thought about making it do this dynamically, but chose this route as it:
@@ -33,7 +37,7 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({ children, button
 
   const toggleOpen = () => {
     setOpen(!open);
-  }
+  };
 
   // useEffect(() => {
   //   if (open) {
@@ -47,9 +51,12 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({ children, button
       {children}
     </button>
   );
-}
+};
 
-export const DropdownContent: React.FC<DropdownContentProps> = ({ children, rightAlign = false }) => {
+export const DropdownContent: React.FC<DropdownContentProps> = ({
+  children,
+  rightAlign = false,
+}) => {
   const { open } = useContext(DropdownContext);
 
   // useEffect(() => {
@@ -59,28 +66,20 @@ export const DropdownContent: React.FC<DropdownContentProps> = ({ children, righ
   //   }
   // }, [open]);
 
-
   if (open) {
     if (!rightAlign) {
-      return (
-        <div className='dropdown'>
-          {children}
-        </div>
-      )
+      return <div className="dropdown">{children}</div>;
     } else {
       return (
-        <div className='dropdown' style={{ right: 0 }}>
+        <div className="dropdown" style={{ right: 0 }}>
           {children}
         </div>
-      )
+      );
     }
   } else {
-    return (
-      <></>
-    )
+    return <></>;
   }
-
-}
+};
 
 //Full dropdown component
 export const Dropdown: React.FC<DropdownProps> = ({ children }) => {
@@ -88,25 +87,26 @@ export const Dropdown: React.FC<DropdownProps> = ({ children }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-
     let close = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
-    }
+    };
 
     if (open) {
       window.addEventListener('click', close);
     }
 
     return () => {
-      window.removeEventListener('click', close)
+      window.removeEventListener('click', close);
     };
   }, [open]);
 
   return (
     <DropdownContext.Provider value={{ open, setOpen }}>
-      <div className='dropdown-container' ref={dropdownRef}>{children}</div>
+      <div className="dropdown-container" ref={dropdownRef}>
+        {children}
+      </div>
     </DropdownContext.Provider>
-  )
-}
+  );
+};

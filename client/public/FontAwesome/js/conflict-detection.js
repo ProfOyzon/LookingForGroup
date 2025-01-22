@@ -4,10 +4,13 @@
  * Copyright 2024 Fonticons, Inc.
  */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (factory());
-}(this, (function () { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined'
+    ? factory()
+    : typeof define === 'function' && define.amd
+      ? define(factory)
+      : factory();
+})(this, function () {
+  'use strict';
 
   let _WINDOW = {};
   let _DOCUMENT = {};
@@ -17,13 +20,15 @@
     if (typeof document !== 'undefined') _DOCUMENT = document;
   } catch (e) {}
 
-  const {
-    userAgent = ''
-  } = _WINDOW.navigator || {};
+  const { userAgent = '' } = _WINDOW.navigator || {};
   const WINDOW = _WINDOW;
   const DOCUMENT = _DOCUMENT;
   const IS_BROWSER = !!WINDOW.document;
-  const IS_DOM = !!DOCUMENT.documentElement && !!DOCUMENT.head && typeof DOCUMENT.addEventListener === 'function' && typeof DOCUMENT.createElement === 'function';
+  const IS_DOM =
+    !!DOCUMENT.documentElement &&
+    !!DOCUMENT.head &&
+    typeof DOCUMENT.addEventListener === 'function' &&
+    typeof DOCUMENT.createElement === 'function';
   const IS_IE = ~userAgent.indexOf('MSIE') || ~userAgent.indexOf('Trident/');
 
   const functions = [];
@@ -31,26 +36,25 @@
   const listener = function () {
     DOCUMENT.removeEventListener('DOMContentLoaded', listener);
     loaded = 1;
-    functions.map(fn => fn());
+    functions.map((fn) => fn());
   };
 
   let loaded = false;
 
   if (IS_DOM) {
-    loaded = (DOCUMENT.documentElement.doScroll ? /^loaded|^c/ : /^loaded|^i|^c/).test(DOCUMENT.readyState);
+    loaded = (DOCUMENT.documentElement.doScroll ? /^loaded|^c/ : /^loaded|^i|^c/).test(
+      DOCUMENT.readyState
+    );
     if (!loaded) DOCUMENT.addEventListener('DOMContentLoaded', listener);
   }
 
-  function domready (fn) {
+  function domready(fn) {
     if (!IS_DOM) return;
     loaded ? setTimeout(fn, 0) : functions.push(fn);
   }
 
-  function report (_ref) {
-    let {
-      nodesTested,
-      nodesFound
-    } = _ref;
+  function report(_ref) {
+    let { nodesTested, nodesFound } = _ref;
     const timedOutTests = {};
 
     for (let key in nodesFound) {
@@ -62,15 +66,21 @@
     const conflictsCount = Object.keys(nodesTested.conflict).length;
 
     if (conflictsCount > 0) {
-      console.info("%cConflict".concat(conflictsCount > 1 ? 's' : '', " found:"), 'color: darkred; font-size: large');
+      console.info(
+        '%cConflict'.concat(conflictsCount > 1 ? 's' : '', ' found:'),
+        'color: darkred; font-size: large'
+      );
       const data = {};
 
       for (let key in nodesTested.conflict) {
         const item = nodesTested.conflict[key];
         data[key] = {
-          'tagName': item.tagName,
+          tagName: item.tagName,
           'src/href': item.src || item.href || 'n/a',
-          'innerText excerpt': item.innerText && item.innerText !== '' ? item.innerText.slice(0, 200) + '...' : '(empty)'
+          'innerText excerpt':
+            item.innerText && item.innerText !== ''
+              ? item.innerText.slice(0, 200) + '...'
+              : '(empty)',
         };
       }
 
@@ -80,15 +90,23 @@
     const noConflictsCount = Object.keys(nodesTested.noConflict).length;
 
     if (noConflictsCount > 0) {
-      console.info("%cNo conflict".concat(noConflictsCount > 1 ? 's' : '', " found with ").concat(noConflictsCount === 1 ? 'this' : 'these', ":"), 'color: green; font-size: large');
+      console.info(
+        '%cNo conflict'
+          .concat(noConflictsCount > 1 ? 's' : '', ' found with ')
+          .concat(noConflictsCount === 1 ? 'this' : 'these', ':'),
+        'color: green; font-size: large'
+      );
       const data = {};
 
       for (let key in nodesTested.noConflict) {
         const item = nodesTested.noConflict[key];
         data[key] = {
-          'tagName': item.tagName,
+          tagName: item.tagName,
           'src/href': item.src || item.href || 'n/a',
-          'innerText excerpt': item.innerText && item.innerText !== '' ? item.innerText.slice(0, 200) + '...' : '(empty)'
+          'innerText excerpt':
+            item.innerText && item.innerText !== ''
+              ? item.innerText.slice(0, 200) + '...'
+              : '(empty)',
         };
       }
 
@@ -98,15 +116,24 @@
     const timeOutCount = Object.keys(timedOutTests).length;
 
     if (timeOutCount > 0) {
-      console.info("%cLeftovers--we timed out before collecting test results for ".concat(timeOutCount === 1 ? 'this' : 'these', ":"), 'color: blue; font-size: large');
+      console.info(
+        '%cLeftovers--we timed out before collecting test results for '.concat(
+          timeOutCount === 1 ? 'this' : 'these',
+          ':'
+        ),
+        'color: blue; font-size: large'
+      );
       const data = {};
 
       for (let key in timedOutTests) {
         const item = timedOutTests[key];
         data[key] = {
-          'tagName': item.tagName,
+          tagName: item.tagName,
           'src/href': item.src || item.href || 'n/a',
-          'innerText excerpt': item.innerText && item.innerText !== '' ? item.innerText.slice(0, 200) + '...' : '(empty)'
+          'innerText excerpt':
+            item.innerText && item.innerText !== ''
+              ? item.innerText.slice(0, 200) + '...'
+              : '(empty)',
         };
       }
 
@@ -114,14 +141,20 @@
     }
   }
 
-  var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+  var commonjsGlobal =
+    typeof window !== 'undefined'
+      ? window
+      : typeof global !== 'undefined'
+        ? global
+        : typeof self !== 'undefined'
+          ? self
+          : {};
 
   function createCommonjsModule(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+    return (module = { exports: {} }), fn(module, module.exports), module.exports;
   }
 
   var md5 = createCommonjsModule(function (module) {
-
     (function ($) {
       /**
        * Add integers, wrapping at 2^32.
@@ -135,7 +168,7 @@
       function safeAdd(x, y) {
         var lsw = (x & 0xffff) + (y & 0xffff);
         var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-        return msw << 16 | lsw & 0xffff;
+        return (msw << 16) | (lsw & 0xffff);
       }
       /**
        * Bitwise rotate a 32-bit number to the left.
@@ -145,9 +178,8 @@
        * @returns {number} Rotated number
        */
 
-
       function bitRotateLeft(num, cnt) {
-        return num << cnt | num >>> 32 - cnt;
+        return (num << cnt) | (num >>> (32 - cnt));
       }
       /**
        * Basic operation the algorithm uses.
@@ -160,7 +192,6 @@
        * @param {number} t t
        * @returns {number} Result
        */
-
 
       function md5cmn(q, a, b, x, s, t) {
         return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b);
@@ -178,9 +209,8 @@
        * @returns {number} Result
        */
 
-
       function md5ff(a, b, c, d, x, s, t) {
-        return md5cmn(b & c | ~b & d, a, b, x, s, t);
+        return md5cmn((b & c) | (~b & d), a, b, x, s, t);
       }
       /**
        * Basic operation the algorithm uses.
@@ -194,10 +224,9 @@
        * @param {number} t t
        * @returns {number} Result
        */
-
 
       function md5gg(a, b, c, d, x, s, t) {
-        return md5cmn(b & d | c & ~d, a, b, x, s, t);
+        return md5cmn((b & d) | (c & ~d), a, b, x, s, t);
       }
       /**
        * Basic operation the algorithm uses.
@@ -211,7 +240,6 @@
        * @param {number} t t
        * @returns {number} Result
        */
-
 
       function md5hh(a, b, c, d, x, s, t) {
         return md5cmn(b ^ c ^ d, a, b, x, s, t);
@@ -229,7 +257,6 @@
        * @returns {number} Result
        */
 
-
       function md5ii(a, b, c, d, x, s, t) {
         return md5cmn(c ^ (b | ~d), a, b, x, s, t);
       }
@@ -241,11 +268,10 @@
        * @returns {Array<number>} MD5 Array
        */
 
-
       function binlMD5(x, len) {
         /* append padding */
         x[len >> 5] |= 0x80 << len % 32;
-        x[(len + 64 >>> 9 << 4) + 14] = len;
+        x[(((len + 64) >>> 9) << 4) + 14] = len;
         var i;
         var olda;
         var oldb;
@@ -340,14 +366,13 @@
        * @returns {string} MD5 string
        */
 
-
       function binl2rstr(input) {
         var i;
         var output = '';
         var length32 = input.length * 32;
 
         for (i = 0; i < length32; i += 8) {
-          output += String.fromCharCode(input[i >> 5] >>> i % 32 & 0xff);
+          output += String.fromCharCode((input[i >> 5] >>> i % 32) & 0xff);
         }
 
         return output;
@@ -359,7 +384,6 @@
        * @param {string} input Raw input string
        * @returns {Array<number>} Array of little-endian words
        */
-
 
       function rstr2binl(input) {
         var i;
@@ -385,7 +409,6 @@
        * @returns {string} Raw MD5 string
        */
 
-
       function rstrMD5(s) {
         return binl2rstr(binlMD5(rstr2binl(s), s.length * 8));
       }
@@ -396,7 +419,6 @@
        * @param {string} data Raw input string
        * @returns {string} Raw MD5 string
        */
-
 
       function rstrHMACMD5(key, data) {
         var i;
@@ -425,7 +447,6 @@
        * @returns {string} Hex encoded string
        */
 
-
       function rstr2hex(input) {
         var hexTab = '0123456789abcdef';
         var output = '';
@@ -434,7 +455,7 @@
 
         for (i = 0; i < input.length; i += 1) {
           x = input.charCodeAt(i);
-          output += hexTab.charAt(x >>> 4 & 0x0f) + hexTab.charAt(x & 0x0f);
+          output += hexTab.charAt((x >>> 4) & 0x0f) + hexTab.charAt(x & 0x0f);
         }
 
         return output;
@@ -446,7 +467,6 @@
        * @returns {string} UTF8 string
        */
 
-
       function str2rstrUTF8(input) {
         return unescape(encodeURIComponent(input));
       }
@@ -457,7 +477,6 @@
        * @returns {string} Raw MD5 string
        */
 
-
       function rawMD5(s) {
         return rstrMD5(str2rstrUTF8(s));
       }
@@ -467,7 +486,6 @@
        * @param {string} s Input string
        * @returns {string} Hex encoded string
        */
-
 
       function hexMD5(s) {
         return rstr2hex(rawMD5(s));
@@ -480,7 +498,6 @@
        * @returns {string} Raw MD5 string
        */
 
-
       function rawHMACMD5(k, d) {
         return rstrHMACMD5(str2rstrUTF8(k), str2rstrUTF8(d));
       }
@@ -491,7 +508,6 @@
        * @param {string} d Input string
        * @returns {string} Raw MD5 string
        */
-
 
       function hexHMACMD5(k, d) {
         return rstr2hex(rawHMACMD5(k, d));
@@ -506,7 +522,6 @@
        * @param {boolean} [raw] Raw output switch
        * @returns {string} MD5 output
        */
-
 
       function md5(string, key, raw) {
         if (!key) {
@@ -554,7 +569,7 @@
   const timeoutAttr = 'data-fa-detection-timeout';
   const resultsCollectionMaxWaitAttr = 'data-fa-detection-results-collection-max-wait';
 
-  const silenceErrors = e => {
+  const silenceErrors = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
@@ -565,7 +580,7 @@
       initialDuration = 1,
       maxDuration = WINDOW.FontAwesomeDetection.timeout,
       showProgress = false,
-      progressIndicator
+      progressIndicator,
     } = _ref;
     return new Promise(function (resolve, reject) {
       // eslint-disable-line compat/compat
@@ -598,16 +613,22 @@
   }
 
   function detectWebfontConflicts() {
-    const linkTags = Array.from(DOCUMENT.getElementsByTagName('link')).filter(t => !t.hasAttribute(detectionIgnoreAttr));
-    const styleTags = Array.from(DOCUMENT.getElementsByTagName('style')).filter(t => {
+    const linkTags = Array.from(DOCUMENT.getElementsByTagName('link')).filter(
+      (t) => !t.hasAttribute(detectionIgnoreAttr)
+    );
+    const styleTags = Array.from(DOCUMENT.getElementsByTagName('style')).filter((t) => {
       if (t.hasAttribute(detectionIgnoreAttr)) {
         return false;
       } // If the browser has loaded the FA5 CSS, let's not test that <style> element.
       // Its enough that we'll be testing for traces of the corresponding JS being loaded, and testing
       // this <style> would only produce a false negative anyway.
 
-
-      if (WINDOW.FontAwesomeConfig && t.innerText.match(new RegExp("svg:not\\(:root\\)\\.".concat(WINDOW.FontAwesomeConfig.replacementClass)))) {
+      if (
+        WINDOW.FontAwesomeConfig &&
+        t.innerText.match(
+          new RegExp('svg:not\\(:root\\)\\.'.concat(WINDOW.FontAwesomeConfig.replacementClass))
+        )
+      ) {
         return false;
       }
 
@@ -618,7 +639,10 @@
       const diagFrame = DOCUMENT.createElement('iframe'); // Using "visibility: hidden; position: absolute" instead of "display: none;" because
       // Firefox will not return the expected results for getComputedStyle if our iframe has display: none.
 
-      diagFrame.setAttribute('style', 'visibility: hidden; position: absolute; height: 0; width: 0;');
+      diagFrame.setAttribute(
+        'style',
+        'visibility: hidden; position: absolute; height: 0; width: 0;'
+      );
       const testIconId = 'fa-test-icon-' + md5;
       const iTag = DOCUMENT.createElement('i');
       iTag.setAttribute('class', 'fa fa-coffee');
@@ -644,37 +668,50 @@
             } else {
               return false;
             }
-          }
-        }).then(() => {
-          const node = document.getElementById(nodeUnderTestId);
-          parent.postMessage({
-            type: 'fontawesome-conflict',
-            technology: 'webfont',
-            href: node.href,
-            innerText: node.innerText,
-            tagName: node.tagName,
-            md5
-          }, parentOrigin);
-        }).catch(function (e) {
-          const node = document.getElementById(nodeUnderTestId);
+          },
+        })
+          .then(() => {
+            const node = document.getElementById(nodeUnderTestId);
+            parent.postMessage(
+              {
+                type: 'fontawesome-conflict',
+                technology: 'webfont',
+                href: node.href,
+                innerText: node.innerText,
+                tagName: node.tagName,
+                md5,
+              },
+              parentOrigin
+            );
+          })
+          .catch(function (e) {
+            const node = document.getElementById(nodeUnderTestId);
 
-          if (e === 'timeout') {
-            parent.postMessage({
-              type: 'no-conflict',
-              technology: 'webfont',
-              href: node.src,
-              innerText: node.innerText,
-              tagName: node.tagName,
-              md5
-            }, parentOrigin);
-          } else {
-            console.error(e);
-          }
-        });
+            if (e === 'timeout') {
+              parent.postMessage(
+                {
+                  type: 'no-conflict',
+                  technology: 'webfont',
+                  href: node.src,
+                  innerText: node.innerText,
+                  tagName: node.tagName,
+                  md5,
+                },
+                parentOrigin
+              );
+            } else {
+              console.error(e);
+            }
+          });
       };
 
       const parentOrigin = WINDOW.location.origin === 'file://' ? '*' : WINDOW.location.origin;
-      diagScript.innerText = "(".concat(diagScriptFun.toString(), ")('").concat(nodeUnderTestId, "', '").concat(testIconId || 'foo', "', '").concat(md5, "', '").concat(parentOrigin, "');");
+      diagScript.innerText = '('
+        .concat(diagScriptFun.toString(), ")('")
+        .concat(nodeUnderTestId, "', '")
+        .concat(testIconId || 'foo', "', '")
+        .concat(md5, "', '")
+        .concat(parentOrigin, "');");
 
       diagFrame.onload = function () {
         diagFrame.contentWindow.addEventListener('error', silenceErrors, true);
@@ -713,7 +750,9 @@
   }
 
   function detectSvgConflicts(currentScript) {
-    const scripts = Array.from(DOCUMENT.scripts).filter(t => !t.hasAttribute(detectionIgnoreAttr) && t !== currentScript);
+    const scripts = Array.from(DOCUMENT.scripts).filter(
+      (t) => !t.hasAttribute(detectionIgnoreAttr) && t !== currentScript
+    );
     const scriptsByMD5 = {};
 
     for (let scriptIdx = 0; scriptIdx < scripts.length; scriptIdx++) {
@@ -742,35 +781,47 @@
         parent.FontAwesomeDetection.__pollUntil({
           fn: () => {
             return !!window.FontAwesomeConfig || !!window.FontAwesomeKitConfig;
-          }
-        }).then(function () {
-          const scriptNode = document.getElementById(nodeUnderTestId);
-          parent.postMessage({
-            type: 'fontawesome-conflict',
-            technology: 'js',
-            src: scriptNode.src,
-            innerText: scriptNode.innerText,
-            tagName: scriptNode.tagName,
-            md5
-          }, parentOrigin);
-        }).catch(function (e) {
-          var scriptNode = document.getElementById(nodeUnderTestId);
+          },
+        })
+          .then(function () {
+            const scriptNode = document.getElementById(nodeUnderTestId);
+            parent.postMessage(
+              {
+                type: 'fontawesome-conflict',
+                technology: 'js',
+                src: scriptNode.src,
+                innerText: scriptNode.innerText,
+                tagName: scriptNode.tagName,
+                md5,
+              },
+              parentOrigin
+            );
+          })
+          .catch(function (e) {
+            var scriptNode = document.getElementById(nodeUnderTestId);
 
-          if (e === 'timeout') {
-            parent.postMessage({
-              type: 'no-conflict',
-              src: scriptNode.src,
-              innerText: scriptNode.innerText,
-              tagName: scriptNode.tagName,
-              md5
-            }, parentOrigin);
-          } else {
-            console.error(e);
-          }
-        });
+            if (e === 'timeout') {
+              parent.postMessage(
+                {
+                  type: 'no-conflict',
+                  src: scriptNode.src,
+                  innerText: scriptNode.innerText,
+                  tagName: scriptNode.tagName,
+                  md5,
+                },
+                parentOrigin
+              );
+            } else {
+              console.error(e);
+            }
+          });
       };
 
-      diagScript.innerText = "(".concat(diagScriptFun.toString(), ")('").concat(nodeUnderTestId, "', '").concat(md5ForScript, "', '").concat(parentOrigin, "');");
+      diagScript.innerText = '('
+        .concat(diagScriptFun.toString(), ")('")
+        .concat(nodeUnderTestId, "', '")
+        .concat(md5ForScript, "', '")
+        .concat(parentOrigin, "');");
 
       diagFrame.onload = function () {
         diagFrame.contentWindow.addEventListener('error', silenceErrors, true);
@@ -785,10 +836,7 @@
   }
 
   function setDoneResults(_ref2) {
-    let {
-      nodesTested,
-      nodesFound
-    } = _ref2;
+    let { nodesTested, nodesFound } = _ref2;
     WINDOW.FontAwesomeDetection = WINDOW.FontAwesomeDetection || {};
     WINDOW.FontAwesomeDetection.nodesTested = nodesTested;
     WINDOW.FontAwesomeDetection.nodesFound = nodesFound;
@@ -799,7 +847,7 @@
     let report$$1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : () => {};
     const nodesTested = {
       conflict: {},
-      noConflict: {}
+      noConflict: {},
     };
 
     WINDOW.onmessage = function (e) {
@@ -816,9 +864,7 @@
 
     const scriptsToTest = detectSvgConflicts(DOCUMENT.currentScript);
     const cssToTest = detectWebfontConflicts();
-    const nodesFound = { ...scriptsToTest,
-      ...cssToTest
-    };
+    const nodesFound = { ...scriptsToTest, ...cssToTest };
     const testCount = Object.keys(scriptsToTest).length + Object.keys(cssToTest).length; // The resultsCollectionMaxWait allows for the time between when the tests running under
     // child iframes call postMessage with their results, and when the parent window
     // receives and handles those events with window.onmessage.
@@ -826,63 +872,95 @@
     // Naming it something very different from "timeout" is to help avoid the potential ambiguity between
     // these two timeout-related settings.
 
-    const masterTimeout = WINDOW.FontAwesomeDetection.timeout + WINDOW.FontAwesomeDetection.resultsCollectionMaxWait;
+    const masterTimeout =
+      WINDOW.FontAwesomeDetection.timeout + WINDOW.FontAwesomeDetection.resultsCollectionMaxWait;
     console.group('Font Awesome Detector');
 
     if (testCount === 0) {
       console.info('%cAll Good!', 'color: green; font-size: large');
-      console.info('We didn\'t find anything that needs testing for conflicts. Ergo, no conflicts.');
+      console.info("We didn't find anything that needs testing for conflicts. Ergo, no conflicts.");
     } else {
-      console.info("Testing ".concat(testCount, " possible conflicts."));
-      console.info("We'll wait about ".concat(Math.round(WINDOW.FontAwesomeDetection.timeout / 10) / 100, " seconds while testing these and\n") + "then up to another ".concat(Math.round(WINDOW.FontAwesomeDetection.resultsCollectionMaxWait / 10) / 100, " to allow the browser time\n") + "to accumulate the results. But we'll probably be outta here way before then.\n\n");
-      console.info("You can adjust those durations by assigning values to these attributes on the <script> element that loads this detection:");
-      console.info("\t%c".concat(timeoutAttr, "%c: milliseconds to wait for each test before deciding whether it's a conflict."), 'font-weight: bold;', 'font-size: normal;');
-      console.info("\t%c".concat(resultsCollectionMaxWaitAttr, "%c: milliseconds to wait for the browser to accumulate test results before giving up."), 'font-weight: bold;', 'font-size: normal;');
+      console.info('Testing '.concat(testCount, ' possible conflicts.'));
+      console.info(
+        "We'll wait about ".concat(
+          Math.round(WINDOW.FontAwesomeDetection.timeout / 10) / 100,
+          ' seconds while testing these and\n'
+        ) +
+          'then up to another '.concat(
+            Math.round(WINDOW.FontAwesomeDetection.resultsCollectionMaxWait / 10) / 100,
+            ' to allow the browser time\n'
+          ) +
+          "to accumulate the results. But we'll probably be outta here way before then.\n\n"
+      );
+      console.info(
+        'You can adjust those durations by assigning values to these attributes on the <script> element that loads this detection:'
+      );
+      console.info(
+        '\t%c'.concat(
+          timeoutAttr,
+          "%c: milliseconds to wait for each test before deciding whether it's a conflict."
+        ),
+        'font-weight: bold;',
+        'font-size: normal;'
+      );
+      console.info(
+        '\t%c'.concat(
+          resultsCollectionMaxWaitAttr,
+          '%c: milliseconds to wait for the browser to accumulate test results before giving up.'
+        ),
+        'font-weight: bold;',
+        'font-size: normal;'
+      );
       pollUntil({
         // Give this overall timer a little extra cushion
         maxDuration: masterTimeout,
         showProgress: true,
         progressIndicator: 'waiting...',
         fn: () => {
-          return Object.keys(nodesTested.conflict).length + Object.keys(nodesTested.noConflict).length >= testCount;
-        }
-      }).then(() => {
-        console.info('DONE!');
-        setDoneResults({
-          nodesTested,
-          nodesFound
-        });
-        report$$1({
-          nodesTested,
-          nodesFound
-        });
-        console.groupEnd();
-      }).catch(e => {
-        if (e === 'timeout') {
-          console.info('TIME OUT! We waited until we got tired. Here\'s what we found:');
+          return (
+            Object.keys(nodesTested.conflict).length + Object.keys(nodesTested.noConflict).length >=
+            testCount
+          );
+        },
+      })
+        .then(() => {
+          console.info('DONE!');
           setDoneResults({
             nodesTested,
-            nodesFound
+            nodesFound,
           });
           report$$1({
             nodesTested,
-            nodesFound
+            nodesFound,
           });
-        } else {
-          console.info('Whoops! We hit an error:', e);
-          console.info('Here\'s what we\'d found up until that error:');
-          setDoneResults({
-            nodesTested,
-            nodesFound
-          });
-          report$$1({
-            nodesTested,
-            nodesFound
-          });
-        }
+          console.groupEnd();
+        })
+        .catch((e) => {
+          if (e === 'timeout') {
+            console.info("TIME OUT! We waited until we got tired. Here's what we found:");
+            setDoneResults({
+              nodesTested,
+              nodesFound,
+            });
+            report$$1({
+              nodesTested,
+              nodesFound,
+            });
+          } else {
+            console.info('Whoops! We hit an error:', e);
+            console.info("Here's what we'd found up until that error:");
+            setDoneResults({
+              nodesTested,
+              nodesFound,
+            });
+            report$$1({
+              nodesTested,
+              nodesFound,
+            });
+          }
 
-        console.groupEnd();
-      });
+          console.groupEnd();
+        });
     }
   } // Allow clients to access, and in some cases, override some properties
 
@@ -890,166 +968,169 @@
 
   const _default = {
     report,
-    timeout: +(DOCUMENT.currentScript.getAttribute(timeoutAttr) || "2000"),
-    resultsCollectionMaxWait: +(DOCUMENT.currentScript.getAttribute(resultsCollectionMaxWaitAttr) || "5000")
+    timeout: +(DOCUMENT.currentScript.getAttribute(timeoutAttr) || '2000'),
+    resultsCollectionMaxWait: +(
+      DOCUMENT.currentScript.getAttribute(resultsCollectionMaxWaitAttr) || '5000'
+    ),
   };
-  const _config = { ..._default,
+  const _config = {
+    ..._default,
     ...initialConfig,
     // These cannot be overridden
     __pollUntil: pollUntil,
     md5ForNode,
     detectionDone: false,
     nodesTested: null,
-    nodesFound: null
+    nodesFound: null,
   };
   WINDOW.FontAwesomeDetection = _config;
 
-  var a = "classic",
-      r = "sharp",
-      o = "sharp-duotone";
+  var a = 'classic',
+    r = 'sharp',
+    o = 'sharp-duotone';
 
   var et$1 = {
     classic: {
-      900: "fas",
-      400: "far",
-      normal: "far",
-      300: "fal",
-      100: "fat"
+      900: 'fas',
+      400: 'far',
+      normal: 'far',
+      300: 'fal',
+      100: 'fat',
     },
     sharp: {
-      900: "fass",
-      400: "fasr",
-      300: "fasl",
-      100: "fast"
+      900: 'fass',
+      400: 'fasr',
+      300: 'fasl',
+      100: 'fast',
     },
-    "sharp-duotone": {
-      900: "fasds"
-    }
+    'sharp-duotone': {
+      900: 'fasds',
+    },
   };
   var bt = {
     kit: {
-      fak: "kit",
-      "fa-kit": "kit"
+      fak: 'kit',
+      'fa-kit': 'kit',
     },
-    "kit-duotone": {
-      fakd: "kit-duotone",
-      "fa-kit-duotone": "kit-duotone"
-    }
+    'kit-duotone': {
+      fakd: 'kit-duotone',
+      'fa-kit-duotone': 'kit-duotone',
+    },
   };
   var lo = {
-    classic: {
-      "fa-brands": "fab",
-      "fa-duotone": "fad",
-      "fa-light": "fal",
-      "fa-regular": "far",
-      "fa-solid": "fas",
-      "fa-thin": "fat"
+      classic: {
+        'fa-brands': 'fab',
+        'fa-duotone': 'fad',
+        'fa-light': 'fal',
+        'fa-regular': 'far',
+        'fa-solid': 'fas',
+        'fa-thin': 'fat',
+      },
+      sharp: {
+        'fa-solid': 'fass',
+        'fa-regular': 'fasr',
+        'fa-light': 'fasl',
+        'fa-thin': 'fast',
+      },
+      'sharp-duotone': {
+        'fa-solid': 'fasds',
+      },
     },
-    sharp: {
-      "fa-solid": "fass",
-      "fa-regular": "fasr",
-      "fa-light": "fasl",
-      "fa-thin": "fast"
+    no = {
+      classic: {
+        fab: 'fa-brands',
+        fad: 'fa-duotone',
+        fal: 'fa-light',
+        far: 'fa-regular',
+        fas: 'fa-solid',
+        fat: 'fa-thin',
+      },
+      sharp: {
+        fass: 'fa-solid',
+        fasr: 'fa-regular',
+        fasl: 'fa-light',
+        fast: 'fa-thin',
+      },
+      'sharp-duotone': {
+        fasds: 'fa-solid',
+      },
     },
-    "sharp-duotone": {
-      "fa-solid": "fasds"
-    }
-  },
-      no = {
-    classic: {
-      fab: "fa-brands",
-      fad: "fa-duotone",
-      fal: "fa-light",
-      far: "fa-regular",
-      fas: "fa-solid",
-      fat: "fa-thin"
+    fo = {
+      classic: {
+        solid: 'fas',
+        regular: 'far',
+        light: 'fal',
+        thin: 'fat',
+        duotone: 'fad',
+        brands: 'fab',
+      },
+      sharp: {
+        solid: 'fass',
+        regular: 'fasr',
+        light: 'fasl',
+        thin: 'fast',
+      },
+      'sharp-duotone': {
+        solid: 'fasds',
+      },
     },
-    sharp: {
-      fass: "fa-solid",
-      fasr: "fa-regular",
-      fasl: "fa-light",
-      fast: "fa-thin"
-    },
-    "sharp-duotone": {
-      fasds: "fa-solid"
-    }
-  },
-      fo = {
-    classic: {
-      solid: "fas",
-      regular: "far",
-      light: "fal",
-      thin: "fat",
-      duotone: "fad",
-      brands: "fab"
-    },
-    sharp: {
-      solid: "fass",
-      regular: "fasr",
-      light: "fasl",
-      thin: "fast"
-    },
-    "sharp-duotone": {
-      solid: "fasds"
-    }
-  },
-      ho = {
-    classic: {
-      fa: "solid",
-      fas: "solid",
-      "fa-solid": "solid",
-      far: "regular",
-      "fa-regular": "regular",
-      fal: "light",
-      "fa-light": "light",
-      fat: "thin",
-      "fa-thin": "thin",
-      fad: "duotone",
-      "fa-duotone": "duotone",
-      fab: "brands",
-      "fa-brands": "brands"
-    },
-    sharp: {
-      fa: "solid",
-      fass: "solid",
-      "fa-solid": "solid",
-      fasr: "regular",
-      "fa-regular": "regular",
-      fasl: "light",
-      "fa-light": "light",
-      fast: "thin",
-      "fa-thin": "thin"
-    },
-    "sharp-duotone": {
-      fa: "solid",
-      fasds: "solid",
-      "fa-solid": "solid"
-    }
-  };
+    ho = {
+      classic: {
+        fa: 'solid',
+        fas: 'solid',
+        'fa-solid': 'solid',
+        far: 'regular',
+        'fa-regular': 'regular',
+        fal: 'light',
+        'fa-light': 'light',
+        fat: 'thin',
+        'fa-thin': 'thin',
+        fad: 'duotone',
+        'fa-duotone': 'duotone',
+        fab: 'brands',
+        'fa-brands': 'brands',
+      },
+      sharp: {
+        fa: 'solid',
+        fass: 'solid',
+        'fa-solid': 'solid',
+        fasr: 'regular',
+        'fa-regular': 'regular',
+        fasl: 'light',
+        'fa-light': 'light',
+        fast: 'thin',
+        'fa-thin': 'thin',
+      },
+      'sharp-duotone': {
+        fa: 'solid',
+        fasds: 'solid',
+        'fa-solid': 'solid',
+      },
+    };
   var Io = {
-    kit: {
-      "fa-kit": "fak"
+      kit: {
+        'fa-kit': 'fak',
+      },
+      'kit-duotone': {
+        'fa-kit-duotone': 'fakd',
+      },
     },
-    "kit-duotone": {
-      "fa-kit-duotone": "fakd"
-    }
-  },
-      Fo = {
-    kit: {
-      fak: "fa-kit"
+    Fo = {
+      kit: {
+        fak: 'fa-kit',
+      },
+      'kit-duotone': {
+        fakd: 'fa-kit-duotone',
+      },
     },
-    "kit-duotone": {
-      fakd: "fa-kit-duotone"
-    }
-  },
-      So = {
-    kit: {
-      kit: "fak"
-    },
-    "kit-duotone": {
-      "kit-duotone": "fakd"
-    }
-  };
+    So = {
+      kit: {
+        kit: 'fak',
+      },
+      'kit-duotone': {
+        'kit-duotone': 'fakd',
+      },
+    };
 
   const PRODUCTION = (() => {
     try {
@@ -1064,39 +1145,23 @@
     return new Proxy(obj, {
       get(target, prop) {
         return prop in target ? target[prop] : target[a];
-      }
-
+      },
     });
   }
 
-  const _PREFIX_TO_STYLE = { ...ho
-  };
-  _PREFIX_TO_STYLE[a] = { ...ho[a],
-    ...bt['kit'],
-    ...bt['kit-duotone']
-  };
+  const _PREFIX_TO_STYLE = { ...ho };
+  _PREFIX_TO_STYLE[a] = { ...ho[a], ...bt['kit'], ...bt['kit-duotone'] };
   const PREFIX_TO_STYLE = familyProxy(_PREFIX_TO_STYLE);
-  const _STYLE_TO_PREFIX = { ...fo
-  };
-  _STYLE_TO_PREFIX[a] = { ..._STYLE_TO_PREFIX[a],
-    ...So['kit'],
-    ...So['kit-duotone']
-  };
+  const _STYLE_TO_PREFIX = { ...fo };
+  _STYLE_TO_PREFIX[a] = { ..._STYLE_TO_PREFIX[a], ...So['kit'], ...So['kit-duotone'] };
   const STYLE_TO_PREFIX = familyProxy(_STYLE_TO_PREFIX);
-  const _PREFIX_TO_LONG_STYLE = { ...no
-  };
-  _PREFIX_TO_LONG_STYLE[a] = { ..._PREFIX_TO_LONG_STYLE[a],
-    ...Fo['kit']
-  };
+  const _PREFIX_TO_LONG_STYLE = { ...no };
+  _PREFIX_TO_LONG_STYLE[a] = { ..._PREFIX_TO_LONG_STYLE[a], ...Fo['kit'] };
   const PREFIX_TO_LONG_STYLE = familyProxy(_PREFIX_TO_LONG_STYLE);
-  const _LONG_STYLE_TO_PREFIX = { ...lo
-  };
-  _LONG_STYLE_TO_PREFIX[a] = { ..._LONG_STYLE_TO_PREFIX[a],
-    ...Io['kit']
-  };
+  const _LONG_STYLE_TO_PREFIX = { ...lo };
+  _LONG_STYLE_TO_PREFIX[a] = { ..._LONG_STYLE_TO_PREFIX[a], ...Io['kit'] };
   const LONG_STYLE_TO_PREFIX = familyProxy(_LONG_STYLE_TO_PREFIX);
-  const _FONT_WEIGHT_TO_PREFIX = { ...et$1
-  };
+  const _FONT_WEIGHT_TO_PREFIX = { ...et$1 };
   const FONT_WEIGHT_TO_PREFIX = familyProxy(_FONT_WEIGHT_TO_PREFIX);
   const prefixes = new Set();
   Object.keys(STYLE_TO_PREFIX[a]).map(prefixes.add.bind(prefixes));
@@ -1105,7 +1170,11 @@
 
   function bunker(fn) {
     try {
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      for (
+        var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1;
+        _key < _len;
+        _key++
+      ) {
         args[_key - 1] = arguments[_key];
       }
 
@@ -1122,5 +1191,4 @@
       conflictDetection(window.FontAwesomeDetection.report);
     }
   });
-
-})));
+});

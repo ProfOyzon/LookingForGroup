@@ -6,5 +6,5 @@ import { DropdownContextProps } from '../interfaces/DropdownProps';
  */
 export const DropdownContext = createContext<DropdownContextProps>({
   open: false,
-  setOpen: () => { },
+  setOpen: () => {},
 });

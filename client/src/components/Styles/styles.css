@@ -48,73 +48,73 @@ General style rules
 /*default color scheme*/
 :root {
   /* default dark mode is default */
-  --bg-color: #0E0E0E;
+  --bg-color: #0e0e0e;
   /* background color */
 
-  --primary-color: #FEAD81;
+  --primary-color: #fead81;
   /* primary color for buttons, etc. */
   --panel-hover: rgba(254, 173, 129, 0.9);
   /* hover color for profile cards */
-  --header-color: #1A1921;
+  --header-color: #1a1921;
   /* search bar, header button background, profile page background, etc. */
-  --dropdown-color: #1A1921;
+  --dropdown-color: #1a1921;
   /* dropdown/small modal background color */
-  --sidebar-gradient: linear-gradient(180deg, #2C2A3A 30%, #FEAD81 100%);
-  --hero-gradient: linear-gradient(180deg, #0E0E0E 30%, #2C2A3A 100%);
+  --sidebar-gradient: linear-gradient(180deg, #2c2a3a 30%, #fead81 100%);
+  --hero-gradient: linear-gradient(180deg, #0e0e0e 30%, #2c2a3a 100%);
   /* gradient for  discover hero section */
-  --modal-gradient: linear-gradient(293deg, #0A0A0A 0%, #2C2A3A 100%);
+  --modal-gradient: linear-gradient(293deg, #0a0a0a 0%, #2c2a3a 100%);
   /* gradient for bigger modals (project/profile settings, etc.) */
-  --border-color: #2B2939;
+  --border-color: #2b2939;
   /* border for elements like textboxes that are on top of gradients for better visibility */
-  --error-delete-color: #FF3859;
+  --error-delete-color: #ff3859;
   /* for error messages and delete buttons */
 
   /* text colors */
   --main-text: white;
   --invert-text: black;
-  --neutral-gray: #9D9D9D;
+  --neutral-gray: #9d9d9d;
 
   /* sidebar create button */
-  --create-bg: #2C2A3A;
+  --create-bg: #2c2a3a;
   --create-text: white;
 
   /* don't invert black image */
   --image-filter: invert(1);
 
   /* tags */
-  --tag-red-selected: #FFA0B0;
-  --tag-orange-selected: #FFA381;
-  --tag-yellow-selected: #FFCF8B;
-  --tag-green-selected: #BED9AA;
-  --tag-blue-selected: #B0DCEE;
-  --tag-purple-selected: #D7BED3;
-  --tag-grey-selected: #D0D0D0;
+  --tag-red-selected: #ffa0b0;
+  --tag-orange-selected: #ffa381;
+  --tag-yellow-selected: #ffcf8b;
+  --tag-green-selected: #bed9aa;
+  --tag-blue-selected: #b0dcee;
+  --tag-purple-selected: #d7bed3;
+  --tag-grey-selected: #d0d0d0;
 
-  --tag-red-unselected: #0E0E0E;
-  --tag-orange-unselected: #0E0E0E;
-  --tag-yellow-unselected: #0E0E0E;
-  --tag-green-unselected: #0E0E0E;
-  --tag-blue-unselected: #0E0E0E;
-  --tag-purple-unselected: #0E0E0E;
-  --tag-grey-unselected: #0E0E0E;
+  --tag-red-unselected: #0e0e0e;
+  --tag-orange-unselected: #0e0e0e;
+  --tag-yellow-unselected: #0e0e0e;
+  --tag-green-unselected: #0e0e0e;
+  --tag-blue-unselected: #0e0e0e;
+  --tag-purple-unselected: #0e0e0e;
+  --tag-grey-unselected: #0e0e0e;
 
-  --tag-red-unselected-border: #FFA0B0;
-  --tag-orange-unselected-border: #FFA381;
-  --tag-yellow-unselected-border: #FFCF8B;
-  --tag-green-unselected-border: #BED9AA;
-  --tag-blue-unselected-border: #B0DCEE;
-  --tag-purple-unselected-border: #D7BED3;
-  --tag-grey-unselected-border: #D0D0D0;
+  --tag-red-unselected-border: #ffa0b0;
+  --tag-orange-unselected-border: #ffa381;
+  --tag-yellow-unselected-border: #ffcf8b;
+  --tag-green-unselected-border: #bed9aa;
+  --tag-blue-unselected-border: #b0dcee;
+  --tag-purple-unselected-border: #d7bed3;
+  --tag-grey-unselected-border: #d0d0d0;
 
   --tag-text-selected: black;
 
-  --tag-text-unselected-red: #FFA0B0;
-  --tag-text-unselected-orange: #FFA381;
-  --tag-text-unselected-yellow: #FFCF8B;
-  --tag-text-unselected-green: #BED9AA;
-  --tag-text-unselected-blue: #B0DCEE;
-  --tag-text-unselected-purple: #D7BED3;
-  --tag-text-unselected-grey: #D0D0D0;
+  --tag-text-unselected-red: #ffa0b0;
+  --tag-text-unselected-orange: #ffa381;
+  --tag-text-unselected-yellow: #ffcf8b;
+  --tag-text-unselected-green: #bed9aa;
+  --tag-text-unselected-blue: #b0dcee;
+  --tag-text-unselected-purple: #d7bed3;
+  --tag-text-unselected-grey: #d0d0d0;
 
   /* 
   When implemented look into this https://codepen.io/sosuke/pen/Pjoqqp
@@ -126,53 +126,53 @@ General style rules
 }
 
 /*light mode color scheme*/
-[data-theme="light"] {
-  --bg-color: #FFFFFF;
+[data-theme='light'] {
+  --bg-color: #ffffff;
 
-  --primary-color: #271D66;
+  --primary-color: #271d66;
   --panel-hover: rgba(39, 29, 102, 0.9);
-  --header-color: #ECECF7;
-  --dropdown-color: #FFFFFF;
-  --sidebar-gradient: linear-gradient(180deg, #D3D3FF 0%, #FFCEB4 100%);
-  --hero-gradient: linear-gradient(180deg, #FFFFFF 50%, #D3D3FF 100%);
-  --modal-gradient: linear-gradient(113deg, #D3D3FF 0%, #FFF 100%);
-  --border-color: #D3D3FF;
-  --error-delete-color: #FF3859;
+  --header-color: #ececf7;
+  --dropdown-color: #ffffff;
+  --sidebar-gradient: linear-gradient(180deg, #d3d3ff 0%, #ffceb4 100%);
+  --hero-gradient: linear-gradient(180deg, #ffffff 50%, #d3d3ff 100%);
+  --modal-gradient: linear-gradient(113deg, #d3d3ff 0%, #fff 100%);
+  --border-color: #d3d3ff;
+  --error-delete-color: #ff3859;
 
   --main-text: black;
   --invert-text: white;
   --neutral-gray: #636363;
 
   --create-bg: white;
-  --create-text: #271D66;
+  --create-text: #271d66;
 
   /* invert black image */
   --image-filter: invert(0);
 
   /* tags */
-  --tag-red-selected: #FFA0B0;
-  --tag-orange-selected: #FFA381;
-  --tag-yellow-selected: #FFCF8B;
-  --tag-green-selected: #BED9AA;
-  --tag-blue-selected: #B0DCEE;
-  --tag-purple-selected: #D7BED3;
-  --tag-grey-selected: #D0D0D0;
+  --tag-red-selected: #ffa0b0;
+  --tag-orange-selected: #ffa381;
+  --tag-yellow-selected: #ffcf8b;
+  --tag-green-selected: #bed9aa;
+  --tag-blue-selected: #b0dcee;
+  --tag-purple-selected: #d7bed3;
+  --tag-grey-selected: #d0d0d0;
 
-  --tag-red-unselected: #FFD9DF;
-  --tag-orange-unselected: #FFDACD;
-  --tag-yellow-unselected: #FFECD1;
-  --tag-green-unselected: #E5F0DD;
-  --tag-blue-unselected: #DFF1F8;
-  --tag-purple-unselected: #EFE5ED;
-  --tag-grey-unselected: #ECECEC;
+  --tag-red-unselected: #ffd9df;
+  --tag-orange-unselected: #ffdacd;
+  --tag-yellow-unselected: #ffecd1;
+  --tag-green-unselected: #e5f0dd;
+  --tag-blue-unselected: #dff1f8;
+  --tag-purple-unselected: #efe5ed;
+  --tag-grey-unselected: #ececec;
 
-  --tag-red-unselected-border: #FFD9DF;
-  --tag-orange-unselected-border: #FFDACD;
-  --tag-yellow-unselected-border: #FFECD1;
-  --tag-green-unselected-border: #E5F0DD;
-  --tag-blue-unselected-border: #DFF1F8;
-  --tag-purple-unselected-border: #EFE5ED;
-  --tag-grey-unselected-border: #ECECEC;
+  --tag-red-unselected-border: #ffd9df;
+  --tag-orange-unselected-border: #ffdacd;
+  --tag-yellow-unselected-border: #ffecd1;
+  --tag-green-unselected-border: #e5f0dd;
+  --tag-blue-unselected-border: #dff1f8;
+  --tag-purple-unselected-border: #efe5ed;
+  --tag-grey-unselected-border: #ececec;
 
   --tag-text-selected: black;
 
@@ -186,7 +186,7 @@ General style rules
 }
 
 * {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   color: var(--main-text);
 }
 
@@ -208,7 +208,7 @@ used for the more options dropdown menu and notifications
 
 button {
   cursor: pointer;
-  transition: .2s;
+  transition: 0.2s;
 }
 
 /*give sections of the page a drop shadow*/
@@ -261,15 +261,15 @@ Card component style rules
 /*the animation that plays when the card is loaded*/
 @keyframes fadeIn {
   0% {
-      opacity: 0;
+    opacity: 0;
   }
 
   50% {
-      opacity: 0.5;
+    opacity: 0.5;
   }
 
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
@@ -283,7 +283,7 @@ Card component style rules
 }
 
 /*make them grow and shrink with the window */
-#discover-card-body>* {
+#discover-card-body > * {
   flex: 1;
 }
 
@@ -317,8 +317,8 @@ Card component style rules
 
 @media only screen and (max-width: 800px) {
   .discover-card {
-      width: 90%;
-      max-width: 90%;
+    width: 90%;
+    max-width: 90%;
   }
 }
 
@@ -397,31 +397,31 @@ Project Panel component style rules
   position: relative;
 
   img {
-      /* using 'object-fit:cover' risks cutting off important parts of the image */
-      /* recommended using 'object-fit:contain' if image cutoff is undesired*/
-      object-fit: cover;
-      max-height: 200px;
-      height: 100%;
-      width: 100%;
-      border-radius: 10px;
-      align-self: center;
-      background-color: var(--header-color);
+    /* using 'object-fit:cover' risks cutting off important parts of the image */
+    /* recommended using 'object-fit:contain' if image cutoff is undesired*/
+    object-fit: cover;
+    max-height: 200px;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    align-self: center;
+    background-color: var(--header-color);
   }
 
   .project-panel-hover {
-      z-index: -1;
-      /* transition: 0.2s; */
+    z-index: -1;
+    /* transition: 0.2s; */
   }
 }
 
 .project-panel:hover {
   transition: 0.2s;
 
-  .project-panel-hover{
-      opacity: 1;
-      z-index: 1;
-      cursor: pointer;
-      /* transition: 0.2s; */
+  .project-panel-hover {
+    opacity: 1;
+    z-index: 1;
+    cursor: pointer;
+    /* transition: 0.2s; */
   }
 }
 
@@ -436,7 +436,7 @@ Project Panel component style rules
   position: absolute;
   height: 400px;
   min-width: 420px;
-  transition: opacity .2s;
+  transition: opacity 0.2s;
   top: -100px;
 
   /* bottom: 0; */
@@ -448,43 +448,43 @@ Project Panel component style rules
   text-align: left;
 
   img {
-      /* width: 100%; */
-      height: 180px;
-      /* align-self: flex-start; */
-      /* background-color: var(--primary-color); */
-      border-radius: 10px 10px 0 0;
+    /* width: 100%; */
+    height: 180px;
+    /* align-self: flex-start; */
+    /* background-color: var(--primary-color); */
+    border-radius: 10px 10px 0 0;
   }
 
   /* Name */
   h2 {
-      padding: 0 20px;
-      margin: 14px 0;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--primary-color);
-      line-height: normal;
+    padding: 0 20px;
+    margin: 14px 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: normal;
   }
 
   /* Major */
   h3 {
-      padding: 0 20px;
-      margin: 0;
-      color: var(--main-text);
-      font-size: 16px;
-      font-weight: 400;
-      line-height: normal;
+    padding: 0 20px;
+    margin: 0;
+    color: var(--main-text);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
   }
 
   /* Quote */
   #quote {
-      padding: 0 20px;
-      margin: 14px 0;
-      color: var(--main-text);
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 28px;
+    padding: 0 20px;
+    margin: 14px 0;
+    color: var(--main-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 28px;
 
-      overflow-y: scroll;
+    overflow-y: scroll;
   }
 }
 
@@ -528,41 +528,41 @@ Profile Panel component style rules
   padding: 0 15px 10px 15px;
 
   img {
-      width: 240px;
-      height: auto;
-      align-self: center;
-      /* background-color: var(--primary-color); */
-      border-radius: 10px 10px 0 0;
+    width: 240px;
+    height: auto;
+    align-self: center;
+    /* background-color: var(--primary-color); */
+    border-radius: 10px 10px 0 0;
   }
 
   /* Name */
   h2 {
-      margin: 8px 0;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--primary-color);
-      line-height: normal;
+    margin: 8px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: normal;
   }
 
   /* Major */
   h3 {
-      margin: 0;
-      color: var(--main-text);
-      font-size: 16px;
-      font-weight: 400;
-      line-height: normal;
+    margin: 0;
+    color: var(--main-text);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
   }
 
   /* Quote */
   #quote {
-      margin: 8px 0;
-      color: var(--main-text);
-      font-size: 14px;
-      font-style: italic;
-      font-weight: 300;
-      line-height: 18px;
-      letter-spacing: -0.132px;
-      align-self: stretch;
+    margin: 8px 0;
+    color: var(--main-text);
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 18px;
+    letter-spacing: -0.132px;
+    align-self: stretch;
   }
 }
 
@@ -574,7 +574,7 @@ Profile Panel component style rules
   position: absolute;
   height: auto;
   width: 200px;
-  transition: opacity .2s;
+  transition: opacity 0.2s;
   top: 0;
   bottom: 0;
   left: 0;
@@ -596,18 +596,18 @@ Profile Panel component style rules
   margin: 10px 0;
 
   img {
-      height: 28px;
-      width: 28px;
-      object-fit: contain;
-      /* border: 1px solid black; */
-      align-self: flex-start;
+    height: 28px;
+    width: 28px;
+    object-fit: contain;
+    /* border: 1px solid black; */
+    align-self: flex-start;
   }
 
   p {
-      /* border: 1px solid black; */
-      margin: 0;
-      color: var(--invert-text);
-      font-weight: 600;
+    /* border: 1px solid black; */
+    margin: 0;
+    color: var(--invert-text);
+    font-weight: 600;
   }
 }
 
@@ -642,7 +642,7 @@ Tag component style rules
 
 @media only screen and (max-width: 800px) {
   .tag-name {
-      font-size: 2vw;
+    font-size: 2vw;
   }
 }
 
@@ -680,7 +680,7 @@ orange-button class makes the button orange, white-button class makes the button
 
 .white-button:hover,
 .icon-button:hover {
-  background-color: #D0D0D0;
+  background-color: #d0d0d0;
 }
 
 .icon-button {
@@ -688,7 +688,7 @@ orange-button class makes the button orange, white-button class makes the button
   height: 50px;
 }
 
-.icon-button>img {
+.icon-button > img {
   width: 100%;
 }
 
@@ -815,8 +815,8 @@ Sidebar Nav style rules
   gap: 15px;
 
   img {
-      width: 30px;
-      filter: invert(0);
+    width: 30px;
+    filter: invert(0);
   }
 }
 
@@ -832,7 +832,7 @@ Sidebar Nav style rules
   color: var(--invert-text);
 
   img {
-      filter: invert(1);
+    filter: invert(1);
   }
 }
 
@@ -917,8 +917,8 @@ Sidebar Nav style rules
   font-weight: bold;
 
   img {
-      width: 25px;
-      margin-right: 10px;
+    width: 25px;
+    margin-right: 10px;
   }
 }
 
@@ -934,53 +934,53 @@ Sidebar Nav style rules
 /*responsive stuff for sidebar*/
 @media only screen and (max-width: 800px) {
   .sideBarContainer {
-      width: 100vw;
-      height: 50px;
-      /*border: solid black 2px;*/
-      position: fixed;
-      bottom: 10px;
-      background-color: var(--header-color);
-      z-index: 1;
-      /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
+    width: 100vw;
+    height: 50px;
+    /*border: solid black 2px;*/
+    position: fixed;
+    bottom: 10px;
+    background-color: var(--header-color);
+    z-index: 1;
+    /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
   }
 
   .ProfileContainer {
-      width: 15vw;
+    width: 15vw;
   }
 
   .containerButtonSideBar {
-      display: flex;
-      flex-direction: row;
-      /* cursor: pointer; */
-      gap: 20px;
-      align-items: center;
-      justify-content: space-evenly;
-      height: 80px;
-      background-color: var(--header-color);
+    display: flex;
+    flex-direction: row;
+    /* cursor: pointer; */
+    gap: 20px;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 80px;
+    background-color: var(--header-color);
   }
 
   .containerButtonSideBar button {
-      width: 20vw;
-      height: 45px;
-      margin: 0 5px 20px 5px;
-      padding-left: calc((100vw - 160px) / 10);
-      padding-right: auto;
+    width: 20vw;
+    height: 45px;
+    margin: 0 5px 20px 5px;
+    padding-left: calc((100vw - 160px) / 10);
+    padding-right: auto;
   }
 
   .containerButtonSideBar button:hover {
-      transition-duration: 0.25s;
-      background-color: var(--invert-text);
+    transition-duration: 0.25s;
+    background-color: var(--invert-text);
   }
-  
+
   .containerButtonSideBar button.active {
-      background-color: var(--primary-color);
-      transition: 0.25s;
-      font-weight: bold;
-      color: var(--invert-text);
-  
-      img {
-          filter: invert(1);
-      }
+    background-color: var(--primary-color);
+    transition: 0.25s;
+    font-weight: bold;
+    color: var(--invert-text);
+
+    img {
+      filter: invert(1);
+    }
   }
 }
 
@@ -996,7 +996,7 @@ Notification style rules
   position: absolute;
   width: 30vw;
   height: 15vw;
-  background-color: #D0D0D0;
+  background-color: #d0d0d0;
   z-index: 5;
   padding: 10px;
 
@@ -1196,8 +1196,7 @@ Header style rules
   align-items: center;
   text-align: left;
   margin-right: 50px;
-  grid-template:
-      'search buttons' 90px / auto 140px;
+  grid-template: 'search buttons' 90px / auto 140px;
   background-color: rgba(0, 0, 0, 0);
   /* 
       Please don't comment the background-image rule out unless there is a good reason for it
@@ -1216,7 +1215,7 @@ Header style rules
   grid-area: search;
 }
 
-#header-searchbar>.search-wrapper>.search-bar {
+#header-searchbar > .search-wrapper > .search-bar {
   margin: 0;
 }
 
@@ -1248,7 +1247,7 @@ Header style rules
   width: 45px;
 
   img {
-      width: 34px;
+    width: 34px;
   }
 }
 
@@ -1262,12 +1261,12 @@ Header style rules
   align-items: center;
 
   #profile-img-icon {
-      width: 32px;
+    width: 32px;
   }
 
   #dropdown-arrow {
-      width: 15px;
-      margin-top: 5px;
+    width: 15px;
+    margin-top: 5px;
   }
 }
 
@@ -1355,7 +1354,7 @@ Search style rules
   background-color: var(--header-color);
   color: var(--primary-color);
   font-size: 16px;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 500;
   text-align: left;
   display: flex;
@@ -1395,8 +1394,8 @@ Search style rules
 
 @media only screen and (max-width: 800px) {
   .search-bar {
-      font-size: 16px;
-      /* width: 200px; */
+    font-size: 16px;
+    /* width: 200px; */
   }
 }
 
@@ -1462,7 +1461,6 @@ Tag Filter style rules
 #tag-filter-list {
   display: flex;
   flex-wrap: wrap;
-
 }
 
 .tag-filter {
@@ -1513,7 +1511,6 @@ Project image carousel style rules
 ------------------------------------------------------------------------------------------------
 */
 
-
 #project-image-carousel-content {
   display: flex;
   flex-wrap: nowrap;
@@ -1526,7 +1523,7 @@ Project image carousel style rules
   background-color: var(--background-light);
   width: 100%;
   min-width: 100%;
-  transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
+  transition: 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 
 .project-image-carousel-image {
@@ -1562,7 +1559,7 @@ Project image carousel style rules
 }
 
 #project-image-carousel-left img {
-  transform: rotateY(180deg)
+  transform: rotateY(180deg);
 }
 
 /*
@@ -1611,14 +1608,14 @@ Discover image carousel style rules
   text-align: left;
   column-gap: 20px;
   grid-template:
-      'image title title' 70px
-      'image desc desc' auto
-      'image blank button' 60px /
-      3fr 2fr auto;
+    'image title title' 70px
+    'image desc desc' auto
+    'image blank button' 60px /
+    3fr 2fr auto;
   background-color: var(--background-light);
   width: 100%;
   min-width: 100%;
-  transition: .5s cubic-bezier(0.39, 0.575, 0.565, 1);
+  transition: 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 
 .discover-carousel-image {
@@ -1765,11 +1762,11 @@ Project Creator and Editor style rules
   display: grid;
   height: 100%;
   grid-template:
-      'title title about' 1fr
-      'status purpose about' 1fr
-      'audience audience about' 2fr
-      'desc desc about' 3fr /
-      1fr 1fr 2.5fr;
+    'title title about' 1fr
+    'status purpose about' 1fr
+    'audience audience about' 2fr
+    'desc desc about' 3fr /
+    1fr 1fr 2.5fr;
   gap: 0 20px;
 }
 
@@ -1778,15 +1775,15 @@ Project Creator and Editor style rules
   flex-direction: column;
 
   input {
-      background-color: var(--bg-color);
+    background-color: var(--bg-color);
   }
 
   textarea {
-      background-color: var(--bg-color);
+    background-color: var(--bg-color);
   }
 
   select {
-      background-color: var(--bg-color);
+    background-color: var(--bg-color);
   }
 }
 
@@ -1826,7 +1823,7 @@ Project Creator and Editor style rules
   margin: 10px 0;
 }
 
-#project-editor-image-ui>* {
+#project-editor-image-ui > * {
   width: calc(33% - 10px);
   height: 200px;
   border-radius: 10px;
@@ -1843,9 +1840,9 @@ Project Creator and Editor style rules
 #project-editor-tags {
   display: grid;
   grid-template:
-      'type search' auto
-      'select search' 1fr /
-      1fr 2fr;
+    'type search' auto
+    'select search' 1fr /
+    1fr 2fr;
   gap: 20px;
   height: 100%;
 }
@@ -1907,8 +1904,7 @@ Discover and Meet page style rules
   display: grid;
   align-items: center;
   margin-right: 50px;
-  grid-template:
-      'search blank buttons' 70px / auto 1fr 140px;
+  grid-template: 'search blank buttons' 70px / auto 1fr 140px;
 }
 
 #discover-searchbar {
@@ -1952,10 +1948,8 @@ Discover and Meet page style rules
   font-size: 1vw;
   height: calc(20vw - 20px);
   padding-bottom: 20px;
-  grid-template-areas:
-      'blurb1 blurb2 blurb3'
+  grid-template-areas: 'blurb1 blurb2 blurb3';
 }
-
 
 .profile-hero-blurb,
 .project-hero-blurb {
@@ -1972,15 +1966,15 @@ Discover and Meet page style rules
   height: 20vw;
 
   div {
-      width: 70%;
-      height: 14%;
-      position: absolute;
-      bottom: 14px;
-      text-align: center;
+    width: 70%;
+    height: 14%;
+    position: absolute;
+    bottom: 14px;
+    text-align: center;
   }
 
   img {
-      height: 20vw;
+    height: 20vw;
   }
 }
 
@@ -1993,29 +1987,29 @@ Discover and Meet page style rules
   height: 20vw;
 
   .panel-text {
-      width: 95%;
-      height: 24%;
-      position: absolute;
-      bottom: 10px;
-      text-align: center;
+    width: 95%;
+    height: 24%;
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
 
-      #spacer {
-          height: 10px;
-          width: 100px;
-      }
+    #spacer {
+      height: 10px;
+      width: 100px;
+    }
   }
 
   h2 {
-      color: var(--primary-color);
-      width: 400px;
-      position: absolute;
-      top: 0;
-      margin: 0;
-      text-align: center;
+    color: var(--primary-color);
+    width: 400px;
+    position: absolute;
+    top: 0;
+    margin: 0;
+    text-align: center;
   }
 
   img {
-      height: 20vw;
+    height: 20vw;
   }
 }
 
@@ -2028,16 +2022,15 @@ Discover and Meet page style rules
   height: 20vw;
 
   div {
-      width: 74%;
-      height: 20%;
-      position: absolute;
-      bottom: 14px;
-      text-align: center;
-
+    width: 74%;
+    height: 20%;
+    position: absolute;
+    bottom: 14px;
+    text-align: center;
   }
 
   img {
-      height: 20vw;
+    height: 20vw;
   }
 }
 
@@ -2067,7 +2060,6 @@ Discover and Meet page style rules
   border: none;
   background-color: rgba(0, 0, 0, 0);
 }
-
 
 #filters-left-scroll {
   width: 80px;
@@ -2122,7 +2114,7 @@ Discover and Meet page style rules
 
 .discover-tag-filter-selected:hover {
   background-color: var(--primary-color);
-  color: var(--invert-text)
+  color: var(--invert-text);
 }
 
 #discover-more-filters {
@@ -2134,8 +2126,8 @@ Discover and Meet page style rules
   border-radius: 30px;
 
   img {
-      height: 30px;
-      width: 30px;
+    height: 30px;
+    width: 30px;
   }
 }
 
@@ -2182,10 +2174,10 @@ Discover and Meet page style rules
   margin: 40px;
   display: grid;
   grid-template:
-      'categories' 1fr
-      'genres' 1fr
-      'misc' 1fr /
-      auto;
+    'categories' 1fr
+    'genres' 1fr
+    'misc' 1fr /
+    auto;
   overflow: auto;
 }
 
@@ -2207,13 +2199,13 @@ Discover and Meet page style rules
   min-height: 420px;
   max-height: 620px;
   grid-template:
-      'devskills roles' 1fr
-      'devskills roles' 1fr
-      'devskills majors' 1fr
-      'desskills majors' 1fr
-      'desskills softskills' 1fr
-      'desskills softskills' 1fr /
-      auto auto;
+    'devskills roles' 1fr
+    'devskills roles' 1fr
+    'devskills majors' 1fr
+    'desskills majors' 1fr
+    'desskills softskills' 1fr
+    'desskills softskills' 1fr /
+    auto auto;
   gap: 10px;
   margin: 0 10px;
   overflow: auto;
@@ -2389,7 +2381,7 @@ Profile page style rules
 }
 
 /*make the sections of the profile page the right height*/
-#profile-page>* {
+#profile-page > * {
   height: fit-content;
 }
 
@@ -2455,8 +2447,8 @@ Profile page style rules
 }
 
 /*make the skills fit into 2 columns */
-#profile-skill-list>.tag,
-#profile-interests-list>.tag {
+#profile-skill-list > .tag,
+#profile-interests-list > .tag {
   width: 35%;
   margin: 1%;
 }
@@ -2475,7 +2467,7 @@ Profile page style rules
   justify-content: flex-end;
 }
 
-#profile-project-role>b {
+#profile-project-role > b {
   color: var(--orange);
 }
 
@@ -2489,34 +2481,33 @@ Profile page style rules
 
 /*css for profile responsiveness---------------------------*/
 @media only screen and (max-width: 800px) {
-
   /*get rid of the grid*/
   #profile-page {
-      display: inline;
+    display: inline;
   }
 
   /*make the list one skill wide*/
   #profile-skill-list,
   #profile-preferences-list {
-      margin-left: 5%;
+    margin-left: 5%;
   }
 
-  #profile-skill-list>.tag,
-  #profile-preferences-list>.tag {
-      width: 80%;
-      margin: 1%;
+  #profile-skill-list > .tag,
+  #profile-preferences-list > .tag {
+    width: 80%;
+    margin: 1%;
   }
 
   /*make the popup not go off the screen*/
   #user-options-popup {
-      margin-left: 100px;
-      margin-top: 265px;
+    margin-left: 100px;
+    margin-top: 265px;
   }
 }
 
 /* --------------------------------- Edit Modal Rules --------------------------------- */
 .profile-edit-button {
-  background-color: #271D66;
+  background-color: #271d66;
 }
 
 #popup-container-0 {
@@ -2603,9 +2594,9 @@ Profile page style rules
 .edit-profile-body.about .edit-profile-section-1 {
   display: grid;
   grid-template-areas:
-      "image row1"
-      "image row2"
-      "image row3";
+    'image row1'
+    'image row2'
+    'image row3';
   grid-template-columns: 25% auto;
   column-gap: 20px;
   row-gap: 10px;
@@ -2620,13 +2611,13 @@ Profile page style rules
 
   .first-name input,
   .last-name input {
-      width: 100%;
-      height: 45px;
+    width: 100%;
+    height: 45px;
   }
 
   .pronouns input {
-      width: 100%;
-      height: 45px;
+    width: 100%;
+    height: 45px;
   }
 }
 
@@ -2639,13 +2630,13 @@ Profile page style rules
 
   .role input,
   .major input {
-      width: 100%;
-      height: 45px;
+    width: 100%;
+    height: 45px;
   }
 
   .year input {
-      width: 100%;
-      height: 45px;
+    width: 100%;
+    height: 45px;
   }
 }
 
@@ -2710,8 +2701,8 @@ Profile page style rules
   font-weight: normal;
 
   img {
-      width: 26px;
-      height: auto;
+    width: 26px;
+    height: auto;
   }
 }
 
@@ -2765,7 +2756,7 @@ Profile page style rules
   border-radius: 10px;
   /* width: 100%; */
   /* height: 45px; */
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   margin-top: 8px;
   padding: 8px 15px;
   font-size: 15px;
@@ -2919,12 +2910,12 @@ select.edit-region-input {
   height: 100%;
   text-align: end;
 
-  transition: .1s background-color;
+  transition: 0.1s background-color;
 }
 
 .list-project-hide-icon:has(.fa-solid.fa-eye-slash) {
   background-color: #000000a6;
-  transition: .1s background-color;
+  transition: 0.1s background-color;
 }
 
 #edit-profile-modal .list-project-hide-icon-button {
@@ -2978,7 +2969,7 @@ select.edit-region-input {
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   height: 100%;
   padding: 25px 5px 25px 26px;
   text-align: start;
@@ -3065,7 +3056,7 @@ select.edit-region-input {
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   /* height: 100%; */
   height: 100%;
   padding: 26px 31px;
@@ -3235,7 +3226,7 @@ select.edit-region-input {
   font-family: Inter, FontAwesome;
   font-size: 15px;
   line-height: 150%;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .edit-region-input.links {
@@ -3330,7 +3321,6 @@ select.edit-region-input {
   background-color: var(--primary-color);
 }
 
-
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
@@ -3346,12 +3336,12 @@ New Profile page style rules
 #profile-information-grid {
   display: grid;
   grid-template:
-      'image name buttons' 40px
-      'image extra extra' 40px
-      'image desc desc' auto
-      'image fact fact' auto
-      'bio skills skills' auto /
-      300px auto 200px;
+    'image name buttons' 40px
+    'image extra extra' 40px
+    'image desc desc' auto
+    'image fact fact' auto
+    'bio skills skills' auto /
+    300px auto 200px;
   background-color: var(--header-color);
   border-radius: 10px;
   padding: 30px;
@@ -3565,7 +3555,7 @@ New Profile page style rules
   padding-bottom: 0;
 }
 
-#about-me-buttons button>img {
+#about-me-buttons button > img {
   margin-top: 3px;
 }
 
@@ -3573,7 +3563,7 @@ New Profile page style rules
   background-color: var(--bg-color);
 }
 
-#about-me-buttons>div {
+#about-me-buttons > div {
   height: 100%;
 }
 
@@ -3707,7 +3697,7 @@ New Profile page style rules
   text-align: left;
 
   h2 {
-      font-size: 24px;
+    font-size: 24px;
   }
 }
 
@@ -3736,18 +3726,20 @@ Project page style rules
 /*used for the header section of the page (with the project title, description & other options)*/
 #project-info {
   display: grid;
-  grid-template: 0.3fr 1fr auto / .2fr 1.5fr 550px;
-  grid-template-areas: 'blank blank listing'
-      'picture header listing'
-      'desc desc listing'
+  grid-template: 0.3fr 1fr auto / 0.2fr 1.5fr 550px;
+  grid-template-areas:
+    'blank blank listing'
+    'picture header listing'
+    'desc desc listing';
 }
 
 /*rules for the header used when a project member is viewing the page*/
 #project-info-member {
   display: grid;
-  grid-template: 1fr 1fr / .2fr 1fr 200px 400px;
-  grid-template-areas: 'picture header buttons listing'
-      'desc desc buttons listing';
+  grid-template: 1fr 1fr / 0.2fr 1fr 200px 400px;
+  grid-template-areas:
+    'picture header buttons listing'
+    'desc desc buttons listing';
 }
 
 /*rules for the 'enter virtual space' and 'new post' buttons on the header view for members*/
@@ -3772,9 +3764,10 @@ Project page style rules
   text-align: left;
   display: grid;
   grid-template: auto auto auto/ auto auto auto;
-  grid-template-areas: 'title status buttons'
-      'owner count buttons'
-      'tags members buttons';
+  grid-template-areas:
+    'title status buttons'
+    'owner count buttons'
+    'tags members buttons';
   gap: 5px;
 }
 
@@ -3789,7 +3782,7 @@ Project page style rules
 }
 
 #project-owner {
-  grid-area: owner
+  grid-area: owner;
 }
 
 #project-member-count {
@@ -3928,7 +3921,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 }
 
 #interested-button:hover {
-  background-color: #D0D0D0;
+  background-color: #d0d0d0;
 }
 
 /*rules for the editing roles popup*/
@@ -3937,10 +3930,11 @@ includes 'enter virtual space' and 'make post' buttons*/
   gap: 10px;
   padding: 10px;
   text-align: left;
-  grid-template: 1fr 3fr .5fr / 120px 80px auto;
-  grid-template-areas: 'name number list'
-      'desc desc list'
-      'button button list'
+  grid-template: 1fr 3fr 0.5fr / 120px 80px auto;
+  grid-template-areas:
+    'name number list'
+    'desc desc list'
+    'button button list';
 }
 
 #role-name-input {
@@ -4051,7 +4045,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 used to help wrap the lines around the word 'Members'*/
 #member-divider hr {
   display: inline-block;
-  width: calc((100% - 140px)/2);
+  width: calc((100% - 140px) / 2);
 }
 
 #member-divider span {
@@ -4085,7 +4079,7 @@ used to help wrap the lines around the word 'Members'*/
 }
 
 .member-role {
-  color: #F76902;
+  color: #f76902;
 }
 
 /*rules for the element containing posts for the project*/
@@ -4202,7 +4196,7 @@ used to help wrap the lines around the word 'Members'*/
 
 #project-delete-final:hover {
   background-color: #af0000;
-  color: #a0a0a0
+  color: #a0a0a0;
 }
 
 /*rules for the area containing actual settings*/
@@ -4225,39 +4219,41 @@ used to help wrap the lines around the word 'Members'*/
 
 @media only screen and (max-width: 800px) {
   #project-page {
-      width: calc(100% - 30px);
+    width: calc(100% - 30px);
   }
 
   #project-info {
-      display: grid;
-      grid-template: 1fr .5fr 1fr / .2fr 2fr;
-      grid-template-areas: 'picture header'
-          'desc desc'
-          'listing listing';
+    display: grid;
+    grid-template: 1fr 0.5fr 1fr / 0.2fr 2fr;
+    grid-template-areas:
+      'picture header'
+      'desc desc'
+      'listing listing';
   }
 
   #project-info-member {
-      grid-template: 1fr .5fr 1fr / .2fr 2fr;
-      grid-template-areas: 'picture header'
-          'buttons buttons'
-          'desc desc'
-          'listing listing';
+    grid-template: 1fr 0.5fr 1fr / 0.2fr 2fr;
+    grid-template-areas:
+      'picture header'
+      'buttons buttons'
+      'desc desc'
+      'listing listing';
   }
 
   #member-buttons {
-      flex-direction: row;
-      align-items: center;
+    flex-direction: row;
+    align-items: center;
   }
 
   /*re-sizes 'enter virtual space' button to fit with narrower width*/
   #virtual-space-entrance {
-      width: 40vw;
-      max-width: 200px;
+    width: 40vw;
+    max-width: 200px;
   }
 
   /*shifts the options dropdown on the header view for members so that it doesn't go offscreen*/
   #more-options-popup {
-      right: 16px;
+    right: 16px;
   }
 }
 
@@ -4273,9 +4269,10 @@ Project page general settings style rules
 #general-settings {
   display: grid;
   grid-template: 1fr 1fr 1fr / 1fr 3fr;
-  grid-template-areas: 'image name'
-      'image theme'
-      'pic-edit hiring';
+  grid-template-areas:
+    'image name'
+    'image theme'
+    'pic-edit hiring';
   grid-gap: 10px;
   height: 200px;
 }
@@ -4446,9 +4443,10 @@ plus a follow button & a more options button*/
   width: 45%;
   min-width: 500px;
   grid-template: 40px auto 40px / auto 32px;
-  grid-template-areas: 'name options'
-      'post post'
-      'info share';
+  grid-template-areas:
+    'name options'
+    'post post'
+    'info share';
 }
 
 /*rules for the 'comments & replies' half of the page*/
@@ -4513,11 +4511,11 @@ plus a follow button & a more options button*/
 .post-comment {
   display: grid;
   grid-template: 20px auto 20px auto / 50px auto 25px;
-  grid-template-areas: 'profile header options'
-      'profile body like'
-      'profile reply reply'
-      'profile replies replies'
-  ;
+  grid-template-areas:
+    'profile header options'
+    'profile body like'
+    'profile reply reply'
+    'profile replies replies';
   margin: 10px 0;
 }
 
@@ -4529,7 +4527,7 @@ plus a follow button & a more options button*/
 }
 
 .post-comment button:hover {
-  background-color: #D0D0D0;
+  background-color: #d0d0d0;
 }
 
 .comment-profile {
@@ -4583,9 +4581,10 @@ plus a follow button & a more options button*/
   display: grid;
   height: 100px;
   grid-template: 1fr 2fr 1fr / 3fr 1fr;
-  grid-template-areas: 'prompt prompt'
-      'input input'
-      'buttons submit'
+  grid-template-areas:
+    'prompt prompt'
+    'input input'
+    'buttons submit';
 }
 
 #reply-prompt {
@@ -4611,18 +4610,17 @@ plus a follow button & a more options button*/
 }
 
 @media only screen and (max-width: 800px) {
-
   #post {
-      min-width: 0;
-      max-width: 500px;
-      width: 95%;
+    min-width: 0;
+    max-width: 500px;
+    width: 95%;
   }
 
   #comments {
-      min-width: 0;
-      max-width: 500px;
-      width: 95%;
-      padding-bottom: 60px;
+    min-width: 0;
+    max-width: 500px;
+    width: 95%;
+    padding-bottom: 60px;
   }
 }
 
@@ -4637,10 +4635,10 @@ New Project Page style rules
 #project-page-content {
   display: grid;
   grid-template:
-      'carousel info' 370px
-      'overview people' auto
-      'overview positions' auto /
-      17fr 15fr;
+    'carousel info' 370px
+    'overview people' auto
+    'overview positions' auto /
+    17fr 15fr;
   margin: 0 50px;
   gap: 20px;
 }
@@ -4739,10 +4737,10 @@ New Project Page style rules
   padding-top: 20px;
   border-radius: 4px;
   grid-template:
-      'header header' 50px
-      'list info' auto
-      'close close' 50px /
-      300px auto;
+    'header header' 50px
+    'list info' auto
+    'close close' 50px /
+    300px auto;
 }
 
 #positions-popup-header {
@@ -4834,25 +4832,25 @@ New Project Page style rules
 #position-details {
   display: grid;
   grid-template:
-      'availability duration' auto
-      'location compensation' auto /
-      1fr 1fr;
+    'availability duration' auto
+    'location compensation' auto /
+    1fr 1fr;
 }
 
 #position-availability {
-  grid-area: availability
+  grid-area: availability;
 }
 
 #position-duration {
-  grid-area: duration
+  grid-area: duration;
 }
 
 #position-location {
-  grid-area: location
+  grid-area: location;
 }
 
 #position-compensation {
-  grid-area: compensation
+  grid-area: compensation;
 }
 
 #position-contact {
@@ -4877,13 +4875,13 @@ New Project Page style rules
   align-items: center;
   gap: 10px;
   font-style: normal;
-  transition: background-color .1s;
+  transition: background-color 0.1s;
 }
 
 #position-contact-link:hover {
   cursor: pointer;
   /* background-color: #CCCCD7; */
-  transition: background-color .1s;
+  transition: background-color 0.1s;
 }
 
 #position-contact-link img {
@@ -4978,16 +4976,16 @@ New Project Page style rules
   margin: auto;
 
   .team-member-name {
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--primary-color)
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--primary-color);
   }
 
   .team-member-role {
-      font-style: italic;
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--neutral-gray);
+    font-style: italic;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--neutral-gray);
   }
 }
 
@@ -5060,7 +5058,6 @@ My projects page style rules
 } */
 
 @media only screen and (max-width: 800px) {
-
   /* responsiveness goes here*/
 }
 
@@ -5246,8 +5243,8 @@ My projects page style rules
 
   display: grid;
   grid-template-areas:
-      "image image"
-      "title options";
+    'image image'
+    'title options';
   row-gap: 5px;
 }
 
@@ -5491,7 +5488,7 @@ My projects page style rules
   padding: 5px 15px;
   text-align: left;
   font-family: Inter, FontAwesome;
-  transition: background-color .2s;
+  transition: background-color 0.2s;
 }
 
 .card-delete-button {
@@ -5501,7 +5498,7 @@ My projects page style rules
 .card-leave-button:hover,
 .card-delete-button:hover {
   background-color: #00000040;
-  transition: background-color .2s;
+  transition: background-color 0.2s;
 }
 
 /*
@@ -5668,7 +5665,6 @@ Settings page style rules
   margin: auto 0px;
   padding: 5px;
   /* border: 1px solid lightcoral; */
-
 }
 
 .settingsBtns {
@@ -5687,29 +5683,29 @@ Settings page style rules
 .settingsBtns:hover {
   background-color: var(--primary-blue);
   color: var(--main-text);
-  transition: .2s;
+  transition: 0.2s;
 }
 
 .displayName {
   input {
-      width: 180px;
-      height: 30px;
-      padding: 5px;
-      margin-right: 10px;
-      border-bottom: 1px solid var(--medGray);
-      border-top: none;
-      border-left: none;
-      border-right: none;
-      background-color: var(--primary-color);
-      font-size: 16px;
-      text-align: left;
-      font-weight: 600;
-      outline: none;
+    width: 180px;
+    height: 30px;
+    padding: 5px;
+    margin-right: 10px;
+    border-bottom: 1px solid var(--medGray);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: var(--primary-color);
+    font-size: 16px;
+    text-align: left;
+    font-weight: 600;
+    outline: none;
   }
 
   img {
-      width: 25px;
-      height: 25px;
+    width: 25px;
+    height: 25px;
   }
 }
 
@@ -5760,32 +5756,32 @@ Settings page style rules
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #D0D0D0;
-  -webkit-transition: .4s;
-  transition: .4s;
+  background-color: #d0d0d0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 20px;
   width: 20px;
   left: 4px;
   bottom: 4px;
   background-color: var(--primary-color);
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: var(--primary-blue);
 }
 
-input:focus+.slider {
+input:focus + .slider {
   box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -5825,7 +5821,6 @@ input:checked+.slider:before {
 }
 
 @media only screen and (max-width: 800px) {
-
   /*responsiveness goes here*/
 }
 
@@ -5987,7 +5982,7 @@ Login and Signup page style rules
   margin: 20px auto 0px auto;
   padding: 5px 16px;
   font-size: 20px;
-  border: 1px solid #E3E3E3;
+  border: 1px solid #e3e3e3;
   border: none;
   border-radius: 50px;
   background-color: var(--bg-color);
@@ -6044,50 +6039,50 @@ Login and Signup page style rules
 
 @media screen and (max-width: 1020px) {
   .background-cover {
-      /* background-image: url("../../../public/images/mobile-directory-background.png"); */
-      background-color: var(--bg-color);
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
+    /* background-image: url("../../../public/images/mobile-directory-background.png"); */
+    background-color: var(--bg-color);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 
   .login-signup-container {
-      width: 540px;
-      border-radius: 5px;
+    width: 540px;
+    border-radius: 5px;
   }
 
   .login-form,
   .signup-form {
-      position: fixed;
-      border-radius: 4px;
+    position: fixed;
+    border-radius: 4px;
   }
 
   .directory {
-      visibility: collapse;
-      display: none;
+    visibility: collapse;
+    display: none;
   }
 
   .mobile-signup,
   .mobile-login {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      color: var(--main-text);
-      font-weight: 300;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: var(--main-text);
+    font-weight: 300;
   }
 
   #signup-btn-mobile,
   #login-btn-mobile {
-      display: block;
-      font-weight: 500;
-      color: var(--primary-color);
-      margin: 0 0 0 8px;
+    display: block;
+    font-weight: 500;
+    color: var(--primary-color);
+    margin: 0 0 0 8px;
   }
 
   #signup-btn-mobile:hover,
   #login-btn-mobile:hover {
-      cursor: pointer;
+    cursor: pointer;
   }
 }
 
@@ -6153,10 +6148,10 @@ Signup process modal style rules
   text-align: center;
 
   p {
-      font-size: 15px;
-      color: black;
-      margin: 10px;
-      font-weight: 400;
+    font-size: 15px;
+    color: black;
+    margin: 10px;
+    font-weight: 400;
   }
 }
 
@@ -6244,20 +6239,20 @@ Signup process modal style rules
   padding: 0 20px;
 
   h4 {
-      margin: 10px;
+    margin: 10px;
   }
 
   input {
-      width: 340px;
-      height: 30px;
-      padding: 5px 20px;
-      font-size: 15px;
-      border: 2px solid var(--lightGray);
-      border-radius: 50px;
-      background-color: var(--primary-color);
-      color: black;
-      font-weight: 400;
-      align-self: center;
+    width: 340px;
+    height: 30px;
+    padding: 5px 20px;
+    font-size: 15px;
+    border: 2px solid var(--lightGray);
+    border-radius: 50px;
+    background-color: var(--primary-color);
+    color: black;
+    font-weight: 400;
+    align-self: center;
   }
 }
 
@@ -6281,7 +6276,7 @@ Signup process modal style rules
 
   button,
   label {
-      display: none;
+    display: none;
   }
 }
 
@@ -6290,47 +6285,47 @@ Signup process modal style rules
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.20);
+  background-color: rgba(0, 0, 0, 0.2);
   z-index: 1;
   border-radius: 4px;
   transition: 0.2s;
 
   button {
-      display: block;
-      width: 140px;
-      height: 40px;
-      padding: 5px;
-      font-size: 15px;
-      border: none;
-      border-radius: 10px;
-      background-color: var(--primary-color);
-      color: black;
-      font-weight: 600;
-      text-align: center;
-      box-shadow: 0px 0px 10px 0px var(--shadow-color);
+    display: block;
+    width: 140px;
+    height: 40px;
+    padding: 5px;
+    font-size: 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    color: black;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0px 0px 10px 0px var(--shadow-color);
   }
 
   label {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 140px;
-      height: 40px;
-      font-size: 15px;
-      border: none;
-      border-radius: 10px;
-      background-color: var(--primary-color);
-      color: black;
-      font-weight: 700;
-      text-align: center;
-      box-shadow: 0px 0px 10px 0px var(--shadow-color);
-      transition: 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    height: 40px;
+    font-size: 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    color: black;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0px 0px 10px 0px var(--shadow-color);
+    transition: 0.2s;
   }
 
   button:hover,
   label:hover {
-      color: var(--orange);
-      cursor: pointer;
+    color: var(--orange);
+    cursor: pointer;
   }
 }
 
@@ -6363,13 +6358,12 @@ Signup process modal style rules
   flex-wrap: wrap;
 
   div {
-      margin: 4px;
-      padding: 4px 8px;
-      border-radius: 10px;
-      font-weight: 500;
+    margin: 4px;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-weight: 500;
   }
 }
-
 
 #skill-select button,
 #interest-select button,
@@ -6464,7 +6458,7 @@ Signup process modal style rules
   gap: 20px;
 
   img {
-      filter: invert(1);
+    filter: invert(1);
   }
 }
 
@@ -6475,13 +6469,13 @@ Signup process modal style rules
   border: 2px solid var(--orange);
 
   img {
-      filter: invert(0);
+    filter: invert(0);
   }
 }
 
 @media screen and (max-width: 1020px) {
   #signupProcess-btns {
-      width: 700px;
+    width: 700px;
   }
 
   .ChooseSkills,
@@ -6489,13 +6483,13 @@ Signup process modal style rules
   .ChooseProficiencies,
   .CompleteProfile,
   .GetStarted {
-      width: 800px;
+    width: 800px;
   }
 }
 
 @media screen and (max-width: 820px) {
   #signupProcess-btns {
-      width: 500px;
+    width: 500px;
   }
 
   .ChooseSkills,
@@ -6503,17 +6497,17 @@ Signup process modal style rules
   .ChooseProficiencies,
   .CompleteProfile,
   .GetStarted {
-      width: 550px;
+    width: 550px;
   }
 }
 
 @media screen and (max-width: 550px) {
   body {
-      padding: 0px;
+    padding: 0px;
   }
 
   #signupProcess-btns {
-      width: 480px;
+    width: 480px;
   }
 
   .ChooseSkills,
@@ -6521,14 +6515,14 @@ Signup process modal style rules
   .ChooseProficiencies,
   .CompleteProfile,
   .GetStarted {
-      box-shadow: none;
-      width: 100%;
+    box-shadow: none;
+    width: 100%;
   }
 }
 
 @media screen and (max-width: 400px) {
   body {
-      padding: 0px;
+    padding: 0px;
   }
 
   .ChooseSkills,
@@ -6536,12 +6530,12 @@ Signup process modal style rules
   .ChooseProficiencies,
   .CompleteProfile,
   .GetStarted {
-      box-shadow: none;
-      width: 100%;
+    box-shadow: none;
+    width: 100%;
   }
 
   #signupProcess-title {
-      font-size: 24px;
+    font-size: 24px;
   }
 }
 
@@ -6592,25 +6586,25 @@ Credits style rules
   margin: 20px 50px;
 
   .lfg-contributor {
-      width: 255px;
-      background-color: var(--header-color);
-      display: flex;
-      align-items: center;
-      padding: 12px 15px;
-      border-radius: 10px;
-      margin: 15px 35px;
+    width: 255px;
+    background-color: var(--header-color);
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin: 15px 35px;
 
-      scale: 1.2;
+    scale: 1.2;
   }
 
   .og-lfg-contributor {
-      width: 200px;
-      background-color: var(--header-color);
-      display: flex;
-      align-items: center;
-      padding: 12px 15px;
-      border-radius: 10px;
-      margin: 10px 0 0 10px;
+    width: 200px;
+    background-color: var(--header-color);
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin: 10px 0 0 10px;
   }
 }
 
@@ -6640,10 +6634,9 @@ Credits style rules
   border: none;
   border-radius: 50px;
 
-
   img {
-      width: 20px;
-      rotate: 180deg;
+    width: 20px;
+    rotate: 180deg;
   }
 }
 
@@ -6707,5 +6700,5 @@ Email Confirmation page style rules
 }
 
 #manual-redirect-link {
-  color: #271D66;
+  color: #271d66;
 }

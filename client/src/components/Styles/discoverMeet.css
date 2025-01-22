@@ -422,10 +422,22 @@ Discover and Meet page style rules
   color: var(--tag-text-unselected-red);
 }
 
+.tag-button-red-unselected:hover {
+  background-color: var(--tag-red-selected);
+  border: 2px solid var(--tag-red-selected);
+  color: var(--tag-text-selected);
+}
+
 .tag-button-orange-unselected {
   background-color: var(--tag-orange-unselected);
   border: 2px solid var(--tag-orange-unselected-border);
   color: var(--tag-text-unselected-orange);
+}
+
+.tag-button-orange-unselected:hover {
+  background-color: var(--tag-orange-selected);
+  border: 2px solid var(--tag-orange-selected);
+  color: var(--tag-text-selected);
 }
 
 .tag-button-yellow-unselected {
@@ -434,10 +446,22 @@ Discover and Meet page style rules
   color: var(--tag-text-unselected-yellow);
 }
 
+.tag-button-yellow-unselected:hover {
+  background-color: var(--tag-yellow-selected);
+  border: 2px solid var(--tag-yellow-selected);
+  color: var(--tag-text-selected);
+}
+
 .tag-button-green-unselected {
   background-color: var(--tag-green-unselected);
   border: 2px solid var(--tag-green-unselected-border);
   color: var(--tag-text-unselected-green);
+}
+
+.tag-button-green-unselected:hover {
+  background-color: var(--tag-green-selected);
+  border: 2px solid var(--tag-green-selected);
+  color: var(--tag-text-selected);
 }
 
 .tag-button-blue-unselected {
@@ -446,10 +470,22 @@ Discover and Meet page style rules
   color: var(--tag-text-unselected-blue);
 }
 
+.tag-button-blue-unselected:hover {
+  background-color: var(--tag-blue-selected);
+  border: 2px solid var(--tag-blue-selected);
+  color: var(--tag-text-selected);
+}
+
 .tag-button-purple-unselected {
   background-color: var(--tag-purple-unselected);
   border: 2px solid var(--tag-purple-unselected-border);
   color: var(--tag-text-unselected-purple);
+}
+
+.tag-button-purple-unselected:hover {
+  background-color: var(--tag-purple-selected);
+  border: 2px solid var(--tag-purple-selected);
+  color: var(--tag-text-selected);
 }
 
 .tag-button-grey-unselected {
@@ -458,8 +494,15 @@ Discover and Meet page style rules
   color: var(--tag-text-unselected-grey);
 }
 
+.tag-button-grey-unselected:hover {
+  background-color: var(--tag-grey-selected);
+  border: 2px solid var(--tag-grey-selected);
+  color: var(--tag-text-selected);
+}
+
 .tag-button:hover {
   cursor: pointer;
+  transition: 0.2s;
 }
 
 /* .tag-button-selected {

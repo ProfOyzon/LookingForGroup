@@ -35,11 +35,16 @@ export const SearchBar = ({ dataSets, onSearch }) => {
           setQuery(newQuery);
       
           const filteredResults = dataSets.map(dataSet =>
-            dataSet.data.filter(item =>
-              Object.values(item).some(value =>
-                String(value).toLowerCase().includes(newQuery.toLowerCase())
-              )
-            )
+            dataSet.data.filter((item) => {
+              // See if it's an array of objects, or just an array of strings
+              if (typeof item === "Object") {
+                return Object.values(item).some(value =>
+                  String(value).toLowerCase().includes(newQuery.toLowerCase())
+                );
+              }
+
+              return String(item).toLowerCase().includes(newQuery.toLowerCase());
+            })
           );
           onSearch(filteredResults);
         };

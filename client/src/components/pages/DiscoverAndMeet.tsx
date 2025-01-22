@@ -29,6 +29,7 @@ import profileImage from "../../icons/profile-user.png";
 import { sendPost, sendGet, GET } from "../../functions/fetch";
 import e from "express";
 import { ThemeIcon } from '../ThemeIcon';
+import { current } from '@reduxjs/toolkit';
 
 //To-do
 //Add/finish additional tag filter popup
@@ -50,7 +51,7 @@ let projectList = [];
 let filteredProjectList = [];
 
 //Variable that tracks what position we are at in the above array
-let projectListPosition : number = 0;
+let projectListPosition: number = 0;
 
 //List that holds profile data that will be displayed. Changes along with search parameters
 let profileList = [];
@@ -58,22 +59,22 @@ let profileList = [];
 let filteredProfileList = [];
 
 //Variable that tracks what position we are at in the above array
-let profileListPosition : number = 0;
+let profileListPosition: number = 0;
 //Create array of profiles to help track the order they were added
-let displayedProfileList : {profile, height : number}[] = [];
+let displayedProfileList: { profile, height: number }[] = [];
 //Create array of height trackers to track total height in each column
-let heightTrackers : number[];
+let heightTrackers: number[];
 
 //array that tracks what tags are currently being used to filter
-let activeTagFilters : string[] = [];
+let activeTagFilters: string[] = [];
 //array that tracks active tags used in the more filters dropdown
-let extraTagFilters : string[] = [];
+let extraTagFilters: string[] = [];
 //array that tracks tag selected in the filters popup, contents are copied to extraTagFilters when applied
-let popupTagSelections : string[] = [];
+let popupTagSelections: string[] = [];
 
 //Main DiscoverAndMeet component
 //category - string variable that determines what layout type to load (defaults to profile if invalid value is given)
-const DiscoverAndMeet = ({category}) => {
+const DiscoverAndMeet = ({ category }) => {
   //Use these when testing with 'npm run server'
   //Functions used to retrieve data from the database
   const getProjectData = async () => {
@@ -81,28 +82,28 @@ const DiscoverAndMeet = ({category}) => {
     try {
       let response = await fetch(url, {
         method: "GET",
-        headers: {"Content-Type": "application/json"}
+        headers: { "Content-Type": "application/json" }
       });
-  
+
       const projectData = await response.json();
-  
+
       setFullProjectList(projectData.data);
       setDisplayedProjects(() => firstProjects(projectData.data));
-    } catch(error) {
+    } catch (error) {
       console.error(error.message);
     }
-  } 
+  }
 
   const getProfileData = async () => {
     const url = '/api/users'
     try {
       let response = await fetch(url);
-  
+
       const profileData = await response.json();
-  
+
       setFullProfileList(profileData.data);
       setProfileColumns(() => firstProfiles(profileData.data));
-    } catch(error) {
+    } catch (error) {
       console.error(error.message)
     }
   }
@@ -125,13 +126,13 @@ const DiscoverAndMeet = ({category}) => {
   //List that holds trimmed project data for use in searching
   //Note: Depending on user needs, may need to change or add to what is used in searches
   const projectSearchData = fullProjectList != undefined ? fullProjectList.map((project) => {
-    return({name: project.title, description: project.hook});
+    return ({ name: project.title, description: project.hook });
   }) : [];
 
   //List that holds trimmed profile data for use in searching
   //Note: Depending on user needs, may need to change or add to what is used in searches
   const profileSearchData = fullProfileList != undefined ? fullProfileList.map((profile) => {
-    return({name: `${profile.first_name} ${profile.last_name}`, username: profile.username, bio: profile.bio});
+    return ({ name: `${profile.first_name} ${profile.last_name}`, username: profile.username, bio: profile.bio });
   }) : [];
 
   //Gets the width of the scrollbar
@@ -144,17 +145,17 @@ const DiscoverAndMeet = ({category}) => {
     outer.style.overflow = 'scroll'; // forcing scrollbar to appear
     outer.style.msOverflowStyle = 'scrollbar'; // needed for WinJS apps
     document.body.appendChild(outer);
-    
+
     // Creating inner element and placing it in the container
     const inner = document.createElement('div');
     outer.appendChild(inner);
-    
+
     // Calculating difference between container's full width and the child width
     const scrollbarWidth = (outer.offsetWidth - inner.offsetWidth);
-    
+
     // Removing temporary elements from the DOM
     outer.parentNode.removeChild(outer);
-    
+
     return scrollbarWidth;
   }
 
@@ -178,38 +179,41 @@ const DiscoverAndMeet = ({category}) => {
   }
 
   //Get a list of tags to use for tag filters (project tags for projects, profession tags for profiles)
+  //const tagList = category === 'projects' ? tags.tags : tags.peopleTags;
   const tagList = category === 'projects' ? tags.tags : tags.peopleTags;
+  const [filteredTagList, setFilteredTagList] = useState([]);
+  const [filteredTags, setFilteredTags] = useState([]);
   //list of tabs for the filter popup to use, changes depending on if discover or meet page is being used
-  let filterPopupTabs = category === 'projects' ? 
+  let filterPopupTabs = category === 'projects' ?
     [
-      {categoryTags: tags.projectTypes, categoryName: 'Project Type'},
-      {categoryTags: tags.tags, categoryName: 'Genre'},
-      {categoryTags: tags.tags, categoryName: 'Purpose'}
+      { categoryTags: tags.projectTypes, categoryName: 'Project Type' },
+      { categoryTags: tags.genres, categoryName: 'Genre' },
+      { categoryTags: tags.purposes, categoryName: 'Purpose' }
     ] :
     [
-      {categoryTags: tags.devSkills, categoryName: 'Developer Skill'},
-      {categoryTags: tags.desSkills, categoryName: 'Designer Skill'},
-      {categoryTags: tags.softSkills, categoryName: 'Soft Skill'},
-      {categoryTags: tags.tags, categoryName: 'Role'},
-      {categoryTags: tags.tags, categoryName: 'Major'},
+      { categoryTags: tags.devSkills, categoryName: 'Developer Skill' },
+      { categoryTags: tags.desSkills, categoryName: 'Designer Skill' },
+      { categoryTags: tags.softSkills, categoryName: 'Soft Skill' },
+      { categoryTags: tags.tags, categoryName: 'Role' },
+      { categoryTags: tags.tags, categoryName: 'Major' },
     ]
-  ;
+    ;
 
   //Set up panel display functions
 
   //Variables used for panel displays
   //Find out the width of the flexbox container
-  let flexboxWidth : number = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
+  let flexboxWidth: number = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
     : window.innerWidth - (100 + getScrollbarWidth())
-  ;
+    ;
   //tracks the width of items in the current flexbox row
-  let widthTracker : number = -20;
+  let widthTracker: number = -20;
   //tracks the number of "full" flexbox rows
-  let rowTracker : number = 0;
+  let rowTracker: number = 0;
   //tracks the number of project panels that will be placed in a row
-  let projectTracker : number = 0;
+  let projectTracker: number = 0;
   //Tracks the time of the most recent resize call
-  let lastResizeCall : number = 0;
+  let lastResizeCall: number = 0;
 
   //Loads a new set of project panels to render
   //Calls when page first loads & when a new list of projects is being used (e.g. after a search)
@@ -224,7 +228,7 @@ const DiscoverAndMeet = ({category}) => {
 
     //empty list of projects to display
     //(Will also include project data when actual projects are used)
-    let projectsToDisplay : {project, width : number, adjust : number, row : number, rightMost : boolean}[] = [];
+    let projectsToDisplay: { project, width: number, adjust: number, row: number, rightMost: boolean }[] = [];
 
     //Reset variables, if needed
     widthTracker = -20;
@@ -233,7 +237,7 @@ const DiscoverAndMeet = ({category}) => {
 
     //Get first panel's thumbnail and its width/height
     let firstThumbnail = new Image();
-    firstThumbnail.src = projectList[projectListPosition].thumbnail != null ? 
+    firstThumbnail.src = projectList[projectListPosition].thumbnail != null ?
       `images/thumbnails/${projectList[projectListPosition].thumbnail}` :
       profileImage;
 
@@ -247,11 +251,11 @@ const DiscoverAndMeet = ({category}) => {
     For this reason, an extra check is added to ensure height does not equal 0. In the event it does,
     we randomize width instead of calculating an accurate width.
     */
-    let firstPanelWidth = projectList[projectListPosition].thumbnail != null && firstThumbnail.height != 0 ? 
+    let firstPanelWidth = projectList[projectListPosition].thumbnail != null && firstThumbnail.height != 0 ?
       firstThumbnail.width * (200 / firstThumbnail.height) :
       Math.floor((Math.random() * 200) + 200);
     widthTracker += firstPanelWidth + 20;
-    projectsToDisplay.push({project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker, rightMost: false});
+    projectsToDisplay.push({ project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker, rightMost: false });
     projectListPosition++
     projectTracker++;
 
@@ -259,7 +263,7 @@ const DiscoverAndMeet = ({category}) => {
     while (rowTracker <= 5 && projectListPosition < projectList.length) {
       //Get thumbnail and its width & height
       let thumbnail = new Image();
-      thumbnail.src = projectList[projectListPosition].thumbnail != null ? 
+      thumbnail.src = projectList[projectListPosition].thumbnail != null ?
         `images/thumbnails/${projectList[projectListPosition].thumbnail}` :
         profileImage;
       //Get a width value based on the project's display image's aspect ratio
@@ -281,7 +285,7 @@ const DiscoverAndMeet = ({category}) => {
       //Calculates panel width based on aspect ratio of thumbnail image
       //If no thumbnail is found, randomizes width
       console.log(thumbnail.width, thumbnail.height);
-      let panelWidth = projectList[projectListPosition].thumbnail != null && thumbnail.height != 0 ? 
+      let panelWidth = projectList[projectListPosition].thumbnail != null && thumbnail.height != 0 ?
         thumbnail.width * (200 / thumbnail.height) :
         Math.floor((Math.random() * 200) + 200);
       //Add (width value + flexbox gap value + borders) to width tracker
@@ -320,13 +324,13 @@ const DiscoverAndMeet = ({category}) => {
       if (rowTracker < 5) {
         //Add current project to list of projects to display
         //(Will include actual projects later)
-        projectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker, rightMost: false});
+        projectsToDisplay.push({ project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker, rightMost: false });
         projectListPosition++;
         projectTracker++;
       } else { //otherwise...
         //Break project iteration loop
         break;
-      }  
+      }
     }
 
     //Perform width adjustments on last row
@@ -363,7 +367,7 @@ const DiscoverAndMeet = ({category}) => {
     } = document.querySelector(".page");
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      let newProjectsToDisplay : {project, width : number, adjust : number, row : number, rightMost : boolean}[] = [];
+      let newProjectsToDisplay: { project, width: number, adjust: number, row: number, rightMost: boolean }[] = [];
 
       //Reset calculation values
       widthTracker = -20;
@@ -400,23 +404,23 @@ const DiscoverAndMeet = ({category}) => {
         }
         if (rowTracker < lastRow + 5) {
           //Add current project to list of projects to display
-          newProjectsToDisplay.push({project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker, rightMost: false});
+          newProjectsToDisplay.push({ project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker, rightMost: false });
           projectListPosition++;
           projectTracker++;
-        } else { 
+        } else {
           break;
-        }  
+        }
       }
 
-    //Append new project list to existing one
-    setDisplayedProjects(displayedProjects.concat(newProjectsToDisplay));
-  }
+      //Append new project list to existing one
+      setDisplayedProjects(displayedProjects.concat(newProjectsToDisplay));
+    }
   }
 
   //Adjusts display to fit resized window, called whenever window size is adjusted
   const resizeProjects = () => {
     //Get time this function was called
-    let thisCall : number = new Date().getTime();
+    let thisCall: number = new Date().getTime();
     lastResizeCall = thisCall;
     //Set timer to check whether to continue this call or not
     setTimeout(() => {
@@ -428,11 +432,11 @@ const DiscoverAndMeet = ({category}) => {
       //Similar to initial project panel rendering, just uses all currently displays projects
       //instead of adding new ones
       //Array holding edited project details
-      let resizedProjects : {project, width : number, adjust : number, row : number, rightMost : boolean}[] = [];
+      let resizedProjects: { project, width: number, adjust: number, row: number, rightMost: boolean }[] = [];
       //Calculate new flexbox width
       flexboxWidth = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
         : window.innerWidth - (100 + getScrollbarWidth())
-      ;
+        ;
       //Reset tracker variables (widthTracker, rowTracker, projectTracker)
       widthTracker = -20;
       rowTracker = 0;
@@ -441,7 +445,7 @@ const DiscoverAndMeet = ({category}) => {
       //For each project...
       ///There is some sort of bug happening here, occasionally more than the max projects are being displayed
       ///Issue only seems to occur after saving new code while test server is being hosted, so it may not need to be addressed
-      for (let project of displayedProjects){
+      for (let project of displayedProjects) {
         //Add width to widthTracker
         widthTracker += project.width + 20;
         //If widthTracker > flexbox width...
@@ -467,7 +471,7 @@ const DiscoverAndMeet = ({category}) => {
           projectTracker = 0;
         }
         //Add project to resized projects &  increment projectTracker
-        resizedProjects.push({project: project.project, width: project.width, adjust: 0, row: rowTracker, rightMost: false});
+        resizedProjects.push({ project: project.project, width: project.width, adjust: 0, row: rowTracker, rightMost: false });
         projectTracker++;
       }
       //Perform width adjustment on last row
@@ -486,7 +490,7 @@ const DiscoverAndMeet = ({category}) => {
           }
         }
       }
-          
+
       //Set displayed projects state
       setDisplayedProjects(resizedProjects);
     }, 100)
@@ -513,7 +517,7 @@ const DiscoverAndMeet = ({category}) => {
           continue;
         }
       }
-    } 
+    }
 
     // if no projects were found
     if (filteredProjectList.length === 0) {
@@ -524,7 +528,7 @@ const DiscoverAndMeet = ({category}) => {
       // if projects are found, update the list 
       updateProjectList();
     }
-  
+
   }
 
   //Make new list of projects by mapping new filtered list
@@ -547,7 +551,7 @@ const DiscoverAndMeet = ({category}) => {
         }
       }
 
-      return(tagFilterCheck);
+      return (tagFilterCheck);
     })
 
     //If no tags are currently selected, render all projects
@@ -562,7 +566,7 @@ const DiscoverAndMeet = ({category}) => {
   //Calls when page first loads & when a new list of profiles is being used (e.g. after a search)
   const firstProfiles = (newProfileList) => {
     if (newProfileList === undefined) {
-      return([[]]);
+      return ([[]]);
     }
     profileList = newProfileList;
     profileListPosition = 0;
@@ -573,14 +577,14 @@ const DiscoverAndMeet = ({category}) => {
     let totalColumns = Math.floor(flexboxWidth / 224);
     //Create a number of arrays to hold profile panels equal to the number of columns
     //Also, create height trackers for each column
-    let columnsToDisplay : {profile, height : number}[][] = [];
-    for (let i = 0; i < totalColumns; i++){
+    let columnsToDisplay: { profile, height: number }[][] = [];
+    for (let i = 0; i < totalColumns; i++) {
       columnsToDisplay.push([]);
       heightTrackers.push(0);
     }
     //Start iterating through profiles (set limit of 30 profiles at first render)
     //For each profile... (until all profiles are used or 30 are used)
-    for (let i = 0; i < 30; i++){
+    for (let i = 0; i < 30; i++) {
       //If there are no more profiles to use, break this loop
       if (profileListPosition >= profileList.length) {
         break;
@@ -590,22 +594,22 @@ const DiscoverAndMeet = ({category}) => {
       let panelHeight = Math.floor((Math.random() * 300) + 200) + getProfilePanelTextHeight(profileList[i]);
       //Check which column has the least height currently (if multiple have same, use first)
       let shortestColumn = 0;
-      for (let j = 1; j < heightTrackers.length; j++){
+      for (let j = 1; j < heightTrackers.length; j++) {
         if (heightTrackers[j] < heightTrackers[shortestColumn]) {
           shortestColumn = j;
         }
       }
       //Add current profile to column with least height
-      columnsToDisplay[shortestColumn].push({profile: profileList[i], height: panelHeight});
+      columnsToDisplay[shortestColumn].push({ profile: profileList[i], height: panelHeight });
       //Also add current profile to displayedProfileList
-      displayedProfileList.push({profile: profileList[i], height: panelHeight});
+      displayedProfileList.push({ profile: profileList[i], height: panelHeight });
       profileListPosition++;
       //Add profile height to column's height tracker
       heightTrackers[shortestColumn] += panelHeight;
     }
-        
+
     //Return full set of arrays
-    return(columnsToDisplay);
+    return (columnsToDisplay);
   }
 
   //Function that handles adding new profiles when scrolling to the bottom of the page
@@ -618,7 +622,7 @@ const DiscoverAndMeet = ({category}) => {
 
     if (scrollTop + clientHeight >= scrollHeight) {
       //Get current set of displayed profiles
-      let newProfilePanels : {profile, height : number}[][] = JSON.parse(JSON.stringify(profileColumns));
+      let newProfilePanels: { profile, height: number }[][] = JSON.parse(JSON.stringify(profileColumns));
       //Find where we left off on the profile list
       //Start iterating through profiles
       //For each profile... (until 30 or used or list is exhausted)
@@ -632,15 +636,15 @@ const DiscoverAndMeet = ({category}) => {
         let panelHeight = Math.floor((Math.random() * 300) + 200);
         //Find column with shortest height
         let shortestColumn = 0;
-        for (let j = 1; j < heightTrackers.length; j++){
+        for (let j = 1; j < heightTrackers.length; j++) {
           if (heightTrackers[j] < heightTrackers[shortestColumn]) {
             shortestColumn = j;
           }
         }
         //Add profile to column with shortest height
-        newProfilePanels[shortestColumn].push({profile: profileList[profileListPosition], height: panelHeight});
+        newProfilePanels[shortestColumn].push({ profile: profileList[profileListPosition], height: panelHeight });
         //Add profile to displayedProfileList
-        displayedProfileList.push({profile: profileList[profileListPosition],height: panelHeight});
+        displayedProfileList.push({ profile: profileList[profileListPosition], height: panelHeight });
         profileListPosition++;
         //Add profile's height to column's height tracker
         heightTrackers[shortestColumn] += panelHeight;
@@ -653,7 +657,7 @@ const DiscoverAndMeet = ({category}) => {
   //Function that handles resizing of profile panels
   const resizeProfiles = () => {
     //Get time this function was called
-    let thisCall : number = new Date().getTime();
+    let thisCall: number = new Date().getTime();
     lastResizeCall = thisCall;
     //Set timer to check whether to continue this call or not
     setTimeout(() => {
@@ -665,12 +669,12 @@ const DiscoverAndMeet = ({category}) => {
       //Check current flexbox width & number of columns it can hold
       flexboxWidth = window.innerWidth >= 800 ? window.innerWidth - 320 - getScrollbarWidth()
         : window.innerWidth - (100 + getScrollbarWidth())
-      ;
+        ;
       let newColumns = Math.floor(flexboxWidth / 224);
       //If number of columns available has changed...
-      if (newColumns !== heightTrackers.length){
+      if (newColumns !== heightTrackers.length) {
         //Construct new array to contain resized column info
-        let resizedColumnsToDisplay : {profile, height : number}[][] = [];
+        let resizedColumnsToDisplay: { profile, height: number }[][] = [];
         //Reset all height trackers
         for (let i = 0; i < heightTrackers.length; i++) {
           heightTrackers[i] = 0;
@@ -689,7 +693,7 @@ const DiscoverAndMeet = ({category}) => {
           }
         }
         //Fill new column info array with empty arrays
-        for (let i = 0; i < heightTrackers.length; i++){
+        for (let i = 0; i < heightTrackers.length; i++) {
           resizedColumnsToDisplay.push([]);
         }
         //Get current set of displayed profiles (not profileColumns, need an unaltered list)
@@ -698,13 +702,13 @@ const DiscoverAndMeet = ({category}) => {
         for (let profile of displayedProfileList) {
           //Check which column has the least height currently (use first if there's a tie)
           let shortestColumn = 0;
-          for (let i = 1; i < heightTrackers.length; i++){
+          for (let i = 1; i < heightTrackers.length; i++) {
             if (heightTrackers[i] < heightTrackers[shortestColumn]) {
               shortestColumn = i;
             }
           }
           //Add profile to the least tallest column currently
-          resizedColumnsToDisplay[shortestColumn].push({profile: profile.profile, height: profile.height});
+          resizedColumnsToDisplay[shortestColumn].push({ profile: profile.profile, height: profile.height });
           //Add profile height to the column's height tracker
           heightTrackers[shortestColumn] += profile.height;
           loopTracker++;
@@ -736,7 +740,7 @@ const DiscoverAndMeet = ({category}) => {
         }*/
       }
 
-      return(tagFilterCheck);
+      return (tagFilterCheck);
     })
 
     //If no tags are currently selected, render all projects
@@ -764,12 +768,12 @@ const DiscoverAndMeet = ({category}) => {
         }
       }
     }
-        
+
 
     // if no profiles were found
     if (filteredProfileList.length === 0) {
       profileList = filteredProfileList;
-        setProfileColumns([]);  // clear the profile  columns
+      setProfileColumns([]);  // clear the profile  columns
       console.log("No matching profiles found.");
     } else {
       // if profiles are found, update the list 
@@ -784,9 +788,9 @@ const DiscoverAndMeet = ({category}) => {
 
   //Can possibly merge these two into a single useState? mostly concerned with different variable types
   //Holds data for currently displayed projects
-  let [displayedProjects, setDisplayedProjects] = useState<{project, width : number, adjust : number, row : number, rightMost : boolean}[]>(() => firstProjects(fullProjectList));
+  let [displayedProjects, setDisplayedProjects] = useState<{ project, width: number, adjust: number, row: number, rightMost: boolean }[]>(() => firstProjects(fullProjectList));
   //Holds data for currently displayed profiles
-  let [profileColumns, setProfileColumns] = useState<{profile, height : number}[][]>(() => firstProfiles(fullProfileList));
+  let [profileColumns, setProfileColumns] = useState<{ profile, height: number }[][]>(() => firstProfiles(fullProfileList));
 
   //Runs resizing function whenever window width changes
   //Don't add dependencies to it - it causes state to be reset for some reason (I don't know why)
@@ -798,7 +802,7 @@ const DiscoverAndMeet = ({category}) => {
   });
 
   //Function called when a tag is clicked, adds the tag to the list of filters being used
-  const toggleTag = (e, tagName : string) => {
+  const toggleTag = (e, tagName: string) => {
     //Check if the tag is already in activeTagFilters
     //if it isn't...
     if (!activeTagFilters.includes(tagName)) {
@@ -817,12 +821,12 @@ const DiscoverAndMeet = ({category}) => {
 
   //Function called when scroll arrows are clicked
   //Scrolls the list of tag filters right or left
-  const scrollTags = (direction) => { 
+  const scrollTags = (direction) => {
     //Check if left or right button was clicked
     let tagFilterElement = document.getElementById('discover-tag-filters');
     //Check other button is hidden, if so...
-    if (document.getElementById('filters-left-scroll').classList.contains('hide') || 
-    document.getElementById('filters-right-scroll').classList.contains('hide')) {
+    if (document.getElementById('filters-left-scroll').classList.contains('hide') ||
+      document.getElementById('filters-right-scroll').classList.contains('hide')) {
       //Un-hide the other scrolling button
       document.getElementById('filters-left-scroll').classList.remove('hide');
       document.getElementById('filters-right-scroll').classList.remove('hide');
@@ -865,7 +869,7 @@ const DiscoverAndMeet = ({category}) => {
   }
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   const images = [
     "assets/bannerImages/project1_dark.png",
     "assets/bannerImages/project2_dark.png",
@@ -893,7 +897,7 @@ const DiscoverAndMeet = ({category}) => {
                 transform: `translateX(${(index - currentIndex) * 100}%)`
               }}
             >
-              <ThemeIcon 
+              <ThemeIcon
                 light={`assets/bannerImages/project${index + 1}_light.png`}
                 dark={`assets/bannerImages/project${index + 1}_dark.png`}
                 alt={`project-image-${index}`}
@@ -908,7 +912,7 @@ const DiscoverAndMeet = ({category}) => {
             id="project-image-carousel-left"
             onClick={handlePrev}
           >
-            <ThemeIcon 
+            <ThemeIcon
               light={'assets/arrow_light.png'}
               dark={'assets/arrow_dark.png'}
               alt={'Previous'}
@@ -918,7 +922,7 @@ const DiscoverAndMeet = ({category}) => {
             id="project-image-carousel-right"
             onClick={handleNext}
           >
-            <ThemeIcon 
+            <ThemeIcon
               light={'assets/arrow_light.png'}
               dark={'assets/arrow_dark.png'}
               alt={'Next'}
@@ -983,19 +987,19 @@ const DiscoverAndMeet = ({category}) => {
       <div id='profile-hero'>
 
         <div id='profile-hero-blurb-1' className='profile-hero-blurb'>
-        <ThemeIcon 
-          light={'assets/bannerImages/people1_light.png'}
-          dark={'assets/bannerImages/people1_dark.png'}
-          id={'profile-hero-img-1'}
-        />
+          <ThemeIcon
+            light={'assets/bannerImages/people1_light.png'}
+            dark={'assets/bannerImages/people1_dark.png'}
+            id={'profile-hero-img-1'}
+          />
           {/* <div>
           <span className='profile-hero-highlight'>Explore profiles</span> to see each other's personality, expertise, and project history.
           </div> */}
         </div>
 
         <div id='profile-hero-blurb-2' className='profile-hero-blurb'>
-        <h2>Look for people to work with!</h2>
-          <ThemeIcon 
+          <h2>Look for people to work with!</h2>
+          <ThemeIcon
             light={'assets/bannerImages/people2_light.png'}
             dark={'assets/bannerImages/people2_dark.png'}
             id={'profile-hero-img-2'}
@@ -1008,11 +1012,11 @@ const DiscoverAndMeet = ({category}) => {
         </div>
 
         <div id='profile-hero-blurb-3' className='profile-hero-blurb'>
-        <ThemeIcon 
-          light={'assets/bannerImages/people3_light.png'}
-          dark={'assets/bannerImages/people3_dark.png'}
-          id={'profile-hero-img-3'}
-        />
+          <ThemeIcon
+            light={'assets/bannerImages/people3_light.png'}
+            dark={'assets/bannerImages/people3_dark.png'}
+            id={'profile-hero-img-3'}
+          />
           {/* <div>
           Keep your profile up to date with your skills, project preferences, and interests to 
           <span className='profile-hero-highlight'> find your group!</span>
@@ -1021,10 +1025,10 @@ const DiscoverAndMeet = ({category}) => {
       </div>
     </div>
   }</>
-  
+
   //Displays a set of project panels
   let projectContent = <>{
-    projectList.length > 0 ? 
+    projectList.length > 0 ?
       //For each project in project display list... (use map)
       displayedProjects.map((project) => (
         //Create a Project Panel component
@@ -1048,7 +1052,7 @@ const DiscoverAndMeet = ({category}) => {
       <>Unfortunately, such a person does not exist</>
   }</>
 
-  const toggleFilterTag = (e, tagName : string) => {
+  const toggleFilterTag = (e, tagName: string) => {
     //Check if the tag is already in popupTagSelections
     //if it isn't...
     if (!popupTagSelections.includes(tagName)) {
@@ -1074,22 +1078,22 @@ const DiscoverAndMeet = ({category}) => {
     updateItemList();
   }
 
-  let FilterCategory = ({filterTagList, id, categoryTitle, tagColor = 'grey'}) => {
+  let FilterCategory = ({ filterTagList, id, categoryTitle, tagColor = 'grey' }) => {
     const [displayedTags, setDisplayedTags] = useState(filterTagList);
-    
+
     return (
       <div id={id} className='filter-category'>
         <h2>{categoryTitle}</h2>
-        <hr/>
+        <hr />
         {/* dataSets contains list of tags, onSearch will use function to add tag to list */}
-        <SearchBar dataSets={{data: filterTagList}} onSearch={() => {}}/>
+        <SearchBar dataSets={{ data: filterTagList }} onSearch={() => { }} />
         {/* List of tags, use flexbox */}
         <div className='filter-category-tags'>
           {
             displayedTags.map((tag) => {
               let selected = popupTagSelections.includes(tag) ? 'tag-button-selected' : '';
               return (
-                <button className={`tag-button tag-button-${tagColor} ${selected}`} onClick={(e) => {toggleFilterTag(e, tag)}}>{tag}</button>
+                <button className={`tag-button tag-button-${tagColor} ${selected}`} onClick={(e) => { toggleFilterTag(e, tag) }}>{tag}</button>
               )
             })
           }
@@ -1098,48 +1102,52 @@ const DiscoverAndMeet = ({category}) => {
     )
   }
 
-  let filterPopup = category === 'projects' ? 
+  let filterPopup = category === 'projects' ?
     <>{
       <>
-      <h2>Filters</h2>
-      <div id='filter-popup-projects'>
-        <FilterCategory filterTagList={tags.projectTypes} id='filter-popup-categories' categoryTitle='Categories' tagColor='blue'/>
-        <FilterCategory filterTagList={tags.tags} id='filter-popup-genres' categoryTitle='Genres' tagColor='green'/>
-        <FilterCategory filterTagList={tags.projectDetails} id='filter-popup-misc' categoryTitle='Misc.'/>
-      </div>
-      <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
+        <h2>Filters</h2>
+        <div id='filter-popup-projects'>
+          <FilterCategory filterTagList={tags.projectTypes} id='filter-popup-categories' categoryTitle='Categories' tagColor='blue' />
+          <FilterCategory filterTagList={tags.tags} id='filter-popup-genres' categoryTitle='Genres' tagColor='green' />
+          <FilterCategory filterTagList={tags.projectDetails} id='filter-popup-misc' categoryTitle='Misc.' />
+        </div>
+        <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
       </>
     }</> :
     <>{
       <>
-      <h2>Filters</h2>
-      <div id='filter-popup-profiles'>
-        <FilterCategory filterTagList={tags.devSkills} id='filter-popup-dev-skills' categoryTitle='Developer Skills' tagColor='yellow'/>
-        <FilterCategory filterTagList={tags.desSkills} id='filter-popup-des-skills' categoryTitle='Designer Skills' tagColor='red'/>
-        <FilterCategory filterTagList={tags.proficiencies} id='filter-popup-roles' categoryTitle='Roles'/>
-        <FilterCategory filterTagList={tags.tags} id='filter-popup-majors' categoryTitle='Majors'/>
-        <FilterCategory filterTagList={tags.softSkills} id='filter-popup-soft-skills' categoryTitle='Soft Skills' tagColor='indigo'/>
-      </div>
-      <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
+        <h2>Filters</h2>
+        <div id='filter-popup-profiles'>
+          <FilterCategory filterTagList={tags.devSkills} id='filter-popup-dev-skills' categoryTitle='Developer Skills' tagColor='yellow' />
+          <FilterCategory filterTagList={tags.desSkills} id='filter-popup-des-skills' categoryTitle='Designer Skills' tagColor='red' />
+          <FilterCategory filterTagList={tags.proficiencies} id='filter-popup-roles' categoryTitle='Roles' />
+          <FilterCategory filterTagList={tags.tags} id='filter-popup-majors' categoryTitle='Majors' />
+          <FilterCategory filterTagList={tags.softSkills} id='filter-popup-soft-skills' categoryTitle='Soft Skills' tagColor='indigo' />
+        </div>
+        <PopupButton buttonId='filter-popup-apply' callback={setFilterTags}>Apply</PopupButton>
       </>
     }</>
 
   //Decides which 'content' to display on the page
-  
+
   // let heroContent = category === 'projects' ? <ImageCarousel carouselType='Discover'/> : profileHero;
   let heroContent = category === 'projects' ? projectHero : profileHero;
   let panelContent = category === 'projects' ? projectContent : profileContent;
 
-  return(
+  const [currentTags, setCurrentTags] = useState([]);
+  const [searchedTags, setSearchedTags] = useState([]);
+  const [enabledFilters, setEnabledFilters] = useState([]);
+
+  return (
     <div className='page' onScroll={addContent}>
       {/* Search bar and profile/notification buttons */}
-      <Header dataSets={[{data: category === 'projects' ? projectSearchData : profileSearchData}]}
+      <Header dataSets={[{ data: category === 'projects' ? projectSearchData : profileSearchData }]}
         onSearch={category === 'projects' ? searchProjects : searchProfiles}
       />
       {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
       <div id='discover-hero'>
-      {heroContent}
-      <br></br>
+        {heroContent}
+        <br></br>
       </div>
 
       {/* Contains tag filters & button to access more filters 
@@ -1161,7 +1169,7 @@ const DiscoverAndMeet = ({category}) => {
         </div>
         <Popup>
           <PopupButton buttonId={'discover-more-filters'}>
-            <ThemeIcon 
+            <ThemeIcon
               light={'assets/filters_light.png'}
               dark={'assets/filters_dark.png'}
             />
@@ -1173,53 +1181,71 @@ const DiscoverAndMeet = ({category}) => {
           tags have an onClick function that adds their tag to a full tag list 
           full tag list is only applied when hitting done, which then pushes the info to an active list*/}
           <PopupContent>
-            {/*filterPopup*/}
-            <div id='discover-filter-popup-bg1'>
-              <div id='discover-filter-popup'>
-                <h2>Tag Filters</h2>
-                <div id='filter-popup-selector-container'>
-                  <SearchBar dataSets={{data: tagList}} onSearch={() => {}}/>
-                  <div id='filter-popup-selector-tabs'>
-                    {
-                      /* map something out here, add onClick function */
-                      filterPopupTabs.map((tab) => (
-                        <button className='discover-tag-filter' onClick={() => {}}>{tab.categoryName}</button>
-                      ))
-                    }
-                  </div>
-                  <hr/>
-                  <div id='filter-popup-selector-tags'>
-                    {
-                      /* map tags out here */
-                    }
-                  </div>
-                </div>
-
-                <div id='filter-popup-selected-tags'>
-                  <h2>Selected</h2>
-                  <div id='filter-popup-selected-tags-container'>
-                    {
-                      popupTagSelections.map((tag) => (
-                        <button className='tag-button' onClick={(e) => toggleFilterTag(e, tag)}>{tag}</button>
-                      ))
-                    }
-                  </div>
-                </div>
-
-                <button>Apply</button>
+            <h2>Project Filters</h2>
+            <div id='filters' className='popup-section'>
+              <SearchBar dataSets={[{ data: currentTags }]} onSearch={(results) => {
+                setSearchedTags(results[0]);
+              }}></SearchBar>
+              <div id='filter-tabs'>
+                {
+                  filterPopupTabs.map((tab) =>
+                    <a
+                      className='filter-tab'
+                      onClick={(e) => {
+                        // Remove .selected from all 3 options, add it only to current button
+                        let tabs = document.querySelector('#filter-tabs').children;
+                        for (let i = 0; i < tabs.length; i++) {
+                          tabs[i].classList.remove('selected');
+                        }
+                        e.target.classList.add('selected');
+                        setCurrentTags(tab.categoryTags);
+                        setSearchedTags(tab.categoryTags);
+                      }}
+                    >{tab.categoryName}</a>
+                  )
+                }
+              </div>
+              <hr />
+              <div id='filter-tags'>
+                {(searchedTags.length === 0) ? (
+                  <p>No tags found. Please make sure you have a tab selected.</p>
+                ) :
+                  searchedTags.map(tag =>
+                    <button
+                      className='tag-button tag-button-green-unselected'
+                      onClick={(e) => {
+                        setEnabledFilters([...enabledFilters, tag]);
+                      }}
+                    ><i className='fa-solid fa-plus'></i>{tag}</button>
+                  )
+                }
               </div>
             </div>
+            <div id='selected' className='popup-section'>
+              <h3>Selected</h3>
+              <h4>Click to deselect</h4>
+              <div id='selected-filters'>
+                {enabledFilters.map((tag) =>
+                <button
+                  className='tag-button tag-button-green-selected'
+                  onClick={(e) => {}}
+                ><i className='fa-solid fa-x'></i>{tag}</button>)}
+              </div>
+            </div>
+            <button className='primary-btn' onClick={() => {
+              // Apply selected filters to search
+            }}>Apply</button>
           </PopupContent>
         </Popup>
       </div>
 
       {/* Panel container */}
       <div id='discover-panel-box'>
-      {panelContent}
+        {panelContent}
       </div>
 
       <CreditsFooter />
-      <ToTopButton/>
+      <ToTopButton />
     </div>
   )
 }
@@ -1235,7 +1261,7 @@ export const Discover = () => {
   activeTagFilters = [];
   extraTagFilters = [];
   popupTagSelections = [];
-  return(
+  return (
     <DiscoverAndMeet category={'projects'} />
   )
 }
@@ -1246,7 +1272,7 @@ export const Meet = () => {
   extraTagFilters = [];
   popupTagSelections = [];
   displayedProfileList = [];
-  return(
+  return (
     <DiscoverAndMeet category={'profiles'} />
   )
 }

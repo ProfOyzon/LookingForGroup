@@ -305,3 +305,10 @@ export const genres = [
   "Realistic",
   "Other",
 ]
+
+export const purposes = [
+  "Personal",
+  "Portfolio Piece",
+  "Academic",
+  "Co-op",
+]

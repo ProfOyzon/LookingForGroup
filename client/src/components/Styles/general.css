@@ -717,13 +717,13 @@ Sidebar Nav style rules
         transition-duration: 0.25s;
         background-color: var(--invert-text);
     }
-    
+
     .containerButtonSideBar button.active {
         background-color: var(--primary-color);
         transition: 0.25s;
         font-weight: bold;
         color: var(--invert-text);
-    
+
         img {
             filter: invert(1);
         }
@@ -753,9 +753,11 @@ Page popup style rules
 
 /*rules for the popup itself*/
 .popup {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: fixed;
-    background-color: var(--bg-color);
+    background: var(--modal-gradient);
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px var(--shadow-color);
     max-width: 95vw;
@@ -764,7 +766,13 @@ Page popup style rules
     z-index: 3;
     width: auto;
     height: auto;
-    padding: 10px;
+    padding: 34px 100px;
+}
+
+@media (min-width: 576px) {
+    .popup {
+        max-width: 1121px;
+    }
 }
 
 .popup-container {
@@ -824,6 +832,97 @@ Page popup style rules
     padding-right: 15px;
 }
 
+.popup .primary-btn {
+    width: 110px;
+    height: 40px;
+    padding: 5px 16px;
+    font-size: 20px;
+    border: none;
+    border-radius: 40px;
+    background-color: var(--primary-color);
+    color: var(--invert-text);
+    font-weight: 700;
+    margin-top: 24px;
+}
+
+.popup h2 {
+    font-size: 24px;
+    margin-bottom: 24px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.popup h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0px 0px 4px 0px;
+}
+
+.popup h4 {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--neutral-gray);
+    font-style: italic;
+    margin: 0px 0px 10px 0px;
+}
+
+.popup .popup-section {
+    background-color: var(--bg-color);
+    padding: 26px 30px;
+    margin: 16px 0px;
+    border-radius: 10px;
+}
+
+.popup #filter-tabs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 38px;
+    justify-content: center;
+    margin: 14px auto;
+}
+
+.popup .filter-tab {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--neutral-gray);
+    /* Indicate should be clicked without being a button */
+    cursor: pointer;
+    transition: 0.2s;
+    /* margin: 14px 38px; */
+}
+
+.popup .filter-tab.selected {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.popup hr {
+    /* color: var(--header-color); */
+    border: 1px solid var(--header-color);
+    margin: 0;
+    margin-bottom: 14px;
+}
+
+.popup #filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.popup #selected {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.popup #selected-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
@@ -848,7 +947,8 @@ Header style rules
     */
     background-image: linear-gradient(var(--bg-color) 85%, rgba(0, 0, 0, 0));
     /* width: calc(100% - 50px); */
-    width: 94%; /* This should make it responsive to parent element where it wasn't necessarily before */
+    width: 94%;
+    /* This should make it responsive to parent element where it wasn't necessarily before */
     height: 90px;
     position: sticky;
     top: 0;
@@ -994,7 +1094,8 @@ Search style rules
 .search-bar {
     height: 25px;
     /* width: 100%; */
-    width: calc(100% - 2em); /* Keeps width within parent element */
+    width: calc(100% - 2em);
+    /* Keeps width within parent element */
     /* padding: 10px 15px; */
     padding: 10px 1em;
     /*border: 3px solid gray;*/

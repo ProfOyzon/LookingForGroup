@@ -267,7 +267,7 @@ Project Creator and Editor style rules
 
 #project-editor-content {
   flex-grow: 1;
-  margin: 35px 56px 40px 56px;
+  margin-top: 40px;
 }
 
 #project-editor-content label {
@@ -561,21 +561,21 @@ Project Creator and Editor style rules
 
 #project-editor-project-members {
   display: flex;
-  width: 100%;
+  flex-wrap: wrap;
   margin-top: 15px;
   padding: 20px;
-  justify-content: center;
   align-items: flex-start;
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  background: #0a0a0a;
+  background: #0A0A0A;
+  gap: 10px;
 }
 
 #project-editor-project-member {
   display: flex;
   padding: 12px 15px;
   width: 234px;
-  gap: 30px;
+  gap: 10px;
   flex-direction: row;
   background-color: var(--header-color);
   border-radius: 10px;
@@ -607,16 +607,38 @@ Project Creator and Editor style rules
 
 .edit-project-member-button {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  background-color: var(--primary-color);
-  color: var(--primary-color);
+  width: 30px;
+  height: 30px;
+  transform: translate(26ch, -3.5ch);
+  background-color: var(--primary-color) !important;
   border-radius: 100%;
 }
 
 .edit-project-member-icon {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
+}
+
+#project-editor-add-member {
+  display: flex;
+  padding: 12px 15px;
+  min-width: 234px;
+  gap: 10px;
+  flex-direction: row;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color) !important;
+}
+
+#project-team-add-member-image {
+  width: 74px;
+  height: 74px;
+}
+
+#project-team-add-member-text {
+  font-weight: 700;
+  color: var(--header-color);
 }
 
 /*

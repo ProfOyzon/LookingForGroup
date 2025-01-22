@@ -1193,7 +1193,7 @@ New Profile page style rules
   justify-content: flex-end;
 }
 
-#about-me-buttons button {
+#about-me-buttons>button {
   border: none;
   border-radius: 30px;
   background-color: rgba(0, 0, 0, 0);

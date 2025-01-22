@@ -1,4 +1,4 @@
-import {useState, createContext, useContext} from 'react';
+import { useState, createContext, useContext } from 'react';
 import close from '../icons/cancel.png';
 //This is a reusable component that can be used to make popup windows on pages
 
@@ -31,49 +31,51 @@ const PopupContext = createContext({
 });
 
 //Button component that will open/close the popup
-export const PopupButton = ({children, buttonId = '', callback = () => {}}) => {
-  const {open, setOpen} = useContext(PopupContext);
+export const PopupButton = ({ children, buttonId = '', callback = () => {} }) => {
+  const { open, setOpen } = useContext(PopupContext);
 
   const toggleOpen = () => {
     callback();
     setOpen(!open);
-  }
+  };
 
-  return(
-    <button id={buttonId} onClick={toggleOpen}>{children}</button>
-  )
-}
+  return (
+    <button id={buttonId} onClick={toggleOpen}>
+      {children}
+    </button>
+  );
+};
 
 //Main content of the popup
-export const PopupContent = ({children}) => {
-  const {open, setOpen} = useContext(PopupContext);
+export const PopupContent = ({ children }) => {
+  const { open, setOpen } = useContext(PopupContext);
 
   if (open) {
-    return(
+    return (
       <>
-      <div className='popup-cover'/>
-      <div className='popup-container'>
-        <div className='popup'>
-          <button className='popup-close' onClick={() => setOpen(!open)}><img src={close} alt='X'/></button>
-          {children}
+        <div className="popup-cover" />
+        <div className="popup-container">
+          <div className="popup">
+            <button className="popup-close" onClick={() => setOpen(!open)}>
+              <img src={close} alt="X" />
+            </button>
+            {children}
+          </div>
         </div>
-      </div>
       </>
-    )
+    );
   } else {
-    return(
-      <></>
-    )
+    return <></>;
   }
-}
+};
 
 //Full popup component
-export const Popup = ({children}) => {
+export const Popup = ({ children }) => {
   const [open, setOpen] = useState(false);
 
   return(
     <PopupContext.Provider value={{open, setOpen}}>
-      <div>{children}</div>
+      {children}
     </PopupContext.Provider>
-  )
-}
+  );
+};

@@ -11,12 +11,12 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import profilePlaceholder from "../../icons/profile-user.png";
+import profilePlaceholder from '../../icons/profile-user.png';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import * as paths from "../../constants/routes";
-import { PostReplies } from "../ProjectPostPageComponents/PostReplies"
-import { projects, profiles, posts, comments } from "../../constants/fakeData"; // FIXME: use data in db
+import * as paths from '../../constants/routes';
+import { PostReplies } from '../ProjectPostPageComponents/PostReplies';
+import { projects, profiles, posts, comments } from '../../constants/fakeData'; // FIXME: use data in db
 import { ThemeIcon } from '../ThemeIcon';
 
 //To-do
@@ -55,21 +55,20 @@ const ProjectPostPage = (props) => {
   //If not replying directly to the post, replyTarget indicates which comment it is replying to, identified by id
   let [replyTarget, setReplyTarget] = useState(0);
 
-  
   //Resets the target of any reply inputs back to the post itself
   //Called when clicking the 'reply-prompt-reset' button, which shows if replyingToPost = false
   const resetReplyTarget = () => {
     //Only runs if not already targeting post
-    if(!replyingToPost){
+    if (!replyingToPost) {
       //Change value to indicate replying to post
       setReplyingToPost(true);
       //Reset displays to default
       let replyPrompt = document.getElementById('reply-prompt-display');
-      replyPrompt ? replyPrompt.innerHTML = "Replying to Post" : console.log('element not found');
+      replyPrompt ? (replyPrompt.innerHTML = 'Replying to Post') : console.log('element not found');
       let promptButton = document.getElementById('reply-prompt-reset');
       promptButton ? promptButton.classList.toggle('show') : console.log('element not found');
     }
-  }
+  };
 
   const navigate = useNavigate();
   //Get which post to load using search query
@@ -81,11 +80,13 @@ const ProjectPostPage = (props) => {
   }
 
   //Find post data using Id (or assign a default if one can't be found)
-  const postData = posts.find(p => p._id === Number(postId)) || posts[0];
+  const postData = posts.find((p) => p._id === Number(postId)) || posts[0];
 
   //commentComponent holds the current component data, setCommentComponent should be used whenever
   //  reply data is updated
-  let [commentComponent, setCommentComponent] = useState(<PostReplies postComments={postData.comments}/>);
+  let [commentComponent, setCommentComponent] = useState(
+    <PostReplies postComments={postData.comments} />
+  );
 
   //Function used when sending a new reply, serves as the onClick function for the 'reply-submit' button
   //Constructs a new reply object & writes it to the database
@@ -95,16 +96,16 @@ const ProjectPostPage = (props) => {
     //May require some encoding to prevent code injection
     let replyInput = document.getElementById('reply-input');
     let replyContent;
-    replyInput ? replyContent = replyInput.value : console.log('error finding input container');
-    if (replyContent === ''){
+    replyInput ? (replyContent = replyInput.value) : console.log('error finding input container');
+    if (replyContent === '') {
       console.log('no input given');
       return;
     }
     //create a randomized comment id for the new reply
     //May be a temporary solution, id generation may require different method
     let newId = Math.trunc(Math.random() * 100000000);
-    while (comments.find(comment => comment._id === newId) !== undefined) {
-      newId = Math.trunc(Math.random() * 100000000)
+    while (comments.find((comment) => comment._id === newId) !== undefined) {
+      newId = Math.trunc(Math.random() * 100000000);
     }
     let date = new Date();
     //construct new reply
@@ -114,102 +115,123 @@ const ProjectPostPage = (props) => {
       replies: [],
       createdDate: date.toString(), //change date value later, likely should only include date & time, not timezone
       content: replyContent,
-    }
+    };
     //write reply to data
     /// Note: all data is reset when page is left or reloaded, will require recoding when full database is integrated
     comments.push(newReplyObject);
     //If replying to post, adds id to that post's comments array
     //If replying to another comment, adds id to that comment's replies array
     if (replyingToPost) {
-      let currentPost = posts.find(p => p._id === Number(postId));
+      let currentPost = posts.find((p) => p._id === Number(postId));
       currentPost ? currentPost.comments.push(newId) : console.log('error finding post');
     } else {
-      let commentTarget = comments.find(p => p._id === replyTarget);
+      let commentTarget = comments.find((p) => p._id === replyTarget);
       commentTarget ? commentTarget.replies.push(newId) : console.log('error finding comment');
     }
     //update display to feature new reply
-    let newPostData = posts.find(p => p._id === Number(postId)) || posts[0];
-    setCommentComponent(<PostReplies postComments={newPostData.comments} replyingToPost={replyingToPost} setReplyingToPost={setReplyingToPost} setReplyTarget={setReplyTarget}/>);
-  }
+    let newPostData = posts.find((p) => p._id === Number(postId)) || posts[0];
+    setCommentComponent(
+      <PostReplies
+        postComments={newPostData.comments}
+        replyingToPost={replyingToPost}
+        setReplyingToPost={setReplyingToPost}
+        setReplyTarget={setReplyTarget}
+      />
+    );
+  };
 
   // Some comments may be moved into html
-  return(
-    <div className='page'>
-      <div id='post-page-nav-buttons'>
-        <button className='white-button' onClick={() => window.history.back()}>return</button>
-        <hr/>
-        <button className='white-button' onClick={() => navigate(paths.routes.PROJECT + `?projID=${projectId}`)}>to project</button>
-      </div>
-
-      <div id='post-header'>
-        <img id='post-project-image' src={profilePlaceholder} alt='project image'/>
-        <h2 id='post-project-name'>{projects[projectId].name}</h2>
-        <button className='orange-button'>Follow</button>
-        <button className='icon-button'>
-          <ThemeIcon 
-            light={'/assets/menu_light.png'}
-            dark={'/assets/menu_dark.png'}
-            alt={'...'}
-          />
+  return (
+    <div className="page">
+      <div id="post-page-nav-buttons">
+        <button className="white-button" onClick={() => window.history.back()}>
+          return
+        </button>
+        <hr />
+        <button
+          className="white-button"
+          onClick={() => navigate(paths.routes.PROJECT + `?projID=${projectId}`)}
+        >
+          to project
         </button>
       </div>
 
-      <hr/>
+      <div id="post-header">
+        <img id="post-project-image" src={profilePlaceholder} alt="project image" />
+        <h2 id="post-project-name">{projects[projectId].name}</h2>
+        <button className="orange-button">Follow</button>
+        <button className="icon-button">
+          <ThemeIcon light={'/assets/menu_light.png'} dark={'/assets/menu_dark.png'} alt={'...'} />
+        </button>
+      </div>
 
-      <div id='post-page-content'>
-        <div id='post'>
-          <h3 id='post-name'>{postData.title}</h3>
-          <button id='post-options' className='icon-button'>
-            <ThemeIcon 
+      <hr />
+
+      <div id="post-page-content">
+        <div id="post">
+          <h3 id="post-name">{postData.title}</h3>
+          <button id="post-options" className="icon-button">
+            <ThemeIcon
               light={'/assets/menu_light.png'}
               dark={'/assets/menu_dark.png'}
               alt={'...'}
             />
           </button>
 
-          <div id='post-content'>
-            {postData.postText}
-          </div>
+          <div id="post-content">{postData.postText}</div>
 
-          <div id='post-info'>
+          <div id="post-info">
             <div>
-              Posted by: <span id='post-author' onClick={() => navigate(paths.routes.PROFILE + `?profID=${postData.author}`)}>
+              Posted by:{' '}
+              <span
+                id="post-author"
+                onClick={() => navigate(paths.routes.PROFILE + `?profID=${postData.author}`)}
+              >
                 {profiles[postData.author].name}
               </span>
-              <span id='author-role'> {projects[projectId].members[postData.author].role}</span>
+              <span id="author-role"> {projects[projectId].members[postData.author].role}</span>
             </div>
             <div>{postData.createdDate}</div>
           </div>
 
-          <button id='post-share' className='white-button'>share</button>
-          
+          <button id="post-share" className="white-button">
+            share
+          </button>
         </div>
 
-        <div id='comments'>
-          <div id='comments-content'>
-            {commentComponent}
-          </div>
+        <div id="comments">
+          <div id="comments-content">{commentComponent}</div>
 
-          <div id='reply-content'>
-            <div id='reply-prompt'>
-              <span id='reply-prompt-display'>Replying to Post</span>
-              <button id='reply-prompt-reset' className='hide' onClick={resetReplyTarget}>Cancel</button>
+          <div id="reply-content">
+            <div id="reply-prompt">
+              <span id="reply-prompt-display">Replying to Post</span>
+              <button id="reply-prompt-reset" className="hide" onClick={resetReplyTarget}>
+                Cancel
+              </button>
             </div>
 
-            <textarea id='reply-input' maxLength={300}/>
+            <textarea id="reply-input" maxLength={300} />
 
-            <div id='reply-attach-buttons'>
-              <button id='reply-attach-1' className='white-button'>attach1</button>
-              <button id='reply-attach-2' className='white-button'>attach2</button>
-              <button id='reply-attach-3' className='white-button'>attach3</button>
+            <div id="reply-attach-buttons">
+              <button id="reply-attach-1" className="white-button">
+                attach1
+              </button>
+              <button id="reply-attach-2" className="white-button">
+                attach2
+              </button>
+              <button id="reply-attach-3" className="white-button">
+                attach3
+              </button>
             </div>
 
-            <button id='reply-submit' onClick={sendReply}>send</button>
+            <button id="reply-submit" onClick={sendReply}>
+              send
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default ProjectPostPage
+export default ProjectPostPage;

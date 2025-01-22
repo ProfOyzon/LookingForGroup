@@ -1,36 +1,45 @@
-import { Router } from "express";
-import mid from "../middleware/index.js";
-import userCtrl from "../controllers/users.js";
+import { Router } from 'express';
+import mid from '../middleware/index.js';
+import userCtrl from '../controllers/users.js';
 
 const router = Router();
 
-router.post("/api/login", userCtrl.login);
-router.get("/api/auth", userCtrl.getAuth);
-router.post("/api/logout", userCtrl.logout);
-router.post("/api/signup", userCtrl.signup);
-router.get("/api/signup/:token", userCtrl.createUser);
-router.post("/api/resets/password", userCtrl.requestPasswordReset);
-router.post("/api/resets/password/:token", userCtrl.resetPassword);
-router.get("/api/users/get-username-session", mid.checkLogin, userCtrl.getUsernameBySession);
-router.get("/api/users", userCtrl.getUsers);
-router.get("/api/users/:id", userCtrl.getUserById);
-router.put("/api/users/:id", mid.checkLogin, userCtrl.updateUser);
-router.delete("/api/users/:id", mid.checkLogin, userCtrl.deleteUser);
-router.get("/api/users/search-username/:username", userCtrl.getUserByUsername);
-router.get("/api/users/search-email/:email", userCtrl.getUserByEmail);
-router.put("/api/users/:id/profile-picture", mid.checkLogin, mid.checkImageFile, userCtrl.updateProfilePicture);
-router.get("/api/users/:id/account", mid.checkLogin, userCtrl.getAccount);
-router.put("/api/users/:id/email", mid.checkLogin, userCtrl.updateEmail);
-router.put("/api/users/:id/username", mid.checkLogin, userCtrl.updateUsername);
-router.put("/api/users/:id/password", mid.checkLogin, userCtrl.updatePassword);
-router.get("/api/users/:id/projects", mid.checkLogin, userCtrl.getMyProjects);
-router.get("/api/users/:id/projects/profile", userCtrl.getVisibleProjects);
-router.put("/api/users/:id/projects/visibility", mid.checkLogin, userCtrl.updateProjectVisibility);
-router.get("/api/users/:id/followings/projects", userCtrl.getProjectFollowing);
-router.post("/api/users/:id/followings/projects", mid.checkLogin, userCtrl.addProjectFollowing);
-router.delete("/api/users/:id/followings/projects", mid.checkLogin, userCtrl.deleteProjectFollowing);
-router.get("/api/users/:id/followings/people", userCtrl.getUserFollowing);
-router.post("/api/users/:id/followings/people", mid.checkLogin, userCtrl.addUserFollowing);
-router.delete("/api/users/:id/followings/people", mid.checkLogin, userCtrl.deleteUserFollowing);
+router.post('/api/login', userCtrl.login);
+router.get('/api/auth', userCtrl.getAuth);
+router.post('/api/logout', userCtrl.logout);
+router.post('/api/signup', userCtrl.signup);
+router.get('/api/signup/:token', userCtrl.createUser);
+router.post('/api/resets/password', userCtrl.requestPasswordReset);
+router.post('/api/resets/password/:token', userCtrl.resetPassword);
+router.get('/api/users/get-username-session', mid.checkLogin, userCtrl.getUsernameBySession);
+router.get('/api/users', userCtrl.getUsers);
+router.get('/api/users/:id', userCtrl.getUserById);
+router.put('/api/users/:id', mid.checkLogin, userCtrl.updateUser);
+router.delete('/api/users/:id', mid.checkLogin, userCtrl.deleteUser);
+router.get('/api/users/search-username/:username', userCtrl.getUserByUsername);
+router.get('/api/users/search-email/:email', userCtrl.getUserByEmail);
+router.put(
+  '/api/users/:id/profile-picture',
+  mid.checkLogin,
+  mid.checkImageFile,
+  userCtrl.updateProfilePicture
+);
+router.get('/api/users/:id/account', mid.checkLogin, userCtrl.getAccount);
+router.put('/api/users/:id/email', mid.checkLogin, userCtrl.updateEmail);
+router.put('/api/users/:id/username', mid.checkLogin, userCtrl.updateUsername);
+router.put('/api/users/:id/password', mid.checkLogin, userCtrl.updatePassword);
+router.get('/api/users/:id/projects', mid.checkLogin, userCtrl.getMyProjects);
+router.get('/api/users/:id/projects/profile', userCtrl.getVisibleProjects);
+router.put('/api/users/:id/projects/visibility', mid.checkLogin, userCtrl.updateProjectVisibility);
+router.get('/api/users/:id/followings/projects', userCtrl.getProjectFollowing);
+router.post('/api/users/:id/followings/projects', mid.checkLogin, userCtrl.addProjectFollowing);
+router.delete(
+  '/api/users/:id/followings/projects',
+  mid.checkLogin,
+  userCtrl.deleteProjectFollowing
+);
+router.get('/api/users/:id/followings/people', userCtrl.getUserFollowing);
+router.post('/api/users/:id/followings/people', mid.checkLogin, userCtrl.addUserFollowing);
+router.delete('/api/users/:id/followings/people', mid.checkLogin, userCtrl.deleteUserFollowing);
 
 export default router;

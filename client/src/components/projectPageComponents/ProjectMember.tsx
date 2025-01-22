@@ -1,7 +1,7 @@
-import profilePlaceholder from "../../icons/profile-user.png";
+import profilePlaceholder from '../../icons/profile-user.png';
 import { useNavigate } from 'react-router-dom';
 // import { profiles } from '../../constants/fakeData' // FIXME: use user data in db
-import * as paths from "../../constants/routes";
+import * as paths from '../../constants/routes';
 
 //This component is used in the project page of the site
 //Renders an instance of a single profile of a project member
@@ -15,17 +15,19 @@ export const ProjectMember = (props) => {
 
   // find profile from username
 
-  let profile = profiles.find(p => p._id === props.memberId);
+  let profile = profiles.find((p) => p._id === props.memberId);
   if (profile === undefined) {
     profile = profiles[0];
   }
   const pathQuery = `?userID=${profile._id}`;
-  
+
   return (
-    <div className='project-member' onClick={() => navigate(paths.routes.NEWPROFILE + pathQuery)}>
-      <img src={profilePlaceholder} alt=''/>
-      <h2 className='member-name' onClick={() => window.location.href="profile"}>{profile.name}</h2>
-      <div className='member-role'>{props.role}</div>
+    <div className="project-member" onClick={() => navigate(paths.routes.NEWPROFILE + pathQuery)}>
+      <img src={profilePlaceholder} alt="" />
+      <h2 className="member-name" onClick={() => (window.location.href = 'profile')}>
+        {profile.name}
+      </h2>
+      <div className="member-role">{props.role}</div>
     </div>
-  )
-}
+  );
+};

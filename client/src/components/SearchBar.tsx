@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 
-import { ProjectCard } from "./ProjectCard";
-import { projects } from "../constants/fakeData";// FIXME: use data in db
+import { ProjectCard } from './ProjectCard';
+import { projects } from '../constants/fakeData'; // FIXME: use data in db
 
 export const SearchBar = ({ dataSets, onSearch }) => {
+  let result;
+  let placeholderText = 'Search ';
+  result = `Search`;
 
-    let result;
-    let placeholderText = "Search ";
-    result = `Search`;
-
-    // --- Searching ---
-    /*const [query, setQuery] = useState('');
+  // --- Searching ---
+  /*const [query, setQuery] = useState('');
 
     useEffect(() => {
       const filteredResults = dataSets.map(dataSet =>
@@ -28,7 +27,7 @@ export const SearchBar = ({ dataSets, onSearch }) => {
         setQuery(event.target.value);
     }*/
 
-        const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('');
 
         const HandleChange = (event) => {
           const newQuery = event.target.value;
@@ -49,15 +48,21 @@ export const SearchBar = ({ dataSets, onSearch }) => {
           onSearch(filteredResults);
         };
 
-return (
+  return (
     <>
-        <div className="search-wrapper">
-            <form className="search-bar">
-                <button type="submit" className="search-button"><i className="fa fa-search"></i></button>
-                <input className="search-input" type="text" placeholder={result} onChange={HandleChange}></input>
-            </form>
-             
-        </div>
+      <div className="search-wrapper">
+        <form className="search-bar">
+          <button type="submit" className="search-button">
+            <i className="fa fa-search"></i>
+          </button>
+          <input
+            className="search-input"
+            type="text"
+            placeholder={result}
+            onChange={HandleChange}
+          ></input>
+        </form>
+      </div>
     </>
-)
-}
+  );
+};

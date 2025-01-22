@@ -74,7 +74,7 @@ Profile Panel component style rules
   position: absolute;
   height: auto;
   width: 200px;
-  transition: opacity .2s;
+  transition: opacity 0.2s;
   top: 0;
   bottom: 0;
   left: 0;
@@ -134,7 +134,7 @@ Profile page style rules
 }
 
 /*make the sections of the profile page the right height*/
-#profile-page>* {
+#profile-page > * {
   height: fit-content;
 }
 
@@ -200,8 +200,8 @@ Profile page style rules
 }
 
 /*make the skills fit into 2 columns */
-#profile-skill-list>.tag,
-#profile-interests-list>.tag {
+#profile-skill-list > .tag,
+#profile-interests-list > .tag {
   width: 35%;
   margin: 1%;
 }
@@ -220,7 +220,7 @@ Profile page style rules
   justify-content: flex-end;
 }
 
-#profile-project-role>b {
+#profile-project-role > b {
   color: var(--orange);
 }
 
@@ -234,7 +234,6 @@ Profile page style rules
 
 /*css for profile responsiveness---------------------------*/
 @media only screen and (max-width: 800px) {
-
   /*get rid of the grid*/
   #profile-page {
     display: inline;
@@ -246,8 +245,8 @@ Profile page style rules
     margin-left: 5%;
   }
 
-  #profile-skill-list>.tag,
-  #profile-preferences-list>.tag {
+  #profile-skill-list > .tag,
+  #profile-preferences-list > .tag {
     width: 80%;
     margin: 1%;
   }
@@ -261,7 +260,7 @@ Profile page style rules
 
 /* --------------------------------- Edit Modal Rules --------------------------------- */
 .profile-edit-button {
-  background-color: #271D66;
+  background-color: #271d66;
 }
 
 #popup-container-0 {
@@ -294,7 +293,7 @@ Profile page style rules
   align-content: space-between;
 }
 
-.editor-input-item input, 
+.editor-input-item input,
 .editor-input-item select,
 .editor-input-item textarea {
   background-color: var(--bg-color);
@@ -348,7 +347,7 @@ Profile page style rules
 }
 
 .edit-profile-body input,
-.edit-profile-body select{
+.edit-profile-body select {
   width: 100%;
   height: 45px;
 }
@@ -367,9 +366,9 @@ Profile page style rules
 .edit-profile-body.about .edit-profile-section-1 {
   display: grid;
   grid-template-areas:
-    "image row1"
-    "image row2"
-    "image row3";
+    'image row1'
+    'image row2'
+    'image row3';
   grid-template-columns: 25% auto;
   grid-template-rows: 1fr 1fr 1fr;
   column-gap: 20px;
@@ -396,7 +395,7 @@ Profile page style rules
   grid-template-columns: 4fr 4fr 2fr;
 }
 
-.edit-profile-section-1 .photo{
+.edit-profile-section-1 .photo {
   grid-area: image;
 
   display: flex;
@@ -512,7 +511,7 @@ Profile page style rules
   border-radius: 10px;
   /* width: 100%; */
   /* height: 45px; */
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   margin-top: 8px;
   padding: 8px 15px;
   font-size: 15px;
@@ -649,12 +648,12 @@ select.edit-region-input {
   height: 100%;
   text-align: end;
 
-  transition: .1s background-color;
+  transition: 0.1s background-color;
 }
 
 .list-project-hide-icon:has(.fa-solid.fa-eye-slash) {
   background-color: #000000a6;
-  transition: .1s background-color;
+  transition: 0.1s background-color;
 }
 
 #edit-profile-modal .list-project-hide-icon-button {
@@ -708,7 +707,7 @@ select.edit-region-input {
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   height: 100%;
   padding: 25px 5px 25px 26px;
   text-align: start;
@@ -795,7 +794,7 @@ select.edit-region-input {
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   /* height: 100%; */
   height: 100%;
   padding: 26px 31px;
@@ -965,7 +964,7 @@ select.edit-region-input {
   font-family: Inter, FontAwesome;
   font-size: 15px;
   line-height: 150%;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .edit-region-input.links {
@@ -1145,6 +1144,12 @@ New Profile page style rules
   display: flex;
   align-items: center;
   font-style: italic;
+  gap: 10px;
+}
+
+.profile-extra > img {
+  height: 24px;
+  object-fit: contain;
 }
 
 #profile-info-description {
@@ -1294,7 +1299,7 @@ New Profile page style rules
   padding-bottom: 0;
 }
 
-#about-me-buttons button>img {
+#about-me-buttons button > img {
   margin-top: 3px;
 }
 
@@ -1302,7 +1307,7 @@ New Profile page style rules
   background-color: var(--bg-color);
 }
 
-#about-me-buttons>div {
+#about-me-buttons > div {
   height: 100%;
 }
 

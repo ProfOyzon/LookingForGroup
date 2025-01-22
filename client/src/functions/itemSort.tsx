@@ -1,6 +1,6 @@
-import { projects, profiles } from "../constants/fakeData";
-import { interests } from "../constants/interests";
-import { softSkills, hardSkills, proficiencies } from "../constants/skills";
+import { projects, profiles } from '../constants/fakeData';
+import { interests } from '../constants/interests';
+import { softSkills, hardSkills, proficiencies } from '../constants/skills';
 
 //Interest & skill imports are currently unused, but may become relevant later in development
 //This file will hold code that will allow sorting and filtering projects & people via tags
@@ -8,7 +8,7 @@ import { softSkills, hardSkills, proficiencies } from "../constants/skills";
 //tags - string array representing the tags to use for sorting
 //projectSearch - boolean determining if the funciton will sort through projects or profiles
 //    true: sort projects; false: sort profiles
-export const sortItems = (tags : string[], projectSearch : boolean) => {
+export const sortItems = (tags: string[], projectSearch: boolean) => {
   //Get list of tags (string array) to use for sorting
   //Are we sorting through projects or people?
   //if projects...
@@ -16,14 +16,14 @@ export const sortItems = (tags : string[], projectSearch : boolean) => {
     //get projects currently in the database
     //let projectList = projects;
     //Create an empty array to hold projects that meet criteria (project array)
-    let sortedProjectList : { 
-      _id : number; 
-      name : string; 
-      members : { userID: number; admin: boolean; owner: boolean; role: string; }[]; 
-      description : string; 
-      tags : string[]; 
-      neededRoles : { Role: string; amount: number; description: string; }[]; 
-      posts : number[];
+    let sortedProjectList: {
+      _id: number;
+      name: string;
+      members: { userID: number; admin: boolean; owner: boolean; role: string }[];
+      description: string;
+      tags: string[];
+      neededRoles: { Role: string; amount: number; description: string }[];
+      posts: number[];
     }[] = [];
     //iterate through all the projects. For each one...
     for (let project of projects) {
@@ -38,8 +38,8 @@ export const sortItems = (tags : string[], projectSearch : boolean) => {
       //If project contains the specified tags...
       if (matchingTags == tags.length) {
         //add project to sorted list
-        sortedProjectList.push(project)
-      }  
+        sortedProjectList.push(project);
+      }
     }
     //Once all projects are filtered, return the filled list
     //If no filters were run, just return full project list
@@ -52,30 +52,28 @@ export const sortItems = (tags : string[], projectSearch : boolean) => {
   else {
     //get people currently in the database
     //Create an empty array to hold people that meet criteria (profile array)
-    let sortedProfileList : {
-
-      _id : number;
-      name : string;
-      username : string;
-      pronouns : string[];
-      bio : string;
-      interests : string[];
-      messages : number[];
-      skills : { skill : string; type : string; highlighted : boolean; }[];
+    let sortedProfileList: {
+      _id: number;
+      name: string;
+      username: string;
+      pronouns: string[];
+      bio: string;
+      interests: string[];
+      messages: number[];
+      skills: { skill: string; type: string; highlighted: boolean }[];
       profilePicture: {
         name: string;
         data: string;
         mimeType: string;
       };
       projects: number[];
-      links: {text: string; url: string;}[];
+      links: { text: string; url: string }[];
       endorsements: {
-        endorsement: string; 
-        endorserID: string; 
-        endorseProjectID: string; 
-        skills: number[]
+        endorsement: string;
+        endorserID: string;
+        endorseProjectID: string;
+        skills: number[];
       }[];
-
     }[] = [];
     //iterate through all people. For each one...
     for (let profile of profiles) {
@@ -109,4 +107,4 @@ export const sortItems = (tags : string[], projectSearch : boolean) => {
     }
     return sortedProfileList;
   }
-}
+};

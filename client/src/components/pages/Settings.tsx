@@ -2,24 +2,24 @@ import '../Styles/pages.css';
 
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as paths from "../../constants/routes";
-import MakeAvatarModal from "../AvatarCreation/MakeAvatarModal";
-import VolumeSettings from "../SettingsPageComponents/VolumeSetting";
-import NotificationSettings from "../SettingsPageComponents/NotificationSetting";
-import ProfileVisibilitySetting from "../SettingsPageComponents/ProfileVisibilitySetting";
-import ToTopButton from "../ToTopButton";
-import CreditsFooter from "../CreditsFooter";
-import { ThemeContext } from '../../Contexts';
+import * as paths from '../../constants/routes';
+import MakeAvatarModal from '../AvatarCreation/MakeAvatarModal';
+import VolumeSettings from '../SettingsPageComponents/VolumeSetting';
+import NotificationSettings from '../SettingsPageComponents/NotificationSetting';
+import ProfileVisibilitySetting from '../SettingsPageComponents/ProfileVisibilitySetting';
+import ToTopButton from '../ToTopButton';
+import CreditsFooter from '../CreditsFooter';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }) => {
   // state variables
-  const [activeTab, setActiveTab] = useState("general");
+  const [activeTab, setActiveTab] = useState('general');
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const navigate = useNavigate(); // Hook for navigation
 
   // Pull the theme and setTheme function from useState() via a context
-  const theme = useContext(ThemeContext)["theme"];
-  const setTheme = useContext(ThemeContext)["setTheme"];
+  const theme = useContext(ThemeContext)['theme'];
+  const setTheme = useContext(ThemeContext)['setTheme'];
 
   return (
     <div className="page">
@@ -33,16 +33,28 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
 
           *************************************************************/}
         <div className="settings-page-tabs">
-          <div className={`settings-page-tab-links ${activeTab === "general" ? "settings-page-active-link" : ""}`} onClick={() => setActiveTab("general")}>
+          <div
+            className={`settings-page-tab-links ${activeTab === 'general' ? 'settings-page-active-link' : ''}`}
+            onClick={() => setActiveTab('general')}
+          >
             General
           </div>
-          <div className={`settings-page-tab-links ${activeTab === "privacy" ? "settings-page-active-link" : ""}`} onClick={() => setActiveTab("privacy")}>
+          <div
+            className={`settings-page-tab-links ${activeTab === 'privacy' ? 'settings-page-active-link' : ''}`}
+            onClick={() => setActiveTab('privacy')}
+          >
             Privacy
           </div>
-          <div className={`settings-page-tab-links ${activeTab === "syncing" ? "settings-page-active-link" : ""}`} onClick={() => setActiveTab("syncing")}>
+          <div
+            className={`settings-page-tab-links ${activeTab === 'syncing' ? 'settings-page-active-link' : ''}`}
+            onClick={() => setActiveTab('syncing')}
+          >
             Syncing
           </div>
-          <div className={`settings-page-tab-links ${activeTab === "account" ? "settings-page-active-link" : ""}`} onClick={() => setActiveTab("account")}>
+          <div
+            className={`settings-page-tab-links ${activeTab === 'account' ? 'settings-page-active-link' : ''}`}
+            onClick={() => setActiveTab('account')}
+          >
             Account
           </div>
         </div>
@@ -52,7 +64,10 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
           General settings 
 
           *************************************************************/}
-        <div className={`settings-page-tab-contents ${activeTab === "general" ? "settings-page-active-tab" : ""}`} id="general">
+        <div
+          className={`settings-page-tab-contents ${activeTab === 'general' ? 'settings-page-active-tab' : ''}`}
+          id="general"
+        >
           <div className="setting-in-page">
             <h3>My Avatar</h3>
             <div className="setting-content">
@@ -68,7 +83,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
                 onBack
                 onNext
               /> */}
-              <div id="testing-tag-styles-container" >
+              <div id="testing-tag-styles-container">
                 <div className={`skill-tag-label label-red`}>Designer Skills</div>
                 <div className={`skill-tag-label label-orange`}>Major</div>
                 <div className={`skill-tag-label label-yellow`}>Developer Skills</div>
@@ -118,20 +133,26 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
           <NotificationSettings />
 
           <div className="setting-in-page">
-            <h3>Dark Mode
+            <h3>
+              Dark Mode
               <br></br>
               <span>Change the theme of the page</span>
             </h3>
             <div className="setting-content">
               <label className="switch">
-                <input type="checkbox" checked={theme === 'dark'} onChange={(e) => setTheme(theme === 'dark' ? 'light' : 'dark')} />
+                <input
+                  type="checkbox"
+                  checked={theme === 'dark'}
+                  onChange={(e) => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                />
                 <span className="slider round"></span>
               </label>
             </div>
           </div>
 
           <div className="setting-in-page">
-            <h3>Autoplay
+            <h3>
+              Autoplay
               <br></br>
               <span>Videos will play automatically</span>
             </h3>
@@ -145,8 +166,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
 
           <VolumeSettings />
 
-          <div id="setting-spacer" ></div>
-
+          <div id="setting-spacer"></div>
         </div>
 
         {/*************************************************************
@@ -154,20 +174,23 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
           Privacy settings 
 
           *************************************************************/}
-        <div className={`settings-page-tab-contents ${activeTab === "privacy" ? "settings-page-active-tab" : ""}`} id="privacy">
+        <div
+          className={`settings-page-tab-contents ${activeTab === 'privacy' ? 'settings-page-active-tab' : ''}`}
+          id="privacy"
+        >
           {/* <div>privacy settings go here</div> */}
 
           <ProfileVisibilitySetting />
 
-
           <div className="setting-in-page">
-            <h3>Data
+            <h3>
+              Data
               <br></br>
               <span>What data can be collected</span>
             </h3>
             <div className="setting-content">
               <div className="row">
-                <p className='text'>Data Collection</p>
+                <p className="text">Data Collection</p>
                 <label className="switch">
                   <input type="checkbox" />
                   <span className="slider round"></span>
@@ -177,14 +200,15 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
           </div>
 
           <div className="setting-in-page">
-            <h3>Blocked Accounts
+            <h3>
+              Blocked Accounts
               <br></br>
               <span></span>
             </h3>
             <div className="setting-content"></div>
           </div>
 
-          <div id="setting-spacer" ></div>
+          <div id="setting-spacer"></div>
         </div>
 
         {/*************************************************************
@@ -192,14 +216,17 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
           Syncing options
 
           *************************************************************/}
-        <div className={`settings-page-tab-contents ${activeTab === "syncing" ? "settings-page-active-tab" : ""}`} id="syncing">
+        <div
+          className={`settings-page-tab-contents ${activeTab === 'syncing' ? 'settings-page-active-tab' : ''}`}
+          id="syncing"
+        >
           {/* <div>syncing options go here</div> */}
           <div className="setting-in-page">
             <h3></h3>
             <div className="setting-content"></div>
           </div>
 
-          <div id="setting-spacer" ></div>
+          <div id="setting-spacer"></div>
         </div>
 
         {/*************************************************************
@@ -207,17 +234,28 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
           Account settings 
 
           *************************************************************/}
-        <div className={`settings-page-tab-contents ${activeTab === "account" ? "settings-page-active-tab" : ""}`} id="account">
+        <div
+          className={`settings-page-tab-contents ${activeTab === 'account' ? 'settings-page-active-tab' : ''}`}
+          id="account"
+        >
           {/* <div>account settings go here</div> */}
 
           {/* logout */}
           <div className="setting-in-page">
-            <h3>Logout
+            <h3>
+              Logout
               <br></br>
               <span>Are you sure you want to logout?</span>
             </h3>
             <div className="setting-content">
-              <button className='settingsBtns' onClick={() => { navigate(paths.routes.LOGIN) }}>Log Out</button>
+              <button
+                className="settingsBtns"
+                onClick={() => {
+                  navigate(paths.routes.LOGIN);
+                }}
+              >
+                Log Out
+              </button>
             </div>
           </div>
 
@@ -238,7 +276,7 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
             <div className="setting-content">
               <div className="column">
                 <input className="textInput" type="text" value="myusername" disabled />
-                <button className="settingsBtns" >Change</button>
+                <button className="settingsBtns">Change</button>
               </div>
             </div>
           </div>
@@ -260,28 +298,28 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
             <div className="setting-content">
               <div className="column">
                 <input className="textInput" type="password" value="userpassword123" disabled />
-                <button className="settingsBtns" >Change</button>
+                <button className="settingsBtns">Change</button>
               </div>
             </div>
           </div>
 
           {/* delete account */}
           <div className="setting-in-page">
-            <h3>Delete Account
+            <h3>
+              Delete Account
               <br></br>
               <span>Permanently delete your account</span>
             </h3>
             <div className="setting-content">
-              <button className="settingsBtns" >Delete Account</button>
+              <button className="settingsBtns">Delete Account</button>
             </div>
           </div>
 
           {/* Space at the bottom of the page
               mostly for mobile so the last setting isn't hidden by the nav bar
           */}
-          <div id="setting-spacer" ></div>
+          <div id="setting-spacer"></div>
         </div>
-
       </div>
 
       {/* Scroll To Top button */}
@@ -289,6 +327,6 @@ const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }
       <ToTopButton />
     </div>
   );
-}
+};
 
 export default Settings;

@@ -11,17 +11,17 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import { Header } from "../Header";
-import { ProjectPanel } from "../ProjectPanel";
+import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Header } from '../Header';
+import { ProjectPanel } from '../ProjectPanel';
 import { ProfileEditPopup } from '../Profile/ProfileEditPopup';
-import { Dropdown, DropdownButton, DropdownContent } from "../Dropdown";
-import { profiles, projects } from "../../constants/fakeData"; // FIXME: use user and project data in db
-import profilePicture from "../../images/blue_frog.png";
-import profileImage from "../../icons/profile-user.png";
-import * as tags from "../../constants/tags";
-import EditButton from "../Profile/ProfileEditButton";
+import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
+import { profiles, projects } from '../../constants/fakeData'; // FIXME: use user and project data in db
+import profilePicture from '../../images/blue_frog.png';
+import profileImage from '../../icons/profile-user.png';
+import * as tags from '../../constants/tags';
+import EditButton from '../Profile/ProfileEditButton';
 import { ThemeIcon } from '../ThemeIcon';
 
 //To-do:
@@ -33,31 +33,32 @@ import { ThemeIcon } from '../ThemeIcon';
 
 let runningServer = true;
 
-let defaultProfile = runningServer ? undefined : {
-  first_name: 'User',
-  last_name: 'Name',
-  username: 'someguy',
-  profile_image: profilePicture,
-  headline: `Here's a quick lil blurb about me!`,
-  pronouns: 'Was/Were',
-  job_title: 'Profession',
-  major: 'Professional Typer',
-  academic_year: '13th',
-  location: 'Middle of, Nowhere',
-  fun_fact: `I'm not a real person, I'm just a digital representation of one!`,
-  bio: 'A bunch of Lorem Ipsum text, not bothering to type it out.',
-  skills: ['Figma', 'JavaScript', 'Visual Studio Code', 'Flexibility', 'Krita'],
-}
+let defaultProfile = runningServer
+  ? undefined
+  : {
+      first_name: 'User',
+      last_name: 'Name',
+      username: 'someguy',
+      profile_image: profilePicture,
+      headline: `Here's a quick lil blurb about me!`,
+      pronouns: 'Was/Were',
+      job_title: 'Profession',
+      major: 'Professional Typer',
+      academic_year: '13th',
+      location: 'Middle of, Nowhere',
+      fun_fact: `I'm not a real person, I'm just a digital representation of one!`,
+      bio: 'A bunch of Lorem Ipsum text, not bothering to type it out.',
+      skills: ['Figma', 'JavaScript', 'Visual Studio Code', 'Flexibility', 'Krita'],
+    };
 
 const fetchUserID = async () => {
-  const response = await fetch("/api/auth");
+  const response = await fetch('/api/auth');
   //const { data: {userID} } = await response.json();
   const { data } = await response.json();
   return data;
-}
+};
 
 const userID = await fetchUserID();
-
 
 const NewProfile = () => {
   const location = useLocation();
@@ -80,7 +81,7 @@ const NewProfile = () => {
       //   profileID = userID;
       // })();
     }
-  }
+  };
   setUpProfileID();
 
   //Function used to get profile data
@@ -106,7 +107,7 @@ const NewProfile = () => {
     } catch (error) {
       console.error(error.message);
     }
-  }
+  };
 
   //Function used to get projects the user has worked on
   const getProfileProjectData = async () => {
@@ -127,7 +128,7 @@ const NewProfile = () => {
     } catch (error) {
       console.error(error.message);
     }
-  }
+  };
 
   //State that hold info on the profile being displayed
   //use 'defaultProfile' in useState when using 'npm run client'. otherwise leave blank.
@@ -138,7 +139,6 @@ const NewProfile = () => {
   let defaultProjectList = runningServer ? undefined : projects;
 
   const [fullProjectList, setFullProjectList] = useState(defaultProjectList);
-
 
   //Runs funciton to get data if we haven't yet
   //Comment out if using 'npm run client' (can't connect to server with it)
@@ -161,7 +161,6 @@ const NewProfile = () => {
   if (profileID === `${userID}`) {
     isUsersProfile = true;
     console.log('this is the users profile');
-
   }
 
   //Holds a list of tags that the user selected to represent their skills
@@ -175,7 +174,6 @@ const NewProfile = () => {
   //Gets the width of the scrollbar
   //Obtained from https://stackoverflow.com/questions/13382516/getting-scroll-bar-width-using-javascript
   function getScrollbarWidth() {
-
     // Creating invisible container
     const outer = document.createElement('div');
     outer.style.visibility = 'hidden';
@@ -188,7 +186,7 @@ const NewProfile = () => {
     outer.appendChild(inner);
 
     // Calculating difference between container's full width and the child width
-    const scrollbarWidth = (outer.offsetWidth - inner.offsetWidth);
+    const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
 
     // Removing temporary elements from the DOM
     outer.parentNode.removeChild(outer);
@@ -197,9 +195,10 @@ const NewProfile = () => {
   }
 
   //Find out the width of the flexbox container
-  let flexboxWidth: number = window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
-    window.innerWidth - (100 + getScrollbarWidth())
-    ;
+  let flexboxWidth: number =
+    window.innerWidth >= 800
+      ? window.innerWidth - (320 + getScrollbarWidth())
+      : window.innerWidth - (100 + getScrollbarWidth());
   //tracks the width of items in the current flexbox row
   let widthTracker: number = -20;
   //tracks the number of "full" flexbox rows
@@ -221,7 +220,7 @@ const NewProfile = () => {
 
     //empty list of projects to display
     //(Will also include project data when actual projects are used)
-    let projectsToDisplay: { project, width: number, adjust: number, row: number }[] = [];
+    let projectsToDisplay: { project; width: number; adjust: number; row: number }[] = [];
 
     //Reset variables, if needed
     widthTracker = -20;
@@ -242,12 +241,18 @@ const NewProfile = () => {
     For this reason, an extra check is added to ensure height does not equal 0. In the event it does,
     we randomize width instead of calculating an accurate width.
     */
-    let firstPanelWidth = projectList[projectListPosition].thumbnail != null && firstThumbnail.height != 0 ?
-      firstThumbnail.width * (200 / firstThumbnail.height) :
-      Math.floor((Math.random() * 200) + 200);
+    let firstPanelWidth =
+      projectList[projectListPosition].thumbnail != null && firstThumbnail.height != 0
+        ? firstThumbnail.width * (200 / firstThumbnail.height)
+        : Math.floor(Math.random() * 200 + 200);
     widthTracker += firstPanelWidth + 20;
-    projectsToDisplay.push({ project: projectList[projectListPosition], width: firstPanelWidth, adjust: 0, row: rowTracker });
-    projectListPosition++
+    projectsToDisplay.push({
+      project: projectList[projectListPosition],
+      width: firstPanelWidth,
+      adjust: 0,
+      row: rowTracker,
+    });
+    projectListPosition++;
     projectTracker++;
 
     //Start iterating through projects
@@ -257,7 +262,7 @@ const NewProfile = () => {
       thumbnail.src = `images/thumbnails/${projectList[projectListPosition].thumbnail}`;
 
       //Get a width value based on the project's display image's aspect ratio
-      //Formula for getting width from image: 
+      //Formula for getting width from image:
       /*
       (image height) / X = 100px
       (image height) = 100px * X
@@ -274,9 +279,10 @@ const NewProfile = () => {
 
       //(For testing's sake, width will be randomized)
       //let panelWidth = (img.naturalWidth * 100) / img.naturalHeight; [Use this when images are integrated]
-      let panelWidth = projectList[projectListPosition].thumbnail != null && thumbnail.height != 0 ?
-        thumbnail.width * (200 / thumbnail.height) :
-        Math.floor((Math.random() * 200) + 200);
+      let panelWidth =
+        projectList[projectListPosition].thumbnail != null && thumbnail.height != 0
+          ? thumbnail.width * (200 / thumbnail.height)
+          : Math.floor(Math.random() * 200 + 200);
       //Add (width value + flexbox gap value + borders) to width tracker
       //Note - borders & other factors may add extra width, double check calculations using inspector
       widthTracker += panelWidth + 20;
@@ -307,14 +313,19 @@ const NewProfile = () => {
       }
       //Add current project to list of projects to display
       //(Will include actual projects later)
-      projectsToDisplay.push({ project: projectList[projectListPosition], width: panelWidth, adjust: 0, row: rowTracker });
+      projectsToDisplay.push({
+        project: projectList[projectListPosition],
+        width: panelWidth,
+        adjust: 0,
+        row: rowTracker,
+      });
       projectListPosition++;
       projectTracker++;
     }
 
     //Run one last width check to fully fill last row
     //Calculate flexboxWidth - total width of all projects
-    let flexboxDifference = flexboxWidth - (widthTracker);
+    let flexboxDifference = flexboxWidth - widthTracker;
     //Divide difference to split among project panels' widths (and the remainder);
     let widthAdjustment = Math.floor(flexboxDifference / projectTracker);
     let widthAdjustmentRemainder = flexboxDifference % projectTracker;
@@ -330,8 +341,8 @@ const NewProfile = () => {
       }
     }
 
-    return (projectsToDisplay);
-  }
+    return projectsToDisplay;
+  };
 
   //Adjusts display to fit resized window, called whenever window size is adjusted
   const resizeProjects = () => {
@@ -348,12 +359,13 @@ const NewProfile = () => {
       //Similar to initial project panel rendering, just uses all currently displays projects
       //instead of adding new ones
       //Array holding edited project details
-      let resizedProjects: { project, width: number, adjust: number, row: number }[] = [];
+      let resizedProjects: { project; width: number; adjust: number; row: number }[] = [];
       //Calculate new flexbox width
       // ---Different size, check to see what math needs to be done
-      flexboxWidth = window.innerWidth >= 800 ? window.innerWidth - (320 + getScrollbarWidth()) :
-        window.innerWidth - (100 + getScrollbarWidth());
-      ;
+      flexboxWidth =
+        window.innerWidth >= 800
+          ? window.innerWidth - (320 + getScrollbarWidth())
+          : window.innerWidth - (100 + getScrollbarWidth());
       //Reset tracker variables (widthTracker, rowTracker, projectTracker)
       widthTracker = -20;
       rowTracker = 0;
@@ -384,7 +396,12 @@ const NewProfile = () => {
           projectTracker = 0;
         }
         //Add project to resized projects &  increment projectTracker
-        resizedProjects.push({ project: project.project, width: project.width, adjust: 0, row: rowTracker });
+        resizedProjects.push({
+          project: project.project,
+          width: project.width,
+          adjust: 0,
+          row: rowTracker,
+        });
         projectTracker++;
       }
       //Perform width adjustment on last row
@@ -402,18 +419,20 @@ const NewProfile = () => {
 
       //Set displayed projects state
       setDisplayedProjects(resizedProjects);
-    }, 100)
+    }, 100);
   };
 
   //Holds data for currently displayed projects
-  let [displayedProjects, setDisplayedProjects] = useState<{ project, width: number, adjust: number, row: number }[]>(firstProjects(fullProjectList));
+  let [displayedProjects, setDisplayedProjects] = useState<
+    { project; width: number; adjust: number; row: number }[]
+  >(firstProjects(fullProjectList));
 
   //Runs resizing function whenever window width changes
   //Don't add dependencies to it - it causes state to be reset for some reason (I don't know why)
   useEffect(() => {
     window.addEventListener('resize', resizeProjects);
     return () => {
-      window.removeEventListener('resize', resizeProjects)
+      window.removeEventListener('resize', resizeProjects);
     };
   });
 
@@ -430,127 +449,148 @@ const NewProfile = () => {
     if (runningServer) {
       getProfileData();
     }
-  }, [location])
+  }, [location]);
 
-  const aboutMeButtons = isUsersProfile ?
-    <>{
-      <div id='about-me-buttons'>
-        <button onClick={() => { window.location.href = 'https://www.w3schools.com' }}>
-          <ThemeIcon 
-            light={'assets/profile_light.png'}
-            dark={'assets/profile_dark.png'}
-            alt={'LinkedIn'}
-          />
-        </button>
-        <button onClick={() => { window.location.href = 'https://www.w3schools.com' }}>
-          <ThemeIcon 
-            light={'assets/profile_light.png'}
-            dark={'assets/profile_dark.png'}
-            alt={'Instagram'}
-          />
-        </button>
-        <ProfileEditPopup/>
-      </div>
-    }</> :
-    <>{
-      <div id='about-me-buttons' className='about-me-buttons-minimal'>
-        <button>
-          <ThemeIcon 
-            light={'assets/profile_light.png'}
-            dark={'assets/profile_dark.png'}
-            alt={'LinkedIn'}
-          />
-        </button>
-        <button>
-          <ThemeIcon 
-            light={'assets/profile_light.png'}
-            dark={'assets/profile_dark.png'}
-            alt={'Instagram'}
-          />
-        </button>
-        <button>
-          <ThemeIcon 
-            light={'assets/profile_light.png'}
-            dark={'assets/profile_dark.png'}
-            alt={'Like'}
-          />
-        </button>
-        <Dropdown>
-          <DropdownButton>
-            <ThemeIcon 
-              light={'assets/menu_light.png'}
-              dark={'assets/menu_dark.png'}
-              alt={'...'}
-              addClass={'dropdown-menu'}
+  const aboutMeButtons = isUsersProfile ? (
+    <>
+      {
+        <div id="about-me-buttons">
+          <button
+            onClick={() => {
+              window.location.href = 'https://www.w3schools.com';
+            }}
+          >
+            <ThemeIcon
+              light={'assets/profile_light.png'}
+              dark={'assets/profile_dark.png'}
+              alt={'LinkedIn'}
             />
-          </DropdownButton>
-          <DropdownContent rightAlign={true}>
-            <div id='profile-menu-dropdown'>
-              <button className='profile-menu-dropdown-button'>Share</button>
-              <button className='profile-menu-dropdown-button'>Block</button>
-              <button className='profile-menu-dropdown-button' id='profile-menu-report'>Report</button>
-            </div>
-          </DropdownContent>
-        </Dropdown>
-      </div>
-    }</>
+          </button>
+          <button
+            onClick={() => {
+              window.location.href = 'https://www.w3schools.com';
+            }}
+          >
+            <ThemeIcon
+              light={'assets/profile_light.png'}
+              dark={'assets/profile_dark.png'}
+              alt={'Instagram'}
+            />
+          </button>
+          <ProfileEditPopup />
+        </div>
+      }
+    </>
+  ) : (
+    <>
+      {
+        <div id="about-me-buttons" className="about-me-buttons-minimal">
+          <button>
+            <ThemeIcon
+              light={'assets/profile_light.png'}
+              dark={'assets/profile_dark.png'}
+              alt={'LinkedIn'}
+            />
+          </button>
+          <button>
+            <ThemeIcon
+              light={'assets/profile_light.png'}
+              dark={'assets/profile_dark.png'}
+              alt={'Instagram'}
+            />
+          </button>
+          <button>
+            <ThemeIcon
+              light={'assets/profile_light.png'}
+              dark={'assets/profile_dark.png'}
+              alt={'Like'}
+            />
+          </button>
+          <Dropdown>
+            <DropdownButton>
+              <ThemeIcon
+                light={'assets/menu_light.png'}
+                dark={'assets/menu_dark.png'}
+                alt={'...'}
+                addClass={'dropdown-menu'}
+              />
+            </DropdownButton>
+            <DropdownContent rightAlign={true}>
+              <div id="profile-menu-dropdown">
+                <button className="profile-menu-dropdown-button">Share</button>
+                <button className="profile-menu-dropdown-button">Block</button>
+                <button className="profile-menu-dropdown-button" id="profile-menu-report">
+                  Report
+                </button>
+              </div>
+            </DropdownContent>
+          </Dropdown>
+        </div>
+      }
+    </>
+  );
 
   //Page layout for if profile data hasn't been loaded yet
-  let loadingProfile = <>{
-    <div>
-      Loading profile...
-    </div>
-  }</>
+  let loadingProfile = <>{<div>Loading profile...</div>}</>;
 
   //Page layout for if profile data isn't found
-  let loadingFailed = <>{
-    <div>
-      Data on this profile does not exist.
-    </div>
-  }</>
+  let loadingFailed = <>{<div>Data on this profile does not exist.</div>}</>;
 
   return (
-    <div className='page'>
-      <Header dataSets={{ data: [] }} onSearch={() => { }} />
+    <div className="page">
+      <Header dataSets={{ data: [] }} onSearch={() => {}} />
 
       {/* Checks if we have profile data to use, then determines what to render */}
-      {failCheck === true ? loadingFailed : displayedProfile === undefined ? loadingProfile :
-        <div id='profile-page-content'>
+      {failCheck === true ? (
+        loadingFailed
+      ) : displayedProfile === undefined ? (
+        loadingProfile
+      ) : (
+        <div id="profile-page-content">
           {/* New profile display using css grid, will contain all info except for projects */}
-          <div id='profile-information-grid'>
-            <img src={`/images/profiles/${displayedProfile.profile_image}`} id='profile-image' alt='profile image' />
-            <div id='profile-bio'>{displayedProfile.bio}</div>
+          <div id="profile-information-grid">
+            <img
+              src={`/images/profiles/${displayedProfile.profile_image}`}
+              id="profile-image"
+              alt="profile image"
+            />
+            <div id="profile-bio">{displayedProfile.bio}</div>
 
-            <div id='profile-info-name'><span id='profile-fullname'>{displayedProfile.first_name} {displayedProfile.last_name}</span>@{'someguy'}</div>
-            <div id='profile-info-buttons'>{aboutMeButtons}</div>
+            <div id="profile-info-name">
+              <span id="profile-fullname">
+                {displayedProfile.first_name} {displayedProfile.last_name}
+              </span>
+              @{'someguy'}
+            </div>
+            <div id="profile-info-buttons">{aboutMeButtons}</div>
 
-            <div id='profile-info-extras'>
-              <div className='profile-extra'>
-                <ThemeIcon 
+            <div id="profile-info-extras">
+              <div className="profile-extra">
+                <ThemeIcon
                   light={'assets/black/role.png'}
                   dark={'assets/white/role.png'}
                   alt={'Profession'}
                 />
                 {displayedProfile.job_title}
               </div>
-              <div className='profile-extra'>
-                <ThemeIcon 
+              <div className="profile-extra">
+                <ThemeIcon
                   light={'assets/black/major.png'}
                   dark={'assets/white/major.png'}
                   alt={'Major'}
                 />
                 {displayedProfile.major}, {displayedProfile.academic_year}
               </div>
-              <div className='profile-extra'>
-                <ThemeIcon 
+              <div className="profile-extra">
+                <ThemeIcon
                   light={'assets/black/location.png'}
                   dark={'assets/white/location.png'}
                   alt={'Location'}
                 />
                 {displayedProfile.location}
               </div>
-              <div className='profile-extra'>
-                <ThemeIcon 
+              <div className="profile-extra">
+                <ThemeIcon
                   light={'assets/black/pronouns.png'}
                   dark={'assets/white/pronouns.png'}
                   alt={'Pronouns'}
@@ -559,55 +599,61 @@ const NewProfile = () => {
               </div>
             </div>
 
-            <div id='profile-info-description'>
-              {displayedProfile.headline}
-            </div>
+            <div id="profile-info-description">{displayedProfile.headline}</div>
 
-            <div id='profile-info-funfact'>
-              <span id='fun-fact-start'>Fun Fact! </span>
+            <div id="profile-info-funfact">
+              <span id="fun-fact-start">Fun Fact! </span>
               {displayedProfile.fun_fact}
             </div>
 
-            <div id='profile-info-skills'>
-              {
-                displayedProfile.skills != null ?
-                  /* Will take in a list of tags the user has selected,
+            <div id="profile-info-skills">
+              {displayedProfile.skills != null ? (
+                /* Will take in a list of tags the user has selected,
                   then use a map function to generate tags to fill this div */
-                  displayedProfile.skills.map((tag) => {
-                    let category: string;
-                    if (tag.type === 'Design') { category = 'red'; }
-                    else if (tag.type === 'Developer') { category = 'yellow'; }
-                    else if (tag.type === 'Soft') { category = 'purple'; }
-                    else { category = 'grey'; }
-                    return (
-                      <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>
-                    )
-                  }) :
-                  <></>
-              }
+                displayedProfile.skills.map((tag) => {
+                  let category: string;
+                  if (tag.type === 'Design') {
+                    category = 'red';
+                  } else if (tag.type === 'Developer') {
+                    category = 'yellow';
+                  } else if (tag.type === 'Soft') {
+                    category = 'purple';
+                  } else {
+                    category = 'grey';
+                  }
+                  return <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>;
+                })
+              ) : (
+                <></>
+              )}
             </div>
           </div>
 
-          <div id='profile-projects'>
+          <div id="profile-projects">
             <h2>Projects</h2>
-            <div id='profile-project-list'>
+            <div id="profile-project-list">
               {/* Will use same rendering system as the discover page, just with projects
             this user has worked on. Only needs re-rendering on page resizing. maybe. */}
-              <>{
-                displayedProjects.length > 0 ?
+              <>
+                {displayedProjects.length > 0 ? (
                   //For each project in project display list... (use map)
                   displayedProjects.map((project) => (
                     //Create a Project Panel component
-                    <ProjectPanel width={project.width + project.adjust} projectData={project}></ProjectPanel>
-                  )) :
+                    <ProjectPanel
+                      width={project.width + project.adjust}
+                      projectData={project}
+                    ></ProjectPanel>
+                  ))
+                ) : (
                   <>This user has not worked on any projects yet.</>
-              }</>
+                )}
+              </>
             </div>
           </div>
         </div>
-      }
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default NewProfile;

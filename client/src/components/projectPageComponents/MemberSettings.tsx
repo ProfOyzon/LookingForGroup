@@ -1,6 +1,6 @@
-import { MemberListing } from "./MemberListing";
-import { SearchBar } from "../SearchBar";
-import { projects, profiles } from "../../constants/fakeData";// FIXME: use data in db
+import { MemberListing } from './MemberListing';
+import { SearchBar } from '../SearchBar';
+import { projects, profiles } from '../../constants/fakeData'; // FIXME: use data in db
 import { useState } from 'react';
 
 //This component is used in the project member view of the Project page
@@ -20,17 +20,20 @@ import { useState } from 'react';
 export const MemberSettings = (props) => {
   let i = -1;
   let key = 0; //Not needed, but react will give an error if not used
-  const projectData = projects.find(p => p._id === Number(props.projectId)) || projects[0];
+  const projectData = projects.find((p) => p._id === Number(props.projectId)) || projects[0];
 
   //Creates an array of objects containing data to use for the search function
-  let members = projectData.members.map(member => {
-    let profile = profiles.find(p => p._id === Number(member.userID));
+  let members = projectData.members.map((member) => {
+    let profile = profiles.find((p) => p._id === Number(member.userID));
     if (profile !== undefined) {
-      return (
-        {name: profile.name, username: profile.username, role: member.role, id:member.userID}
-      );
+      return {
+        name: profile.name,
+        username: profile.username,
+        role: member.role,
+        id: member.userID,
+      };
     }
-  })
+  });
 
   const [memberData, setMemberData] = useState(members);
 
@@ -38,29 +41,34 @@ export const MemberSettings = (props) => {
   const updateMembers = (members) => {
     //members requires the index identified here due to how the data returned from the search function is structured
     setMemberData(members[0]);
-  }
+  };
 
-  return(
-    <div id='member-settings'>
-      <div id='member-settings-header'>
-      <SearchBar dataSets={[{data: members}]} onSearch={updateMembers}/>
-      <button className='white-button'>Invite</button>
+  return (
+    <div id="member-settings">
+      <div id="member-settings-header">
+        <SearchBar dataSets={[{ data: members }]} onSearch={updateMembers} />
+        <button className="white-button">Invite</button>
       </div>
-      <div id='member-settings-list'>
-        <hr/>
-        {memberData.map(member => {
-          if (member !== undefined){
+      <div id="member-settings-list">
+        <hr />
+        {memberData.map((member) => {
+          if (member !== undefined) {
             i++;
-            return(
+            return (
               <div key={key++}>
-              <MemberListing name={member.name} role={props.tempSettings.projectMembers[i].role} num={i} idNum={member.id} updateMemberSettings={props.updateMemberSettings}/>
-              <hr/>
+                <MemberListing
+                  name={member.name}
+                  role={props.tempSettings.projectMembers[i].role}
+                  num={i}
+                  idNum={member.id}
+                  updateMemberSettings={props.updateMemberSettings}
+                />
+                <hr />
               </div>
-            )
-          } 
-        })
-        }
+            );
+          }
+        })}
       </div>
     </div>
-  )
-}
+  );
+};

@@ -29,78 +29,78 @@ General style rules
 */
 /*default color scheme*/
 :root {
-    /* default dark mode is default */
-    --bg-color: #0E0E0E;
-    /* background color */
+  /* default dark mode is default */
+  --bg-color: #0e0e0e;
+  /* background color */
 
-    --primary-color: #FEAD81;
-    /* primary color for buttons, etc. */
-    --panel-hover: rgba(254, 173, 129, 0.9);
-    /* hover color for profile cards */
-    --header-color: #1A1921;
-    /* search bar, header button background, profile page background, etc. */
-    --dropdown-color: #0E0E0E;
-    /* dropdown/small modal background color */
-    --sidebar-gradient: linear-gradient(180deg, #2C2A3A 30%, #FEAD81 100%);
-    --hero-gradient: linear-gradient(180deg, #0E0E0E 30%, #2C2A3A 100%);
-    /* gradient for  discover hero section */
-    --modal-gradient: linear-gradient(293deg, #0A0A0A 0%, #2C2A3A 100%);
-    /* gradient for bigger modals (project/profile settings, etc.) */
-    --border-color: #2B2939;
-    /* border for elements like textboxes that are on top of gradients for better visibility */
-    --error-delete-color: #FF3859;
-    /* for error messages and delete buttons */
-    --shadow-color: rgba(255, 255, 255, 0.20);
-    /* for shadows */
+  --primary-color: #fead81;
+  /* primary color for buttons, etc. */
+  --panel-hover: rgba(254, 173, 129, 0.9);
+  /* hover color for profile cards */
+  --header-color: #1a1921;
+  /* search bar, header button background, profile page background, etc. */
+  --dropdown-color: #0e0e0e;
+  /* dropdown/small modal background color */
+  --sidebar-gradient: linear-gradient(180deg, #2c2a3a 30%, #fead81 100%);
+  --hero-gradient: linear-gradient(180deg, #0e0e0e 30%, #2c2a3a 100%);
+  /* gradient for  discover hero section */
+  --modal-gradient: linear-gradient(293deg, #0a0a0a 0%, #2c2a3a 100%);
+  /* gradient for bigger modals (project/profile settings, etc.) */
+  --border-color: #2b2939;
+  /* border for elements like textboxes that are on top of gradients for better visibility */
+  --error-delete-color: #ff3859;
+  /* for error messages and delete buttons */
+  --shadow-color: rgba(255, 255, 255, 0.2);
+  /* for shadows */
 
-    /* text colors */
-    --main-text: white;
-    --invert-text: black;
-    --neutral-gray: #9D9D9D;
+  /* text colors */
+  --main-text: white;
+  --invert-text: black;
+  --neutral-gray: #9d9d9d;
 
-    /* sidebar create button */
-    --create-bg: #2C2A3A;
-    --create-text: white;
+  /* sidebar create button */
+  --create-bg: #2c2a3a;
+  --create-text: white;
 
-    /* don't invert black image */
-    --image-filter: invert(1);
+  /* don't invert black image */
+  --image-filter: invert(1);
 
-    /* tags */
-    --tag-red-selected: #FFA0B0;
-    --tag-orange-selected: #FFA381;
-    --tag-yellow-selected: #FFCF8B;
-    --tag-green-selected: #BED9AA;
-    --tag-blue-selected: #B0DCEE;
-    --tag-purple-selected: #D7BED3;
-    --tag-grey-selected: #D0D0D0;
+  /* tags */
+  --tag-red-selected: #ffa0b0;
+  --tag-orange-selected: #ffa381;
+  --tag-yellow-selected: #ffcf8b;
+  --tag-green-selected: #bed9aa;
+  --tag-blue-selected: #b0dcee;
+  --tag-purple-selected: #d7bed3;
+  --tag-grey-selected: #d0d0d0;
 
-    --tag-red-unselected: #0E0E0E;
-    --tag-orange-unselected: #0E0E0E;
-    --tag-yellow-unselected: #0E0E0E;
-    --tag-green-unselected: #0E0E0E;
-    --tag-blue-unselected: #0E0E0E;
-    --tag-purple-unselected: #0E0E0E;
-    --tag-grey-unselected: #0E0E0E;
+  --tag-red-unselected: #0e0e0e;
+  --tag-orange-unselected: #0e0e0e;
+  --tag-yellow-unselected: #0e0e0e;
+  --tag-green-unselected: #0e0e0e;
+  --tag-blue-unselected: #0e0e0e;
+  --tag-purple-unselected: #0e0e0e;
+  --tag-grey-unselected: #0e0e0e;
 
-    --tag-red-unselected-border: #FFA0B0;
-    --tag-orange-unselected-border: #FFA381;
-    --tag-yellow-unselected-border: #FFCF8B;
-    --tag-green-unselected-border: #BED9AA;
-    --tag-blue-unselected-border: #B0DCEE;
-    --tag-purple-unselected-border: #D7BED3;
-    --tag-grey-unselected-border: #D0D0D0;
+  --tag-red-unselected-border: #ffa0b0;
+  --tag-orange-unselected-border: #ffa381;
+  --tag-yellow-unselected-border: #ffcf8b;
+  --tag-green-unselected-border: #bed9aa;
+  --tag-blue-unselected-border: #b0dcee;
+  --tag-purple-unselected-border: #d7bed3;
+  --tag-grey-unselected-border: #d0d0d0;
 
-    --tag-text-selected: black;
+  --tag-text-selected: black;
 
-    --tag-text-unselected-red: #FFA0B0;
-    --tag-text-unselected-orange: #FFA381;
-    --tag-text-unselected-yellow: #FFCF8B;
-    --tag-text-unselected-green: #BED9AA;
-    --tag-text-unselected-blue: #B0DCEE;
-    --tag-text-unselected-purple: #D7BED3;
-    --tag-text-unselected-grey: #D0D0D0;
+  --tag-text-unselected-red: #ffa0b0;
+  --tag-text-unselected-orange: #ffa381;
+  --tag-text-unselected-yellow: #ffcf8b;
+  --tag-text-unselected-green: #bed9aa;
+  --tag-text-unselected-blue: #b0dcee;
+  --tag-text-unselected-purple: #d7bed3;
+  --tag-text-unselected-grey: #d0d0d0;
 
-    /* 
+  /* 
     When implemented look into this https://codepen.io/sosuke/pen/Pjoqqp
     to change the add_tag.svg color in tag selection.
 
@@ -110,99 +110,99 @@ General style rules
 }
 
 /*light mode color scheme*/
-[data-theme="light"] {
-    --bg-color: #FFF;
+[data-theme='light'] {
+  --bg-color: #fff;
 
-    --primary-color: #271D66;
-    --panel-hover: rgba(39, 29, 102, 0.9);
-    --header-color: #ECECF7;
-    --dropdown-color: #FFF;
-    --sidebar-gradient: linear-gradient(180deg, #D3D3FF 0%, #FFCEB4 100%);
-    --hero-gradient: linear-gradient(180deg, #FFFFFF 50%, #D3D3FF 100%);
-    --modal-gradient: linear-gradient(113deg, #D3D3FF 0%, #FFF 100%);
-    --border-color: #D3D3FF;
-    --error-delete-color: #FF3859;
-    --shadow-color: rgba(0, 0, 0, 0.20);
+  --primary-color: #271d66;
+  --panel-hover: rgba(39, 29, 102, 0.9);
+  --header-color: #ececf7;
+  --dropdown-color: #fff;
+  --sidebar-gradient: linear-gradient(180deg, #d3d3ff 0%, #ffceb4 100%);
+  --hero-gradient: linear-gradient(180deg, #ffffff 50%, #d3d3ff 100%);
+  --modal-gradient: linear-gradient(113deg, #d3d3ff 0%, #fff 100%);
+  --border-color: #d3d3ff;
+  --error-delete-color: #ff3859;
+  --shadow-color: rgba(0, 0, 0, 0.2);
 
-    --main-text: black;
-    --invert-text: white;
-    --neutral-gray: #636363;
+  --main-text: black;
+  --invert-text: white;
+  --neutral-gray: #636363;
 
-    --create-bg: white;
-    --create-text: #271D66;
+  --create-bg: white;
+  --create-text: #271d66;
 
-    /* invert black image */
-    --image-filter: invert(0);
+  /* invert black image */
+  --image-filter: invert(0);
 
-    /* tags */
-    --tag-red-selected: #FFA0B0;
-    --tag-orange-selected: #FFA381;
-    --tag-yellow-selected: #FFCF8B;
-    --tag-green-selected: #BED9AA;
-    --tag-blue-selected: #B0DCEE;
-    --tag-purple-selected: #D7BED3;
-    --tag-grey-selected: #D0D0D0;
+  /* tags */
+  --tag-red-selected: #ffa0b0;
+  --tag-orange-selected: #ffa381;
+  --tag-yellow-selected: #ffcf8b;
+  --tag-green-selected: #bed9aa;
+  --tag-blue-selected: #b0dcee;
+  --tag-purple-selected: #d7bed3;
+  --tag-grey-selected: #d0d0d0;
 
-    --tag-red-unselected: #FFD9DF;
-    --tag-orange-unselected: #FFDACD;
-    --tag-yellow-unselected: #FFECD1;
-    --tag-green-unselected: #E5F0DD;
-    --tag-blue-unselected: #DFF1F8;
-    --tag-purple-unselected: #EFE5ED;
-    --tag-grey-unselected: #ECECEC;
+  --tag-red-unselected: #ffd9df;
+  --tag-orange-unselected: #ffdacd;
+  --tag-yellow-unselected: #ffecd1;
+  --tag-green-unselected: #e5f0dd;
+  --tag-blue-unselected: #dff1f8;
+  --tag-purple-unselected: #efe5ed;
+  --tag-grey-unselected: #ececec;
 
-    --tag-red-unselected-border: #FFD9DF;
-    --tag-orange-unselected-border: #FFDACD;
-    --tag-yellow-unselected-border: #FFECD1;
-    --tag-green-unselected-border: #E5F0DD;
-    --tag-blue-unselected-border: #DFF1F8;
-    --tag-purple-unselected-border: #EFE5ED;
-    --tag-grey-unselected-border: #ECECEC;
+  --tag-red-unselected-border: #ffd9df;
+  --tag-orange-unselected-border: #ffdacd;
+  --tag-yellow-unselected-border: #ffecd1;
+  --tag-green-unselected-border: #e5f0dd;
+  --tag-blue-unselected-border: #dff1f8;
+  --tag-purple-unselected-border: #efe5ed;
+  --tag-grey-unselected-border: #ececec;
 
-    --tag-text-selected: black;
+  --tag-text-selected: black;
 
-    --tag-text-unselected-red: black;
-    --tag-text-unselected-orange: black;
-    --tag-text-unselected-yellow: black;
-    --tag-text-unselected-green: black;
-    --tag-text-unselected-blue: black;
-    --tag-text-unselected-purple: black;
-    --tag-text-unselected-grey: black;
+  --tag-text-unselected-red: black;
+  --tag-text-unselected-orange: black;
+  --tag-text-unselected-yellow: black;
+  --tag-text-unselected-green: black;
+  --tag-text-unselected-blue: black;
+  --tag-text-unselected-purple: black;
+  --tag-text-unselected-grey: black;
 }
 
 * {
-    font-family: "Inter", sans-serif;
-    color: var(--main-text);
+  font-family: 'Inter', sans-serif;
+  color: var(--main-text);
 }
 
 /*basic rules for hiding/showing certain elements
 used for the more options dropdown menu and notifications
 */
 .hide {
-    display: none;
+  display: none;
 }
 
 .show {
-    display: block;
+  display: block;
 }
 
 .page-title {
-    margin-bottom: 0;
-    font-size: 30px;
+  margin-bottom: 0;
+  font-size: 30px;
 }
 
 button {
-    cursor: pointer;
-    transition: .2s;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 /*give sections of the page a drop shadow*/
 section {
-    margin: 10px;
-    padding: 4px 16px 16px 16px;
-    border-style: solid;
-    border: 2px solid black;
-    box-shadow: 10px 10px 5px lightblue;
+  margin: 10px;
+  padding: 4px 16px 16px 16px;
+  border-style: solid;
+  border: 2px solid black;
+  box-shadow: 10px 10px 5px lightblue;
 }
 
 /*
@@ -221,145 +221,145 @@ Card component style rules
 .discover-card,
 #endorsement,
 #profile-project-card {
-    width: 70%;
-    max-width: 765px;
-    max-height: 265px;
-    border: 2px solid black;
-    box-shadow: 10px 10px 5px lightblue;
-    display: grid;
-    grid-template-columns: 30% 70%;
-    text-align: left;
-    padding: 3%;
-    margin: 2.5% auto;
-    transition: 1s;
-    opacity: 0;
-    animation: fadeIn 1s forwards;
+  width: 70%;
+  max-width: 765px;
+  max-height: 265px;
+  border: 2px solid black;
+  box-shadow: 10px 10px 5px lightblue;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  text-align: left;
+  padding: 3%;
+  margin: 2.5% auto;
+  transition: 1s;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
 }
 
 /*makes them bigger when hovered over */
 /*TODO: endorsements dont get bigger for some reason*/
 .discover-card:hover #endorsement:hover,
 #profile-project-card:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /*the animation that plays when the card is loaded*/
 @keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
 
-    50% {
-        opacity: 0.5;
-    }
+  50% {
+    opacity: 0.5;
+  }
 
-    100% {
-        opacity: 1;
-    }
+  100% {
+    opacity: 1;
+  }
 }
 
 #discover-card-body {
-    margin-left: 10%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    grid-template-rows: 10% 50% 30% 10%;
-    font-size: 0.8rem;
+  margin-left: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  grid-template-rows: 10% 50% 30% 10%;
+  font-size: 0.8rem;
 }
 
 /*make them grow and shrink with the window */
-#discover-card-body>* {
-    flex: 1;
+#discover-card-body > * {
+  flex: 1;
 }
 
 #message-card #discover-card-body {
-    margin-top: 0%;
-    padding-bottom: 5%;
+  margin-top: 0%;
+  padding-bottom: 5%;
 }
 
 #profile-project-body {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
 }
 
 #profile-project-card {
-    width: 85%;
+  width: 85%;
 }
 
 #endorsement {
-    flex-direction: row;
-    width: 85%;
+  flex-direction: row;
+  width: 85%;
 }
 
 #message-card {
-    max-height: 45px;
-    grid-template-columns: 10% 90%;
-    padding-top: 0;
-    padding-bottom: 3.5%;
+  max-height: 45px;
+  grid-template-columns: 10% 90%;
+  padding-top: 0;
+  padding-bottom: 3.5%;
 }
 
 @media only screen and (max-width: 800px) {
-    .discover-card {
-        width: 90%;
-        max-width: 90%;
-    }
+  .discover-card {
+    width: 90%;
+    max-width: 90%;
+  }
 }
 
 /*profile picture rules-----------------------------------------------------*/
 #discover-card-profile-picture,
 #profile-project-profile-picture,
 #endorsement-profile-picture {
-    width: 100%;
-    border: 2px solid black;
-    border-radius: 100%;
+  width: 100%;
+  border: 2px solid black;
+  border-radius: 100%;
 }
 
 #profile-project-profile-picture {
-    width: 80%;
+  width: 80%;
 }
 
 #endorsement-profile-picture {
-    width: 60%;
+  width: 60%;
 }
 
 #message-card #discover-card-profile-picture {
-    width: 110%;
-    margin-top: 15%;
+  width: 110%;
+  margin-top: 15%;
 }
 
 /*text rules---------------------------------------------------------------*/
 #discover-card-name {
-    text-align: center;
-    margin-bottom: 0;
+  text-align: center;
+  margin-bottom: 0;
 }
 
 #message-card #discover-card-name {
-    text-align: left;
+  text-align: left;
 }
 
 #discover-card-name:hover,
 #profile-project-name:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 #discover-card-description {
-    margin-top: 0;
-    max-width: 450px;
+  margin-top: 0;
+  max-width: 450px;
 }
 
 #discover-card-tag-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    gap: 4px;
-    max-width: 450px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 4px;
+  max-width: 450px;
 }
 
 #discover-card-pronouns {
-    margin-top: 0%;
-    text-align: center;
+  margin-top: 0%;
+  text-align: center;
 }
 
 /*
@@ -372,24 +372,24 @@ Tag component style rules
 
 /*used in Tags component */
 .tag {
-    display: flex;
-    align-items: center;
-    border: 2px solid lightseagreen;
-    border-radius: 5px;
-    text-align: center;
-    padding: 0.5vw 1vw;
-    max-height: 25px;
+  display: flex;
+  align-items: center;
+  border: 2px solid lightseagreen;
+  border-radius: 5px;
+  text-align: center;
+  padding: 0.5vw 1vw;
+  max-height: 25px;
 }
 
 .tag-name {
-    margin: 0;
-    font-size: 1rem;
+  margin: 0;
+  font-size: 1rem;
 }
 
 @media only screen and (max-width: 800px) {
-    .tag-name {
-        font-size: 2vw;
-    }
+  .tag-name {
+    font-size: 2vw;
+  }
 }
 
 /*
@@ -403,57 +403,57 @@ Button component style rules
 /*general rules for buttons
 orange-button class makes the button orange, white-button class makes the button white*/
 .orange-button {
-    background-color: var(--orange);
-    color: var(--white);
-    font-size: large;
-    border: none;
-    cursor: pointer;
-    margin: 10px;
+  background-color: var(--orange);
+  color: var(--white);
+  font-size: large;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
 }
 
 .orange-button:hover {
-    background-color: var(--orange-hover);
+  background-color: var(--orange-hover);
 }
 
 /*icon button: has an icon in it*/
 .white-button,
 .icon-button {
-    background-color: var(--white);
-    color: black;
-    border: none;
-    cursor: pointer;
+  background-color: var(--white);
+  color: black;
+  border: none;
+  cursor: pointer;
 }
 
 .white-button:hover,
 .icon-button:hover {
-    background-color: #D0D0D0;
+  background-color: #d0d0d0;
 }
 
 .icon-button {
-    width: 50px;
-    height: 50px;
+  width: 50px;
+  height: 50px;
 }
 
-.icon-button>img {
-    width: 100%;
+.icon-button > img {
+  width: 100%;
 }
 
 /*rules for the 'return' button*/
 #return-button {
-    font-weight: bold;
-    font-size: larger;
-    height: 40px;
-    margin-bottom: 10px;
+  font-weight: bold;
+  font-size: larger;
+  height: 40px;
+  margin-bottom: 10px;
 }
 
 #return-button-container {
-    text-align: left;
-    display: flex;
-    position: absolute;
-    float: inline-start;
-    flex-direction: row;
-    align-content: center;
-    margin: auto;
+  text-align: left;
+  display: flex;
+  position: absolute;
+  float: inline-start;
+  flex-direction: row;
+  align-content: center;
+  margin: auto;
 }
 
 /*
@@ -465,24 +465,24 @@ Sidebar Nav style rules
 */
 
 .SideBarContainer {
-    width: 220px;
-    height: 100vh;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px; */
-    z-index: 2;
-    color: var(--dark-lighttheme);
-    background-color: var(--bg-color);
-    /*background-image: url("../../../public/images/nav-background.png");*/
-    background-image: var(--sidebar-gradient);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+  width: 220px;
+  height: 100vh;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px; */
+  z-index: 2;
+  color: var(--dark-lighttheme);
+  background-color: var(--bg-color);
+  /*background-image: url("../../../public/images/nav-background.png");*/
+  background-image: var(--sidebar-gradient);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 #lfg-logo {
-    width: 80px;
+  width: 80px;
 }
 
 /* .ProfileContainer {
@@ -494,139 +494,139 @@ Sidebar Nav style rules
 
 /* Container for logo and notification bell */
 .headerContainer {
-    display: flex;
-    flex-direction: row;
-    /* justify-content: space-between; */
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 200px;
-    margin: 30px 0 30px 0;
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 200px;
+  margin: 30px 0 30px 0;
 }
 
 #notif-dot {
-    width: 12px;
-    height: 12px;
-    background-color: var(--red);
-    color: white;
-    font-size: 10px;
-    border-radius: 50%;
-    position: absolute;
-    top: 33px;
-    right: 14px;
+  width: 12px;
+  height: 12px;
+  background-color: var(--red);
+  color: white;
+  font-size: 10px;
+  border-radius: 50%;
+  position: absolute;
+  top: 33px;
+  right: 14px;
 }
 
 /* notification bell */
 .headerContainer button {
-    background: none;
-    border: none;
-    width: 33px;
-    height: 33px;
+  background: none;
+  border: none;
+  width: 33px;
+  height: 33px;
 }
 
 /* title/logo */
 .headerContainer h1 {
-    font-weight: bold;
-    font-size: 45px;
-    margin: 0px 0px 0px 30px;
-    text-align: center;
-    color: var(--primary-color);
+  font-weight: bold;
+  font-size: 45px;
+  margin: 0px 0px 0px 30px;
+  text-align: center;
+  color: var(--primary-color);
 }
 
 /*sidebar options*/
 .containerButtonSideBar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    gap: 10px;
-    /*background-color: var(--primary-blue);*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  gap: 10px;
+  /*background-color: var(--primary-blue);*/
 }
 
 .containerButtonSideBar button {
-    color: var(--main-text);
-    width: 194px;
-    height: 55px;
-    /*background-color: var(--primary-blue);*/
-    background-color: rgb(0, 0, 0, 0);
-    border: none;
-    border-radius: 30px;
-    font-size: 20px;
-    text-align: left;
-    padding-left: 20px;
-    padding-right: auto;
-    display: flex;
-    align-items: center;
-    /*color: var(--dark-lighttheme);*/
-    gap: 15px;
+  color: var(--main-text);
+  width: 194px;
+  height: 55px;
+  /*background-color: var(--primary-blue);*/
+  background-color: rgb(0, 0, 0, 0);
+  border: none;
+  border-radius: 30px;
+  font-size: 20px;
+  text-align: left;
+  padding-left: 20px;
+  padding-right: auto;
+  display: flex;
+  align-items: center;
+  /*color: var(--dark-lighttheme);*/
+  gap: 15px;
 
-    img {
-        width: 30px;
-        filter: invert(0);
-    }
+  img {
+    width: 30px;
+    filter: invert(0);
+  }
 }
 
 .containerButtonSideBar button:hover {
-    transition-duration: 0.25s;
-    background-color: var(--invert-text);
+  transition-duration: 0.25s;
+  background-color: var(--invert-text);
 }
 
 .containerButtonSideBar button.active {
-    background-color: var(--primary-color);
-    transition: 0.25s;
-    font-weight: bold;
-    color: var(--invert-text);
+  background-color: var(--primary-color);
+  transition: 0.25s;
+  font-weight: bold;
+  color: var(--invert-text);
 
-    img {
-        filter: invert(1);
-    }
+  img {
+    filter: invert(1);
+  }
 }
 
 /* Profile picture or avatar */
 .displayProfilePic,
 #profile-pic {
-    height: 140px;
-    width: 140px;
-    background-color: var(--header-color);
-    border-radius: 4px;
-    display: flex;
-    border: none;
-    /* box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25); */
-    margin-bottom: 14px;
-    object-fit: cover;
-    overflow: hidden;
+  height: 140px;
+  width: 140px;
+  background-color: var(--header-color);
+  border-radius: 4px;
+  display: flex;
+  border: none;
+  /* box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.25); */
+  margin-bottom: 14px;
+  object-fit: cover;
+  overflow: hidden;
 }
 
 .displayProfilePic img,
 #profile-pic img {
-    scale: 1.1;
+  scale: 1.1;
 }
 
 /*logout button*/
 /*!!!May be removed later!!!*/
 .Logout {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Logout button {
-    background-color: white;
-    color: black;
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 40px;
-    width: 120px;
-    height: 45px;
-    font-size: 18px;
-    border: none;
-    border-radius: 12px;
-    /* outline: solid var(--orange) 2px; */
-    font-weight: 600;
+  background-color: white;
+  color: black;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 40px;
+  width: 120px;
+  height: 45px;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  /* outline: solid var(--orange) 2px; */
+  font-weight: 600;
 }
 
 .Logout button:hover {
-    background-color: rgb(199, 198, 198);
+  background-color: rgb(199, 198, 198);
 }
 
 /* .Logout button:hover {
@@ -639,33 +639,33 @@ Sidebar Nav style rules
 
 /*create button*/
 .Create {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Create button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--create-bg);
-    color: var(--create-text);
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 40px;
-    width: 194px;
-    height: 55px;
-    font-size: 20px;
-    /* padding-bottom: 5px; */
-    border: none;
-    border-radius: 30px;
-    /* outline: solid var(--orange) 2px; */
-    font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--create-bg);
+  color: var(--create-text);
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 40px;
+  width: 194px;
+  height: 55px;
+  font-size: 20px;
+  /* padding-bottom: 5px; */
+  border: none;
+  border-radius: 30px;
+  /* outline: solid var(--orange) 2px; */
+  font-weight: bold;
 
-    img {
-        width: 25px;
-        margin-right: 10px;
-    }
+  img {
+    width: 25px;
+    margin-right: 10px;
+  }
 }
 
 /* .Create button:hover {
@@ -679,55 +679,55 @@ Sidebar Nav style rules
 
 /*responsive stuff for sidebar*/
 @media only screen and (max-width: 800px) {
-    .sideBarContainer {
-        width: 100vw;
-        height: 50px;
-        /*border: solid black 2px;*/
-        position: fixed;
-        bottom: 10px;
-        background-color: var(--header-color);
-        z-index: 1;
-        /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
-    }
+  .sideBarContainer {
+    width: 100vw;
+    height: 50px;
+    /*border: solid black 2px;*/
+    position: fixed;
+    bottom: 10px;
+    background-color: var(--header-color);
+    z-index: 1;
+    /*box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 16px;*/
+  }
 
-    .ProfileContainer {
-        width: 15vw;
-    }
+  .ProfileContainer {
+    width: 15vw;
+  }
 
-    .containerButtonSideBar {
-        display: flex;
-        flex-direction: row;
-        /* cursor: pointer; */
-        gap: 20px;
-        align-items: center;
-        justify-content: space-evenly;
-        height: 80px;
-        background-color: var(--header-color);
-    }
+  .containerButtonSideBar {
+    display: flex;
+    flex-direction: row;
+    /* cursor: pointer; */
+    gap: 20px;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 80px;
+    background-color: var(--header-color);
+  }
 
-    .containerButtonSideBar button {
-        width: 20vw;
-        height: 45px;
-        margin: 0 5px 20px 5px;
-        padding-left: calc((100vw - 160px) / 10);
-        padding-right: auto;
-    }
+  .containerButtonSideBar button {
+    width: 20vw;
+    height: 45px;
+    margin: 0 5px 20px 5px;
+    padding-left: calc((100vw - 160px) / 10);
+    padding-right: auto;
+  }
 
-    .containerButtonSideBar button:hover {
-        transition-duration: 0.25s;
-        background-color: var(--invert-text);
-    }
+  .containerButtonSideBar button:hover {
+    transition-duration: 0.25s;
+    background-color: var(--invert-text);
+  }
 
-    .containerButtonSideBar button.active {
-        background-color: var(--primary-color);
-        transition: 0.25s;
-        font-weight: bold;
-        color: var(--invert-text);
+  .containerButtonSideBar button.active {
+    background-color: var(--primary-color);
+    transition: 0.25s;
+    font-weight: bold;
+    color: var(--invert-text);
 
-        img {
-            filter: invert(1);
-        }
+    img {
+      filter: invert(1);
     }
+  }
 }
 
 /*
@@ -740,15 +740,15 @@ Page popup style rules
 
 /*rules for the cover a popup uses*/
 .popup-cover {
-    display: block;
-    position: fixed;
-    background-color: black;
-    opacity: 50%;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
+  display: block;
+  position: fixed;
+  background-color: black;
+  opacity: 50%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 
 /*rules for the popup itself*/
@@ -776,60 +776,60 @@ Page popup style rules
 }
 
 .popup-container {
-    display: flex;
-    position: fixed;
-    align-items: center;
-    justify-content: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 3;
-    border-radius: 10px;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  border-radius: 10px;
 }
 
 #popup-close {
-    position: absolute;
-    border-radius: 4px;
-    top: 10px;
-    right: 10px;
-    background: none;
+  position: absolute;
+  border-radius: 4px;
+  top: 10px;
+  right: 10px;
+  background: none;
 }
 
 .popup-close {
-    position: absolute;
-    border-radius: 4px !important;
-    border: none !important;
-    top: 0px;
-    right: 0px;
-    width: 40px !important;
-    height: 40px !important;
-    background: none !important;
-    margin: 4px 4px 0 0 !important;
+  position: absolute;
+  border-radius: 4px !important;
+  border: none !important;
+  top: 0px;
+  right: 0px;
+  width: 40px !important;
+  height: 40px !important;
+  background: none !important;
+  margin: 4px 4px 0 0 !important;
 }
 
 .popup-close img {
-    width: 100%;
-    height: 32px;
-    margin-top: 3px;
-    filter: var(--image-filter);
+  width: 100%;
+  height: 32px;
+  margin-top: 3px;
+  filter: var(--image-filter);
 }
 
 .popup-close:hover {
-    /* background-color: var(--lightGray) !important; */
-    cursor: pointer;
+  /* background-color: var(--lightGray) !important; */
+  cursor: pointer;
 }
 
 #popup-close img {
-    width: 40px;
-    height: 40px;
-    filter: var(--image-filter);
+  width: 40px;
+  height: 40px;
+  filter: var(--image-filter);
 }
 
 /*rules used to prevent page scrolling while a popup is open*/
 .page-scroll-lock {
-    position: fixed;
-    padding-right: 15px;
+  position: fixed;
+  padding-right: 15px;
 }
 
 .popup .primary-btn {
@@ -932,88 +932,86 @@ Header style rules
 */
 
 #header {
-    display: grid;
-    align-items: center;
-    text-align: left;
-    /* margin-right: 50px; */
-    margin: auto;
-    grid-template:
-        'search buttons' 90px / auto max-content;
-    background-color: rgba(0, 0, 0, 0);
-    /* 
+  display: grid;
+  align-items: center;
+  text-align: left;
+  /* margin-right: 50px; */
+  margin: auto;
+  grid-template: 'search buttons' 90px / auto max-content;
+  background-color: rgba(0, 0, 0, 0);
+  /* 
         Please don't comment the background-image rule out unless there is a good reason for it
         It makes a smooth color transition for the header to the page content, and works with light/dark mode
         from what I've tested. I see no reason to not use it.
     */
-    background-image: linear-gradient(var(--bg-color) 85%, rgba(0, 0, 0, 0));
-    /* width: calc(100% - 50px); */
-    width: 94%;
-    /* This should make it responsive to parent element where it wasn't necessarily before */
-    height: 90px;
-    position: sticky;
-    top: 0;
-    z-index: 2;
+  background-image: linear-gradient(var(--bg-color) 85%, rgba(0, 0, 0, 0));
+  /* width: calc(100% - 50px); */
+  width: 94%; /* This should make it responsive to parent element where it wasn't necessarily before */
+  height: 90px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 #header-searchbar {
-    grid-area: search;
+  grid-area: search;
 }
 
-#header-searchbar>.search-wrapper>.search-bar {
-    margin: 0;
+#header-searchbar > .search-wrapper > .search-bar {
+  margin: 0;
 }
 
 #header-buttons {
-    grid-area: buttons;
-    display: flex;
-    justify-content: flex-end;
-    /* width: 140px; */
-    max-width: fit-content;
-    margin-left: 10px;
+  grid-area: buttons;
+  display: flex;
+  justify-content: flex-end;
+  /* width: 140px; */
+  max-width: fit-content;
+  margin-left: 10px;
 }
 
 #header-buttons button {
-    background-color: var(--header-color);
-    border-radius: 50px;
-    border: none;
-    margin-left: 10px;
-    height: 45px;
-    /* width: auto; */
+  background-color: var(--header-color);
+  border-radius: 50px;
+  border: none;
+  margin-left: 10px;
+  height: 45px;
+  /* width: auto; */
 
-    /* margin-left:10px;
+  /* margin-left:10px;
     height:auto;
     width:auto;
     padding-top:4px; */
 }
 
 #notif-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
 
-    img {
-        width: 34px;
-    }
+  img {
+    width: 34px;
+  }
 }
 
 #profile-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 
-    #profile-img-icon {
-        width: 32px;
-    }
+  #profile-img-icon {
+    width: 32px;
+  }
 
-    #dropdown-arrow {
-        width: 15px;
-        margin-top: 5px;
-    }
+  #dropdown-arrow {
+    width: 15px;
+    margin-top: 5px;
+  }
 }
 
 /* #header-buttons img {
@@ -1023,49 +1021,49 @@ Header style rules
 } */
 
 #header-profile-dropdown {
-    margin-top: 10px;
-    width: 165px;
-    height: 200px;
-    border-radius: 10px;
-    background-color: var(--dropdown-color);
-    box-shadow: 0px 0px 10px 0px var(--shadow-color);
-    border: none;
-    padding: 10px;
-    /* color: var(--primary-color); */
+  margin-top: 10px;
+  width: 165px;
+  height: 200px;
+  border-radius: 10px;
+  background-color: var(--dropdown-color);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
+  border: none;
+  padding: 10px;
+  /* color: var(--primary-color); */
 }
 
 #header-profile-user {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
 }
 
 #header-profile-email {
-    font-style: italic;
-    font-size: smaller;
-    color: var(--main-text);
+  font-style: italic;
+  font-size: smaller;
+  color: var(--main-text);
 }
 
 #header-profile-dropdown img {
-    height: 28px;
-    width: 28px;
+  height: 28px;
+  width: 28px;
 }
 
 #header-profile-dropdown button {
-    background: none;
-    display: flex;
-    width: 100%;
-    border-radius: 10px;
-    gap: 10px;
-    align-items: center;
-    margin: 0;
-    flex-shrink: 0;
-    color: var(--main-text);
+  background: none;
+  display: flex;
+  width: 100%;
+  border-radius: 10px;
+  gap: 10px;
+  align-items: center;
+  margin: 0;
+  flex-shrink: 0;
+  color: var(--main-text);
 }
 
 #header-profile-dropdown button:hover {
-    background-color: var(--header-color);
+  background-color: var(--header-color);
 }
 
 /*
@@ -1078,74 +1076,73 @@ Search style rules
 
 /*position on the page*/
 .search-wrapper {
-    /* display: flex;
+  /* display: flex;
     flex-direction: row; */
-    /* align-content: right; */
-    /* justify-self: right; */
-    /* height: 50px; */
-    /* margin-left: 50px;
+  /* align-content: right; */
+  /* justify-self: right; */
+  /* height: 50px; */
+  /* margin-left: 50px;
     width: calc(100% - 40px); */
 }
 
 .fa-search {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .search-bar {
-    height: 25px;
-    /* width: 100%; */
-    width: calc(100% - 2em);
-    /* Keeps width within parent element */
-    /* padding: 10px 15px; */
-    padding: 10px 1em;
-    /*border: 3px solid gray;*/
-    border-radius: 40px;
-    background-color: var(--header-color);
-    color: var(--primary-color);
-    font-size: 16px;
-    font-family: "Inter", sans-serif;
-    font-weight: 500;
-    text-align: left;
-    display: flex;
-    flex-direction: row;
-    /* float: right; */
-    /* align-content: center; */
-    /* margin: auto; */
+  height: 25px;
+  /* width: 100%; */
+  width: calc(100% - 2em); /* Keeps width within parent element */
+  /* padding: 10px 15px; */
+  padding: 10px 1em;
+  /*border: 3px solid gray;*/
+  border-radius: 40px;
+  background-color: var(--header-color);
+  color: var(--primary-color);
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  /* float: right; */
+  /* align-content: center; */
+  /* margin: auto; */
 }
 
 /*text in the bar*/
 .search-input,
 .search-input::placeholder {
-    background: none;
-    width: 100%;
-    color: var(--primary-color);
-    border: none;
-    padding: 4px;
-    font: inherit;
-    cursor: text;
-    outline: inherit;
+  background: none;
+  width: 100%;
+  color: var(--primary-color);
+  border: none;
+  padding: 4px;
+  font: inherit;
+  cursor: text;
+  outline: inherit;
 }
 
 /*magnifying glass button*/
 .search-button {
-    background: none;
-    border: none;
-    /* padding: 4px; */
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
+  background: none;
+  border: none;
+  /* padding: 4px; */
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
 }
 
 .navIcon {
-    width: 33px;
-    filter: invert();
+  width: 33px;
+  filter: invert();
 }
 
 @media only screen and (max-width: 800px) {
-    .search-bar {
-        font-size: 16px;
-        /* width: 200px; */
-    }
+  .search-bar {
+    font-size: 16px;
+    /* width: 200px; */
+  }
 }
 
 /*
@@ -1157,16 +1154,16 @@ Dropdown style rules
 */
 
 .dropdown-container {
-    position: relative;
+  position: relative;
 }
 
 .dropdown {
-    /* border:solid 1px var(--dark-lighttheme); */
-    border-radius: 10px;
-    /* box-shadow: 1px 2px 2px var(--dark-lighttheme); */
-    position: absolute;
-    background: none;
-    z-index: 1;
+  /* border:solid 1px var(--dark-lighttheme); */
+  border-radius: 10px;
+  /* box-shadow: 1px 2px 2px var(--dark-lighttheme); */
+  position: absolute;
+  background: none;
+  z-index: 1;
 }
 
 /*
@@ -1179,24 +1176,24 @@ Scrollbar style rules
 
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    border: 2px solid var(--header-color);
-    border-radius: 10px;
+  border: 2px solid var(--header-color);
+  border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: var(--header-color);
-    border-radius: 10px;
+  background: var(--header-color);
+  border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /*
@@ -1208,25 +1205,24 @@ Tag Filter style rules
 */
 
 #tag-filter-list {
-    display: flex;
-    flex-wrap: wrap;
-
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .tag-filter {
-    width: 200px;
-    height: 30px;
-    border: var(--orange) solid 2px;
-    color: var(--orange);
-    cursor: pointer;
+  width: 200px;
+  height: 30px;
+  border: var(--orange) solid 2px;
+  color: var(--orange);
+  cursor: pointer;
 }
 
 .tag-filter-selected {
-    width: 200px;
-    height: 30px;
-    border: var(--green) solid 2px;
-    color: var(--green);
-    cursor: pointer;
+  width: 200px;
+  height: 30px;
+  border: var(--green) solid 2px;
+  color: var(--green);
+  cursor: pointer;
 }
 
 /*
@@ -1238,21 +1234,21 @@ Image Carousel style rules
 */
 
 #carousel-tabs {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .carousel-tab {
-    border: none;
-    border-radius: 50%;
-    width: 14px;
-    height: 14px;
-    background-color: var(--header-color);
+  border: none;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  background-color: var(--header-color);
 }
 
 .carousel-tab:hover,
 .carousel-tab-active {
-    background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
 
 /*
@@ -1263,35 +1259,34 @@ Image Carousel style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 .ToTopContainer {
-    position: fixed;
-    right: 50px;
-    bottom: 50px;
-    width: fit-content;
-    height: fit-content;
-    font-size: 3rem;
-    z-index: 1;
-    /* color: green; */
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+  width: fit-content;
+  height: fit-content;
+  font-size: 3rem;
+  z-index: 1;
+  /* color: green; */
 }
 
 .ToTopContainer .to-top-button {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    background: none;
-    border: none;
-    border-radius: 50px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  background: none;
+  border: none;
+  border-radius: 50px;
 
-
-    img {
-        width: 20px;
-        rotate: 180deg;
-    }
+  img {
+    width: 20px;
+    rotate: 180deg;
+  }
 }
 
 .to-top-button:hover {
-    background-color: var(--header-color);
+  background-color: var(--header-color);
 }
 
 .hidden {
-    display: none;
+  display: none;
 }

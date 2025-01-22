@@ -11,10 +11,9 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 
 import { useNavigate } from 'react-router-dom';
-import * as paths from "../../constants/routes";
-import profilePlaceholder from "../../icons/profile-user.png";
-import { profiles, comments } from "../../constants/fakeData";// FIXME: use data in db
-
+import * as paths from '../../constants/routes';
+import profilePlaceholder from '../../icons/profile-user.png';
+import { profiles, comments } from '../../constants/fakeData'; // FIXME: use data in db
 
 //This component is used in the Project Post page, and contains code for structuring the full length of a comment
 //  This includes the comment itself, as well as any replies the comment has.
@@ -29,14 +28,14 @@ const showRepliesToggle = (i) => {
   let currentId = i;
   //Get reply set with currently selected ID. If it exists, show/hide the replies in the set
   let currentButton = document.getElementById(currentId);
-  if (currentButton !== null){
+  if (currentButton !== null) {
     currentButton.classList.toggle('show');
   }
-}
+};
 
 //Component used in conjuction with 'PostComment', which creates a set of replies for the comment
 //Contains a button that shows/hides the replies, as well as the full list of replies
-//  Each reply is rendered with another 'PostComment' component, 
+//  Each reply is rendered with another 'PostComment' component,
 //  causing it to loop until all subsequent replies & comments are rendered
 //If the current comment has no replies, returns an empty element
 
@@ -48,31 +47,25 @@ const showRepliesToggle = (i) => {
 // *** Separate component, should be moved into its own file later ***
 // Due to how the two components work in tandem, I am rethinking the action to separate them into their own files
 const CommentReplies = (props) => {
-  if (props.comment.replies.length !== 0){
+  if (props.comment.replies.length !== 0) {
     i++;
     let replyKey = 0; //Code doesn't need replyKey, but react will post an error if it isn't used in the .map function later
     let currentId = 'show-reply-set-' + i;
-    return(
-      <div className='comment-replies'>
+    return (
+      <div className="comment-replies">
         <button onClick={() => showRepliesToggle(currentId)}>----- View Replies</button>
-        <div id={currentId} className='hide'>
-          {
-            props.comment.replies.map(reply => {
-              replyKey++
-              return(
-                <PostComment commentId={reply} callback={props.callback} key={replyKey}/>
-              )
-            })
-          }
+        <div id={currentId} className="hide">
+          {props.comment.replies.map((reply) => {
+            replyKey++;
+            return <PostComment commentId={reply} callback={props.callback} key={replyKey} />;
+          })}
         </div>
       </div>
-    )
+    );
   } else {
-    return(
-      <></>
-    )
+    return <></>;
   }
-}
+};
 
 //Main component, which is exported from this file
 //Used as the base for a post comment, which contains the comment content, author & comment info, and options
@@ -84,27 +77,30 @@ const CommentReplies = (props) => {
 //  the callback function should be the 'changeReplyTarget' function, found in ProjectPostPage.tsx line 32
 export const PostComment = (props) => {
   let navigate = useNavigate();
-  let comment = comments.find(c => c._id === props.commentId) || comments[0];
-  return(
-    <div className='post-comment' id={props.commentId}>
-      <img className='comment-profile' src={profilePlaceholder} alt='profile'/>
-      <div className='comment-header'>
-        <span className='comment-author' onClick={() => navigate(paths.routes.PROFILE + `?profID=${comment.author}`)}>
+  let comment = comments.find((c) => c._id === props.commentId) || comments[0];
+  return (
+    <div className="post-comment" id={props.commentId}>
+      <img className="comment-profile" src={profilePlaceholder} alt="profile" />
+      <div className="comment-header">
+        <span
+          className="comment-author"
+          onClick={() => navigate(paths.routes.PROFILE + `?profID=${comment.author}`)}
+        >
           {profiles[comment.author].username}
         </span>
-        <span className='comment-date'> {comment.createdDate}</span>
+        <span className="comment-date"> {comment.createdDate}</span>
       </div>
 
-      <div className='comment-content'>
-        {comment.content}
-      </div>
+      <div className="comment-content">{comment.content}</div>
 
-      <button className='comment-options'>...</button>
-      <button className='comment-like'>like</button>
+      <button className="comment-options">...</button>
+      <button className="comment-like">like</button>
 
-      <button className='comment-reply' onClick={() => props.callback(props.commentId)}>Reply</button>
+      <button className="comment-reply" onClick={() => props.callback(props.commentId)}>
+        Reply
+      </button>
 
-      <CommentReplies comment={comment} callback={props.callback}/>
+      <CommentReplies comment={comment} callback={props.callback} />
     </div>
-  )
-}
+  );
+};

@@ -1145,6 +1145,12 @@ New Profile page style rules
   display: flex;
   align-items: center;
   font-style: italic;
+  gap: 10px;
+}
+
+.profile-extra > img {
+  height: 24px;
+  object-fit: contain;
 }
 
 #profile-info-description {

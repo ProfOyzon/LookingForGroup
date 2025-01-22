@@ -101,7 +101,7 @@ export const ProjectCreatorEditor = () => {
       <div id='project-editor-image-ui'>
         {/* TODO: Add image elements/components here based on currently uploaded images */}
         <div id='project-editor-add-image'>
-          <img src='assets/white/upload_image.png' alt=''/>
+          <img src='assets/white/upload_file_white.png' alt=''/>
           <div className='project-editor-extra-info'>Drop your image here, or {/*TODO: click to upload file<input type="file">*/}browse{/*</input>*/}</div>
           <div className='project-editor-extra-info'>Supports: JPEG, PNG</div>
         </div>
@@ -240,6 +240,15 @@ export const ProjectCreatorEditor = () => {
   const teamTabContent = currentTeamTab === 0 ? <>{
     <div id='project-editor-project-members'>
       {/* List out project members */}
+      {/* Temporary hard-coded members */}
+      <div id='project-editor-project-member'>
+        <img className='project-member-image' src='/assets/creditProfiles/JF.png' alt=''/>
+        <div id='project-editor-project-member-info'>
+          <div id='project-editor-project-member-name'>Lily Carter</div>
+          <div id='project-editor-project-member-role' className='project-editor-extra-info'>Project Lead</div>
+        </div>
+        <button className='edit-project-member-button'><img className='edit-project-member-icon' src='/images/icons/pencil.png' alt='' /></button>
+      </div>
       <Popup>
         <PopupButton buttonId="project-editor-add-member">
           <img src={profileImage} alt=''/>Add Member
@@ -255,7 +264,7 @@ export const ProjectCreatorEditor = () => {
         </PopupContent>
       </Popup>
     </div>
-  }</> : currentTeamTab === 1 ? <>{
+    }</> : currentTeamTab === 1 ? <>{
     <div id='project-editor-open-positions'>
       <div id='project-editor-open-positions-list'>
         {/* Add open positions here */}

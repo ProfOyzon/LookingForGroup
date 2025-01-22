@@ -493,9 +493,15 @@ Project Creator and Editor style rules
   font-weight: 600;
 }
 
-#project-editor-tag-search-tabs {
+#project-editor-tag-search-tabs,
+#project-editor-team-tabs {
   display: flex;
   justify-content: space-between;
+}
+
+#project-editor-team-tabs {
+  margin: 0px 335px;
+  gap: 50px;
 }
 
 .project-editor-tag-search-tab {
@@ -504,11 +510,80 @@ Project Creator and Editor style rules
   font-size: 1.6ch;
 }
 
+.project-editor-team-tab {
+  padding: 0;
+  color: var(--neutral-gray);
+  font-size: 2ch;
+}
+
 .project-editor-tag-search-tab:hover,
-.tag-search-tab-active {
+.tag-search-tab-active,
+.project-editor-team-tab:hover,
+.team-tab-active {
   color: var(--primary-color);
   font-weight: 600;
   transition: none;
+}
+
+#project-editor-project-members {
+  display: flex;
+  width: 100%;
+  margin-top: 15px;
+  padding: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: #0A0A0A;
+}
+
+#project-editor-project-member {
+  display: flex;
+  padding: 12px 15px;
+  width: 234px;
+  gap: 30px;
+  flex-direction: row;
+  background-color: var(--header-color);
+  border-radius: 10px;
+  align-items: center;
+
+}
+
+.project-member-image {
+  border: 2px solid #FFF;
+  border-radius: 100%;
+  width: 74px;
+  height: 74px;
+}
+
+#project-editor-project-member-name {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+#project-editor-project-member-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+#project-editor-project-member-info > * {
+  align-self: stretch;
+}
+
+.edit-project-member-button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background-color: var(--primary-color);
+  color: var(--primary-color);
+  border-radius: 100%;
+}
+
+.edit-project-member-icon {
+  width: 24px;
+  height: 24px;
 }
 
 /*
@@ -1478,10 +1553,10 @@ New Project Page style rules
   background-color: rgba(0, 0, 0, 0);
 }
 
-#project-info-buttons img {
-  width: 50px;
-  height: 50px;
-}
+/* #project-info-buttons img {
+  width: 25px;
+  height: 25px;
+} */
 
 #project-info-edit {
   font-size: 1.8ch;

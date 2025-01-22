@@ -9,7 +9,7 @@ import NotificationSettings from "../SettingsPageComponents/NotificationSetting"
 import ProfileVisibilitySetting from "../SettingsPageComponents/ProfileVisibilitySetting";
 import ToTopButton from "../ToTopButton";
 import CreditsFooter from "../CreditsFooter";
-import { ThemeContext } from '../../Contexts';
+import ThemeContext from '../../contexts/ThemeContext';
 
 const Settings = ({ avatarImage, setAvatarImage, profileImage, setProfileImage }) => {
   // state variables

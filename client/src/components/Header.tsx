@@ -19,7 +19,7 @@ import * as paths from "../constants/routes";
 import profileImage from "../icons/profile-user.png";
 import { sendPost } from "../functions/fetch";
 import { ThemeIcon } from "./ThemeIcon";
-import { ThemeContext } from "../Contexts";
+import ThemeContext from "../contexts/ThemeContext";
 
 
 //Header component to be used in pages

@@ -9,9 +9,9 @@ import './components/Styles/profile.css';
 import './components/Styles/projects.css';
 import './components/Styles/settings.css';
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import * as paths from "./constants/routes";
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Login from './components/pages/Login';
 import SignUp from './components/pages/Signup';
 import ForgotPassword from './components/pages/ForgotPassword';
@@ -33,10 +33,9 @@ import CreateProject from './components/pages/CreateProject';
 import CreditsFooter from './components/CreditsFooter';
 import Credits from './components/pages/CreditsPage';
 import AccountActivation from './components/pages/AccountActivation';
-import { ThemeContext } from './Contexts';
+import ThemeContext from './contexts/ThemeContext';
 
 import uselocalstorage from 'use-local-storage';
-import { useEffect } from 'react';
 
 
 function App() {
@@ -48,37 +47,35 @@ function App() {
   const [theme, setTheme] = uselocalstorage('theme', defaultDark ? 'dark' : 'light');
 
   return (
-    <BrowserRouter>
-      <ThemeContext.Provider value={{ theme, setTheme }}>
-        <div className="App" data-theme={theme} >
-          <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} theme={theme} />
-          <Routes>
-            <Route path={paths.routes.DEFAULT} element={<Discover/>} />
-            <Route path={paths.routes.LOGIN} element={<Login />} />
-            <Route path={paths.routes.SIGNUP} element={<SignUp avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
-            <Route path={paths.routes.FORGOTPASSWORD} element={<ForgotPassword />} />
-            <Route path={paths.routes.RESETPASSWORD} element={<ResetPassword />} />
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <div className="App" data-theme={theme} >
+        <SideBar avatarImage={avatarImage} setAvatarImage={setAvatarImage} theme={theme} />
+        <Routes>
+          <Route path={paths.routes.DEFAULT} element={<Discover />} />
+          <Route path={paths.routes.LOGIN} element={<Login />} />
+          <Route path={paths.routes.SIGNUP} element={<SignUp avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
+          <Route path={paths.routes.FORGOTPASSWORD} element={<ForgotPassword />} />
+          <Route path={paths.routes.RESETPASSWORD} element={<ResetPassword />} />
 
-            <Route path={paths.routes.HOME} element={<Discover />} />
-            <Route path={paths.routes.MEET} element={<Meet />} />
-            <Route path={paths.routes.MESSAGES} element={<Messages />} />
-            <Route path={paths.routes.MYPROJECTS} element={<MyProjects />} />
-            <Route path={paths.routes.PROFILE} element={<NewProfile />} />
-            <Route path={paths.routes.NEWPROFILE} element={<NewProfile />} />
-            <Route path={paths.routes.PROJECT} element={<Project />} />
-            <Route path={paths.routes.NEWPROJECT} element={<NewProject />} />
-            <Route path={paths.routes.CREATEPROJECT} element={<CreateProject />} />
-            <Route path={paths.routes.PROJECTPOST} element={<ProjectPostPage />} />
-            <Route path={paths.routes.SETTINGS} element={<Settings avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
-            <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
-            <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
-            <Route path={paths.routes.CREDITS} element={<Credits />} />
-            <Route path={paths.routes.ACCOUNTACTIVATE} element={<AccountActivation />} />
-          </Routes>
-          {/* <CreditsFooter /> */}
-        </div>
-      </ThemeContext.Provider>
-    </BrowserRouter>
+          <Route path={paths.routes.HOME} element={<Discover />} />
+          <Route path={paths.routes.MEET} element={<Meet />} />
+          <Route path={paths.routes.MESSAGES} element={<Messages />} />
+          <Route path={paths.routes.MYPROJECTS} element={<MyProjects />} />
+          <Route path={paths.routes.PROFILE} element={<NewProfile />} />
+          <Route path={paths.routes.NEWPROFILE} element={<NewProfile />} />
+          <Route path={paths.routes.PROJECT} element={<Project />} />
+          <Route path={paths.routes.NEWPROJECT} element={<NewProject />} />
+          <Route path={paths.routes.CREATEPROJECT} element={<CreateProject />} />
+          <Route path={paths.routes.PROJECTPOST} element={<ProjectPostPage />} />
+          <Route path={paths.routes.SETTINGS} element={<Settings avatarImage={avatarImage} setAvatarImage={setAvatarImage} profileImage={profileImage} setProfileImage={setProfileImage} />} />
+          <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
+          <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
+          <Route path={paths.routes.CREDITS} element={<Credits />} />
+          <Route path={paths.routes.ACCOUNTACTIVATE} element={<AccountActivation />} />
+        </Routes>
+        {/* <CreditsFooter /> */}
+      </div>
+    </ThemeContext.Provider>
   );
 }
 

@@ -16,13 +16,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import * as paths from "../../constants/routes";
 //import * as fetch from "../../functions/fetch";
 
-const EmailConfirmation = (props) => {
+const EmailConfirmation = (props: any) => {
     // THINGS TO DO:
     // Add Page Components (info box stating email is confirmed) x
     // Style page to match Figma (both light and dark modes)
     // Auto redirect to discover page (as well as link to discover page if redirect doesn't work) x
     // Include token in link as (react search parameter or query parameter) and work with database to verify users email (grab token and fetch to /api/signup/[insert token here]) x
     const [responseData, setResponseData] = useState(props.responseData);
+    const [counter, setCounter] = useState(5);
 
     //Gets current location
     const location = useLocation();
@@ -53,16 +54,16 @@ const EmailConfirmation = (props) => {
 
     useEffect(() => {
         const getUserCreationStatus = async () => {
-            const url = `/api/signup/${path.substring(path.lastIndexOf("/")+1, path.length)}`;
+            const url = `/api/signup/${path.substring(path.lastIndexOf("/") + 1, path.length)}`;
             try {
                 const response = await fetch(url);
                 const data = await response.json();
                 console.log(`Status: ${data.status}`);
-                if(data.error) {
-                console.log(`Error: ${data.error}`);
+                if (data.error) {
+                    console.log(`Error: ${data.error}`);
                 }
                 setResponseData(data);
-            } catch(err) {
+            } catch (err) {
                 console.error(err)
             }
         };
@@ -77,18 +78,18 @@ const EmailConfirmation = (props) => {
     // Sets default h1Text and redirect destination
     let h1Text = "Error Fetching";
 
-    if(responseData != undefined) {
+    if (responseData != undefined) {
         // Changes h1Text and redirect destination dependent on the status code returned by server
-        switch(responseData.status) {
+        switch (responseData.status) {
             case 200:
-                h1Text = "Your LFG account has been activated!";
+                h1Text = "Your LFG account is now activated!";
                 break;
             case 400:
                 h1Text = responseData.error;
                 break;
         }
     }
-    
+
 
     // Function to handle redirecting from the current page
     const redirect = () => {
@@ -97,8 +98,18 @@ const EmailConfirmation = (props) => {
 
     // Function that calls redirect after 5 seconds
     useEffect(() => {
-        const interval = setInterval(() => {redirect()}, 5000);
-        return () => clearInterval(interval);
+        const interval = setInterval(() => {
+            setCounter((prevCounter) => prevCounter > 0 ? prevCounter - 1 : 0);
+        }, 1000);
+
+        const timeout = setTimeout(() => {
+            redirect();
+        }, 5000);
+
+        return () => {
+            clearInterval(interval);
+            clearTimeout(timeout);
+        };
     });
 
 
@@ -106,11 +117,9 @@ const EmailConfirmation = (props) => {
     return (
         <div id="email-confirmation-page" className="background-cover">
             <div className="confirmation-container">
-                <div className="text-container">
-                    <h1 id="confirmation-text">{h1Text}</h1><br></br>
-                    <h2 id="auto-redirect-text">You will be automatically redirected soon</h2><br></br>
-                    <h3 id="manual-redirect-text">If you are not automatically redirected, click <span id="manual-redirect-link" onClick={() => redirect()}><i>here</i></span></h3>
-                </div>
+                <h1 id="confirmation-text">{h1Text}</h1><br></br>
+                <h2 id="auto-redirect-text">Redirecting to login in {counter}s</h2><br></br>
+                <h3 id="manual-redirect-text">If the page does not automatically redirect, click <span id="manual-redirect-link" onClick={() => redirect()}>here</span></h3>
             </div>
         </div>
     );

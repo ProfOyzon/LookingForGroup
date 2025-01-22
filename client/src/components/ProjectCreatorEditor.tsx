@@ -306,66 +306,89 @@ export const ProjectCreatorEditor = () => {
 
   const positionWindow = editMode === true ? positionEditWindow : positionViewWindow;
 
-  const teamTabContent = currentTeamTab === 0 ? <>{
-    <div id='project-editor-project-members'>
-      {/* List out project members */}
-      {/* Temporary hard-coded members */}
-      <div id='project-editor-project-member'>
-        <img className='project-member-image' src='/assets/creditProfiles/JF.png' alt=''/>
-        <div id='project-editor-project-member-info'>
-          <div id='project-editor-project-member-name'>Lily Carter</div>
-          <div id='project-editor-project-member-role' className='project-editor-extra-info'>Project Lead</div>
-        </div>
-        <button className='edit-project-member-button'><img className='edit-project-member-icon' src='/images/icons/pencil.png' alt='' /></button>
-      </div>
-      <div id='project-editor-project-member'>
-        <img className='project-member-image' src='/assets/creditProfiles/JF.png' alt=''/>
-        <div id='project-editor-project-member-info'>
-          <div id='project-editor-project-member-name'>Maya Bennett</div>
-          <div id='project-editor-project-member-role' className='project-editor-extra-info'>2D Artist</div>
-        </div>
-        <button className='edit-project-member-button'><img className='edit-project-member-icon' src='/images/icons/pencil.png' alt='' /></button>
-      </div>
-      <div id='project-editor-project-member'>
-        <img className='project-member-image' src='/assets/creditProfiles/JF.png' alt=''/>
-        <div id='project-editor-project-member-info'>
-          <div id='project-editor-project-member-name'>Aiden Brooks</div>
-          <div id='project-editor-project-member-role' className='project-editor-extra-info'>Video Game Developer</div>
-        </div>
-        <button className='edit-project-member-button'><img className='edit-project-member-icon' src='/images/icons/pencil.png' alt='' /></button>
-      </div>
-      <div id='project-editor-project-member'>
-        <img className='project-member-image' src='/assets/creditProfiles/JF.png' alt=''/>
-        <div id='project-editor-project-member-info'>
-          <div id='project-editor-project-member-name'>Aiden Brooks</div>
-          <div id='project-editor-project-member-role' className='project-editor-extra-info'>Video Game Developer</div>
-        </div>
-        <button className='edit-project-member-button'><img className='edit-project-member-icon' src='/images/icons/pencil.png' alt='' /></button>
-      </div>
-      {/* Add member button */}
-      <Popup>
-        <PopupButton buttonId="project-editor-add-member">
-          <img id='project-team-add-member-image' src={profileImage} alt=''/>
-          <div id='project-team-add-member-text'>Add Member</div>
-        </PopupButton>
-        <PopupContent>
-          <div id=''>Add Member</div>
-          <label>Name</label><input type='text'></input>
-          <label>Role</label>
-          <select>
-            <option>role 1</option>
-            <option>role 2</option>
-          </select>
-        </PopupContent>
-      </Popup>
-    </div>
-    }</> : currentTeamTab === 1 ? (
-    <>{
-    <div id='project-editor-open-positions'>
-      <div id='project-editor-open-positions-list'>
-        {/* Add open positions here */}
-        <button>+ Add Position</button>
-      </div>
+  const teamTabContent =
+    currentTeamTab === 0 ? (
+      <>
+        {
+          <div id="project-editor-project-members">
+            {/* List out project members */}
+            {/* Temporary hard-coded members */}
+            <div id="project-editor-project-member">
+              <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt="" />
+              <div id="project-editor-project-member-info">
+                <div id="project-editor-project-member-name">Lily Carter</div>
+                <div id="project-editor-project-member-role" className="project-editor-extra-info">
+                  Project Lead
+                </div>
+              </div>
+              <button className="edit-project-member-button">
+                <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
+              </button>
+            </div>
+            <div id="project-editor-project-member">
+              <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt="" />
+              <div id="project-editor-project-member-info">
+                <div id="project-editor-project-member-name">Maya Bennett</div>
+                <div id="project-editor-project-member-role" className="project-editor-extra-info">
+                  2D Artist
+                </div>
+              </div>
+              <button className="edit-project-member-button">
+                <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
+              </button>
+            </div>
+            <div id="project-editor-project-member">
+              <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt="" />
+              <div id="project-editor-project-member-info">
+                <div id="project-editor-project-member-name">Aiden Brooks</div>
+                <div id="project-editor-project-member-role" className="project-editor-extra-info">
+                  Video Game Developer
+                </div>
+              </div>
+              <button className="edit-project-member-button">
+                <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
+              </button>
+            </div>
+            <div id="project-editor-project-member">
+              <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt="" />
+              <div id="project-editor-project-member-info">
+                <div id="project-editor-project-member-name">Aiden Brooks</div>
+                <div id="project-editor-project-member-role" className="project-editor-extra-info">
+                  Video Game Developer
+                </div>
+              </div>
+              <button className="edit-project-member-button">
+                <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
+              </button>
+            </div>
+            {/* Add member button */}
+            <Popup>
+              <PopupButton buttonId="project-editor-add-member">
+                <img id="project-team-add-member-image" src={profileImage} alt="" />
+                <div id="project-team-add-member-text">Add Member</div>
+              </PopupButton>
+              <PopupContent>
+                <div id="">Add Member</div>
+                <label>Name</label>
+                <input type="text"></input>
+                <label>Role</label>
+                <select>
+                  <option>role 1</option>
+                  <option>role 2</option>
+                </select>
+              </PopupContent>
+            </Popup>
+          </div>
+        }
+      </>
+    ) : currentTeamTab === 1 ? (
+      <>
+        {
+          <div id="project-editor-open-positions">
+            <div id="project-editor-open-positions-list">
+              {/* Add open positions here */}
+              <button>+ Add Position</button>
+            </div>
 
             <div id="project-editor-open-position-details">{positionWindow}</div>
           </div>

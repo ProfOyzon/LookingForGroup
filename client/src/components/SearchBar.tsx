@@ -29,24 +29,24 @@ export const SearchBar = ({ dataSets, onSearch }) => {
 
   const [query, setQuery] = useState('');
 
-        const HandleChange = (event) => {
-          const newQuery = event.target.value;
-          setQuery(newQuery);
-      
-          const filteredResults = dataSets.map(dataSet =>
-            dataSet.data.filter((item) => {
-              // See if it's an array of objects, or just an array of strings
-              if (typeof item === "Object") {
-                return Object.values(item).some(value =>
-                  String(value).toLowerCase().includes(newQuery.toLowerCase())
-                );
-              }
+  const HandleChange = (event) => {
+    const newQuery = event.target.value;
+    setQuery(newQuery);
 
-              return String(item).toLowerCase().includes(newQuery.toLowerCase());
-            })
+    const filteredResults = dataSets.map((dataSet) =>
+      dataSet.data.filter((item) => {
+        // See if it's an array of objects, or just an array of strings
+        if (typeof item === 'Object') {
+          return Object.values(item).some((value) =>
+            String(value).toLowerCase().includes(newQuery.toLowerCase())
           );
-          onSearch(filteredResults);
-        };
+        }
+
+        return String(item).toLowerCase().includes(newQuery.toLowerCase());
+      })
+    );
+    onSearch(filteredResults);
+  };
 
   return (
     <>

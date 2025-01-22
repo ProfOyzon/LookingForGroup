@@ -223,7 +223,6 @@ Profile page style rules
 }
 
 #profile-project-role > b {
-#profile-project-role > b {
   color: var(--orange);
 }
 
@@ -444,7 +443,6 @@ select.edit-region-input {
   height: 45px;
   width: 100%;
 }
-
 
 .edit-region.quote,
 .edit-region.fact {
@@ -1193,7 +1191,7 @@ New Profile page style rules
   justify-content: flex-end;
 }
 
-#about-me-buttons>button {
+#about-me-buttons > button {
   border: none;
   border-radius: 30px;
   background-color: rgba(0, 0, 0, 0);

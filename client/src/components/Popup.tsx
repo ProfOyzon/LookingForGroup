@@ -73,9 +73,5 @@ export const PopupContent = ({ children }) => {
 export const Popup = ({ children }) => {
   const [open, setOpen] = useState(false);
 
-  return(
-    <PopupContext.Provider value={{open, setOpen}}>
-      {children}
-    </PopupContext.Provider>
-  );
+  return <PopupContext.Provider value={{ open, setOpen }}>{children}</PopupContext.Provider>;
 };

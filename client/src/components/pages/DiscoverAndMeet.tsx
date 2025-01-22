@@ -193,19 +193,20 @@ const DiscoverAndMeet = ({ category }) => {
   const [filteredTagList, setFilteredTagList] = useState([]);
   const [filteredTags, setFilteredTags] = useState([]);
   //list of tabs for the filter popup to use, changes depending on if discover or meet page is being used
-  let filterPopupTabs = category === 'projects' 
-    ? [
-        { categoryTags: tags.projectTypes, categoryName: 'Project Type' },
-        { categoryTags: tags.genres, categoryName: 'Genre' },
-        { categoryTags: tags.purposes, categoryName: 'Purpose' }
-      ] 
-    : [
-        { categoryTags: tags.devSkills, categoryName: 'Developer Skill' },
-        { categoryTags: tags.desSkills, categoryName: 'Designer Skill' },
-        { categoryTags: tags.softSkills, categoryName: 'Soft Skill' },
-        { categoryTags: tags.tags, categoryName: 'Role' },
-        { categoryTags: tags.tags, categoryName: 'Major' },
-      ];
+  let filterPopupTabs =
+    category === 'projects'
+      ? [
+          { categoryTags: tags.projectTypes, categoryName: 'Project Type' },
+          { categoryTags: tags.genres, categoryName: 'Genre' },
+          { categoryTags: tags.purposes, categoryName: 'Purpose' },
+        ]
+      : [
+          { categoryTags: tags.devSkills, categoryName: 'Developer Skill' },
+          { categoryTags: tags.desSkills, categoryName: 'Designer Skill' },
+          { categoryTags: tags.softSkills, categoryName: 'Soft Skill' },
+          { categoryTags: tags.tags, categoryName: 'Role' },
+          { categoryTags: tags.tags, categoryName: 'Major' },
+        ];
 
   //Set up panel display functions
 
@@ -1286,7 +1287,7 @@ const DiscoverAndMeet = ({ category }) => {
   const [searchedTags, setSearchedTags] = useState([]);
   const [enabledFilters, setEnabledFilters] = useState([]);
 
-  return  (
+  return (
     <div className="page" onScroll={addContent}>
       {/* Search bar and profile/notification buttons */}
       <Header
@@ -1343,59 +1344,71 @@ const DiscoverAndMeet = ({ category }) => {
           full tag list is only applied when hitting done, which then pushes the info to an active list*/}
           <PopupContent>
             <h2>Project Filters</h2>
-            <div id='filters' className='popup-section'>
-              <SearchBar dataSets={[{ data: currentTags }]} onSearch={(results) => {
-                setSearchedTags(results[0]);
-              }}></SearchBar>
-              <div id='filter-tabs'>
-                {
-                  filterPopupTabs.map((tab) =>
-                    <a
-                      className='filter-tab'
-                      onClick={(e) => {
-                        // Remove .selected from all 3 options, add it only to current button
-                        let tabs = document.querySelector('#filter-tabs').children;
-                        for (let i = 0; i < tabs.length; i++) {
-                          tabs[i].classList.remove('selected');
-                        }
-                        e.target.classList.add('selected');
-                        setCurrentTags(tab.categoryTags);
-                        setSearchedTags(tab.categoryTags);
-                      }}
-                    >{tab.categoryName}</a>
-                  )
-                }
+            <div id="filters" className="popup-section">
+              <SearchBar
+                dataSets={[{ data: currentTags }]}
+                onSearch={(results) => {
+                  setSearchedTags(results[0]);
+                }}
+              ></SearchBar>
+              <div id="filter-tabs">
+                {filterPopupTabs.map((tab) => (
+                  <a
+                    className="filter-tab"
+                    onClick={(e) => {
+                      // Remove .selected from all 3 options, add it only to current button
+                      let tabs = document.querySelector('#filter-tabs').children;
+                      for (let i = 0; i < tabs.length; i++) {
+                        tabs[i].classList.remove('selected');
+                      }
+                      e.target.classList.add('selected');
+                      setCurrentTags(tab.categoryTags);
+                      setSearchedTags(tab.categoryTags);
+                    }}
+                  >
+                    {tab.categoryName}
+                  </a>
+                ))}
               </div>
               <hr />
-              <div id='filter-tags'>
-                {(searchedTags.length === 0) ? (
+              <div id="filter-tags">
+                {searchedTags.length === 0 ? (
                   <p>No tags found. Please make sure you have a tab selected.</p>
-                ) :
-                  searchedTags.map(tag =>
+                ) : (
+                  searchedTags.map((tag) => (
                     <button
-                      className='tag-button tag-button-green-unselected'
+                      className="tag-button tag-button-green-unselected"
                       onClick={(e) => {
                         setEnabledFilters([...enabledFilters, tag]);
                       }}
-                    ><i className='fa-solid fa-plus'></i>{tag}</button>
-                  )
-                }
+                    >
+                      <i className="fa-solid fa-plus"></i>
+                      {tag}
+                    </button>
+                  ))
+                )}
               </div>
             </div>
-            <div id='selected' className='popup-section'>
+            <div id="selected" className="popup-section">
               <h3>Selected</h3>
               <h4>Click to deselect</h4>
-              <div id='selected-filters'>
-                {enabledFilters.map((tag) =>
-                <button
-                  className='tag-button tag-button-green-selected'
-                  onClick={(e) => {}}
-                ><i className='fa-solid fa-x'></i>{tag}</button>)}
+              <div id="selected-filters">
+                {enabledFilters.map((tag) => (
+                  <button className="tag-button tag-button-green-selected" onClick={(e) => {}}>
+                    <i className="fa-solid fa-x"></i>
+                    {tag}
+                  </button>
+                ))}
               </div>
             </div>
-            <button className='primary-btn' onClick={() => {
-              // Apply selected filters to search
-            }}>Apply</button>
+            <button
+              className="primary-btn"
+              onClick={() => {
+                // Apply selected filters to search
+              }}
+            >
+              Apply
+            </button>
           </PopupContent>
         </Popup>
       </div>

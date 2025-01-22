@@ -301,10 +301,4 @@ export const genres = [
   'Other',
 ];
 
-
-export const purposes = [
-  'Personal',
-  'Portfolio Piece',
-  'Academic',
-  'Co-op',
-]
+export const purposes = ['Personal', 'Portfolio Piece', 'Academic', 'Co-op'];

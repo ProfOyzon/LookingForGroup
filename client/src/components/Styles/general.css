@@ -753,26 +753,26 @@ Page popup style rules
 
 /*rules for the popup itself*/
 .popup {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: fixed;
-    background: var(--modal-gradient);
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px 0px var(--shadow-color);
-    max-width: 95vw;
-    max-height: 95vh;
-    opacity: 100%;
-    z-index: 3;
-    width: auto;
-    height: auto;
-    padding: 34px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  background: var(--modal-gradient);
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
+  max-width: 95vw;
+  max-height: 95vh;
+  opacity: 100%;
+  z-index: 3;
+  width: auto;
+  height: auto;
+  padding: 34px 100px;
 }
 
 @media (min-width: 576px) {
-    .popup {
-        max-width: 1121px;
-    }
+  .popup {
+    max-width: 1121px;
+  }
 }
 
 .popup-container {
@@ -797,7 +797,7 @@ Page popup style rules
 }
 
 .onFront {
-    z-index: 5;
+  z-index: 5;
 }
 
 .popup-close {
@@ -837,94 +837,94 @@ Page popup style rules
 }
 
 .popup .primary-btn {
-    width: 110px;
-    height: 40px;
-    padding: 5px 16px;
-    font-size: 20px;
-    border: none;
-    border-radius: 40px;
-    background-color: var(--primary-color);
-    color: var(--invert-text);
-    font-weight: 700;
-    margin-top: 24px;
+  width: 110px;
+  height: 40px;
+  padding: 5px 16px;
+  font-size: 20px;
+  border: none;
+  border-radius: 40px;
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+  font-weight: 700;
+  margin-top: 24px;
 }
 
 .popup h2 {
-    font-size: 24px;
-    margin-bottom: 24px;
-    font-weight: 600;
-    color: var(--primary-color);
+  font-size: 24px;
+  margin-bottom: 24px;
+  font-weight: 600;
+  color: var(--primary-color);
 }
 
 .popup h3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin: 0px 0px 4px 0px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 0px 0px 4px 0px;
 }
 
 .popup h4 {
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--neutral-gray);
-    font-style: italic;
-    margin: 0px 0px 10px 0px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--neutral-gray);
+  font-style: italic;
+  margin: 0px 0px 10px 0px;
 }
 
 .popup .popup-section {
-    background-color: var(--bg-color);
-    padding: 26px 30px;
-    margin: 16px 0px;
-    border-radius: 10px;
+  background-color: var(--bg-color);
+  padding: 26px 30px;
+  margin: 16px 0px;
+  border-radius: 10px;
 }
 
 .popup #filter-tabs {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 38px;
-    justify-content: center;
-    margin: 14px auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 38px;
+  justify-content: center;
+  margin: 14px auto;
 }
 
 .popup .filter-tab {
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--neutral-gray);
-    /* Indicate should be clicked without being a button */
-    cursor: pointer;
-    transition: 0.2s;
-    /* margin: 14px 38px; */
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--neutral-gray);
+  /* Indicate should be clicked without being a button */
+  cursor: pointer;
+  transition: 0.2s;
+  /* margin: 14px 38px; */
 }
 
 .popup .filter-tab.selected {
-    font-weight: 700;
-    color: var(--primary-color);
+  font-weight: 700;
+  color: var(--primary-color);
 }
 
 .popup hr {
-    /* color: var(--header-color); */
-    border: 1px solid var(--header-color);
-    margin: 0;
-    margin-bottom: 14px;
+  /* color: var(--header-color); */
+  border: 1px solid var(--header-color);
+  margin: 0;
+  margin-bottom: 14px;
 }
 
 .popup #filter-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .popup #selected {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 .popup #selected-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 /*

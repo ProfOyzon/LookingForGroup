@@ -33,7 +33,7 @@ import CreateProject from './components/pages/CreateProject';
 import CreditsFooter from './components/CreditsFooter';
 import Credits from './components/pages/CreditsPage';
 import AccountActivation from './components/pages/AccountActivation';
-import ThemeContext from './contexts/ThemeContext';
+import { ThemeContext } from './contexts/ThemeContext';
 
 import uselocalstorage from 'use-local-storage';
 

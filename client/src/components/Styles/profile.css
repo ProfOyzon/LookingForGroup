@@ -76,7 +76,7 @@ Profile Panel component style rules
   position: absolute;
   height: auto;
   width: 200px;
-  transition: opacity .2s;
+  transition: opacity 0.2s;
   top: 0;
   bottom: 0;
   left: 0;
@@ -136,7 +136,7 @@ Profile page style rules
 }
 
 /*make the sections of the profile page the right height*/
-#profile-page>* {
+#profile-page > * {
   height: fit-content;
 }
 
@@ -202,8 +202,8 @@ Profile page style rules
 }
 
 /*make the skills fit into 2 columns */
-#profile-skill-list>.tag,
-#profile-interests-list>.tag {
+#profile-skill-list > .tag,
+#profile-interests-list > .tag {
   width: 35%;
   margin: 1%;
 }
@@ -223,6 +223,7 @@ Profile page style rules
 }
 
 #profile-project-role > b {
+#profile-project-role > b {
   color: var(--orange);
 }
 
@@ -236,7 +237,6 @@ Profile page style rules
 
 /*css for profile responsiveness---------------------------*/
 @media only screen and (max-width: 800px) {
-
   /*get rid of the grid*/
   #profile-page {
     display: inline;
@@ -248,8 +248,8 @@ Profile page style rules
     margin-left: 5%;
   }
 
-  #profile-skill-list>.tag,
-  #profile-preferences-list>.tag {
+  #profile-skill-list > .tag,
+  #profile-preferences-list > .tag {
     width: 80%;
     margin: 1%;
   }
@@ -262,7 +262,9 @@ Profile page style rules
 }
 
 /* --------------------------------- Edit Modal Rules --------------------------------- */
-
+.profile-edit-button {
+  background-color: #271d66;
+}
 
 #popup-container-0 {
   border-radius: 12px;
@@ -426,7 +428,7 @@ Profile page style rules
   border-radius: 10px;
   /* width: 100%; */
   /* height: 45px; */
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   margin-top: 8px;
   padding: 8px 15px;
   font-size: 15px;
@@ -551,12 +553,12 @@ select.edit-region-input {
   height: 100%;
   text-align: end;
 
-  transition: .1s background-color;
+  transition: 0.1s background-color;
 }
 
 .list-project-hide-icon:has(.fa-solid.fa-eye-slash) {
   background-color: #000000a6;
-  transition: .1s background-color;
+  transition: 0.1s background-color;
 }
 
 #edit-profile-modal .list-project-hide-icon-button {
@@ -610,7 +612,7 @@ select.edit-region-input {
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   height: 100%;
   padding: 25px 5px 25px 26px;
   text-align: start;
@@ -697,7 +699,7 @@ select.edit-region-input {
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   /* height: 100%; */
   height: 100%;
   padding: 26px 31px;
@@ -867,7 +869,7 @@ select.edit-region-input {
   font-family: Inter, FontAwesome;
   font-size: 15px;
   line-height: 150%;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .edit-region-input.links {
@@ -1202,7 +1204,7 @@ New Profile page style rules
   padding-bottom: 0;
 }
 
-#about-me-buttons button>img {
+#about-me-buttons button > img {
   margin-top: 3px;
 }
 
@@ -1210,7 +1212,7 @@ New Profile page style rules
   background-color: var(--bg-color);
 }
 
-#about-me-buttons>div {
+#about-me-buttons > div {
   height: 100%;
 }
 

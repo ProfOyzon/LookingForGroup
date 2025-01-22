@@ -12,13 +12,13 @@ import '../Styles/settings.css';
 import '../Styles/pages.css';
 
 import { useState, useEffect } from 'react';
-import { ProjectInfo } from "../projectPageComponents/ProjectInfo";
-import { ProjectInfoMember } from "../projectPageComponents/ProjectInfoMember";
-import { ProjectPost } from "../projectPageComponents/ProjectPost";
-import { ProjectMember } from "../projectPageComponents/ProjectMember";
-import { ProjectMemberPopup } from "../projectPageComponents/ProjectMemberPopup";
-import { PagePopup, openClosePopup } from "../PagePopup";
-import { projects, posts, profiles } from "../../constants/fakeData"; // FIXME: use data in db
+import { ProjectInfo } from '../projectPageComponents/ProjectInfo';
+import { ProjectInfoMember } from '../projectPageComponents/ProjectInfoMember';
+import { ProjectPost } from '../projectPageComponents/ProjectPost';
+import { ProjectMember } from '../projectPageComponents/ProjectMember';
+import { ProjectMemberPopup } from '../projectPageComponents/ProjectMemberPopup';
+import { PagePopup, openClosePopup } from '../PagePopup';
+import { projects, posts, profiles } from '../../constants/fakeData'; // FIXME: use data in db
 
 //Styling changes needed:
 /*
@@ -47,7 +47,7 @@ import { projects, posts, profiles } from "../../constants/fakeData"; // FIXME: 
 
 // The 'select' element is for testing different projects with this layout, it should not be included in the final product
 const Project = (props) => {
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 
   //current project's id number
   let projectId;
@@ -57,26 +57,26 @@ const Project = (props) => {
   // dummy project data, used when re-rendering the page after saving settings
   const dummyProject = {
     _id: -1,
-    name: "dummy project",
+    name: 'dummy project',
     members: [
-        {
-            userID: 0,
-            admin: true,
-            owner: true,
-            role: "Project Lead"
-        },
+      {
+        userID: 0,
+        admin: true,
+        owner: true,
+        role: 'Project Lead',
+      },
     ],
-    description: "dummy project",
-    tags: ["dummy", "project"],
+    description: 'dummy project',
+    tags: ['dummy', 'project'],
     neededRoles: [
-        {
-            Role: "dummy",
-            amount: 2,
-            description: "dummy project",
-        },
+      {
+        Role: 'dummy',
+        amount: 2,
+        description: 'dummy project',
+      },
     ],
-    posts: []
-  }
+    posts: [],
+  };
 
   let keys = [0, 0, 0, 0]; //keys are not required for functionality, but react will give an error without it when using .map functions later
 
@@ -95,13 +95,15 @@ const Project = (props) => {
   }
 
   //Find project using project ID
-  const currentProject = projects.find(p => p._id === Number(projectId)) || projects[0];
+  const currentProject = projects.find((p) => p._id === Number(projectId)) || projects[0];
 
   //Pass project data for rendering purposes
   const [projectData, setProjectData] = useState(currentProject);
 
   //Store project owner's username
-  projectOwner = profiles.find(p => p._id === projectData.members.find(p => p.owner === true).userID).username;
+  projectOwner = profiles.find(
+    (p) => p._id === projectData.members.find((p) => p.owner === true).userID
+  ).username;
 
   //Workaround function to update data on a project save
   //Necessary due to how setting useState variables works
@@ -112,65 +114,79 @@ const Project = (props) => {
     setProjectData(dummyProject);
     //Second line delays the resetting of the project data
     //This is due to the set state function being partly asynchronous, and this allows the first line to finish before continuing
-    setTimeout(() => {setProjectData(projects.find(p => p._id === Number(projectId)) || projects[0])}, 1);
-  }
+    setTimeout(() => {
+      setProjectData(projects.find((p) => p._id === Number(projectId)) || projects[0]);
+    }, 1);
+  };
 
   //First select element is used for testing/debugging purposes, it should be removed in the final product
   //Some comments may be move into html
   return (
-    <div id='project-page' className='page'>
-
-      <select onChange={e => {
-        setProjectData(projects[e.target.value]);
-      }}>
-        {
-          projects.map(project => {
-            return(
-              <option value={project._id} key={keys[0]++}>{project.name}</option>
-            )
-          })
-        }
+    <div id="project-page" className="page">
+      <select
+        onChange={(e) => {
+          setProjectData(projects[e.target.value]);
+        }}
+      >
+        {projects.map((project) => {
+          return (
+            <option value={project._id} key={keys[0]++}>
+              {project.name}
+            </option>
+          );
+        })}
       </select>
 
-      <div id='return-button-container'>
-      <button id='return-button' className='white-button' onClick={() => window.history.back()}>&lt; return</button>
+      <div id="return-button-container">
+        <button id="return-button" className="white-button" onClick={() => window.history.back()}>
+          &lt; return
+        </button>
       </div>
 
-      <ProjectInfoMember callback={resetProjectData} callback2={() => openClosePopup(showPopup, setShowPopup, [showPopup])} projectData={projectData}/>
+      <ProjectInfoMember
+        callback={resetProjectData}
+        callback2={() => openClosePopup(showPopup, setShowPopup, [showPopup])}
+        projectData={projectData}
+      />
 
-      <div id='member-divider'>
-        <hr/>
+      <div id="member-divider">
+        <hr />
         <span>Members</span>
-        <hr/>
-      </div>
-      
-
-      <div id='project-members'>
-        {
-          projectData.members.map(member => {
-            return (
-              <ProjectMember onClick={() => window.location.href="profile"} memberId={member.userID} role={member.role}  key={keys[1]++}/>
-            );
-          })
-        }
-      </div>
-      <hr/>
-
-      <div id='project-posts'>
-        {
-          projectData.posts.map(postNum => {
-            return(
-              <ProjectPost postID={posts[postNum]._id} key={keys[2]++}/>
-            );
-          })
-        }
+        <hr />
       </div>
 
-      <PagePopup width={'80vw'} height={'80vh'} popupId={3} zIndex={3} show={showPopup} setShow={setShowPopup}>
-        <ProjectMemberPopup projectData={projectData}/>
+      <div id="project-members">
+        {projectData.members.map((member) => {
+          return (
+            <ProjectMember
+              onClick={() => (window.location.href = 'profile')}
+              memberId={member.userID}
+              role={member.role}
+              key={keys[1]++}
+            />
+          );
+        })}
+      </div>
+      <hr />
+
+      <div id="project-posts">
+        {projectData.posts.map((postNum) => {
+          return <ProjectPost postID={posts[postNum]._id} key={keys[2]++} />;
+        })}
+      </div>
+
+      <PagePopup
+        width={'80vw'}
+        height={'80vh'}
+        popupId={3}
+        zIndex={3}
+        show={showPopup}
+        setShow={setShowPopup}
+      >
+        <ProjectMemberPopup projectData={projectData} />
       </PagePopup>
     </div>
   );
-}
+};
 
 export default Project;

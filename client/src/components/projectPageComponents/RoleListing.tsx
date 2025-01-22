@@ -1,4 +1,3 @@
-
 //Will return name, positions, & 3 buttons on a single line
 //Will also return description accessable via a dropdown menu (accessed via 1 of the buttons)
 export const RoleListing = (props) => {
@@ -13,12 +12,16 @@ export const RoleListing = (props) => {
     descHidden = !descHidden;
     if (!editMode) {
       let roleListing = document.getElementById('role-desc-' + i);
-      roleListing ? roleListing.classList.toggle('role-list-description') : console.log('cannot find listing');
+      roleListing
+        ? roleListing.classList.toggle('role-list-description')
+        : console.log('cannot find listing');
     } else {
       let roleInput = document.getElementById('role-desc-edit-' + i);
-      roleInput ? roleInput.classList.toggle('role-list-desc-input') : console.log('cannot find listing');
+      roleInput
+        ? roleInput.classList.toggle('role-list-desc-input')
+        : console.log('cannot find listing');
     }
-  }
+  };
 
   //toggles the editing mode for a listing
   //i - the number index of this listing, used to toggle editing mode on the correct listing
@@ -46,14 +49,16 @@ export const RoleListing = (props) => {
     //Only modifies description displays if the description dropdown is open
     if (!descHidden) {
       desc ? desc.classList.toggle('role-list-description') : console.log('cannot find listing');
-      descInput ? descInput.classList.toggle('role-list-desc-input') : console.log('cannot find listing');
+      descInput
+        ? descInput.classList.toggle('role-list-desc-input')
+        : console.log('cannot find listing');
     }
-  }
+  };
 
   //Removes a role from the list & adjusts display to cover said role
   //Reveals an 'undo' button that undoes this
   const removeRole = (roleIndex) => {
-    if(!descHidden) {
+    if (!descHidden) {
       let desc = document.getElementById('role-desc-' + roleIndex);
       desc ? desc.classList.toggle('role-list-description') : console.log('cannot find listing');
       descHidden = true;
@@ -61,14 +66,14 @@ export const RoleListing = (props) => {
     let cover = document.getElementById('role-cover-' + roleIndex);
     cover ? cover.classList.toggle('role-cover') : console.log('error');
     props.removeRole(roleIndex);
-  }
+  };
 
   //Undoes a role deletion & reverts display
   const undoRemoveRole = (roleIndex) => {
     let cover = document.getElementById('role-cover-' + roleIndex);
     cover ? cover.classList.toggle('role-cover') : console.log('error');
     props.undoRemoveRole(roleIndex);
-  }
+  };
 
   //Called when a 'done' button is pressed, saves any changes made to a role's info based on inputs
   //Changes are not finalized until 'save changes' is pressed & window is subsequently closed
@@ -94,15 +99,18 @@ export const RoleListing = (props) => {
     document.getElementById('role-desc-' + roleIndex).innerHTML = roleDesc;
 
     //Creates a roleObject to replace the current role data
-    let roleObject: {Role: string, amount: number, description: string} =
-      {Role: roleName, amount: roleNum, description: roleDesc};
+    let roleObject: { Role: string; amount: number; description: string } = {
+      Role: roleName,
+      amount: roleNum,
+      description: roleDesc,
+    };
 
     //Disables editing mode
     toggleEdit(roleIndex);
 
     props.updateRoleSettings(roleIndex, roleObject);
-  }
-  
+  };
+
   //Check to make sure the role data being passed in exists
   //If this triggers, something's wrong elsewhere here or in Project.tsx
   if (props.role === undefined || props.role === null) {
@@ -110,25 +118,37 @@ export const RoleListing = (props) => {
     return;
   }
 
-  return(
+  return (
     <>
-    <div id={'role-cover-' + props.num} className='hide'>
-      Role Removed <button onClick={() => undoRemoveRole(props.num)}>undo</button>
-    </div>
-    <div id={'role-list-' + props.num} className='role-list-info'>
-      <span className='role-list-name'>{props.role.Role}</span>
-      <input type='text' className='role-list-name-edit-hide' defaultValue={props.role.Role}/>
-      <span className='role-list-num'>{props.role.amount}</span>
-      <input type='number' className='role-list-num-edit-hide' defaultValue={props.role.amount}/>
-      <button className='role-list-desc-dropdown' onClick={() => toggleDescription(props.num)}>V</button>
-      <button className='role-list-edit' onClick={() => toggleEdit(props.num)}>edit</button>
-      <button className='role-list-done-hide' onClick={() => doneEdit(props.num)}>done</button>
-      <button className='role-list-delete' onClick={() => removeRole(props.num)}>X</button>
-    </div>
-    <div id={'role-desc-' + props.num} className='hide'>
-      {props.role.description}
-    </div>
-    <textarea id={'role-desc-edit-' + props.num} className='hide' defaultValue={props.role.description}/>
+      <div id={'role-cover-' + props.num} className="hide">
+        Role Removed <button onClick={() => undoRemoveRole(props.num)}>undo</button>
+      </div>
+      <div id={'role-list-' + props.num} className="role-list-info">
+        <span className="role-list-name">{props.role.Role}</span>
+        <input type="text" className="role-list-name-edit-hide" defaultValue={props.role.Role} />
+        <span className="role-list-num">{props.role.amount}</span>
+        <input type="number" className="role-list-num-edit-hide" defaultValue={props.role.amount} />
+        <button className="role-list-desc-dropdown" onClick={() => toggleDescription(props.num)}>
+          V
+        </button>
+        <button className="role-list-edit" onClick={() => toggleEdit(props.num)}>
+          edit
+        </button>
+        <button className="role-list-done-hide" onClick={() => doneEdit(props.num)}>
+          done
+        </button>
+        <button className="role-list-delete" onClick={() => removeRole(props.num)}>
+          X
+        </button>
+      </div>
+      <div id={'role-desc-' + props.num} className="hide">
+        {props.role.description}
+      </div>
+      <textarea
+        id={'role-desc-edit-' + props.num}
+        className="hide"
+        defaultValue={props.role.description}
+      />
     </>
-  )
-}
+  );
+};

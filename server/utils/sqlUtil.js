@@ -1,5 +1,5 @@
 const genPlaceholders = (arr) => {
-    return arr.map(() => "?").join(",");
-} 
+  return arr.map(() => '?').join(',');
+};
 
-export { genPlaceholders }
+export { genPlaceholders };

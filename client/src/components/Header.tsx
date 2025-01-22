@@ -11,16 +11,15 @@ import './Styles/projects.css';
 import './Styles/settings.css';
 import './Styles/pages.css';
 
-import { SearchBar } from "./SearchBar";
-import { Dropdown, DropdownButton, DropdownContent } from "./Dropdown";
+import { SearchBar } from './SearchBar';
+import { Dropdown, DropdownButton, DropdownContent } from './Dropdown';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef, useContext } from 'react';
-import * as paths from "../constants/routes";
-import profileImage from "../icons/profile-user.png";
-import { sendPost } from "../functions/fetch";
-import { ThemeIcon } from "./ThemeIcon";
-import { ThemeContext } from "../Contexts";
-
+import * as paths from '../constants/routes';
+import profileImage from '../icons/profile-user.png';
+import { sendPost } from '../functions/fetch';
+import { ThemeIcon } from './ThemeIcon';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 //Header component to be used in pages
 
@@ -39,8 +38,8 @@ export const Header = ({ dataSets, onSearch }) => {
   const [email, setEmail] = useState(null);
 
   // Pull the theme and setTheme function from useState() via a context
-  const theme = useContext(ThemeContext)["theme"];
-  const setTheme = useContext(ThemeContext)["setTheme"];
+  const theme = useContext(ThemeContext)['theme'];
+  const setTheme = useContext(ThemeContext)['setTheme'];
 
   //Text for light mode toggle button should be opposite of current theme
   const [modeToggle, setModeToggle] = useState(theme === 'dark' ? 'Light Mode' : 'Dark Mode');
@@ -48,47 +47,43 @@ export const Header = ({ dataSets, onSearch }) => {
   const navigate = useNavigate(); //Hook for navigation
 
   useEffect(() => {
-      const fetchUsername = async () => {
-          try {
+    const fetchUsername = async () => {
+      try {
+        const response2 = await fetch('/api/auth');
+        console.log('Auth response: ' + response2.status);
 
-            const response2 = await fetch("/api/auth");
-            console.log("Auth response: " + response2.status);
+        if (response2.status != 401) {
+          loggedIn = true;
+          const response = await fetch('/api/users/get-username-session');
+          const { data } = await response.json();
+          console.log(data);
+          const { username, primary_email, first_name, last_name } = await data;
 
-            if(response2.status != 401) {
-              loggedIn = true;
-              const response = await fetch("/api/users/get-username-session");
-              const { data } = await response.json();
-              console.log(data);
-              const { username, primary_email, first_name, last_name } = await data;
-
-              setUsername(await username);
-              setEmail(await primary_email);
-            }
-
-            else {
-              setUsername("Guest");
-            }
-            
-          }   catch (err) {
-            console.log("Error fetching username: " + err);
-          }
+          setUsername(await username);
+          setEmail(await primary_email);
+        } else {
+          setUsername('Guest');
+        }
+      } catch (err) {
+        console.log('Error fetching username: ' + err);
       }
+    };
 
-      fetchUsername();
+    fetchUsername();
   }, []);
 
   const handlePageChange = (path) => {
     //Have code to update sidebar display (unsure of how to do this yet)
     //Navigate to desired page
     navigate(path);
-  }
+  };
 
   const handleProfileAccess = async () => {
     // navigate to Profile, attach userID
-    const response = await fetch("/api/auth");
+    const response = await fetch('/api/auth');
     const { data } = await response.json();
     navigate(`${paths.routes.PROFILE}?userID=${data}`);
-  }
+  };
 
   const switchTheme = () => {
     setModeToggle(theme === 'dark' ? 'Light Mode' : 'Dark Mode');
@@ -96,11 +91,11 @@ export const Header = ({ dataSets, onSearch }) => {
   };
 
   return (
-    <div id='header'>
-      <div id='header-searchbar'>
+    <div id="header">
+      <div id="header-searchbar">
         <SearchBar dataSets={dataSets} onSearch={onSearch} />
       </div>
-      <div id='header-buttons'>
+      <div id="header-buttons">
         {/* Notififcations not being used rn */}
         {/* <Dropdown>
           <DropdownButton buttonId="notif-btn">
@@ -114,69 +109,88 @@ export const Header = ({ dataSets, onSearch }) => {
           <DropdownContent rightAlign={true}>This is where notification stuff will be</DropdownContent>
         </Dropdown> */}
         <Dropdown>
-          <DropdownButton buttonId="profile-btn" >
-            <ThemeIcon 
-              light={"assets/profile_light.png"} 
-              dark={"assets/profile_dark.png"}
-              id={"profile-img-icon"}
+          <DropdownButton buttonId="profile-btn">
+            <ThemeIcon
+              light={'assets/profile_light.png'}
+              dark={'assets/profile_dark.png'}
+              id={'profile-img-icon'}
             />
-            <ThemeIcon 
-              light={"assets/dropdown_light.png"}
-              dark={"assets/dropdown_dark.png"}
+            <ThemeIcon
+              light={'assets/dropdown_light.png'}
+              dark={'assets/dropdown_dark.png'}
               id="dropdown-arrow"
             />
           </DropdownButton>
           <DropdownContent rightAlign={true}>
-            <div id='header-profile-dropdown'>
-              { (!loggedIn)
-                ? <button id='header-profile-user'>
-                  <ThemeIcon 
-                    light={"assets/profile_light.png"}
-                    dark={"assets/profile_dark.png"}
-                    alt={"X"}
+            <div id="header-profile-dropdown">
+              {!loggedIn ? (
+                <button id="header-profile-user">
+                  <ThemeIcon
+                    light={'assets/profile_light.png'}
+                    dark={'assets/profile_dark.png'}
+                    alt={'X'}
                   />
-                  <div>{username}<br /><span id='header-profile-email'>{email}</span></div>
-                  </button>
-                  : <button onClick={() => handleProfileAccess()} id='header-profile-user'>
-                <ThemeIcon 
-                    light={"assets/profile_light.png"}
-                    dark={"assets/profile_dark.png"}
-                    alt={"X"}
-                />
-                <div>{username}<br /><span id='header-profile-email'>{email}</span></div>
+                  <div>
+                    {username}
+                    <br />
+                    <span id="header-profile-email">{email}</span>
+                  </div>
                 </button>
-              }
+              ) : (
+                <button onClick={() => handleProfileAccess()} id="header-profile-user">
+                  <ThemeIcon
+                    light={'assets/profile_light.png'}
+                    dark={'assets/profile_dark.png'}
+                    alt={'X'}
+                  />
+                  <div>
+                    {username}
+                    <br />
+                    <span id="header-profile-email">{email}</span>
+                  </div>
+                </button>
+              )}
               <hr />
               <button onClick={switchTheme}>
                 <ThemeIcon
-                  light={"assets/black/mode.png"}
-                  dark={"assets/white/mode.png"}
-                  alt={"X"} 
-                />{modeToggle}</button> {/* Light mode toggle goes here! */}
+                  light={'assets/black/mode.png'}
+                  dark={'assets/white/mode.png'}
+                  alt={'X'}
+                />
+                {modeToggle}
+              </button>{' '}
+              {/* Light mode toggle goes here! */}
               <button onClick={() => handlePageChange(paths.routes.SETTINGS)}>
-                <ThemeIcon 
-                  light={"assets/black/settings.png"}
-                  dark={"assets/white/settings.png"}
-                  alt={"X"}
-                />Settings</button>
-                  { (!loggedIn)
-                    ? <button onClick={() => handlePageChange(paths.routes.LOGIN)}>
-                    <ThemeIcon 
-                      light={"assets/black/logout.png"}
-                      dark={"assets/white/logout.png"}
-                      alt={"X"}
-                    />Log In</button>
-                      : <button onClick={() => sendPost("/api/logout")}>
-                      <ThemeIcon 
-                        light={"assets/black/logout.png"}
-                        dark={"assets/white/logout.png"}
-                        alt={"X"}
-                      />Log Out</button>
-                  }
+                <ThemeIcon
+                  light={'assets/black/settings.png'}
+                  dark={'assets/white/settings.png'}
+                  alt={'X'}
+                />
+                Settings
+              </button>
+              {!loggedIn ? (
+                <button onClick={() => handlePageChange(paths.routes.LOGIN)}>
+                  <ThemeIcon
+                    light={'assets/black/logout.png'}
+                    dark={'assets/white/logout.png'}
+                    alt={'X'}
+                  />
+                  Log In
+                </button>
+              ) : (
+                <button onClick={() => sendPost('/api/logout')}>
+                  <ThemeIcon
+                    light={'assets/black/logout.png'}
+                    dark={'assets/white/logout.png'}
+                    alt={'X'}
+                  />
+                  Log Out
+                </button>
+              )}
             </div>
           </DropdownContent>
         </Dropdown>
       </div>
     </div>
-  )
-}
+  );
+};

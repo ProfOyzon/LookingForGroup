@@ -1,15 +1,12 @@
-import React from "react";
-import { Tags } from "./Tags";
+import React from 'react';
+import { Tags } from './Tags';
 import { useNavigate } from 'react-router-dom';
-import * as paths from "../constants/routes";
+import * as paths from '../constants/routes';
 
-import profilePicture from "../images/blue_frog.png";
-import followPicture from "../images/heart.png";
+import profilePicture from '../images/blue_frog.png';
+import followPicture from '../images/heart.png';
 
-import { projects } from "../constants/fakeData";// FIXME: use data in db
-
-
-
+import { projects } from '../constants/fakeData'; // FIXME: use data in db
 
 /*
 
@@ -36,28 +33,29 @@ This component is not necessarily the final version and doesn't match the visual
 
 */
 
-export const ProfileCard = ({profile}) => {
-    // Updates the url to point toward the profile being clicked
-    const navigate = useNavigate();
-    const pathQuery = `?profID=${profile._id}`;
-    return (
-        <div className="discover-card">
-            <img id="discover-card-profile-picture" src={profilePicture} alt={profile.name}/>
-            <div id="discover-card-body">
-                <span>
-                    {/* When the title is clicked it navigates to the profile page */}
-                    <h2 id="discover-card-name" onClick={() => navigate(paths.routes.PROFILE + pathQuery)}>{profile.name}</h2>
-                    {/* The pronouns are pulled from an array in fakeData.ts, and are mapped/joined together with / */}
-                    <p id="discover-card-pronouns">{profile.pronouns.map(p => `${p}`).join("/")}</p>
-                </span>
-                <p id="discover-card-description">{profile.bio}</p>
-                <div id="discover-card-tag-wrapper">
-                    <Tags>{profile.skills[0].skill}</Tags>
-                    <Tags>{profile.skills[1].skill}</Tags>
-                    <Tags>{profile.skills[2].skill}</Tags>
-                </div>
-            </div>
+export const ProfileCard = ({ profile }) => {
+  // Updates the url to point toward the profile being clicked
+  const navigate = useNavigate();
+  const pathQuery = `?profID=${profile._id}`;
+  return (
+    <div className="discover-card">
+      <img id="discover-card-profile-picture" src={profilePicture} alt={profile.name} />
+      <div id="discover-card-body">
+        <span>
+          {/* When the title is clicked it navigates to the profile page */}
+          <h2 id="discover-card-name" onClick={() => navigate(paths.routes.PROFILE + pathQuery)}>
+            {profile.name}
+          </h2>
+          {/* The pronouns are pulled from an array in fakeData.ts, and are mapped/joined together with / */}
+          <p id="discover-card-pronouns">{profile.pronouns.map((p) => `${p}`).join('/')}</p>
+        </span>
+        <p id="discover-card-description">{profile.bio}</p>
+        <div id="discover-card-tag-wrapper">
+          <Tags>{profile.skills[0].skill}</Tags>
+          <Tags>{profile.skills[1].skill}</Tags>
+          <Tags>{profile.skills[2].skill}</Tags>
         </div>
-    );
-}
-
+      </div>
+    </div>
+  );
+};

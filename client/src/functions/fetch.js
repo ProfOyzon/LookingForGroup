@@ -3,102 +3,101 @@
    end in an error.
 */
 const handleError = (message) => {
-    console.log('Error: ', message);
-    // const errorElement = document.querySelector('.error');
-    // errorElement.textContent = message;
-    // errorElement.classList.remove('hidden');
+  console.log('Error: ', message);
+  // const errorElement = document.querySelector('.error');
+  // errorElement.textContent = message;
+  // errorElement.classList.remove('hidden');
 };
 
 /* Sends post requests to the server using fetch. Will look for various
     entries in the response JSON object, and will handle them appropriately.
 */
 const sendPost = async (url, data, handler) => {
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
 
-    const result = await response.json();
-    //document.getElementById('errorMessage').classList.add('hidden');
+  const result = await response.json();
+  //document.getElementById('errorMessage').classList.add('hidden');
 
-    if(result.redirect) {
-        window.location = result.redirect;
-    }
+  if (result.redirect) {
+    window.location = result.redirect;
+  }
 
-    if(result.error) {
-        handleError(result.error);
-        return result.error;
-    }
+  if (result.error) {
+    handleError(result.error);
+    return result.error;
+  }
 
-    if(handler) {
-        handler(result);
-    }
+  if (handler) {
+    handler(result);
+  }
 };
 
 const sendGet = async (url, handler) => {
+  console.log(`URL: ${url}`);
 
-    console.log(`URL: ${url}`);
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    });
+  const result = await response.json();
+  document.querySelector('error').classList.add('hidden');
+  console.log(result);
 
-    const result = await response.json();
-    document.querySelector('error').classList.add('hidden');
-    console.log(result);
+  if (result.redirect) {
+    window.location = result.redirect;
+  }
 
-    if(result.redirect) {
-        window.location = result.redirect;
-    }
+  if (result.error) {
+    handleError(result.error);
+  }
 
-    if(result.error) {
-        handleError(result.error);
-    }
-
-    if(handler) {
-        handler(result);
-    }
+  if (handler) {
+    handler(result);
+  }
 };
 
 // removed errorMessage element from login and signup pages
 const hideError = () => {
-    document.getElementById('errorMessage').classList.add('hidden');
+  document.getElementById('errorMessage').classList.add('hidden');
 };
 
 const POST = async (url, data) => {
-    try {
-        return await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ ...data }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                return data;
-            });
-    } catch (err) {
-        console.log(err);
-    }
-}
+  try {
+    return await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...data }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return data;
+      });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const GET = async (url) => {
-    try {
-        return await fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                return data;
-            });
-    } catch (err) {
-        console.log(err);
-    }
-}
+  try {
+    return await fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        return data;
+      });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export { POST, GET, handleError, sendPost, sendGet, hideError };

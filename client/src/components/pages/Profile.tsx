@@ -11,30 +11,33 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { ProfileHeader } from "../Profile/ProfileHeader";
-import { ProfileInterests } from "../Profile/ProfileInterests";
-import { ProfileSkills } from "../Profile/ProfileSkills";
-import { ProfileEndorsements } from "../Profile/ProfileEndorsements";
-import { ProfileProjects } from "../Profile/ProfileProjects";
-import { useEffect, useState } from "react";
-import ToTopButton from "../ToTopButton";
-import EditButton from "../Profile/ProfileEditButton";
-import { sendGet } from "../../functions/fetch";
+import { ProfileHeader } from '../Profile/ProfileHeader';
+import { ProfileInterests } from '../Profile/ProfileInterests';
+import { ProfileSkills } from '../Profile/ProfileSkills';
+import { ProfileEndorsements } from '../Profile/ProfileEndorsements';
+import { ProfileProjects } from '../Profile/ProfileProjects';
+import { useEffect, useState } from 'react';
+import ToTopButton from '../ToTopButton';
+import EditButton from '../Profile/ProfileEditButton';
+import { sendGet } from '../../functions/fetch';
 
 const fetchUserID = async () => {
-  const response = await fetch("/api/auth");
-  const { data: {userID} } = await response.json();
+  const response = await fetch('/api/auth');
+  const {
+    data: { userID },
+  } = await response.json();
   return userID;
-}
+};
 
 const getProfiles = async () => {
-  const response = await fetch("/api/users");
-  const { data: {users} } = await response.json();
+  const response = await fetch('/api/users');
+  const {
+    data: { users },
+  } = await response.json();
   return users;
 };
 
 const Profile = (props) => {
-
   const [profileID, setProfileID] = useState<String | null>(null);
   const [profiles, setProfiles] = useState<{ _id: number; username: string }[]>([]);
 
@@ -49,8 +52,8 @@ const Profile = (props) => {
         // Get profile ID from API
         const userID = await fetchUserID();
         setProfileID(userID);
-        console.log("userID is: " + userID);
-        console.log("profileID is: " + profileID);
+        console.log('userID is: ' + userID);
+        console.log('profileID is: ' + profileID);
       })();
     }
 
@@ -63,13 +66,13 @@ const Profile = (props) => {
   }, [profileID]);
 
   //Find profile data using id & assign it to a value to use
-  const profileData = profiles.find(p => p._id === Number(profileID)) || profiles[0];
+  const profileData = profiles.find((p) => p._id === Number(profileID)) || profiles[0];
 
   /*usestates for selectors*/
   const [UID, setUID] = useState(profileData._id);
   const user = profiles[UID];
 
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 
   const [userData, setUserData] = useState();
 
@@ -77,14 +80,13 @@ const Profile = (props) => {
     const url = `http://localhost:8081/api/users/${userID}`;
     try {
       let response = await fetch(url, {
-        method: "GET",
-        headers: {"Content-Type": "application/json"}
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
       });
 
       const rawData = await response.json();
       setUserData(rawData.data[0]);
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -93,32 +95,32 @@ const Profile = (props) => {
   }
 
   return (
-    <div className = "page">
+    <div className="page">
       {/*selector at the top to switch between users */}
-      <select onChange = {e => {
-                setUID(Number(e.target.value));
-            }}>
-                {
-                    profiles.map(prof => {
-                        return <option value={prof._id}>{prof.username}</option>
-                    })
-                }
-            </select>
+      <select
+        onChange={(e) => {
+          setUID(Number(e.target.value));
+        }}
+      >
+        {profiles.map((prof) => {
+          return <option value={prof._id}>{prof.username}</option>;
+        })}
+      </select>
       <div id="profile-page">
-        <ProfileHeader user={user}/>
-        <ProfileInterests user={user}/>
+        <ProfileHeader user={user} />
+        <ProfileInterests user={user} />
         <div>
-          <ProfileSkills user={user}/>
-          <ProfileEndorsements user={user}/>
+          <ProfileSkills user={user} />
+          <ProfileEndorsements user={user} />
         </div>
-        <ProfileProjects user={user}/>
+        <ProfileProjects user={user} />
       </div>
-      {userData === undefined ? "" : <EditButton userData={userData}/>}
+      {userData === undefined ? '' : <EditButton userData={userData} />}
 
       {/* Scroll To Top button */}
       <ToTopButton />
     </div>
   );
-}
+};
 
 export default Profile;

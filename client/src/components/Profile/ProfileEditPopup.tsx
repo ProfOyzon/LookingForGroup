@@ -12,10 +12,10 @@ import '../Styles/settings.css';
 import '../Styles/pages.css';
 
 import { useState } from 'react';
-import { Popup, PopupButton, PopupContent } from "../Popup";
-import { SearchBar } from "../SearchBar";
-import profileImage from "../../icons/profile-user.png";
-import editIcon from "../../icons/edit.png";
+import { Popup, PopupButton, PopupContent } from '../Popup';
+import { SearchBar } from '../SearchBar';
+import profileImage from '../../icons/profile-user.png';
+import editIcon from '../../icons/edit.png';
 
 const pageTabs = ['About', 'Projects', 'Skills', 'Links'];
 const tagTabs = ['Dev Skills', 'Design Skills', 'Soft Skills'];
@@ -95,7 +95,7 @@ const AboutTab = () => {
       <div className='edit-profile-section-2'>
         <div id='profile-editor-personal-quote-input' className='editor-input-item editor-input-textarea'>
           <label>Personal Quote</label>
-          <div className='project-editor-extra-info'>
+          <div className="project-editor-extra-info">
             Write a fun and catchy phrase that captures your unique personality!
           </div>
           <span className='character-count'>0/100</span>
@@ -104,7 +104,7 @@ const AboutTab = () => {
 
         <div id='profile-editor-fun-fact-input' className='editor-input-item editor-input-textarea'>
           <label>Fun Fact</label>
-          <div className='project-editor-extra-info'>
+          <div className="project-editor-extra-info">
             Share a fun fact about yourself that will surprise others!
           </div>
           <span className='character-count'>0/100</span>
@@ -123,16 +123,16 @@ const AboutTab = () => {
       </div>
     </div>
   );
-}
+};
 
 const ProjectsTab = () => {
   return (
-    <div id='profile-editor-projects'>
-      <div className='project-editor-section-header'>Projects</div>
-      <div className='project-editor-extra-info'>
+    <div id="profile-editor-projects">
+      <div className="project-editor-section-header">Projects</div>
+      <div className="project-editor-extra-info">
         Choose to hide/show projects you've worked on.
       </div>
-      <div id='profile-editor-project-selection'>
+      <div id="profile-editor-project-selection">
         {/* Insert user projects here, as blocks */}
         <ul>
           <li>You</li>
@@ -142,59 +142,57 @@ const ProjectsTab = () => {
       </div>
     </div>
   );
-}
+};
 
 const SkillsTab = () => {
   const [currentTagsTab, setCurrentTagsTab] = useState(0);
   let tagSearchTabs = tagTabs.map((tag, i) => {
-    return <button onClick={() => setCurrentTagsTab(i)}
-      className={`project-editor-tag-search-tab ${currentTagsTab === i ? 'tag-search-tab-active' : ''}`}>
-      {tag}
-    </button>;
+    return (
+      <button
+        onClick={() => setCurrentTagsTab(i)}
+        className={`project-editor-tag-search-tab ${currentTagsTab === i ? 'tag-search-tab-active' : ''}`}
+      >
+        {tag}
+      </button>
+    );
   });
 
   return (
-    <div id='project-editor-tags'>
-      <div id='project-editor-selected-tags'>
-        <div className='project-editor-section-header'>Selected Tags</div>
+    <div id="project-editor-tags">
+      <div id="project-editor-selected-tags">
+        <div className="project-editor-section-header">Selected Tags</div>
         {/* <div className='project-editor-warning'>*At least 1 tag is required</div> */}
-        <div className='project-editor-extra-info'>
-          Drag and drop to reorder
-        </div>
-        <div id='project-editor-selected-tags-container'>
+        <div className="project-editor-extra-info">Drag and drop to reorder</div>
+        <div id="project-editor-selected-tags-container">
           {/* Add tags here, separate top 2 from others */}
         </div>
       </div>
 
-      <div id='project-editor-tag-search'>
-        <SearchBar dataSets={{}} onSearch={() => { }} />
-        <div id='project-editor-tag-search-tabs'>
-          {tagSearchTabs}
-        </div>
+      <div id="project-editor-tag-search">
+        <SearchBar dataSets={{}} onSearch={() => {}} />
+        <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
         <hr />
-        <div id='project-editor-tag-search-container'>
-          {/* Insert current tab's tags here */}
-        </div>
+        <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
       </div>
     </div>
   );
-}
+};
 
 const LinksTab = () => {
   return (
-    <div id='project-editor-links'>
+    <div id="project-editor-links">
       <label>Social Links</label>
-      <div className='project-editor-extra-info'>
+      <div className="project-editor-extra-info">
         Provide the links to pages you wish to include on your page.
       </div>
 
-      <div id='project-editor-link-list'>
+      <div id="project-editor-link-list">
         {/* insert list of link elements/componenets here */}
-        <button id='project-editor-add-link'>+ Add Social Profile</button>
+        <button id="project-editor-add-link">+ Add Social Profile</button>
       </div>
     </div>
   );
-}
+};
 
 export const ProfileEditPopup = () => {
   //State variable denoting current tab
@@ -226,16 +224,19 @@ export const ProfileEditPopup = () => {
   let editorTabs; //= document.createElement('div');
   // editorTabs.id = 'project-editor-tabs';
   editorTabs = pageTabs.map((tag, i) => {
-    return (<button
-      onClick={() => setCurrentTab(i)}
-      className={`project-editor-tab ${currentTab === i ? 'project-editor-tab-active' : ''}`}>
-      {tag}
-    </button>)
+    return (
+      <button
+        onClick={() => setCurrentTab(i)}
+        className={`project-editor-tab ${currentTab === i ? 'project-editor-tab-active' : ''}`}
+      >
+        {tag}
+      </button>
+    );
   });
 
   return (
     <Popup>
-      <PopupButton buttonId='project-info-edit'>Edit Profile</PopupButton>
+      <PopupButton buttonId="project-info-edit">Edit Profile</PopupButton>
       <PopupContent>
         <div id='profile-creator-editor'>
           <div id='profile-editor-tabs'>
@@ -248,5 +249,5 @@ export const ProfileEditPopup = () => {
         </div>
       </PopupContent>
     </Popup>
-  )
-}
+  );
+};

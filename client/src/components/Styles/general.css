@@ -788,6 +788,10 @@ Page popup style rules
     background: none;
 }
 
+.onFront {
+    z-index: 5;
+}
+
 .popup-close {
     position: absolute;
     border-radius: 4px !important;

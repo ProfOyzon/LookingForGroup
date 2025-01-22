@@ -54,7 +54,7 @@ export const PopupContent = ({children}) => {
       <div className='popup-cover'/>
       <div className='popup-container'>
         <div className='popup'>
-          <button className='popup-close' onClick={() => setOpen(!open)}><img src={close} alt='X'/></button>
+          <button className='popup-close onFront' onClick={() => setOpen(!open)}><img src={close} alt='X'/></button>
           {children}
         </div>
       </div>

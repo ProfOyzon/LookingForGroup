@@ -25,51 +25,57 @@ const AboutTab = () => {
   return (
     <div id='profile-editor-about' className='edit-profile-body about'>
       <div className='edit-profile-section-1'>
-        <div className='edit-profile-image'>
+
+        {/* <div id="project-editor-add-image">
+          <img src="assets/white/upload_file_white.png" alt="" />
+          <div className="project-editor-extra-info">Drop your image here, or browse</div>
+          <div className="project-editor-extra-info">Supports: JPEG, PNG</div>
+        </div> */}
+
+        <div id='profile-editor-add-image' className='edit-profile-image'>
           {/* TODO: Add image elements/components here based on currently uploaded images */}
-          <div id='profile-editor-add-image'>
-            <img src='assets/white/upload_image.png' alt='' />
-            <div className='project-editor-extra-info'>Drop your image here, or {/*TODO: click to upload file<input type="file">*/}browse{/*</input>*/}</div>
-            <div className='project-editor-extra-info'>Supports: JPEG, PNG</div>
-          </div>
+          <img src='assets/white/upload_image.png' alt='' />
+          <div className='project-editor-extra-info'>Drop your image here, or {/*TODO: click to upload file<input type="file">*/}browse{/*</input>*/}</div>
+          <div className='project-editor-extra-info'>Supports: JPEG, PNG</div>
         </div>
+
         <div className='about-row row-1'>
-          <div id='profile-editor-firstName-input' className='editor-input-item first-name'>
+          <div id='profile-editor-firstName-input' className='editor-input-item'>
             <label>First Name*</label>
-            <br />
+            {/* <br /> */}
             <input type='text'></input>
           </div>
-          <div id='profile-editor-lastName-input' className='editor-input-item last-name'>
+          <div id='profile-editor-lastName-input' className='editor-input-item'>
             <label>Last Name*</label>
-            <br />
+            {/* <br /> */}
             <input type='text'></input>
           </div>
-          <div id='profile-editor-pronouns-input' className='editor-input-item pronouns'>
+          <div id='profile-editor-pronouns-input' className='editor-input-item'>
             <label>Pronouns</label>
-            <br />
+            {/* <br /> */}
             <input type='text'></input>
           </div>
         </div>
         <div className="about-row row-2">
-          <div id='profile-editor-role-input' className='editor-input-item role'>
+          <div id='profile-editor-role-input' className='editor-input-item'>
             <label>Role*</label>
-            <br />
+            {/* <br /> */}
             <select>
               <option>UI Designer</option>
               <option>Programmer</option>
             </select>
           </div>
-          <div id='profile-editor-major-input' className='editor-input-item major'>
+          <div id='profile-editor-major-input' className='editor-input-item'>
             <label>Major*</label>
-            <br />
+            {/* <br /> */}
             <select>
               <option>Game Design & Development</option>
               <option>New Media Design</option>
             </select>
           </div>
-          <div id='profile-editor-year-input' className='editor-input-item year'>
+          <div id='profile-editor-year-input' className='editor-input-item'>
             <label>Year</label>
-            <br />
+            {/* <br /> */}
             <select>
               <option>1st</option>
               <option>2nd</option>
@@ -79,36 +85,39 @@ const AboutTab = () => {
           </div>
         </div>
         <div className="about-row row-3">
-          <div id='profile-editor-location-input' className='editor-input-item location'>
+          <div id='profile-editor-location-input' className='editor-input-item'>
             <label>Location</label>
-            <br />
+            {/* <br /> */}
             <input type='text'></input>
           </div>
         </div>
       </div>
       <div className='edit-profile-section-2'>
-        <div id='profile-editor-personal-quote-input' className='project-editor-input-item'>
+        <div id='profile-editor-personal-quote-input' className='editor-input-item editor-input-textarea'>
           <label>Personal Quote</label>
           <div className='project-editor-extra-info'>
             Write a fun and catchy phrase that captures your unique personality!
           </div>
+          <span className='character-count'>0/100</span>
           <textarea maxLength={100} />
         </div>
 
-        <div id='profile-editor-fun-fact-input' className='project-editor-input-item'>
+        <div id='profile-editor-fun-fact-input' className='editor-input-item editor-input-textarea'>
           <label>Fun Fact</label>
           <div className='project-editor-extra-info'>
             Share a fun fact about yourself that will surprise others!
           </div>
+          <span className='character-count'>0/100</span>
           <textarea maxLength={100} />
         </div>
       </div>
       <div className='edit-profile-section-3'>
-        <div id='project-editor-long-description-input' className='project-editor-input-item'>
-          <label>About you*</label>
+        <div id='project-editor-long-description-input' className='editor-input-item editor-input-textarea'>
+          <label>About You*</label>
           <div className='project-editor-extra-info'>
             Share a brief overview of who you are, your interests, and what drives you!
           </div>
+          <span className='character-count'>0/2000</span>
           <textarea maxLength={2000} />
         </div>
       </div>
@@ -228,14 +237,14 @@ export const ProfileEditPopup = () => {
     <Popup>
       <PopupButton buttonId='project-info-edit'>Edit Profile</PopupButton>
       <PopupContent>
-        <div id='project-creator-editor'>
-          <div id='project-editor-tabs'>
+        <div id='profile-creator-editor'>
+          <div id='profile-editor-tabs'>
             {editorTabs}
           </div>
-          <div id='project-editor-content'>
+          <div id='profile-editor-content'>
             {currentTabContent}
           </div>
-          <button id='project-editor-save'>Save Changes</button>
+          <button id='profile-editor-save'>Save Changes</button>
         </div>
       </PopupContent>
     </Popup>

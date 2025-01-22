@@ -1,3 +1,5 @@
+@import url('profileEditor.css');
+
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ------------------------------------------------------------------------------------------------
@@ -220,7 +222,7 @@ Profile page style rules
   justify-content: flex-end;
 }
 
-#profile-project-role>b {
+#profile-project-role > b {
   color: var(--orange);
 }
 
@@ -260,9 +262,7 @@ Profile page style rules
 }
 
 /* --------------------------------- Edit Modal Rules --------------------------------- */
-.profile-edit-button {
-  background-color: #271D66;
-}
+
 
 #popup-container-0 {
   border-radius: 12px;
@@ -292,19 +292,6 @@ Profile page style rules
   grid-template-columns: 100%;
   justify-content: center;
   align-content: space-between;
-}
-
-.editor-input-item input, 
-.editor-input-item select,
-.editor-input-item textarea {
-  background-color: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  color: var(--main-text);
-  flex-grow: 1;
-  font-size: 1.6ch;
-  margin: 10px 0;
-  outline: none;
 }
 
 #edit-profile-header {
@@ -345,79 +332,6 @@ Profile page style rules
   background-color: var(--primary-color);
   color: var(--invert-text);
   font-weight: 700;
-}
-
-.edit-profile-body input,
-.edit-profile-body select{
-  width: 100%;
-  height: 45px;
-}
-/* ----- About Page ----- */
-
-.edit-profile-body.about {
-  box-sizing: border-box;
-  /* height: calc(100% - 28px - 10px); */
-  /* margin: 0px 45px; */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 0px 45px;
-}
-
-.edit-profile-body.about .edit-profile-section-1 {
-  display: grid;
-  grid-template-areas:
-    "image row1"
-    "image row2"
-    "image row3";
-  grid-template-columns: 25% auto;
-  grid-template-rows: 1fr 1fr 1fr;
-  column-gap: 20px;
-  row-gap: 10px;
-}
-
-.about-row {
-  display: grid;
-  gap: 10px;
-}
-
-.row-1 {
-  grid-area: row1;
-  grid-template-columns: 4fr 4fr 2fr;
-}
-
-.row-2 {
-  grid-area: row2;
-  grid-template-columns: 4fr 4fr 2fr;
-}
-
-.row-3 {
-  grid-area: row3;
-  grid-template-columns: 4fr 4fr 2fr;
-}
-
-.edit-profile-section-1 .photo{
-  grid-area: image;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.photo .edit-profile-image {
-  position: relative;
-  box-sizing: border-box;
-  border: 2px solid white;
-  border-radius: 10px;
-  aspect-ratio: 1 / 1;
-  width: 250px;
-  /* max-width: 200px; */
-  height: 250px;
-  /* max-height: 200px; */
-  /* margin: 0px 12.5%; */
-  padding: 0px;
-  flex-shrink: 0;
-  box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
 #edit-profile-modal .edit-region-photo.photo {
@@ -529,14 +443,6 @@ select.edit-region-input {
   width: 100%;
 }
 
-.edit-profile-body.about .edit-profile-section-2 {
-  box-sizing: border-box;
-  width: 100%;
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 10px;
-}
 
 .edit-region.quote,
 .edit-region.fact {
@@ -567,10 +473,6 @@ select.edit-region-input {
   font-size: 14px;
   font-style: italic;
   letter-spacing: 0%;
-}
-
-.edit-profile-body.about .edit-profile-section-3 {
-  height: 100%;
 }
 
 .edit-region-input.big.quote,

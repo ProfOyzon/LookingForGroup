@@ -28,41 +28,41 @@ Profile Panel component style rules
   padding: 0 15px 10px 15px;
 
   img {
-      width: 240px;
-      height: auto;
-      align-self: center;
-      /* background-color: var(--primary-color); */
-      border-radius: 10px 10px 0 0;
+    width: 240px;
+    height: auto;
+    align-self: center;
+    /* background-color: var(--primary-color); */
+    border-radius: 10px 10px 0 0;
   }
 
   /* Name */
   h2 {
-      margin: 8px 0;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--primary-color);
-      line-height: normal;
+    margin: 8px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: normal;
   }
 
   /* Major */
   h3 {
-      margin: 0;
-      color: var(--main-text);
-      font-size: 16px;
-      font-weight: 400;
-      line-height: normal;
+    margin: 0;
+    color: var(--main-text);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
   }
 
   /* Quote */
   #quote {
-      margin: 8px 0;
-      color: var(--main-text);
-      font-size: 14px;
-      font-style: italic;
-      font-weight: 300;
-      line-height: 18px;
-      letter-spacing: -0.132px;
-      align-self: stretch;
+    margin: 8px 0;
+    color: var(--main-text);
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 18px;
+    letter-spacing: -0.132px;
+    align-self: stretch;
   }
 }
 
@@ -96,18 +96,18 @@ Profile Panel component style rules
   margin: 10px 0;
 
   img {
-      height: 28px;
-      width: 28px;
-      object-fit: contain;
-      /* border: 1px solid black; */
-      align-self: flex-start;
+    height: 28px;
+    width: 28px;
+    object-fit: contain;
+    /* border: 1px solid black; */
+    align-self: flex-start;
   }
 
   p {
-      /* border: 1px solid black; */
-      margin: 0;
-      color: var(--invert-text);
-      font-weight: 600;
+    /* border: 1px solid black; */
+    margin: 0;
+    color: var(--invert-text);
+    font-weight: 600;
   }
 }
 
@@ -237,25 +237,25 @@ Profile page style rules
 
   /*get rid of the grid*/
   #profile-page {
-      display: inline;
+    display: inline;
   }
 
   /*make the list one skill wide*/
   #profile-skill-list,
   #profile-preferences-list {
-      margin-left: 5%;
+    margin-left: 5%;
   }
 
   #profile-skill-list>.tag,
   #profile-preferences-list>.tag {
-      width: 80%;
-      margin: 1%;
+    width: 80%;
+    margin: 1%;
   }
 
   /*make the popup not go off the screen*/
   #user-options-popup {
-      margin-left: 100px;
-      margin-top: 265px;
+    margin-left: 100px;
+    margin-top: 265px;
   }
 }
 
@@ -292,6 +292,19 @@ Profile page style rules
   grid-template-columns: 100%;
   justify-content: center;
   align-content: space-between;
+}
+
+.editor-input-item input, 
+.editor-input-item select,
+.editor-input-item textarea {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--main-text);
+  flex-grow: 1;
+  font-size: 1.6ch;
+  margin: 10px 0;
+  outline: none;
 }
 
 #edit-profile-header {
@@ -334,7 +347,13 @@ Profile page style rules
   font-weight: 700;
 }
 
+.edit-profile-body input,
+.edit-profile-body select{
+  width: 100%;
+  height: 45px;
+}
 /* ----- About Page ----- */
+
 .edit-profile-body.about {
   box-sizing: border-box;
   /* height: calc(100% - 28px - 10px); */
@@ -348,53 +367,36 @@ Profile page style rules
 .edit-profile-body.about .edit-profile-section-1 {
   display: grid;
   grid-template-areas:
-      "image row1"
-      "image row2"
-      "image row3";
+    "image row1"
+    "image row2"
+    "image row3";
   grid-template-columns: 25% auto;
+  grid-template-rows: 1fr 1fr 1fr;
   column-gap: 20px;
   row-gap: 10px;
 }
 
-.about-row.row-1 {
+.about-row {
+  display: grid;
+  gap: 10px;
+}
+
+.row-1 {
   grid-area: row1;
-
-  display: grid;
   grid-template-columns: 4fr 4fr 2fr;
-  gap: 10px;
-
-  .first-name input,
-  .last-name input {
-      width: 100%;
-      height: 45px;
-  }
-
-  .pronouns input {
-      width: 100%;
-      height: 45px;
-  }
 }
 
-.about-row.row-2 {
+.row-2 {
   grid-area: row2;
-
-  display: grid;
-  gap: 10px;
   grid-template-columns: 4fr 4fr 2fr;
-
-  .role input,
-  .major input {
-      width: 100%;
-      height: 45px;
-  }
-
-  .year input {
-      width: 100%;
-      height: 45px;
-  }
 }
 
-.edit-region.photo {
+.row-3 {
+  grid-area: row3;
+  grid-template-columns: 4fr 4fr 2fr;
+}
+
+.edit-profile-section-1 .photo{
   grid-area: image;
 
   display: flex;
@@ -402,7 +404,7 @@ Profile page style rules
   align-items: center;
 }
 
-.edit-region .edit-region-image {
+.photo .edit-profile-image {
   position: relative;
   box-sizing: border-box;
   border: 2px solid white;
@@ -455,8 +457,8 @@ Profile page style rules
   font-weight: normal;
 
   img {
-      width: 26px;
-      height: auto;
+    width: 26px;
+    height: auto;
   }
 }
 
@@ -527,21 +529,12 @@ select.edit-region-input {
   width: 100%;
 }
 
-.edit-region.location {
-  grid-area: row3;
-}
-
-.edit-region-input.location {
-  width: 290px;
-  height: 45px;
-}
-
 .edit-profile-body.about .edit-profile-section-2 {
   box-sizing: border-box;
   width: 100%;
 
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   column-gap: 10px;
 }
 
@@ -578,14 +571,6 @@ select.edit-region-input {
 
 .edit-profile-body.about .edit-profile-section-3 {
   height: 100%;
-}
-
-.edit-region.you {
-  /* height: 100%; */
-}
-
-.edit-region-text-area.you {
-  /* height: calc(100% - 27px - 19px - 8px - 10px); */
 }
 
 .edit-region-input.big.quote,
@@ -1090,12 +1075,12 @@ New Profile page style rules
 #profile-information-grid {
   display: grid;
   grid-template:
-      'image name buttons' 40px
-      'image extra extra' 40px
-      'image desc desc' auto
-      'image fact fact' auto
-      'bio skills skills' auto /
-      300px auto 200px;
+    'image name buttons' 40px
+    'image extra extra' 40px
+    'image desc desc' auto
+    'image fact fact' auto
+    'bio skills skills' auto /
+    300px auto 200px;
   background-color: var(--header-color);
   border-radius: 10px;
   padding: 30px;
@@ -1451,7 +1436,7 @@ New Profile page style rules
   text-align: left;
 
   h2 {
-      font-size: 24px;
+    font-size: 24px;
   }
 }
 

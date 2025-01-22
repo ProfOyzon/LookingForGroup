@@ -249,22 +249,34 @@ Project Creator and Editor style rules
   margin: 10px 0;
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  padding: 15px 15px;
+  padding: 0.5rem;
   flex-grow: 1;
   background-color: var(--bg-color);
   color: var(--main-text);
   font-size: 1.6ch;
   outline: none;
 }
-
 #project-editor-content select {
+  appearance: none;
+  position: relative;
+}
+
+#project-editor-content select::after {
+  content: url('../../../build/assets/dropdown_dark.png');
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(50%);
+}
+
+/* #project-editor-content select {
   appearance: none;
   background-image: url('../../../build/assets/dropdown_dark.png');
   background-repeat: no-repeat;
   background-size: 20px;
   background-position-x: 150px;
   background-position-y: 20px;
-}
+} */
 
 #project-editor-content .title-input {
   padding: 8px 15px;

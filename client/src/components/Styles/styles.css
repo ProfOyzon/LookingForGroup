@@ -6031,10 +6031,6 @@ Login and Signup page style rules
   text-decoration: underline;
 }
 
-.spacer {
-  /* height: 30px; */
-}
-
 .mobile-signup,
 .mobile-login {
   display: none;

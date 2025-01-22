@@ -23,65 +23,70 @@ const tagTabs = ['Dev Skills', 'Design Skills', 'Soft Skills'];
 // Tab Pages
 const AboutTab = () => {
   return (
-    <div id='profile-editor-about'>
-      <div id='profile-editor-about-top'>
-        <div id='profile-editor-image-ui'>
+    <div id='profile-editor-about' className='edit-profile-body about'>
+      <div className='edit-profile-section-1'>
+        <div className='edit-profile-image'>
           {/* TODO: Add image elements/components here based on currently uploaded images */}
-          <div id='project-editor-add-image'>
+          <div id='profile-editor-add-image'>
             <img src='assets/white/upload_image.png' alt='' />
             <div className='project-editor-extra-info'>Drop your image here, or {/*TODO: click to upload file<input type="file">*/}browse{/*</input>*/}</div>
             <div className='project-editor-extra-info'>Supports: JPEG, PNG</div>
           </div>
         </div>
-        <div id='profile-editor-firstName-input' className='project-editor-input-item'>
-          <label>First Name*</label>
-          <br />
-          <input type='text'></input>
+        <div className='about-row row-1'>
+          <div id='profile-editor-firstName-input' className='editor-input-item first-name'>
+            <label>First Name*</label>
+            <br />
+            <input type='text'></input>
+          </div>
+          <div id='profile-editor-lastName-input' className='editor-input-item last-name'>
+            <label>Last Name*</label>
+            <br />
+            <input type='text'></input>
+          </div>
+          <div id='profile-editor-pronouns-input' className='editor-input-item pronouns'>
+            <label>Pronouns</label>
+            <br />
+            <input type='text'></input>
+          </div>
         </div>
-        <div id='profile-editor-lastName-input' className='project-editor-input-item'>
-          <label>Last Name*</label>
-          <br />
-          <input type='text'></input>
+        <div className="about-row row-2">
+          <div id='profile-editor-role-input' className='editor-input-item role'>
+            <label>Role*</label>
+            <br />
+            <select>
+              <option>UI Designer</option>
+              <option>Programmer</option>
+            </select>
+          </div>
+          <div id='profile-editor-major-input' className='editor-input-item major'>
+            <label>Major*</label>
+            <br />
+            <select>
+              <option>Game Design & Development</option>
+              <option>New Media Design</option>
+            </select>
+          </div>
+          <div id='profile-editor-year-input' className='editor-input-item year'>
+            <label>Year</label>
+            <br />
+            <select>
+              <option>1st</option>
+              <option>2nd</option>
+              <option>3rd</option>
+              <option>4th</option>
+            </select>
+          </div>
         </div>
-        <div id='profile-editor-pronouns-input' className='project-editor-input-item'>
-          <label>Pronouns</label>
-          <br />
-          <input type='text'></input>
-        </div>
-        <div id='profile-editor-role-input' className='project-editor-input-item'>
-          <label>Role*</label>
-          <br />
-          <select>
-            <option>UI Designer</option>
-            <option>Programmer</option>
-          </select>
-        </div>
-        <div id='profile-editor-major-input' className='project-editor-input-item'>
-          <label>Major*</label>
-          <br />
-          <select>
-            <option>Game Design & Development</option>
-            <option>New Media Design</option>
-          </select>
-        </div>
-        <div id='profile-editor-year-input' className='project-editor-input-item'>
-          <label>Year</label>
-          <br />
-          <select>
-            <option>1st</option>
-            <option>2nd</option>
-            <option>3rd</option>
-            <option>4th</option>
-          </select>
-        </div>
-
-        <div id='profile-editor-location-input' className='project-editor-input-item'>
-          <label>Location</label>
-          <br />
-          <input type='text'></input>
+        <div className="about-row row-3">
+          <div id='profile-editor-location-input' className='editor-input-item location'>
+            <label>Location</label>
+            <br />
+            <input type='text'></input>
+          </div>
         </div>
       </div>
-      <div id='profile-editor-about-middle'>
+      <div className='edit-profile-section-2'>
         <div id='profile-editor-personal-quote-input' className='project-editor-input-item'>
           <label>Personal Quote</label>
           <div className='project-editor-extra-info'>
@@ -98,7 +103,7 @@ const AboutTab = () => {
           <textarea maxLength={100} />
         </div>
       </div>
-      <div id='profile-editor-about-bottom'>
+      <div className='edit-profile-section-3'>
         <div id='project-editor-long-description-input' className='project-editor-input-item'>
           <label>About you*</label>
           <div className='project-editor-extra-info'>
@@ -196,7 +201,7 @@ export const ProfileEditPopup = () => {
       currentTabContent = <AboutTab />;
       break;
     case 'Projects':
-      currentTabContent = <ProjectsTab/>;
+      currentTabContent = <ProjectsTab />;
       // currentTabContent = <h1>Project tab test</h1>;
       break;
     case 'Skills':

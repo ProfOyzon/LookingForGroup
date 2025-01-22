@@ -172,8 +172,12 @@ Project image carousel style rules
 #project-image-carousel-left,
 #project-image-carousel-right {
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 3vw;
+  max-width: 40px;
+  min-width: 20px;
+  height: 3vw;
+  max-height: 40px;
+  min-height: 20px;
   padding: 0;
   background-color: rgba(0, 0, 0, 0);
   display: flex;

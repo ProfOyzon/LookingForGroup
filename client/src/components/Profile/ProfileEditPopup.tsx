@@ -118,7 +118,7 @@ const AboutTab = () => {
       </div>
       <div className="edit-profile-section-3">
         <div
-          id="project-editor-long-description-input"
+          id="profile-editor-long-description-input"
           className="editor-input-item editor-input-textarea"
         >
           <label>About You*</label>

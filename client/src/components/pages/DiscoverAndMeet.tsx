@@ -196,9 +196,9 @@ const DiscoverAndMeet = ({ category }) => {
   let filterPopupTabs =
     category === 'projects'
       ? [
-          { categoryTags: tags.projectTypes, categoryName: 'Project Type' },
-          { categoryTags: tags.genres, categoryName: 'Genre' },
-          { categoryTags: tags.purposes, categoryName: 'Purpose' },
+          { categoryTags: tags.projectTypes, categoryName: 'Project Type', color: 'blue' },
+          { categoryTags: tags.genres, categoryName: 'Genre', color: 'green' },
+          { categoryTags: tags.purposes, categoryName: 'Purpose', color: 'grey' },
         ]
       : [
           { categoryTags: tags.devSkills, categoryName: 'Developer Skill' },
@@ -586,7 +586,7 @@ const DiscoverAndMeet = ({ category }) => {
 
   //Make new list of projects by mapping new filtered list
   const updateProjectList = () => {
-    console.log('length: ' + projectList.length);
+    console.log('length: ' + filteredProjectList.length);
     //Note: tags are not included in current mySQL database for projects
     let tagFilteredList = filteredProjectList.filter((project) => {
       console.log(project);
@@ -1287,6 +1287,24 @@ const DiscoverAndMeet = ({ category }) => {
   const [searchedTags, setSearchedTags] = useState([]);
   const [enabledFilters, setEnabledFilters] = useState([]);
 
+  // helper function to check if the enabledFilters contains a particular tag
+  const isTagEnabled = (tag) => {
+    for (let i = 0; i < enabledFilters.length; i++) {
+      if (enabledFilters[i].tag === tag) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
+  // Reset values when filter popup is closed
+  const resetFilters = () => {
+    setCurrentTags([]);
+    setSearchedTags([]);
+    setEnabledFilters([]);
+  }
+
   return (
     <div className="page" onScroll={addContent}>
       {/* Search bar and profile/notification buttons */}
@@ -1333,7 +1351,7 @@ const DiscoverAndMeet = ({ category }) => {
           </button>
         </div>
         <Popup>
-          <PopupButton buttonId={'discover-more-filters'}>
+          <PopupButton buttonId={'discover-more-filters'} callback={resetFilters}>
             <ThemeIcon light={'assets/filters_light.png'} dark={'assets/filters_dark.png'} />
           </PopupButton>
           {/* When page loads, get all necessary tag lists based on page category
@@ -1344,17 +1362,17 @@ const DiscoverAndMeet = ({ category }) => {
           full tag list is only applied when hitting done, which then pushes the info to an active list*/}
           <PopupContent>
             <h2>Project Filters</h2>
-            <div id="filters" className="popup-section">
+            <div id='filters' className='popup-section'>
               <SearchBar
                 dataSets={[{ data: currentTags }]}
                 onSearch={(results) => {
                   setSearchedTags(results[0]);
                 }}
               ></SearchBar>
-              <div id="filter-tabs">
+              <div id='filter-tabs'>
                 {filterPopupTabs.map((tab) => (
                   <a
-                    className="filter-tab"
+                    className='filter-tab'
                     onClick={(e) => {
                       // Remove .selected from all 3 options, add it only to current button
                       let tabs = document.querySelector('#filter-tabs').children;
@@ -1363,7 +1381,7 @@ const DiscoverAndMeet = ({ category }) => {
                       }
                       e.target.classList.add('selected');
                       setCurrentTags(tab.categoryTags);
-                      setSearchedTags(tab.categoryTags);
+                      setSearchedTags({ tags: tab.categoryTags, color: tab.color });
                     }}
                   >
                     {tab.categoryName}
@@ -1371,32 +1389,56 @@ const DiscoverAndMeet = ({ category }) => {
                 ))}
               </div>
               <hr />
-              <div id="filter-tags">
+              <div id='filter-tags'>
                 {searchedTags.length === 0 ? (
                   <p>No tags found. Please make sure you have a tab selected.</p>
                 ) : (
-                  searchedTags.map((tag) => (
+                  searchedTags.tags.map((tag) => (
                     <button
-                      className="tag-button tag-button-green-unselected"
+                      // className={`tag-button tag-button-${searchedTags.color}-unselected`}
+                      className={`tag-button tag-button-${searchedTags.color}-${isTagEnabled(tag) !== -1 ? 'selected' : 'unselected'}`}
                       onClick={(e) => {
-                        setEnabledFilters([...enabledFilters, tag]);
+                        let selecIndex = isTagEnabled(tag);
+
+                        if (selecIndex === -1) {
+                          // Creates an object to store text and category
+                          //setEnabledFilters([...enabledFilters, { tag, color: searchedTags.color }]);
+                          setEnabledFilters([...enabledFilters, { tag, color: searchedTags.color }]);
+                          e.target.classList.replace(
+                            `tag-button-${searchedTags.color}-unselected`, 
+                            `tag-button-${searchedTags.color}-selected`
+                          );
+                        } else {
+                          // Remove tag from list of enabled filters
+                          setEnabledFilters(enabledFilters.toSpliced(selecIndex, 1));
+                          e.target.classList.replace(
+                            `tag-button-${searchedTags.color}-selected`, 
+                            `tag-button-${searchedTags.color}-unselected`
+                          );
+                        }
                       }}
                     >
-                      <i className="fa-solid fa-plus"></i>
-                      {tag}
+                      <i className={isTagEnabled(tag) !== -1 ? 'fa fa-check' : 'fa fa-plus'}></i>
+                      &nbsp;{tag}
                     </button>
                   ))
                 )}
               </div>
             </div>
-            <div id="selected" className="popup-section">
+            <div id="selected-section" className="popup-section">
               <h3>Selected</h3>
               <h4>Click to deselect</h4>
               <div id="selected-filters">
                 {enabledFilters.map((tag) => (
-                  <button className="tag-button tag-button-green-selected" onClick={(e) => {}}>
-                    <i className="fa-solid fa-x"></i>
-                    {tag}
+                  <button 
+                    className={`tag-button tag-button-${tag.color}-selected`}
+                    onClick={(e) => {
+                      // Remove tag from list of enabled filters, re-rendering component
+                      setEnabledFilters(enabledFilters.toSpliced(isTagEnabled(tag.tag), 1));
+                    }}
+                  >
+                    <i className="fa fa-close"></i>
+                    &nbsp;{tag.tag}
                   </button>
                 ))}
               </div>
@@ -1404,7 +1446,16 @@ const DiscoverAndMeet = ({ category }) => {
             <button
               className="primary-btn"
               onClick={() => {
-                // Apply selected filters to search
+                // TO-DO: Apply selected filters to search and close popup
+                // Closing the popup is kinda tough since I don't have access
+                // to the "open" state variable and useContext can't be called
+                // inside of a callback. Any attempts to reference it inside
+                // <PopupContent> don't seem to be working either
+                // 
+                // Applying selected filters shouldn't be as tough. mostly a 
+                // matter of adding the filters via toggleTag(), or by adding to
+                // the activeTagFilters object without doing that, which might
+                // be easier in the end. Not too sure though.
               }}
             >
               Apply

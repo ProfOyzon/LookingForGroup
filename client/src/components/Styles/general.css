@@ -915,7 +915,7 @@ Page popup style rules
   gap: 10px;
 }
 
-.popup #selected {
+.popup #selected-section {
   display: flex;
   flex-direction: column;
   align-items: start;

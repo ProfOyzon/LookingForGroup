@@ -586,7 +586,7 @@ const DiscoverAndMeet = ({ category }) => {
 
   //Make new list of projects by mapping new filtered list
   const updateProjectList = () => {
-    console.log('length: ' + projectList.length);
+    console.log('length: ' + filteredProjectList.length);
     //Note: tags are not included in current mySQL database for projects
     let tagFilteredList = filteredProjectList.filter((project) => {
       console.log(project);
@@ -1298,6 +1298,13 @@ const DiscoverAndMeet = ({ category }) => {
     return -1;
   }
 
+  // Reset values when filter popup is closed
+  const resetFilters = () => {
+    setCurrentTags([]);
+    setSearchedTags([]);
+    setEnabledFilters([]);
+  }
+
   return (
     <div className="page" onScroll={addContent}>
       {/* Search bar and profile/notification buttons */}
@@ -1344,7 +1351,7 @@ const DiscoverAndMeet = ({ category }) => {
           </button>
         </div>
         <Popup>
-          <PopupButton buttonId={'discover-more-filters'}>
+          <PopupButton buttonId={'discover-more-filters'} callback={resetFilters}>
             <ThemeIcon light={'assets/filters_light.png'} dark={'assets/filters_dark.png'} />
           </PopupButton>
           {/* When page loads, get all necessary tag lists based on page category
@@ -1439,7 +1446,16 @@ const DiscoverAndMeet = ({ category }) => {
             <button
               className="primary-btn"
               onClick={() => {
-                // Apply selected filters to search
+                // TO-DO: Apply selected filters to search and close popup
+                // Closing the popup is kinda tough since I don't have access
+                // to the "open" state variable and useContext can't be called
+                // inside of a callback. Any attempts to reference it inside
+                // <PopupContent> don't seem to be working either
+                // 
+                // Applying selected filters shouldn't be as tough. mostly a 
+                // matter of adding the filters via toggleTag(), or by adding to
+                // the activeTagFilters object without doing that, which might
+                // be easier in the end. Not too sure though.
               }}
             >
               Apply

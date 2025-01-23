@@ -11,26 +11,79 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { SearchBar } from '../SearchBar';
+import { sendPost } from '../../functions/fetch';
 import profileImage from '../../icons/profile-user.png';
 import editIcon from '../../icons/edit.png';
 
 const pageTabs = ['About', 'Projects', 'Skills', 'Links'];
 const tagTabs = ['Dev Skills', 'Design Skills', 'Soft Skills'];
+const inputs = [
+  'firstName',
+  'lastName',
+  'pronouns',
+  'role',
+  'major',
+  'academicYear',
+  'location',
+  'headline',
+  'funFact',
+  'bio',
+  'skills',
+  'socials'];
+
+const setUpInputs = async (data) => {
+  let profileData = data[0];
+
+  const setUpFunc = (input, data) => {
+    let inputElement = document.getElementById(`profile-editor-${input}`);
+    if (inputElement) {
+      if (inputElement.tagName.toLowerCase() === 'input' || inputElement.tagName.toLowerCase() === 'textarea') {
+        inputElement.value = data;
+      }
+    }
+  }
+
+  setUpFunc('firstName', profileData.first_name);
+  setUpFunc('lastName', profileData.last_name);
+  setUpFunc('pronouns', profileData.pronouns);
+  setUpFunc('role', profileData.job_title);
+  setUpFunc('major', profileData.major);
+  setUpFunc('academicYear', profileData.academic_year);
+  setUpFunc('location', profileData.location);
+  setUpFunc('headline', profileData.headline);
+  setUpFunc('funFact', profileData.fun_fact);
+}
 
 // Tab Pages
 const AboutTab = () => {
+  // Effects
+  useEffect(() => {
+    const fetchUserID = async () => {
+      const response = await fetch('/api/auth');
+      const { data } = await response.json();
+      return data;
+    }
+    const fetchProfile = async () => {
+      try {
+        const id = await fetchUserID();
+        const response = await fetch(`/api/users/${id}`);
+        const { data } = await response.json();
+        await data;
+        console.log(data);
+        await setUpInputs(data);
+      } catch (err) {
+        console.log('Error fetching username: ' + err);
+      }
+    };
+    fetchProfile();
+  }, []);
+
   return (
     <div id="profile-editor-about" className="edit-profile-body about">
       <div className="edit-profile-section-1">
-        {/* <div id="project-editor-add-image">
-          <img src="assets/white/upload_file_white.png" alt="" />
-          <div className="project-editor-extra-info">Drop your image here, or browse</div>
-          <div className="project-editor-extra-info">Supports: JPEG, PNG</div>
-        </div> */}
-
         <div id="profile-editor-add-image" className="edit-profile-image">
           {/* TODO: Add image elements/components here based on currently uploaded images */}
           <img src="assets/white/upload_image.png" alt="" />
@@ -42,43 +95,43 @@ const AboutTab = () => {
         </div>
 
         <div className="about-row row-1">
-          <div id="profile-editor-firstName-input" className="editor-input-item">
+          <div className="editor-input-item">
             <label>First Name*</label>
             {/* <br /> */}
-            <input type="text"></input>
+            <input id="profile-editor-firstName" type="text"></input>
           </div>
-          <div id="profile-editor-lastName-input" className="editor-input-item">
+          <div className="editor-input-item">
             <label>Last Name*</label>
             {/* <br /> */}
-            <input type="text"></input>
+            <input id="profile-editor-lastName" type="text"></input>
           </div>
-          <div id="profile-editor-pronouns-input" className="editor-input-item">
+          <div className="editor-input-item">
             <label>Pronouns</label>
             {/* <br /> */}
-            <input type="text"></input>
+            <input id="profile-editor-pronouns" type="text"></input>
           </div>
         </div>
         <div className="about-row row-2">
-          <div id="profile-editor-role-input" className="editor-input-item">
+          <div className="editor-input-item">
             <label>Role*</label>
             {/* <br /> */}
-            <select>
+            <select id="profile-editor-role">
               <option>UI Designer</option>
               <option>Programmer</option>
             </select>
           </div>
-          <div id="profile-editor-major-input" className="editor-input-item">
+          <div className="editor-input-item">
             <label>Major*</label>
             {/* <br /> */}
-            <select>
+            <select id="profile-editor-major">
               <option>Game Design & Development</option>
               <option>New Media Design</option>
             </select>
           </div>
-          <div id="profile-editor-year-input" className="editor-input-item">
+          <div className="editor-input-item">
             <label>Year</label>
             {/* <br /> */}
-            <select>
+            <select id="profile-editor-academicYear">
               <option>1st</option>
               <option>2nd</option>
               <option>3rd</option>
@@ -87,46 +140,40 @@ const AboutTab = () => {
           </div>
         </div>
         <div className="about-row row-3">
-          <div id="profile-editor-location-input" className="editor-input-item">
+          <div className="editor-input-item">
             <label>Location</label>
             {/* <br /> */}
-            <input type="text"></input>
+            <input id="profile-editor-location" type="text"></input>
           </div>
         </div>
       </div>
       <div className="edit-profile-section-2">
-        <div
-          id="profile-editor-personal-quote-input"
-          className="editor-input-item editor-input-textarea"
-        >
+        <div className="editor-input-item editor-input-textarea">
           <label>Personal Quote</label>
           <div className="project-editor-extra-info">
             Write a fun and catchy phrase that captures your unique personality!
           </div>
           <span className="character-count">0/100</span>
-          <textarea maxLength={100} />
+          <textarea id="profile-editor-headline" maxLength={100} />
         </div>
 
-        <div id="profile-editor-fun-fact-input" className="editor-input-item editor-input-textarea">
+        <div className="editor-input-item editor-input-textarea">
           <label>Fun Fact</label>
           <div className="project-editor-extra-info">
             Share a fun fact about yourself that will surprise others!
           </div>
           <span className="character-count">0/100</span>
-          <textarea maxLength={100} />
+          <textarea id="profile-editor-funFact" maxLength={100} />
         </div>
       </div>
       <div className="edit-profile-section-3">
-        <div
-          id="profile-editor-long-description-input"
-          className="editor-input-item editor-input-textarea"
-        >
+        <div className="editor-input-item editor-input-textarea">
           <label>About You*</label>
           <div className="project-editor-extra-info">
             Share a brief overview of who you are, your interests, and what drives you!
           </div>
           <span className="character-count">0/2000</span>
-          <textarea maxLength={2000} />
+          <textarea id="profile-editor-bio" maxLength={2000} />
         </div>
       </div>
     </div>
@@ -177,7 +224,7 @@ const SkillsTab = () => {
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={{}} onSearch={() => {}} />
+        <SearchBar dataSets={{}} onSearch={() => { }} />
         <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
         <hr />
         <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
@@ -202,14 +249,20 @@ const LinksTab = () => {
   );
 };
 
+// Functions
+const onSaveClicked = () => {
+  // Receive all inputted values
+  // Prepare these values for a POST/PUT request
+  console.log('save clicked');
+}
+
 export const ProfileEditPopup = () => {
   //State variable denoting current tab
   const [currentTab, setCurrentTab] = useState(0);
 
   //State variable tracking which tab of tags is currently viewed
-  const [currentTagsTab, setCurrentTagsTab] = useState(0);
+  // const [currentTagsTab, setCurrentTagsTab] = useState(0);
 
-  //Checks to see which tab we are currently rendering
   let currentTabContent;
   switch (pageTabs[currentTab]) {
     case 'About':
@@ -249,7 +302,7 @@ export const ProfileEditPopup = () => {
         <div id="profile-creator-editor">
           <div id="profile-editor-tabs">{editorTabs}</div>
           <div id="profile-editor-content">{currentTabContent}</div>
-          <button id="profile-editor-save">Save Changes</button>
+          <button id="profile-editor-save" onClick={onSaveClicked}>Save Changes</button>
         </div>
       </PopupContent>
     </Popup>

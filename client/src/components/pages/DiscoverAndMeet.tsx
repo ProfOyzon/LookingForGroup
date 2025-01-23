@@ -1411,8 +1411,8 @@ const DiscoverAndMeet = ({ category }) => {
                         }
                       }}
                     >
-                      <i className='fa-solid fa-plus'></i>
-                      {tag}
+                      <i className={isTagEnabled(tag) !== -1 ? 'fa fa-check' : 'fa fa-plus'}></i>
+                      &nbsp;{tag}
                     </button>
                   ))
                 )}
@@ -1430,8 +1430,8 @@ const DiscoverAndMeet = ({ category }) => {
                       setEnabledFilters(enabledFilters.toSpliced(isTagEnabled(tag.tag), 1));
                     }}
                   >
-                    <i className="fa-solid fa-x"></i>
-                    {tag.tag}
+                    <i className="fa fa-close"></i>
+                    &nbsp;{tag.tag}
                   </button>
                 ))}
               </div>

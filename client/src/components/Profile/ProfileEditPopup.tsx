@@ -34,6 +34,46 @@ const inputs = [
   'skills',
   'socials'];
 
+// Convenient Functions
+const fetchUserID = async () => {
+  const response = await fetch('/api/auth');
+  const { data } = await response.json();
+  return data;
+}
+
+// Functions
+const onSaveClicked = async () => {
+  // Receive all inputted values
+  // Prepare these values for a POST/PUT request
+  console.log('save clicked');
+  const getInputValue = (input) => {
+    const element = document.getElementById(`profile-editor-${input}`);
+    return element ? element.value : null;
+  };
+
+  const data = {
+    firstName: getInputValue('firstName'),
+    lastName: getInputValue('lastName'),
+    headline: getInputValue('headline'),
+    pronouns: getInputValue('pronouns'),
+    jobTitleId: getInputValue('jobTitle'),
+    majorId: getInputValue('major'),
+    academicYear: getInputValue('academicYear'),
+    location: getInputValue('location'),
+    funFact: getInputValue('funFact'),
+    bio: getInputValue('bio'),
+    skills: getInputValue('skills'),
+    socials: getInputValue('socials'),
+  }
+
+  console.log(`Data is to save:`);
+  console.log(data);
+  
+
+  const userID = await fetchUserID();
+  sendPost(`/api/users/${userID}`, data);
+}
+
 const setUpInputs = async (data) => {
   let profileData = data[0];
 
@@ -61,11 +101,6 @@ const setUpInputs = async (data) => {
 const AboutTab = () => {
   // Effects
   useEffect(() => {
-    const fetchUserID = async () => {
-      const response = await fetch('/api/auth');
-      const { data } = await response.json();
-      return data;
-    }
     const fetchProfile = async () => {
       try {
         const id = await fetchUserID();
@@ -248,13 +283,6 @@ const LinksTab = () => {
     </div>
   );
 };
-
-// Functions
-const onSaveClicked = () => {
-  // Receive all inputted values
-  // Prepare these values for a POST/PUT request
-  console.log('save clicked');
-}
 
 export const ProfileEditPopup = () => {
   //State variable denoting current tab

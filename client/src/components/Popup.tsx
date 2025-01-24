@@ -27,11 +27,11 @@ import close from '../icons/cancel.png';
 //Create context to be used throughout component on popup's visibility state
 const PopupContext = createContext({
   open: false,
-  setOpen: () => {},
+  setOpen: (open: boolean) => {},
 });
 
 //Button component that will open/close the popup
-export const PopupButton = ({ children, buttonId = '', callback = () => {} }) => {
+export const PopupButton = ({ children, buttonId = '', className = '', callback = () => {} }) => {
   const { open, setOpen } = useContext(PopupContext);
 
   const toggleOpen = () => {
@@ -40,7 +40,7 @@ export const PopupButton = ({ children, buttonId = '', callback = () => {} }) =>
   };
 
   return (
-    <button id={buttonId} onClick={toggleOpen}>
+    <button id={buttonId} className={className} onClick={toggleOpen}>
       {children}
     </button>
   );
@@ -56,7 +56,7 @@ export const PopupContent = ({ children }) => {
         <div className="popup-cover" />
         <div className="popup-container">
           <div className="popup">
-            <button className="popup-close" onClick={() => setOpen(!open)}>
+            <button className="popup-close" onClick={() => setOpen(false)}>
               <img src={close} alt="X" />
             </button>
             {children}

@@ -306,89 +306,93 @@ export const ProjectCreatorEditor = () => {
 
   const positionWindow = editMode === true ? positionEditWindow : positionViewWindow;
 
-  const teamTabContent =
-    currentTeamTab === 0 ? (
-      <>
-        {
-          <div id="project-editor-project-members">
-            {/* List out project members */}
-            {/* Temporary hard-coded members */}
-            <div id="project-editor-project-member">
-              <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt="" />
-              <div id="project-editor-project-member-info">
-                <div id="project-editor-project-member-name">Lily Carter</div>
-                <div id="project-editor-project-member-role" className="project-editor-extra-info">
-                  Project Lead
-                </div>
-              </div>
-              <button className="edit-project-member-button">
-                <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
-              </button>
+  const teamTabContent = currentTeamTab === 0 ? <>{
+    <div id="project-editor-project-members">
+      {/* List out project members */}
+      {/* Temporary hard-coded members */}
+      <div className="project-editor-project-member">
+        <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt=""/>
+        <div className="project-editor-project-member-info">
+          <div className="project-editor-project-member-name">Lily Carter</div>
+          <div className="project-editor-project-member-role project-editor-extra-info">Project Lead</div>
+        </div>
+        {/* Edit member popup */}
+        <Popup>
+          <PopupButton className="edit-project-member-button">
+            <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
+          </PopupButton>
+          <PopupContent>
+            <div id="project-team-edit-member-title">Edit Member</div>
+            <div id="project-team-edit-member-card" className="project-editor-project-member">
+              <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt=""/>
+              <div className="project-editor-project-member-name">Lily Carter</div>
             </div>
-            <div id="project-editor-project-member">
-              <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt="" />
-              <div id="project-editor-project-member-info">
-                <div id="project-editor-project-member-name">Maya Bennett</div>
-                <div id="project-editor-project-member-role" className="project-editor-extra-info">
-                  2D Artist
-                </div>
-              </div>
-              <button className="edit-project-member-button">
-                <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
-              </button>
+            <div id="project-team-add-member-role">
+              <label>Role</label>
+              <select>
+                <option disabled selected>Select</option>
+                <option>role 1</option>
+                <option>role 2</option>
+              </select>
             </div>
-            <div id="project-editor-project-member">
-              <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt="" />
-              <div id="project-editor-project-member-info">
-                <div id="project-editor-project-member-name">Aiden Brooks</div>
-                <div id="project-editor-project-member-role" className="project-editor-extra-info">
-                  Video Game Developer
-                </div>
-              </div>
-              <button className="edit-project-member-button">
-                <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
-              </button>
+            {/* Action buttons */}
+            <div className="project-editor-button-pair">
+              {/* TODO: save team member to project */}
+              <button id="team-edit-member-save-button">Save</button>
+              <Popup>
+                <PopupButton className="delete-button">Delete</PopupButton>
+                <PopupContent>
+                  <div id="project-team-delete-member-title">Delete Member</div>
+                  <div id="project-team-delete-member-text" className="project-editor-extra-info">
+                    {/* TODO: get member name dynamically */}
+                    Are you sure you want to delete <span className="project-info-highlight">Lily Carter</span> from the project? This action cannot be undone.
+                  </div>
+                  <div className="project-editor-button-pair">
+                    <button className="delete-button">Delete</button>
+                    <PopupButton buttonId="team-delete-member-cancel-button">Cancel</PopupButton>
+                  </div>
+                </PopupContent>
+              </Popup>
             </div>
-            <div id="project-editor-project-member">
-              <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt="" />
-              <div id="project-editor-project-member-info">
-                <div id="project-editor-project-member-name">Aiden Brooks</div>
-                <div id="project-editor-project-member-role" className="project-editor-extra-info">
-                  Video Game Developer
-                </div>
-              </div>
-              <button className="edit-project-member-button">
-                <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
-              </button>
-            </div>
-            {/* Add member button */}
-            <Popup>
-              <PopupButton buttonId="project-editor-add-member">
-                <img id="project-team-add-member-image" src={profileImage} alt="" />
-                <div id="project-team-add-member-text">Add Member</div>
-              </PopupButton>
-              <PopupContent>
-                <div id="">Add Member</div>
-                <label>Name</label>
-                <input type="text"></input>
-                <label>Role</label>
-                <select>
-                  <option>role 1</option>
-                  <option>role 2</option>
-                </select>
-              </PopupContent>
-            </Popup>
+            <PopupButton buttonId="team-edit-member-cancel-button">Cancel</PopupButton>
+          </PopupContent>
+        </Popup>
+      </div>
+      {/* Add member button */}
+      <Popup>
+        <PopupButton buttonId="project-editor-add-member">
+          <img id="project-team-add-member-image" src={profileImage} alt=""/>
+          <div id="project-team-add-member-text">Add Member</div>
+        </PopupButton>
+        <PopupContent>
+          <div id="project-team-add-member-title">Add Member</div>
+          <div id="project-team-add-member-name">
+            <label>Name</label><input type="text"></input>
           </div>
-        }
-      </>
-    ) : currentTeamTab === 1 ? (
-      <>
-        {
-          <div id="project-editor-open-positions">
-            <div id="project-editor-open-positions-list">
-              {/* Add open positions here */}
-              <button>+ Add Position</button>
-            </div>
+          <div id="project-team-add-member-role">
+            <label>Role</label>
+            <select>
+              <option disabled selected>Select</option>
+              <option>role 1</option>
+              <option>role 2</option>
+            </select>
+          </div>
+          {/* Action buttons */}
+          <div className="project-editor-button-pair">
+            {/* TODO: add team member to project */}
+            <button id="team-add-member-add-button">Add</button>
+            <PopupButton buttonId="team-add-member-cancel-button">Cancel</PopupButton>
+          </div>
+        </PopupContent>
+      </Popup>
+    </div>
+    }</> : currentTeamTab === 1 ? (
+    <>{
+    <div id="project-editor-open-positions">
+      <div id="project-editor-open-positions-list">
+        {/* Add open positions here */}
+        <button>+ Add Position</button>
+      </div>
 
             <div id="project-editor-open-position-details">{positionWindow}</div>
           </div>

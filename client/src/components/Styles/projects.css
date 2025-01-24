@@ -247,13 +247,17 @@ Project Creator and Editor style rules
 }
 
 .project-editor-tab:hover,
-.project-editor-tab-active {
+.project-editor-tab-active,
+#team-add-member-add-button,
+#team-edit-member-save-button {
   background-color: var(--primary-color) !important;
   color: var(--invert-text);
   font-weight: 700;
 }
 
-#project-editor-save {
+#project-editor-save,
+#team-add-member-add-button,
+#team-edit-member-save-button {
   border: none;
   border-radius: 30px;
   padding: 10px 20px;
@@ -268,17 +272,31 @@ Project Creator and Editor style rules
 #project-editor-content {
   flex-grow: 1;
   margin-top: 40px;
+  margin-bottom: 40px;
 }
 
-#project-editor-content label {
+#project-editor-content label,
+#project-team-add-member-title,
+#team-add-member-cancel-button,
+#project-team-edit-member-title,
+#team-edit-member-cancel-button,
+#project-team-delete-member-title,
+#team-delete-member-cancel-button {
   color: var(--primary-color);
   font-size: 2ch;
   font-weight: 700;
 }
 
+#project-editor-content select {
+  font-style: italic;
+  font-size: 1.5ch;
+  color: var(--neutral-gray);
+}
+
 #project-editor-content select,
 #project-editor-general input,
-#project-editor-content textarea {
+#project-editor-content textarea,
+#project-team-add-member-name input {
   margin: 10px 0;
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -539,6 +557,7 @@ Project Creator and Editor style rules
 }
 
 .project-editor-tag-search-tab {
+  margin-bottom: 10px;
   padding: 0;
   color: var(--neutral-gray);
   font-size: 1.6ch;
@@ -571,7 +590,7 @@ Project Creator and Editor style rules
   gap: 10px;
 }
 
-#project-editor-project-member {
+.project-editor-project-member {
   display: flex;
   padding: 12px 15px;
   width: 234px;
@@ -589,19 +608,19 @@ Project Creator and Editor style rules
   height: 74px;
 }
 
-#project-editor-project-member-name {
+.project-editor-project-member-name {
   color: var(--primary-color);
   font-weight: 700;
 }
 
-#project-editor-project-member-info {
+.project-editor-project-member-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
 }
 
-#project-editor-project-member-info > * {
+.project-editor-project-member-info > * {
   align-self: stretch;
 }
 
@@ -639,6 +658,65 @@ Project Creator and Editor style rules
 #project-team-add-member-text {
   font-weight: 700;
   color: var(--header-color);
+  font-size: 1.6ch;
+}
+
+#project-editor-project-members > .popup-container > .popup,
+.project-editor-project-member > .popup-container > .popup,
+.project-editor-button-pair > .popup-container > .popup {
+  display: flex;
+  flex-direction: column;
+  width: 439px;
+  padding: 20px 40px;
+  align-items: center;
+  gap: 15px;
+  background: var(--header-color);
+}
+
+#project-team-add-member-name,
+#project-team-add-member-role {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  gap: 8px;
+}
+
+#project-team-add-member-name label {
+  text-align: right;
+}
+
+#project-team-add-member-name input,
+#project-team-add-member-role select {
+  margin: 0;
+  padding: 15px;
+}
+
+#project-team-edit-member-card {
+  background-color: #0a0a0a;
+}
+
+#project-team-delete-member-text {
+  text-align: center;
+  font-size: 1.6ch;
+}
+
+.project-editor-button-pair {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete-button {
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  background-color: var(--error-delete-color) !important;
+  color: var(--invert-text);
+  font-size: 2ch;
+  width: max-content;
+  margin: auto;
+  font-weight: 700;
 }
 
 /*

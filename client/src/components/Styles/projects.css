@@ -220,11 +220,9 @@ Project Creator and Editor style rules
 #project-creator-editor {
   display: flex;
   flex-direction: column;
-  background-image: var(--modal-gradient);
-  width: 90vw;
+  width: 100%;
   max-width: 1120px;
   height: calc(90vh - 100px);
-  padding: 50px;
   border: none;
   border-radius: 10px;
   color: var(--main-text);
@@ -578,9 +576,19 @@ Project Creator and Editor style rules
   transition: none;
 }
 
+#project-editor-team {
+  height: 100%;
+}
+
+#project-editor-team-content {
+  display: flex;
+  height: 100%;
+}
+
 #project-editor-project-members {
   display: flex;
   flex-wrap: wrap;
+  flex: 1;
   margin-top: 15px;
   padding: 20px;
   align-items: flex-start;
@@ -716,6 +724,36 @@ Project Creator and Editor style rules
   font-size: 2ch;
   width: max-content;
   margin: auto;
+  font-weight: 700;
+}
+
+#project-team-open-positions-popup {
+  display: flex;
+  gap: 25px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+#team-positions-popup-list-header {
+  text-align: left;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+#team-positions-popup-list-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#team-positions-popup-list-buttons button {
+  background-color: var(--primary-color) !important;
+  color: var(--invert-text);
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-size: 1.6ch;
   font-weight: 700;
 }
 
@@ -1692,6 +1730,7 @@ New Project Page style rules
 #project-info-buttons button {
   border: none;
   background-color: rgba(0, 0, 0, 0);
+  text-wrap: nowrap;
 }
 
 /* #project-info-buttons img {
@@ -1765,12 +1804,21 @@ New Project Page style rules
   border-radius: 100px;
 }
 
-#positions-popup-list {
+.positions-popup-list {
   grid-area: list;
   text-align: center;
   background-color: var(--bg-color);
   /* box-shadow: 0 0 10px #BBBBBB; */
   border-radius: 10px;
+  flex: 0 381px;
+  padding: 20px;
+}
+
+#project-team-open-positions-popup > .positions-popup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
 }
 
 #positions-popup-list-header {
@@ -1787,6 +1835,16 @@ New Project Page style rules
   gap: 10px;
 }
 
+.team-positions-button {
+  display: flex;
+  flex-direction: column;
+}
+
+.team-positions-button {
+  width: 21px;
+  height: 21px;
+}
+
 .positions-popup-list-item {
   width: max-content;
   background-color: var(--header-color);
@@ -1798,6 +1856,11 @@ New Project Page style rules
   font-weight: 400;
 }
 
+#team-positions-popup-list-header > .positions-popup-list-item {
+  display: flex;
+  gap: 8px;
+}
+
 .positions-popup-list-item:hover,
 .positions-popup-list-item-active {
   background-color: var(--primary-color);
@@ -1806,7 +1869,7 @@ New Project Page style rules
   font-weight: 700;
 }
 
-#positions-popup-info {
+.positions-popup-info {
   grid-area: info;
   display: flex;
   flex-direction: column;
@@ -1814,9 +1877,10 @@ New Project Page style rules
   /* box-shadow: 0 0 10px #BBBBBB; */
   border-radius: 10px;
   padding: 20px;
+  width: 100%;
 }
 
-#positions-popup-info-title {
+.positions-popup-info-title {
   color: var(--primary-color);
   font-size: 20px;
   font-weight: 600;
@@ -1824,7 +1888,7 @@ New Project Page style rules
   margin-bottom: 20px;
 }
 
-#positions-popup-info-description {
+.positions-popup-info-description {
   flex-grow: 1;
 }
 

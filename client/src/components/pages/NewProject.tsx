@@ -279,7 +279,7 @@ const NewProject = () => {
                   <div id="project-open-positions-popup">
                     <div id="positions-popup-header">Join The Team</div>
 
-                    <div id="positions-popup-list">
+                    <div className="positions-popup-list">
                       <div id="positions-popup-list-header">Open Positions</div>
                       <div id="positions-popup-list-buttons">
                         {displayedProject.jobs.map((job, index) => (
@@ -323,7 +323,7 @@ const NewProject = () => {
                         </div>
                       </div>
                       <div id="position-contact">
-                        if interested, please contact:{' '}
+                        If interested, please contact:{' '}
                         <span
                           onClick={() =>
                             navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)

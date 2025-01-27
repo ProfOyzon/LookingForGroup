@@ -1288,9 +1288,9 @@ const DiscoverAndMeet = ({ category }) => {
   const [enabledFilters, setEnabledFilters] = useState([]);
 
   // helper function to check if the enabledFilters contains a particular tag
-  const isTagEnabled = (tag) => {
+  const isTagEnabled = (tag, color) => {
     for (let i = 0; i < enabledFilters.length; i++) {
-      if (enabledFilters[i].tag === tag) {
+      if ((enabledFilters[i].tag === tag) && (enabledFilters[i].color === color)) {
         return i;
       }
     }
@@ -1396,9 +1396,9 @@ const DiscoverAndMeet = ({ category }) => {
                   searchedTags.tags.map((tag) => (
                     <button
                       // className={`tag-button tag-button-${searchedTags.color}-unselected`}
-                      className={`tag-button tag-button-${searchedTags.color}-${isTagEnabled(tag) !== -1 ? 'selected' : 'unselected'}`}
+                      className={`tag-button tag-button-${searchedTags.color}-${isTagEnabled(tag, searchedTags.color) !== -1 ? 'selected' : 'unselected'}`}
                       onClick={(e) => {
-                        let selecIndex = isTagEnabled(tag);
+                        let selecIndex = isTagEnabled(tag, searchedTags.color);
 
                         if (selecIndex === -1) {
                           // Creates an object to store text and category
@@ -1418,7 +1418,7 @@ const DiscoverAndMeet = ({ category }) => {
                         }
                       }}
                     >
-                      <i className={isTagEnabled(tag) !== -1 ? 'fa fa-check' : 'fa fa-plus'}></i>
+                      <i className={isTagEnabled(tag, searchedTags.color) !== -1 ? 'fa fa-check' : 'fa fa-plus'}></i>
                       &nbsp;{tag}
                     </button>
                   ))
@@ -1434,7 +1434,7 @@ const DiscoverAndMeet = ({ category }) => {
                     className={`tag-button tag-button-${tag.color}-selected`}
                     onClick={(e) => {
                       // Remove tag from list of enabled filters, re-rendering component
-                      setEnabledFilters(enabledFilters.toSpliced(isTagEnabled(tag.tag), 1));
+                      setEnabledFilters(enabledFilters.toSpliced(isTagEnabled(tag, searchedTags.color), 1));
                     }}
                   >
                     <i className="fa fa-close"></i>
@@ -1469,6 +1469,7 @@ const DiscoverAndMeet = ({ category }) => {
                 const discoverFilters = document.getElementsByClassName('discover-tag-filter');
 
                 for (let i = 0; i < enabledFilters.length; i++) {
+                  // Other from 'Projects' and Other from 'Genres' are treated the same when searching
                   activeTagFilters.push(enabledFilters[i].tag.toLowerCase());
 
                   // Check if any enabled filters matches a discover tag, and visually toggle it

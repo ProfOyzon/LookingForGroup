@@ -166,7 +166,7 @@ Project image carousel style rules
   right: 0;
   width: 100%;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 3;
 }
 
 #project-image-carousel-left,

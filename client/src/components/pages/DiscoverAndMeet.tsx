@@ -1366,7 +1366,7 @@ const DiscoverAndMeet = ({ category }) => {
               <SearchBar
                 dataSets={[{ data: currentTags }]}
                 onSearch={(results) => {
-                  setSearchedTags(results[0]);
+                  setSearchedTags({ tags: results[0], color: searchedTags.color });
                 }}
               ></SearchBar>
               <div id='filter-tabs'>
@@ -1481,6 +1481,7 @@ const DiscoverAndMeet = ({ category }) => {
 
                 // Update the project list
                 updateProjectList();
+                resetFilters();
               }}
             >Apply</PopupButton>
           </PopupContent>

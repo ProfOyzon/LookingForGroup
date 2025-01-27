@@ -14,7 +14,7 @@ import '../Styles/pages.css';
 import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { SearchBar } from '../SearchBar';
-import { sendPost } from '../../functions/fetch';
+import { sendPut } from '../../functions/fetch';
 import profileImage from '../../icons/profile-user.png';
 import editIcon from '../../icons/edit.png';
 
@@ -71,7 +71,7 @@ const onSaveClicked = async () => {
   
 
   const userID = await fetchUserID();
-  sendPost(`/api/users/${userID}`, data);
+  sendPut(`/api/users/${userID}`, data);
 }
 
 const setUpInputs = async (data) => {

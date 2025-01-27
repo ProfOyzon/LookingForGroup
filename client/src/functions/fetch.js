@@ -20,7 +20,24 @@ const sendPost = async (url, data, handler) => {
     },
     body: JSON.stringify(data),
   });
+  await responseHandler(response, handler);
+};
 
+/* Sends put requests to the server using fetch. Will look for various
+    entries in the response JSON object, and will handle them appropriately.
+*/
+const sendPut = async (url, data, handler) => {
+  const response = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  await responseHandler(response, handler);
+};
+
+const responseHandler = async (response, handler) => {
   const result = await response.json();
   //document.getElementById('errorMessage').classList.add('hidden');
 
@@ -36,7 +53,7 @@ const sendPost = async (url, data, handler) => {
   if (handler) {
     handler(result);
   }
-};
+}
 
 const sendGet = async (url, handler) => {
   console.log(`URL: ${url}`);
@@ -100,4 +117,4 @@ const GET = async (url) => {
   }
 };
 
-export { POST, GET, handleError, sendPost, sendGet, hideError };
+export { POST, GET, handleError, sendPost, sendPut, sendGet, hideError };

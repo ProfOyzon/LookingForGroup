@@ -836,7 +836,7 @@ Page popup style rules
   padding-right: 15px;
 }
 
-.popup .primary-btn {
+.popup #primary-btn {
   width: 110px;
   height: 40px;
   padding: 5px 16px;

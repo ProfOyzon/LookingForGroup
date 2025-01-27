@@ -1443,7 +1443,7 @@ const DiscoverAndMeet = ({ category }) => {
                 ))}
               </div>
             </div>
-            <button
+            {/* <button
               className="primary-btn"
               onClick={() => {
                 // TO-DO: Apply selected filters to search and close popup
@@ -1459,7 +1459,30 @@ const DiscoverAndMeet = ({ category }) => {
               }}
             >
               Apply
-            </button>
+            </button> */}
+            <PopupButton 
+              buttonId={'primary-btn'} 
+              callback={() => {
+                // Reset tag filters before adding results in
+                activeTagFilters = [];
+                filteredProjectList = fullProjectList;
+                const discoverFilters = document.getElementsByClassName('discover-tag-filter');
+
+                for (let i = 0; i < enabledFilters.length; i++) {
+                  activeTagFilters.push(enabledFilters[i].tag.toLowerCase());
+
+                  // Check if any enabled filters matches a discover tag, and visually toggle it
+                  for (let j = 0; j < discoverFilters.length; j++) {
+                    if (discoverFilters[j].innerHTML.toLowerCase() === enabledFilters[i].tag.toLowerCase()) {
+                      discoverFilters[j].classList.add('discover-tag-filter-selected');
+                    }
+                  }
+                }
+
+                // Update the project list
+                updateProjectList();
+              }}
+            >Apply</PopupButton>
           </PopupContent>
         </Popup>
       </div>

@@ -517,12 +517,13 @@ const updateUser = async (req, res) => {
       status: 400,
       error: 'Missing major id',
     });
-  } else if (skills.length < 1) {
-    return res.status(400).json({
-      status: 400,
-      error: 'Missing at least 1 skill',
-    });
-  }
+  } 
+  // else if (!skills || skills.length < 1) {
+  //   return res.status(400).json({
+  //     status: 400,
+  //     error: 'Missing at least 1 skill',
+  //   });
+  // }
 
   try {
     // Update database with users's new info
@@ -543,55 +544,55 @@ const updateUser = async (req, res) => {
     ];
     await pool.query(sql, values);
 
-    // ----- UPDATE USER'S SKILLS -----
-    // Create array from skills
-    const newSkills = skills.map((skill) => skill.id);
-    // Get skills already in database that need to be removed
-    let placeholders = genPlaceholders(newSkills);
-    sql = `SELECT JSON_ARRAYAGG(us.skill_id) AS skills FROM user_skills us 
-        WHERE us.user_id = ? AND NOT us.skill_id IN (${placeholders})`;
-    values = [id, ...newSkills];
-    const [removingSkills] = await pool.query(sql, values);
-    // Remove skills if any were found
-    if (removingSkills[0].skills) {
-      placeholders = genPlaceholders(removingSkills[0].skills);
-      sql = `DELETE FROM user_skills WHERE user_id = ? AND skill_id IN (${placeholders})`;
-      values = [id, ...removingSkills[0].skills];
-      await pool.query(sql, values);
-    }
-    // Add new skills or update if already in database
-    sql = `INSERT INTO user_skills (user_id, skill_id, position) VALUES (?, ?, ?) AS new
-        ON DUPLICATE KEY UPDATE user_id = new.user_id, skill_id = new.skill_id, position = new.position`;
-    for (let skill of skills) {
-      await pool.query(sql, [id, skill.id, skill.position]);
-    }
+    // // ----- UPDATE USER'S SKILLS -----
+    // // Create array from skills
+    // const newSkills = skills.map((skill) => skill.id);
+    // // Get skills already in database that need to be removed
+    // let placeholders = genPlaceholders(newSkills);
+    // sql = `SELECT JSON_ARRAYAGG(us.skill_id) AS skills FROM user_skills us 
+    //     WHERE us.user_id = ? AND NOT us.skill_id IN (${placeholders})`;
+    // values = [id, ...newSkills];
+    // const [removingSkills] = await pool.query(sql, values);
+    // // Remove skills if any were found
+    // if (removingSkills[0].skills) {
+    //   placeholders = genPlaceholders(removingSkills[0].skills);
+    //   sql = `DELETE FROM user_skills WHERE user_id = ? AND skill_id IN (${placeholders})`;
+    //   values = [id, ...removingSkills[0].skills];
+    //   await pool.query(sql, values);
+    // }
+    // // Add new skills or update if already in database
+    // sql = `INSERT INTO user_skills (user_id, skill_id, position) VALUES (?, ?, ?) AS new
+    //     ON DUPLICATE KEY UPDATE user_id = new.user_id, skill_id = new.skill_id, position = new.position`;
+    // for (let skill of skills) {
+    //   await pool.query(sql, [id, skill.id, skill.position]);
+    // }
 
-    // ----- UPDATE USER'S SOCIALS -----
-    // Create array from socials
-    const newSocials = socials.map((social) => social.id);
-    // Add 0 if empty to allow sql statement to still find exisiting data to be removed
-    if (newSocials.length === 0) {
-      newSocials.push(0);
-    }
-    // Get socials already in database that need to be removed
-    placeholders = genPlaceholders(newSocials);
-    sql = `SELECT JSON_ARRAYAGG(uso.website_id) AS socials FROM user_socials uso 
-        WHERE uso.user_id = ? AND NOT uso.website_id IN (${placeholders})`;
-    values = [id, ...newSocials];
-    const [removingSocials] = await pool.query(sql, values);
-    // Remove socials if any were found
-    if (removingSocials[0].socials) {
-      placeholders = genPlaceholders(removingSocials[0].socials);
-      sql = `DELETE FROM user_socials WHERE user_id = ? AND website_id IN (${placeholders})`;
-      values = [id, ...removingSocials[0].socials];
-      await pool.query(sql, values);
-    }
-    // Add new socials or update if already in database
-    sql = `INSERT INTO user_socials (user_id, website_id, url) VALUES (?, ?, ?) AS new
-        ON DUPLICATE KEY UPDATE user_id = new.user_id, website_id = new.website_id, url = new.url`;
-    for (let social of socials) {
-      await pool.query(sql, [id, social.id, social.url]);
-    }
+    // // ----- UPDATE USER'S SOCIALS -----
+    // // Create array from socials
+    // const newSocials = socials.map((social) => social.id);
+    // // Add 0 if empty to allow sql statement to still find exisiting data to be removed
+    // if (newSocials.length === 0) {
+    //   newSocials.push(0);
+    // }
+    // // Get socials already in database that need to be removed
+    // placeholders = genPlaceholders(newSocials);
+    // sql = `SELECT JSON_ARRAYAGG(uso.website_id) AS socials FROM user_socials uso 
+    //     WHERE uso.user_id = ? AND NOT uso.website_id IN (${placeholders})`;
+    // values = [id, ...newSocials];
+    // const [removingSocials] = await pool.query(sql, values);
+    // // Remove socials if any were found
+    // if (removingSocials[0].socials) {
+    //   placeholders = genPlaceholders(removingSocials[0].socials);
+    //   sql = `DELETE FROM user_socials WHERE user_id = ? AND website_id IN (${placeholders})`;
+    //   values = [id, ...removingSocials[0].socials];
+    //   await pool.query(sql, values);
+    // }
+    // // Add new socials or update if already in database
+    // sql = `INSERT INTO user_socials (user_id, website_id, url) VALUES (?, ?, ?) AS new
+    //     ON DUPLICATE KEY UPDATE user_id = new.user_id, website_id = new.website_id, url = new.url`;
+    // for (let social of socials) {
+    //   await pool.query(sql, [id, social.id, social.url]);
+    // }
 
     return res.status(200).json({
       status: 200,

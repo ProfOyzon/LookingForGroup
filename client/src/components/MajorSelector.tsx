@@ -41,7 +41,7 @@ export const MajorSelector = () => {
         <div className="editor-input-item">
             <label>Major*</label>
             {/* <br /> */}
-            <select id="profile-editor-role">
+            <select id="profile-editor-major">
                 {options}
             </select>
         </div>

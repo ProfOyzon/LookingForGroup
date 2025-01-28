@@ -57,8 +57,8 @@ const onSaveClicked = async () => {
     lastName: getInputValue('lastName'),
     headline: getInputValue('headline'),
     pronouns: getInputValue('pronouns'),
-    jobTitleId: getInputValue('jobTitle'),
-    majorId: getInputValue('major'),
+    jobTitleId: parseInt(getInputValue('jobTitle')),
+    majorId: parseInt(getInputValue('major')),
     academicYear: getInputValue('academicYear'),
     location: getInputValue('location'),
     funFact: getInputValue('funFact'),
@@ -66,12 +66,10 @@ const onSaveClicked = async () => {
     skills: getInputValue('skills'),
     socials: getInputValue('socials'),
   }
-
-  console.log(`Data is to save:`);
+  console.log(`Data to save:`);
   console.log(data);
-
-
   const userID = await fetchUserID();
+  console.log(`/api/users/${userID}`)
   sendPut(`/api/users/${userID}`, data);
 }
 
@@ -90,12 +88,13 @@ const setUpInputs = async (data) => {
   setUpFunc('firstName', profileData.first_name);
   setUpFunc('lastName', profileData.last_name);
   setUpFunc('pronouns', profileData.pronouns);
-  setUpFunc('role', profileData.job_title);
+  setUpFunc('jobTitle', profileData.job_title);
   setUpFunc('major', profileData.major);
   setUpFunc('academicYear', profileData.academic_year);
   setUpFunc('location', profileData.location);
-  setUpFunc('headline', profileData.headline);
+  setUpFunc('headline', profileData.headline); // description
   setUpFunc('funFact', profileData.fun_fact);
+  setUpFunc('bio', profileData.bio);
 }
 
 // Tab Pages
@@ -152,7 +151,6 @@ const AboutTab = () => {
           {<MajorSelector/>}
           <div className="editor-input-item">
             <label>Year</label>
-            {/* <br /> */}
             <select id="profile-editor-academicYear">
               <option>1st</option>
               <option>2nd</option>
@@ -176,7 +174,7 @@ const AboutTab = () => {
             Write a fun and catchy phrase that captures your unique personality!
           </div>
           <span className="character-count">0/100</span>
-          <textarea id="profile-editor-headline" maxLength={100} />
+          <textarea id="profile-editor-bio" maxLength={100} />
         </div>
 
         <div className="editor-input-item editor-input-textarea">
@@ -195,7 +193,7 @@ const AboutTab = () => {
             Share a brief overview of who you are, your interests, and what drives you!
           </div>
           <span className="character-count">0/2000</span>
-          <textarea id="profile-editor-bio" maxLength={2000} />
+          <textarea id="profile-editor-headline" maxLength={2000} />
         </div>
       </div>
     </div>
@@ -275,9 +273,6 @@ export const ProfileEditPopup = () => {
   //State variable denoting current tab
   const [currentTab, setCurrentTab] = useState(0);
 
-  //State variable tracking which tab of tags is currently viewed
-  // const [currentTagsTab, setCurrentTagsTab] = useState(0);
-
   let currentTabContent;
   switch (pageTabs[currentTab]) {
     case 'About':
@@ -285,7 +280,6 @@ export const ProfileEditPopup = () => {
       break;
     case 'Projects':
       currentTabContent = <ProjectsTab />;
-      // currentTabContent = <h1>Project tab test</h1>;
       break;
     case 'Skills':
       currentTabContent = <SkillsTab />;

@@ -41,7 +41,7 @@ export const RoleSelector = () => {
         <div className="editor-input-item">
             <label>Role*</label>
             {/* <br /> */}
-            <select id="profile-editor-role">
+            <select id="profile-editor-jobTitle">
                 {options}
             </select>
         </div>

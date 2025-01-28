@@ -94,10 +94,10 @@ Login and Signup page style rules
   color: var(--primary-color);
 }
 
-.login-form p {
+/* .login-form p {
   color: var(--primary-color);
   margin-bottom: 0;
-}
+} */
 
 .signup-name-input {
   width: 135px;

@@ -760,7 +760,7 @@ Page popup style rules
   background: var(--modal-gradient);
   border-radius: 10px;
   box-shadow: 0px 0px 10px 0px var(--shadow-color);
-  max-width: 95vw;
+  max-width: 95vw; /* Factors in padding */
   max-height: 95vh;
   opacity: 100%;
   z-index: 3;
@@ -771,7 +771,10 @@ Page popup style rules
 
 @media (min-width: 576px) {
   .popup {
-    max-width: 1121px;
+    max-width: 921px;
+    max-height: 781px;
+    width: 64vw;
+    height: 95vw;
   }
 }
 
@@ -849,6 +852,11 @@ Page popup style rules
   margin-top: 24px;
 }
 
+/* .popup #primary-btn:hover {
+  background-color: var(--border-color);
+  color: var(--invert-text);
+} */
+
 .popup h2 {
   font-size: 24px;
   margin-bottom: 24px;
@@ -871,11 +879,19 @@ Page popup style rules
   margin: 0px 0px 10px 0px;
 }
 
+.popup #filters {
+  max-height: 340px;
+  height: 48%;
+}
+
 .popup .popup-section {
   background-color: var(--bg-color);
   padding: 26px 30px;
   margin: 16px 0px;
   border-radius: 10px;
+  max-width: 859px;
+  width: 100%;
+  overflow: auto;
 }
 
 .popup #filter-tabs {
@@ -919,6 +935,8 @@ Page popup style rules
   display: flex;
   flex-direction: column;
   align-items: start;
+  max-height: 158px;
+  height: 22%;
 }
 
 .popup #selected-filters {

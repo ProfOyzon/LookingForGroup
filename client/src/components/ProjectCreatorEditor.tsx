@@ -388,16 +388,81 @@ export const ProjectCreatorEditor = () => {
     </div>
     }</> : currentTeamTab === 1 ? (
     <>{
-    <div id="project-editor-open-positions">
-      <div id="project-editor-open-positions-list">
-        {/* Add open positions here */}
-        <button>+ Add Position</button>
-      </div>
-
-            <div id="project-editor-open-position-details">{positionWindow}</div>
+      <div id="project-team-open-positions-popup">
+        <div className="positions-popup-list">
+          <div id="team-positions-popup-list-header">Open Positions</div>
+          <div id="team-positions-popup-list-buttons">
+            {/* {displayedProject.jobs.map((job, index) => (
+              <button
+                className={`positions-popup-list-item ${index === viewedPosition ? 'positions-popup-list-item-active' : ''}`}
+                onClick={() => setViewedPosition(index)}
+                key={index}
+              >
+                {job.job_title}
+              </button>
+            ))} */}
+            <div className="team-positions-button">
+              <img src="/images/icons/drag.png" alt=""/>
+              <button className="positions-popup-list-item">Video Game Developer</button>
+            </div>
+            <div className="team-positions-button">
+              <img src="/images/icons/drag.png" alt=""/>
+              <button className="positions-popup-list-item">2D Artist</button>
+            </div>
           </div>
-        }
-      </>
+        </div>
+
+        <div className="positions-popup-info">
+          <div className="positions-popup-info-title">
+            {/* {displayedProject.jobs[viewedPosition].job_title} */}
+            Video Game Developer
+          </div>
+          <div className="positions-popup-info-description">
+            <div id="position-description-header">What we are looking for:</div>
+            <div id="position-description-content">
+              {/* {displayedProject.jobs[viewedPosition].description} */}
+              We are looking for game developers familiar with Unreal Engine 5
+            </div>
+          </div>
+          <div className="position-details">
+            <div id="position-availability">
+              <span className="position-detail-indicator">Availability: </span>
+              {/* {displayedProject.jobs[viewedPosition].availability} */}
+              Full-time
+            </div>
+            <div id="position-duration">
+              <span className="position-detail-indicator">Duration: </span>
+              {/* {displayedProject.jobs[viewedPosition].duration} */}
+              Short-term
+            </div>
+            <div id="position-location">
+              <span className="position-detail-indicator">Location: </span>
+              {/* {displayedProject.jobs[viewedPosition].location} */}
+              On-site
+            </div>
+            <div id="position-compensation">
+              <span className="position-detail-indicator">Compensation: </span>
+              {/* {displayedProject.jobs[viewedPosition].compensation} */}
+              Paid
+            </div>
+          </div>
+          <div className="open-position-contact">
+            If interested, please contact:{' '}
+            <span
+              // onClick={() =>
+              //   navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)
+              // }
+              className="position-contact-link"
+            >
+              <img src="/assets/creditProfiles/JF.png" alt=""/>
+              {/* {projectLead.first_name} {projectLead.last_name} */}
+              Lily Carter
+            </span>
+          </div>
+        </div>
+      </div>
+    }
+    </>
     ) : (
       <></>
     );

@@ -13,6 +13,7 @@ import '../Styles/pages.css';
 
 import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
+import { RoleSelector } from '../RoleSelector';
 import { SearchBar } from '../SearchBar';
 import { sendPut } from '../../functions/fetch';
 import profileImage from '../../icons/profile-user.png';
@@ -45,9 +46,8 @@ const fetchUserID = async () => {
 const onSaveClicked = async () => {
   // Receive all inputted values
   // Prepare these values for a POST/PUT request
-  console.log('save clicked');
   const getInputValue = (input) => {
-    const element = document.getElementById(`profile-editor-${input}`);
+    const element = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     return element ? element.value : null;
   };
 
@@ -68,7 +68,7 @@ const onSaveClicked = async () => {
 
   console.log(`Data is to save:`);
   console.log(data);
-  
+
 
   const userID = await fetchUserID();
   sendPut(`/api/users/${userID}`, data);
@@ -78,7 +78,7 @@ const setUpInputs = async (data) => {
   let profileData = data[0];
 
   const setUpFunc = (input, data) => {
-    let inputElement = document.getElementById(`profile-editor-${input}`);
+    let inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     if (inputElement) {
       if (inputElement.tagName.toLowerCase() === 'input' || inputElement.tagName.toLowerCase() === 'textarea') {
         inputElement.value = data;
@@ -107,10 +107,10 @@ const AboutTab = () => {
         const response = await fetch(`/api/users/${id}`);
         const { data } = await response.json();
         await data;
-        console.log(data);
+      
         await setUpInputs(data);
       } catch (err) {
-        console.log('Error fetching username: ' + err);
+        console.log('Error fetching profile: ' + err);
       }
     };
     fetchProfile();
@@ -147,14 +147,14 @@ const AboutTab = () => {
           </div>
         </div>
         <div className="about-row row-2">
-          <div className="editor-input-item">
+          {<RoleSelector/>}
+          {/* <div className="editor-input-item">
             <label>Role*</label>
-            {/* <br /> */}
             <select id="profile-editor-role">
               <option>UI Designer</option>
               <option>Programmer</option>
             </select>
-          </div>
+          </div> */}
           <div className="editor-input-item">
             <label>Major*</label>
             {/* <br /> */}
@@ -310,8 +310,8 @@ export const ProfileEditPopup = () => {
       currentTabContent = <AboutTab />;
       break;
   }
-  let editorTabs; //= document.createElement('div');
-  // editorTabs.id = 'project-editor-tabs';
+
+  let editorTabs;
   editorTabs = pageTabs.map((tag, i) => {
     return (
       <button

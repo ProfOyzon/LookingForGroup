@@ -1434,7 +1434,9 @@ const DiscoverAndMeet = ({ category }) => {
                     className={`tag-button tag-button-${tag.color}-selected`}
                     onClick={(e) => {
                       // Remove tag from list of enabled filters, re-rendering component
-                      setEnabledFilters(enabledFilters.toSpliced(isTagEnabled(tag, searchedTags.color), 1));
+                      console.log(tag);
+                      console.log(isTagEnabled(tag.tag, tag.color));
+                      setEnabledFilters(enabledFilters.toSpliced(isTagEnabled(tag.tag, tag.color), 1));
                     }}
                   >
                     <i className="fa fa-close"></i>

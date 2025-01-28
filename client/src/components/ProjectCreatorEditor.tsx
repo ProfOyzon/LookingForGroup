@@ -97,6 +97,7 @@ export const ProjectCreatorEditor = () => {
     </>
   );
 
+  //Media
   const mediaTab = (
     <>
       {
@@ -121,6 +122,8 @@ export const ProjectCreatorEditor = () => {
       }
     </>
   );
+
+  //Tags
 
   //State variable tracking which tab of tags is currently viewed
   //0 - project type, 1 - genre, 2 - dev skills, 3 - design skills, 4 - soft skills
@@ -197,6 +200,8 @@ export const ProjectCreatorEditor = () => {
     </>
   );
 
+  // Team tab
+
   //State variable tracking which team tab is currently being viewed
   //0 - current team, 1 - open positions
   const [currentTeamTab, setCurrentTeamTab] = useState(0);
@@ -204,42 +209,66 @@ export const ProjectCreatorEditor = () => {
   //State variable tracking whether position view is in edit mode or not
   const [editMode, setEditMode] = useState(false);
 
+  // Open position display
   const positionViewWindow = (
     <>
       {
         <>
-          <div id="project-editor-position-title">Title</div>
-          <button onClick={() => setEditMode(true)} id="project-editor-position-edit">
-            <img src={editIcon} alt="" />
+          <button className="edit-project-member-button">
+            <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
           </button>
-          <div id="project-editor-position-description">
-            <div id="position-description-header">What we are looking for:</div>
-            <div id="position-description-content">Description text etc. etc.</div>
+          <div className="positions-popup-info-title">
+            {/* {displayedProject.jobs[viewedPosition].job_title} */}
+            Video Game Developer
           </div>
-          <div id="position-details">
-            <div id="position-availability">
-              <span className="position-detail-indicator">Availability: </span>bleh
-            </div>
-            <div id="position-duration">
-              <span className="position-detail-indicator">Duration: </span>bleh
-            </div>
-            <div id="position-location">
-              <span className="position-detail-indicator">Location: </span>bleh
-            </div>
-            <div id="position-compensation">
-              <span className="position-detail-indicator">Compensation: </span>bleh
+          <div className="positions-popup-info-description">
+            <div id="position-description-content">
+              {/* {displayedProject.jobs[viewedPosition].description} */}
+              We are looking for game developers familiar with Unreal Engine 5
             </div>
           </div>
-          <div id="position-contact">
-            if interested, please contact:{' '}
-            <span
-              /* onClick={() => navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)} */ id="position-contact-link"
-            >
-              <img />
-              user name
-            </span>
+          <div id="open-position-details">
+            <div id="open-position-details-left">
+              <div id="position-availability">
+                <span className="position-detail-indicator">Availability: </span>
+                {/* {displayedProject.jobs[viewedPosition].availability} */}
+                Full-time
+              </div>
+              <div id="position-location">
+                <span className="position-detail-indicator">Location: </span>
+                {/* {displayedProject.jobs[viewedPosition].location} */}
+                On-site
+              </div>
+              <div id="open-position-contact">
+                <span className="position-detail-indicator">Contact: </span>
+                <span
+                  // onClick={() =>
+                  //   navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)
+                  // }
+                  id="position-contact-link"
+                >
+                  <img src="/assets/creditProfiles/JF.png" alt=""/>
+                  {/* {projectLead.first_name} {projectLead.last_name} */}
+                  Lily Carter
+                </span>
+              </div>
+            </div>
+            <div id="open-position-details-right">
+              <div id="position-duration">
+                <span className="position-detail-indicator">Duration: </span>
+                {/* {displayedProject.jobs[viewedPosition].duration} */}
+                Short-term
+              </div>
+              <div id="position-compensation">
+                <span className="position-detail-indicator">Compensation: </span>
+                {/* {displayedProject.jobs[viewedPosition].compensation} */}
+                Paid
+              </div>
+            </div>
           </div>
-          <button id="delete-position-button">delete</button>
+          <button id="delete-position-button">
+            <img src="/images/icons/delete.svg" alt="trash can" />
+          </button>
         </>
       }
     </>
@@ -250,6 +279,7 @@ export const ProjectCreatorEditor = () => {
     setEditMode(false);
   };
 
+  // Edit open position
   const positionEditWindow = (
     <>
       {
@@ -304,6 +334,7 @@ export const ProjectCreatorEditor = () => {
     </>
   );
 
+  // Check if team tab is in edit mode
   const positionWindow = editMode === true ? positionEditWindow : positionViewWindow;
 
   const teamTabContent = currentTeamTab === 0 ? <>{
@@ -403,62 +434,19 @@ export const ProjectCreatorEditor = () => {
             ))} */}
             <div className="team-positions-button">
               <img src="/images/icons/drag.png" alt=""/>
-              <button className="positions-popup-list-item">Video Game Developer</button>
+              <button className="positions-popup-list-item" id="team-positions-active-button">Video Game Developer</button>
             </div>
             <div className="team-positions-button">
               <img src="/images/icons/drag.png" alt=""/>
               <button className="positions-popup-list-item">2D Artist</button>
             </div>
+            <div className="team-positions-button">
+              <button className="project-editor-extra-info">&#43; Add Position</button>
+            </div>
           </div>
         </div>
-
         <div className="positions-popup-info">
-          <div className="positions-popup-info-title">
-            {/* {displayedProject.jobs[viewedPosition].job_title} */}
-            Video Game Developer
-          </div>
-          <div className="positions-popup-info-description">
-            <div id="position-description-header">What we are looking for:</div>
-            <div id="position-description-content">
-              {/* {displayedProject.jobs[viewedPosition].description} */}
-              We are looking for game developers familiar with Unreal Engine 5
-            </div>
-          </div>
-          <div className="position-details">
-            <div id="position-availability">
-              <span className="position-detail-indicator">Availability: </span>
-              {/* {displayedProject.jobs[viewedPosition].availability} */}
-              Full-time
-            </div>
-            <div id="position-duration">
-              <span className="position-detail-indicator">Duration: </span>
-              {/* {displayedProject.jobs[viewedPosition].duration} */}
-              Short-term
-            </div>
-            <div id="position-location">
-              <span className="position-detail-indicator">Location: </span>
-              {/* {displayedProject.jobs[viewedPosition].location} */}
-              On-site
-            </div>
-            <div id="position-compensation">
-              <span className="position-detail-indicator">Compensation: </span>
-              {/* {displayedProject.jobs[viewedPosition].compensation} */}
-              Paid
-            </div>
-          </div>
-          <div className="open-position-contact">
-            If interested, please contact:{' '}
-            <span
-              // onClick={() =>
-              //   navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)
-              // }
-              className="position-contact-link"
-            >
-              <img src="/assets/creditProfiles/JF.png" alt=""/>
-              {/* {projectLead.first_name} {projectLead.last_name} */}
-              Lily Carter
-            </span>
-          </div>
+          {positionWindow}
         </div>
       </div>
     }
@@ -492,6 +480,7 @@ export const ProjectCreatorEditor = () => {
     </>
   );
 
+  //Links
   const linksTab = (
     <>
       {

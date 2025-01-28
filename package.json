@@ -11,7 +11,8 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm run build --prefix client",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "b": "npm run b --prefix client && npm run server"
   },
   "author": "",
   "license": "ISC",

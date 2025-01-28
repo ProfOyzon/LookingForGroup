@@ -14,6 +14,7 @@ import '../Styles/pages.css';
 import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { RoleSelector } from '../RoleSelector';
+import { MajorSelector } from '../MajorSelector';
 import { SearchBar } from '../SearchBar';
 import { sendPut } from '../../functions/fetch';
 import profileImage from '../../icons/profile-user.png';
@@ -148,21 +149,7 @@ const AboutTab = () => {
         </div>
         <div className="about-row row-2">
           {<RoleSelector/>}
-          {/* <div className="editor-input-item">
-            <label>Role*</label>
-            <select id="profile-editor-role">
-              <option>UI Designer</option>
-              <option>Programmer</option>
-            </select>
-          </div> */}
-          <div className="editor-input-item">
-            <label>Major*</label>
-            {/* <br /> */}
-            <select id="profile-editor-major">
-              <option>Game Design & Development</option>
-              <option>New Media Design</option>
-            </select>
-          </div>
+          {<MajorSelector/>}
           <div className="editor-input-item">
             <label>Year</label>
             {/* <br /> */}

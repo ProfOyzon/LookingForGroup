@@ -1,5 +1,9 @@
 import { createContext } from 'react';
-import { DropdownContextProps } from '../interfaces/DropdownProps';
+
+type DropdownContextProps = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+};
 
 /**
  * Contains info on whether the dropdown is open or not

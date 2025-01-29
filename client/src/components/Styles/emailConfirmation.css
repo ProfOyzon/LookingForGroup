@@ -45,3 +45,7 @@ Email Confirmation page style rules
   font-style: italic;
   color: var(--primary-color);
 }
+
+@media only screen and (max-width: 800px) {
+  
+}

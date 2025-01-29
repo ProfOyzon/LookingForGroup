@@ -1290,20 +1290,20 @@ const DiscoverAndMeet = ({ category }) => {
   // helper function to check if the enabledFilters contains a particular tag
   const isTagEnabled = (tag, color) => {
     for (let i = 0; i < enabledFilters.length; i++) {
-      if ((enabledFilters[i].tag === tag) && (enabledFilters[i].color === color)) {
+      if (enabledFilters[i].tag === tag && enabledFilters[i].color === color) {
         return i;
       }
     }
 
     return -1;
-  }
+  };
 
   // Reset values when filter popup is closed
   const resetFilters = () => {
     setCurrentTags([]);
     setSearchedTags([]);
     setEnabledFilters([]);
-  }
+  };
 
   return (
     <div className="page" onScroll={addContent}>
@@ -1362,17 +1362,17 @@ const DiscoverAndMeet = ({ category }) => {
           full tag list is only applied when hitting done, which then pushes the info to an active list*/}
           <PopupContent>
             <h2>Project Filters</h2>
-            <div id='filters' className='popup-section'>
+            <div id="filters" className="popup-section">
               <SearchBar
                 dataSets={[{ data: currentTags }]}
                 onSearch={(results) => {
                   setSearchedTags({ tags: results[0], color: searchedTags.color });
                 }}
               ></SearchBar>
-              <div id='filter-tabs'>
+              <div id="filter-tabs">
                 {filterPopupTabs.map((tab) => (
                   <a
-                    className='filter-tab'
+                    className="filter-tab"
                     onClick={(e) => {
                       // Remove .selected from all 3 options, add it only to current button
                       let tabs = document.querySelector('#filter-tabs').children;
@@ -1389,7 +1389,7 @@ const DiscoverAndMeet = ({ category }) => {
                 ))}
               </div>
               <hr />
-              <div id='filter-tags'>
+              <div id="filter-tags">
                 {searchedTags.length === 0 ? (
                   <p>No tags found. Please make sure you have a tab selected.</p>
                 ) : (
@@ -1403,22 +1403,31 @@ const DiscoverAndMeet = ({ category }) => {
                         if (selecIndex === -1) {
                           // Creates an object to store text and category
                           //setEnabledFilters([...enabledFilters, { tag, color: searchedTags.color }]);
-                          setEnabledFilters([...enabledFilters, { tag, color: searchedTags.color }]);
+                          setEnabledFilters([
+                            ...enabledFilters,
+                            { tag, color: searchedTags.color },
+                          ]);
                           e.target.classList.replace(
-                            `tag-button-${searchedTags.color}-unselected`, 
+                            `tag-button-${searchedTags.color}-unselected`,
                             `tag-button-${searchedTags.color}-selected`
                           );
                         } else {
                           // Remove tag from list of enabled filters
                           setEnabledFilters(enabledFilters.toSpliced(selecIndex, 1));
                           e.target.classList.replace(
-                            `tag-button-${searchedTags.color}-selected`, 
+                            `tag-button-${searchedTags.color}-selected`,
                             `tag-button-${searchedTags.color}-unselected`
                           );
                         }
                       }}
                     >
-                      <i className={isTagEnabled(tag, searchedTags.color) !== -1 ? 'fa fa-check' : 'fa fa-plus'}></i>
+                      <i
+                        className={
+                          isTagEnabled(tag, searchedTags.color) !== -1
+                            ? 'fa fa-check'
+                            : 'fa fa-plus'
+                        }
+                      ></i>
                       &nbsp;{tag}
                     </button>
                   ))
@@ -1430,13 +1439,15 @@ const DiscoverAndMeet = ({ category }) => {
               <h4>Click to deselect</h4>
               <div id="selected-filters">
                 {enabledFilters.map((tag) => (
-                  <button 
+                  <button
                     className={`tag-button tag-button-${tag.color}-selected`}
                     onClick={(e) => {
                       // Remove tag from list of enabled filters, re-rendering component
                       console.log(tag);
                       console.log(isTagEnabled(tag.tag, tag.color));
-                      setEnabledFilters(enabledFilters.toSpliced(isTagEnabled(tag.tag, tag.color), 1));
+                      setEnabledFilters(
+                        enabledFilters.toSpliced(isTagEnabled(tag.tag, tag.color), 1)
+                      );
                     }}
                   >
                     <i className="fa fa-close"></i>
@@ -1462,8 +1473,8 @@ const DiscoverAndMeet = ({ category }) => {
             >
               Apply
             </button> */}
-            <PopupButton 
-              buttonId={'primary-btn'} 
+            <PopupButton
+              buttonId={'primary-btn'}
               callback={() => {
                 // Reset tag filters before adding results in
                 activeTagFilters = [];
@@ -1476,7 +1487,10 @@ const DiscoverAndMeet = ({ category }) => {
 
                   // Check if any enabled filters matches a discover tag, and visually toggle it
                   for (let j = 0; j < discoverFilters.length; j++) {
-                    if (discoverFilters[j].innerHTML.toLowerCase() === enabledFilters[i].tag.toLowerCase()) {
+                    if (
+                      discoverFilters[j].innerHTML.toLowerCase() ===
+                      enabledFilters[i].tag.toLowerCase()
+                    ) {
                       discoverFilters[j].classList.add('discover-tag-filter-selected');
                     }
                   }
@@ -1486,7 +1500,9 @@ const DiscoverAndMeet = ({ category }) => {
                 updateProjectList();
                 resetFilters();
               }}
-            >Apply</PopupButton>
+            >
+              Apply
+            </PopupButton>
           </PopupContent>
         </Popup>
       </div>

@@ -776,7 +776,8 @@ Project Creator and Editor style rules
   cursor: pointer;
 }
 
-#team-positions-active-button, #team-positions-popup-list-buttons button:hover {
+#team-positions-active-button,
+#team-positions-popup-list-buttons button:hover {
   background-color: var(--primary-color) !important;
   color: var(--invert-text);
   font-weight: 700 !important;
@@ -1919,7 +1920,7 @@ New Project Page style rules
   flex-direction: column;
   gap: 15px;
   background-color: var(--bg-color);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding: 20px;
   width: 100%;

@@ -1,6 +1,13 @@
 import { useContext } from 'react';
-import { ThemeIconProps } from '../interfaces/ThemeIconProps';
 import { ThemeContext } from '../contexts/ThemeContext';
+
+type ThemeIconProps = {
+  light: string;
+  dark: string;
+  alt?: string;
+  id?: string;
+  addClass?: string;
+};
 
 export const ThemeIcon: React.FC<ThemeIconProps> = ({
   light,

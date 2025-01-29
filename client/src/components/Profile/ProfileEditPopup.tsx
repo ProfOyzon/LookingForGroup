@@ -75,21 +75,35 @@ const onSaveClicked = async () => {
 
 const setUpInputs = async (data) => {
   let profileData = data[0];
+  let roles, majors;
+
+  const getRolesAndMajors = async () => {
+    const roleResponse = await fetch(`/api/datasets/job-titles`);
+    const majorResponse = await fetch(`/api/datasets/majors`);
+
+    roles = await roleResponse.json();
+    majors = await majorResponse.json();
+    roles = roles.data;
+    majors = majors.data;
+  }
 
   const setUpFunc = (input, data) => {
     let inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     if (inputElement) {
-      if (inputElement.tagName.toLowerCase() === 'input' || inputElement.tagName.toLowerCase() === 'textarea') {
-        inputElement.value = data;
-      }
+      // if (inputElement.tagName.toLowerCase() === 'input' || inputElement.tagName.toLowerCase() === 'textarea') {
+      //   inputElement.value = data;
+      // }
+      inputElement.value = data;
     }
   }
+  
+  await getRolesAndMajors();
 
   setUpFunc('firstName', profileData.first_name);
   setUpFunc('lastName', profileData.last_name);
   setUpFunc('pronouns', profileData.pronouns);
-  setUpFunc('jobTitle', profileData.job_title);
-  setUpFunc('major', profileData.major);
+  setUpFunc('jobTitle', roles.find(r => r.label === profileData.job_title).title_id);
+  setUpFunc('major', majors.find(r => r.label === profileData.major).major_id);
   setUpFunc('academicYear', profileData.academic_year);
   setUpFunc('location', profileData.location);
   setUpFunc('headline', profileData.headline); // description

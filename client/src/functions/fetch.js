@@ -53,7 +53,7 @@ const responseHandler = async (response, handler) => {
   if (handler) {
     handler(result);
   }
-}
+};
 
 const sendGet = async (url, handler) => {
   console.log(`URL: ${url}`);

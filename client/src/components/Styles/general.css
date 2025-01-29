@@ -774,7 +774,7 @@ Page popup style rules
     max-width: 921px;
     max-height: 781px;
     width: 64vw;
-    height: 95vw;
+    /* height: 95vw; */
   }
 }
 
@@ -839,7 +839,7 @@ Page popup style rules
   padding-right: 15px;
 }
 
-.popup .primary-btn {
+.popup #primary-btn {
   width: 110px;
   height: 40px;
   padding: 5px 16px;

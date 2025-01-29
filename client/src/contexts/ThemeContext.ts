@@ -1,5 +1,9 @@
 import { createContext } from 'react';
-import { ThemeContextProps } from '../interfaces/ThemeContextProps';
+
+type ThemeContextProps = {
+  theme: string;
+  setTheme: (theme: string) => void;
+};
 
 export const ThemeContext = createContext<ThemeContextProps>({
   theme: 'dark',

@@ -626,7 +626,7 @@ Discover image carousel style rules
   /* filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%); */
 }
 
-#discover-carousel-right img {
+#discover-carousel-left img {
   transform: rotateY(180deg);
 }
 

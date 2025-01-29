@@ -604,6 +604,7 @@ Discover image carousel style rules
 
 #discover-carousel-bar {
   display: flex;
+  flex-direction: row;
   margin-bottom: 10px;
 }
 

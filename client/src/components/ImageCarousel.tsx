@@ -79,7 +79,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       autoScroll();
-    }, 3000);
+    }, 10_000);
     return () => clearInterval(interval);
   });
 

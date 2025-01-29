@@ -1276,8 +1276,8 @@ const DiscoverAndMeet = ({ category }) => {
 
   //Decides which 'content' to display on the page
 
-  // let heroContent = category === 'projects' ? <ImageCarousel carouselType='Discover'/> : profileHero;
-  let heroContent = category === 'projects' ? projectHero : profileHero;
+  let heroContent = category === 'projects' ? <ImageCarousel carouselType='Discover'/> : profileHero;
+  //let heroContent = category === 'projects' ? projectHero : profileHero;
   let panelContent = category === 'projects' ? projectContent : profileContent;
 
   // determine if screen width big enough to hide right scroll button

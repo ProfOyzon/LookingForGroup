@@ -623,7 +623,7 @@ Discover image carousel style rules
   height: 80px;
   /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
   /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
-  filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+  /* filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%); */
 }
 
 #discover-carousel-right img {
@@ -692,7 +692,7 @@ Discover image carousel style rules
 .discover-carousel-link img {
   transform: rotateY(180deg);
   width: 30px;
-  filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%);
+  /* filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%); */
 }
 
 #discover-carousel-tabs {

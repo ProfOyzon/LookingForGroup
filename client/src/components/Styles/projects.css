@@ -2212,8 +2212,34 @@ My projects page style rules
   padding-right: 64px;
 
   display: grid;
-  grid-template-columns: auto max-content max-content max-content;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto auto auto;
   column-gap: 1.46%;
+  row-gap: 2.92%;
+  margin-bottom: 5.92%;
+}
+
+@media (min-width: 420px) {
+  .my-projects-header-row {
+    grid-template-columns: auto max-content;
+    grid-template-rows: auto max-content;
+    margin-bottom: 0%;
+  }
+}
+
+@media (min-width: 525px) {
+  .my-projects-header-row {
+    grid-template-columns: auto max-content max-content;
+    grid-template-rows: auto;
+    margin-bottom: 0%;
+  }
+}
+
+@media ((min-width: 665px) and (max-width: 799px)) or (min-width: 885px) {
+  .my-projects-header-row {
+    grid-template-columns: auto max-content max-content max-content;
+    margin-bottom: 0%;
+  }
 }
 
 .my-projects-all-projects-button {
@@ -2243,6 +2269,7 @@ My projects page style rules
   font-family: Inter, FontAwesome;
   line-height: normal;
   letter-spacing: 0%;
+  width: fit-content;
 }
 
 .my-projects-display-switch {
@@ -2253,6 +2280,7 @@ My projects page style rules
   padding: 0px;
 
   display: flex;
+  width: fit-content;
 }
 
 .my-projects-display-switch .display-switch-option {
@@ -2272,6 +2300,10 @@ My projects page style rules
 .my-projects-display-switch .display-switch-option#selected {
   background-color: var(--primary-color);
   color: var(--main-text);
+}
+
+.my-projects-display-switch .display-switch-option#selected .fa-solid {
+  color: var(--invert-text);
 }
 
 .my-projects-new-project-button {

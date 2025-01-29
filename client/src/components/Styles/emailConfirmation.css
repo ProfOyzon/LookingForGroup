@@ -47,5 +47,8 @@ Email Confirmation page style rules
 }
 
 @media only screen and (max-width: 800px) {
-  
+  .confirmation-container {
+    width: 90vw;
+    height: 40vh;
+  }
 }

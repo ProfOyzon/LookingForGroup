@@ -517,7 +517,7 @@ const updateUser = async (req, res) => {
       status: 400,
       error: 'Missing major id',
     });
-  } 
+  }
   // else if (!skills || skills.length < 1) {
   //   return res.status(400).json({
   //     status: 400,
@@ -549,7 +549,7 @@ const updateUser = async (req, res) => {
     // const newSkills = skills.map((skill) => skill.id);
     // // Get skills already in database that need to be removed
     // let placeholders = genPlaceholders(newSkills);
-    // sql = `SELECT JSON_ARRAYAGG(us.skill_id) AS skills FROM user_skills us 
+    // sql = `SELECT JSON_ARRAYAGG(us.skill_id) AS skills FROM user_skills us
     //     WHERE us.user_id = ? AND NOT us.skill_id IN (${placeholders})`;
     // values = [id, ...newSkills];
     // const [removingSkills] = await pool.query(sql, values);
@@ -576,7 +576,7 @@ const updateUser = async (req, res) => {
     // }
     // // Get socials already in database that need to be removed
     // placeholders = genPlaceholders(newSocials);
-    // sql = `SELECT JSON_ARRAYAGG(uso.website_id) AS socials FROM user_socials uso 
+    // sql = `SELECT JSON_ARRAYAGG(uso.website_id) AS socials FROM user_socials uso
     //     WHERE uso.user_id = ? AND NOT uso.website_id IN (${placeholders})`;
     // values = [id, ...newSocials];
     // const [removingSocials] = await pool.query(sql, values);

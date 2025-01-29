@@ -550,8 +550,8 @@ Project Creator and Editor style rules
 }
 
 #project-editor-team-tabs {
-  margin: 0px 335px;
   gap: 50px;
+  justify-content: center;
 }
 
 .project-editor-tag-search-tab {
@@ -636,9 +636,12 @@ Project Creator and Editor style rules
   position: absolute;
   width: 30px;
   height: 30px;
-  transform: translate(26ch, -3.5ch);
   background-color: var(--primary-color) !important;
   border-radius: 100%;
+}
+
+.project-editor-project-member > .edit-project-member-button {
+  transform: translate(26ch, -3.5ch);
 }
 
 .edit-project-member-icon {
@@ -741,20 +744,65 @@ Project Creator and Editor style rules
   color: var(--primary-color);
 }
 
+.positions-popup-info .edit-project-member-button {
+  position: absolute;
+  top: 175px;
+  right: 115px;
+}
+#delete-position-button {
+  position: absolute;
+  bottom: 115px;
+  right: 115px;
+}
+
 #team-positions-popup-list-buttons {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
+#team-positions-popup-list-buttons img {
+  width: 21px;
+  height: 21px;
+}
+
 #team-positions-popup-list-buttons button {
-  background-color: var(--primary-color) !important;
-  color: var(--invert-text);
+  background-color: var(--header-color);
   border: none;
   border-radius: 30px;
-  padding: 10px 20px;
+  padding: 0 17px;
   font-size: 1.6ch;
-  font-weight: 700;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+#team-positions-active-button,
+#team-positions-popup-list-buttons button:hover {
+  background-color: var(--primary-color) !important;
+  color: var(--invert-text);
+  font-weight: 700 !important;
+}
+
+#open-position-details {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 100px;
+  align-self: stretch;
+  flex-wrap: wrap;
+}
+
+#open-position-details-left,
+#open-position-details-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#open-position-contact {
+  display: flex;
+  align-items: center;
 }
 
 /*
@@ -1837,11 +1885,8 @@ New Project Page style rules
 
 .team-positions-button {
   display: flex;
-  flex-direction: column;
-}
-
-.team-positions-button {
-  width: 21px;
+  flex-direction: row;
+  gap: 5px;
   height: 21px;
 }
 
@@ -1873,8 +1918,9 @@ New Project Page style rules
   grid-area: info;
   display: flex;
   flex-direction: column;
+  gap: 15px;
   background-color: var(--bg-color);
-  /* box-shadow: 0 0 10px #BBBBBB; */
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding: 20px;
   width: 100%;
@@ -1893,9 +1939,10 @@ New Project Page style rules
 }
 
 #position-description-header,
-.position-detail-indicator {
+.position-detail-indicator,
+#position-contact-link {
   color: var(--primary-color);
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 10px;
 }
 
@@ -1940,14 +1987,15 @@ New Project Page style rules
 }
 
 #position-contact-link {
-  background-color: var(--bg-color);
+  background-color: var(--header-color);
   color: var(--primary-color);
   border-radius: 30px;
-  padding: 5px 15px;
+  padding: 5px 10px 5px 5px;
   height: 100%;
+  width: fit-content;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   font-style: normal;
   transition: background-color 0.1s;
 }
@@ -1959,8 +2007,8 @@ New Project Page style rules
 }
 
 #position-contact-link img {
-  height: 40px;
-  width: 40px;
+  height: 32px;
+  width: 32px;
   border-radius: 50%;
 }
 

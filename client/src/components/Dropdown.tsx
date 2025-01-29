@@ -1,10 +1,6 @@
-import { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { DropdownContext } from '../contexts/DropdownContext';
-import {
-  DropdownButtonProps,
-  DropdownContentProps,
-  DropdownProps,
-} from '../interfaces/DropdownProps';
+
 //This is a reusable component that can be used to create dropdown menus and windows
 //This article was used to help create this component:
 //https://www.codemzy.com/blog/reactjs-dropdown-component
@@ -30,6 +26,19 @@ import {
 //This is meant to help prevent dropdowns from going off the screen, but it can just be used for styling too.
 //I thought about making it do this dynamically, but chose this route as it:
 //1. was easier to implement, 2. is less code intensive, and 3. I trust the team to know how to use it like this
+type DropdownButtonProps = {
+  children: React.ReactNode;
+  buttonId?: string;
+};
+
+type DropdownContentProps = {
+  children: React.ReactNode;
+  rightAlign?: boolean;
+};
+
+type DropdownProps = {
+  children: React.ReactNode;
+};
 
 //Button component that will open/close dropdown
 export const DropdownButton: React.FC<DropdownButtonProps> = ({ children, buttonId = '' }) => {

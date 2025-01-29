@@ -34,14 +34,15 @@ const inputs = [
   'funFact',
   'bio',
   'skills',
-  'socials'];
+  'socials',
+];
 
 // Convenient Functions
 const fetchUserID = async () => {
   const response = await fetch('/api/auth');
   const { data } = await response.json();
   return data;
-}
+};
 
 // Functions
 const onSaveClicked = async () => {
@@ -65,13 +66,13 @@ const onSaveClicked = async () => {
     bio: getInputValue('bio'),
     skills: getInputValue('skills'),
     socials: getInputValue('socials'),
-  }
+  };
   console.log(`Data to save:`);
   console.log(data);
   const userID = await fetchUserID();
-  console.log(`/api/users/${userID}`)
+  console.log(`/api/users/${userID}`);
   sendPut(`/api/users/${userID}`, data);
-}
+};
 
 const setUpInputs = async (data) => {
   let profileData = data[0];
@@ -79,11 +80,14 @@ const setUpInputs = async (data) => {
   const setUpFunc = (input, data) => {
     let inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     if (inputElement) {
-      if (inputElement.tagName.toLowerCase() === 'input' || inputElement.tagName.toLowerCase() === 'textarea') {
+      if (
+        inputElement.tagName.toLowerCase() === 'input' ||
+        inputElement.tagName.toLowerCase() === 'textarea'
+      ) {
         inputElement.value = data;
       }
     }
-  }
+  };
 
   setUpFunc('firstName', profileData.first_name);
   setUpFunc('lastName', profileData.last_name);
@@ -95,7 +99,7 @@ const setUpInputs = async (data) => {
   setUpFunc('headline', profileData.headline); // description
   setUpFunc('funFact', profileData.fun_fact);
   setUpFunc('bio', profileData.bio);
-}
+};
 
 // Tab Pages
 const AboutTab = () => {
@@ -107,7 +111,7 @@ const AboutTab = () => {
         const response = await fetch(`/api/users/${id}`);
         const { data } = await response.json();
         await data;
-      
+
         await setUpInputs(data);
       } catch (err) {
         console.log('Error fetching profile: ' + err);
@@ -147,8 +151,8 @@ const AboutTab = () => {
           </div>
         </div>
         <div className="about-row row-2">
-          {<RoleSelector/>}
-          {<MajorSelector/>}
+          {<RoleSelector />}
+          {<MajorSelector />}
           <div className="editor-input-item">
             <label>Year</label>
             <select id="profile-editor-academicYear">
@@ -244,7 +248,7 @@ const SkillsTab = () => {
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={{}} onSearch={() => { }} />
+        <SearchBar dataSets={{}} onSearch={() => {}} />
         <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
         <hr />
         <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
@@ -311,7 +315,9 @@ export const ProfileEditPopup = () => {
         <div id="profile-creator-editor">
           <div id="profile-editor-tabs">{editorTabs}</div>
           <div id="profile-editor-content">{currentTabContent}</div>
-          <button id="profile-editor-save" onClick={onSaveClicked}>Save Changes</button>
+          <button id="profile-editor-save" onClick={onSaveClicked}>
+            Save Changes
+          </button>
         </div>
       </PopupContent>
     </Popup>

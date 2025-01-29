@@ -774,7 +774,7 @@ Page popup style rules
     max-width: 921px;
     max-height: 781px;
     width: 64vw;
-    height: 95vw;
+    /* height: 95vw; */
   }
 }
 

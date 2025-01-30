@@ -1202,6 +1202,17 @@ New Profile page style rules
   padding-bottom: 0;
 }
 
+#about-me-buttons > .dropdown-container > button {
+  border: none;
+  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0);
+  height: 100%;
+  font-weight: bold;
+  font-size: 1.8ch;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 #about-me-buttons button > img {
   margin-top: 3px;
 }
@@ -1239,19 +1250,47 @@ New Profile page style rules
 
 #profile-menu-dropdown {
   text-align: left;
-  padding: 8px;
+  /* padding: 8px; */
+  margin-top: 10px;
+  /* width: 165px;
+  height: 200px; */
+  border-radius: 10px;
+  background-color: var(--dropdown-color);
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
+  border: none;
+  padding: 10px;
 }
 
 .profile-menu-dropdown-button {
-  font-weight: normal !important;
+  /* font-weight: normal !important;
   border-radius: 5px !important;
   margin: 4px 0 4px;
   width: 100%;
-  text-align: left;
+  text-align: left; */
+  font-weight: normal !important;
+  background: none;
+  display: flex;
+  width: 100%;
+  border-radius: 10px;
+  gap: 10px;
+  align-items: center;
+  margin: 0;
+  flex-shrink: 0;
+  color: var(--main-text);
+  border: none;
+  height: 25px;
+}
+
+.profile-menu-dropdown-button:hover {
+  background-color: var(--header-color) !important;
 }
 
 #profile-menu-report {
-  color: red;
+  color: var(--error-delete-color);
+
+  .fa-solid {
+    color: var(--error-delete-color);
+  }
 }
 
 /* #profile-about-me-description {

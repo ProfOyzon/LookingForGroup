@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 
 import { ProjectCard } from './ProjectCard';
-import { projects } from '../constants/fakeData'; // FIXME: use data in db
 
 export const SearchBar = ({ dataSets, onSearch }) => {
   let result;
-  let placeholderText = 'Search ';
   result = `Search`;
 
   // --- Searching ---

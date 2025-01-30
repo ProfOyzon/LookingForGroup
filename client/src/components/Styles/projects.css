@@ -638,6 +638,9 @@ Project Creator and Editor style rules
   height: 30px;
   background-color: var(--primary-color) !important;
   border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-items: center;
 }
 
 .project-editor-project-member > .edit-project-member-button {
@@ -766,7 +769,8 @@ Project Creator and Editor style rules
   height: 21px;
 }
 
-#team-positions-popup-list-buttons button {
+#team-positions-popup-list-buttons button,
+#position-edit-save {
   background-color: var(--header-color);
   border: none;
   border-radius: 30px;
@@ -774,10 +778,13 @@ Project Creator and Editor style rules
   font-size: 1.6ch;
   font-weight: 400;
   cursor: pointer;
+  line-height: 28px;
+  align-self: center;
 }
 
 #team-positions-active-button,
-#team-positions-popup-list-buttons button:hover {
+#team-positions-popup-list-buttons button:hover,
+#position-edit-save {
   background-color: var(--primary-color) !important;
   color: var(--invert-text);
   font-weight: 700 !important;
@@ -803,6 +810,99 @@ Project Creator and Editor style rules
 #open-position-contact {
   display: flex;
   align-items: center;
+  gap: 10px;
+}
+
+#edit-position-role {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  gap: 10px;
+  align-self: stretch;
+}
+
+#edit-position-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 17px;
+}
+
+#edit-position-details-left {
+  display: grid;
+  grid-template: 1fr 1fr 1fr / 1fr 2fr;
+  grid-template-areas:
+    'availability-label availability-input'
+    'location-label location-input'
+    'contact-label contact-input';
+  gap: 8px;
+  align-items: center;
+}
+label.edit-position-availability {
+  grid-area: availability-label;
+}
+select.edit-position-availability {
+  grid-area: availability-input;
+}
+label.edit-position-location {
+  grid-area: location-label;
+}
+select.edit-position-location {
+  grid-area: location-input;
+}
+label.edit-position-contact {
+  grid-area: contact-label;
+}
+select.edit-position-contact {
+  grid-area: contact-input;
+}
+
+#edit-position-details-right {
+  display: grid;
+  grid-template: 1fr 1fr 1fr / 1fr 2fr;
+  grid-template-areas:
+    'duration-label duration-input'
+    'compensation-label compensation-input'
+    '. .';
+  gap: 8px;
+  align-items: center;
+}
+label.edit-position-duration {
+  grid-area: duration-label;
+}
+select.edit-position-duration {
+  grid-area: duration-input;
+}
+label.edit-position-compensation {
+  grid-area: compensation-label;
+}
+select.edit-position-compensation {
+  grid-area: compensation-input;
+}
+
+#edit-position-details label {
+  justify-self: end;
+  font-size: 16px;
+  text-wrap: nowrap;
+}
+
+.positions-popup-info select {
+  justify-self: stretch;
+  font-style: normal;
+  margin: 0 !important;
+}
+
+#position-edit-cancel {
+  color: var(--primary-color);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+#edit-position-description {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 0 0;
 }
 
 /*
@@ -1924,6 +2024,10 @@ New Project Page style rules
   border-radius: 10px;
   padding: 20px;
   width: 100%;
+}
+
+.positions-popup-info select {
+  margin: 0;
 }
 
 .positions-popup-info-title {

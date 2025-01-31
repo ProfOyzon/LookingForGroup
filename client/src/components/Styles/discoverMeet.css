@@ -619,8 +619,10 @@ Discover image carousel style rules
 
 #discover-carousel-left img,
 #discover-carousel-right img {
-  width: 60px;
-  height: 80px;
+  width: 30px;
+  height: 60px;
+  margin-left: 20px;
+  margin-right: 20px;
   /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
   /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
   /* filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%); */

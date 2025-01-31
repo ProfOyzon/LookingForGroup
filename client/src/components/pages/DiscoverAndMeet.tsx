@@ -963,101 +963,6 @@ const DiscoverAndMeet = ({ category }) => {
     setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
   };
 
-  // replaced the hero banner with an image carousel
-  let projectHero = (
-    <>
-      {
-        <div id="project-hero-bg1">
-          <div id="project-hero">
-            <div id="project-image-carousel-content">
-              {images.map((image, index) => (
-                <div
-                  key={index}
-                  className="project-image-carousel-item"
-                  style={{
-                    transform: `translateX(${(index - currentIndex) * 100}%)`,
-                  }}
-                >
-                  <ThemeIcon
-                    light={`assets/bannerImages/project${index + 1}_light.png`}
-                    dark={`assets/bannerImages/project${index + 1}_dark.png`}
-                    alt={`project-image-${index}`}
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* carousel nav buttons */}
-            <div id="project-image-carousel-buttons">
-              <button id="project-image-carousel-left" onClick={handlePrev}>
-                <ThemeIcon
-                  light={'assets/arrow_light.png'}
-                  dark={'assets/arrow_dark.png'}
-                  alt={'Previous'}
-                />
-              </button>
-              <button id="project-image-carousel-right" onClick={handleNext}>
-                <ThemeIcon
-                  light={'assets/arrow_light.png'}
-                  dark={'assets/arrow_dark.png'}
-                  alt={'Next'}
-                />
-              </button>
-            </div>
-          </div>
-        </div>
-      }
-    </>
-  );
-
-  // Old hero banner for project display
-  // let projectHero = <>{
-  //   <div id='project-hero-bg1'>
-  //     <div id='project-hero'>
-
-  //       <div id='project-hero-blurb-1' className='project-hero-blurb'>
-  //       <img id='project-hero-img-1'
-  //       className='theme-icon'
-  //       src="assets/bannerImages/project1_dark.png"
-  //       src-light="assets/bannerImages/project1_light.png"
-  //       src-dark="assets/bannerImages/project1_dark.png"
-  //       />
-  //         {/* <div>
-  //         <span className='project-hero-highlight'>Discover projects</span> to see what they're about and what roles they're looking for.
-  //         </div> */}
-  //       </div>
-
-  //       <div id='project-hero-blurb-2' className='project-hero-blurb'>
-  //       <h2>Look for projects to work on!</h2>
-  //         <img id='project-hero-img-2'
-  //         className='theme-icon'
-  //         src="assets/bannerImages/project2_dark.png"
-  //         src-light="assets/bannerImages/project2_light.png"
-  //         src-dark="assets/bannerImages/project2_dark.png"
-  //         />
-  //         {/* <div className="panel-text">
-  //         Interested in joining? <span className='project-hero-highlight'>Send a message!</span> <br/>
-  //         <div id='spacer'></div>
-  //         Introduce yourself, share your interest in working together, and what skills you have to offer!
-  //         </div> */}
-  //       </div>
-
-  //       <div id='project-hero-blurb-3' className='project-hero-blurb'>
-  //       <img id='project-hero-img-3'
-  //       className='theme-icon'
-  //       src="assets/bannerImages/project3_dark.png"
-  //       src-light="assets/bannerImages/project3_light.png"
-  //       src-dark="assets/bannerImages/project3_dark.png"
-  //       />
-  //         {/* <div>
-  //         Sort through projects by categories and filter according to your skills or interests to
-  //         <span className='project-hero-highlight'> find your group!</span>
-  //         </div> */}
-  //       </div>
-  //     </div>
-  //   </div>
-  // }</>
-
   //Hero banner for profile display
   let profileHero = (
     <>
@@ -1276,8 +1181,8 @@ const DiscoverAndMeet = ({ category }) => {
 
   //Decides which 'content' to display on the page
 
-  let heroContent = category === 'projects' ? <ImageCarousel carouselType='Discover'/> : profileHero;
-  //let heroContent = category === 'projects' ? projectHero : profileHero;
+  // let heroContent = category === 'projects' ? <ImageCarousel carouselType='Discover'/> : profileHero;
+  let heroContent = category === 'projects' ? <ImageCarousel carouselType='Discover' /> : profileHero;
   let panelContent = category === 'projects' ? projectContent : profileContent;
 
   // determine if screen width big enough to hide right scroll button

@@ -11,7 +11,7 @@ import './Styles/projects.css';
 import './Styles/settings.css';
 import './Styles/pages.css';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Popup, PopupButton, PopupContent } from './Popup';
 import { SearchBar } from './SearchBar';
 import profileImage from '../icons/profile-user.png';
@@ -27,12 +27,95 @@ import editIcon from '../icons/edit.png';
 */
 
 export const ProjectCreatorEditor = () => {
+  //Creating project?
+  //Get project ID from search parameters
+  let urlParams = new URLSearchParams(window.location.search);
+  let projectID = urlParams.get('projectID');
+
+  //state variable used to check whether or not data was successfully obtained from database
+  let [failCheck, setFailCheck] = useState(false);
+
+  //state variable used to store project data
+  const emptyProject = {
+    title: '',
+    hook: '',
+    description: '',
+    purpose: '',
+    status: '',
+    audience: '',
+    project_types: [],
+    tags: [],
+    jobs: [],
+    members: [],
+    images: [],
+    socials: [],
+  };
+  let [projectData, setProjectData] = useState(emptyProject);
+
+  // Function used to get project data
+  const getProjectData = async () => {
+    const url = `/api/projects/${projectID}`;
+
+    try {
+      let response = await fetch(url);
+
+      const projectData = await response.json();
+
+      if (projectData.data[0] === undefined) {
+        setFailCheck(true);
+        return;
+      }
+
+      // save project data
+      setProjectData(projectData.data[0]);
+      console.log('got project data', projectData);
+
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  let modifiedProject;
+  if (projectData === emptyProject || projectData === undefined) {
+    getProjectData();
+    modifiedProject = projectData;
+    console.log(projectData);
+    console.log(modifiedProject);
+  }
+
+  //State variable for complete list of jobs
+  let [allJobs, setAllJobs] = useState(false);
+
+  //Function used to get list of all jobs
+  const getJobsList = async () => {
+    const url = `/api/datasets/job-titles`;
+
+    try {
+      let response = await fetch(url);
+
+      const jobTitles = await response.json();
+
+      if (jobTitles.data[0] === undefined) {
+        setFailCheck(true);
+        return;
+      }
+
+      setAllJobs(jobTitles);
+      console.log('got job titles', jobTitles);
+
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  if (!allJobs) {
+    getJobsList();
+  }
+
   //State variable denoting current tab
   //0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
   const [currentTab, setCurrentTab] = useState(0);
 
   //Tab page elements
-
   //General
   const generalTab = (
     <>
@@ -40,22 +123,26 @@ export const ProjectCreatorEditor = () => {
         <div id="project-editor-general">
           <div id="project-editor-title-input" className="project-editor-input-item">
             <label>Title*</label>
-            <input type="text" className="title-input"></input>
+            <input type="text" className="title-input" value={projectData.title} />
           </div>
 
           <div id="project-editor-status-input" className="project-editor-input-item">
             <label>Status*</label>
-            <select>
+            <select value={projectData.status || "Select"} onChange={(e) => projectData.status = e.target.value}>
+              <option disabled>Select</option>
+              <option>Planning</option>
               <option>In Development</option>
-              <option>Finished</option>
+              <option>Complete</option>
             </select>
           </div>
 
           <div id="project-editor-purpose-input" className="project-editor-input-item">
             <label>Purpose</label>
-            <select>
+            <select value={projectData.purpose || "Select"} >
+              <option disabled>Select</option>
               <option>Passion project</option>
               <option>Academic</option>
+              <option>Portfolio Piece</option>
             </select>
           </div>
 
@@ -67,7 +154,7 @@ export const ProjectCreatorEditor = () => {
             </div>
             <span className="character-count">0/100</span>{' '}
             {/*FIXME: update counter to use realtime entry*/}
-            <textarea maxLength={100} />
+            <textarea maxLength={100} value={projectData.audience} />
           </div>
 
           <div id="project-editor-description-input" className="project-editor-input-item">
@@ -78,7 +165,7 @@ export const ProjectCreatorEditor = () => {
             </div>
             <span className="character-count">0/300</span>{' '}
             {/*FIXME: update counter to use realtime entry*/}
-            <textarea maxLength={300} />
+            <textarea maxLength={300} value={projectData.hook} />
           </div>
 
           <div id="project-editor-long-description-input" className="project-editor-input-item">
@@ -90,7 +177,7 @@ export const ProjectCreatorEditor = () => {
             </div>
             <span className="character-count">0/2000</span>{' '}
             {/*FIXME: update counter to use realtime entry*/}
-            <textarea maxLength={2000} />
+            <textarea maxLength={2000} value={projectData.description} />
           </div>
         </div>
       }
@@ -209,12 +296,15 @@ export const ProjectCreatorEditor = () => {
   //State variable tracking whether position view is in edit mode or not
   const [editMode, setEditMode] = useState(false);
 
+  //State variable tracking if the user is making a new position (after pressing Add Position button)
+  const [newPosition, setNewPosition] = useState(false);
+
   // Open position display
   const positionViewWindow = (
     <>
       {
         <>
-          <button className="edit-project-member-button">
+          <button className="edit-project-member-button" onClick={() => setEditMode(true)}>
             <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
           </button>
           <div className="positions-popup-info-title">
@@ -279,56 +369,62 @@ export const ProjectCreatorEditor = () => {
     setEditMode(false);
   };
 
-  // Edit open position
+  // Edit open position or creating new position
   const positionEditWindow = (
     <>
       {
         <>
-          <label>Role*</label>
-          <select>
-            <option>option 1</option>
-            <option>option 2</option>
-          </select>
+          <div id="edit-position-role">
+            <label>Role*</label>
+            <select>
+              <option>option 1</option>
+              <option>option 2</option>
+            </select>
 
-          <button onClick={savePosition} id="position-edit-save">
-            Save
-          </button>
-          <button onClick={() => setEditMode(false)} id="position-edit-cancel">
-            Cancel
-          </button>
+            <button onClick={savePosition} id="position-edit-save">
+              Save
+            </button>
+            <button onClick={() => setEditMode(false)} id="position-edit-cancel">
+              Cancel
+            </button>
+          </div>
 
-          <label>Role Description*</label>
-          <textarea></textarea>
+          <div id="edit-position-description">
+            <label>Role Description*</label>
+            <textarea></textarea>
+          </div>
 
-          <label>Availability</label>
-          <select>
-            <option>option 1</option>
-            <option>option 2</option>
-          </select>
-
-          <label>Duration</label>
-          <select>
-            <option>option 1</option>
-            <option>option 2</option>
-          </select>
-
-          <label>Location</label>
-          <select>
-            <option>option 1</option>
-            <option>option 2</option>
-          </select>
-
-          <label>Compensation</label>
-          <select>
-            <option>option 1</option>
-            <option>option 2</option>
-          </select>
-
-          <label>Main Contact</label>
-          <select>
-            <option>option 1</option>
-            <option>option 2</option>
-          </select>
+          <div id="edit-position-details">
+            <div id="edit-position-details-left">
+              <label className="edit-position-availability">Availability</label>
+              <select className="edit-position-availability">
+                <option>option 1</option>
+                <option>option 2</option>
+              </select>
+              <label className="edit-position-location">Location</label>
+              <select className="edit-position-location">
+                <option>option 1</option>
+                <option>option 2</option>
+              </select>
+              <label className="edit-position-contact">Main Contact</label>
+              <select className="edit-position-contact">
+                <option>option 1</option>
+                <option>option 2</option>
+              </select>
+            </div>
+            <div id="edit-position-details-right">
+              <label className="edit-position-duration">Duration</label>
+              <select className="edit-position-duration">
+                <option>option 1</option>
+                <option>option 2</option>
+              </select>
+              <label className="edit-position-compensation">Compensation</label>
+              <select className="edit-position-compensation">
+                <option>option 1</option>
+                <option>option 2</option>
+              </select>
+            </div>
+          </div>
         </>
       }
     </>
@@ -523,6 +619,12 @@ export const ProjectCreatorEditor = () => {
     </>
   );
 
+  //Save project editor changes
+  const saveProject = () => {
+    // setProjectData(modifiedProject);
+    console.log('save project');
+  }
+
   //Checks to see which tab we are currently rendering
   let currentTabContent;
   switch (currentTab) {
@@ -585,7 +687,7 @@ export const ProjectCreatorEditor = () => {
 
           <div id="project-editor-content">{currentTabContent}</div>
 
-          <button id="project-editor-save">Save Changes</button>
+          <PopupButton buttonId="project-editor-save" callback={saveProject}>Save Changes</PopupButton>
         </div>
       </PopupContent>
     </Popup>

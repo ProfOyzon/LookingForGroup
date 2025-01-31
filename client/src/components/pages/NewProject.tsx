@@ -33,10 +33,12 @@ import { ThemeIcon } from '../ThemeIcon';
 //Have team member listings link to their respective profiles
 //Ensure 'ProjectCreatorEditor' component is complete and works on this page for project editing (import found above)
 
+//TODO: remove after implementing database functionality
 //Variable used for checking whether or not we are running a server or not
 //Should be 'true' when using npm run server, 'false' when using npm run client
 let runningServer = true;
 
+//TODO: remove after implementing database functionality
 //A default set of project data for the component to use
 //use while running with npm run client
 let defaultProject = runningServer

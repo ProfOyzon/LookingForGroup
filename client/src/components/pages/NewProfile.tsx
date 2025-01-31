@@ -517,9 +517,16 @@ const NewProfile = () => {
             </DropdownButton>
             <DropdownContent rightAlign={true}>
               <div id="profile-menu-dropdown">
-                <button className="profile-menu-dropdown-button">Share</button>
-                <button className="profile-menu-dropdown-button">Block</button>
+                <button className="profile-menu-dropdown-button">
+                  <i className="fa-solid fa-share"></i>
+                  Share
+                </button>
+                <button className="profile-menu-dropdown-button">
+                  <i className="fa-solid fa-shield"></i>
+                  Block
+                </button>
                 <button className="profile-menu-dropdown-button" id="profile-menu-report">
+                  <i className="fa-solid fa-flag"></i>
                   Report
                 </button>
               </div>

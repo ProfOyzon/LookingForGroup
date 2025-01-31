@@ -211,6 +211,9 @@ const MyProjects = () => {
           <option value="sort" disabled>
             Sort by
           </option>
+          {/* Not really a good way of adding icons to this unfortunately.
+          Option strips all inside HTML, so you can't have FA icons that way.
+          Probably best to leave it without them, but could maybe strip */}
           <option value="newest">&#xf017;&nbsp; Newest</option>
           <option value="oldest">&#xf017;&nbsp; Oldest</option>
           <option value="a-z">&#xf062;&nbsp; A-Z</option>

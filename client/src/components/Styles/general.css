@@ -1310,5 +1310,5 @@ Image Carousel style rules
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }

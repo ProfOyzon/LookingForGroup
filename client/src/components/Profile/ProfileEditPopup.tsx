@@ -22,20 +22,6 @@ import editIcon from '../../icons/edit.png';
 
 const pageTabs = ['About', 'Projects', 'Skills', 'Links'];
 const tagTabs = ['Dev Skills', 'Design Skills', 'Soft Skills'];
-const inputs = [
-  'firstName',
-  'lastName',
-  'pronouns',
-  'role',
-  'major',
-  'academicYear',
-  'location',
-  'headline',
-  'funFact',
-  'bio',
-  'skills',
-  'socials',
-];
 
 // Convenient Functions
 const fetchUserID = async () => {
@@ -76,24 +62,35 @@ const onSaveClicked = async () => {
 
 const setUpInputs = async (data) => {
   let profileData = data[0];
+  let roles, majors;
+
+  const getRolesAndMajors = async () => {
+    const roleResponse = await fetch(`/api/datasets/job-titles`);
+    const majorResponse = await fetch(`/api/datasets/majors`);
+
+    roles = await roleResponse.json();
+    majors = await majorResponse.json();
+    roles = roles.data;
+    majors = majors.data;
+  }
 
   const setUpFunc = (input, data) => {
     let inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     if (inputElement) {
-      if (
-        inputElement.tagName.toLowerCase() === 'input' ||
-        inputElement.tagName.toLowerCase() === 'textarea'
-      ) {
-        inputElement.value = data;
-      }
+      // if (inputElement.tagName.toLowerCase() === 'input' || inputElement.tagName.toLowerCase() === 'textarea') {
+      //   inputElement.value = data;
+      // }
+      inputElement.value = data;
     }
-  };
+  }
+
+  await getRolesAndMajors();
 
   setUpFunc('firstName', profileData.first_name);
   setUpFunc('lastName', profileData.last_name);
   setUpFunc('pronouns', profileData.pronouns);
-  setUpFunc('jobTitle', profileData.job_title);
-  setUpFunc('major', profileData.major);
+  setUpFunc('jobTitle', roles.find(r => r.label === profileData.job_title).title_id);
+  setUpFunc('major', majors.find(r => r.label === profileData.major).major_id);
   setUpFunc('academicYear', profileData.academic_year);
   setUpFunc('location', profileData.location);
   setUpFunc('headline', profileData.headline); // description
@@ -206,7 +203,7 @@ const AboutTab = () => {
 
 const ProjectsTab = () => {
   return (
-    <div id="profile-editor-projects">
+    <div id="profile-editor-projects" className='hidden'>
       <div className="project-editor-section-header">Projects</div>
       <div className="project-editor-extra-info">
         Choose to hide/show projects you've worked on.
@@ -237,7 +234,7 @@ const SkillsTab = () => {
   });
 
   return (
-    <div id="project-editor-tags">
+    <div id="profile-editor-skills" className='hidden'>
       <div id="project-editor-selected-tags">
         <div className="project-editor-section-header">Selected Tags</div>
         {/* <div className='project-editor-warning'>*At least 1 tag is required</div> */}
@@ -248,7 +245,7 @@ const SkillsTab = () => {
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={{}} onSearch={() => {}} />
+        <SearchBar dataSets={{}} onSearch={() => { }} />
         <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
         <hr />
         <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
@@ -259,7 +256,7 @@ const SkillsTab = () => {
 
 const LinksTab = () => {
   return (
-    <div id="project-editor-links">
+    <div id="profile-editor-links" className='hidden'>
       <label>Social Links</label>
       <div className="project-editor-extra-info">
         Provide the links to pages you wish to include on your page.
@@ -275,32 +272,72 @@ const LinksTab = () => {
 
 export const ProfileEditPopup = () => {
   //State variable denoting current tab
-  const [currentTab, setCurrentTab] = useState(0);
+  // const [currentTab, setCurrentTab] = useState(0);
+  let currentTab = 0;
 
-  let currentTabContent;
-  switch (pageTabs[currentTab]) {
-    case 'About':
-      currentTabContent = <AboutTab />;
-      break;
-    case 'Projects':
-      currentTabContent = <ProjectsTab />;
-      break;
-    case 'Skills':
-      currentTabContent = <SkillsTab />;
-      break;
-    case 'Links':
-      currentTabContent = <LinksTab />;
-      break;
-    default:
-      currentTabContent = <AboutTab />;
-      break;
+  let TabContent = () => {
+    return (
+      <div id="profile-editor-content">
+        <AboutTab />
+        <ProjectsTab />
+        <SkillsTab />
+        <LinksTab />
+      </div>
+    );
+  }
+
+  const switchTab = (tabIndex) => {
+    // Toggle the visibility for the previous Tab
+    const previousTabIndex = pageTabs[currentTab].toLowerCase();
+    const prevElement = document.querySelector(`#profile-editor-${previousTabIndex}`);
+    const prevTab = document.querySelector(`#profile-tab-${pageTabs[currentTab]}`);
+    if (prevElement) {
+      prevElement.classList.toggle('hidden');
+    }
+    if (prevTab) {
+      prevTab.classList.toggle('project-editor-tab-active');
+    }
+    currentTab = tabIndex;
+
+    // Get current tab
+    let currentElement;
+    let currTab = document.querySelector(`#profile-tab-${pageTabs[currentTab]}`);
+    switch (pageTabs[currentTab]) {
+      case 'About':
+        currentElement = document.querySelector(`#profile-editor-about`);
+        break;
+      case 'Projects':
+        currentElement = document.querySelector(`#profile-editor-projects`);
+        break;
+      case 'Skills':
+        currentElement = document.querySelector(`#profile-editor-skills`);
+        break;
+      case 'Links':
+        currentElement = document.querySelector(`#profile-editor-links`);
+        break;
+      default:
+        currentElement = document.querySelector(`#profile-editor-about`);
+        break;
+    }
+    // Toggle its visibility
+    if (currentElement) {
+      currentElement.classList.toggle('hidden');
+    };
+    if (currTab) {
+      currTab.classList.toggle('project-editor-tab-active');
+    }
+    
   }
 
   let editorTabs;
   editorTabs = pageTabs.map((tag, i) => {
     return (
       <button
-        onClick={() => setCurrentTab(i)}
+        onClick={(e) => {
+          switchTab(i);
+          console.log(e.target);
+        }}
+        id={`profile-tab-${tag}`}
         className={`project-editor-tab ${currentTab === i ? 'project-editor-tab-active' : ''}`}
       >
         {tag}
@@ -308,13 +345,33 @@ export const ProfileEditPopup = () => {
     );
   });
 
+  // let currentTabContent;
+  // switch (pageTabs[currentTab]) {
+  //   case 'About':
+  //     // Hide everything but the selected tab
+  //     currentTabContent = <AboutTab />;
+  //     break;
+  //   case 'Projects':
+  //     currentTabContent = <ProjectsTab />;
+  //     break;
+  //   case 'Skills':
+  //     currentTabContent = <SkillsTab />;
+  //     break;
+  //   case 'Links':
+  //     currentTabContent = <LinksTab />;
+  //     break;
+  //   default:
+  //     currentTabContent = <AboutTab />;
+  //     break;
+  // }
+
   return (
     <Popup>
       <PopupButton buttonId="project-info-edit">Edit Profile</PopupButton>
       <PopupContent>
         <div id="profile-creator-editor">
           <div id="profile-editor-tabs">{editorTabs}</div>
-          <div id="profile-editor-content">{currentTabContent}</div>
+          <TabContent />
           <button id="profile-editor-save" onClick={onSaveClicked}>
             Save Changes
           </button>

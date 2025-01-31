@@ -28,14 +28,12 @@ import editIcon from '../icons/edit.png';
 
 export const ProjectCreatorEditor = () => {
   //Creating project?
+
   //Get project ID from search parameters
   let urlParams = new URLSearchParams(window.location.search);
   let projectID = urlParams.get('projectID');
 
-  //state variable used to check whether or not data was successfully obtained from database
-  let [failCheck, setFailCheck] = useState(false);
-
-  //state variable used to store project data
+  // project template and default value for variable
   const emptyProject = {
     title: '',
     hook: '',
@@ -50,70 +48,91 @@ export const ProjectCreatorEditor = () => {
     images: [],
     socials: [],
   };
-  let [projectData, setProjectData] = useState(emptyProject);
 
-  // Function used to get project data
-  const getProjectData = async () => {
-    const url = `/api/projects/${projectID}`;
+  //State variables
+  const [projectData, setProjectData] = useState(emptyProject);           //store project data
+  const [modifiedProject, setModifiedProject] = useState(emptyProject);   //tracking temporary project changes before committing to a save
+  const [failCheck, setFailCheck] = useState(false);                      //check whether or not data was successfully obtained from database
+  const [allJobs, setAllJobs] = useState(false);                          //for complete list of jobs
+  const [currentTab, setCurrentTab] = useState(0);                        //for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
+  const [currentTagsTab, setCurrentTagsTab] = useState(0);                //tracking which tab of tags is currently viewed: 0 - project type, 1 - genre, 2 - dev skills, 3 - design skills, 4 - soft skills
+  const [currentTeamTab, setCurrentTeamTab] = useState(0);                //tracking which team tab is currently being viewed: 0 - current team, 1 - open positions
+  const [editMode, setEditMode] = useState(false);                        //tracking whether position view is in edit mode or not
+  const [newPosition, setNewPosition] = useState(false);                  //tracking if the user is making a new position (after pressing Add Position button)
 
-    try {
-      let response = await fetch(url);
-
-      const projectData = await response.json();
-
-      if (projectData.data[0] === undefined) {
-        setFailCheck(true);
-        return;
+  // Get project data on projectID change
+  useEffect(() => {
+    const getProjectData = async () => {
+      const url = `/api/projects/${projectID}`;
+  
+      try {
+        let response = await fetch(url);
+  
+        const projectResponse = await response.json();
+        const projectData = projectResponse.data[0];
+        console.log(projectData);
+  
+        if (projectData === undefined) {
+          setFailCheck(true);
+          return;
+        }
+  
+        // save project data
+        setProjectData(projectData);
+        setModifiedProject(projectData);  
+      } catch (error) {
+        console.error(error);
       }
-
-      // save project data
-      setProjectData(projectData.data[0]);
-      console.log('got project data', projectData);
-
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  let modifiedProject;
-  if (projectData === emptyProject || projectData === undefined) {
+    };
     getProjectData();
-    modifiedProject = projectData;
-    console.log(projectData);
-    console.log(modifiedProject);
-  }
+  }, [projectID]);
 
-  //State variable for complete list of jobs
-  let [allJobs, setAllJobs] = useState(false);
-
-  //Function used to get list of all jobs
-  const getJobsList = async () => {
-    const url = `/api/datasets/job-titles`;
-
-    try {
-      let response = await fetch(url);
-
-      const jobTitles = await response.json();
-
-      if (jobTitles.data[0] === undefined) {
-        setFailCheck(true);
-        return;
+  // Get job list if allJobs is false
+  useEffect(() => {
+    const getJobsList = async () => {
+      const url = `/api/datasets/job-titles`;
+  
+      try {
+        let response = await fetch(url);
+  
+        const jobTitles = await response.json();
+  
+        if (jobTitles.data[0] === undefined) {
+          setFailCheck(true);
+          return;
+        }
+  
+        setAllJobs(jobTitles);
+        console.log('got job titles', jobTitles);
+  
+      } catch (error) {
+        console.error(error.message);
       }
+    };
+    if (!allJobs) {
+      getJobsList();
+    }
+  }, [allJobs]);
 
-      setAllJobs(jobTitles);
-      console.log('got job titles', jobTitles);
+  //Save project editor changes
+  const saveProject = async () => {
+    // Send PUT request (editor)
+    try {
+      console.log(`Sending PUT request to /api/projects/${projectID} for body: `, modifiedProject);
+      await fetch(`/api/projects/${projectID}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(modifiedProject),
+      });
+
+      setProjectData(modifiedProject);
 
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
     }
   };
-  if (!allJobs) {
-    getJobsList();
-  }
-
-  //State variable denoting current tab
-  //0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
-  const [currentTab, setCurrentTab] = useState(0);
 
   //Tab page elements
   //General
@@ -123,12 +142,12 @@ export const ProjectCreatorEditor = () => {
         <div id="project-editor-general">
           <div id="project-editor-title-input" className="project-editor-input-item">
             <label>Title*</label>
-            <input type="text" className="title-input" value={projectData.title} />
+            <input type="text" className="title-input" value={modifiedProject.title} onChange={(e) => {setModifiedProject({ ...modifiedProject, title: e.target.value})}}/>
           </div>
 
           <div id="project-editor-status-input" className="project-editor-input-item">
             <label>Status*</label>
-            <select value={projectData.status || "Select"} onChange={(e) => projectData.status = e.target.value}>
+            <select value={modifiedProject.status || "Select"} onChange={(e) => {setModifiedProject({ ...modifiedProject, status: e.target.value})}}>
               <option disabled>Select</option>
               <option>Planning</option>
               <option>In Development</option>
@@ -138,7 +157,7 @@ export const ProjectCreatorEditor = () => {
 
           <div id="project-editor-purpose-input" className="project-editor-input-item">
             <label>Purpose</label>
-            <select value={projectData.purpose || "Select"} >
+            <select value={modifiedProject.purpose || "Select"} onChange={(e) => {setModifiedProject({ ...modifiedProject, purpose: e.target.value})}}>
               <option disabled>Select</option>
               <option>Passion project</option>
               <option>Academic</option>
@@ -152,9 +171,8 @@ export const ProjectCreatorEditor = () => {
               Define who this project is intended for--consider age group, interest, industry, or
               specific user needs.
             </div>
-            <span className="character-count">0/100</span>{' '}
-            {/*FIXME: update counter to use realtime entry*/}
-            <textarea maxLength={100} value={projectData.audience} />
+            <span className="character-count">{modifiedProject.audience.length}/100</span>{' '}
+            <textarea maxLength={100} value={modifiedProject.audience} onChange={(e) => {setModifiedProject({ ...modifiedProject, audience: e.target.value})}}/>
           </div>
 
           <div id="project-editor-description-input" className="project-editor-input-item">
@@ -163,9 +181,8 @@ export const ProjectCreatorEditor = () => {
               Share a brief summary of your project. This will be displayed in your project's
               discover card.
             </div>
-            <span className="character-count">0/300</span>{' '}
-            {/*FIXME: update counter to use realtime entry*/}
-            <textarea maxLength={300} value={projectData.hook} />
+            <span className="character-count">{modifiedProject.hook.length}/300</span>{' '}
+            <textarea maxLength={300} value={modifiedProject.hook} onChange={(e) => {setModifiedProject({ ...modifiedProject, hook: e.target.value})}}/>
           </div>
 
           <div id="project-editor-long-description-input" className="project-editor-input-item">
@@ -175,9 +192,8 @@ export const ProjectCreatorEditor = () => {
               inspirations and goals, outline key features, and describe this impact you hope it
               brings to others.
             </div>
-            <span className="character-count">0/2000</span>{' '}
-            {/*FIXME: update counter to use realtime entry*/}
-            <textarea maxLength={2000} value={projectData.description} />
+            <span className="character-count">{modifiedProject.description.length}/2000</span>{' '}
+            <textarea maxLength={2000} value={modifiedProject.description} onChange={(e) => {setModifiedProject({ ...modifiedProject, description: e.target.value})}}/>
           </div>
         </div>
       }
@@ -211,11 +227,6 @@ export const ProjectCreatorEditor = () => {
   );
 
   //Tags
-
-  //State variable tracking which tab of tags is currently viewed
-  //0 - project type, 1 - genre, 2 - dev skills, 3 - design skills, 4 - soft skills
-  const [currentTagsTab, setCurrentTagsTab] = useState(0);
-
   const tagsTab = (
     <>
       {
@@ -288,17 +299,6 @@ export const ProjectCreatorEditor = () => {
   );
 
   // Team tab
-
-  //State variable tracking which team tab is currently being viewed
-  //0 - current team, 1 - open positions
-  const [currentTeamTab, setCurrentTeamTab] = useState(0);
-
-  //State variable tracking whether position view is in edit mode or not
-  const [editMode, setEditMode] = useState(false);
-
-  //State variable tracking if the user is making a new position (after pressing Add Position button)
-  const [newPosition, setNewPosition] = useState(false);
-
   // Open position display
   const positionViewWindow = (
     <>
@@ -619,12 +619,6 @@ export const ProjectCreatorEditor = () => {
     </>
   );
 
-  //Save project editor changes
-  const saveProject = () => {
-    // setProjectData(modifiedProject);
-    console.log('save project');
-  }
-
   //Checks to see which tab we are currently rendering
   let currentTabContent;
   switch (currentTab) {
@@ -650,7 +644,7 @@ export const ProjectCreatorEditor = () => {
   return (
     <Popup>
       <PopupButton buttonId="project-info-edit">Edit Project</PopupButton>
-      <PopupContent>
+      <PopupContent callback={() => setModifiedProject(projectData)}>
         <div id="project-creator-editor">
           <div id="project-editor-tabs">
             <button

@@ -47,8 +47,13 @@ export const PopupButton = ({ children, buttonId = '', className = '', callback 
 };
 
 //Main content of the popup
-export const PopupContent = ({ children }) => {
+export const PopupContent = ({ children, callback = () => {} }) => {
   const { open, setOpen } = useContext(PopupContext);
+
+  const closePopup = () => {
+    callback();
+    setOpen(false);
+  }
 
   if (open) {
     return (
@@ -56,7 +61,7 @@ export const PopupContent = ({ children }) => {
         <div className="popup-cover" />
         <div className="popup-container">
           <div className="popup">
-            <button className="popup-close" onClick={() => setOpen(false)}>
+            <button className="popup-close" onClick={closePopup}>
               <img src={close} alt="X" />
             </button>
             {children}

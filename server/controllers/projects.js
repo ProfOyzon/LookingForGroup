@@ -51,7 +51,7 @@ const createProject = async (req, res) => {
     purpose,
     status,
     audience,
-    projectTypes,
+    project_types,
     tags,
     jobs,
     members,
@@ -84,7 +84,7 @@ const createProject = async (req, res) => {
       status: 400,
       error: 'Missing a project status',
     });
-  } else if (projectTypes.length < 1) {
+  } else if (project_types.length < 1) {
     return res.status(400).json({
       status: 400,
       error: 'Missing at least 1 project type',
@@ -113,7 +113,7 @@ const createProject = async (req, res) => {
     );
 
     // Add project's types to database
-    for (let type of projectTypes) {
+    for (let type of project_types) {
       await pool.query('INSERT INTO project_genres (project_id, type_id) VALUES (?, ?)', [
         projectId[0].project_id,
         type.id,
@@ -135,7 +135,7 @@ const createProject = async (req, res) => {
         'INSERT INTO jobs (project_id, title_id, availability, duration, location, compensation, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
         [
           projectId[0].project_id,
-          job.titleId,
+          job.title_id,
           job.availability,
           job.duration,
           job.location,
@@ -150,7 +150,7 @@ const createProject = async (req, res) => {
       await pool.query('INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?)', [
         projectId[0].project_id,
         member.id,
-        member.titleId,
+        member.title_id,
       ]);
     }
 
@@ -251,7 +251,7 @@ const updateProject = async (req, res) => {
     purpose,
     status,
     audience,
-    projectTypes,
+    project_types,
     tags,
     jobs,
     members,
@@ -279,7 +279,7 @@ const updateProject = async (req, res) => {
       status: 400,
       error: 'Missing a project status',
     });
-  } else if (projectTypes.length < 1) {
+  } else if (project_types.length < 1) {
     return res.status(400).json({
       status: 400,
       error: 'Missing at least 1 project type',
@@ -305,7 +305,7 @@ const updateProject = async (req, res) => {
 
     // ----- UPDATE PROJECT'S TYPES -----
     // Create array from project types
-    const newProjectTypes = projectTypes.map((type) => type.id);
+    const newProjectTypes = project_types.map((type) => type.id);
     // Get project types already in database that need to be removed
     let placeholders = genPlaceholders(newProjectTypes);
     sql = `SELECT JSON_ARRAYAGG(pg.type_id) AS project_types FROM project_genres pg 
@@ -322,7 +322,7 @@ const updateProject = async (req, res) => {
     // Add new project types or update if already in database
     sql = `INSERT INTO project_genres (project_id, type_id) VALUES (?, ?) AS new 
         ON DUPLICATE KEY UPDATE project_id = new.project_id, type_id = new.type_id`;
-    for (let type of projectTypes) {
+    for (let type of project_types) {
       await pool.query(sql, [id, type.id]);
     }
 
@@ -351,7 +351,7 @@ const updateProject = async (req, res) => {
 
     // ----- UPDATE PROJECT'S JOBS -----
     // Create array from jobs
-    const newJobs = jobs.map((job) => job.titleId);
+    const newJobs = jobs.map((job) => job.title_id);
     // Add 0 if empty to allow sql statement to still find exisiting data to be removed
     if (newJobs.length === 0) {
       newJobs.push(0);
@@ -376,7 +376,7 @@ const updateProject = async (req, res) => {
     for (let job of jobs) {
       await pool.query(sql, [
         id,
-        job.titleId,
+        job.title_id,
         job.availability,
         job.duration,
         job.location,
@@ -387,7 +387,7 @@ const updateProject = async (req, res) => {
 
     // ----- UPDATE PROJECT'S MEMBERS -----
     // Create array from members
-    const newMembers = members.map((member) => member.id);
+    const newMembers = members.map((member) => member.user_id);
     // Get members already in database that need to be removed
     placeholders = genPlaceholders(newMembers);
     sql = `SELECT JSON_ARRAYAGG(m.user_id) AS members FROM members m
@@ -405,10 +405,20 @@ const updateProject = async (req, res) => {
     sql = `INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?) AS new
         ON DUPLICATE KEY UPDATE project_id = new.project_id, user_id = new.user_id, title_id = new.title_id`;
     for (let member of members) {
-      await pool.query(sql, [id, member.id, member.titleId]);
+      // find title_id with matching project and member
+      const titleSql = `SELECT m.title_id FROM members m JOIN job_titles jt ON m.title_id = jt.title_id WHERE m.project_id = ${id} AND m.user_id = ${member.user_id}`;
+      const [matchingTitle] = await pool.query(titleSql);
+      member.title_id = matchingTitle[0].title_id;
+      await pool.query(sql, [id, member.user_id, member.title_id]);
     }
 
     // ----- UPDATE PROJECT'S SOCIALS -----
+    // Check if there are socials to add
+    if (!socials || socials === undefined) {
+      return res.status(200).json({
+        status: 200,
+      });
+    }
     // Create array from socials
     const newSocials = socials.map((social) => social.id);
     // Add 0 if empty to allow sql statement to still find exisiting data to be removed

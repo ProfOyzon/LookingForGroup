@@ -17,7 +17,7 @@ import { Header } from '../Header';
 import { ProjectPanel } from '../ProjectPanel';
 import { ProfileEditPopup } from '../Profile/ProfileEditPopup';
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
-import { profiles, projects } from '../../constants/fakeData'; // FIXME: use user and project data in db
+import { profiles, projects } from '../../constants/fakeData'; // Currently just used as a template when server isn't up. Can be removed later.
 import profilePicture from '../../images/blue_frog.png';
 import profileImage from '../../icons/profile-user.png';
 import * as tags from '../../constants/tags';

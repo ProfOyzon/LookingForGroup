@@ -1,66 +1,119 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import { memo, FC, ChangeEvent, useState } from 'react';
+// import { ProjectCard } from './ProjectCard';
 
-import { ProjectCard } from './ProjectCard';
+interface DataSet {
+  data: (string | Record<string, any>)[];
+}
 
-export const SearchBar = ({ dataSets, onSearch }) => {
-  let result;
-  result = `Search`;
+interface SearchBarProps {
+  dataSets: DataSet[];
+  onSearch: (results: (string | Record<string, any>)[][]) => void;
+}
 
-  // --- Searching ---
-  /*const [query, setQuery] = useState('');
-
-    useEffect(() => {
-      const filteredResults = dataSets.map(dataSet =>
-        dataSet.data.filter(item =>
-          Object.values(item).some(value =>
-            String(value).toLowerCase().includes(query.toLowerCase())
-          )
-        )
-      );
-      onSearch(filteredResults);
-    }, [query, dataSets, onSearch]);
-
-    const HandleChange = (event) => {
-        setQuery(event.target.value);
-    }*/
-
+// Search bar component for filtering data in Discover and Meet pages
+// Component is memoized to prevent unnecessary re-renders
+export const SearchBar: FC<SearchBarProps> = memo(({ dataSets, onSearch }) => {
   const [query, setQuery] = useState('');
 
-  const HandleChange = (event) => {
-    const newQuery = event.target.value;
+  // Filter the data based on the query
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // Convert the query to lowercase
+    const newQuery = event.target.value.toLowerCase();
     setQuery(newQuery);
 
+    // Filter the data based on the query
     const filteredResults = dataSets.map((dataSet) =>
-      dataSet.data.filter((item) => {
-        // See if it's an array of objects, or just an array of strings
-        if (typeof item === 'Object') {
-          return Object.values(item).some((value) =>
-            String(value).toLowerCase().includes(newQuery.toLowerCase())
-          );
-        }
-
-        return String(item).toLowerCase().includes(newQuery.toLowerCase());
-      })
+      dataSet.data.filter((item) =>
+        typeof item === 'object'
+          ? Object.values(item).some((value) => String(value).toLowerCase().includes(newQuery))
+          : String(item).toLowerCase().includes(newQuery)
+      )
     );
+
     onSearch(filteredResults);
   };
 
   return (
-    <>
-      <div className="search-wrapper">
-        <form className="search-bar">
-          <button type="submit" className="search-button">
-            <i className="fa fa-search"></i>
-          </button>
-          <input
-            className="search-input"
-            type="text"
-            placeholder={result}
-            onChange={HandleChange}
-          ></input>
-        </form>
-      </div>
-    </>
+    <div className="search-wrapper">
+      {/* Prevent form submission from refreshing the page */}
+      <form className="search-bar" onSubmit={(e) => e.preventDefault()}>
+        <button type="submit" className="search-button" aria-label="Search">
+          <i className="fa fa-search" aria-hidden="true"></i>
+        </button>
+        {/* Input field for search query */}
+        <input
+          className="search-input"
+          type="text"
+          placeholder="Search"
+          value={query}
+          onChange={handleChange}
+        />
+      </form>
+    </div>
   );
-};
+});
+
+// import React, { useState, useCallback } from 'react';
+// import { ProjectCard } from './ProjectCard';
+
+// export const SearchBar = ({ dataSets, onSearch }) => {
+//   let result;
+//   result = `Search`;
+
+//   // --- Searching ---
+//   /*const [query, setQuery] = useState('');
+
+//     useEffect(() => {
+//       const filteredResults = dataSets.map(dataSet =>
+//         dataSet.data.filter(item =>
+//           Object.values(item).some(value =>
+//             String(value).toLowerCase().includes(query.toLowerCase())
+//           )
+//         )
+//       );
+//       onSearch(filteredResults);
+//     }, [query, dataSets, onSearch]);
+
+//     const HandleChange = (event) => {
+//         setQuery(event.target.value);
+//     }*/
+
+//   const [query, setQuery] = useState('');
+
+//   const HandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const newQuery = event.target.value;
+//     setQuery(newQuery);
+
+//     const filteredResults = dataSets.map((dataSet) =>
+//       dataSet.data.filter((item) => {
+//         // See if it's an array of objects, or just an array of strings
+//         if (typeof item === 'object') {
+//           return Object.values(item).some((value) =>
+//             String(value).toLowerCase().includes(newQuery.toLowerCase())
+//           );
+//         }
+
+//         return String(item).toLowerCase().includes(newQuery.toLowerCase());
+//       })
+//     );
+//     onSearch(filteredResults);
+//   };
+
+//   return (
+//     <>
+//       <div className="search-wrapper">
+//         <form className="search-bar">
+//           <button type="submit" className="search-button">
+//             <i className="fa fa-search"></i>
+//           </button>
+//           <input
+//             className="search-input"
+//             type="text"
+//             placeholder={result}
+//             onChange={HandleChange}
+//           ></input>
+//         </form>
+//       </div>
+//     </>
+//   );
+// };

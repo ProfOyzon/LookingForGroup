@@ -53,7 +53,7 @@ export const PopupContent = ({ children, callback = () => {} }) => {
   const closePopup = () => {
     callback();
     setOpen(false);
-  }
+  };
 
   if (open) {
     return (

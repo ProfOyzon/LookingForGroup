@@ -72,7 +72,7 @@ const setUpInputs = async (data) => {
     majors = await majorResponse.json();
     roles = roles.data;
     majors = majors.data;
-  }
+  };
 
   const setUpFunc = (input, data) => {
     let inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
@@ -82,15 +82,15 @@ const setUpInputs = async (data) => {
       // }
       inputElement.value = data;
     }
-  }
+  };
 
   await getRolesAndMajors();
 
   setUpFunc('firstName', profileData.first_name);
   setUpFunc('lastName', profileData.last_name);
   setUpFunc('pronouns', profileData.pronouns);
-  setUpFunc('jobTitle', roles.find(r => r.label === profileData.job_title).title_id);
-  setUpFunc('major', majors.find(r => r.label === profileData.major).major_id);
+  setUpFunc('jobTitle', roles.find((r) => r.label === profileData.job_title).title_id);
+  setUpFunc('major', majors.find((r) => r.label === profileData.major).major_id);
   setUpFunc('academicYear', profileData.academic_year);
   setUpFunc('location', profileData.location);
   setUpFunc('headline', profileData.headline); // description
@@ -203,7 +203,7 @@ const AboutTab = () => {
 
 const ProjectsTab = () => {
   return (
-    <div id="profile-editor-projects" className='hidden'>
+    <div id="profile-editor-projects" className="hidden">
       <div className="project-editor-section-header">Projects</div>
       <div className="project-editor-extra-info">
         Choose to hide/show projects you've worked on.
@@ -234,7 +234,7 @@ const SkillsTab = () => {
   });
 
   return (
-    <div id="profile-editor-skills" className='hidden'>
+    <div id="profile-editor-skills" className="hidden">
       <div id="project-editor-selected-tags">
         <div className="project-editor-section-header">Selected Tags</div>
         {/* <div className='project-editor-warning'>*At least 1 tag is required</div> */}
@@ -245,7 +245,7 @@ const SkillsTab = () => {
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={{}} onSearch={() => { }} />
+        <SearchBar dataSets={{}} onSearch={() => {}} />
         <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
         <hr />
         <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
@@ -256,7 +256,7 @@ const SkillsTab = () => {
 
 const LinksTab = () => {
   return (
-    <div id="profile-editor-links" className='hidden'>
+    <div id="profile-editor-links" className="hidden">
       <label>Social Links</label>
       <div className="project-editor-extra-info">
         Provide the links to pages you wish to include on your page.
@@ -284,7 +284,7 @@ export const ProfileEditPopup = () => {
         <LinksTab />
       </div>
     );
-  }
+  };
 
   const switchTab = (tabIndex) => {
     // Toggle the visibility for the previous Tab
@@ -322,12 +322,11 @@ export const ProfileEditPopup = () => {
     // Toggle its visibility
     if (currentElement) {
       currentElement.classList.toggle('hidden');
-    };
+    }
     if (currTab) {
       currTab.classList.toggle('project-editor-tab-active');
     }
-    
-  }
+  };
 
   let editorTabs;
   editorTabs = pageTabs.map((tag, i) => {

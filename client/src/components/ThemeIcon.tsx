@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 type ThemeIconProps = {
@@ -9,7 +9,7 @@ type ThemeIconProps = {
   addClass?: string;
 };
 
-export const ThemeIcon: React.FC<ThemeIconProps> = ({
+export const ThemeIcon: React.FC<ThemeIconProps> = memo(({
   light,
   dark,
   alt = '',
@@ -28,4 +28,4 @@ export const ThemeIcon: React.FC<ThemeIconProps> = ({
       className={`theme-icon ${addClass}`}
     />
   );
-};
+});

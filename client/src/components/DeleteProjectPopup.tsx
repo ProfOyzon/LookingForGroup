@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { PagePopup } from './PagePopup';
 import './Styles/projects.css';
 

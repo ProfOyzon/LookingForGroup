@@ -685,6 +685,7 @@ Discover image carousel style rules
   font-size: 2ch;
   font-weight: 700;
   margin: 10px;
+  margin-top: 240px;
 }
 
 .discover-carousel-link:hover {

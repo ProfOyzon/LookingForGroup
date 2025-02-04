@@ -190,7 +190,11 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
                       Quisquam similique laudantium doloremque pariatur expedita dicta suscipit
                       eligendi molestiae, harum iusto sequi.
                     </div>
-                    <button className="discover-carousel-link">
+                  </div>
+                ))}
+              </div>
+
+              <button className="discover-carousel-link">
                       Learn More
                       <ThemeIcon
                         light={'assets/arrow_light.png'}
@@ -198,9 +202,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
                         alt={'>'}
                       />
                     </button>
-                  </div>
-                ))}
-              </div>
+                    
               <button
                 onClick={() => handleIndexChange(currentIndex + 1)}
                 id="discover-carousel-right"

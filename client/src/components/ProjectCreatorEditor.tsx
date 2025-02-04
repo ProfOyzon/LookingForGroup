@@ -34,7 +34,20 @@ export const ProjectCreatorEditor = () => {
   let projectID = urlParams.get('projectID');
 
   // project template and default value for variable
-  const emptyProject = {
+  const emptyProject: {
+    title: string;
+    hook: string;
+    description: string;
+    purpose: string;
+    status: string;
+    audience: string;
+    project_types: { id: number, project_type: string}[];
+    tags: { id: number, position: number, tag: string, type: string}[];
+    jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
+    members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
+    images: { id: number, image: string, position: number}[];
+    socials: string[]; // not implemented?
+  } = {
     title: '',
     hook: '',
     description: '',
@@ -48,17 +61,28 @@ export const ProjectCreatorEditor = () => {
     images: [],
     socials: [],
   };
+  const emptyMember = {
+    first_name: '',
+    last_name: '',
+    job_title: '',
+    profile_image: '',
+    user_id: 0
+  }
 
   //State variables
-  const [projectData, setProjectData] = useState(emptyProject); //store project data
-  const [modifiedProject, setModifiedProject] = useState(emptyProject); //tracking temporary project changes before committing to a save
-  const [failCheck, setFailCheck] = useState(false); //check whether or not data was successfully obtained from database
-  const [allJobs, setAllJobs] = useState(false); //for complete list of jobs
-  const [currentTab, setCurrentTab] = useState(0); //for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
-  const [currentTagsTab, setCurrentTagsTab] = useState(0); //tracking which tab of tags is currently viewed: 0 - project type, 1 - genre, 2 - dev skills, 3 - design skills, 4 - soft skills
-  const [currentTeamTab, setCurrentTeamTab] = useState(0); //tracking which team tab is currently being viewed: 0 - current team, 1 - open positions
-  const [editMode, setEditMode] = useState(false); //tracking whether position view is in edit mode or not
-  const [newPosition, setNewPosition] = useState(false); //tracking if the user is making a new position (after pressing Add Position button)
+  const [projectData, setProjectData] = useState(emptyProject);           //store project data
+  const [modifiedProject, setModifiedProject] = useState(emptyProject);   //tracking temporary project changes before committing to a save
+  const [failCheck, setFailCheck] = useState(false);                      //check whether or not data was successfully obtained from database
+  const [allJobs, setAllJobs] = useState([]);                             //for complete list of jobs
+  const [currentTab, setCurrentTab] = useState(0);                        //for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
+  const [currentTagsTab, setCurrentTagsTab] = useState(0);                //tracking which tab of tags is currently viewed: 0 - project type, 1 - genre, 2 - dev skills, 3 - design skills, 4 - soft skills
+  const [currentTeamTab, setCurrentTeamTab] = useState(0);                //tracking which team tab is currently being viewed: 0 - current team, 1 - open positions
+  const [currentRole, setCurrentRole] = useState(0);                      //tracking which role is being viewed out of all open positions: value is project title_id (or job_title title_id)
+  const [currentMember, setCurrentMember] = useState(emptyMember);        //tracking which member is being editted
+  const [newMember, setNewMember] = useState(emptyMember);                //store new member data to save later
+  const [viewedPosition, setViewedPosition] = useState([]);               //tracking which open job is selected (to access job info specific to project)
+  const [editMode, setEditMode] = useState(false);                        //tracking whether position view is in edit mode or not
+  const [newPosition, setNewPosition] = useState(false);                  //tracking if the user is making a new position (after pressing Add Position button)
 
   // Get project data on projectID change
   useEffect(() => {
@@ -70,8 +94,8 @@ export const ProjectCreatorEditor = () => {
 
         const projectResponse = await response.json();
         const projectData = projectResponse.data[0];
-        console.log(projectData);
-
+        console.log('got project data', projectData);
+  
         if (projectData === undefined) {
           setFailCheck(true);
           return;
@@ -96,22 +120,56 @@ export const ProjectCreatorEditor = () => {
         let response = await fetch(url);
 
         const jobTitles = await response.json();
+        const jobTitleData = jobTitles.data;
 
-        if (jobTitles.data[0] === undefined) {
+        if (jobTitleData === undefined) {
           setFailCheck(true);
           return;
         }
+  
+        setAllJobs(jobTitleData);
+        console.log('all jobs', jobTitleData);
 
-        setAllJobs(jobTitles);
-        console.log('got job titles', jobTitles);
       } catch (error) {
         console.error(error.message);
       }
     };
-    if (!allJobs) {
+    if (allJobs.length === 0) {
       getJobsList();
     }
   }, [allJobs]);
+
+  // Assign active buttons in Team tab (Open Positions)
+  const isTeamTabOpen = currentTeamTab === 1;
+  useEffect(() => {
+    // add id of selected button
+    const assigningButton = document.querySelector(`button[data-id="${currentRole}"]`);
+    if (assigningButton) {
+      // remove id of old button
+      const oldButton = document.querySelector("#team-positions-active-button");
+      if (oldButton) {
+        oldButton.id = '';
+      }
+      assigningButton.id = "team-positions-active-button";
+      return;
+    }
+
+    // neither button present, assign default
+    const buttonDiv = document.querySelector(".team-positions-button");
+
+    if (buttonDiv && buttonDiv.querySelector("button")) {
+      const defaultButton = buttonDiv.querySelector("button");
+      defaultButton!.id = "team-positions-active-button"; // explicit because check is passed in the if statement
+      setCurrentRole(Number(defaultButton!.dataset.id));
+      // setViewedPosition(allJobs.at(currentRole));
+    }
+  }, [currentRole, isTeamTabOpen]);
+
+  // Get project job info
+  const getProjectJob = (id: number) => {
+    const job = modifiedProject.jobs.find((job: {title_id: number}) => job.title_id === id);
+    return job || { job_title: '', description: '', availability: '', location: '', duration: '', compensation: '' };
+  };
 
   //Save project editor changes
   const saveProject = async () => {
@@ -158,7 +216,7 @@ export const ProjectCreatorEditor = () => {
                 setModifiedProject({ ...modifiedProject, status: e.target.value });
               }}
             >
-              <option disabled>Select</option>
+              <option className="italic" disabled>Select</option>
               <option>Planning</option>
               <option>In Development</option>
               <option>Complete</option>
@@ -173,7 +231,7 @@ export const ProjectCreatorEditor = () => {
                 setModifiedProject({ ...modifiedProject, purpose: e.target.value });
               }}
             >
-              <option disabled>Select</option>
+              <option className="italic" disabled>Select</option>
               <option>Passion project</option>
               <option>Academic</option>
               <option>Portfolio Piece</option>
@@ -186,7 +244,7 @@ export const ProjectCreatorEditor = () => {
               Define who this project is intended for--consider age group, interest, industry, or
               specific user needs.
             </div>
-            <span className="character-count">{modifiedProject.audience.length}/100</span>{' '}
+            <span className="character-count">{modifiedProject.audience ? modifiedProject.audience.length : '0'}/100</span>{' '}
             <textarea
               maxLength={100}
               value={modifiedProject.audience}
@@ -202,7 +260,7 @@ export const ProjectCreatorEditor = () => {
               Share a brief summary of your project. This will be displayed in your project's
               discover card.
             </div>
-            <span className="character-count">{modifiedProject.hook.length}/300</span>{' '}
+            <span className="character-count">{modifiedProject.hook ? modifiedProject.hook.length : '0'}/300</span>{' '}
             <textarea
               maxLength={300}
               value={modifiedProject.hook}
@@ -219,7 +277,7 @@ export const ProjectCreatorEditor = () => {
               inspirations and goals, outline key features, and describe this impact you hope it
               brings to others.
             </div>
-            <span className="character-count">{modifiedProject.description.length}/2000</span>{' '}
+            <span className="character-count">{modifiedProject.description ? modifiedProject.description.length : '0'}/2000</span>{' '}
             <textarea
               maxLength={2000}
               value={modifiedProject.description}
@@ -286,7 +344,7 @@ export const ProjectCreatorEditor = () => {
           </div>
 
           <div id="project-editor-tag-search">
-            <SearchBar dataSets={{}} onSearch={() => {}} />
+            <SearchBar dataSets={[]} onSearch={() => {}} />
             <div id="project-editor-tag-wrapper">
               <div id="project-editor-tag-search-tabs">
                 <button
@@ -341,26 +399,22 @@ export const ProjectCreatorEditor = () => {
             <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
           </button>
           <div className="positions-popup-info-title">
-            {/* {displayedProject.jobs[viewedPosition].job_title} */}
-            Video Game Developer
+            {getProjectJob(currentRole).job_title}
           </div>
           <div className="positions-popup-info-description">
             <div id="position-description-content">
-              {/* {displayedProject.jobs[viewedPosition].description} */}
-              We are looking for game developers familiar with Unreal Engine 5
+              {getProjectJob(currentRole).description}
             </div>
           </div>
           <div id="open-position-details">
             <div id="open-position-details-left">
               <div id="position-availability">
                 <span className="position-detail-indicator">Availability: </span>
-                {/* {displayedProject.jobs[viewedPosition].availability} */}
-                Full-time
+                {getProjectJob(currentRole).availability}
               </div>
               <div id="position-location">
                 <span className="position-detail-indicator">Location: </span>
-                {/* {displayedProject.jobs[viewedPosition].location} */}
-                On-site
+                {getProjectJob(currentRole).location}
               </div>
               <div id="open-position-contact">
                 <span className="position-detail-indicator">Contact: </span>
@@ -379,26 +433,44 @@ export const ProjectCreatorEditor = () => {
             <div id="open-position-details-right">
               <div id="position-duration">
                 <span className="position-detail-indicator">Duration: </span>
-                {/* {displayedProject.jobs[viewedPosition].duration} */}
-                Short-term
+                {getProjectJob(currentRole).duration}
               </div>
               <div id="position-compensation">
                 <span className="position-detail-indicator">Compensation: </span>
-                {/* {displayedProject.jobs[viewedPosition].compensation} */}
-                Paid
+                {getProjectJob(currentRole).compensation}
               </div>
             </div>
           </div>
-          <button id="delete-position-button">
-            <img src="/images/icons/delete.svg" alt="trash can" />
-          </button>
+          <Popup>
+              <PopupButton className="delete-position-button">
+                <img src="/images/icons/delete.svg" alt="trash can" />
+              </PopupButton>
+              <PopupContent useClose={false}>
+                <div id="project-team-delete-member-title">Delete Position</div>
+                <div
+                  id="project-team-delete-member-text"
+                  className="project-editor-extra-info"
+                >
+                  Are you sure you want to delete{' '}
+                  <span className="project-info-highlight">{getProjectJob(currentRole).job_title}</span> from the
+                  project? This action cannot be undone.
+                </div>
+                <div className="project-editor-button-pair">
+                  {/* TODO: make delete button work */}
+                  <button className="delete-button">Delete</button>
+                  <PopupButton buttonId="team-delete-member-cancel-button">
+                    Cancel
+                  </PopupButton>
+                </div>
+              </PopupContent>
+            </Popup>
         </>
       }
     </>
   );
 
+  //Save current inputs in position editing window
   const savePosition = () => {
-    //Save current inputs in position editing window
     setEditMode(false);
   };
 
@@ -409,9 +481,18 @@ export const ProjectCreatorEditor = () => {
         <>
           <div id="edit-position-role">
             <label>Role*</label>
-            <select>
-              <option>option 1</option>
-              <option>option 2</option>
+            <select key={currentRole}>
+              {allJobs.map((job: { title_id: number, label: string }) => (
+              <option
+                key={job.title_id} selected={job.title_id === currentRole} onClick={() => {
+                  const updatedJobs = modifiedProject.jobs.map(j =>
+                    j.title_id === job.title_id ? { ...j, job_title: job.label } : j);
+                  setModifiedProject({ ...modifiedProject, jobs: updatedJobs });
+                }}
+                >
+                {job.label}
+              </option>
+              ))}
             </select>
 
             <button onClick={savePosition} id="position-edit-save">
@@ -424,7 +505,7 @@ export const ProjectCreatorEditor = () => {
 
           <div id="edit-position-description">
             <label>Role Description*</label>
-            <textarea></textarea>
+            <textarea>{getProjectJob(currentRole).description}</textarea>
           </div>
 
           <div id="edit-position-details">
@@ -472,90 +553,128 @@ export const ProjectCreatorEditor = () => {
         {
           <div id="project-editor-project-members">
             {/* List out project members */}
-            {/* Temporary hard-coded members */}
-            <div className="project-editor-project-member">
-              <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt="" />
-              <div className="project-editor-project-member-info">
-                <div className="project-editor-project-member-name">Lily Carter</div>
-                <div className="project-editor-project-member-role project-editor-extra-info">
-                  Project Lead
+            {modifiedProject.members.map(m => (
+              <div className="project-editor-project-member">
+                {/* <img className="project-member-image" src="/assets/creditProfiles/JF.png" alt="" /> */}
+                <img className="project-member-image" src={`/images/profiles/${m.profile_image}`} alt="" />
+                <div className="project-editor-project-member-info">
+                  <div className="project-editor-project-member-name">{m.first_name} {m.last_name}</div>
+                  <div className="project-editor-project-member-role project-editor-extra-info">
+                    {m.job_title}
+                  </div>
                 </div>
-              </div>
-              {/* Edit member popup */}
-              <Popup>
-                <PopupButton className="edit-project-member-button">
-                  <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
-                </PopupButton>
-                <PopupContent>
-                  <div id="project-team-edit-member-title">Edit Member</div>
-                  <div id="project-team-edit-member-card" className="project-editor-project-member">
-                    <img
-                      className="project-member-image"
-                      src="/assets/creditProfiles/JF.png"
-                      alt=""
-                    />
-                    <div className="project-editor-project-member-name">Lily Carter</div>
-                  </div>
-                  <div id="project-team-add-member-role">
-                    <label>Role</label>
-                    <select>
-                      <option disabled selected>
-                        Select
-                      </option>
-                      <option>role 1</option>
-                      <option>role 2</option>
-                    </select>
-                  </div>
-                  {/* Action buttons */}
-                  <div className="project-editor-button-pair">
-                    {/* TODO: save team member to project */}
-                    <button id="team-edit-member-save-button">Save</button>
-                    <Popup>
-                      <PopupButton className="delete-button">Delete</PopupButton>
-                      <PopupContent>
-                        <div id="project-team-delete-member-title">Delete Member</div>
-                        <div
-                          id="project-team-delete-member-text"
-                          className="project-editor-extra-info"
+                <Popup>
+                  <PopupButton className="edit-project-member-button">
+                    <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
+                  </PopupButton>
+                  <PopupContent useClose={false}>
+                    <div id="project-team-edit-member-title">Edit Member</div>
+                    <div id="project-team-edit-member-card" className="project-editor-project-member">
+                      <img
+                        className="project-member-image"
+                        src={`/images/profiles/${m.profile_image}`}
+                        alt=""
+                      />
+                      <div className="project-editor-project-member-name">{m.first_name} {m.last_name}</div>
+                    </div>
+                    <div id="project-team-add-member-role">
+                      <label>Role</label>
+                        <select
+                        key={currentRole}
+                        onChange={(e) => {
+                          // update member's role temporarily
+                          console.log('project member', modifiedProject.members);
+                            const tempMember = { ...m };
+                            tempMember.job_title = e.target.value;
+                            setCurrentMember(tempMember);
+                          console.log('current member', tempMember);
+                        }}
                         >
-                          {/* TODO: get member name dynamically */}
-                          Are you sure you want to delete{' '}
-                          <span className="project-info-highlight">Lily Carter</span> from the
-                          project? This action cannot be undone.
-                        </div>
-                        <div className="project-editor-button-pair">
-                          <button className="delete-button">Delete</button>
-                          <PopupButton buttonId="team-delete-member-cancel-button">
-                            Cancel
-                          </PopupButton>
-                        </div>
-                      </PopupContent>
-                    </Popup>
-                  </div>
-                  <PopupButton buttonId="team-edit-member-cancel-button">Cancel</PopupButton>
-                </PopupContent>
-              </Popup>
-            </div>
+                        {allJobs.map((job: { title_id: number, label: string }) => (
+                        <option
+                          key={job.title_id} selected={job.label === m.job_title}
+                        >
+                          {job.label}
+                        </option>
+                        ))}
+                        </select>
+                    </div>
+                    {/* Action buttons */}
+                    <div className="project-editor-button-pair">
+                      {/* TODO: save team member to project */}
+                      <PopupButton buttonId="team-edit-member-save-button" callback={() => {
+                        console.log('old members', modifiedProject.members);
+                        // update members
+                        const members = modifiedProject.members.map(m =>
+                          m.user_id === currentMember.user_id ? currentMember : m
+                        );
+                        setModifiedProject({ ...modifiedProject, members });
+                        console.log('new members', members);
+                      }}
+                      >
+                        Save
+                      </PopupButton>
+                      <Popup>
+                        <PopupButton className="delete-button">Delete</PopupButton>
+                        <PopupContent>
+                          <div id="project-team-delete-member-title">Delete Member</div>
+                          <div
+                            id="project-team-delete-member-text"
+                            className="project-editor-extra-info"
+                          >
+                            Are you sure you want to delete{' '}
+                            <span className="project-info-highlight">{m.first_name} {m.last_name}</span> from the
+                            project? This action cannot be undone.
+                          </div>
+                          <div className="project-editor-button-pair">
+                            <button className="delete-button">Delete</button>
+                            <PopupButton buttonId="team-delete-member-cancel-button">
+                              Cancel
+                            </PopupButton>
+                          </div>
+                        </PopupContent>
+                      </Popup>
+                    </div>
+                    <PopupButton buttonId="team-edit-member-cancel-button" callback={() => console.log(modifiedProject.members)}>Cancel</PopupButton>
+                  </PopupContent>
+                </Popup>
+              </div>
+              ))}
             {/* Add member button */}
             <Popup>
               <PopupButton buttonId="project-editor-add-member">
                 <img id="project-team-add-member-image" src={profileImage} alt="" />
                 <div id="project-team-add-member-text">Add Member</div>
               </PopupButton>
-              <PopupContent>
+              <PopupContent useClose={false}>
                 <div id="project-team-add-member-title">Add Member</div>
                 <div id="project-team-add-member-name">
                   <label>Name</label>
-                  <input type="text"></input>
+                  <input type="text" id="new-member-name"></input>
                 </div>
                 <div id="project-team-add-member-role">
                   <label>Role</label>
-                  <select>
-                    <option disabled selected>
-                      Select
+                  <select key={currentRole}>
+                    {allJobs.map((job: { title_id: number, label: string }) => (
+                    <option
+                      key={job.title_id} selected={job.title_id === currentRole} onClick={() => {
+                      let member = emptyMember;
+                      // assign name
+                      const nameInput = document.querySelector<HTMLInputElement>("#new-member-name");
+                      if (nameInput) {
+                        member.first_name = nameInput.value.split(' ')[0];
+                        member.last_name = nameInput.value.split(' ')[1] || '';
+                      }
+                      // assign job title
+                      member.job_title = getProjectJob(currentRole).job_title;
+                      //TODO: assign proper user_id and profile_image
+                      member.profile_image = ''; member.user_id = 0;
+                        setNewMember(member);
+                      }}
+                      >
+                      {job.label}
                     </option>
-                    <option>role 1</option>
-                    <option>role 2</option>
+                    ))}
                   </select>
                 </div>
                 {/* Action buttons */}
@@ -576,27 +695,18 @@ export const ProjectCreatorEditor = () => {
             <div className="positions-popup-list">
               <div id="team-positions-popup-list-header">Open Positions</div>
               <div id="team-positions-popup-list-buttons">
-                {/* {displayedProject.jobs.map((job, index) => (
-              <button
-                className={`positions-popup-list-item ${index === viewedPosition ? 'positions-popup-list-item-active' : ''}`}
-                onClick={() => setViewedPosition(index)}
-                key={index}
-              >
-                {job.job_title}
-              </button>
-            ))} */}
-                <div className="team-positions-button">
-                  <img src="/images/icons/drag.png" alt="" />
-                  <button className="positions-popup-list-item" id="team-positions-active-button">
-                    Video Game Developer
-                  </button>
-                </div>
-                <div className="team-positions-button">
-                  <img src="/images/icons/drag.png" alt="" />
-                  <button className="positions-popup-list-item">2D Artist</button>
-                </div>
-                <div className="team-positions-button">
-                  <button className="project-editor-extra-info">&#43; Add Position</button>
+                {modifiedProject.jobs.map((job: {job_title: string, title_id: number}) => (
+                  <div className="team-positions-button">
+                    <img src="/images/icons/drag.png" alt="" />
+                    <button className="positions-popup-list-item" id="" data-id={job.title_id} onClick={() => !editMode ? setCurrentRole(job.title_id) : ''}>
+                      {job.job_title}
+                    </button>
+                  </div>
+                ))}
+                <div id="add-position-button">
+                  <button>
+                    <img src={'/images/icons/cancel.png'} alt="+" />
+                    <span className="project-editor-extra-info">Add Position</span></button>
                 </div>
               </div>
             </div>

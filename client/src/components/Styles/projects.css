@@ -1364,7 +1364,7 @@ used to help wrap the lines around the word 'Members'*/
 }
 
 /*rules used for the delete button & its relevant popup*/
-.deleteProject{
+.deleteProject {
   background: white;
 }
 
@@ -1376,7 +1376,7 @@ used to help wrap the lines around the word 'Members'*/
   font-style: italic;
   font-weight: 400;
   line-height: normal;
-  color: #271D66;
+  color: #271d66;
   font-family: Inter;
   font-size: 16px;
   font-style: italic;
@@ -1400,8 +1400,8 @@ used to help wrap the lines around the word 'Members'*/
   align-items: center;
   gap: 10px;
   border-radius: 55px;
-  background: #FF3859;
-  color: #F4F4F4;
+  background: #ff3859;
+  color: #f4f4f4;
   text-align: center;
   font-family: Inter;
   font-size: 20px;
@@ -1412,12 +1412,12 @@ used to help wrap the lines around the word 'Members'*/
 
 .project-delete-cancel {
   background-color: transparent;
-  color: #271D66;
+  color: #271d66;
   padding: 8px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  color: #271D66;
+  color: #271d66;
   text-align: center;
   font-family: Inter;
   font-size: 20px;
@@ -1433,7 +1433,6 @@ used to help wrap the lines around the word 'Members'*/
 .project-delete-cancel:hover {
   background-color: darkgray;
 }
-
 
 /*rules for the area containing actual settings*/
 #settings-content {

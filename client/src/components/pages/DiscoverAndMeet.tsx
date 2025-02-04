@@ -73,21 +73,21 @@ let popupTagSelections: string[] = [];
 
 interface Project {
   _id: number;
-    name: string;
-    members: {
-        userID: number;
-        admin: boolean;
-        owner: boolean;
-        role: string;
-    }[];
+  name: string;
+  members: {
+    userID: number;
+    admin: boolean;
+    owner: boolean;
+    role: string;
+  }[];
+  description: string;
+  tags: string[];
+  neededRoles: {
+    Role: string;
+    amount: number;
     description: string;
-    tags: string[];
-    neededRoles: {
-        Role: string;
-        amount: number;
-        description: string;
-    }[];
-    posts: number[];
+  }[];
+  posts: number[];
 }
 
 //Main DiscoverAndMeet component
@@ -108,11 +108,11 @@ const DiscoverAndMeet = ({ category }) => {
       setFullProjectList(projectData.data);
       setDisplayedProjects(() => firstProjects(projectData.data));
     } catch (error) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        } else {
-          console.log(`Unknown error: ${error}`);
-        }
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.log(`Unknown error: ${error}`);
+      }
     }
   };
 

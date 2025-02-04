@@ -107,7 +107,9 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
     <div>
       <div className="SideBarContainer">
         <div className="headerContainer">
-          <h1 style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}>lfg.</h1>
+          <h1 style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}>
+            lfg.
+          </h1>
         </div>
 
         <div className="containerButtonSideBar">

@@ -16,7 +16,8 @@ import { Popup, PopupButton, PopupContent } from '../Popup';
 import { RoleSelector } from '../RoleSelector';
 import { MajorSelector } from '../MajorSelector';
 import { SearchBar } from '../SearchBar';
-import { sendPut } from '../../functions/fetch';
+import { ImageUploader } from '../ImageUploader';
+import { sendPut, sendFile} from '../../functions/fetch';
 import profileImage from '../../icons/profile-user.png';
 import editIcon from '../../icons/edit.png';
 
@@ -31,7 +32,8 @@ const fetchUserID = async () => {
 };
 
 // Functions
-const onSaveClicked = async () => {
+const onSaveClicked = async (e) => {
+  e.preventDefault(); // prevents any default calls
   // Receive all inputted values
   // Prepare these values for a POST/PUT request
   const getInputValue = (input) => {
@@ -53,12 +55,17 @@ const onSaveClicked = async () => {
     skills: getInputValue('skills'),
     socials: getInputValue('socials'),
   };
-  console.log(`Data to save:`);
-  console.log(data);
   const userID = await fetchUserID();
-  console.log(`/api/users/${userID}`);
-  sendPut(`/api/users/${userID}`, data);
+  await sendPut(`/api/users/${userID}`, data);
+  await saveImage(userID, e.target);
+  return false; // prevents any default calls
 };
+
+const saveImage = (userID, data) => {
+  // saves the profile pic if there has been a change
+  const formElement = document.getElementById('profile-creator-editor') as HTMLFormElement;
+  sendFile(`/api/users/${userID}/profile-picture`, formElement);
+}
 
 const setUpInputs = async (data) => {
   let profileData = data[0];
@@ -121,13 +128,7 @@ const AboutTab = () => {
     <div id="profile-editor-about" className="edit-profile-body about">
       <div className="edit-profile-section-1">
         <div id="profile-editor-add-image" className="edit-profile-image">
-          {/* TODO: Add image elements/components here based on currently uploaded images */}
-          <img src="assets/white/upload_image.png" alt="" />
-          <div className="project-editor-extra-info">
-            Drop your image here, or {/*TODO: click to upload file<input type="file">*/}browse
-            {/*</input>*/}
-          </div>
-          <div className="project-editor-extra-info">Supports: JPEG, PNG</div>
+          <ImageUploader/>
         </div>
 
         <div className="about-row row-1">
@@ -245,7 +246,7 @@ const SkillsTab = () => {
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={{}} onSearch={() => {}} />
+        <SearchBar dataSets={{}} onSearch={() => { }} />
         <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
         <hr />
         <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
@@ -368,13 +369,11 @@ export const ProfileEditPopup = () => {
     <Popup>
       <PopupButton buttonId="project-info-edit">Edit Profile</PopupButton>
       <PopupContent>
-        <div id="profile-creator-editor">
+        <form id="profile-creator-editor" encType="multipart/form-data">
           <div id="profile-editor-tabs">{editorTabs}</div>
           <TabContent />
-          <button id="profile-editor-save" onClick={onSaveClicked}>
-            Save Changes
-          </button>
-        </div>
+          <input type='submit' id="profile-editor-save" onClick={onSaveClicked}/>
+        </form>
       </PopupContent>
     </Popup>
   );

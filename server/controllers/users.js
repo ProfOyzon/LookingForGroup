@@ -639,7 +639,7 @@ const updateProfilePicture = async (req, res) => {
   const { id } = req.params;
 
   // Checks
-  if (req.session.userId !== id) {
+  if (req.session.userId !== parseInt(id)) {
     return res.status(401).json({
       status: 401,
       error: 'Unauthorized',

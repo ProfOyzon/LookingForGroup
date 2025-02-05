@@ -23,6 +23,15 @@ const sendPost = async (url, data, handler) => {
   await responseHandler(response, handler);
 };
 
+const sendFile = async (url, data, handler) => {
+  console.log(data);
+  const response = await fetch(url, {
+    method: 'PUT',
+    body: new FormData(data),
+  });
+  await responseHandler(response, handler);
+};
+
 /* Sends put requests to the server using fetch. Will look for various
     entries in the response JSON object, and will handle them appropriately.
 */
@@ -117,4 +126,4 @@ const GET = async (url) => {
   }
 };
 
-export { POST, GET, handleError, sendPost, sendPut, sendGet, hideError };
+export { POST, GET, handleError, sendPost, sendPut, sendFile, sendGet, hideError };

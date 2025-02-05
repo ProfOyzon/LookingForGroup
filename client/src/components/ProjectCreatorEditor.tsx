@@ -583,11 +583,9 @@ export const ProjectCreatorEditor = () => {
                         key={currentRole}
                         onChange={(e) => {
                           // update member's role temporarily
-                          console.log('project member', modifiedProject.members);
                             const tempMember = { ...m };
                             tempMember.job_title = e.target.value;
                             setCurrentMember(tempMember);
-                          console.log('current member', tempMember);
                         }}
                         >
                         {allJobs.map((job: { title_id: number, label: string }) => (
@@ -601,15 +599,12 @@ export const ProjectCreatorEditor = () => {
                     </div>
                     {/* Action buttons */}
                     <div className="project-editor-button-pair">
-                      {/* TODO: save team member to project */}
                       <PopupButton buttonId="team-edit-member-save-button" callback={() => {
-                        console.log('old members', modifiedProject.members);
                         // update members
                         const members = modifiedProject.members.map(m =>
                           m.user_id === currentMember.user_id ? currentMember : m
                         );
                         setModifiedProject({ ...modifiedProject, members });
-                        console.log('new members', members);
                       }}
                       >
                         Save

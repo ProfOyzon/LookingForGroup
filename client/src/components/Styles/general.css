@@ -760,16 +760,16 @@ Page popup style rules
   background: var(--modal-gradient);
   border-radius: 10px;
   box-shadow: 0px 0px 10px 0px var(--shadow-color);
-  max-width: 95vw; /* Factors in padding */
-  max-height: 95vh;
+  /* max-width: 1321px; */
+  max-height: 849px;
   opacity: 100%;
   z-index: 3;
-  width: auto;
-  height: auto;
+  width: 1121px;
+  /* height: 849px; */
   padding: 34px 100px;
 }
 
-@media (min-width: 576px) {
+@media (max-width: 576px) {
   .popup {
     max-width: 921px;
     max-height: 781px;

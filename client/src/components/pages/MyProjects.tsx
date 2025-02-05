@@ -1,4 +1,5 @@
 import '../Styles/pages.css';
+import '../Styles/projects.css';
 
 // import { MyProjectsDisplay } from "../MyProjectsDisplay";
 // import { profiles } from "../../constants/fakeData";
@@ -10,10 +11,13 @@ import MyProjectsDisplayList from '../MyProjectsDisplayList';
 import MyProjectsDisplayGrid from '../MyProjectsDisplayGrid';
 import { Header } from '../Header';
 import { ThemeIcon } from '../ThemeIcon';
+import DeleteProjectPopup from '../DeleteProjectPopup';
 
 const MyProjects = () => {
   // const [UID, setUID] = useState(profiles[0]._id);
   // const [activePage, setActivePage] = useState(0);
+
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
 
   const [displayMode, setDisplayMode] = useState('grid');
   // Can be:
@@ -239,6 +243,10 @@ const MyProjects = () => {
         <button className="my-projects-new-project-button" onClick={(e) => {}}>
           + New Project
         </button>
+        <button className="delete" onClick={() => setIsDeletePopupOpen(true)}>
+          -Delete Project test
+        </button>
+        <DeleteProjectPopup show={isDeletePopupOpen} setShow={setIsDeletePopupOpen} />
       </div>
 
       <hr />

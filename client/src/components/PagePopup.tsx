@@ -81,7 +81,7 @@ export const PagePopup = ({ children, width, height, popupId, zIndex, show, setS
         >
           <img src="images/icons/cancel.png" alt="close" />
         </button>
-        <div>{children}</div>
+        {children}
       </div>
     </>
   );

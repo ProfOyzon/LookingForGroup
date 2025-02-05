@@ -18,9 +18,9 @@ import { Header } from '../Header';
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { ImageCarousel } from '../ImageCarousel';
-import { projects } from '../../constants/fakeData'; // FIXME: use project data in db
-import { profiles } from '../../constants/fakeData'; // FIXME: use user data in db
-import * as tags from '../../constants/tags';
+import { projects } from '../../constants/fakeData'; // FIXME: Dummy data used in case no database conn. Remove.
+import { profiles } from '../../constants/fakeData'; // FIXME: Dummy data used in case no database conn. Remove.
+import * as tags from '../../constants/tags'; // FIXME: use tags from db
 import { useState, useEffect, useRef } from 'react';
 import ToTopButton from '../ToTopButton';
 import CreditsFooter from '../CreditsFooter';
@@ -32,7 +32,6 @@ import { ThemeIcon } from '../ThemeIcon';
 import { current } from '@reduxjs/toolkit';
 
 //To-do
-//Add/finish additional tag filter popup
 //Have arrow buttons disappear if length is too wide to warrant them
 //Possibly finish & add image carousel (use ImageCarousel component, import found above)
 //Fix panels displaying when no items match searchbar input (should show NO projects if that's the case)
@@ -46,9 +45,9 @@ let runningServer = true;
 
 //List that holds project data that will be displayed. Changes along with search parameters
 //Could combine this and profile variants into single variable
-let projectList = [];
+let projectList: Project[] = [];
 //List that holds a project list that is filtered by searching
-let filteredProjectList = [];
+let filteredProjectList: Project[] = [];
 
 //Variable that tracks what position we are at in the above array
 let projectListPosition: number = 0;
@@ -72,6 +71,25 @@ let extraTagFilters: string[] = [];
 //array that tracks tag selected in the filters popup, contents are copied to extraTagFilters when applied
 let popupTagSelections: string[] = [];
 
+interface Project {
+  _id: number;
+  name: string;
+  members: {
+    userID: number;
+    admin: boolean;
+    owner: boolean;
+    role: string;
+  }[];
+  description: string;
+  tags: string[];
+  neededRoles: {
+    Role: string;
+    amount: number;
+    description: string;
+  }[];
+  posts: number[];
+}
+
 //Main DiscoverAndMeet component
 //category - string variable that determines what layout type to load (defaults to profile if invalid value is given)
 const DiscoverAndMeet = ({ category }) => {
@@ -90,7 +108,11 @@ const DiscoverAndMeet = ({ category }) => {
       setFullProjectList(projectData.data);
       setDisplayedProjects(() => firstProjects(projectData.data));
     } catch (error) {
-      console.error(error.message);
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.log(`Unknown error: ${error}`);
+      }
     }
   };
 
@@ -104,10 +126,15 @@ const DiscoverAndMeet = ({ category }) => {
       setFullProfileList(profileData.data);
       setProfileColumns(() => firstProfiles(profileData.data));
     } catch (error) {
-      console.error(error.message);
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.log(`Unknown error: ${error}`);
+      }
     }
   };
 
+  // TO-DO: Change fakeData.ts to match format used in database
   let defaultProjectList = runningServer ? undefined : projects;
   let defaultProfileList = runningServer ? undefined : profiles;
 
@@ -128,6 +155,7 @@ const DiscoverAndMeet = ({ category }) => {
   const projectSearchData =
     fullProjectList != undefined
       ? fullProjectList.map((project) => {
+          // Hook and title don't exist in fakeData.ts
           return { name: project.title, description: project.hook };
         })
       : [];
@@ -138,6 +166,7 @@ const DiscoverAndMeet = ({ category }) => {
     fullProfileList != undefined
       ? fullProfileList.map((profile) => {
           return {
+            // first_name and last_name don't exist in fakeData.ts
             name: `${profile.first_name} ${profile.last_name}`,
             username: profile.username,
             bio: profile.bio,
@@ -163,7 +192,7 @@ const DiscoverAndMeet = ({ category }) => {
     const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
 
     // Removing temporary elements from the DOM
-    outer.parentNode.removeChild(outer);
+    outer.parentNode!.removeChild(outer);
 
     return scrollbarWidth;
   }
@@ -182,7 +211,7 @@ const DiscoverAndMeet = ({ category }) => {
 
     const textHeight = textbox.offsetHeight;
 
-    textbox.parentElement.removeChild(textbox);
+    textbox.parentElement!.removeChild(textbox);
 
     return textHeight;
   }
@@ -254,6 +283,7 @@ const DiscoverAndMeet = ({ category }) => {
     //Get first panel's thumbnail and its width/height
     let firstThumbnail = new Image();
     firstThumbnail.src =
+      // Thumbnail isn't defined in fakeData.ts
       projectList[projectListPosition].thumbnail != null
         ? `images/thumbnails/${projectList[projectListPosition].thumbnail}`
         : profileImage;
@@ -393,7 +423,7 @@ const DiscoverAndMeet = ({ category }) => {
 
   //Function that adds more panels to render, called when the user scrolls to the bottom of the page
   const addProjects = () => {
-    const { scrollTop, scrollHeight, clientHeight } = document.querySelector('.page');
+    const { scrollTop, scrollHeight, clientHeight } = document.querySelector('.page')!;
 
     if (scrollTop + clientHeight >= scrollHeight) {
       let newProjectsToDisplay: {
@@ -565,7 +595,7 @@ const DiscoverAndMeet = ({ category }) => {
         if (result === item) {
           //Get index of item in original search data
           //Get item with this index in projectList
-          let projectItem = fullProjectList[projectSearchData.indexOf(item)];
+          let projectItem = fullProjectList![projectSearchData.indexOf(item)];
           //Push this item to filteredProjectList
           filteredProjectList.push(projectItem);
           continue;

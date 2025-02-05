@@ -47,7 +47,7 @@ export const PopupButton = ({ children, buttonId = '', className = '', callback 
 };
 
 //Main content of the popup
-export const PopupContent = ({ children, callback = () => {} }) => {
+export const PopupContent = ({ children, useClose = true, callback = () => {} }) => {
   const { open, setOpen } = useContext(PopupContext);
 
   const closePopup = () => {
@@ -55,7 +55,7 @@ export const PopupContent = ({ children, callback = () => {} }) => {
     setOpen(false);
   };
 
-  if (open) {
+  if (open && useClose) {
     return (
       <>
         <div className="popup-cover" />
@@ -69,7 +69,19 @@ export const PopupContent = ({ children, callback = () => {} }) => {
         </div>
       </>
     );
-  } else {
+  } else if (open) {
+    return (
+      <>
+        <div className="popup-cover" />
+        <div className="popup-container">
+          <div className="popup">
+            {children}
+          </div>
+        </div>
+      </>
+    );
+  }
+  else {
     return <></>;
   }
 };

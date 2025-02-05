@@ -29,7 +29,6 @@ import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
 
 //To-do
-//Ensure light/dark mode colors work properly on this page
 //Have team member listings link to their respective profiles
 //Ensure 'ProjectCreatorEditor' component is complete and works on this page for project editing (import found above)
 

@@ -286,19 +286,22 @@ Project Creator and Editor style rules
 }
 
 #project-editor-content select {
-  font-style: italic;
   font-size: 1.5ch;
   color: var(--neutral-gray);
+}
+
+.italic {
+  font-style: italic;
 }
 
 #project-editor-content select,
 #project-editor-general input,
 #project-editor-content textarea,
 #project-team-add-member-name input {
-  margin: 10px 0;
+  margin-top: 10px;
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  padding: 0.5rem;
+  padding: 15px;
   flex-grow: 1;
   background-color: var(--bg-color);
   color: var(--main-text);
@@ -615,6 +618,7 @@ Project Creator and Editor style rules
   border-radius: 100%;
   width: 74px;
   height: 74px;
+  object-fit: cover;
 }
 
 .project-editor-project-member-name {
@@ -627,6 +631,7 @@ Project Creator and Editor style rules
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  flex: 1;
 }
 
 .project-editor-project-member-info > * {
@@ -678,7 +683,8 @@ Project Creator and Editor style rules
 
 #project-editor-project-members > .popup-container > .popup,
 .project-editor-project-member > .popup-container > .popup,
-.project-editor-button-pair > .popup-container > .popup {
+.project-editor-button-pair > .popup-container > .popup,
+.positions-popup-info > .popup-container > .popup {
   display: flex;
   flex-direction: column;
   width: 439px;
@@ -753,7 +759,7 @@ Project Creator and Editor style rules
   top: 175px;
   right: 115px;
 }
-#delete-position-button {
+.delete-position-button {
   position: absolute;
   bottom: 115px;
   right: 115px;
@@ -763,6 +769,7 @@ Project Creator and Editor style rules
   display: flex;
   flex-direction: column;
   gap: 8px;
+  align-items: start;
 }
 
 #team-positions-popup-list-buttons img {
@@ -784,7 +791,7 @@ Project Creator and Editor style rules
 }
 
 #team-positions-active-button,
-#team-positions-popup-list-buttons button:hover,
+.positions-popup-list-item:hover,
 #position-edit-save {
   background-color: var(--primary-color) !important;
   color: var(--invert-text);
@@ -1364,36 +1371,74 @@ used to help wrap the lines around the word 'Members'*/
 }
 
 /*rules used for the delete button & its relevant popup*/
-#delete-project {
-  margin-left: auto;
-  color: red;
-  border: 2px solid red;
+.deleteProject {
+  background: white;
 }
 
-#project-delete-check {
-  padding: 10px 0;
+.delete-popup-content {
+  color: var(--neutral-gray, #636363);
+  text-align: center;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: normal;
+  color: #271d66;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: normal;
 }
 
-#project-delete-cancel {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  height: 30px;
+.delete-popup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
 }
 
-#project-delete-final {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: red;
-  color: var(--main-text);
-  height: 30px;
+.project-delete-final {
+  display: flex;
+  width: 106px;
+  height: 40px;
+  padding: 0px 17px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 55px;
+  background: #ff3859;
+  color: #f4f4f4;
+  text-align: center;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 140% */
+}
+
+.project-delete-cancel {
+  background-color: transparent;
+  color: #271d66;
+  padding: 8px 15px;
   border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #271d66;
+  text-align: center;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 
-#project-delete-final:hover {
-  background-color: #af0000;
-  color: #a0a0a0;
+.project-delete-final:hover {
+  background-color: darkred;
+}
+
+.project-delete-cancel:hover {
+  background-color: darkgray;
 }
 
 /*rules for the area containing actual settings*/
@@ -1988,12 +2033,33 @@ New Project Page style rules
   display: flex;
   flex-direction: row;
   gap: 5px;
-  height: 21px;
+  height: 28px;
+}
+
+#add-position-button > button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+#add-position-button * {
+  font-size: 16px;
+  color: var(--neutral-gray);
+}
+
+#add-position-button img {
+  transform: rotate(45deg);
+  width: 10px;
+  height: 10px;
+  scale: 1.75;
+  filter: var(--image-filter);
 }
 
 .positions-popup-list-item {
   width: max-content;
-  background-color: var(--header-color);
+  background-color: var(--header-color) !important;
   color: var(--main-text);
   border: none;
   border-radius: 50px;

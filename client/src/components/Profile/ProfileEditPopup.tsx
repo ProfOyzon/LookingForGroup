@@ -272,10 +272,7 @@ const LinksTab = () => {
 };
 
 export const ProfileEditPopup = () => {
-  //State variable denoting current tab
-  // const [currentTab, setCurrentTab] = useState(0);
   let currentTab = 0;
-
   let TabContent = () => {
     return (
       <div id="profile-editor-content">
@@ -334,8 +331,8 @@ export const ProfileEditPopup = () => {
     return (
       <button
         onClick={(e) => {
+          e.preventDefault();
           switchTab(i);
-          console.log(e.target);
         }}
         id={`profile-tab-${tag}`}
         className={`project-editor-tab ${currentTab === i ? 'project-editor-tab-active' : ''}`}
@@ -370,9 +367,12 @@ export const ProfileEditPopup = () => {
       <PopupButton buttonId="project-info-edit">Edit Profile</PopupButton>
       <PopupContent>
         <form id="profile-creator-editor" encType="multipart/form-data">
+        {/* <div id="profile-creator-editor"> */}
           <div id="profile-editor-tabs">{editorTabs}</div>
           <TabContent />
-          <input type='submit' id="profile-editor-save" onClick={onSaveClicked}/>
+          {/* <button id="profile-editor-save" onClick={onSaveClicked}>Save Changes</button> */}
+          <input type='submit' id="profile-editor-save" onClick={onSaveClicked} value={'Save Changes'}/>
+        {/* </div> */}
         </form>
       </PopupContent>
     </Popup>

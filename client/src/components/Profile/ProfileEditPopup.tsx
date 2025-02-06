@@ -15,9 +15,10 @@ import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { RoleSelector } from '../RoleSelector';
 import { MajorSelector } from '../MajorSelector';
+import { SocialSelector } from '../SocialSelector';
 import { SearchBar } from '../SearchBar';
 import { ImageUploader } from '../ImageUploader';
-import { sendPut, sendFile} from '../../functions/fetch';
+import { sendPut, sendFile } from '../../functions/fetch';
 import profileImage from '../../icons/profile-user.png';
 import editIcon from '../../icons/edit.png';
 
@@ -128,7 +129,7 @@ const AboutTab = () => {
     <div id="profile-editor-about" className="edit-profile-body about">
       <div className="edit-profile-section-1">
         <div id="profile-editor-add-image" className="edit-profile-image">
-          <ImageUploader/>
+          <ImageUploader />
         </div>
 
         <div className="about-row row-1">
@@ -256,6 +257,16 @@ const SkillsTab = () => {
 };
 
 const LinksTab = () => {
+  const DataLink = () => {
+    return (
+      <div>
+        <SocialSelector />
+        <div className='editor-input-item'>
+          <input type="text" name="url" id="link-url-input" />
+        </div>
+      </div>
+    );
+  };
   return (
     <div id="profile-editor-links" className="hidden">
       <label>Social Links</label>
@@ -264,6 +275,7 @@ const LinksTab = () => {
       </div>
 
       <div id="project-editor-link-list">
+        <DataLink/>
         {/* insert list of link elements/componenets here */}
         <button id="project-editor-add-link">+ Add Social Profile</button>
       </div>
@@ -367,12 +379,12 @@ export const ProfileEditPopup = () => {
       <PopupButton buttonId="project-info-edit">Edit Profile</PopupButton>
       <PopupContent>
         <form id="profile-creator-editor" encType="multipart/form-data">
-        {/* <div id="profile-creator-editor"> */}
+          {/* <div id="profile-creator-editor"> */}
           <div id="profile-editor-tabs">{editorTabs}</div>
           <TabContent />
           {/* <button id="profile-editor-save" onClick={onSaveClicked}>Save Changes</button> */}
-          <input type='submit' id="profile-editor-save" onClick={onSaveClicked} value={'Save Changes'}/>
-        {/* </div> */}
+          <input type='submit' id="profile-editor-save" onClick={onSaveClicked} value={'Save Changes'} />
+          {/* </div> */}
         </form>
       </PopupContent>
     </Popup>

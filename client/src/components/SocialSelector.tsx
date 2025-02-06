@@ -13,33 +13,31 @@ import './Styles/pages.css';
 
 import { useState, useEffect } from 'react';
 
-const getMajors = async () => {
+const getSocials = async () => {
   // TODO: create error handling, try catch block
-  const response = await fetch('/api/datasets/majors');
+  const response = await fetch('/api/datasets/socials');
   const { data } = await response.json();
   // console.log(data);
   return data;
 };
 
-export const MajorSelector = () => {
+export const SocialSelector = () => {
   const [options, setOptions] = useState(null);
 
   useEffect(() => {
-    const setUp = async () => {
-      const jobTitles = await getMajors();
-      const selectorOptions = jobTitles.map((job) => {
-        return <option value={job.major_id}>{job.label}</option>;
+    const setUpSocialSelector = async () => {
+      const socials = await getSocials();
+      const selectorOptions = socials.map((social) => {
+        return <option value={social.website_id}>{social.label}</option>;
       });
       setOptions(selectorOptions);
     };
-    setUp();
+    setUpSocialSelector();
   }, []);
 
   return (
     <div className="editor-input-item">
-      <label>Major*</label>
-      {/* <br /> */}
-      <select id="profile-editor-major">{options}</select>
+      <select id="profile-editor-social">{options}</select>
     </div>
   );
 };

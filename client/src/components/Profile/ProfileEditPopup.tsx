@@ -101,7 +101,7 @@ const setUpInputs = async (data) => {
   setUpFunc('major', majors.find((r) => r.label === profileData.major).major_id);
   setUpFunc('academicYear', profileData.academic_year);
   setUpFunc('location', profileData.location);
-  setUpFunc('headline', profileData.headline); // description
+  setUpFunc('headline', profileData.headline); 
   setUpFunc('funFact', profileData.fun_fact);
   setUpFunc('bio', profileData.bio);
 };
@@ -177,7 +177,7 @@ const AboutTab = () => {
             Write a fun and catchy phrase that captures your unique personality!
           </div>
           <span className="character-count">0/100</span>
-          <textarea id="profile-editor-bio" maxLength={100} />
+          <textarea id="profile-editor-headline" maxLength={100} />
         </div>
 
         <div className="editor-input-item editor-input-textarea">
@@ -196,7 +196,7 @@ const AboutTab = () => {
             Share a brief overview of who you are, your interests, and what drives you!
           </div>
           <span className="character-count">0/2000</span>
-          <textarea id="profile-editor-headline" maxLength={2000} />
+          <textarea id="profile-editor-bio" maxLength={2000} />
         </div>
       </div>
     </div>

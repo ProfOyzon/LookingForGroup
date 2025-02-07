@@ -561,7 +561,7 @@ const NewProfile = () => {
               id="profile-image"
               alt="profile image"
             />
-            <div id="profile-bio">{displayedProfile.bio}</div>
+            <div id="profile-bio">{displayedProfile.headline}</div>
 
             <div id="profile-info-name">
               <span id="profile-fullname">
@@ -606,7 +606,7 @@ const NewProfile = () => {
               </div>
             </div>
 
-            <div id="profile-info-description">{displayedProfile.headline}</div>
+            <div id="profile-info-description">{displayedProfile.bio}</div>
 
             <div id="profile-info-funfact">
               <span id="fun-fact-start">Fun Fact! </span>

@@ -41,7 +41,6 @@ const onSaveClicked = async (e) => {
     const element = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     return element ? element.value : null;
   };
-
   const data = {
     firstName: getInputValue('firstName'),
     lastName: getInputValue('lastName'),
@@ -59,7 +58,7 @@ const onSaveClicked = async (e) => {
   const userID = await fetchUserID();
   await sendPut(`/api/users/${userID}`, data);
   await saveImage(userID, e.target);
-  return false; // prevents any default calls
+  window.location.reload(); // reload page
 };
 
 const saveImage = (userID, data) => {

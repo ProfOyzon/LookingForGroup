@@ -49,7 +49,6 @@ const sendPut = async (url, data, handler) => {
 const responseHandler = async (response, handler) => {
   const result = await response.json();
   //document.getElementById('errorMessage').classList.add('hidden');
-
   if (result.redirect) {
     window.location = result.redirect;
   }

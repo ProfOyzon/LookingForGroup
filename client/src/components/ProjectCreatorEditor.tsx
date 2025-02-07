@@ -66,14 +66,14 @@ export const ProjectCreatorEditor = () => {
     last_name: '',
     job_title: '',
     profile_image: '',
-    user_id: 0
+    user_id: -1
   }
 
   //State variables
   const [projectData, setProjectData] = useState(emptyProject);           //store project data
   const [modifiedProject, setModifiedProject] = useState(emptyProject);   //tracking temporary project changes before committing to a save
   const [failCheck, setFailCheck] = useState(false);                      //check whether or not data was successfully obtained from database
-  const [allJobs, setAllJobs] = useState([]);                             //for complete list of jobs
+  const [allJobs, setAllJobs] = useState<{ title_id: number, label: string }[]>([]); //for complete list of jobs
   const [currentTab, setCurrentTab] = useState(0);                        //for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
   const [currentTagsTab, setCurrentTagsTab] = useState(0);                //tracking which tab of tags is currently viewed: 0 - project type, 1 - genre, 2 - dev skills, 3 - design skills, 4 - soft skills
   const [currentTeamTab, setCurrentTeamTab] = useState(0);                //tracking which team tab is currently being viewed: 0 - current team, 1 - open positions
@@ -83,6 +83,8 @@ export const ProjectCreatorEditor = () => {
   const [viewedPosition, setViewedPosition] = useState([]);               //tracking which open job is selected (to access job info specific to project)
   const [editMode, setEditMode] = useState(false);                        //tracking whether position view is in edit mode or not
   const [newPosition, setNewPosition] = useState(false);                  //tracking if the user is making a new position (after pressing Add Position button)
+  const [errorAddMember, setErrorAddMember] = useState('');  //sets error when adding a member to the team
+  const [closePopup, setClosePopup] = useState(true); //determine if a popup should close after press (PopupButton)
 
   // Get project data on projectID change
   useEffect(() => {
@@ -189,6 +191,93 @@ export const ProjectCreatorEditor = () => {
       console.error(error);
     }
   };
+
+  //TEMP DEBUG TODO: remove
+  useEffect(() => {
+    console.log('closepopup changed!', closePopup);
+  }, [closePopup]);
+
+  //FIXME: closepopup prop not working
+  const handleNewMember = () => {
+    //do not close as default
+    setClosePopup(false);
+    console.log('before closepopup:', closePopup);
+    
+    let member = emptyMember;
+
+    // get name
+    const nameInput = document.querySelector<HTMLInputElement>("#new-member-name");
+    if (nameInput) {
+      member.first_name = nameInput.value.split(' ')[0] || '';
+      member.last_name = nameInput.value.split(' ')[1] || '';
+    }
+    else {
+      setErrorAddMember('Error getting name data');
+      console.log('no nameInput found');
+      setClosePopup(false);
+      console.log('closepopup', closePopup);
+      return;
+    }
+
+    // get job title
+    const jobTitleInput = document.querySelector("#project-team-add-member-role-select") as HTMLInputElement;
+    console.log('value', jobTitleInput.value);
+    if (jobTitleInput) {
+      member.job_title = jobTitleInput.value;
+    }
+    else {
+      setErrorAddMember('Error getting job data');
+      console.log('no jobtitleinput found');
+      setClosePopup(false);
+      return;
+    }
+
+    //TODO: assign proper user_id and profile_image
+    member.profile_image = ''; member.user_id = 0;
+
+    console.log('member', member);
+    
+    // check if member has name
+    if (!member.first_name || !member.last_name) {
+      setErrorAddMember('Member needs a first and last name');
+      setClosePopup(false);
+      return;
+    }
+    else {
+      // clear error
+      setErrorAddMember('');
+      // close popup
+      setClosePopup(true);
+      // add member
+      setNewMember(member);
+      modifiedProject.members.push(newMember);
+      console.log('new members!', modifiedProject.members);
+    }
+  }
+
+  // update position edit window for creating a new position
+  const addPositionCallback = () => {
+    // going back to previous state
+    if (newPosition) {
+      // no longer new position
+      setNewPosition(false);
+      // return selected role
+      const firstPosition = document.querySelector(".positions-popup-list-item");
+      if (firstPosition) firstPosition.id = "#team-positions-active-button";
+      // change to position view window
+      setEditMode(false);
+    }
+    // opening add position
+    else {
+      // empty input fields
+      setNewPosition(true);
+      // clear selected role
+      const activePosition = document.querySelector("#team-positions-active-button");
+      if (activePosition) activePosition.id = "";
+      // change to position edit window
+      setEditMode(true);
+    }
+  }
 
   //Tab page elements
   //General
@@ -463,7 +552,7 @@ export const ProjectCreatorEditor = () => {
                   </PopupButton>
                 </div>
               </PopupContent>
-            </Popup>
+          </Popup>
         </>
       }
     </>
@@ -482,6 +571,7 @@ export const ProjectCreatorEditor = () => {
           <div id="edit-position-role">
             <label>Role*</label>
             <select key={currentRole}>
+              <option disabled key="select">Select</option>
               {allJobs.map((job: { title_id: number, label: string }) => (
               <option
                 key={job.title_id} selected={job.title_id === currentRole} onClick={() => {
@@ -498,14 +588,14 @@ export const ProjectCreatorEditor = () => {
             <button onClick={savePosition} id="position-edit-save">
               Save
             </button>
-            <button onClick={() => setEditMode(false)} id="position-edit-cancel">
+            <button onClick={() => {setEditMode(false); setNewPosition(false); addPositionCallback()}} id="position-edit-cancel">
               Cancel
             </button>
           </div>
 
           <div id="edit-position-description">
             <label>Role Description*</label>
-            <textarea>{getProjectJob(currentRole).description}</textarea>
+            <textarea>{newPosition ? '' : getProjectJob(currentRole).description}</textarea>
           </div>
 
           <div id="edit-position-details">
@@ -583,6 +673,7 @@ export const ProjectCreatorEditor = () => {
                         key={currentRole}
                         onChange={(e) => {
                           // update member's role temporarily
+                          // TODO: make this work without onchange
                             const tempMember = { ...m };
                             tempMember.job_title = e.target.value;
                             setCurrentMember(tempMember);
@@ -643,30 +734,19 @@ export const ProjectCreatorEditor = () => {
               </PopupButton>
               <PopupContent useClose={false}>
                 <div id="project-team-add-member-title">Add Member</div>
+                <div className="error" id="error-add-member">{errorAddMember}</div>
                 <div id="project-team-add-member-name">
                   <label>Name</label>
                   <input type="text" id="new-member-name"></input>
                 </div>
                 <div id="project-team-add-member-role">
                   <label>Role</label>
-                  <select key={currentRole}>
+                  <select id="project-team-add-member-role-select" key={currentRole}>
                     {allJobs.map((job: { title_id: number, label: string }) => (
                     <option
-                      key={job.title_id} selected={job.title_id === currentRole} onClick={() => {
-                      let member = emptyMember;
-                      // assign name
-                      const nameInput = document.querySelector<HTMLInputElement>("#new-member-name");
-                      if (nameInput) {
-                        member.first_name = nameInput.value.split(' ')[0];
-                        member.last_name = nameInput.value.split(' ')[1] || '';
-                      }
-                      // assign job title
-                      member.job_title = getProjectJob(currentRole).job_title;
-                      //TODO: assign proper user_id and profile_image
-                      member.profile_image = ''; member.user_id = 0;
-                        setNewMember(member);
-                      }}
-                      >
+                      key={job.title_id}
+                      selected={job.title_id === currentRole}
+                    >
                       {job.label}
                     </option>
                     ))}
@@ -675,7 +755,7 @@ export const ProjectCreatorEditor = () => {
                 {/* Action buttons */}
                 <div className="project-editor-button-pair">
                   {/* TODO: add team member to project */}
-                  <button id="team-add-member-add-button">Add</button>
+                  <PopupButton buttonId="team-add-member-add-button" callback={() => {/*handleNewMember();*/ console.log('in callback', closePopup)}} doNotClose={!closePopup}>Add</PopupButton>
                   <PopupButton buttonId="team-add-member-cancel-button">Cancel</PopupButton>
                 </div>
               </PopupContent>
@@ -693,13 +773,13 @@ export const ProjectCreatorEditor = () => {
                 {modifiedProject.jobs.map((job: {job_title: string, title_id: number}) => (
                   <div className="team-positions-button">
                     <img src="/images/icons/drag.png" alt="" />
-                    <button className="positions-popup-list-item" id="" data-id={job.title_id} onClick={() => !editMode ? setCurrentRole(job.title_id) : ''}>
+                    <button className="positions-popup-list-item" id="" data-id={job.title_id} onClick={() => setCurrentRole(job.title_id)}>
                       {job.job_title}
                     </button>
                   </div>
                 ))}
                 <div id="add-position-button">
-                  <button>
+                  <button onClick={addPositionCallback}>
                     <img src={'/images/icons/cancel.png'} alt="+" />
                     <span className="project-editor-extra-info">Add Position</span></button>
                 </div>

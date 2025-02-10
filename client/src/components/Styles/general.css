@@ -1313,3 +1313,22 @@ Image Carousel style rules
 .hidden {
   display: none !important;
 }
+
+/* IMAGE UPLOADER */
+#img-view {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-position: center;
+  background-size: cover;
+}
+
+#drop-area { 
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}

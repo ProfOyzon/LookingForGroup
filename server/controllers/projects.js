@@ -405,9 +405,10 @@ const updateProject = async (req, res) => {
     sql = `INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?) AS new
         ON DUPLICATE KEY UPDATE project_id = new.project_id, user_id = new.user_id, title_id = new.title_id`;
     for (let member of members) {
-      // find title_id with matching project and member
-      const titleSql = `SELECT m.title_id FROM members m JOIN job_titles jt ON m.title_id = jt.title_id WHERE m.project_id = ${id} AND m.user_id = ${member.user_id}`;
-      const [matchingTitle] = await pool.query(titleSql);
+      // find title_id with matching job title (members.label and member.job_title)
+      const titleSql = `SELECT jt.title_id FROM job_titles jt WHERE jt.label = ?`
+      values = [member.job_title];
+      const [matchingTitle] = await pool.query(titleSql, values);
       member.title_id = matchingTitle[0].title_id;
       await pool.query(sql, [id, member.user_id, member.title_id]);
     }

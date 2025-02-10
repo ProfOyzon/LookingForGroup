@@ -20,6 +20,7 @@ const checkImageFile = (req, res, next) => {
   upload(req, res, async (err) => {
     if (err) {
       try {
+        console.log(err.code);
         switch (err.code) {
           case 'LIMIT_INVALID_TYPE':
             throw new Error('Invalid file type. Only PNG and JPEG are allowed');

@@ -1,0 +1,21 @@
+#profile-editor-links {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.link-input {
+    display: flex;
+    column-gap: 0.5rem;
+}
+
+#project-editor-add-link {
+    background-color: #0000;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.8ch;
+    font-weight: 700;
+    height: 2ch;
+    padding-bottom: 0;
+    padding-top: 0;
+}

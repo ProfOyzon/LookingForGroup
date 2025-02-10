@@ -13,24 +13,17 @@ import '../Styles/pages.css';
 
 import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
+import { LinksTab } from '../tabs/LinksTab';
 import { RoleSelector } from '../RoleSelector';
 import { MajorSelector } from '../MajorSelector';
-import { SocialSelector } from '../SocialSelector';
 import { SearchBar } from '../SearchBar';
 import { ImageUploader } from '../ImageUploader';
-import { sendPut, sendFile } from '../../functions/fetch';
+import { sendPut, sendFile, fetchUserID } from '../../functions/fetch';
 import profileImage from '../../icons/profile-user.png';
 import editIcon from '../../icons/edit.png';
 
 const pageTabs = ['About', 'Projects', 'Skills', 'Links'];
 const tagTabs = ['Dev Skills', 'Design Skills', 'Soft Skills'];
-
-// Convenient Functions
-const fetchUserID = async () => {
-  const response = await fetch('/api/auth');
-  const { data } = await response.json();
-  return data;
-};
 
 // Functions
 const onSaveClicked = async (e) => {
@@ -250,33 +243,6 @@ const SkillsTab = () => {
         <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
         <hr />
         <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
-      </div>
-    </div>
-  );
-};
-
-const LinksTab = () => {
-  const DataLink = () => {
-    return (
-      <div>
-        <SocialSelector />
-        <div className='editor-input-item'>
-          <input type="text" name="url" id="link-url-input" />
-        </div>
-      </div>
-    );
-  };
-  return (
-    <div id="profile-editor-links" className="hidden">
-      <label>Social Links</label>
-      <div className="project-editor-extra-info">
-        Provide the links to pages you wish to include on your page.
-      </div>
-
-      <div id="project-editor-link-list">
-        <DataLink/>
-        {/* insert list of link elements/componenets here */}
-        <button id="project-editor-add-link">+ Add Social Profile</button>
       </div>
     </div>
   );

@@ -6,15 +6,16 @@ import placeholderThumbnail from '../images/project_temp.png';
 
 //Takes in a 'project' value which contains info on the project it will display
 //Also takes in width (the width of this panel), and rightAlign, which determines which side the hover panel aligns with
-export const ProjectPanel = ({ width, projectData, rightAlign = false }) => {
+export const ProjectPanel = ({ project }) => {
   const navigate = useNavigate();
-  const projectURL = `${paths.routes.NEWPROJECT}?projectID=${projectData.project.project_id}`;
+  const projectURL = `${paths.routes.NEWPROJECT}?projectID=${project.project_id}`;
   return (
-    <div className={'project-panel'} style={{ width: width }}>
+    // <div className={'project-panel'} style={{ width: width }}>
+    <div className={'project-panel'}>
       <img
         src={
-          projectData.project.thumbnail != null
-            ? `images/thumbnails/${projectData.project.thumbnail}`
+          project.thumbnail != null
+            ? `images/thumbnails/${project.thumbnail}`
             : placeholderThumbnail
         }
         alt={'project image'}
@@ -22,19 +23,19 @@ export const ProjectPanel = ({ width, projectData, rightAlign = false }) => {
       <div
         className={'project-panel-hover'}
         onClick={() => navigate(projectURL)}
-        style={rightAlign ? { width: width, right: 0 } : { width: width }}
+        // style={rightAlign ? { width: width, right: 0 } : { width: width }}
       >
         <img
           src={
-            projectData.project.thumbnail != null
-              ? `images/thumbnails/${projectData.project.thumbnail}`
+            project.thumbnail != null
+              ? `images/thumbnails/${project.thumbnail}`
               : placeholderThumbnail
           }
           alt={'project image'}
         />
-        <h2>{projectData.project.title}</h2>
+        <h2>{project.title}</h2>
         <div id="project-panel-tags">
-          {projectData.project.tags.map((tag, index) => {
+          {project.tags.map((tag, index) => {
             let category: string;
             switch (tag.type) {
               case 'Design':
@@ -62,7 +63,7 @@ export const ProjectPanel = ({ width, projectData, rightAlign = false }) => {
             }
           })}
         </div>
-        <div id="quote">{projectData.project.hook}</div>
+        <div id="quote">{project.hook}</div>
       </div>
     </div>
   );

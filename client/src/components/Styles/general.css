@@ -764,7 +764,7 @@ Page popup style rules
   max-height: 849px;
   opacity: 100%;
   z-index: 3;
-  width: 1121px;
+  width: 921px; /* 100px of padding on both sides makes 1121px total */
   /* height: 849px; */
   padding: 34px 100px;
 }
@@ -840,7 +840,7 @@ Page popup style rules
 }
 
 .popup #primary-btn {
-  width: 110px;
+  width: 104px;
   height: 40px;
   padding: 5px 16px;
   font-size: 20px;
@@ -849,7 +849,7 @@ Page popup style rules
   background-color: var(--primary-color);
   color: var(--invert-text);
   font-weight: 700;
-  margin-top: 24px;
+  margin-top: 36px;
 }
 
 /* .popup #primary-btn:hover {
@@ -860,6 +860,7 @@ Page popup style rules
 .popup h2 {
   font-size: 24px;
   margin-bottom: 24px;
+  margin-top: 0px;
   font-weight: 600;
   color: var(--primary-color);
 }
@@ -881,7 +882,7 @@ Page popup style rules
 
 .popup #filters {
   max-height: 340px;
-  height: 48%;
+  height: 49vh;
 }
 
 .popup .popup-section {
@@ -936,7 +937,7 @@ Page popup style rules
   flex-direction: column;
   align-items: start;
   max-height: 158px;
-  height: 22%;
+  height: 23vh;
 }
 
 .popup #selected-filters {

@@ -268,7 +268,6 @@ export const ProjectCreatorEditor = () => {
 
   // update position edit window for creating a new position
   const addPositionCallback = () => {
-    console.log('add position clicked');
     // going back to previous state
     if (newPosition || editMode) {
       // no longer new position
@@ -593,7 +592,7 @@ export const ProjectCreatorEditor = () => {
               <option disabled selected={newPosition}>Select</option>
               {allJobs.map((job: { title_id: number, label: string }) => (
               <option
-                key={job.title_id} selected={job.title_id === currentRole} onClick={() => {
+                key={job.title_id} selected={newPosition ? false : job.title_id === currentRole} onClick={() => {
                   const updatedJobs = modifiedProject.jobs.map(j =>
                     j.title_id === job.title_id ? { ...j, job_title: job.label } : j);
                   setModifiedProject({ ...modifiedProject, jobs: updatedJobs });
@@ -805,9 +804,7 @@ export const ProjectCreatorEditor = () => {
                   </div>
                 ))}
                 <div id="add-position-button">
-                  {/* <button onClick={() => !editMode ? () => {console.log('!editMode', !editMode); setNewPosition(true); addPositionCallback()} : {}}> */}
                   <button onClick={() => {
-                    console.log('click!');
                     if (!editMode) {
                       setNewPosition(true);
                       addPositionCallback();

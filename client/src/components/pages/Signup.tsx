@@ -201,8 +201,8 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
         <div className="signup-form column">
           <h2>Sign Up</h2>
 
+          <div className="error">{message}</div>
           <div className="signup-form-inputs">
-            <div className="error">{message}</div>
             <div className="row">
               <input
                 className="signup-name-input"

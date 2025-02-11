@@ -125,4 +125,10 @@ const GET = async (url) => {
   }
 };
 
-export { POST, GET, handleError, sendPost, sendPut, sendFile, sendGet, hideError };
+const fetchUserID = async () => {
+  const response = await fetch('/api/auth');
+  const { data } = await response.json();
+  return data;
+};
+
+export { POST, GET, handleError, sendPost, sendPut, sendFile, sendGet, hideError, fetchUserID };

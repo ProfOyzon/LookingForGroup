@@ -69,7 +69,18 @@ export const ProjectCreatorEditor = () => {
     user_id: -1
   }
 
+  // project purpose and status options
+  const purposeOptions = ["Personal", "Portfolio Piece", "Academic", "Co-op"];
+  const statusOptions = ["Planning", "Development", "Post-Production", "Complete"];
+
+  // job detail options
+  const availabilityOptions = ["Full-time", "Part-time", "Flexible"];
+  const durationOptions = ["Short-term", "Long-term"];
+  const locationOptions = ["On-site", "Remote", "Hybrid"]
+  const compensationOptions = ["Unpaid", "Paid"]
+
   //State variables
+  const [newProject, setNewProject] = useState(false);                    //tracking if creating a new project or editting existing (empty or populated fields)
   const [projectData, setProjectData] = useState(emptyProject);           //store project data
   const [modifiedProject, setModifiedProject] = useState(emptyProject);   //tracking temporary project changes before committing to a save
   const [failCheck, setFailCheck] = useState(false);                      //check whether or not data was successfully obtained from database
@@ -80,7 +91,6 @@ export const ProjectCreatorEditor = () => {
   const [currentRole, setCurrentRole] = useState(0);                      //tracking which role is being viewed out of all open positions: value is project title_id (or job_title title_id)
   const [currentMember, setCurrentMember] = useState(emptyMember);        //tracking which member is being editted
   const [newMember, setNewMember] = useState(emptyMember);                //store new member data to save later
-  const [viewedPosition, setViewedPosition] = useState([]);               //tracking which open job is selected (to access job info specific to project)
   const [editMode, setEditMode] = useState(false);                        //tracking whether position view is in edit mode or not
   const [newPosition, setNewPosition] = useState(false);                  //tracking if the user is making a new position (after pressing Add Position button)
   const [errorAddMember, setErrorAddMember] = useState('');  //sets error when adding a member to the team
@@ -190,6 +200,7 @@ export const ProjectCreatorEditor = () => {
     } catch (error) {
       console.error(error);
     }
+    // window.location.reload();
   };
 
   //TEMP DEBUG TODO: remove
@@ -258,12 +269,19 @@ export const ProjectCreatorEditor = () => {
   // update position edit window for creating a new position
   const addPositionCallback = () => {
     // going back to previous state
-    if (newPosition) {
+    if (newPosition || editMode) {
       // no longer new position
       setNewPosition(false);
-      // return selected role
-      const firstPosition = document.querySelector(".positions-popup-list-item");
-      if (firstPosition) firstPosition.id = "#team-positions-active-button";
+      // return to selected role
+      const positions = document.querySelectorAll(".positions-popup-list-item");
+      for (const p of positions) {
+        const dataId = p.getAttribute('data-id');
+        if (dataId && parseInt(dataId) === currentRole) {
+          // found matching id, set element as active
+          p.id = 'team-positions-active-button';
+          break;
+        }
+      }
       // change to position view window
       setEditMode(false);
     }
@@ -290,7 +308,7 @@ export const ProjectCreatorEditor = () => {
             <input
               type="text"
               className="title-input"
-              value={modifiedProject.title}
+              value={newProject ? '' : modifiedProject.title}
               onChange={(e) => {
                 setModifiedProject({ ...modifiedProject, title: e.target.value });
               }}
@@ -305,25 +323,25 @@ export const ProjectCreatorEditor = () => {
                 setModifiedProject({ ...modifiedProject, status: e.target.value });
               }}
             >
-              <option className="italic" disabled>Select</option>
-              <option>Planning</option>
-              <option>In Development</option>
-              <option>Complete</option>
+              <option disabled selected={newProject}>Select</option>
+              {statusOptions.map(o => (
+                <option selected={newProject ? false : modifiedProject.status === o}>{o}</option>  
+              ))}
             </select>
           </div>
 
           <div id="project-editor-purpose-input" className="project-editor-input-item">
             <label>Purpose</label>
             <select
-              value={modifiedProject.purpose || 'Select'}
+              value={newProject ? '' : modifiedProject.purpose}
               onChange={(e) => {
                 setModifiedProject({ ...modifiedProject, purpose: e.target.value });
               }}
             >
-              <option className="italic" disabled>Select</option>
-              <option>Passion project</option>
-              <option>Academic</option>
-              <option>Portfolio Piece</option>
+              <option disabled selected={newProject}>Select</option>
+              {purposeOptions.map(o => (
+                <option selected={newProject ? false : modifiedProject.purpose === o}>{o}</option>  
+              ))}
             </select>
           </div>
 
@@ -336,7 +354,7 @@ export const ProjectCreatorEditor = () => {
             <span className="character-count">{modifiedProject.audience ? modifiedProject.audience.length : '0'}/100</span>{' '}
             <textarea
               maxLength={100}
-              value={modifiedProject.audience}
+              value={newProject ? '' : modifiedProject.audience}
               onChange={(e) => {
                 setModifiedProject({ ...modifiedProject, audience: e.target.value });
               }}
@@ -352,7 +370,7 @@ export const ProjectCreatorEditor = () => {
             <span className="character-count">{modifiedProject.hook ? modifiedProject.hook.length : '0'}/300</span>{' '}
             <textarea
               maxLength={300}
-              value={modifiedProject.hook}
+              value={newProject ? '' : modifiedProject.hook}
               onChange={(e) => {
                 setModifiedProject({ ...modifiedProject, hook: e.target.value });
               }}
@@ -369,7 +387,7 @@ export const ProjectCreatorEditor = () => {
             <span className="character-count">{modifiedProject.description ? modifiedProject.description.length : '0'}/2000</span>{' '}
             <textarea
               maxLength={2000}
-              value={modifiedProject.description}
+              value={newProject ? '' : modifiedProject.description}
               onChange={(e) => {
                 setModifiedProject({ ...modifiedProject, description: e.target.value });
               }}
@@ -571,10 +589,10 @@ export const ProjectCreatorEditor = () => {
           <div id="edit-position-role">
             <label>Role*</label>
             <select key={currentRole}>
-              <option disabled key="select">Select</option>
+              <option disabled selected={newPosition}>Select</option>
               {allJobs.map((job: { title_id: number, label: string }) => (
               <option
-                key={job.title_id} selected={job.title_id === currentRole} onClick={() => {
+                key={job.title_id} selected={newPosition ? false : job.title_id === currentRole} onClick={() => {
                   const updatedJobs = modifiedProject.jobs.map(j =>
                     j.title_id === job.title_id ? { ...j, job_title: job.label } : j);
                   setModifiedProject({ ...modifiedProject, jobs: updatedJobs });
@@ -588,7 +606,7 @@ export const ProjectCreatorEditor = () => {
             <button onClick={savePosition} id="position-edit-save">
               Save
             </button>
-            <button onClick={() => {setEditMode(false); setNewPosition(false); addPositionCallback()}} id="position-edit-cancel">
+            <button onClick={() => {addPositionCallback()}} id="position-edit-cancel">
               Cancel
             </button>
           </div>
@@ -602,30 +620,37 @@ export const ProjectCreatorEditor = () => {
             <div id="edit-position-details-left">
               <label className="edit-position-availability">Availability</label>
               <select className="edit-position-availability">
-                <option>option 1</option>
-                <option>option 2</option>
+                <option disabled selected={newPosition}>Select</option>
+                {availabilityOptions.map(o => (
+                  <option selected={newPosition ? false : getProjectJob(currentRole).availability === o}>{o}</option>  
+                ))}
               </select>
               <label className="edit-position-location">Location</label>
               <select className="edit-position-location">
-                <option>option 1</option>
-                <option>option 2</option>
+                <option disabled selected={newPosition}>Select</option>
+                {locationOptions.map(o => (
+                  <option selected={newPosition ? false : getProjectJob(currentRole).location === o}>{o}</option>
+                ))}
               </select>
               <label className="edit-position-contact">Main Contact</label>
               <select className="edit-position-contact">
-                <option>option 1</option>
-                <option>option 2</option>
+                {/* Put project lead here */}
               </select>
             </div>
             <div id="edit-position-details-right">
               <label className="edit-position-duration">Duration</label>
               <select className="edit-position-duration">
-                <option>option 1</option>
-                <option>option 2</option>
+                <option disabled selected={newPosition}>Select</option>
+                {durationOptions.map(o => (
+                  <option selected={newPosition ? false : getProjectJob(currentRole).duration === o}>{o}</option>
+                ))}
               </select>
               <label className="edit-position-compensation">Compensation</label>
               <select className="edit-position-compensation">
-                <option>option 1</option>
-                <option>option 2</option>
+                <option disabled selected={newPosition}>Select</option>
+                {compensationOptions.map(o => (
+                  <option selected={newPosition ? false : getProjectJob(currentRole).compensation === o}>{o}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -773,13 +798,18 @@ export const ProjectCreatorEditor = () => {
                 {modifiedProject.jobs.map((job: {job_title: string, title_id: number}) => (
                   <div className="team-positions-button">
                     <img src="/images/icons/drag.png" alt="" />
-                    <button className="positions-popup-list-item" id="" data-id={job.title_id} onClick={() => setCurrentRole(job.title_id)}>
+                    <button className="positions-popup-list-item" id="" data-id={job.title_id} onClick={() => !editMode ? setCurrentRole(job.title_id) : {}}>
                       {job.job_title}
                     </button>
                   </div>
                 ))}
                 <div id="add-position-button">
-                  <button onClick={addPositionCallback}>
+                  <button onClick={() => {
+                    if (!editMode) {
+                      setNewPosition(true);
+                      addPositionCallback();
+                    }
+                  }}>
                     <img src={'/images/icons/cancel.png'} alt="+" />
                     <span className="project-editor-extra-info">Add Position</span></button>
                 </div>

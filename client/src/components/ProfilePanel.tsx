@@ -8,8 +8,6 @@ import * as paths from '../constants/routes';
 
 //Takes in a 'profile' value which contains info on the profile it will display
 export const ProfilePanel = ({ profileData }) => {
-  console.log(profileData);
-
   const navigate = useNavigate();
   const profileURL = `${paths.routes.NEWPROFILE}?userID=${profileData.user_id}`;
 

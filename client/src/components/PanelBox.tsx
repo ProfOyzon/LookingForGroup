@@ -7,10 +7,12 @@ import { ProfilePanel } from './ProfilePanel';
 export const PanelBox = ({ category, itemList, itemAddInterval }) => {
     // Don't display all items at first, load them in periodically
     const [displayedItems, setDisplayedItems] = useState(itemList.slice(0, itemAddInterval));
-    
+    const [itemListCopy, setItemListCopy] = useState(itemList);
+
     // Make sure displayedItems gets updated when itemList receives API data
-    if (displayedItems.length === 0 && itemList.length !== 0) {
+    if (itemList !== itemListCopy) {
         setDisplayedItems(itemList.slice(0, itemAddInterval));
+        setItemListCopy(itemList);
     }
 
     // Adds new items to the display if user has scrolled to bottom of currently displayed list

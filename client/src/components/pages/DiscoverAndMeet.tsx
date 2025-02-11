@@ -97,6 +97,9 @@ const DiscoverAndMeet = ({ category }) => {
     // --------------------
     // Global variables
     // --------------------
+    // Important for ensuring data has properly loaded
+    const [dataLoaded, setDataLoaded] = useState(false);
+
     // Pulls the full list of either projects or profiles from database
     let fullItemList, filteredItemList: Item[];
     let setFullItemList, setFilteredItemList: Function;
@@ -105,6 +108,9 @@ const DiscoverAndMeet = ({ category }) => {
 
     // This list is what will actually be displayed, and adjust based on SearchData
     [filteredItemList, setFilteredItemList] = useState([]);
+
+    // Need this for searching
+    let tempItemList: Item[] = fullItemList;
 
     // List that holds trimmed data for searching. Empty before fullItemList is initialized
     const itemSearchData = fullItemList.map((item) => {
@@ -130,8 +136,14 @@ const DiscoverAndMeet = ({ category }) => {
         try {
             const response = await fetch(url);
             const data = await response.json();
-            setFullItemList(data.data);
-            setFilteredItemList(data.data);
+
+            // Don't assign if there's no array returned
+            if (data.data !== undefined) {
+                setFullItemList(data.data);
+                setFilteredItemList(data.data);
+            }
+
+            setDataLoaded(true);
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.message);
@@ -141,13 +153,14 @@ const DiscoverAndMeet = ({ category }) => {
         }
     };
 
-    if (fullItemList.length === 0) {
+    if (!dataLoaded) {
         getData();
     }
 
     // Updates filtered project list with new search info
     const searchItems = (searchResults) => {
-        let tempItemList: Item[] = [];
+        // Clear list before handling search
+        tempItemList = [];
         
         for (let result of searchResults[0]) {
             for (let item of itemSearchData) {
@@ -158,20 +171,22 @@ const DiscoverAndMeet = ({ category }) => {
             }
         }
 
-        // If no projects were found
+        // If no items were found
         if (tempItemList.length === 0) {
             setFilteredItemList([]); // Clear the displayed list
-            console.log('No matching projects found.');
+            console.log('No matching items found.');
         } else {
-            setFilteredItemList(tempItemList);
+            // setFilteredItemList(tempItemList);
             updateItemList([]); // Don't check for tags after searching
         }
     };
 
     // Make new list of items by mapping new filtered list
     const updateItemList = (activeTagFilters) => {
+        console.log(activeTagFilters);
+
         // Check which items should be included based on filters
-        let tagFilteredList = filteredItemList.filter((item) => {
+        let tagFilteredList = tempItemList.filter((item) => {
             let tagFilterCheck = true;
             let lowercaseTags = item.tags.map((tag) => tag.tag.toLowerCase());
 
@@ -214,7 +229,9 @@ const DiscoverAndMeet = ({ category }) => {
             <DiscoverFilters category={category} updateItemList={updateItemList} />
 
             {/* Panel container. itemAddInterval can be whatever. 25 feels good for now */}
-            <PanelBox category={category} itemList={filteredItemList} itemAddInterval={25} />
+            <div id='discover-panel-box'>
+                <PanelBox category={category} itemList={filteredItemList} itemAddInterval={25} />
+            </div>
             <CreditsFooter />
             <ToTopButton />
         </div>

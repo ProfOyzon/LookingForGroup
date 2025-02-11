@@ -4,6 +4,9 @@ import { SearchBar } from './SearchBar';
 import { ThemeIcon } from './ThemeIcon';
 import * as tags from '../constants/tags'; // FIXME: use tags from db
 
+// Has to be outside component to avoid getting reset on re-render
+let activeTagFilters: string[] = [];
+
 export const DiscoverFilters = ({ category, updateItemList }) => {
     // --------------------
     // Interfaces
@@ -16,8 +19,6 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
     // --------------------
     // Global variables
     // --------------------
-    let activeTagFilters: string[] = [];
-
     let currentTags, searchedTags, enabledFilters: Tag[];
     let setCurrentTags, setSearchedTags, setEnabledFilters: Function;
     [currentTags, setCurrentTags] = useState([]);

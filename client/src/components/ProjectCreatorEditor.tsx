@@ -150,9 +150,7 @@ export const ProjectCreatorEditor = () => {
           setFailCheck(true);
           return;
         }
-  
         setAllJobs(jobTitleData);
-        console.log('all jobs', jobTitleData);
 
       } catch (error) {
         console.error(error.message);
@@ -292,11 +290,9 @@ export const ProjectCreatorEditor = () => {
         if (dataId && parseInt(dataId) === currentRole) {
           // found matching id, set element as active
           p.id = 'team-positions-active-button';
-          console.log('matching button found');
           break;
         }
       }
-      console.log('loop after');
       // change to position view window
       setEditMode(false);
     }
@@ -305,14 +301,15 @@ export const ProjectCreatorEditor = () => {
       // empty input fields
       setNewPosition(true);
       // clear selected role
+      setCurrentJob(emptyJob);
       const activePosition = document.querySelector("#team-positions-active-button");
       if (activePosition) activePosition.id = "";
       // change to position edit window
       setEditMode(true);
     }
+    setErrorAddPosition('');
   }
 
-  
   //Save current inputs in position editing window
   const savePosition = () => {
     // check if all values present
@@ -326,28 +323,24 @@ export const ProjectCreatorEditor = () => {
     ) {
       // set error
       setErrorAddPosition('All fields are required');
-      console.log('need all fields');
       return;
     }
 
     // check if same position is present
-    const existingJob = modifiedProject.jobs.find(j => j.title_id === currentJob.title_id);
-    if (newPosition && existingJob) {
+    const existingJob = modifiedProject.jobs.find(j => j.title_id === currentJob.title_id && j !== currentJob);
+    if (existingJob) {
       setErrorAddPosition('Job already exists');
-      console.log('job exists');
       return;
     }
 
     // if new position, add to job list
     if (newPosition) {
       setModifiedProject({ ...modifiedProject, jobs: [ ...modifiedProject.jobs, currentJob]});
-      console.log('added new position: ', [ ...modifiedProject.jobs, currentJob]);
     }
     else {
       // find matching position
       const updatedJobs = modifiedProject.jobs.map(j => j.title_id === currentJob.title_id ? { ...j, ...currentJob } : j);
       setModifiedProject({ ...modifiedProject, jobs: updatedJobs});
-      console.log('updates existing position. new: ', updatedJobs);
     }
     setErrorAddPosition('');
     setNewPosition(false);
@@ -363,7 +356,6 @@ export const ProjectCreatorEditor = () => {
 
     // update jobs
     setModifiedProject({ ...modifiedProject, jobs: updatedJobs});
-    console.log('position deleted. new positions', updatedJobs);
 
     // reset current position
     const buttonDiv = document.querySelector(".team-positions-button");
@@ -681,13 +673,17 @@ export const ProjectCreatorEditor = () => {
               </option>
               ))}
             </select>
-
-            <button onClick={savePosition} id="position-edit-save">
-              Save
-            </button>
-            <button onClick={() => {addPositionCallback()}} id="position-edit-cancel">
-              Cancel
-            </button>
+            <div id="edit-position-buttons">
+              <div id="edit-position-button-pair">
+                <button onClick={savePosition} id="position-edit-save">
+                  Save
+                </button>
+                <button onClick={() => {addPositionCallback()}} id="position-edit-cancel">
+                  Cancel
+                </button>
+              </div>
+              <div className='error'>{errorAddPosition}</div>
+            </div>
           </div>
 
           <div id="edit-position-description">
@@ -908,7 +904,7 @@ export const ProjectCreatorEditor = () => {
                 </div>
               </div>
             </div>
-            <div className="positions-popup-info">{positionWindow}</div>
+            <div className="positions-popup-info" id={editMode ? "positions-popup-list-edit" : ""}>{positionWindow}</div>
           </div>
         }
       </>

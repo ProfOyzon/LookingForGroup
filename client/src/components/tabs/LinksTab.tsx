@@ -19,7 +19,7 @@ const removeRowClicked = (e) => {
   e.preventDefault();
   // Hide what was removed, because decreasing the count will refresh the page
   // This would recreate what was remove
-  // 
+  console.log(e.target);
   return false;
 }
 

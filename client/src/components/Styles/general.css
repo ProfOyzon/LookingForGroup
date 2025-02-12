@@ -191,6 +191,13 @@ used for the more options dropdown menu and notifications
   font-size: 30px;
 }
 
+.error {
+  color: var(--error-delete-color);
+  font-weight: 500;
+  font-size: 14px;
+  font-style: italic;
+}
+
 button {
   cursor: pointer;
   transition: 0.2s;

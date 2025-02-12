@@ -114,9 +114,8 @@ const Login = ({}) => {
                 *************************************************************/}
         <div className="login-form column">
           <h2>Log In</h2>
+          <div className="error">{error}</div>
           <div className="login-form-inputs">
-            <div className="error">{error}</div>
-            <span id="errorMessage"></span>
             <input
               className="login-input"
               type="text"

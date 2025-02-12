@@ -840,6 +840,13 @@ Project Creator and Editor style rules
   align-self: stretch;
 }
 
+#edit-position-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
 #edit-position-details {
   display: flex;
   flex-direction: row;
@@ -2017,6 +2024,11 @@ New Project Page style rules
   border-radius: 10px;
   flex: 0 381px;
   padding: 20px;
+}
+
+#positions-popup-list-edit {
+  background-color: transparent;
+  box-shadow: none;
 }
 
 #project-team-open-positions-popup > .positions-popup-list {

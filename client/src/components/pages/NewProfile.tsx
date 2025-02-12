@@ -85,11 +85,11 @@ const NewProfile = () => {
 
     // Get URL parameters to tell what user we're looking for and store it
     let urlParams = new URLSearchParams(window.location.search);
-    let profileID;
+    let profileID = urlParams.get('userID');
 
     // Stores if profile is loaded from server and if it's user's respectively
     const [profileLoaded, setProfileLoaded] = useState(false);
-    let isUsersProfile = false;
+    let isUsersProfile = `${userID}` === profileID;
 
     let displayedProfile: Profile;
     let setDisplayedProfile: Function;
@@ -116,6 +116,9 @@ const NewProfile = () => {
         if (profileID === undefined || profileID === null) {
             profileID = userID;
             isUsersProfile = true;
+        }
+        else {
+            isUsersProfile = `${profileID}` === `${userID}`;
         }
     };
 

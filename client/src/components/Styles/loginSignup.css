@@ -6,14 +6,6 @@ Login and Signup page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-.error {
-  color: var(--error-delete-color);
-  font-weight: 500;
-  font-size: 14px;
-  margin-bottom: 0.5em;
-  font-style: italic;
-}
-
 .background-cover {
   position: fixed;
   z-index: 20;
@@ -89,7 +81,7 @@ Login and Signup page style rules
 .login-form h2,
 .signup-form h2 {
   font-size: 24px;
-  margin: 0;
+  margin-bottom: 20px;
   font-weight: 600;
   color: var(--primary-color);
 }

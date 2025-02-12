@@ -180,133 +180,135 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
                     info to an active list.
                 */}
                 <PopupContent>
-                    <h2>{(category === 'project') ? 'Project Filters' : 'People Filters'}</h2>
-                    <div id="filters" className="popup-section">
-                        <SearchBar
-                            dataSets={[{ data: currentTags }]}
-                            onSearch={(results) => {
-                                setSearchedTags({ tags: results[0], color: searchedTags.color });
-                            }}
-                        ></SearchBar>
-                        <div id="filter-tabs">
-                            {filterPopupTabs.map((tab) => (
-                                <a
-                                    className="filter-tab"
-                                    onClick={(e) => {
-                                        let element = e.target as HTMLElement;
-
-                                        // Remove .selected from all 3 options, add it only to current button
-                                        let tabs = document.querySelector('#filter-tabs')!.children;
-                                        for (let i = 0; i < tabs.length; i++) {
-                                            tabs[i].classList.remove('selected');
-                                        }
-                                        element.classList.add('selected');
-                                        setCurrentTags(tab.categoryTags);
-                                        setSearchedTags({ tags: tab.categoryTags, color: tab.color });
-                                    }}
-                                >
-                                    {tab.categoryName}
-                                </a>
-                            ))}
-                        </div>
-                        <hr />
-                        <div id="filter-tags">
-                            {searchedTags.length === 0 ? (
-                                <p>No tags found. Please make sure you have a tab selected.</p>
-                            ) : (
-                                searchedTags.tags.map((tag) => (
-                                    <button
-                                        // className={`tag-button tag-button-${searchedTags.color}-unselected`}
-                                        className={`tag-button tag-button-${searchedTags.color}-${isTagEnabled(tag, searchedTags.color) !== -1 ? 'selected' : 'unselected'}`}
+                    <div id='filters-popup'>
+                        <h2>{(category === 'projects') ? 'Project Filters' : 'People Filters'}</h2>
+                        <div id="filters" className="popup-section">
+                            <SearchBar
+                                dataSets={[{ data: currentTags }]}
+                                onSearch={(results) => {
+                                    setSearchedTags({ tags: results[0], color: searchedTags.color });
+                                }}
+                            ></SearchBar>
+                            <div id="filter-tabs">
+                                {filterPopupTabs.map((tab) => (
+                                    <a
+                                        className="filter-tab"
                                         onClick={(e) => {
                                             let element = e.target as HTMLElement;
-                                            let selecIndex = isTagEnabled(tag, searchedTags.color);
 
-                                            if (selecIndex === -1) {
-                                                // Creates an object to store text and category
-                                                //setEnabledFilters([...enabledFilters, { tag, color: searchedTags.color }]);
-                                                setEnabledFilters([
-                                                    ...enabledFilters,
-                                                    { tag, color: searchedTags.color },
-                                                ]);
-                                                element.classList.replace(
-                                                    `tag-button-${searchedTags.color}-unselected`,
-                                                    `tag-button-${searchedTags.color}-selected`
-                                                );
-                                            } else {
-                                                // Remove tag from list of enabled filters
-                                                setEnabledFilters(enabledFilters.toSpliced(selecIndex, 1));
-                                                element.classList.replace(
-                                                    `tag-button-${searchedTags.color}-selected`,
-                                                    `tag-button-${searchedTags.color}-unselected`
-                                                );
+                                            // Remove .selected from all 3 options, add it only to current button
+                                            let tabs = document.querySelector('#filter-tabs')!.children;
+                                            for (let i = 0; i < tabs.length; i++) {
+                                                tabs[i].classList.remove('selected');
                                             }
+                                            element.classList.add('selected');
+                                            setCurrentTags(tab.categoryTags);
+                                            setSearchedTags({ tags: tab.categoryTags, color: tab.color });
                                         }}
                                     >
-                                        <i
-                                            className={
-                                                isTagEnabled(tag, searchedTags.color) !== -1
-                                                    ? 'fa fa-check'
-                                                    : 'fa fa-plus'
-                                            }
-                                        ></i>
-                                        &nbsp;{tag}
+                                        {tab.categoryName}
+                                    </a>
+                                ))}
+                            </div>
+                            <hr />
+                            <div id="filter-tags">
+                                {searchedTags.length === 0 ? (
+                                    <p>No tags found. Please make sure you have a tab selected.</p>
+                                ) : (
+                                    searchedTags.tags.map((tag) => (
+                                        <button
+                                            // className={`tag-button tag-button-${searchedTags.color}-unselected`}
+                                            className={`tag-button tag-button-${searchedTags.color}-${isTagEnabled(tag, searchedTags.color) !== -1 ? 'selected' : 'unselected'}`}
+                                            onClick={(e) => {
+                                                let element = e.target as HTMLElement;
+                                                let selecIndex = isTagEnabled(tag, searchedTags.color);
+
+                                                if (selecIndex === -1) {
+                                                    // Creates an object to store text and category
+                                                    //setEnabledFilters([...enabledFilters, { tag, color: searchedTags.color }]);
+                                                    setEnabledFilters([
+                                                        ...enabledFilters,
+                                                        { tag, color: searchedTags.color },
+                                                    ]);
+                                                    element.classList.replace(
+                                                        `tag-button-${searchedTags.color}-unselected`,
+                                                        `tag-button-${searchedTags.color}-selected`
+                                                    );
+                                                } else {
+                                                    // Remove tag from list of enabled filters
+                                                    setEnabledFilters(enabledFilters.toSpliced(selecIndex, 1));
+                                                    element.classList.replace(
+                                                        `tag-button-${searchedTags.color}-selected`,
+                                                        `tag-button-${searchedTags.color}-unselected`
+                                                    );
+                                                }
+                                            }}
+                                        >
+                                            <i
+                                                className={
+                                                    isTagEnabled(tag, searchedTags.color) !== -1
+                                                        ? 'fa fa-check'
+                                                        : 'fa fa-plus'
+                                                }
+                                            ></i>
+                                            &nbsp;{tag}
+                                        </button>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+                        <div id="selected-section" className="popup-section">
+                            <h3>Selected</h3>
+                            <h4>Click to deselect</h4>
+                            <div id="selected-filters">
+                                {enabledFilters.map((tag) => (
+                                    <button
+                                        className={`tag-button tag-button-${tag.color}-selected`}
+                                        onClick={(e) => {
+                                            // Remove tag from list of enabled filters, re-rendering component
+                                            console.log(tag);
+                                            console.log(isTagEnabled(tag.tag, tag.color));
+                                            setEnabledFilters(
+                                                enabledFilters.toSpliced(isTagEnabled(tag.tag, tag.color), 1)
+                                            );
+                                        }}
+                                    >
+                                        <i className="fa fa-close"></i>
+                                        &nbsp;{tag.tag}
                                     </button>
-                                ))
-                            )}
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                    <div id="selected-section" className="popup-section">
-                        <h3>Selected</h3>
-                        <h4>Click to deselect</h4>
-                        <div id="selected-filters">
-                            {enabledFilters.map((tag) => (
-                                <button
-                                    className={`tag-button tag-button-${tag.color}-selected`}
-                                    onClick={(e) => {
-                                        // Remove tag from list of enabled filters, re-rendering component
-                                        console.log(tag);
-                                        console.log(isTagEnabled(tag.tag, tag.color));
-                                        setEnabledFilters(
-                                            enabledFilters.toSpliced(isTagEnabled(tag.tag, tag.color), 1)
-                                        );
-                                    }}
-                                >
-                                    <i className="fa fa-close"></i>
-                                    &nbsp;{tag.tag}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                    <PopupButton
-                        buttonId={'primary-btn'}
-                        callback={() => {
-                            // Reset tag filters before adding results in
-                            activeTagFilters = [];
-                            const discoverFilters = document.getElementsByClassName('discover-tag-filter');
+                        <PopupButton
+                            buttonId={'primary-btn'}
+                            callback={() => {
+                                // Reset tag filters before adding results in
+                                activeTagFilters = [];
+                                const discoverFilters = document.getElementsByClassName('discover-tag-filter');
 
-                            for (let i = 0; i < enabledFilters.length; i++) {
-                                // Other from 'Projects' and Other from 'Genres' are treated the same when searching
-                                activeTagFilters.push(enabledFilters[i].tag.toLowerCase());
+                                for (let i = 0; i < enabledFilters.length; i++) {
+                                    // Other from 'Projects' and Other from 'Genres' are treated the same when searching
+                                    activeTagFilters.push(enabledFilters[i].tag.toLowerCase());
 
-                                // Check if any enabled filters matches a discover tag, and visually toggle it
-                                for (let j = 0; j < discoverFilters.length; j++) {
-                                    if (
-                                        discoverFilters[j].innerHTML.toLowerCase() ===
-                                        enabledFilters[i].tag.toLowerCase()
-                                    ) {
-                                        discoverFilters[j].classList.add('discover-tag-filter-selected');
+                                    // Check if any enabled filters matches a discover tag, and visually toggle it
+                                    for (let j = 0; j < discoverFilters.length; j++) {
+                                        if (
+                                            discoverFilters[j].innerHTML.toLowerCase() ===
+                                            enabledFilters[i].tag.toLowerCase()
+                                        ) {
+                                            discoverFilters[j].classList.add('discover-tag-filter-selected');
+                                        }
                                     }
                                 }
-                            }
 
-                            // Update the project list
-                            updateItemList(activeTagFilters);
-                            resetFilters();
-                        }}
-                    >
-                        Apply
-                    </PopupButton>
+                                // Update the project list
+                                updateItemList(activeTagFilters);
+                                resetFilters();
+                            }}
+                        >
+                            Apply
+                        </PopupButton>
+                    </div>
                 </PopupContent>
             </Popup>
         </div>

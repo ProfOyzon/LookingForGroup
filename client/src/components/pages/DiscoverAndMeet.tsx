@@ -29,15 +29,6 @@ const DiscoverAndMeet = ({ category }) => {
         tags: Tag[];
     }
 
-    // Might add later
-    interface Project extends Item {
-
-    }
-
-    interface Profile extends Item {
-
-    }
-
     interface Tag {
         tag: string;
         color: string;

@@ -242,7 +242,7 @@ Project Creator and Editor style rules
 #project-editor-tabs {
   display: flex;
   justify-content: space-around;
-  margin: 0 20px;
+  margin-top: 38px;
 }
 
 .project-editor-tab {
@@ -280,8 +280,7 @@ Project Creator and Editor style rules
 
 #project-editor-content {
   flex-grow: 1;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin: 35px 56px 40px 55px;
 }
 
 #project-editor-content label,
@@ -466,6 +465,16 @@ Project Creator and Editor style rules
   border-radius: 10px;
 }
 
+#project-editor-tag-search-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 10px;
+  /*For scrolling*/
+  max-height: 482px;
+  overflow-y: auto;
+}
+
 #project-editor-tag-wrapper {
   display: flex;
   flex-direction: column;
@@ -529,10 +538,20 @@ Project Creator and Editor style rules
 #project-editor-type-tags {
   grid-area: type;
   min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 #project-editor-selected-tags {
   grid-area: select;
+}
+
+#project-editor-selected-tags-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 #project-editor-tag-search {
@@ -1940,8 +1959,6 @@ New Project Page style rules
 }
 
 #project-info-buttons button {
-  border: none;
-  background-color: rgba(0, 0, 0, 0);
   text-wrap: nowrap;
 }
 

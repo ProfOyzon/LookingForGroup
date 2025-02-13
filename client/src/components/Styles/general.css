@@ -198,6 +198,11 @@ used for the more options dropdown menu and notifications
   font-style: italic;
 }
 
+.button-reset {
+  background-color: transparent;
+  border: none;
+}
+
 button {
   cursor: pointer;
   transition: 0.2s;

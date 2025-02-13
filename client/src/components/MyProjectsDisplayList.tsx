@@ -21,6 +21,26 @@ const MyProjectsDisplayList = ({ projectData }) => {
     getStatus();
   }
 
+  const deleteProject = async () => {
+    const url = `/api/projects/${projectData.project_id}`;
+    try {
+      // send a DELETE request to the API
+      const response = await fetch(url, {
+        method: 'DELETE',
+      });
+
+      // check if the delete request was successful
+      if (response.ok) {
+        console.log('Project deleted successfully');
+       // still need to add functionality for removing the project from the UI/Database
+      } else {
+        console.log('Failed to delete project');
+      }
+    } catch (error) {
+      console.error('Error deleting project:', error);
+    } 
+  }
+
   let optionsClass = 'list-card-options-list';
   if (optionsShown) {
     optionsClass += ' show';

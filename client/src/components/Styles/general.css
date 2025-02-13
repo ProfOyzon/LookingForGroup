@@ -768,19 +768,18 @@ Page popup style rules
   border-radius: 10px;
   box-shadow: 0px 0px 10px 0px var(--shadow-color);
   /* max-width: 1321px; */
+  max-width: 1121px;
   max-height: 849px;
   opacity: 100%;
   z-index: 3;
-  width: 921px; /* 100px of padding on both sides makes 1121px total */
   /* height: 849px; */
-  padding: 34px 100px;
 }
 
 @media (max-width: 576px) {
   .popup {
-    max-width: 921px;
+    /* max-width: 921px;
     max-height: 781px;
-    width: 64vw;
+    width: 64vw; */
     /* height: 95vw; */
   }
 }
@@ -846,112 +845,145 @@ Page popup style rules
   padding-right: 15px;
 }
 
-.popup #primary-btn {
-  width: 104px;
-  height: 40px;
-  padding: 5px 16px;
-  font-size: 20px;
-  border: none;
-  border-radius: 40px;
-  background-color: var(--primary-color);
-  color: var(--invert-text);
-  font-weight: 700;
-  margin-top: 36px;
+.popup #filters-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  #primary-btn {
+    width: 104px;
+    height: 40px;
+    padding: 5px 16px;
+    font-size: 20px;
+    border: none;
+    border-radius: 40px;
+    background-color: var(--primary-color);
+    color: var(--invert-text);
+    font-weight: 700;
+    margin-top: min(3.67vh, 36px);
+    margin-bottom: min(2.65vh, 26px);
+  }
+
+  h2 {
+    font-size: 24px;
+    margin-top: min(3.46vh, 34px);
+    margin-bottom: min(3.05vh, 30px);
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+  
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: min(0.20vh, 2px) 0 min(0.51vh, 5px);
+  }
+  
+  h4 {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--neutral-gray);
+    font-style: italic;
+    margin: 0 0 min(1.02vh, 10px);
+  }
+
+  .popup-section {
+    background-color: var(--bg-color);
+    border-radius: 10px;
+    width: 100%;
+    overflow: auto;
+    margin: min(1.32vh, 13px) min(6.68vw, 101px);
+  }
+  
+  #filters {
+    /* Scale with viewport, but cap off at 919x392 (including padding) */
+    max-width: 857px;
+    max-height: 340px;
+    width: 56.7vw;
+    height: 39.9vh;
+    padding: min(2.65vh, 26px) min(2.05vw, 31px);
+  }
+  
+  #filter-tabs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: min(3.87vh, 38px) min(2.51vw, 38px);
+    justify-content: center;
+    margin: min(1.63vh, 16px) auto;
+  }
+  
+  .filter-tab {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--neutral-gray);
+    /* Indicate should be clicked without being a button */
+    cursor: pointer;
+    transition: 0.2s;
+    /* margin: 14px 38px; */
+  }
+  
+  .filter-tab.selected {
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+  
+  hr {
+    /* color: var(--header-color); */
+    border: 1px solid var(--header-color);
+    margin: 0;
+    margin-bottom: min(1.73vh, 17px);
+  }
+  
+  #filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: min(1.02vh, 10px) min(0.66vw, 10px);
+  }
+  
+  #selected-section {
+    max-width: 859px;
+    max-height: 178px;
+    width: 56.8vw;
+    height: 18.1vh;
+    padding: min(1.63vh, 16px) min(1.98vw, 30px);
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+  
+  #selected-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: min(1.02vh, 10px) min(0.66vw, 10px);
+  }
+}
+
+/* Mobile styling */
+@media (max-width: 576px) {
+  .popup #filters-popup {
+    .popup-section {
+      margin: 1.44vh 8.47vw;
+    }
+    
+    #filters {
+      width: 71.9vw;
+      height: 37.6vh;
+      padding: 2.88vh 2.6vw;
+    }
+  
+    #selected-section {
+      width: 72vw;
+      height: 19.7vh;
+      padding: 1.77vh 2.52vw;
+    }
+  }
 }
 
 /* .popup #primary-btn:hover {
   background-color: var(--border-color);
   color: var(--invert-text);
 } */
-
-.popup h2 {
-  font-size: 24px;
-  margin-bottom: 24px;
-  margin-top: 0px;
-  font-weight: 600;
-  color: var(--primary-color);
-}
-
-.popup h3 {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--primary-color);
-  margin: 0px 0px 4px 0px;
-}
-
-.popup h4 {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--neutral-gray);
-  font-style: italic;
-  margin: 0px 0px 10px 0px;
-}
-
-.popup #filters {
-  max-height: 340px;
-  height: 49vh;
-}
-
-.popup .popup-section {
-  background-color: var(--bg-color);
-  padding: 26px 30px;
-  margin: 16px 0px;
-  border-radius: 10px;
-  max-width: 859px;
-  width: 100%;
-  overflow: auto;
-}
-
-.popup #filter-tabs {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 38px;
-  justify-content: center;
-  margin: 14px auto;
-}
-
-.popup .filter-tab {
-  font-size: 16px;
-  font-weight: 400;
-  color: var(--neutral-gray);
-  /* Indicate should be clicked without being a button */
-  cursor: pointer;
-  transition: 0.2s;
-  /* margin: 14px 38px; */
-}
-
-.popup .filter-tab.selected {
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
-.popup hr {
-  /* color: var(--header-color); */
-  border: 1px solid var(--header-color);
-  margin: 0;
-  margin-bottom: 14px;
-}
-
-.popup #filter-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.popup #selected-section {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  max-height: 158px;
-  height: 23vh;
-}
-
-.popup #selected-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
 
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\

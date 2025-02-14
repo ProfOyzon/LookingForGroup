@@ -21,6 +21,25 @@ const MyProjectsDisplayList = ({ projectData }) => {
     getStatus();
   }
 
+  const deleteProject = async () => {
+    const url = `/api/projects/${projectData.project_id}`;
+    try {
+      // send a DELETE request to the API
+      const response = await fetch(url, {
+        method: 'DELETE',
+      });
+
+      // check if the delete request was successful
+      if (response.ok) {
+        console.log('Project deleted successfully');
+      } else {
+        console.log('Failed to delete project');
+      }
+    } catch (error) {
+      console.error('Error deleting project:', error);
+    } 
+  }
+
   let optionsClass = 'list-card-options-list';
   if (optionsShown) {
     optionsClass += ' show';
@@ -84,7 +103,7 @@ const MyProjectsDisplayList = ({ projectData }) => {
               ></i>
               &nbsp; Leave Project
             </button>
-            <button className="card-delete-button" onClick={(e) => {}}>
+            <button className="card-delete-button" onClick={() => {deleteProject()}}>
               <i
                 className="fa-solid fa-trash-can"
                 style={{ fontStyle: 'normal', color: '#ff3859' }}

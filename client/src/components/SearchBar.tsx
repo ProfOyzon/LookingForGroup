@@ -12,6 +12,7 @@ interface SearchBarProps {
 
 // Search bar component for filtering data in Discover and Meet pages
 // Component is memoized to prevent unnecessary re-renders
+//FIXME: create way to update results if a new dataset is provided: discover page filter and project editor tag filters do not save search state
 export const SearchBar: FC<SearchBarProps> = memo(({ dataSets, onSearch }) => {
   const [query, setQuery] = useState('');
 

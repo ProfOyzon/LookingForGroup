@@ -11,11 +11,13 @@ import './Styles/projects.css';
 import './Styles/settings.css';
 import './Styles/pages.css';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Popup, PopupButton, PopupContent } from './Popup';
 import { SearchBar } from './SearchBar';
 import profileImage from '../icons/profile-user.png';
 import editIcon from '../icons/edit.png';
+import { render } from '@testing-library/react';
+import { current } from '@reduxjs/toolkit';
 
 //THIS COMPONENT NEEDS TO BE WORKED ON
 
@@ -88,14 +90,46 @@ export const ProjectCreatorEditor = () => {
   const locationOptions = ["On-site", "Remote", "Hybrid"]
   const compensationOptions = ["Unpaid", "Paid"]
 
-  //State variables
+  // tag interfaces
+  interface Tag {
+    tag_id: number;
+    label: string;
+    type: string;
+  }
+  
+  interface Skill {
+    skill_id: number;
+    label: string;
+    type: string;
+  }
+  
+  interface ProjectType {
+    type_id: number;
+    label: string;
+  }
+
+  //=================
+  // State variables
+  //=================
   const [newProject, setNewProject] = useState(false);                    //tracking if creating a new project or editting existing (empty or populated fields)
   const [projectData, setProjectData] = useState(emptyProject);           //store project data
   const [modifiedProject, setModifiedProject] = useState(emptyProject);   //tracking temporary project changes before committing to a save
   const [failCheck, setFailCheck] = useState(false);                      //check whether or not data was successfully obtained from database
-  const [allJobs, setAllJobs] = useState<{ title_id: number, label: string }[]>([]); //for complete list of jobs
+  const [allJobs, setAllJobs] = useState<{                                //for complete list of jobs
+    title_id: number, label: string
+  }[]>([]);
+  const [allProjectTypes, setAllProjectTypes] =                           //for complete list of project types  
+    useState<ProjectType[]>([]);
+  const [allTags, setAllTags] = useState<Tag[]>([]);                      //for complete list of tags
+  const [allSkills, setAllSkills] = useState<Skill[]>([]);                //for complete list of skills
   const [currentTab, setCurrentTab] = useState(0);                        //for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
   const [currentTagsTab, setCurrentTagsTab] = useState(0);                //tracking which tab of tags is currently viewed: 0 - project type, 1 - genre, 2 - dev skills, 3 - design skills, 4 - soft skills
+  // const [currentDataSet, setCurrentDataSet] = useState<{                  //current dataset for tag search bar
+  //   data: (Tag | Skill | ProjectType)[] }[]>([]);
+  const [searchedTags, setSearchedTags] = useState<(                      //filtered results from tag search bar
+    Tag | Skill | ProjectType)[]>([]);
+  const [searchResults, setSearchResults] = useState<(                    //filtered results from tag search bar
+    Tag | Skill | ProjectType)[][]>([]);
   const [currentTeamTab, setCurrentTeamTab] = useState(0);                //tracking which team tab is currently being viewed: 0 - current team, 1 - open positions
   const [currentRole, setCurrentRole] = useState(0);                      //tracking which role is being viewed out of all open positions: value is project title_id (or job_title title_id)
   const [currentMember, setCurrentMember] = useState(emptyMember);        //tracking which member is being editted
@@ -103,16 +137,18 @@ export const ProjectCreatorEditor = () => {
   const [editMode, setEditMode] = useState(false);                        //tracking whether position view is in edit mode or not
   const [newPosition, setNewPosition] = useState(false);                  //tracking if the user is making a new position (after pressing Add Position button)
   const [currentJob, setCurrentJob] = useState(emptyJob);
-  const [closePopup, setClosePopup] = useState(true); //determine if a popup should close after press (PopupButton)
+  const [closePopup, setClosePopup] = useState(true);                     //determine if a popup should close after press (PopupButton)
   //errors
-  const [errorAddMember, setErrorAddMember] = useState('');  //sets error when adding a member to the team
-  const [errorAddPosition, setErrorAddPosition] = useState('');
+  const [errorAddMember, setErrorAddMember] = useState('');               //sets error when adding a member to the team
+  const [errorAddPosition, setErrorAddPosition] = useState('');           //sets error when adding a position to the team
 
+  //=============
+  // Use Effects
+  //=============
   // Get project data on projectID change
   useEffect(() => {
     const getProjectData = async () => {
       const url = `/api/projects/${projectID}`;
-
       try {
         let response = await fetch(url);
 
@@ -135,7 +171,7 @@ export const ProjectCreatorEditor = () => {
     getProjectData();
   }, [projectID]);
 
-  // Get job list if allJobs is false
+  // Get job list if allJobs is empty
   useEffect(() => {
     const getJobsList = async () => {
       const url = `/api/datasets/job-titles`;
@@ -160,6 +196,87 @@ export const ProjectCreatorEditor = () => {
       getJobsList();
     }
   }, [allJobs]);
+
+  // Get project types if allProjectTypes is empty
+  useEffect(() => {
+    const getProjectTypes = async () => {
+      const url = `/api/datasets/project-types`;
+
+      try {
+        let response = await fetch(url);
+
+        const projectTypes = await response.json();
+        const projectTypeData = projectTypes.data;
+
+        if (projectTypeData === undefined) {
+          setFailCheck(true);
+          return;
+        }
+        setAllProjectTypes(projectTypeData);
+        console.log('project types', projectTypeData);
+
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    if (allProjectTypes.length === 0) {
+      getProjectTypes();
+    }
+  }, [allProjectTypes]);
+
+  // Get tags if allTags is empty
+  useEffect(() => {
+    const getTags = async () => {
+      const url = `/api/datasets/tags`;
+
+      try {
+        let response = await fetch(url);
+
+        const tags = await response.json();
+        const tagsData = tags.data;
+
+        if (tagsData === undefined) {
+          setFailCheck(true);
+          return;
+        }
+        setAllTags(tagsData);
+        console.log('tags', tagsData);
+
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    if (allTags.length === 0) {
+      getTags();
+    }
+  }, [allTags]);
+
+  // Get skills if allSkills is empty
+  useEffect(() => {
+    const getSkills = async () => {
+      const url = `/api/datasets/skills`;
+
+      try {
+        let response = await fetch(url);
+
+        const skills = await response.json();
+        const skillsData = skills.data;
+
+        if (skillsData === undefined) {
+          setFailCheck(true);
+          return;
+        }
+        setAllSkills(skillsData);
+        console.log('skills', skillsData);
+
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    if (allSkills.length === 0) {
+      getSkills();
+    }
+  }, [allSkills]);
 
   // Assign active buttons in Team tab (Open Positions)
   const isTeamTabOpen = currentTeamTab === 1;
@@ -186,11 +303,208 @@ export const ProjectCreatorEditor = () => {
     }
   }, [currentRole, isTeamTabOpen]);
 
+  // Find if a tag is present on the project
+  const isTagSelected = useCallback((tab: number, id: number, label: string) => {
+    // Project Type
+    if (tab === 0) {
+      return modifiedProject.project_types.some(t => t.id === id && t.project_type === label) ?
+        'selected' : 'unselected';
+    }
+    // Genre
+    if (tab === 1) {
+      return modifiedProject.tags.some(t => t.id === id && t.tag === label) ?
+        'selected' : 'unselected';
+    }
+    //TODO: complete other skills
+    // // Developer Skills
+    // if (tab === 2) {
+    //   return modifiedProject.skills.some(t => t.id === id && t.tag === label) ?
+    //     'selected' : 'unselected';
+    // }
+    // // Designer Skills
+    // if (tab === 3) {
+    //   return modifiedProject.tags.some(t => t.id === id && t.tag === label) ?
+    //     'selected' : 'unselected';
+    // }
+    // // Soft Skills
+    // if (tab === 4) {
+    //   return modifiedProject.tags.some(t => t.id === id && t.tag === label) ?
+    //     'selected' : 'unselected';
+    // }
+    console.log(`tab ${tab} not implemented`);
+    return 'unselected';
+  }, [modifiedProject]);
+
+  // Create element for each tag
+  const renderTags = useCallback(() => {
+    if (searchedTags && searchedTags.length !== 0 ) {
+      return (
+        searchedTags.map(t => {
+          // get id according to type of tag
+          let id;
+          if ('tag_id' in t) {
+            id = t.tag_id;
+          } else if ('skill_id' in t) {
+            id = t.skill_id;
+          } else if ('type_id' in t) {
+            id = t.type_id;
+          }
+
+          return (
+            <button
+                className={`tag-button tag-button-${('type' in t) ? getTagColor(t.type) : 'blue'}-${
+                  isTagSelected(currentTagsTab, id, t.label)
+                }`}
+              >
+                <i className={isTagSelected(currentTagsTab, id, t.label) === 'selected' ? 'fa fa-close' : 'fa fa-plus'}
+                ></i>
+              &nbsp;{t.label}
+              </button>
+          )
+        })
+      )
+    }
+    // project type
+    if (currentTagsTab === 0) {
+      return (
+        allProjectTypes.map(t => (
+          <button
+            className={`tag-button tag-button-blue-${isTagSelected(currentTagsTab, t.type_id, t.label)}`}
+          >
+            <i className={isTagSelected(currentTagsTab, t.type_id, t.label) === 'selected' ? 'fa fa-close' : 'fa fa-plus'}
+            ></i>
+          &nbsp;{t.label}
+          </button>
+        ))
+      )
+    }
+    else if (currentTagsTab === 1) {
+      return (
+        allTags.map(t => (
+          <button
+            className={`tag-button tag-button-green-${isTagSelected(currentTagsTab, t.tag_id, t.label)}`}
+          >
+            <i className={isTagSelected(currentTagsTab, t.tag_id, t.label) === 'selected' ? 'fa fa-close' : 'fa fa-plus'}
+            ></i>
+          &nbsp;{t.label}
+          </button>
+        ))
+      )
+    }
+    else if (currentTagsTab === 2) {
+      return (
+        allSkills.filter(s => s.type === 'Designer').map(s => (
+          <button
+            className={`tag-button tag-button-red-${isTagSelected(currentTagsTab, s.skill_id, s.label)}`}
+          >
+            <i className={isTagSelected(currentTagsTab, s.skill_id, s.label) === 'selected' ? 'fa fa-close' : 'fa fa-plus'}
+            ></i>
+          &nbsp;{s.label}
+          </button>
+        ))
+      )
+    }
+    else if (currentTagsTab === 3) {
+      return (
+        allSkills.filter(s => s.type === 'Developer').map(s => (
+          <button
+            className={`tag-button tag-button-yellow-${isTagSelected(currentTagsTab, s.skill_id, s.label)}`}
+          >
+            <i className={isTagSelected(currentTagsTab, s.skill_id, s.label) === 'selected' ? 'fa fa-close' : 'fa fa-plus'}
+            ></i>
+          &nbsp;{s.label}
+          </button>
+        ))
+      )
+    }
+    return (
+      allSkills.filter(s => s.type === 'Soft').map(s => (
+        <button
+          className={`tag-button tag-button-purple-${isTagSelected(currentTagsTab, s.skill_id, s.label)}`}
+        >
+          <i className={isTagSelected(currentTagsTab, s.skill_id, s.label) === 'selected' ? 'fa fa-close' : 'fa fa-plus'}
+          ></i>
+        &nbsp;{s.label}
+        </button>
+      ))
+    )
+  }, [searchedTags, currentTagsTab, allSkills, isTagSelected, allProjectTypes, allTags]);
+
+  // Update tags shown for search bar
+  const currentDataSet = useMemo(() => {
+    switch (currentTagsTab) {
+      case 0:
+        return [{ data: allProjectTypes }];
+      case 1:
+        return [{ data: allTags }];
+      case 2:
+        return [{ data: allSkills.filter(s => s.type === 'Developer') }];
+      case 3:
+        return [{ data: allSkills.filter(s => s.type === 'Designer') }];
+      case 4:
+        return [{ data: allSkills.filter(s => s.type === 'Soft') }];
+      default:
+        return [{ data: [] }];
+    }
+  }, [currentTagsTab, allProjectTypes, allTags, allSkills]);
+
+  // Update shown tags according to search results
+  // FIXME: results do not carry over when switching tabs
+  const handleSearch = useCallback((results: (Tag | Skill | ProjectType)[][]) => {
+    setSearchResults(results);
+    console.log('handling search');
+    console.log('results', results);
+    console.log('current data set', currentDataSet);
+    if (results.length === 0 && currentDataSet.length !== 0) {
+      setSearchedTags(currentDataSet[0].data);
+    }
+    setSearchedTags(results[0]);
+  }, [currentDataSet]);
+
+  // Search tags on tab change
+  useEffect(() => {
+    handleSearch(searchResults);
+  }, [currentTagsTab, currentDataSet, handleSearch, searchResults]);
+
+  //================
+  // Helper Methods
+  //================
   // Get project job info
   const getProjectJob = (id: number) => {
     const job = modifiedProject.jobs.find((job: {title_id: number}) => job.title_id === id);
     return job || { title_id: 0, job_title: '', description: '', availability: '', location: '', duration: '', compensation: '' };
   };
+
+  // Get appropriate tag color for tag
+  const getTagColor = (type: string) => {
+    // Genre
+    if (type === 'Creative' ||
+      type === 'Technical' ||
+      type === 'Games' ||
+      type === 'Multimedia' ||
+      type === 'Music' ||
+      type === 'Other'
+    ) {
+      return 'green';
+    }
+
+    // Developer Skills
+    if (type === 'Developer') {
+      return 'yellow';
+    }
+
+    // Designer Skills
+    if (type === 'Designer') {
+      return 'red';
+    }
+
+    // Soft Skills
+    if (type === 'Soft') {
+      return 'purple';
+    }
+
+    console.log("Couldn't find appropriate tag to assign color");
+  }
 
   //Save project editor changes
   const saveProject = async () => {
@@ -366,7 +680,9 @@ export const ProjectCreatorEditor = () => {
     }
   }
 
-  //Tab page elements
+  //===================
+  // Tab page elements
+  //===================
   //General
   const generalTab = (
     <>
@@ -500,9 +816,19 @@ export const ProjectCreatorEditor = () => {
         <div id="project-editor-tags">
           <div id="project-editor-type-tags">
             <div className="project-editor-section-header">Project Type</div>
-            <div className="error">*At least 1 type is required</div>{' '}
+            {modifiedProject.project_types.length === 0 ? <div className="error">*At least 1 type is required</div> : <></> }
             {/* FIXME: determine error from project information*/}
-            <div id="project-editor-type-tags-container">{/* TODO: Add type tags here */}</div>
+            <div id="project-editor-type-tags-container">
+              {modifiedProject.project_types.map(t => (
+                <button
+                  className={`tag-button tag-button-blue-selected`}
+                >
+                  <i className="fa fa-close"
+                  ></i>
+                  &nbsp;{t.project_type}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div id="project-editor-selected-tags">
@@ -511,45 +837,59 @@ export const ProjectCreatorEditor = () => {
               Drag and drop to reorder. The first 2 tags will be displayed on your project's
               discover card.
             </div>
-            <div className="error">*At least 1 tag is required</div>{' '}
-            {/* FIXME: determine error from project information*/}
-            <hr id="selected-tag-divider" />
+            {/* TODO: check for project skills */}
+            {modifiedProject.tags.length === 0 ? <div className="error">*At least 1 tag is required</div> : <></> }
             <div id="project-editor-selected-tags-container">
-              {/* TODO: Add tags here, separate top 2 from others */}
+              <hr id="selected-tag-divider" />
+              {/* TODO: Separate top 2 tags from others with hr element */}
+              {modifiedProject.tags.map(t => (
+                <button
+                className={`tag-button tag-button-${getTagColor(t.type)}-selected`}
+                >
+                  <i className="fa fa-close"
+                  ></i>
+                &nbsp;{t.tag}
+                </button>
+              ))}
             </div>
           </div>
 
           <div id="project-editor-tag-search">
-            <SearchBar dataSets={[]} onSearch={() => {}} />
+            <SearchBar dataSets={currentDataSet} onSearch={handleSearch} />
             <div id="project-editor-tag-wrapper">
               <div id="project-editor-tag-search-tabs">
                 <button
                   onClick={() => setCurrentTagsTab(0)}
-                  className={`project-editor-tag-search-tab ${currentTagsTab === 0 ? 'tag-search-tab-active' : ''}`}
+                  className={`button-reset project-editor-tag-search-tab ${currentTagsTab === 0 ? 'tag-search-tab-active' : ''}`}
+                  //Data from genres
                 >
                   Project Type
                 </button>
                 <button
                   onClick={() => setCurrentTagsTab(1)}
-                  className={`project-editor-tag-search-tab ${currentTagsTab === 1 ? 'tag-search-tab-active' : ''}`}
+                  className={`button-reset project-editor-tag-search-tab ${currentTagsTab === 1 ? 'tag-search-tab-active' : ''}`}
+                  //Data from tags
                 >
                   Genre
                 </button>
                 <button
                   onClick={() => setCurrentTagsTab(2)}
-                  className={`project-editor-tag-search-tab ${currentTagsTab === 2 ? 'tag-search-tab-active' : ''}`}
+                  className={`button-reset project-editor-tag-search-tab ${currentTagsTab === 2 ? 'tag-search-tab-active' : ''}`}
+                  //Data from skills (type=Developer)
                 >
                   Developer Skills
                 </button>
                 <button
                   onClick={() => setCurrentTagsTab(3)}
-                  className={`project-editor-tag-search-tab ${currentTagsTab === 3 ? 'tag-search-tab-active' : ''}`}
+                  className={`button-reset project-editor-tag-search-tab ${currentTagsTab === 3 ? 'tag-search-tab-active' : ''}`}
+                  //Data from skills (type=Designer)
                 >
                   Designer Skills
                 </button>
                 <button
                   onClick={() => setCurrentTagsTab(4)}
-                  className={`project-editor-tag-search-tab ${currentTagsTab === 4 ? 'tag-search-tab-active' : ''}`}
+                  className={`button-reset project-editor-tag-search-tab ${currentTagsTab === 4 ? 'tag-search-tab-active' : ''}`}
+                  //Data from skills (type=Soft)
                 >
                   Soft Skills
                 </button>
@@ -557,7 +897,7 @@ export const ProjectCreatorEditor = () => {
               <hr id="tag-search-divider" />
             </div>
             <div id="project-editor-tag-search-container">
-              {/* TODO: Insert current tab's tags here */}
+              {renderTags()}
             </div>
           </div>
         </div>
@@ -618,7 +958,7 @@ export const ProjectCreatorEditor = () => {
             </div>
           </div>
           <Popup>
-              <PopupButton className="delete-position-button">
+              <PopupButton className="delete-position-button button-reset">
                 <img src="/images/icons/delete.svg" alt="trash can" />
               </PopupButton>
               <PopupContent useClose={false}>
@@ -678,7 +1018,7 @@ export const ProjectCreatorEditor = () => {
                 <button onClick={savePosition} id="position-edit-save">
                   Save
                 </button>
-                <button onClick={() => {addPositionCallback()}} id="position-edit-cancel">
+                <button onClick={() => {addPositionCallback()}} id="position-edit-cancel" className="button-reset">
                   Cancel
                 </button>
               </div>
@@ -828,14 +1168,14 @@ export const ProjectCreatorEditor = () => {
                           </div>
                           <div className="project-editor-button-pair">
                             <button className="delete-button">Delete</button>
-                            <PopupButton buttonId="team-delete-member-cancel-button">
+                            <PopupButton buttonId="team-delete-member-cancel-button" className="button-reset">
                               Cancel
                             </PopupButton>
                           </div>
                         </PopupContent>
                       </Popup>
                     </div>
-                    <PopupButton buttonId="team-edit-member-cancel-button" callback={() => console.log(modifiedProject.members)}>Cancel</PopupButton>
+                    <PopupButton buttonId="team-edit-member-cancel-button" className="button-reset" callback={() => console.log(modifiedProject.members)}>Cancel</PopupButton>
                   </PopupContent>
                 </Popup>
               </div>
@@ -870,7 +1210,7 @@ export const ProjectCreatorEditor = () => {
                 <div className="project-editor-button-pair">
                   {/* TODO: add team member to project */}
                   <PopupButton buttonId="team-add-member-add-button" callback={() => {/*handleNewMember();*/ console.log('in callback', closePopup)}} doNotClose={!closePopup}>Add</PopupButton>
-                  <PopupButton buttonId="team-add-member-cancel-button">Cancel</PopupButton>
+                  <PopupButton buttonId="team-add-member-cancel-button" className="button-reset">Cancel</PopupButton>
                 </div>
               </PopupContent>
             </Popup>
@@ -919,13 +1259,13 @@ export const ProjectCreatorEditor = () => {
           <div id="project-editor-team-tabs">
             <button
               onClick={() => setCurrentTeamTab(0)}
-              className={`project-editor-team-tab ${currentTeamTab === 0 ? 'team-tab-active' : ''}`}
+              className={`button-reset project-editor-team-tab ${currentTeamTab === 0 ? 'team-tab-active' : ''}`}
             >
               Current Team
             </button>
             <button
               onClick={() => setCurrentTeamTab(1)}
-              className={`project-editor-team-tab ${currentTeamTab === 1 ? 'team-tab-active' : ''}`}
+              className={`button-reset project-editor-team-tab ${currentTeamTab === 1 ? 'team-tab-active' : ''}`}
             >
               Open Positions
             </button>

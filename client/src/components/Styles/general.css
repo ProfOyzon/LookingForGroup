@@ -809,6 +809,22 @@ Page popup style rules
   z-index: 5;
 }
 
+.popup-back {
+  position: absolute;
+  border-radius: 4px !important;
+  border: none !important;
+  top: 0px;
+  left: 0px;
+  background: none !important;
+  margin: min(1.59vw, 24px) 0 0 min(1.59vw, 24px) !important;
+  display: flex;
+  align-items: center;
+
+  img {
+    height: 24px; /* Font-size is meant to be 20pt, which corresponds to 24px here */
+  }
+}
+
 .popup-close {
   position: absolute;
   border-radius: 4px !important;
@@ -902,6 +918,10 @@ Page popup style rules
     width: 56.7vw;
     height: 39.9vh;
     padding: min(2.65vh, 26px) min(2.05vw, 31px);
+
+    p {
+      margin-top: 0;
+    }
   }
   
   #filter-tabs {
@@ -961,7 +981,16 @@ Page popup style rules
 
 /* Mobile styling */
 @media (max-width: 576px) {
+  .popup-back {
+    margin: 2.01vw 0 0 2.01vw !important;
+  }
+
   .popup #filters-popup {
+    h2 {
+      margin-top: 3.76vh;
+      margin-bottom: 3.32vh;
+    }
+
     .popup-section {
       margin: 1.44vh 8.47vw;
     }
@@ -970,6 +999,10 @@ Page popup style rules
       width: 71.9vw;
       height: 37.6vh;
       padding: 2.88vh 2.6vw;
+    }
+
+    #filter-tabs {
+      column-gap: 3.19vw;
     }
   
     #selected-section {

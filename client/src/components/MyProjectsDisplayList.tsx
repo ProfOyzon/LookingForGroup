@@ -32,7 +32,6 @@ const MyProjectsDisplayList = ({ projectData }) => {
       // check if the delete request was successful
       if (response.ok) {
         console.log('Project deleted successfully');
-       // still need to add functionality for removing the project from the UI/Database
       } else {
         console.log('Failed to delete project');
       }
@@ -104,7 +103,7 @@ const MyProjectsDisplayList = ({ projectData }) => {
               ></i>
               &nbsp; Leave Project
             </button>
-            <button className="card-delete-button" onClick={(e) => {}}>
+            <button className="card-delete-button" onClick={() => {deleteProject()}}>
               <i
                 className="fa-solid fa-trash-can"
                 style={{ fontStyle: 'normal', color: '#ff3859' }}

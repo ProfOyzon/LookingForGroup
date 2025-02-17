@@ -1,4 +1,4 @@
-import { memo, FC, ChangeEvent, useState } from 'react';
+import { memo, FC, ChangeEvent, useState, useLayoutEffect } from 'react';
 // import { ProjectCard } from './ProjectCard';
 
 interface DataSet {
@@ -21,18 +21,27 @@ export const SearchBar: FC<SearchBarProps> = memo(({ dataSets, onSearch }) => {
     // Convert the query to lowercase
     const newQuery = event.target.value.toLowerCase();
     setQuery(newQuery);
+    handleSearch(newQuery);
+  };
 
+  const handleSearch = (searchQuery) => {
     // Filter the data based on the query
     const filteredResults = dataSets.map((dataSet) =>
       dataSet.data.filter((item) =>
         typeof item === 'object'
-          ? Object.values(item).some((value) => String(value).toLowerCase().includes(newQuery))
-          : String(item).toLowerCase().includes(newQuery)
+          ? Object.values(item).some((value) => String(value).toLowerCase().includes(searchQuery))
+          : String(item).toLowerCase().includes(searchQuery)
       )
     );
 
     onSearch(filteredResults);
-  };
+  }
+
+  useLayoutEffect(() => {
+    if (query !== '') {
+      handleSearch(query);
+    }
+  }, [dataSets]);
 
   return (
     <div className="search-wrapper">

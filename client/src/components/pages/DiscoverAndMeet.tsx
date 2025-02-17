@@ -11,7 +11,7 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import CreditsFooter from '../CreditsFooter';
 import { DiscoverFilters } from '../DiscoverFilters';
 import { Header } from '../Header';
@@ -104,17 +104,23 @@ const DiscoverAndMeet = ({ category }) => {
     let tempItemList: Item[] = fullItemList;
 
     // List that holds trimmed data for searching. Empty before fullItemList is initialized
-    const itemSearchData = fullItemList.map((item) => {
-        if (category === 'projects') {
-            return { name: item.title, description: item.hook };
-        } else {
-            return {
-                name: `${item.first_name} ${item.last_name}`,
-                username: item.username,
-                bio: item.bio,
-            };
-        }
-    });
+    const [itemSearchData, setItemSearchData] = useState([]);
+    // const itemSearchData = fullItemList.map((item) => {
+    //     if (category === 'projects') {
+    //         return { name: item.title, description: item.hook };
+    //     } else {
+    //         return {
+    //             name: `${item.first_name} ${item.last_name}`,
+    //             username: item.username,
+    //             bio: item.bio,
+    //         };
+    //     }
+    // });
+
+    // Format data for use with SearchBar, which requires it to be: [{ data: }]
+    const dataSet = useMemo(() => {
+        return [{ data: itemSearchData }];
+    }, [itemSearchData]);
 
     let heroContent = (category === 'projects') ? <ImageCarousel carouselType='Discover' /> : profileHero;
 
@@ -132,6 +138,17 @@ const DiscoverAndMeet = ({ category }) => {
             if (data.data !== undefined) {
                 setFullItemList(data.data);
                 setFilteredItemList(data.data);
+                setItemSearchData(data.data.map((item) => {
+                    if (category === 'projects') {
+                        return { name: item.title, description: item.hook };
+                    } else {
+                        return {
+                            name: `${item.first_name} ${item.last_name}`,
+                            username: item.username,
+                            bio: item.bio,
+                        };
+                    }
+                }));
             }
 
             setDataLoaded(true);
@@ -174,8 +191,6 @@ const DiscoverAndMeet = ({ category }) => {
 
     // Make new list of items by mapping new filtered list
     const updateItemList = (activeTagFilters) => {
-        console.log(activeTagFilters);
-
         // Check which items should be included based on filters
         let tagFilteredList = tempItemList.filter((item) => {
             let tagFilterCheck = true;
@@ -205,7 +220,7 @@ const DiscoverAndMeet = ({ category }) => {
     return (
         <div className='page'>
             {/* Search bar and profile/notification buttons */}
-            <Header dataSets={[{ data: itemSearchData }]} onSearch={searchItems} />
+            <Header dataSets={dataSet} onSearch={searchItems} />
             {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
             <div id='discover-hero'>
                 {heroContent}

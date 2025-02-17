@@ -22,8 +22,14 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
     let currentTags, searchedTags, enabledFilters: Tag[];
     let setCurrentTags, setSearchedTags, setEnabledFilters: Function;
     [currentTags, setCurrentTags] = useState([]);
-    [searchedTags, setSearchedTags] = useState([]);
+    [searchedTags, setSearchedTags] = useState({ 
+        tags: [], 
+        color: 'grey', 
+    });
     [enabledFilters, setEnabledFilters] = useState([]);
+
+    // Formatted for SearchBar dataSets prop
+    const [dataSet, setDataSet] = useState([{ data: currentTags }]);
 
     const tagList = (category === 'projects') ? tags.tags : tags.peopleTags;
 
@@ -141,12 +147,17 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
         return -1;
     }
 
-    // Reset filter values when popup is cleared
-    const resetFilters = () => {
-        setCurrentTags([]);
-        setSearchedTags([]);
+    // Setup filter tabs when popup is opened
+    const setupFilters = () => {
+        // Defaults to the first available tab
+        setCurrentTags(filterPopupTabs[0].categoryTags);
+        setDataSet([{ data: filterPopupTabs[0].categoryTags }]);
+        setSearchedTags({ 
+            tags: filterPopupTabs[0].categoryTags, 
+            color: filterPopupTabs[0].color 
+        });
         setEnabledFilters([]);
-    }
+    };
 
     // --------------------
     // Component
@@ -173,7 +184,7 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
                 <div id='discover-more-filters-container'>
                     {/* Additional filters popup */}
                     <Popup>
-                        <PopupButton buttonId={'discover-more-filters'} callback={resetFilters}>
+                        <PopupButton buttonId={'discover-more-filters'} callback={setupFilters}>
                             <ThemeIcon light={'assets/filters_light.png'} dark={'assets/filters_dark.png'} />
                         </PopupButton>
                         {/* 
@@ -198,15 +209,15 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
                                 <h2>{(category === 'projects') ? 'Project Filters' : 'People Filters'}</h2>
                                 <div id="filters" className="popup-section">
                                     <SearchBar
-                                        dataSets={[{ data: currentTags }]}
+                                        dataSets={dataSet}
                                         onSearch={(results) => {
                                             setSearchedTags({ tags: results[0], color: searchedTags.color });
                                         }}
                                     ></SearchBar>
                                     <div id="filter-tabs">
-                                        {filterPopupTabs.map((tab) => (
+                                        {filterPopupTabs.map((tab, index) => (
                                             <a
-                                                className="filter-tab"
+                                                className={`filter-tab ${index === 0 ? 'selected' : ''}`}
                                                 onClick={(e) => {
                                                     let element = e.target as HTMLElement;
 
@@ -217,6 +228,7 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
                                                     }
                                                     element.classList.add('selected');
                                                     setCurrentTags(tab.categoryTags);
+                                                    setDataSet([{ data: tab.categoryTags }]);
                                                     setSearchedTags({ tags: tab.categoryTags, color: tab.color });
                                                 }}
                                             >
@@ -226,8 +238,8 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
                                     </div>
                                     <hr />
                                     <div id="filter-tags">
-                                        {searchedTags.length === 0 ? (
-                                            <p>No tags found. Please make sure you have a tab selected.</p>
+                                        {searchedTags.tags.length === 0 ? (
+                                            <p>No tags found. Please try a different search term.</p>
                                         ) : (
                                             searchedTags.tags.map((tag) => (
                                                 <button
@@ -280,8 +292,6 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
                                                 className={`tag-button tag-button-${tag.color}-selected`}
                                                 onClick={(e) => {
                                                     // Remove tag from list of enabled filters, re-rendering component
-                                                    console.log(tag);
-                                                    console.log(isTagEnabled(tag.tag, tag.color));
                                                     setEnabledFilters(
                                                         enabledFilters.toSpliced(isTagEnabled(tag.tag, tag.color), 1)
                                                     );

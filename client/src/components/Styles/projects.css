@@ -1457,11 +1457,11 @@ used to help wrap the lines around the word 'Members'*/
 .project-delete-cancel {
   background-color: transparent;
   color: #271d66;
+  color: (--primary-color, red);
   padding: 8px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  color: #271d66;
   text-align: center;
   font-family: Inter;
   font-size: 20px;

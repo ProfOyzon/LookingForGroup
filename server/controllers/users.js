@@ -1233,6 +1233,7 @@ const deleteUserFollowing = async (req, res) => {
   }
 };
 
+// Block a user
 export default {
   login,
   getAuth,
@@ -1262,4 +1263,7 @@ export default {
   getUserFollowing,
   addUserFollowing,
   deleteUserFollowing,
+  blockUser,
+  unblockUser,
+  reportUser,
 };

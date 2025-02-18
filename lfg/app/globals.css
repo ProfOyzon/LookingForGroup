@@ -1,0 +1,94 @@
+:root {
+   /* default dark mode is default*/
+   --primary-color: #fead81;
+   --panel-hover: rgba(254, 173, 129, 0.9);
+   --header-color: #1a1921;
+   --sidebar-gradient: linear-gradient(180deg, #2c2a3a 30%, #fead81 100%);
+   --hero-gradient: linear-gradient(180deg, #0e0e0e 30%, #2c2a3a 100%);
+   --modal-gradient: linear-gradient(293deg, #0a0a0a 0%, #2c2a3a 100%);
+
+   --main-text: white;
+   --invert-text: black;
+
+   --create-bg: #2c2a3a;
+   --create-text: white;
+
+   --tag-red: #ffa0b0;
+   --tag-yellow: #ffcf8b;
+   --tag-green: #bed9aa;
+   --tag-blue: #b0dcee;
+   --tag-purple: #d7bed3;
+   --tag-light-red: #ffd9df;
+   --tag-light-yellow: #ffebd0;
+   --tag-light-green: #e5f0dd;
+   --tag-light-blue: #dff1f8;
+   --tag-light-purple: #e6e6ff;
+}
+
+/*light mode color scheme*/
+[data-theme="light"] {
+   --primary-color: #271d66;
+   --panel-hover: rgba(39, 29, 102, 0.9);
+   --header-color: #ececf7;
+   --sidebar-gradient: linear-gradient(180deg, #d3d3ff 0%, #ffceb4 100%);
+   --hero-gradient: linear-gradient(180deg, #ffffff 50%, #d3d3ff 100%);
+   --modal-gradient: linear-gradient(113deg, #d3d3ff 0%, #fff 100%);
+
+   --main-text: black;
+   --invert-text: white;
+
+   --create-bg: white;
+   --create-text: #271d66;
+}
+
+.App {
+   text-align: center;
+}
+
+.App-logo {
+   height: 40vmin;
+   pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+   .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+   }
+}
+
+.App-header {
+   background-color: #282c34;
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   font-size: calc(10px + 2vmin);
+   color: white;
+}
+
+.App-link {
+   color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+   from {
+      transform: rotate(0deg);
+   }
+   to {
+      transform: rotate(360deg);
+   }
+}
+
+body {
+   margin: 0;
+   font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+      "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}

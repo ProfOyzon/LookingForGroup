@@ -3,31 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@reduxjs/toolkit": "^1.9.5",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@reduxjs/toolkit": "^2.5.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
     "client": "file:",
     "password-validator": "^5.3.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-redux": "^8.1.1",
-    "react-router-dom": "^6.14.1",
-    "react-scripts": "5.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.1.5",
     "use-local-storage": "^3.0.0",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^4.2.4"
   },
   "devDependencies": {
-    "typescript": "3.2.1"
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@typescript-eslint/eslint-plugin": "^8.24.1",
+    "@typescript-eslint/parser": "^8.24.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "npm i && react-scripts build",
-    "b": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "build": "npm i && vite build",
+    "b": "vite build",
+    "serve": "vite preview"
   },
   "eslintConfig": {
     "extends": [

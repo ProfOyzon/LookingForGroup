@@ -1233,6 +1233,11 @@ const deleteUserFollowing = async (req, res) => {
   }
 };
 
+// Removed due to Vite compilation error, still need to be added at some point
+// blockUser,
+// unblockUser,
+// reportUser,
+
 // Block a user
 export default {
   login,
@@ -1263,7 +1268,4 @@ export default {
   getUserFollowing,
   addUserFollowing,
   deleteUserFollowing,
-  blockUser,
-  unblockUser,
-  reportUser,
 };

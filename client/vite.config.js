@@ -8,6 +8,7 @@ export default defineConfig(() => {
         },
         build: {
             outDir: 'build',
+            target: 'esnext', //browsers can handle the latest ES features
         },
         plugins: [react()],
     };

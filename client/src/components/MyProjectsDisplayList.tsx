@@ -37,8 +37,8 @@ const MyProjectsDisplayList = ({ projectData }) => {
       }
     } catch (error) {
       console.error('Error deleting project:', error);
-    } 
-  }
+    }
+  };
 
   let optionsClass = 'list-card-options-list';
   if (optionsShown) {
@@ -103,7 +103,12 @@ const MyProjectsDisplayList = ({ projectData }) => {
               ></i>
               &nbsp; Leave Project
             </button>
-            <button className="card-delete-button" onClick={() => {deleteProject()}}>
+            <button
+              className="card-delete-button"
+              onClick={() => {
+                deleteProject();
+              }}
+            >
               <i
                 className="fa-solid fa-trash-can"
                 style={{ fontStyle: 'normal', color: '#ff3859' }}

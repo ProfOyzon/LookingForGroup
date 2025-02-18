@@ -892,14 +892,14 @@ Page popup style rules
     font-weight: 600;
     color: var(--primary-color);
   }
-  
+
   h3 {
     font-size: 20px;
     font-weight: 600;
     color: var(--primary-color);
-    margin: min(0.20vh, 2px) 0 min(0.51vh, 5px);
+    margin: min(0.2vh, 2px) 0 min(0.51vh, 5px);
   }
-  
+
   h4 {
     font-size: 14px;
     font-weight: 400;
@@ -915,7 +915,7 @@ Page popup style rules
     overflow: auto;
     margin: min(1.32vh, 13px) min(6.68vw, 101px);
   }
-  
+
   #filters {
     /* Scale with viewport, but cap off at 919x392 (including padding) */
     max-width: 857px;
@@ -928,7 +928,7 @@ Page popup style rules
       margin-top: 0;
     }
   }
-  
+
   #filter-tabs {
     display: flex;
     flex-direction: row;
@@ -937,7 +937,7 @@ Page popup style rules
     justify-content: center;
     margin: min(1.63vh, 16px) auto;
   }
-  
+
   .filter-tab {
     font-size: 16px;
     font-weight: 400;
@@ -947,25 +947,25 @@ Page popup style rules
     transition: 0.2s;
     /* margin: 14px 38px; */
   }
-  
+
   .filter-tab.selected {
     font-weight: 700;
     color: var(--primary-color);
   }
-  
+
   hr {
     /* color: var(--header-color); */
     border: 1px solid var(--header-color);
     margin: 0;
     margin-bottom: min(1.73vh, 17px);
   }
-  
+
   #filter-tags {
     display: flex;
     flex-wrap: wrap;
     gap: min(1.02vh, 10px) min(0.66vw, 10px);
   }
-  
+
   #selected-section {
     max-width: 859px;
     max-height: 178px;
@@ -976,7 +976,7 @@ Page popup style rules
     flex-direction: column;
     align-items: start;
   }
-  
+
   #selected-filters {
     display: flex;
     flex-wrap: wrap;
@@ -999,7 +999,7 @@ Page popup style rules
     .popup-section {
       margin: 1.44vh 8.47vw;
     }
-    
+
     #filters {
       width: 71.9vw;
       height: 37.6vh;
@@ -1009,7 +1009,7 @@ Page popup style rules
     #filter-tabs {
       column-gap: 3.19vw;
     }
-  
+
     #selected-section {
       width: 72vw;
       height: 19.7vh;
@@ -1404,7 +1404,7 @@ Image Carousel style rules
   background-size: cover;
 }
 
-#drop-area { 
+#drop-area {
   height: 100%;
   width: 100%;
   cursor: pointer;

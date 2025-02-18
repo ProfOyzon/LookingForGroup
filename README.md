@@ -1,11 +1,38 @@
 # LookingForGroup
 
-Looking for Group
+## Getting Started
 
-# How To Run
+1. Navigate to the root folder and install dependencies:
+```bash
+npm install
+```
+2. Navigate to the `client` folder and install its dependencies:
+```bash
+cd client
+npm install
+```
 
-- Use 'npm i' in the root folder as well as in the client folder to install dependencies
-- If working with html and css only, you can use 'npm run client'
-- If you need to work with the backend, database or need the api to work then you can use 'npm run server'
-- 'npm run server' requires running a 'npm run build' each time you want to see an updated version of the frontend
-- Using 'npm run dev' will launch both in separate browser tabs
+## Running the Project
+
+- Frontend only (HTML & CSS work):
+```bash
+npm run client
+## or
+cd client
+npm run start
+```
+
+- Backend & API (including database functionality):
+```bash
+npm run server
+```
+
+- Run both frontend and backend together:
+```bash
+npm run dev
+## or
+npm run server
+cd client
+npm run start
+```
+

@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import { unlink } from 'fs/promises';
 import sharp from 'sharp';
 import pool from '../config/database.js';
@@ -8,7 +7,7 @@ import { transporter } from '../config/mailer.js';
 import envConfig from '../config/env.js';
 import { genPlaceholders } from '../utils/sqlUtil.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const dirname = import.meta.dirname;
 
 const login = async (req, res) => {
   const { loginInput, password } = req.body;
@@ -654,7 +653,7 @@ const updateProfilePicture = async (req, res) => {
   try {
     // Download user's uploaded image. Convert to webp and reduce file size
     const fileName = `${id}profile${Date.now()}.webp`;
-    const saveTo = join(__dirname, '../images/profiles/');
+    const saveTo = join(dirname, '../images/profiles/');
     const filePath = join(saveTo, fileName);
 
     await sharp(req.file.buffer).webp({ quality: 50 }).toFile(filePath);

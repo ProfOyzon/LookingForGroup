@@ -58,7 +58,7 @@ const saveImage = (userID, data) => {
   // saves the profile pic if there has been a change
   const formElement = document.getElementById('profile-creator-editor') as HTMLFormElement;
   sendFile(`/api/users/${userID}/profile-picture`, formElement);
-}
+};
 
 const setUpInputs = async (data) => {
   let profileData = data[0];
@@ -93,7 +93,7 @@ const setUpInputs = async (data) => {
   setUpFunc('major', majors.find((r) => r.label === profileData.major).major_id);
   setUpFunc('academicYear', profileData.academic_year);
   setUpFunc('location', profileData.location);
-  setUpFunc('headline', profileData.headline); 
+  setUpFunc('headline', profileData.headline);
   setUpFunc('funFact', profileData.fun_fact);
   setUpFunc('bio', profileData.bio);
 };
@@ -239,7 +239,7 @@ const SkillsTab = () => {
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={{}} onSearch={() => { }} />
+        <SearchBar dataSets={{}} onSearch={() => {}} />
         <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
         <hr />
         <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
@@ -348,7 +348,12 @@ export const ProfileEditPopup = () => {
           <div id="profile-editor-tabs">{editorTabs}</div>
           <TabContent />
           {/* <button id="profile-editor-save" onClick={onSaveClicked}>Save Changes</button> */}
-          <input type='submit' id="profile-editor-save" onClick={onSaveClicked} value={'Save Changes'} />
+          <input
+            type="submit"
+            id="profile-editor-save"
+            onClick={onSaveClicked}
+            value={'Save Changes'}
+          />
           {/* </div> */}
         </form>
       </PopupContent>

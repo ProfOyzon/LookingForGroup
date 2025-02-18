@@ -1,8 +1,9 @@
 {
   "name": "looking-for-group",
+  "private": true,
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
+  "license": "CC0-1.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "pm2 start ./lookingforgrp.com/server/index.js",
@@ -11,11 +12,8 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm run build --prefix client",
-    "format": "prettier --write .",
-    "b": "npm run b --prefix client && npm run server"
+    "format": "prettier --write ."
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
@@ -36,5 +34,7 @@
     "nodemon": "^3.1.7",
     "prettier": "3.5.1"
   },
-  "type": "module"
+  "engines": {
+    "node": ">=20.11.0"
+  }
 }

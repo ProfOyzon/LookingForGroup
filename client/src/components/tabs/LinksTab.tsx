@@ -21,16 +21,18 @@ const removeRowClicked = (e) => {
   // This would recreate what was remove
   console.log(e.target);
   return false;
-}
+};
 
 const LinkInput = () => {
   return (
-    <div className='link-input'>
+    <div className="link-input">
       <SocialSelector />
-      <div className='editor-input-item'>
+      <div className="editor-input-item">
         <input type="text" name="url" id="link-url-input" />
       </div>
-      <button><i></i></button>
+      <button>
+        <i></i>
+      </button>
     </div>
   );
 };
@@ -45,7 +47,7 @@ export const LinksTab = () => {
     // get the container div
     setLinks(links + 1);
     return false;
-  }
+  };
 
   const LinkContainer = () => {
     // Use an effect to reload the container based on the
@@ -59,7 +61,7 @@ export const LinksTab = () => {
         const socials = data[0].socials;
         console.log(socials);
         // TODO: Set up the links container with the fetched socials
-      }
+      };
       loadSocials();
     }, []);
 
@@ -69,12 +71,8 @@ export const LinksTab = () => {
       content.push(<LinkInput />);
     }
 
-    return (
-      <div id='link-container'>
-        {content}
-      </div>
-    );
-  }
+    return <div id="link-container">{content}</div>;
+  };
 
   return (
     <div id="profile-editor-links" className="hidden">
@@ -85,7 +83,9 @@ export const LinksTab = () => {
 
       <div id="project-editor-link-list">
         <LinkContainer />
-        <button id="project-editor-add-link" onClick={onAddLinkClicked}>+ Add Social Profile</button>
+        <button id="project-editor-add-link" onClick={onAddLinkClicked}>
+          + Add Social Profile
+        </button>
       </div>
     </div>
   );

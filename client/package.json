@@ -1,27 +1,32 @@
 {
   "name": "client",
-  "version": "0.1.0",
   "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^14.6.1",
     "client": "file:",
+    "esbuild": "^0.25.0",
     "password-validator": "^5.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
-    "use-local-storage": "^3.0.0",
-    "web-vitals": "^4.2.4"
+    "use-local-storage": "^3.0.0"
   },
   "devDependencies": {
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
+    "@eslint/js": "^9.20.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
     "@typescript-eslint/eslint-plugin": "^8.24.1",
     "@typescript-eslint/parser": "^8.24.1",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react-swc": "^3.8.0",
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-react-hooks": "^5.1.0",
@@ -30,23 +35,5 @@
     "typescript-eslint": "^8.24.1",
     "vite": "^6.1.0",
     "vite-plugin-eslint": "^1.8.1"
-  },
-  "scripts": {
-    "start": "vite",
-    "build": "npm i && vite build",
-    "b": "vite build",
-    "serve": "vite preview"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }

@@ -195,14 +195,14 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
               </div>
 
               <button className="discover-carousel-link">
-                      Learn More
-                      <ThemeIcon
-                        light={'assets/arrow_light.png'}
-                        dark={'assets/arrow_dark.png'}
-                        alt={'>'}
-                      />
-                    </button>
-                    
+                Learn More
+                <ThemeIcon
+                  light={'assets/arrow_light.png'}
+                  dark={'assets/arrow_dark.png'}
+                  alt={'>'}
+                />
+              </button>
+
               <button
                 onClick={() => handleIndexChange(currentIndex + 1)}
                 id="discover-carousel-right"

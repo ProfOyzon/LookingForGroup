@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { Popup, PopupButton, PopupContent } from './Popup';
 import { SearchBar } from './SearchBar';
 import { ThemeIcon } from './ThemeIcon';
-import * as tags from '../constants/tags'; // FIXME: use tags from db
-import { projectTabs, peopleTabs } from '../constants/tags';
+import { tags, peopleTags, projectTabs, peopleTabs } from '../constants/tags';
 
 // Has to be outside component to avoid getting reset on re-render
 let activeTagFilters: string[] = [];
@@ -35,7 +34,7 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
   // Formatted for SearchBar dataSets prop
   const [dataSet, setDataSet] = useState([{ data: currentTags }]);
 
-  const tagList = category === 'projects' ? tags.tags : tags.peopleTags;
+  const tagList = category === 'projects' ? tags : peopleTags;
 
   // List of tabs for the filter popup to use, changes for discover/meet page
   // TO-DO: Change code to rely on Database

@@ -3,6 +3,7 @@ import { Popup, PopupButton, PopupContent } from './Popup';
 import { SearchBar } from './SearchBar';
 import { ThemeIcon } from './ThemeIcon';
 import * as tags from '../constants/tags'; // FIXME: use tags from db
+import { projectTabs, peopleTabs } from '../constants/tags';
 
 // Has to be outside component to avoid getting reset on re-render
 let activeTagFilters: string[] = [];
@@ -19,6 +20,9 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
   // --------------------
   // Global variables
   // --------------------
+  // Important for ensuring data has properly loaded
+  const [dataLoaded, setDataLoaded] = useState(false);
+
   let currentTags, searchedTags, enabledFilters: Tag[];
   let setCurrentTags, setSearchedTags, setEnabledFilters: Function;
   [currentTags, setCurrentTags] = useState([]);
@@ -35,23 +39,70 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
 
   // List of tabs for the filter popup to use, changes for discover/meet page
   // TO-DO: Change code to rely on Database
-  let filterPopupTabs =
-    category === 'projects'
-      ? [
-          { categoryTags: tags.projectTypes, categoryName: 'Project Type', color: 'blue' },
-          { categoryTags: tags.genres, categoryName: 'Genre', color: 'green' },
-          { categoryTags: tags.purposes, categoryName: 'Purpose', color: 'grey' },
-        ]
-      : [
-          { categoryTags: tags.devSkills, categoryName: 'Developer Skill', color: 'yellow' },
-          { categoryTags: tags.desSkills, categoryName: 'Designer Skill', color: 'red' },
-          { categoryTags: tags.softSkills, categoryName: 'Soft Skill', color: 'purple' },
-          { categoryTags: tags.tags, categoryName: 'Role', color: 'grey' },
-          { categoryTags: tags.tags, categoryName: 'Major', color: 'orange' },
-        ];
+  // let filterPopupTabs =
+  //   category === 'projects'
+  //     ? [
+  //         { categoryTags: tags.projectTypes, categoryName: 'Project Type', color: 'blue' },
+  //         { categoryTags: tags.genres, categoryName: 'Genre', color: 'green' },
+  //         { categoryTags: tags.purposes, categoryName: 'Purpose', color: 'grey' },
+  //       ]
+  //     : [
+  //         { categoryTags: tags.devSkills, categoryName: 'Developer Skill', color: 'yellow' },
+  //         { categoryTags: tags.desSkills, categoryName: 'Designer Skill', color: 'red' },
+  //         { categoryTags: tags.softSkills, categoryName: 'Soft Skill', color: 'purple' },
+  //         { categoryTags: tags.tags, categoryName: 'Role', color: 'grey' },
+  //         { categoryTags: tags.tags, categoryName: 'Major', color: 'orange' },
+  //       ];
+  const [filterPopupTabs, setFilterPopupTabs] = useState([]);
+
   // --------------------
   // Helper functions
   // --------------------
+  const getData = async () => {
+    const url = `/api/datasets/${category === 'projects' ? 'tags' : 'skills'}`;
+
+    try {
+      let response = await fetch(url);
+      const result = await response.json();
+      let data = result.data;
+
+      // Need to also pull from majors and job_titles tables
+      if (category === 'profiles') {
+        // Get job titles and append it to full data
+        response = await fetch(`/api/datasets/job-titles`);
+        let extraData = await response.json();
+        if (extraData.data !== undefined) {
+          extraData.data.forEach((jobTitle) => data.push({ label: jobTitle.label, type: 'Role' }));
+        }      
+
+        // Get majors and append it to full data
+        response = await fetch(`/api/datasets/majors`);
+        extraData = await response.json();
+        if (extraData.data !== undefined) {
+          extraData.data.forEach((major) => data.push({ label: major.label, type: 'Major' }));
+        }
+      }
+
+      // Construct the finalized version of the data to be moved into filterPopupTabs
+      let tabs = JSON.parse(JSON.stringify((category === 'projects') ? projectTabs : peopleTabs));
+      data.forEach((tag) => tabs[tag.type].categoryTags.push(tag.label));
+      setFilterPopupTabs(Object.values(tabs));
+
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.log(`Unknown error: ${error}`);
+      }
+    }
+
+    setDataLoaded(true);
+  };
+
+  if (!dataLoaded) {
+    getData();
+  }
+
   // Function called when a tag is clicked, adds tag to list of filters
   const toggleTag = (e, tagName: string) => {
     // Add tag if it isn't yet in the list
@@ -148,12 +199,14 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
   // Setup filter tabs when popup is opened
   const setupFilters = () => {
     // Defaults to the first available tab
-    setCurrentTags(filterPopupTabs[0].categoryTags);
-    setDataSet([{ data: filterPopupTabs[0].categoryTags }]);
-    setSearchedTags({
-      tags: filterPopupTabs[0].categoryTags,
-      color: filterPopupTabs[0].color,
-    });
+    if (filterPopupTabs.length !== 0) {
+      setCurrentTags(filterPopupTabs[0].categoryTags);
+      setDataSet([{ data: filterPopupTabs[0].categoryTags }]);
+      setSearchedTags({
+        tags: filterPopupTabs[0].categoryTags,
+        color: filterPopupTabs[0].color,
+      });
+    }
     setEnabledFilters([]);
   };
 

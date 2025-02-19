@@ -105,17 +105,6 @@ const DiscoverAndMeet = ({ category }) => {
 
   // List that holds trimmed data for searching. Empty before fullItemList is initialized
   const [itemSearchData, setItemSearchData] = useState([]);
-  // const itemSearchData = fullItemList.map((item) => {
-  //     if (category === 'projects') {
-  //         return { name: item.title, description: item.hook };
-  //     } else {
-  //         return {
-  //             name: `${item.first_name} ${item.last_name}`,
-  //             username: item.username,
-  //             bio: item.bio,
-  //         };
-  //     }
-  // });
 
   // Format data for use with SearchBar, which requires it to be: [{ data: }]
   const dataSet = useMemo(() => {
@@ -153,8 +142,6 @@ const DiscoverAndMeet = ({ category }) => {
           })
         );
       }
-
-      setDataLoaded(true);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -162,6 +149,8 @@ const DiscoverAndMeet = ({ category }) => {
         console.log(`Unknown error: ${error}`);
       }
     }
+
+    setDataLoaded(true);
   };
 
   if (!dataLoaded) {

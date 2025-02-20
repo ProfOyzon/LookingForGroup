@@ -25,9 +25,9 @@ let i = 0;
 //A function that allows for the hiding/showing of a comment's replies
 //i - the current ID of the comment element this is being made for
 const showRepliesToggle = (i) => {
-  let currentId = i;
+  const currentId = i;
   //Get reply set with currently selected ID. If it exists, show/hide the replies in the set
-  let currentButton = document.getElementById(currentId);
+  const currentButton = document.getElementById(currentId);
   if (currentButton !== null) {
     currentButton.classList.toggle('show');
   }
@@ -50,7 +50,7 @@ const CommentReplies = (props) => {
   if (props.comment.replies.length !== 0) {
     i++;
     let replyKey = 0; //Code doesn't need replyKey, but react will post an error if it isn't used in the .map function later
-    let currentId = 'show-reply-set-' + i;
+    const currentId = 'show-reply-set-' + i;
     return (
       <div className="comment-replies">
         <button onClick={() => showRepliesToggle(currentId)}>----- View Replies</button>
@@ -76,8 +76,8 @@ const CommentReplies = (props) => {
 //  commentId represent the current id of the comment being rendered
 //  the callback function should be the 'changeReplyTarget' function, found in ProjectPostPage.tsx line 32
 export const PostComment = (props) => {
-  let navigate = useNavigate();
-  let comment = comments.find((c) => c._id === props.commentId) || comments[0];
+  const navigate = useNavigate();
+  const comment = comments.find((c) => c._id === props.commentId) || comments[0];
   return (
     <div className="post-comment" id={props.commentId}>
       <img className="comment-profile" src={profilePlaceholder} alt="profile" />

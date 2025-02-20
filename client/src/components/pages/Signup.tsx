@@ -248,7 +248,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
-                let passMsg = validatePassword(e.target.value);
+                const passMsg = validatePassword(e.target.value);
                 setMessage(passMsg);
                 setPasswordMessage(passMsg);
               }}

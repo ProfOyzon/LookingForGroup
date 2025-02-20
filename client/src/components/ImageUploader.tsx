@@ -11,7 +11,7 @@ const init = () => {
   const uploadImage = () => {
     // real-time update to view selected picture
     // Not for backend uploading
-    let imgLink = URL.createObjectURL(imageUploader.files[0]);
+    const imgLink = URL.createObjectURL(imageUploader.files[0]);
     imageView.style.backgroundImage = `url(${imgLink})`;
     imageView.textContent = '';
     imageView.style.border = '';

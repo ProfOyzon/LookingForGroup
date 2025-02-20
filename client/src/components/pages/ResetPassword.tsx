@@ -116,7 +116,7 @@ const ResetPassword = ({}) => {
             value={passwordInput}
             onChange={(e) => {
               setPasswordInput(e.target.value);
-              let passMsg = validatePassword(e.target.value);
+              const passMsg = validatePassword(e.target.value);
               setError(passMsg);
               setPasswordMsg(passMsg);
             }}

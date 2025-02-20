@@ -35,12 +35,12 @@ import { ThemeIcon } from '../ThemeIcon';
 //TODO: remove after implementing database functionality
 //Variable used for checking whether or not we are running a server or not
 //Should be 'true' when using npm run server, 'false' when using npm run client
-let runningServer = true;
+const runningServer = true;
 
 //TODO: remove after implementing database functionality
 //A default set of project data for the component to use
 //use while running with npm run client
-let defaultProject = runningServer
+const defaultProject = runningServer
   ? undefined
   : {
       title: 'Title Here',
@@ -94,18 +94,18 @@ const NewProject = () => {
   const navigate = useNavigate();
 
   //Get project ID from search parameters
-  let urlParams = new URLSearchParams(window.location.search);
-  let projectID = urlParams.get('projectID');
+  const urlParams = new URLSearchParams(window.location.search);
+  const projectID = urlParams.get('projectID');
 
   //state variable used to check whether or not data was successfully obtained from database
-  let [failCheck, setFailCheck] = useState(false);
+  const [failCheck, setFailCheck] = useState(false);
 
   //Function used to get project data
   const getProjectData = async () => {
     const url = `/api/projects/${projectID}`;
 
     try {
-      let response = await fetch(url);
+      const response = await fetch(url);
 
       const projectData = await response.json();
 
@@ -251,7 +251,7 @@ const NewProject = () => {
         : displayedProject.members[0];
 
   //Page layout for if project data hasn't been loaded yet
-  let loadingProject = <>{<div>Loading project...</div>}</>;
+  const loadingProject = <>{<div>Loading project...</div>}</>;
 
   return (
     <div className="page">

@@ -33,28 +33,28 @@ const NewProfile = async () => {
   // Interfaces
   // --------------------
   interface Project {
-    name: String;
-    hook: String;
+    name: string;
+    hook: string;
   }
 
   interface Tag {
-    type: String;
-    skill: String;
+    type: string;
+    skill: string;
   }
 
   interface Profile {
-    first_name: String;
-    last_name: String;
-    username: String;
+    first_name: string;
+    last_name: string;
+    username: string;
     profile_image: HTMLImageElement;
-    headline: String;
-    pronouns: String;
-    job_title: String;
-    major: String;
-    academic_year: String;
-    location: String;
-    fun_fact: String;
-    bio: String;
+    headline: string;
+    pronouns: string;
+    job_title: string;
+    major: string;
+    academic_year: string;
+    location: string;
+    fun_fact: string;
+    bio: string;
     skills: Tag[];
   }
 
@@ -62,11 +62,11 @@ const NewProfile = async () => {
   // Global variables
   // --------------------
   // Just to prevent typescript errors
-  let skillsStr = ['Figma', 'JavaScript', 'Visual Studio Code', 'Flexibility', 'Krita'];
-  let skills: Tag[] = skillsStr.map((skillStr) => {
+  const skillsStr = ['Figma', 'JavaScript', 'Visual Studio Code', 'Flexibility', 'Krita'];
+  const skills: Tag[] = skillsStr.map((skillStr) => {
     return { type: 'Soft', skill: skillStr };
   });
-  let defaultProfile: Profile = {
+  const defaultProfile: Profile = {
     first_name: 'User',
     last_name: 'Name',
     username: 'someguy',
@@ -85,7 +85,7 @@ const NewProfile = async () => {
   //const location = useLocation();
 
   // Get URL parameters to tell what user we're looking for and store it
-  let urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(window.location.search);
   let profileID = urlParams.get('userID');
 
   // Stores if profile is loaded from server and if it's user's respectively
@@ -128,7 +128,7 @@ const NewProfile = async () => {
     const url = `/api/users/${profileID}`;
 
     try {
-      let response = await fetch(url);
+      const response = await fetch(url);
       const { data } = await response.json();
 
       // Only run this if profile data exists for user
@@ -156,7 +156,7 @@ const NewProfile = async () => {
     }
 
     try {
-      let response = await fetch(url);
+      const response = await fetch(url);
       const { data } = await response.json();
 
       // Only update if there's data
@@ -179,10 +179,10 @@ const NewProfile = async () => {
 
   // Search bar doesn't really have a use, so might as well use it for projects
   const searchProjects = (searchResults) => {
-    let tempProjList: Project[] = [];
+    const tempProjList: Project[] = [];
 
-    for (let result of searchResults[0]) {
-      for (let proj of projectSearchData) {
+    for (const result of searchResults[0]) {
+      for (const proj of projectSearchData) {
         if (result === proj) {
           tempProjList.push(fullProjectList[projectSearchData.indexOf(proj)]);
           continue;

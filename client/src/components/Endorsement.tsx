@@ -5,7 +5,7 @@ import { Tags } from './Tags';
 
 //used on the profile page to show an endorsement
 export const Endorsement = ({ endorsement, endorsedID }) => {
-  let user = profiles[endorsedID];
+  const user = profiles[endorsedID];
   return (
     <div id="endorsement">
       <img

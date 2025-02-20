@@ -66,7 +66,7 @@ export const LinksTab = () => {
     }, []);
 
     // Create the array of Link Inputs
-    let content = [] as JSX.Element[];
+    const content = [] as JSX.Element[];
     for (let i = 0; i < links; i++) {
       content.push(<LinkInput />);
     }

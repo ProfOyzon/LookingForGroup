@@ -32,8 +32,8 @@ export const ProjectCreatorEditor = () => {
   //Creating project?
 
   //Get project ID from search parameters
-  let urlParams = new URLSearchParams(window.location.search);
-  let projectID = urlParams.get('projectID');
+  const urlParams = new URLSearchParams(window.location.search);
+  const projectID = urlParams.get('projectID');
 
   // project template and default value for variable
   const emptyProject: {
@@ -172,7 +172,7 @@ export const ProjectCreatorEditor = () => {
     const getProjectData = async () => {
       const url = `/api/projects/${projectID}`;
       try {
-        let response = await fetch(url);
+        const response = await fetch(url);
 
         const projectResponse = await response.json();
         const projectData = projectResponse.data[0];
@@ -199,7 +199,7 @@ export const ProjectCreatorEditor = () => {
       const url = `/api/datasets/job-titles`;
 
       try {
-        let response = await fetch(url);
+        const response = await fetch(url);
 
         const jobTitles = await response.json();
         const jobTitleData = jobTitles.data;
@@ -224,7 +224,7 @@ export const ProjectCreatorEditor = () => {
       const url = `/api/datasets/project-types`;
 
       try {
-        let response = await fetch(url);
+        const response = await fetch(url);
 
         const projectTypes = await response.json();
         const projectTypeData = projectTypes.data;
@@ -250,7 +250,7 @@ export const ProjectCreatorEditor = () => {
       const url = `/api/datasets/tags`;
 
       try {
-        let response = await fetch(url);
+        const response = await fetch(url);
 
         const tags = await response.json();
         const tagsData = tags.data;
@@ -276,7 +276,7 @@ export const ProjectCreatorEditor = () => {
       const url = `/api/datasets/skills`;
 
       try {
-        let response = await fetch(url);
+        const response = await fetch(url);
 
         const skills = await response.json();
         const skillsData = skills.data;
@@ -597,7 +597,7 @@ export const ProjectCreatorEditor = () => {
     setClosePopup(false);
     console.log('before closepopup:', closePopup);
 
-    let member = emptyMember;
+    const member = emptyMember;
 
     // get name
     const nameInput = document.querySelector<HTMLInputElement>('#new-member-name');

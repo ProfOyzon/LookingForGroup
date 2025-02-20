@@ -24,7 +24,7 @@ export const MyProjectsDisplay = ({ userID }) => {
 
       {filteredProjects.map((proj) => {
         let prof = profiles[0];
-        for (let p of profiles) {
+        for (const p of profiles) {
           if (p._id == userID) {
             prof = p;
             break;

@@ -35,7 +35,7 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
 
   // List of tabs for the filter popup to use, changes for discover/meet page
   // TO-DO: Change code to rely on Database
-  let filterPopupTabs =
+  const filterPopupTabs =
     category === 'projects'
       ? [
           { categoryTags: tags.projectTypes, categoryName: 'Project Type', color: 'blue' },
@@ -70,11 +70,11 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
   // Scrolls the list of tag filters right or left
   const scrollTags = (direction) => {
     // Check if left or right button was clicked
-    let tagFilterElement = document.getElementById('discover-tag-filters')!;
-    let leftScroll = document.getElementById('filters-left-scroll')!;
-    let rightScroll = document.getElementById('filters-right-scroll')!;
+    const tagFilterElement = document.getElementById('discover-tag-filters')!;
+    const leftScroll = document.getElementById('filters-left-scroll')!;
+    const rightScroll = document.getElementById('filters-right-scroll')!;
 
-    let scrollAmt = tagFilterElement.clientWidth;
+    const scrollAmt = tagFilterElement.clientWidth;
 
     // Check if other button is hidden, if so...
     if (leftScroll.classList.contains('hide') || rightScroll.classList.contains('hide')) {
@@ -91,7 +91,7 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
 
       tagFilterElement.scrollBy(-scrollAmt, 0);
     } else if (direction === 'right') {
-      let scrolledAmt = tagFilterElement.scrollLeft + tagFilterElement.offsetWidth + scrollAmt;
+      const scrolledAmt = tagFilterElement.scrollLeft + tagFilterElement.offsetWidth + scrollAmt;
       if (scrolledAmt >= tagFilterElement.scrollWidth) {
         rightScroll.classList.add('hide');
       }
@@ -102,9 +102,9 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
 
   // Ensures that scroll buttons show and hide when they're supposed to on-resize
   const resizeTagFilter = () => {
-    let tagFilterElement = document.getElementById('discover-tag-filters')!;
-    let leftScroll = document.getElementById('filters-left-scroll')!;
-    let rightScroll = document.getElementById('filters-right-scroll')!;
+    const tagFilterElement = document.getElementById('discover-tag-filters')!;
+    const leftScroll = document.getElementById('filters-left-scroll')!;
+    const rightScroll = document.getElementById('filters-right-scroll')!;
 
     // Check if left scroll should be shown or hidden
     if (tagFilterElement.scrollLeft <= 0 && !leftScroll.classList.contains('hide')) {
@@ -114,7 +114,7 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
     }
 
     // Check if right scroll should be shown or hidden
-    let scrollAmt = tagFilterElement.scrollLeft + tagFilterElement.offsetWidth;
+    const scrollAmt = tagFilterElement.scrollLeft + tagFilterElement.offsetWidth;
     if (scrollAmt >= tagFilterElement.scrollWidth && !rightScroll.classList.contains('hide')) {
       rightScroll.classList.add('hide');
     } else if (scrollAmt < tagFilterElement.scrollWidth && rightScroll.classList.contains('hide')) {
@@ -124,7 +124,7 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
 
   // Variables for debouncing resize event call
   let timeout; // holder for timeout id
-  let delay: number = 250; // delay after event is "complete" to run callback
+  const delay: number = 250; // delay after event is "complete" to run callback
 
   // window.resize event listener
   window.addEventListener('resize', function () {
@@ -214,10 +214,10 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
                       <a
                         className={`filter-tab ${index === 0 ? 'selected' : ''}`}
                         onClick={(e) => {
-                          let element = e.target as HTMLElement;
+                          const element = e.target as HTMLElement;
 
                           // Remove .selected from all 3 options, add it only to current button
-                          let tabs = document.querySelector('#filter-tabs')!.children;
+                          const tabs = document.querySelector('#filter-tabs')!.children;
                           for (let i = 0; i < tabs.length; i++) {
                             tabs[i].classList.remove('selected');
                           }
@@ -241,8 +241,8 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
                           // className={`tag-button tag-button-${searchedTags.color}-unselected`}
                           className={`tag-button tag-button-${searchedTags.color}-${isTagEnabled(tag, searchedTags.color) !== -1 ? 'selected' : 'unselected'}`}
                           onClick={(e) => {
-                            let element = e.target as HTMLElement;
-                            let selecIndex = isTagEnabled(tag, searchedTags.color);
+                            const element = e.target as HTMLElement;
+                            const selecIndex = isTagEnabled(tag, searchedTags.color);
 
                             if (selecIndex === -1) {
                               // Creates an object to store text and category

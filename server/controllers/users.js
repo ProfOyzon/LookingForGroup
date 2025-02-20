@@ -1263,7 +1263,7 @@ export default {
   getUserFollowing,
   addUserFollowing,
   deleteUserFollowing,
-  blockUser,
-  unblockUser,
-  reportUser,
+  // blockUser,
+  // unblockUser,
+  // reportUser,
 };

@@ -19,3 +19,25 @@
     padding-bottom: 0;
     padding-top: 0;
 }
+
+.link-input-wrapper {
+    position: relative;
+    max-width: 100%;
+    width: 400px;
+}
+
+.close-btn {
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    height: 50%;
+    aspect-ratio: 1;
+
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateX(-10%) translateY(50%);
+}
+
+.close-btn .fa {
+    color: var(--invert-text);
+}

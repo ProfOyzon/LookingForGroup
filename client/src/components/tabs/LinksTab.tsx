@@ -1,4 +1,4 @@
-import { useState, useEffect, JSXElementConstructor } from 'react';
+import React, { useState, useEffect, JSXElementConstructor } from 'react';
 import { sendPut, sendFile, fetchUserID } from '../../functions/fetch';
 import { SocialSelector } from '../SocialSelector';
 
@@ -15,41 +15,66 @@ import '../Styles/settings.css';
 import '../Styles/pages.css';
 import '../Styles/linksTab.css';
 
-const removeRowClicked = (e) => {
-  e.preventDefault();
-  // Hide what was removed, because decreasing the count will refresh the page
-  // This would recreate what was remove
-  console.log(e.target);
-  return false;
+interface LinkData {
+  website: String;
+  url: String;
 }
 
-const LinkInput = () => {
-  return (
-    <div className='link-input'>
-      <SocialSelector />
-      <div className='editor-input-item'>
-        <input type="text" name="url" id="link-url-input" />
-      </div>
-      <button><i></i></button>
-    </div>
-  );
-};
-
 export const LinksTab = () => {
-  // load links from profile
   let userID;
-  const [links, setLinks] = useState(0);
+  const [links, setLinks] = useState([] as LinkData[]); 
+
+  const updateURL = (index, newUrl) => {
+    // ld = linkData
+    setLinks( links.map( (ld, i) => i === index ? {...ld, url: newUrl} : ld));
+  }
+
+  const updateWebsite = (index, newWebsite) => {
+    setLinks( links.map((ld, i) => i === index ? {...ld, website: newWebsite} : ld));
+  }
 
   const onAddLinkClicked = (e) => {
-    e.preventDefault();
-    // get the container div
-    setLinks(links + 1);
+    e.preventDefault();    
+    // Adds another LinkInput into the chain
+    setLinks(prev => [...prev, {website:'', url:''}]);
     return false;
-  }
+  };
+
+  const onRemoveLinkClicked = (e, index) => {
+    e.preventDefault();
+    // save this change into the state
+    setLinks(prev => prev.filter((_, i) => i !== index));
+    return false;
+  };
+
+  const LinkInput = (props) => {
+    return (
+      <div id={`link-${props.index}`} className='link-input'>
+        <SocialSelector value={props.data.website} 
+        onChange={
+          (e)=>{
+          updateWebsite(props.index, e.target.selectedIndex);
+          }}/>
+        <div className='link-input-wrapper'>
+          <div className='editor-input-item'>
+            <input type="text" name="url" id="link-url-input" value={props.data.url} 
+            onChange={
+              (e)=>updateURL(props.index, e.target.value)
+              }/>
+          </div>
+          <button className='close-btn' onClick={ 
+            (e) => {
+            onRemoveLinkClicked(e, props.index);
+          }}><i className="fa fa-close"></i></button>
+        </div>
+      </div>
+    );
+  };
 
   const LinkContainer = () => {
     // Use an effect to reload the container based on the
     // number of links the user has/requests
+    let hasSocials = false;
     useEffect(() => {
       const loadSocials = async () => {
         // fetch for profile on ID
@@ -57,24 +82,39 @@ export const LinksTab = () => {
         const response = await fetch(`api/users/${userID}`);
         const { data } = await response.json(); // use data[0]
         const socials = data[0].socials;
-        console.log(socials);
+        // console.log(socials);
         // TODO: Set up the links container with the fetched socials
+        if(socials){
+          hasSocials = true;
+        }
       }
       loadSocials();
     }, []);
 
-    // Create the array of Link Inputs
-    let content = [] as JSX.Element[];
-    for (let i = 0; i < links; i++) {
-      content.push(<LinkInput />);
+    if(hasSocials){
+      console.log('Using user data...');
     }
-
-    return (
-      <div id='link-container'>
-        {content}
-      </div>
-    );
-  }
+    else if (links.length > 0){
+      console.log('Edit data found, showing...');
+      let render = links.map((ld, i) => {
+        return <LinkInput data={ld} index={i}/>;
+      });
+      
+      return (
+        <div id='links-container'>
+          {render}
+        </div>
+      );
+    }
+    else {
+      console.log('No data');
+      return (
+        <div id='links-container'>
+          <p>No Socials Posted!</p>
+        </div>
+      );
+    }
+  };
 
   return (
     <div id="profile-editor-links" className="hidden">

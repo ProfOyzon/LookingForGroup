@@ -1,4 +1,4 @@
-import React, { useState, useEffect, JSXElementConstructor } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { sendPut, sendFile, fetchUserID } from '../../functions/fetch';
 import { SocialSelector } from '../SocialSelector';
 
@@ -20,60 +20,79 @@ interface LinkData {
   url: String;
 }
 
+let links = [] as LinkData[];
+
 export const LinksTab = () => {
   let userID;
-  const [links, setLinks] = useState([] as LinkData[]); 
 
+  const [update, setUpdate] = useState(false);
   // Update Functions ----------------------
 
   const updateURL = (index, newUrl) => {
     // ld = linkData
-    setLinks( links.map( (ld, i) => i === index ? {...ld, url: newUrl} : ld));
+    links = links.map((ld, i) => i === index ? { ...ld, url: newUrl } : ld);
   }
 
   const updateWebsite = (index, newWebsite) => {
-    setLinks( links.map((ld, i) => i === index ? {...ld, website: newWebsite} : ld));
+    links = links.map((ld, i) => i === index ? { ...ld, website: newWebsite } : ld);
   }
 
   // Button Functions ----------------------
 
   const onAddLinkClicked = (e) => {
-    e.preventDefault();    
+    e.preventDefault();
     // Save current state
-    
     // Adds another LinkInput into the chain
-    setLinks(prev => [...prev, {website:'', url:''}]);
+    links.push({ website: '', url: '' });
+
+    // setLinks(prev => [...prev, {website:'', url:''}]);
+    setUpdate(!update);
     return false;
   };
 
   const onRemoveLinkClicked = (e, index) => {
     e.preventDefault();
     // save this change into the state
-    setLinks(prev => prev.filter((_, i) => i !== index));
+    // setLinks(prev => prev.filter((_, i) => i !== index));
+    links = links.filter((_, i) => i !== index);
+    setUpdate(!update);
     return false;
   };
 
   // Components ----------------------
 
   const LinkInput = (props) => {
+    let [text, setText] = useState('');
+
+    useEffect(()=>{
+      if(links[props.index]){
+        // If there exists a value for it in the array
+        // Load in the value
+        setText(props.data.url);
+      }
+    }, []);
+
     return (
       <div id={`link-${props.index}`} className='link-input'>
-        <SocialSelector value={props.data.website} 
-        onChange={
-          (e)=>{
-          updateWebsite(props.index, e.target.selectedIndex);
-          }}/>
+        <SocialSelector value={props.data.website}
+          onChange={
+            (e) => {
+              updateWebsite(props.index, e.target.selectedIndex);
+            }} />
         <div className='link-input-wrapper'>
           <div className='editor-input-item'>
-            <input type="text" name="url" id="link-url-input" value={props.data.url} 
-            onChange={
-              (e)=>updateURL(props.index, e.target.value)
-              }/>
+          <input type="text" name="url" id="link-url-input" value={text}
+              onChange={
+                (e) => {
+                  setText(e.target.value);
+                  updateURL(props.index, e.target.value);
+                }
+              } />
           </div>
-          <button className='close-btn' onClick={ 
+          <button className='close-btn' onClick={
             (e) => {
-            onRemoveLinkClicked(e, props.index);
-          }}><i className="fa fa-close"></i></button>
+              onRemoveLinkClicked(e, props.index);
+            }}><i className="fa fa-close"></i></button>
         </div>
       </div>
     );
@@ -92,22 +111,22 @@ export const LinksTab = () => {
         const socials = data[0].socials;
         // console.log(socials);
         // TODO: Set up the links container with the fetched socials
-        if(socials){
+        if (socials) {
           hasSocials = true;
         }
       }
       loadSocials();
     }, []);
 
-    if(hasSocials){
+    if (hasSocials) {
       console.log('Using user data...');
     }
-    else if (links.length > 0){
+    else if (links.length > 0) {
       console.log('Edit data found, showing...');
       let render = links.map((ld, i) => {
-        return <LinkInput data={ld} index={i}/>;
+        return <LinkInput data={ld} index={i} />;
       });
-      
+
       return (
         <div id='links-container'>
           {render}

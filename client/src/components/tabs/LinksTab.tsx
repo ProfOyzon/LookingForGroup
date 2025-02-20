@@ -24,6 +24,8 @@ export const LinksTab = () => {
   let userID;
   const [links, setLinks] = useState([] as LinkData[]); 
 
+  // Update Functions ----------------------
+
   const updateURL = (index, newUrl) => {
     // ld = linkData
     setLinks( links.map( (ld, i) => i === index ? {...ld, url: newUrl} : ld));
@@ -33,8 +35,12 @@ export const LinksTab = () => {
     setLinks( links.map((ld, i) => i === index ? {...ld, website: newWebsite} : ld));
   }
 
+  // Button Functions ----------------------
+
   const onAddLinkClicked = (e) => {
     e.preventDefault();    
+    // Save current state
+    
     // Adds another LinkInput into the chain
     setLinks(prev => [...prev, {website:'', url:''}]);
     return false;
@@ -46,6 +52,8 @@ export const LinksTab = () => {
     setLinks(prev => prev.filter((_, i) => i !== index));
     return false;
   };
+
+  // Components ----------------------
 
   const LinkInput = (props) => {
     return (
@@ -116,13 +124,14 @@ export const LinksTab = () => {
     }
   };
 
+  // Tab Component ----------------------
+
   return (
     <div id="profile-editor-links" className="hidden">
       <label>Social Links</label>
       <div className="project-editor-extra-info">
         Provide the links to pages you wish to include on your page.
       </div>
-
       <div id="project-editor-link-list">
         <LinkContainer />
         <button id="project-editor-add-link" onClick={onAddLinkClicked}>+ Add Social Profile</button>

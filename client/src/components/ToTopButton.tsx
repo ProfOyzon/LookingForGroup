@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ThemeIcon } from './ThemeIcon';
 
 const ToTopButton = () => {
-  let [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const toggleVisible = (scrollPage) => {
     if (scrollPage.scrollTop > 300) {

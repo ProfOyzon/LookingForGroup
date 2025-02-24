@@ -15532,7 +15532,7 @@
   const _LONG_STYLE_TO_PREFIX = { ...lo };
   _LONG_STYLE_TO_PREFIX[a] = { ..._LONG_STYLE_TO_PREFIX[a], ...Io['kit'] };
   const LONG_STYLE_TO_PREFIX = familyProxy(_LONG_STYLE_TO_PREFIX);
-  const ICON_SELECTION_SYNTAX_PATTERN = Dt; // eslint-disable-line no-useless-escape
+  const ICON_SELECTION_SYNTAX_PATTERN = Dt;  
 
   const LAYERS_TEXT_CLASSNAME = 'fa-layers-text';
   const FONT_FAMILY_PATTERN = Kt;
@@ -16003,7 +16003,7 @@
         const extra = string.charCodeAt(counter++);
 
         if ((extra & 0xfc00) == 0xdc00) {
-          // eslint-disable-line eqeqeq
+           
           output.push(((value & 0x3ff) << 10) + (extra & 0x3ff) + 0x10000);
         } else {
           output.push(value);
@@ -16465,7 +16465,7 @@
 
     const hookFns = _hooks[hook] || [];
     hookFns.forEach((hookFn) => {
-      accumulator = hookFn.apply(null, [accumulator, ...args]); // eslint-disable-line no-useless-call
+      accumulator = hookFn.apply(null, [accumulator, ...args]);  
     });
     return accumulator;
   }

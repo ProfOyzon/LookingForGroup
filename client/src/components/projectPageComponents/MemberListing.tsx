@@ -19,8 +19,8 @@ export const MemberListing = (props) => {
   //Opens/closes the relevant 'more options' dropdown menu
   //i - the number id for the relevant menu. Allows the function to correctly open specific menus
   const moreSettingsToggle = (i) => {
-    let currentId = 'member-settings-dropdown-' + i;
-    let dropdown = document.getElementById(currentId);
+    const currentId = 'member-settings-dropdown-' + i;
+    const dropdown = document.getElementById(currentId);
     dropdown ? dropdown.classList.toggle('settings-show') : console.log('element not found');
   };
 
@@ -40,8 +40,8 @@ export const MemberListing = (props) => {
   //Changes will still be lost if the user doesn't click 'save' in the bottom right
   const saveRoleName = () => {
     openCloseInput();
-    let roleNameInput = document.getElementsByClassName('member-settings-role-input')[props.num];
-    let roleNameDisplay = document.getElementsByClassName('member-settings-role')[props.num];
+    const roleNameInput = document.getElementsByClassName('member-settings-role-input')[props.num];
+    const roleNameDisplay = document.getElementsByClassName('member-settings-role')[props.num];
     roleNameDisplay.innerHTML = roleNameInput.value;
     props.updateMemberSettings(0, props.idNum, roleNameInput.value);
   };

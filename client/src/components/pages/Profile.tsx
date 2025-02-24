@@ -38,11 +38,11 @@ const getProfiles = async () => {
 };
 
 const Profile = (props) => {
-  const [profileID, setProfileID] = useState<String | null>(null);
+  const [profileID, setProfileID] = useState<string | null>(null);
   const [profiles, setProfiles] = useState<{ _id: number; username: string }[]>([]);
 
   //Get profile id from search query
-  let urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(window.location.search);
   setProfileID(urlParams.get('profID'));
 
   //If nothing is found, use a default id
@@ -79,7 +79,7 @@ const Profile = (props) => {
   const getUserData = async (userID: number) => {
     const url = `http://localhost:8081/api/users/${userID}`;
     try {
-      let response = await fetch(url, {
+      const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });

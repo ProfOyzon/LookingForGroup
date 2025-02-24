@@ -16,7 +16,7 @@ export const sortItems = (tags: string[], projectSearch: boolean) => {
     //get projects currently in the database
     //let projectList = projects;
     //Create an empty array to hold projects that meet criteria (project array)
-    let sortedProjectList: {
+    const sortedProjectList: {
       _id: number;
       name: string;
       members: { userID: number; admin: boolean; owner: boolean; role: string }[];
@@ -26,10 +26,10 @@ export const sortItems = (tags: string[], projectSearch: boolean) => {
       posts: number[];
     }[] = [];
     //iterate through all the projects. For each one...
-    for (let project of projects) {
+    for (const project of projects) {
       //Compare the list of tags we are using to the tags of the project
       let matchingTags = 0;
-      for (let tag of tags) {
+      for (const tag of tags) {
         if (!project.tags.includes(tag)) {
           break;
         }
@@ -52,7 +52,7 @@ export const sortItems = (tags: string[], projectSearch: boolean) => {
   else {
     //get people currently in the database
     //Create an empty array to hold people that meet criteria (profile array)
-    let sortedProfileList: {
+    const sortedProfileList: {
       _id: number;
       name: string;
       username: string;
@@ -76,18 +76,18 @@ export const sortItems = (tags: string[], projectSearch: boolean) => {
       }[];
     }[] = [];
     //iterate through all people. For each one...
-    for (let profile of profiles) {
+    for (const profile of profiles) {
       //Compare the list of tags we are using to the tags of the person
       //No tags exist for profiles yet, so skills & interests will be used instead
       let matchingTags: number = 0;
-      for (let tag of tags) {
+      for (const tag of tags) {
         //Search interests first
         if (profile.interests.includes(tag)) {
           matchingTags++;
           continue;
         }
         //If it is not found in interests, search skills next
-        for (let skill of profile.skills) {
+        for (const skill of profile.skills) {
           if (skill.skill == tag) {
             matchingTags++;
             break;

@@ -8,7 +8,7 @@ const MyProjectsDisplayList = ({ projectData }) => {
   const getStatus = async () => {
     const url = `/api/projects/${projectData.project_id}`;
     try {
-      let response = await fetch(url);
+      const response = await fetch(url);
 
       const rawData = await response.json();
       setStatus(rawData.data[0].status === undefined ? 'No data' : rawData.data[0].status);
@@ -54,8 +54,8 @@ const MyProjectsDisplayList = ({ projectData }) => {
   };
 
   const createDate = (theDate: string) => {
-    let dataList = theDate.split('T');
-    let dateParts = dataList[0].split('-');
+    const dataList = theDate.split('T');
+    const dateParts = dataList[0].split('-');
     return `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
   };
 

@@ -2,7 +2,7 @@ import { CreateNotification } from './NotificationSingles';
 
 //fake notifications for testing purposes
 //can move to the "fake data" file if needed
-let notifications = [
+const notifications = [
   CreateNotification('Notification 1', new Date('2024-06-15T10:00:00Z')),
   CreateNotification('Notification 2', new Date('2024-06-12T06:00:00Z')),
   CreateNotification('Notification 3', new Date('2024-06-10T07:00:00Z')),
@@ -24,8 +24,8 @@ function SortNotifs(notifs) {
 //puts it into a 'month-day' format for the headers
 function FormatDate(dateString) {
   const date = new Date(dateString);
-  let month = date.getMonth();
-  let day = date.getDate();
+  const month = date.getMonth();
+  const day = date.getDate();
 
   return `${month}-${day}`;
 }
@@ -65,11 +65,11 @@ function GroupNotifsByDate(notifs) {
 export function DisplayNotifs() {
   //first sort the notifs by time
   //the most recent go up towards the top
-  let sortedNotifs = SortNotifs(notifications);
+  const sortedNotifs = SortNotifs(notifications);
 
   //get the sorted notifs from above and group them
   //puts all notifs from the same day under one header
-  let groupedNotifs = GroupNotifsByDate(sortedNotifs);
+  const groupedNotifs = GroupNotifsByDate(sortedNotifs);
 
   return (
     <>

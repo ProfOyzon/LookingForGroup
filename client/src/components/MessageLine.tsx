@@ -10,7 +10,7 @@ export const MessageLine = ({ msg, username, type }) => {
   const navigate = useNavigate();
   let profile;
   // finds the profile associated with the usernames and stores it for use in the path
-  for (let p of profiles) {
+  for (const p of profiles) {
     if (username == p.username) {
       profile = p;
     }

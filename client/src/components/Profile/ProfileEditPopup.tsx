@@ -61,7 +61,7 @@ const saveImage = (userID, data) => {
 };
 
 const setUpInputs = async (data) => {
-  let profileData = data[0];
+  const profileData = data[0];
   let roles, majors;
 
   const getRolesAndMajors = async () => {
@@ -75,7 +75,7 @@ const setUpInputs = async (data) => {
   };
 
   const setUpFunc = (input, data) => {
-    let inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
+    const inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     if (inputElement) {
       // if (inputElement.tagName.toLowerCase() === 'input' || inputElement.tagName.toLowerCase() === 'textarea') {
       //   inputElement.value = data;
@@ -216,7 +216,7 @@ const ProjectsTab = () => {
 
 const SkillsTab = () => {
   const [currentTagsTab, setCurrentTagsTab] = useState(0);
-  let tagSearchTabs = tagTabs.map((tag, i) => {
+  const tagSearchTabs = tagTabs.map((tag, i) => {
     return (
       <button
         onClick={() => setCurrentTagsTab(i)}
@@ -250,7 +250,7 @@ const SkillsTab = () => {
 
 export const ProfileEditPopup = () => {
   let currentTab = 0;
-  let TabContent = () => {
+  const TabContent = () => {
     return (
       <div id="profile-editor-content">
         <AboutTab />
@@ -276,7 +276,7 @@ export const ProfileEditPopup = () => {
 
     // Get current tab
     let currentElement;
-    let currTab = document.querySelector(`#profile-tab-${pageTabs[currentTab]}`);
+    const currTab = document.querySelector(`#profile-tab-${pageTabs[currentTab]}`);
     switch (pageTabs[currentTab]) {
       case 'About':
         currentElement = document.querySelector(`#profile-editor-about`);

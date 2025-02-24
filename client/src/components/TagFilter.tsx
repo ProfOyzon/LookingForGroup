@@ -18,7 +18,7 @@ import { softSkills, hardSkills, proficiencies } from '../constants/skills';
 //create empty array, which will be filled with tags selected by user
 //This needs to be placed outside the main component
 //Placing it inside causes it to be reset whenever 'setUseState' in 'filter' is run
-let selectedTags: string[] = [];
+const selectedTags: string[] = [];
 
 //props used:
 //projectFilter - boolean, if true this filters projects, if false this filters profiles
@@ -46,31 +46,31 @@ export const TagFilter = ({ projectFilter, setUseState }) => {
     } */
   }
   //create useState using this array; this will be used for 'tag searching' and modify display accordingly
-  let [displayedTags, setDisplayedTags] = useState(tagsList);
+  const [displayedTags, setDisplayedTags] = useState(tagsList);
 
   //tag search function
   //Runs whenever the input in the searchbar changes
   //takes in searchResults, which is the data filtered by the search function
   const tagSearch = (searchResults) => {
     //Get the 'correct' data out of the weird structuring of searchResults
-    let realSearchResults = searchResults[0];
+    const realSearchResults = searchResults[0];
     //set displayedTags state
     setDisplayedTags(realSearchResults);
     //run through all selected tags & update their displays if present
     //setTimeout allows new data to be loaded first before updating based on selected tags
     setTimeout(() => {
       //First, find all 'selected' elements and change them to unselected displays
-      let selectedTagElements = Array.from(document.getElementsByClassName('tag-filter-selected'));
+      const selectedTagElements = Array.from(document.getElementsByClassName('tag-filter-selected'));
       console.log(selectedTagElements);
-      for (let element of selectedTagElements) {
+      for (const element of selectedTagElements) {
         element.classList.toggle('tag-filter-selected');
       }
       //Then, see if any results are in the currently selected tags
-      for (let result of realSearchResults) {
+      for (const result of realSearchResults) {
         //If the are...
         if (selectedTags.includes(result)) {
           //Update their displays to match
-          let tagElement = document.getElementById(`tag-id-${result}`);
+          const tagElement = document.getElementById(`tag-id-${result}`);
           console.log(tagElement);
           tagElement
             ? tagElement.classList.toggle('tag-filter-selected')
@@ -104,7 +104,7 @@ export const TagFilter = ({ projectFilter, setUseState }) => {
   //Also utilizes itemSort.tsx for sorting code (for now, ugh.)
   const filter = () => {
     //Passes in selected tag array to be run by sortItems
-    let filteredData = sortItems(selectedTags, projectFilter);
+    const filteredData = sortItems(selectedTags, projectFilter);
     //Use returned data with the setUseState function passed into this component
     setUseState(filteredData); //May need adjustments due to same-name useState stuff
     //Additional stuff - if component is part of a popup or dropdown, have this function close it as well

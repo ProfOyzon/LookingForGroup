@@ -38,7 +38,7 @@ const DiscoverAndMeet = ({ category }) => {
   // Components
   // --------------------
   //Hero banner for profile display
-  let profileHero = (
+  const profileHero = (
     <>
       {
         <div id="profile-hero-bg1">
@@ -111,7 +111,7 @@ const DiscoverAndMeet = ({ category }) => {
     return [{ data: itemSearchData }];
   }, [itemSearchData]);
 
-  let heroContent =
+  const heroContent =
     category === 'projects' ? <ImageCarousel carouselType="Discover" /> : profileHero;
 
   // --------------------
@@ -162,8 +162,8 @@ const DiscoverAndMeet = ({ category }) => {
     // Clear list before handling search
     tempItemList = [];
 
-    for (let result of searchResults[0]) {
-      for (let item of itemSearchData) {
+    for (const result of searchResults[0]) {
+      for (const item of itemSearchData) {
         if (result === item) {
           tempItemList.push(fullItemList[itemSearchData.indexOf(item)]);
           continue;
@@ -186,10 +186,10 @@ const DiscoverAndMeet = ({ category }) => {
     // Check which items should be included based on filters
     let tagFilteredList = tempItemList.filter((item) => {
       let tagFilterCheck = true;
-      let lowercaseTags = item.tags.map((tag) => tag.tag.toLowerCase());
+      const lowercaseTags = item.tags.map((tag) => tag.tag.toLowerCase());
 
       // If item in filtered list contains all tags in taglist, include it
-      for (let tag of activeTagFilters) {
+      for (const tag of activeTagFilters) {
         if (!lowercaseTags.includes(tag)) {
           tagFilterCheck = false;
           break;

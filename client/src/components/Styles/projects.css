@@ -239,6 +239,12 @@ Project Creator and Editor style rules
   color: var(--main-text);
 }
 
+@media (min-width: 1172px) {
+  #project-creator-editor {
+    width: 1120px;
+  }
+}
+
 #project-editor-tabs {
   display: flex;
   justify-content: space-around;
@@ -307,7 +313,8 @@ Project Creator and Editor style rules
 #project-editor-content select,
 #project-editor-general input,
 #project-editor-content textarea,
-#project-team-add-member-name input {
+#project-team-add-member-name input,
+#project-editor-link-item input {
   margin-top: 10px;
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -673,6 +680,7 @@ Project Creator and Editor style rules
   width: 30px;
   height: 30px;
   background-color: var(--primary-color) !important;
+  border: none;
   border-radius: 100%;
   display: flex;
   align-items: center;
@@ -694,6 +702,7 @@ Project Creator and Editor style rules
   min-width: 234px;
   gap: 10px;
   flex-direction: row;
+  border: none;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
@@ -809,7 +818,7 @@ Project Creator and Editor style rules
 
 #team-positions-popup-list-buttons button,
 #position-edit-save {
-  background-color: var(--header-color);
+  background-color: transparent;
   border: none;
   border-radius: 30px;
   padding: 0 17px;
@@ -1956,6 +1965,7 @@ New Project Page style rules
   display: flex;
   height: 28px;
   margin-left: auto;
+  align-items: center;
 }
 
 #project-info-buttons button {
@@ -1969,6 +1979,7 @@ New Project Page style rules
 
 #project-info-edit {
   font-size: 1.8ch;
+  border: none;
   border-radius: 30px;
   background-color: var(--primary-color) !important;
   color: var(--invert-text);

@@ -96,7 +96,23 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
 
       // Construct the finalized version of the data to be moved into filterPopupTabs
       let tabs = JSON.parse(JSON.stringify((category === 'projects') ? projectTabs : peopleTabs));
-      data.forEach((tag: Skill) => tabs[tag.type].categoryTags.push(tag.label));
+      data.forEach((tag: Skill) => {
+        let type = tag.type;
+
+        // All these tags should be under Genre
+        if (
+          type === 'Creative' ||
+          type === 'Technical' ||
+          type === 'Games' ||
+          type === 'Multimedia' ||
+          type === 'Music' ||
+          type === 'Other'
+        ) {
+          type = 'Genre';
+        }
+
+        tabs[type].categoryTags.push(tag.label);
+      });
       setFilterPopupTabs(Object.values(tabs));
 
     } catch (error) {

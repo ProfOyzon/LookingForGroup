@@ -537,16 +537,16 @@ export const ProjectCreatorEditor = () => {
   // Get appropriate tag color for tag
   const getTagColor = (type: string) => {
     // Genre
-    // if (
-    //   type === 'Creative' ||
-    //   type === 'Technical' ||
-    //   type === 'Games' ||
-    //   type === 'Multimedia' ||
-    //   type === 'Music' ||
-    //   type === 'Other'
-    // ) {
-    //   return 'green';
-    // }
+    if (
+      type === 'Creative' ||
+      type === 'Technical' ||
+      type === 'Games' ||
+      type === 'Multimedia' ||
+      type === 'Music' ||
+      type === 'Other'
+    ) {
+      return 'green';
+    }
     
     // Project Types
     if (type === 'Project Type') {

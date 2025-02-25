@@ -16,16 +16,27 @@ import '../Styles/pages.css';
 import '../Styles/linksTab.css';
 
 interface LinkData {
-  website: String;
+  id: Number;
   url: String;
 }
 
 let links = [] as LinkData[];
 
-export const LinksTab = () => {
-  let userID;
+export const LinksTab = (props) => {
+  const type = props.type;
+  let socials;
 
   const [update, setUpdate] = useState(false);
+  useEffect(() => {
+    const loadSocials = async () => {
+      // fetch for profile on ID
+      const userID = await fetchUserID();
+      const response = await fetch(`api/users/${userID}`);
+      const { data } = await response.json(); // use data[0]
+      socials = data[0].socials;
+    }
+    loadSocials();
+  }, []);
   // Update Functions ----------------------
 
   const updateURL = (index, newUrl) => {
@@ -34,7 +45,7 @@ export const LinksTab = () => {
   }
 
   const updateWebsite = (index, newWebsite) => {
-    links = links.map((ld, i) => i === index ? { ...ld, website: newWebsite } : ld);
+    links = links.map((ld, i) => i === index ? { ...ld, id: newWebsite } : ld);
   }
 
   // Button Functions ----------------------
@@ -43,7 +54,7 @@ export const LinksTab = () => {
     e.preventDefault();
     // Save current state
     // Adds another LinkInput into the chain
-    links.push({ website: '', url: '' });
+    links.push({ id: 0, url: '' });
 
     // setLinks(prev => [...prev, {website:'', url:''}]);
     setUpdate(!update);
@@ -101,46 +112,26 @@ export const LinksTab = () => {
   const LinkContainer = () => {
     // Use an effect to reload the container based on the
     // number of links the user has/requests
-    let hasSocials = false;
-    useEffect(() => {
-      const loadSocials = async () => {
-        // fetch for profile on ID
-        userID = await fetchUserID();
-        const response = await fetch(`api/users/${userID}`);
-        const { data } = await response.json(); // use data[0]
-        const socials = data[0].socials;
-        // console.log(socials);
-        // TODO: Set up the links container with the fetched socials
-        if (socials) {
-          hasSocials = true;
-        }
-      }
-      loadSocials();
-    }, []);
-
-    if (hasSocials) {
+    let render;
+    if (socials && socials.length > 0) {
       console.log('Using user data...');
+      render = socials.map((social, i) => {
+        return <LinkInput data={social} index={i} />;
+      });
     }
     else if (links.length > 0) {
-      console.log('Edit data found, showing...');
-      let render = links.map((ld, i) => {
+      render = links.map((ld, i) => {
         return <LinkInput data={ld} index={i} />;
       });
-
-      return (
-        <div id='links-container'>
-          {render}
-        </div>
-      );
     }
     else {
-      console.log('No data');
-      return (
-        <div id='links-container'>
-          <p>No Socials Posted!</p>
-        </div>
-      );
+      render = <p>No Socials Posted!</p>;
     }
+    return (
+      <div id='links-container'>
+        {render}
+      </div>
+    );
   };
 
   // Tab Component ----------------------
@@ -158,3 +149,8 @@ export const LinksTab = () => {
     </div>
   );
 };
+
+export const getSocials = () => {
+  console.log(links);
+  return links;
+}

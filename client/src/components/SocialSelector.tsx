@@ -28,9 +28,9 @@ export const SocialSelector = (props) => {
       const socials = await getSocials();
       const selectorOptions = socials.map((social, i) => {
         if(`${props.value}` === `${i}`) {
-          return <option value={social.website_id} selected>{social.label}</option>;
+          return <option value={social.id} selected>{social.label}</option>;
         }
-        return <option value={social.website_id}>{social.label}</option>;
+        return <option value={social.id}>{social.label}</option>;
       });
       setOptions(selectorOptions);
     };

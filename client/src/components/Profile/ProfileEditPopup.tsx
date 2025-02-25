@@ -13,7 +13,7 @@ import '../Styles/pages.css';
 
 import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
-import { LinksTab } from '../tabs/LinksTab';
+import { LinksTab, getSocials } from '../tabs/LinksTab';
 import { RoleSelector } from '../RoleSelector';
 import { MajorSelector } from '../MajorSelector';
 import { SearchBar } from '../SearchBar';
@@ -46,12 +46,15 @@ const onSaveClicked = async (e) => {
     funFact: getInputValue('funFact'),
     bio: getInputValue('bio'),
     skills: getInputValue('skills'),
-    socials: getInputValue('socials'),
+    socials: getSocials(),
   };
+  console.log(data);
+  
   const userID = await fetchUserID();
   await sendPut(`/api/users/${userID}`, data);
   await saveImage(userID, e.target);
-  window.location.reload(); // reload page
+
+  // window.location.reload(); // reload page
 };
 
 const saveImage = (userID, data) => {
@@ -256,7 +259,7 @@ export const ProfileEditPopup = () => {
         <AboutTab />
         <ProjectsTab />
         <SkillsTab />
-        <LinksTab />
+        <LinksTab type={'profile'}/>
       </div>
     );
   };

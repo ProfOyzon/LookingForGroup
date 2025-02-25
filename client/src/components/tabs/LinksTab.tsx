@@ -24,18 +24,30 @@ let links = [] as LinkData[];
 
 export const LinksTab = (props) => {
   const type = props.type;
-  let socials;
+  let socials = props.socials;
 
   const [update, setUpdate] = useState(false);
   useEffect(() => {
     const loadSocials = async () => {
+      // Pick which socials to use based on type
       // fetch for profile on ID
       const userID = await fetchUserID();
       const response = await fetch(`api/users/${userID}`);
       const { data } = await response.json(); // use data[0]
       socials = data[0].socials;
+      // Setup links
+      if (socials) {
+        links = socials.map(s => {
+          return {
+            id: s.id,
+            url: s.url
+          };
+        });
+      }
+      setUpdate(!update);
     }
     loadSocials();
+
   }, []);
   // Update Functions ----------------------
 
@@ -56,7 +68,6 @@ export const LinksTab = (props) => {
     // Adds another LinkInput into the chain
     links.push({ id: 0, url: '' });
 
-    // setLinks(prev => [...prev, {website:'', url:''}]);
     setUpdate(!update);
     return false;
   };
@@ -75,24 +86,26 @@ export const LinksTab = (props) => {
   const LinkInput = (props) => {
     let [text, setText] = useState('');
 
-    useEffect(()=>{
-      if(links[props.index]){
+    useEffect(() => {
+      console.log(props.data);
+      
+      if (links[props.index]) {
         // If there exists a value for it in the array
         // Load in the value
-        setText(props.data.url);
+        setText(props.data.url); // textInput
       }
     }, []);
 
     return (
       <div id={`link-${props.index}`} className='link-input'>
-        <SocialSelector value={props.data.website}
+        <SocialSelector value={props.data.id}
           onChange={
             (e) => {
               updateWebsite(props.index, e.target.selectedIndex);
             }} />
         <div className='link-input-wrapper'>
           <div className='editor-input-item'>
-          <input type="text" name="url" id="link-url-input" value={text}
+            <input type="text" name="url" id="link-url-input" value={text}
               onChange={
                 (e) => {
                   setText(e.target.value);

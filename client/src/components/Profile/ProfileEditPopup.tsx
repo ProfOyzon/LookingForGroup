@@ -49,12 +49,12 @@ const onSaveClicked = async (e) => {
     socials: getSocials(),
   };
   console.log(data);
-  
+
   const userID = await fetchUserID();
   await sendPut(`/api/users/${userID}`, data);
   await saveImage(userID, e.target);
 
-  // window.location.reload(); // reload page
+  window.location.reload(); // reload page
 };
 
 const saveImage = (userID, data) => {
@@ -96,7 +96,7 @@ const setUpInputs = async (data) => {
   setUpFunc('major', majors.find((r) => r.label === profileData.major).major_id);
   setUpFunc('academicYear', profileData.academic_year);
   setUpFunc('location', profileData.location);
-  setUpFunc('headline', profileData.headline); 
+  setUpFunc('headline', profileData.headline);
   setUpFunc('funFact', profileData.fun_fact);
   setUpFunc('bio', profileData.bio);
 };
@@ -253,6 +253,22 @@ const SkillsTab = () => {
 
 export const ProfileEditPopup = () => {
   let currentTab = 0;
+  const [profile, setProfile] = useState(); // Profile Data holder
+
+  useEffect(() => {
+    const setUpProfileData = async () => {
+      // Pick which socials to use based on type
+      // fetch for profile on ID
+      const userID = await fetchUserID();
+      const response = await fetch(`api/users/${userID}`);
+      const { data } = await response.json(); // use data[0]
+      console.log(data[0]);
+      
+      setProfile(data[0]);
+    };
+    setUpProfileData();
+  }, []);
+
   let TabContent = () => {
     return (
       <div id="profile-editor-content">
@@ -306,8 +322,7 @@ export const ProfileEditPopup = () => {
     }
   };
 
-  let editorTabs;
-  editorTabs = pageTabs.map((tag, i) => {
+  let editorTabs = pageTabs.map((tag, i) => {
     return (
       <button
         onClick={(e) => {
@@ -321,26 +336,6 @@ export const ProfileEditPopup = () => {
       </button>
     );
   });
-
-  // let currentTabContent;
-  // switch (pageTabs[currentTab]) {
-  //   case 'About':
-  //     // Hide everything but the selected tab
-  //     currentTabContent = <AboutTab />;
-  //     break;
-  //   case 'Projects':
-  //     currentTabContent = <ProjectsTab />;
-  //     break;
-  //   case 'Skills':
-  //     currentTabContent = <SkillsTab />;
-  //     break;
-  //   case 'Links':
-  //     currentTabContent = <LinksTab />;
-  //     break;
-  //   default:
-  //     currentTabContent = <AboutTab />;
-  //     break;
-  // }
 
   return (
     <Popup>

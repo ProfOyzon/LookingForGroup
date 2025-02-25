@@ -21,14 +21,7 @@ import profilePicture from '../../images/blue_frog.png';
 import EditButton from '../Profile/ProfileEditButton';
 import { ThemeIcon } from '../ThemeIcon';
 
-const fetchUserID = async () => {
-  const response = await fetch('/api/auth');
-  const { data } = await response.json();
-  return data;
-};
-
-const NewProfile = async () => {
-  const userID = await fetchUserID();
+const NewProfile = () => {
   // --------------------
   // Interfaces
   // --------------------
@@ -90,7 +83,8 @@ const NewProfile = async () => {
 
   // Stores if profile is loaded from server and if it's user's respectively
   const [profileLoaded, setProfileLoaded] = useState(false);
-  let isUsersProfile = `${userID}` === profileID;
+  let userID: number;
+  let isUsersProfile: boolean = false;
 
   let displayedProfile: Profile;
   let setDisplayedProfile: Function;
@@ -122,8 +116,17 @@ const NewProfile = async () => {
     }
   };
 
+  // Gets the userID
+  const fetchUserID = async () => {
+    const response = await fetch('/api/auth');
+    const { data } = await response.json();
+    return data;
+  };
+
   // Gets the profile data
   const getProfileData = async () => {
+    userID = await fetchUserID();
+    isUsersProfile = `${userID}` === profileID; 
     setUpProfileID();
     const url = `/api/users/${profileID}`;
 
@@ -174,6 +177,8 @@ const NewProfile = async () => {
   };
 
   if (!profileLoaded) {
+    //const userID = await fetchUserID();
+    //isUsersProfile = `${userID}` === profileID;
     getProfileData();
   }
 

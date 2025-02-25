@@ -310,12 +310,28 @@ Project Creator and Editor style rules
   font-style: italic;
 }
 
+.project-link-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.project-link-input-wrapper input {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 15px;
+  flex-grow: 1;
+  background-color: var(--bg-color);
+  color: var(--main-text);
+  font-size: 1.6ch;
+  outline: none;
+}
+
 #project-editor-content select,
 #project-editor-general input,
 #project-editor-content textarea,
-#project-team-add-member-name input,
-#project-editor-link-item input {
-  margin-top: 10px;
+#project-team-add-member-name input {
   border: 1px solid var(--border-color);
   border-radius: 10px;
   padding: 15px;
@@ -957,6 +973,39 @@ select.edit-position-compensation {
   flex-direction: column;
   gap: 8px;
   flex: 1 0 0;
+}
+
+#project-editor-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.project-editor-link-item {
+  display: flex;
+  gap: 8px;
+  justify-items: center;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.project-editor-link-item select {
+  max-width: 166px;
+  width: 100%;
+}
+
+.remove-link-button {
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  right: 12px;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 50%;
+}
+
+.remove-link-button > .fa-minus {
+  color: var(--invert-text);
 }
 
 /*

@@ -48,7 +48,7 @@ export const ProjectCreatorEditor = () => {
     jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
     members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
     images: { id: number, image: string, position: number}[];
-    socials: string[]; // not implemented?
+    socials: { id: number, url: string }[]; // not implemented?
   } = {
     title: '',
     hook: '',
@@ -240,7 +240,6 @@ export const ProjectCreatorEditor = () => {
           return;
         }
         setAllTags(tagsData);
-        console.log('tags', tagsData);
 
       } catch (error) {
         console.error(error.message);
@@ -267,7 +266,6 @@ export const ProjectCreatorEditor = () => {
           return;
         }
         setAllSkills(skillsData);
-        console.log('skills', skillsData);
 
       } catch (error) {
         console.error(error.message);
@@ -335,8 +333,40 @@ export const ProjectCreatorEditor = () => {
     return 'unselected';
   }, [modifiedProject]);
 
+  // Get appropriate tag color for tag
+  const getTagColor = (type: string) => {
+    // Genre
+    if (type === 'Creative' ||
+      type === 'Technical' ||
+      type === 'Games' ||
+      type === 'Multimedia' ||
+      type === 'Music' ||
+      type === 'Other'
+    ) {
+      return 'green';
+    }
+
+    // Developer Skills
+    if (type === 'Developer') {
+      return 'yellow';
+    }
+
+    // Designer Skills
+    if (type === 'Designer') {
+      return 'red';
+    }
+
+    // Soft Skills
+    if (type === 'Soft') {
+      return 'purple';
+    }
+
+    console.log("Couldn't find appropriate tag to assign color");
+  }
+
   // Create element for each tag
   const renderTags = useCallback(() => {
+    console.log('searched tags', searchedTags);
     if (searchedTags && searchedTags.length !== 0 ) {
       return (
         searchedTags.map(t => {
@@ -432,6 +462,7 @@ export const ProjectCreatorEditor = () => {
 
   // Update tags shown for search bar
   const currentDataSet = useMemo(() => {
+    console.log('setting current data set for tab ', currentTagsTab);
     switch (currentTagsTab) {
       case 0:
         return [{ data: allProjectTypes }];
@@ -449,22 +480,19 @@ export const ProjectCreatorEditor = () => {
   }, [currentTagsTab, allProjectTypes, allTags, allSkills]);
 
   // Update shown tags according to search results
-  // FIXME: results do not carry over when switching tabs
+  // FIXME: results do not update when switching tabs with no query
   const handleSearch = useCallback((results: (Tag | Skill | ProjectType)[][]) => {
-    setSearchResults(results);
+    // setSearchResults(results);
     console.log('handling search');
     console.log('results', results);
-    console.log('current data set', currentDataSet);
     if (results.length === 0 && currentDataSet.length !== 0) {
+      console.log('no results or current data set');
       setSearchedTags(currentDataSet[0].data);
     }
-    setSearchedTags(results[0]);
+    else {
+      setSearchedTags(results[0]);
+    }
   }, [currentDataSet]);
-
-  // Search tags on tab change
-  useEffect(() => {
-    handleSearch(searchResults);
-  }, [currentTagsTab, currentDataSet, handleSearch, searchResults]);
 
   //================
   // Helper Methods
@@ -474,37 +502,6 @@ export const ProjectCreatorEditor = () => {
     const job = modifiedProject.jobs.find((job: {title_id: number}) => job.title_id === id);
     return job || { title_id: 0, job_title: '', description: '', availability: '', location: '', duration: '', compensation: '' };
   };
-
-  // Get appropriate tag color for tag
-  const getTagColor = (type: string) => {
-    // Genre
-    if (type === 'Creative' ||
-      type === 'Technical' ||
-      type === 'Games' ||
-      type === 'Multimedia' ||
-      type === 'Music' ||
-      type === 'Other'
-    ) {
-      return 'green';
-    }
-
-    // Developer Skills
-    if (type === 'Developer') {
-      return 'yellow';
-    }
-
-    // Designer Skills
-    if (type === 'Designer') {
-      return 'red';
-    }
-
-    // Soft Skills
-    if (type === 'Soft') {
-      return 'purple';
-    }
-
-    console.log("Couldn't find appropriate tag to assign color");
-  }
 
   //Save project editor changes
   const saveProject = async () => {
@@ -680,6 +677,47 @@ export const ProjectCreatorEditor = () => {
     }
   }
 
+  const addLinkInput = () => {
+    // find parent div
+    const linkListDiv = document.querySelector("#project-editor-link-list");
+    console.log('linklistdiv', linkListDiv);
+    if (linkListDiv) {
+      // parent div
+      const linkItemDiv = document.createElement('div');
+      linkItemDiv.className = 'project-editor-link-item';
+
+      // dropdown
+      const dropdown = document.createElement('select');
+      //TODO: add dropdown options
+
+      // input wrapper
+      const linkInputWrapper = document.createElement('div');
+      linkInputWrapper.className = 'project-link-input-wrapper';
+
+      // URL input
+      const input = document.createElement('input');
+      input.type = 'url';
+      input.placeholder = 'URL';
+
+      // remove link button
+      const button = document.createElement('button');
+      button.className = 'remove-link-button';
+      button.innerHTML = '<i class="fa-solid fa-minus"></i>';
+      button.onclick = (e) => {
+        const wrapper = e.currentTarget.closest('.project-editor-link-item');
+        if (wrapper) {
+          wrapper.remove();
+        }
+      };
+
+      linkInputWrapper.appendChild(input);
+      linkInputWrapper.appendChild(button);
+      linkItemDiv.appendChild(dropdown);
+      linkItemDiv.appendChild(linkInputWrapper);
+      linkListDiv.insertBefore(linkItemDiv, linkListDiv.lastElementChild);
+    }
+  }
+
   //===================
   // Tab page elements
   //===================
@@ -817,7 +855,6 @@ export const ProjectCreatorEditor = () => {
           <div id="project-editor-type-tags">
             <div className="project-editor-section-header">Project Type</div>
             {modifiedProject.project_types.length === 0 ? <div className="error">*At least 1 type is required</div> : <></> }
-            {/* FIXME: determine error from project information*/}
             <div id="project-editor-type-tags-container">
               {modifiedProject.project_types.map(t => (
                 <button
@@ -837,7 +874,6 @@ export const ProjectCreatorEditor = () => {
               Drag and drop to reorder. The first 2 tags will be displayed on your project's
               discover card.
             </div>
-            {/* TODO: check for project skills */}
             {modifiedProject.tags.length === 0 ? <div className="error">*At least 1 tag is required</div> : <></> }
             <div id="project-editor-selected-tags-container">
               <hr id="selected-tag-divider" />
@@ -859,35 +895,35 @@ export const ProjectCreatorEditor = () => {
             <div id="project-editor-tag-wrapper">
               <div id="project-editor-tag-search-tabs">
                 <button
-                  onClick={() => setCurrentTagsTab(0)}
+                  onClick={() => {setCurrentTagsTab(0);}}
                   className={`button-reset project-editor-tag-search-tab ${currentTagsTab === 0 ? 'tag-search-tab-active' : ''}`}
                   //Data from genres
                 >
                   Project Type
                 </button>
                 <button
-                  onClick={() => setCurrentTagsTab(1)}
+                  onClick={() => {setCurrentTagsTab(1); }}
                   className={`button-reset project-editor-tag-search-tab ${currentTagsTab === 1 ? 'tag-search-tab-active' : ''}`}
                   //Data from tags
                 >
                   Genre
                 </button>
                 <button
-                  onClick={() => setCurrentTagsTab(2)}
+                  onClick={() => {setCurrentTagsTab(2); }}
                   className={`button-reset project-editor-tag-search-tab ${currentTagsTab === 2 ? 'tag-search-tab-active' : ''}`}
                   //Data from skills (type=Developer)
                 >
                   Developer Skills
                 </button>
                 <button
-                  onClick={() => setCurrentTagsTab(3)}
+                  onClick={() => {setCurrentTagsTab(3); }}
                   className={`button-reset project-editor-tag-search-tab ${currentTagsTab === 3 ? 'tag-search-tab-active' : ''}`}
                   //Data from skills (type=Designer)
                 >
                   Designer Skills
                 </button>
                 <button
-                  onClick={() => setCurrentTagsTab(4)}
+                  onClick={() => {setCurrentTagsTab(4); }}
                   className={`button-reset project-editor-tag-search-tab ${currentTagsTab === 4 ? 'tag-search-tab-active' : ''}`}
                   //Data from skills (type=Soft)
                 >
@@ -1289,7 +1325,27 @@ export const ProjectCreatorEditor = () => {
 
           <div id="project-editor-link-list">
             {/* insert list of link elements/componenets here */}
-            <button id="project-editor-add-link">+ Add Social Profile</button>
+            {/* temp value in here */}
+            <div className="project-editor-link-item">
+              <select>
+                {/* TODO: get values from socials table */}
+                <option disabled selected>Select</option>
+                <option>LinkedIn</option>
+              </select>
+              <div className='project-link-input-wrapper'>
+                <input type="url" placeholder="URL" />
+                <button className='remove-link-button' onClick={
+                  (e) => {
+                    const wrapper = e.currentTarget.closest('.project-editor-link-item');
+                    if (wrapper) {
+                    wrapper.remove();
+                    }
+                }}>
+                  <i className="fa-solid fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <button id="project-editor-add-link" onClick={addLinkInput}>+ Add Social Profile</button>
           </div>
         </div>
       }

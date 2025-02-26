@@ -807,6 +807,10 @@ export const ProjectCreatorEditor = () => {
     }
   }
 
+  const updateLinks = () => {
+    
+  }
+
   //===================
   // Tab page elements
   //===================

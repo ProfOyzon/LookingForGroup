@@ -16,8 +16,6 @@ import { Popup, PopupButton, PopupContent } from './Popup';
 import { SearchBar } from './SearchBar';
 import profileImage from '../icons/profile-user.png';
 import editIcon from '../icons/edit.png';
-import { render } from '@testing-library/react';
-import { current } from '@reduxjs/toolkit';
 
 //THIS COMPONENT NEEDS TO BE WORKED ON
 
@@ -110,7 +108,7 @@ export const ProjectCreatorEditor = () => {
 
   interface Social {
     website_id: number;
-    url: string;
+    label: string;
   }
 
   //=================
@@ -133,22 +131,15 @@ export const ProjectCreatorEditor = () => {
   const [failCheck, setFailCheck] = useState(false);                      //check whether or not data was successfully obtained from database
   const [currentTab, setCurrentTab] = useState(0);                        //for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
   const [currentTagsTab, setCurrentTagsTab] = useState(0);                //tracking which tab of tags is currently viewed: 0 - project type, 1 - genre, 2 - dev skills, 3 - design skills, 4 - soft skills
-  // const [currentDataSet, setCurrentDataSet] = useState<{                  //current dataset for tag search bar
-  //   data: (Tag | Skill | ProjectType)[] }[]>([]);
-  const [searchedTags, setSearchedTags] = useState<
-    //filtered results from tag search bar
+  const [searchedTags, setSearchedTags] = useState<                       //filtered results from tag search bar
     (Tag | Skill | ProjectType)[]
   >([]);
-  const [searchResults, setSearchResults] = useState<
-    //filtered results from tag search bar
-    (Tag | Skill | ProjectType)[][]
-  >([]);
-  const [currentTeamTab, setCurrentTeamTab] = useState(0); //tracking which team tab is currently being viewed: 0 - current team, 1 - open positions
-  const [currentRole, setCurrentRole] = useState(0); //tracking which role is being viewed out of all open positions: value is project title_id (or job_title title_id)
-  const [currentMember, setCurrentMember] = useState(emptyMember); //tracking which member is being editted
-  const [newMember, setNewMember] = useState(emptyMember); //store new member data to save later
-  const [editMode, setEditMode] = useState(false); //tracking whether position view is in edit mode or not
-  const [newPosition, setNewPosition] = useState(false); //tracking if the user is making a new position (after pressing Add Position button)
+  const [currentTeamTab, setCurrentTeamTab] = useState(0);                //tracking which team tab is currently being viewed: 0 - current team, 1 - open positions
+  const [currentRole, setCurrentRole] = useState(0);                      //tracking which role is being viewed out of all open positions: value is project title_id (or job_title title_id)
+  const [currentMember, setCurrentMember] = useState(emptyMember);        //tracking which member is being editted
+  const [newMember, setNewMember] = useState(emptyMember);                //store new member data to save later
+  const [editMode, setEditMode] = useState(false);                        //tracking whether position view is in edit mode or not
+  const [newPosition, setNewPosition] = useState(false);                  //tracking if the user is making a new position (after pressing Add Position button)
   const [currentJob, setCurrentJob] = useState(emptyJob);
   const [closePopup, setClosePopup] = useState(true);                     //determine if a popup should close after press (PopupButton)
 
@@ -580,6 +571,9 @@ export const ProjectCreatorEditor = () => {
 
   //Save project editor changes
   const saveProject = async () => {
+    // save if on link tab
+    if (currentTab === 4) updateLinks();
+
     // Send PUT request (editor)
     try {
       console.log(`Sending PUT request to /api/projects/${projectID} for body: `, modifiedProject);
@@ -776,8 +770,8 @@ export const ProjectCreatorEditor = () => {
       // add list of options
       for (const s of allSocials) {
         const option = document.createElement('option');
-        option.value = s.url;
-        option.text = s.url;
+        option.value = s.label;
+        option.text = s.label;
         dropdown.appendChild(option);
       }
 
@@ -807,14 +801,12 @@ export const ProjectCreatorEditor = () => {
       linkItemDiv.appendChild(dropdown);
       linkItemDiv.appendChild(linkInputWrapper);
       linkListDiv.insertBefore(linkItemDiv, linkListDiv.lastElementChild);
-
-      // update project links
-      setModifiedProject({ ...modifiedProject, socials: [...modifiedProject.socials, { id: -1, url: '' }] });
     }
   }
 
   const updateLinks = () => {
     //
+    console.log('(not) updating links (yet)');
   }
 
   //===================
@@ -1451,7 +1443,7 @@ export const ProjectCreatorEditor = () => {
                     </button>
                   </div>
                 ))}
-                <div id="add-position-button">
+                <div className="add-item-button">
                   <button
                     onClick={() => {
                       if (!editMode) {
@@ -1461,7 +1453,7 @@ export const ProjectCreatorEditor = () => {
                     }}
                   >
                     <img src={'/images/icons/cancel.png'} alt="+" />
-                    <span className="project-editor-extra-info">Add Position</span>
+                    <span className="project-editor-extra-info">Add position</span>
                   </button>
                 </div>
               </div>
@@ -1513,40 +1505,37 @@ export const ProjectCreatorEditor = () => {
 
           <div id="project-editor-link-list">
             {
-              modifiedProject.socials.map(s => (
+              modifiedProject.socials ? modifiedProject.socials.map(social => (
                 <div className="project-editor-link-item">
-                <select
-                  onChange={() => {
-                    //
-                    // const updatedSocials = modifiedProject.socials.map((social) =>
-                    //   social.url === s.url ? { ...social, url: e.target.value } : social
-                    // );
-                    // setModifiedProject({ ...modifiedProject, socials: updatedSocials });
-                  }}
-                >
+                <select>
                   <option disabled selected={allSocials.length === 0}>Select</option>
                   {
-                    allSocials ? allSocials.map(social => (
-                      <option selected={s.url === social.url}>{social.url}</option>
+                    allSocials ? allSocials.map(website => (
+                      <option selected={social.id === website.website_id} data-id={website.website_id}>{website.label}</option>
                     )) : ''
                   }
                 </select>
                 <div className='project-link-input-wrapper'>
-                  <input type="url" placeholder="URL" value={s.url} onChange={updateLinks}/>
+                  <input type="url" placeholder="URL" value={social.url}/>
                   <button className='remove-link-button' onClick={
                     (e) => {
                       const wrapper = e.currentTarget.closest('.project-editor-link-item');
                       if (wrapper) {
-                      wrapper.remove();
+                          wrapper.remove();
                       }
                   }}>
                     <i className="fa-solid fa-minus"></i>
                   </button>
                 </div>
               </div>
-              ))
+              )) : ''
             }
-            <button id="project-editor-add-link" onClick={addLinkInput}>+ Add Social Profile</button>
+            <div className="add-item-button">
+                  <button onClick={() => addLinkInput()}>
+                    <img src={'/images/icons/cancel.png'} alt="+" />
+                    <span className="project-editor-extra-info">Add social profile</span>
+                  </button>
+                </div>
           </div>
         </div>
       }
@@ -1582,31 +1571,46 @@ export const ProjectCreatorEditor = () => {
         <div id="project-creator-editor">
           <div id="project-editor-tabs">
             <button
-              onClick={() => setCurrentTab(0)}
+              onClick={() => {
+                if (currentTab === 4) updateLinks();
+                setCurrentTab(0)
+              }}
               className={`project-editor-tab ${currentTab === 0 ? 'project-editor-tab-active' : ''}`}
             >
               General
             </button>
             <button
-              onClick={() => setCurrentTab(1)}
+              onClick={() => {
+                if (currentTab === 4) updateLinks();
+                setCurrentTab(1)
+              }}
               className={`project-editor-tab ${currentTab === 1 ? 'project-editor-tab-active' : ''}`}
             >
               Media
             </button>
             <button
-              onClick={() => setCurrentTab(2)}
+              onClick={() => {
+                if (currentTab === 4) updateLinks();
+                setCurrentTab(2)
+              }}
               className={`project-editor-tab ${currentTab === 2 ? 'project-editor-tab-active' : ''}`}
             >
               Tags
             </button>
             <button
-              onClick={() => setCurrentTab(3)}
+              onClick={() => {
+                if (currentTab === 4) updateLinks();
+                setCurrentTab(3)
+              }}
               className={`project-editor-tab ${currentTab === 3 ? 'project-editor-tab-active' : ''}`}
             >
               Team
             </button>
             <button
-              onClick={() => setCurrentTab(4)}
+              onClick={() => {
+                if (currentTab === 4) updateLinks();
+                setCurrentTab(4)
+              }}
               className={`project-editor-tab ${currentTab === 4 ? 'project-editor-tab-active' : ''}`}
             >
               Links

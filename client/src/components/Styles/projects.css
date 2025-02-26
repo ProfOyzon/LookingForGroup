@@ -827,7 +827,8 @@ Project Creator and Editor style rules
   align-items: start;
 }
 
-#team-positions-popup-list-buttons img {
+#team-positions-popup-list-buttons img,
+.add-item-button img {
   width: 21px;
   height: 21px;
 }
@@ -975,7 +976,7 @@ select.edit-position-compensation {
   flex: 1 0 0;
 }
 
-#project-editor-links .project-editor-extra-info {
+#project-editor-links > .project-editor-extra-info {
   margin-bottom: 15px;
 }
 
@@ -2140,24 +2141,23 @@ New Project Page style rules
   height: 28px;
 }
 
-#add-position-button > button {
+.add-item-button > button {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
   padding: 0 10px;
+  background: transparent;
+  border: none;
 }
 
-#add-position-button * {
+.add-item-button * {
   font-size: 16px;
   color: var(--neutral-gray);
 }
 
-#add-position-button img {
+.add-item-button img {
   transform: rotate(45deg);
-  width: 10px;
-  height: 10px;
-  scale: 1.75;
   filter: var(--image-filter);
 }
 

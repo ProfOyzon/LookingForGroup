@@ -437,7 +437,9 @@ export const ProjectCreatorEditor = () => {
             &nbsp;{t.label}
           </button>
         );
-      });
+
+        })
+      )
     }
     // project type
     if (currentTagsTab === 0) {
@@ -799,16 +801,20 @@ export const ProjectCreatorEditor = () => {
         }
       };
 
+      // build element
       linkInputWrapper.appendChild(input);
       linkInputWrapper.appendChild(button);
       linkItemDiv.appendChild(dropdown);
       linkItemDiv.appendChild(linkInputWrapper);
       linkListDiv.insertBefore(linkItemDiv, linkListDiv.lastElementChild);
+
+      // update project links
+      setModifiedProject({ ...modifiedProject, socials: [...modifiedProject.socials, { id: -1, url: '' }] });
     }
   }
 
   const updateLinks = () => {
-    
+    //
   }
 
   //===================
@@ -1506,33 +1512,39 @@ export const ProjectCreatorEditor = () => {
           </div>
 
           <div id="project-editor-link-list">
-            {/* Get current socials */}
             {
-              modifiedProject.socials ?
-                modifiedProject.socials.map(s => (
-                  <div className="project-editor-link-item">
-                  <select>
-                    <option disabled selected={allSocials.length === 0}>Select</option>
-                    {
-                      allSocials ? allSocials.map(social => (
-                        <option selected={s.url === social.url}>{social.url}</option>
-                      )) : ''
-                    }
-                  </select>
-                  <div className='project-link-input-wrapper'>
-                    <input type="url" placeholder="URL" value={s.url} onChange={updateLinks}/>
-                    <button className='remove-link-button' onClick={
-                      (e) => {
-                        const wrapper = e.currentTarget.closest('.project-editor-link-item');
-                        if (wrapper) {
-                        wrapper.remove();
-                        }
-                    }}>
-                      <i className="fa-solid fa-minus"></i>
-                    </button>
-                  </div>
+              modifiedProject.socials.map(s => (
+                <div className="project-editor-link-item">
+                <select
+                  onChange={() => {
+                    //
+                    // const updatedSocials = modifiedProject.socials.map((social) =>
+                    //   social.url === s.url ? { ...social, url: e.target.value } : social
+                    // );
+                    // setModifiedProject({ ...modifiedProject, socials: updatedSocials });
+                  }}
+                >
+                  <option disabled selected={allSocials.length === 0}>Select</option>
+                  {
+                    allSocials ? allSocials.map(social => (
+                      <option selected={s.url === social.url}>{social.url}</option>
+                    )) : ''
+                  }
+                </select>
+                <div className='project-link-input-wrapper'>
+                  <input type="url" placeholder="URL" value={s.url} onChange={updateLinks}/>
+                  <button className='remove-link-button' onClick={
+                    (e) => {
+                      const wrapper = e.currentTarget.closest('.project-editor-link-item');
+                      if (wrapper) {
+                      wrapper.remove();
+                      }
+                  }}>
+                    <i className="fa-solid fa-minus"></i>
+                  </button>
                 </div>
-                )) : document.querySelector("#project-editor-link-list")?.firstChild !== document.querySelector("#project-editor-add-link") ? <p>Nothing here!</p> : ''
+              </div>
+              ))
             }
             <button id="project-editor-add-link" onClick={addLinkInput}>+ Add Social Profile</button>
           </div>

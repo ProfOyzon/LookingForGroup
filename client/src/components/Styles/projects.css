@@ -975,6 +975,10 @@ select.edit-position-compensation {
   flex: 1 0 0;
 }
 
+#project-editor-links .project-editor-extra-info {
+  margin-bottom: 15px;
+}
+
 #project-editor-link-list {
   display: flex;
   flex-direction: column;

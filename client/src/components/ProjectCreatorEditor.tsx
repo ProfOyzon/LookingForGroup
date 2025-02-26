@@ -108,13 +108,15 @@ export const ProjectCreatorEditor = () => {
     label: string;
   }
 
+  interface Social {
+    website_id: number;
+    url: string;
+  }
+
   //=================
   // State variables
   //=================
-  const [newProject, setNewProject] = useState(false);                    //tracking if creating a new project or editting existing (empty or populated fields)
-  const [projectData, setProjectData] = useState(emptyProject);           //store project data
-  const [modifiedProject, setModifiedProject] = useState(emptyProject);   //tracking temporary project changes before committing to a save
-  const [failCheck, setFailCheck] = useState(false);                      //check whether or not data was successfully obtained from database
+  // Static constants
   const [allJobs, setAllJobs] = useState<{                                //for complete list of jobs
     title_id: number, label: string
   }[]>([]);
@@ -122,6 +124,13 @@ export const ProjectCreatorEditor = () => {
     useState<ProjectType[]>([]);
   const [allTags, setAllTags] = useState<Tag[]>([]);                      //for complete list of tags
   const [allSkills, setAllSkills] = useState<Skill[]>([]);                //for complete list of skills
+  const [allSocials, setAllSocials] = useState<Social[]>([]);             //for complete list of skills
+
+  // Change tracking
+  const [newProject, setNewProject] = useState(false);                    //tracking if creating a new project or editting existing (empty or populated fields)
+  const [projectData, setProjectData] = useState(emptyProject);           //store project data
+  const [modifiedProject, setModifiedProject] = useState(emptyProject);   //tracking temporary project changes before committing to a save
+  const [failCheck, setFailCheck] = useState(false);                      //check whether or not data was successfully obtained from database
   const [currentTab, setCurrentTab] = useState(0);                        //for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
   const [currentTagsTab, setCurrentTagsTab] = useState(0);                //tracking which tab of tags is currently viewed: 0 - project type, 1 - genre, 2 - dev skills, 3 - design skills, 4 - soft skills
   // const [currentDataSet, setCurrentDataSet] = useState<{                  //current dataset for tag search bar
@@ -138,7 +147,8 @@ export const ProjectCreatorEditor = () => {
   const [newPosition, setNewPosition] = useState(false);                  //tracking if the user is making a new position (after pressing Add Position button)
   const [currentJob, setCurrentJob] = useState(emptyJob);
   const [closePopup, setClosePopup] = useState(true);                     //determine if a popup should close after press (PopupButton)
-  //errors
+
+  // Errors
   const [errorAddMember, setErrorAddMember] = useState('');               //sets error when adding a member to the team
   const [errorAddPosition, setErrorAddPosition] = useState('');           //sets error when adding a position to the team
 
@@ -275,6 +285,33 @@ export const ProjectCreatorEditor = () => {
       getSkills();
     }
   }, [allSkills]);
+
+  // Get socials if allSocials is empty
+  useEffect(() => {
+    const getSocials = async () => {
+      const url = `/api/datasets/socials`;
+
+      try {
+        let response = await fetch(url);
+
+        const socials = await response.json();
+        const socialsData = socials.data;
+
+        if (socialsData === undefined) {
+          setFailCheck(true);
+          return;
+        }
+        setAllSocials(socialsData);
+        console.log('socials', socialsData);
+
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    if (allSocials.length === 0) {
+      getSocials();
+    }
+  }, [allSocials]);
 
   // Assign active buttons in Team tab (Open Positions)
   const isTeamTabOpen = currentTeamTab === 1;
@@ -688,7 +725,19 @@ export const ProjectCreatorEditor = () => {
 
       // dropdown
       const dropdown = document.createElement('select');
-      //TODO: add dropdown options
+      // default option
+      const defaultOption = document.createElement('option');
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      defaultOption.text = 'Select';
+      dropdown.appendChild(defaultOption);
+      // add list of options
+      for (const s of allSocials) {
+        const option = document.createElement('option');
+        option.value = s.url;
+        option.text = s.url;
+        dropdown.appendChild(option);
+      }
 
       // input wrapper
       const linkInputWrapper = document.createElement('div');
@@ -1324,27 +1373,34 @@ export const ProjectCreatorEditor = () => {
           </div>
 
           <div id="project-editor-link-list">
-            {/* insert list of link elements/componenets here */}
-            {/* temp value in here */}
-            <div className="project-editor-link-item">
-              <select>
-                {/* TODO: get values from socials table */}
-                <option disabled selected>Select</option>
-                <option>LinkedIn</option>
-              </select>
-              <div className='project-link-input-wrapper'>
-                <input type="url" placeholder="URL" />
-                <button className='remove-link-button' onClick={
-                  (e) => {
-                    const wrapper = e.currentTarget.closest('.project-editor-link-item');
-                    if (wrapper) {
-                    wrapper.remove();
+            {/* Get current socials */}
+            {
+              modifiedProject.socials ?
+                modifiedProject.socials.map(s => (
+                  <div className="project-editor-link-item">
+                  <select>
+                    <option disabled selected={allSocials.length === 0}>Select</option>
+                    {
+                      allSocials ? allSocials.map(social => (
+                        <option selected={s.url === social.url}>{social.url}</option>
+                      )) : ''
                     }
-                }}>
-                  <i className="fa-solid fa-minus"></i>
-                </button>
-              </div>
-            </div>
+                  </select>
+                  <div className='project-link-input-wrapper'>
+                    <input type="url" placeholder="URL" value={s.url} onChange={updateLinks}/>
+                    <button className='remove-link-button' onClick={
+                      (e) => {
+                        const wrapper = e.currentTarget.closest('.project-editor-link-item');
+                        if (wrapper) {
+                        wrapper.remove();
+                        }
+                    }}>
+                      <i className="fa-solid fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                )) : document.querySelector("#project-editor-link-list")?.firstChild !== document.querySelector("#project-editor-add-link") ? <p>Nothing here!</p> : ''
+            }
             <button id="project-editor-add-link" onClick={addLinkInput}>+ Add Social Profile</button>
           </div>
         </div>

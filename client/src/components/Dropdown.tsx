@@ -96,7 +96,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ children }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let close = (e: MouseEvent) => {
+    const close = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setOpen(false);
       }

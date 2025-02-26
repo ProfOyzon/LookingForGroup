@@ -13,7 +13,7 @@ const MyProjectsDisplayGrid = ({ projectData }) => {
   const getStatus = async () => {
     const url = `/api/projects/${projectData.project_id}`;
     try {
-      let response = await fetch(url);
+      const response = await fetch(url);
 
       const rawData = await response.json();
       setStatus(rawData.data[0].status === undefined ? 'No data' : rawData.data[0].status);

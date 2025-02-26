@@ -14,7 +14,7 @@ const imageList = [image1, image2, image3];
 //Variable is identical in function to pages.
 //warnings about this variable can be found in Joseph Dunne's page documentation
 //All warnings shown about this variable in pages also applies to this one
-let runningServer = true;
+const runningServer = true;
 
 //This post was used to help create this component (found by Ben Gomez)
 // https://blog.bitsrc.io/simple-carousel-in-react-2aac73887243
@@ -95,7 +95,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
               onMouseLeave={() => handleHover(false)}
             >
               {dataList.map((image, index) => {
-                let imageLink = runningServer ? `/images/projects/${image.image}` : image.image;
+                const imageLink = runningServer ? `/images/projects/${image.image}` : image.image;
                 return (
                   <div
                     className="project-image-carousel-item"
@@ -122,7 +122,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
               </button>
               <div id="carousel-tabs">
                 {dataList.map((image, index) => {
-                  let className =
+                  const className =
                     index === currentIndex ? 'carousel-tab carousel-tab-active' : 'carousel-tab';
                   return (
                     <button
@@ -195,14 +195,14 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
               </div>
 
               <button className="discover-carousel-link">
-                      Learn More
-                      <ThemeIcon
-                        light={'assets/arrow_light.png'}
-                        dark={'assets/arrow_dark.png'}
-                        alt={'>'}
-                      />
-                    </button>
-                    
+                Learn More
+                <ThemeIcon
+                  light={'assets/arrow_light.png'}
+                  dark={'assets/arrow_dark.png'}
+                  alt={'>'}
+                />
+              </button>
+
               <button
                 onClick={() => handleIndexChange(currentIndex + 1)}
                 id="discover-carousel-right"
@@ -218,7 +218,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
             <div id="discover-carousel-tabs">
               <div id="carousel-tabs">
                 {dataList.map((image, index) => {
-                  let className =
+                  const className =
                     index === currentIndex ? 'carousel-tab carousel-tab-active' : 'carousel-tab';
                   return (
                     <button

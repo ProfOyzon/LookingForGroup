@@ -2,7 +2,7 @@
    displays it to the user. Will be hidden by other events that could
    end in an error.
 */
-const handleError = (message) => {
+const handleError = (message: string) => {
   console.log('Error: ', message);
   // const errorElement = document.querySelector('.error');
   // errorElement.textContent = message;
@@ -12,7 +12,7 @@ const handleError = (message) => {
 /* Sends post requests to the server using fetch. Will look for various
     entries in the response JSON object, and will handle them appropriately.
 */
-const sendPost = async (url, data, handler) => {
+const sendPost = async (url: string, data: FetchData, handler?: ResponseHandler): Promise<void> => {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -34,7 +34,7 @@ const sendFile = async (url, data, handler) => {
 /* Sends put requests to the server using fetch. Will look for various
     entries in the response JSON object, and will handle them appropriately.
 */
-const sendPut = async (url, data, handler) => {
+const sendPut = async (url: string, data: FormData, handler?: ResponseHandler): Promise<void> => {
   const response = await fetch(url, {
     method: 'PUT',
     headers: {
@@ -45,7 +45,10 @@ const sendPut = async (url, data, handler) => {
   await responseHandler(response, handler);
 };
 
-const responseHandler = async (response, handler) => {
+const responseHandler = async (
+  response: Response,
+  handler?: ResponseHandler
+): Promise<string | void> => {
   const result = await response.json();
   //document.getElementById('errorMessage').classList.add('hidden');
   if (result.redirect) {
@@ -62,7 +65,7 @@ const responseHandler = async (response, handler) => {
   }
 };
 
-const sendGet = async (url, handler) => {
+const sendGet = async (url: string, handler?: ResponseHandler): Promise<void> => {
   console.log(`URL: ${url}`);
 
   const response = await fetch(url, {
@@ -73,7 +76,7 @@ const sendGet = async (url, handler) => {
   });
 
   const result = await response.json();
-  document.querySelector('error').classList.add('hidden');
+  document.querySelector('error')?.classList.add('hidden');
   console.log(result);
 
   if (result.redirect) {
@@ -91,10 +94,10 @@ const sendGet = async (url, handler) => {
 
 // removed errorMessage element from login and signup pages
 const hideError = () => {
-  document.getElementById('errorMessage').classList.add('hidden');
+  document.getElementById('errorMessage')?.classList.add('hidden');
 };
 
-const POST = async (url, data) => {
+const POST = async (url: string, data: FetchData): Promise<any> => {
   try {
     return await fetch(url, {
       method: 'POST',
@@ -112,7 +115,7 @@ const POST = async (url, data) => {
   }
 };
 
-const GET = async (url) => {
+const GET = async (url: string): Promise<any> => {
   try {
     return await fetch(url)
       .then((response) => response.json())
@@ -124,7 +127,7 @@ const GET = async (url) => {
   }
 };
 
-const fetchUserID = async () => {
+const fetchUserID = async (): Promise<any> => {
   const response = await fetch('/api/auth');
   const { data } = await response.json();
   return data;

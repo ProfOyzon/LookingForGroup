@@ -34,7 +34,7 @@ let loggedIn;
 //(logout = logout the user and send them to home page or equivalent)
 
 export const Header = ({ dataSets, onSearch }) => {
-  const [username, setUsername] = useState<String | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState(null);
 
   // Pull the theme and setTheme function from useState() via a context

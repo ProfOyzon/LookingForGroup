@@ -1,8 +1,9 @@
 {
   "name": "looking-for-group",
+  "private": true,
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
+  "license": "CC0-1.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "pm2 start ./lookingforgrp.com/server/index.js",
@@ -11,27 +12,27 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm run build --prefix client",
-    "format": "prettier --write .",
-    "b": "npm run b --prefix client && npm run server"
+    "format": "prettier --write ."
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-session": "^1.18.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.11.3",
-    "nodemailer": "^6.9.16",
+    "nodemailer": "^6.10.0",
     "sharp": "^0.33.5"
   },
   "devDependencies": {
-    "@img/sharp-win32-x64": "^0.33.5",
-    "concurrently": "^8.2.0",
-    "nodemon": "^3.1.7",
-    "prettier": "^3.4.2"
+    "concurrently": "^9.1.2",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "nodemon": "^3.1.9",
+    "prettier": "3.5.1"
   },
-  "type": "module"
+  "engines": {
+    "node": ">=20.11.0"
+  }
 }

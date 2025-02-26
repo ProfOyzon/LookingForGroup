@@ -11,7 +11,7 @@ import { ThemeIcon } from '../ThemeIcon';
   /* toggle the popup for the menu that appears next to a users name*/
 }
 const toggleUserOptions = () => {
-  let popup = document.getElementById('user-options-popup');
+  const popup = document.getElementById('user-options-popup');
   popup ? popup.classList.toggle('show') : console.log('element not found');
 };
 

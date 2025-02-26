@@ -61,10 +61,10 @@ const saveImage = (userID, data) => {
   // saves the profile pic if there has been a change
   const formElement = document.getElementById('profile-creator-editor') as HTMLFormElement;
   sendFile(`/api/users/${userID}/profile-picture`, formElement);
-}
+};
 
 const setUpInputs = async (data) => {
-  let profileData = data[0];
+  const profileData = data[0];
   let roles, majors;
 
   const getRolesAndMajors = async () => {
@@ -78,7 +78,7 @@ const setUpInputs = async (data) => {
   };
 
   const setUpFunc = (input, data) => {
-    let inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
+    const inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     if (inputElement) {
       // if (inputElement.tagName.toLowerCase() === 'input' || inputElement.tagName.toLowerCase() === 'textarea') {
       //   inputElement.value = data;
@@ -219,7 +219,7 @@ const ProjectsTab = () => {
 
 const SkillsTab = () => {
   const [currentTagsTab, setCurrentTagsTab] = useState(0);
-  let tagSearchTabs = tagTabs.map((tag, i) => {
+  const tagSearchTabs = tagTabs.map((tag, i) => {
     return (
       <button
         onClick={() => setCurrentTagsTab(i)}
@@ -242,7 +242,7 @@ const SkillsTab = () => {
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={{}} onSearch={() => { }} />
+        <SearchBar dataSets={{}} onSearch={() => {}} />
         <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
         <hr />
         <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
@@ -295,7 +295,7 @@ export const ProfileEditPopup = () => {
 
     // Get current tab
     let currentElement;
-    let currTab = document.querySelector(`#profile-tab-${pageTabs[currentTab]}`);
+    const currTab = document.querySelector(`#profile-tab-${pageTabs[currentTab]}`);
     switch (pageTabs[currentTab]) {
       case 'About':
         currentElement = document.querySelector(`#profile-editor-about`);
@@ -346,7 +346,12 @@ export const ProfileEditPopup = () => {
           <div id="profile-editor-tabs">{editorTabs}</div>
           <TabContent />
           {/* <button id="profile-editor-save" onClick={onSaveClicked}>Save Changes</button> */}
-          <input type='submit' id="profile-editor-save" onClick={onSaveClicked} value={'Save Changes'} />
+          <input
+            type="submit"
+            id="profile-editor-save"
+            onClick={onSaveClicked}
+            value={'Save Changes'}
+          />
           {/* </div> */}
         </form>
       </PopupContent>

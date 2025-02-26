@@ -17,6 +17,6 @@ export function NotifButton() {
 }
 
 function HandleClick() {
-  let notifButton = document.getElementById('notif-popup') as HTMLElement;
+  const notifButton = document.getElementById('notif-popup') as HTMLElement;
   notifButton.classList.toggle('hide');
 }

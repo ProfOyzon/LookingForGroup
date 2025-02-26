@@ -1,5 +1,33 @@
 //tags used for projects
 //Many are temporary, as they are just what was in the data
+// export const projectTabs = [
+//   { tags: [], name: 'Project Type', color: 'blue' },
+//   { tags: [], name: 'Genre', color: 'green' },
+//   { tags: [], name: 'Purpose', color: 'grey' },
+// ];
+
+export const projectTabs = {
+  'Project Type': { categoryTags: [], categoryName: 'Project Type', color: 'blue' },
+  'Genre': { categoryTags: [], categoryName: 'Genre', color: 'green' },
+  'Purpose': { categoryTags: [], categoryName: 'Purpose', color: 'grey' },
+};
+
+// export const peopleTabs = [
+//   { tags: [], name: 'Developer Skill', color: 'yellow' },
+//   { tags: [], name: 'Designer Skill', color: 'red' },
+//   { tags: [], name: 'Soft Skill', color: 'purple' },
+//   { tags: [], name: 'Role', color: 'grey' },
+//   { tags: [], name: 'Major', color: 'orange' },
+// ];
+
+export const peopleTabs = {
+  'Developer': { categoryTags: [], categoryName: 'Developer Skill', color: 'yellow' },
+  'Designer': { categoryTags: [], categoryName: 'Designer Skill', color: 'red' },
+  'Soft': { categoryTags: [], categoryName: 'Soft Skill', color: 'purple' },
+  'Role': { categoryTags: [], categoryName: 'Role', color: 'grey' },
+  'Major': { categoryTags: [], categoryName: 'Major', color: 'orange' },
+};
+
 export const tags = [
   'New',
   'Video Game',

@@ -1339,6 +1339,7 @@ New Profile page style rules
   padding: 5px 15px;
   font-size: medium;
   flex-shrink: 0;
+  height: fit-content; /* Fixes weird issue where height is way taller than text for some reason */
 
   color: var(--tag-text-selected);
 }

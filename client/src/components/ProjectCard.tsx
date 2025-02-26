@@ -37,7 +37,7 @@ This component is not necessarily the final version and doesn't match the visual
 export const ProjectCard = ({ project }) => {
   // Updates the url to point toward the project being clicked
   const navigate = useNavigate();
-  let pathQuery = `?projID=${project._id}`;
+  const pathQuery = `?projID=${project._id}`;
   return (
     <div className="discover-card">
       <img id="discover-card-profile-picture" src={profilePicture} alt={project.name} />

@@ -31,7 +31,13 @@ const PopupContext = createContext({
 });
 
 //Button component that will open/close the popup
-export const PopupButton = ({ children, buttonId = '', className = '', callback = () => {}, doNotClose = false}) => {
+export const PopupButton = ({
+  children,
+  buttonId = '',
+  className = '',
+  callback = () => {},
+  doNotClose = false,
+}) => {
   const { open, setOpen } = useContext(PopupContext);
 
   const toggleOpen = () => {
@@ -41,9 +47,9 @@ export const PopupButton = ({ children, buttonId = '', className = '', callback 
 
   if (doNotClose) {
     return (
-    <button id={buttonId} className={className} onClick={callback}>
-      {children}
-    </button>
+      <button id={buttonId} className={className} onClick={callback}>
+        {children}
+      </button>
     );
   }
 
@@ -82,14 +88,11 @@ export const PopupContent = ({ children, useClose = true, callback = () => {} })
       <>
         <div className="popup-cover" />
         <div className="popup-container">
-          <div className="popup">
-            {children}
-          </div>
+          <div className="popup">{children}</div>
         </div>
       </>
     );
-  }
-  else {
+  } else {
     return <></>;
   }
 };

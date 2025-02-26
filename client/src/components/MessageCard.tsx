@@ -8,7 +8,7 @@ export const MessageCard = ({ msg }) => {
 
   // Grab profile object from sender ID
   const getS = () => {
-    for (let p of profiles) {
+    for (const p of profiles) {
       if (p._id == msg.senderID) {
         return p;
       }

@@ -21,7 +21,7 @@ const EditButton = ({ userData }) => {
     const url = '/api/datasets/job-titles';
 
     try {
-      let response = await fetch(url);
+      const response = await fetch(url);
 
       const rawData = await response.json();
       setRolesList(rawData.data);
@@ -34,7 +34,7 @@ const EditButton = ({ userData }) => {
     const url = '/api/datasets/majors';
 
     try {
-      let response = await fetch(url);
+      const response = await fetch(url);
 
       const rawData = await response.json();
       setMajorsList(rawData.data);
@@ -78,7 +78,7 @@ const EditButton = ({ userData }) => {
     return `${index}th`;
   };
 
-  let yearOptions = [<option value="blank"></option>];
+  const yearOptions = [<option value="blank"></option>];
   for (let i = 0; i < 10; i++) {
     // The "10" can be replaced with any value we choose to use as the maximum number of years
     yearOptions.push(<option value={getOrdinal(i + 1)}>{getOrdinal(i + 1)}</option>);
@@ -94,7 +94,7 @@ const EditButton = ({ userData }) => {
     }*/
 
   const uploadNewImage = async (theInput) => {
-    let form = document.querySelector('.edit-region-button-wrapper.photo');
+    const form = document.querySelector('.edit-region-button-wrapper.photo');
     if (
       form !== undefined &&
       form !== null &&
@@ -102,11 +102,11 @@ const EditButton = ({ userData }) => {
       theInput.files !== null &&
       theInput.files.length > 0
     ) {
-      let fileForm = new FormData(form);
+      const fileForm = new FormData(form);
 
       const url = `/api/users/${userData.user_id}/profile-picture`;
       try {
-        let response = await fetch(url, {
+        const response = await fetch(url, {
           method: 'PUT',
           body: fileForm,
         });
@@ -345,7 +345,7 @@ const EditButton = ({ userData }) => {
   const getUsersProjects = async () => {
     const url = `/api/users/${userData.user_id}/projects`;
     try {
-      let response = await fetch(url, {
+      const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -360,7 +360,7 @@ const EditButton = ({ userData }) => {
   const getVisibleProjects = async () => {
     const url = `/api/users/${userData.user_id}/projects/profile`;
     try {
-      let response = await fetch(url);
+      const response = await fetch(url);
 
       const rawData = await response.json();
       setShownProjects(rawData.data);
@@ -391,7 +391,7 @@ const EditButton = ({ userData }) => {
   const updateHiddenProjects = (project) => {
     if (shownProjects !== undefined) {
       if (checkIfProjectIsShown(project.project_id)) {
-        let tempList = new Array(0);
+        const tempList = new Array(0);
         for (let i = 0; i < shownProjects.length; i++) {
           if (shownProjects[i].project_id !== project.project_id) {
             tempList.push(shownProjects[i]);
@@ -400,7 +400,7 @@ const EditButton = ({ userData }) => {
 
         setShownProjects(tempList);
       } else {
-        let tempList = new Array(0);
+        const tempList = new Array(0);
         for (let i = 0; i < shownProjects.length; i++) {
           tempList.push(shownProjects[i]);
         }
@@ -495,7 +495,7 @@ const EditButton = ({ userData }) => {
       }
 
       if (!found) {
-        let tempList = new Array(0);
+        const tempList = new Array(0);
         for (let i = 0; i < currentSkills.length; i++) {
           tempList.push(currentSkills[i]);
         }
@@ -514,7 +514,7 @@ const EditButton = ({ userData }) => {
   };
 
   const removeFromSkillsList = (index: number) => {
-    let tempList = new Array(0);
+    const tempList = new Array(0);
     for (let i = 0; i < currentSkills.length; i++) {
       if (i != index) {
         tempList.push(currentSkills[i]);
@@ -535,7 +535,7 @@ const EditButton = ({ userData }) => {
     if (index + 1 === newPos || index + 1 === newPos - 1) {
       setCurrentSkills(currentSkills);
     } else {
-      let tempList = [
+      const tempList = [
         {
           id: currentSkills[index].id,
           type: currentSkills[index].type,
@@ -586,17 +586,17 @@ const EditButton = ({ userData }) => {
   const drop = (ev) => {
     ev.preventDefault();
     ev.target.style.borderColor = '#00000000';
-    let data = ev.dataTransfer.getData('text');
+    const data = ev.dataTransfer.getData('text');
 
-    let theSkill = document.querySelector(`#${data}`);
+    const theSkill = document.querySelector(`#${data}`);
     if (theSkill !== undefined && theSkill !== null) {
-      let thePos = parseInt(theSkill.id.substring(4));
-      let theSpot = parseInt(ev.target.id.substring(4));
+      const thePos = parseInt(theSkill.id.substring(4));
+      const theSpot = parseInt(ev.target.id.substring(4));
       editSkillPosition(thePos - 1, theSpot);
     }
   };
 
-  let mySkillsList = new Array(0);
+  const mySkillsList = new Array(0);
   mySkillsList.push(
     <span
       className="chosen-gap"
@@ -644,7 +644,7 @@ const EditButton = ({ userData }) => {
       );
 
       // Gap
-      let newGap = (
+      const newGap = (
         <span
           className="chosen-gap"
           id={'spot' + (i + 2)}
@@ -664,12 +664,12 @@ const EditButton = ({ userData }) => {
     }
   }
 
-  let displayedSkillsList = <div className="chosen-skills-list">{mySkillsList}</div>;
+  const displayedSkillsList = <div className="chosen-skills-list">{mySkillsList}</div>;
 
   const [currentSearch, setCurrentSearch] = useState('');
   const [skillsList, setSkillsList] = useState();
 
-  const getSkillsList = async (type: String) => {
+  const getSkillsList = async (type: string) => {
     if (
       type.toLowerCase() === 'developer' ||
       type.toLowerCase() === 'designer' ||
@@ -677,7 +677,7 @@ const EditButton = ({ userData }) => {
     ) {
       const url = `/api/datasets/skills?type=${type.toLowerCase()}`;
       try {
-        let response = await fetch(url);
+        const response = await fetch(url);
 
         const rawData = await response.json();
         setSkillsList(
@@ -697,7 +697,7 @@ const EditButton = ({ userData }) => {
     } else {
       const url = `/api/datasets/skills`;
       try {
-        let response = await fetch(url);
+        const response = await fetch(url);
 
         const rawData = await response.json();
         setSkillsList(rawData.data);
@@ -734,7 +734,7 @@ const EditButton = ({ userData }) => {
     }
   };
 
-  let filterButton1 = (
+  const filterButton1 = (
     <button
       className="skills-filter-button"
       id={filterSel === 0 ? 'selected' : ''}
@@ -743,7 +743,7 @@ const EditButton = ({ userData }) => {
       Developer Skills
     </button>
   );
-  let filterButton2 = (
+  const filterButton2 = (
     <button
       className="skills-filter-button"
       id={filterSel === 1 ? 'selected' : ''}
@@ -752,7 +752,7 @@ const EditButton = ({ userData }) => {
       Designer Skills
     </button>
   );
-  let filterButton3 = (
+  const filterButton3 = (
     <button
       className="skills-filter-button"
       id={filterSel === 2 ? 'selected' : ''}
@@ -889,7 +889,7 @@ const EditButton = ({ userData }) => {
   const getSocials = async () => {
     const url = `/api/datasets/socials`;
     try {
-      let response = await fetch(url);
+      const response = await fetch(url);
 
       const rawData = await response.json();
       setSocialLinks(rawData.data);
@@ -948,9 +948,9 @@ const EditButton = ({ userData }) => {
 
   const getLinksDropDown = (currentSite: string, index: number) => {
     if (socialLinks !== undefined) {
-      let socialsList = new Array(0);
+      const socialsList = new Array(0);
       for (let i = 0; i < socialLinks.length; i++) {
-        let tempLink = (
+        const tempLink = (
           <option value={socialLinks[i].label.toLowerCase()}>
             {getWebsiteIcon(socialLinks[i].label)} &nbsp; {socialLinks[i].label}
           </option>
@@ -958,7 +958,7 @@ const EditButton = ({ userData }) => {
         socialsList.push(tempLink);
       }
 
-      let dropDownList = (
+      const dropDownList = (
         <select
           className="link-options-list"
           value={currentSite.toLowerCase()}
@@ -988,7 +988,7 @@ const EditButton = ({ userData }) => {
   };
 
   const addNewLink = () => {
-    let tempList = new Array(0);
+    const tempList = new Array(0);
     for (let i = 0; i < currentLinks.length; i++) {
       tempList.push(currentLinks[i]);
     }
@@ -997,7 +997,7 @@ const EditButton = ({ userData }) => {
   };
 
   const removeLink = (index: number) => {
-    let tempList = new Array(0);
+    const tempList = new Array(0);
     for (let i = 0; i < currentLinks.length; i++) {
       if (i !== index) {
         tempList.push(currentLinks[i]);
@@ -1007,7 +1007,7 @@ const EditButton = ({ userData }) => {
   };
 
   const updateSite = (index: number, newSite: string) => {
-    let tempList = new Array(0);
+    const tempList = new Array(0);
     for (let i = 0; i < currentLinks.length; i++) {
       if (i === index) {
         tempList.push({ id: getIdOfWebsite(newSite), website: newSite, url: currentLinks[i].url });
@@ -1019,7 +1019,7 @@ const EditButton = ({ userData }) => {
   };
 
   const updateURL = (index: number, newURL: string) => {
-    let tempList = new Array(0);
+    const tempList = new Array(0);
     for (let i = 0; i < currentLinks.length; i++) {
       if (i === index) {
         tempList.push({ id: currentLinks[i].id, website: currentLinks[i].website, url: newURL });
@@ -1169,7 +1169,7 @@ const EditButton = ({ userData }) => {
   };
 
   const createSkillsList = () => {
-    let tempList = new Array(0);
+    const tempList = new Array(0);
     for (let i = 0; i < currentSkills.length; i++) {
       tempList.push({ id: currentSkills[i].id, position: currentSkills[i].position });
     }
@@ -1177,7 +1177,7 @@ const EditButton = ({ userData }) => {
   };
 
   const createLinksList = () => {
-    let tempList = new Array(0);
+    const tempList = new Array(0);
     for (let i = 0; i < currentLinks.length; i++) {
       if (currentLinks[i].id !== 0) {
         tempList.push({ id: currentLinks[i].id, url: currentLinks[i].url });
@@ -1202,7 +1202,7 @@ const EditButton = ({ userData }) => {
     console.log("I'M BEING RAN HAHAHAAHAHAHAHAHAHH");
     const url = `/api/users/${userData.user_id}`;
     try {
-      let response = await fetch(url, {
+      const response = await fetch(url, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -1234,7 +1234,7 @@ const EditButton = ({ userData }) => {
       for (let i = 0; i < userProjects.length; i++) {
         const url = `/api/users/${userData.user_id}/projects/visibility`;
         try {
-          let response = await fetch(url, {
+          const response = await fetch(url, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

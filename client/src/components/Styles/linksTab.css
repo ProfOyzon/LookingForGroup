@@ -1,12 +1,12 @@
 #profile-editor-links {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
 }
 
 .link-input {
-    display: flex;
-    column-gap: 0.5rem;
+  display: flex;
+  column-gap: 0.5rem;
 }
 
 #project-editor-add-link {

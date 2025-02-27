@@ -6,7 +6,7 @@
 
 ## Getting Started
 
-1. Navigate to the root folder and install dependencies:
+1. Navigate to the `root` folder and install dependencies:
 
 ```bash
 npm install
@@ -49,6 +49,10 @@ npm run start
 ## Linting and Formatting
 
 ### Linting
+
+> [!WARNING]
+> Must be in `client` directory
+
 Run ESLint to check for issues:
 
 ```bash
@@ -62,6 +66,10 @@ npm run lint:fix
 ```
 
 ### Formatting
+
+> [!WARNING]
+> Must be in `root` directory
+
 Format code using Prettier:
 
 ```bash

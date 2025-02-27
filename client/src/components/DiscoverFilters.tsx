@@ -51,18 +51,86 @@ export const DiscoverFilters = ({ category, updateItemList }) => {
             ]
         ;
 
-    // --------------------
-    // Helper functions
-    // --------------------
-    // Function called when a tag is clicked, adds tag to list of filters
-    const toggleTag = (e, tagName: string) => {
-        // Add tag if it isn't yet in the list
-        if (!activeTagFilters.includes(tagName)) {
-            activeTagFilters.push(tagName);
-        } else {
-            // Remove tag from the list
-            activeTagFilters.splice(activeTagFilters.indexOf(tagName), 1);
+  // --------------------
+  // Helper functions
+  // --------------------
+  const getData = async () => {
+    const url = `/api/datasets/${category === 'projects' ? 'tags' : 'skills'}`;
+
+    try {
+      let response = await fetch(url);
+      const result = await response.json();
+      let data = result.data;
+
+      // Need to also pull from majors and job_titles tables
+      if (category === 'profiles') {
+        // Get job titles and append it to full data
+        response = await fetch(`/api/datasets/job-titles`);
+        let extraData = await response.json();
+        if (extraData.data !== undefined) {
+          extraData.data.forEach((jobTitle: Skill) => data.push({ label: jobTitle.label, type: 'Role' }));
+        }      
+
+        // Get majors and append it to full data
+        response = await fetch(`/api/datasets/majors`);
+        extraData = await response.json();
+        if (extraData.data !== undefined) {
+          extraData.data.forEach((major: Skill) => data.push({ label: major.label, type: 'Major' }));
         }
+      } else if (category === 'projects') {
+        // Pull Project Types and append it to full data
+        response = await fetch(`/api/datasets/project-types`);
+        let extraData = await response.json();
+        if (extraData.data !== undefined) {
+          extraData.data.forEach((projectType: Skill) => data.push({ label: projectType.label, type: 'Project Type' }));
+        }
+      }
+
+      // Construct the finalized version of the data to be moved into filterPopupTabs
+      let tabs = JSON.parse(JSON.stringify((category === 'projects') ? projectTabs : peopleTabs));
+      data.forEach((tag: Skill) => {
+        let type = tag.type;
+
+        // Sub-tags for genre, treated all as genre
+        if (
+          type === 'Creative' ||
+          type === 'Technical' ||
+          type === 'Games' ||
+          type === 'Multimedia' ||
+          type === 'Music' ||
+          type === 'Other'
+        ) {
+          type = 'Genre';
+        }
+
+        tabs[type].categoryTags.push(tag.label);
+      });
+      setFilterPopupTabs(Object.values(tabs));
+
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.log(`Unknown error: ${error}`);
+      }
+    }
+
+    setDataLoaded(true);
+  };
+
+  if (!dataLoaded) {
+    getData();
+  }
+
+  // Function called when a tag is clicked, adds tag to list of filters
+  const toggleTag = (e, tagName: string) => {
+    // Add tag if it isn't yet in the list
+    if (!activeTagFilters.includes(tagName)) {
+      activeTagFilters.push(tagName);
+    } else {
+      // Remove tag from the list
+      activeTagFilters.splice(activeTagFilters.indexOf(tagName), 1);
+    }
 
         // Toggle tag filter display and update panel display
         e.target.classList.toggle('discover-tag-filter-selected');

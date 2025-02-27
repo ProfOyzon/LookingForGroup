@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import { unlink } from 'fs/promises';
 import sharp from 'sharp';
 import pool from '../config/database.js';
@@ -8,7 +7,7 @@ import { transporter } from '../config/mailer.js';
 import envConfig from '../config/env.js';
 import { genPlaceholders } from '../utils/sqlUtil.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const dirname = import.meta.dirname;
 
 const login = async (req, res) => {
   const { loginInput, password } = req.body;
@@ -567,32 +566,32 @@ const updateUser = async (req, res) => {
     //   await pool.query(sql, [id, skill.id, skill.position]);
     // }
 
-    // // ----- UPDATE USER'S SOCIALS -----
-    // // Create array from socials
-    // const newSocials = socials.map((social) => social.id);
-    // // Add 0 if empty to allow sql statement to still find exisiting data to be removed
-    // if (newSocials.length === 0) {
-    //   newSocials.push(0);
-    // }
-    // // Get socials already in database that need to be removed
-    // placeholders = genPlaceholders(newSocials);
-    // sql = `SELECT JSON_ARRAYAGG(uso.website_id) AS socials FROM user_socials uso
-    //     WHERE uso.user_id = ? AND NOT uso.website_id IN (${placeholders})`;
-    // values = [id, ...newSocials];
-    // const [removingSocials] = await pool.query(sql, values);
-    // // Remove socials if any were found
-    // if (removingSocials[0].socials) {
-    //   placeholders = genPlaceholders(removingSocials[0].socials);
-    //   sql = `DELETE FROM user_socials WHERE user_id = ? AND website_id IN (${placeholders})`;
-    //   values = [id, ...removingSocials[0].socials];
-    //   await pool.query(sql, values);
-    // }
-    // // Add new socials or update if already in database
-    // sql = `INSERT INTO user_socials (user_id, website_id, url) VALUES (?, ?, ?) AS new
-    //     ON DUPLICATE KEY UPDATE user_id = new.user_id, website_id = new.website_id, url = new.url`;
-    // for (let social of socials) {
-    //   await pool.query(sql, [id, social.id, social.url]);
-    // }
+    // ----- UPDATE USER'S SOCIALS -----
+    // Create array from socials
+    const newSocials = socials.map((social) => social.id);
+    // Add 0 if empty to allow sql statement to still find exisiting data to be removed
+    if (newSocials.length === 0) {
+      newSocials.push(0);
+    }
+    // Get socials already in database that need to be removed
+    let placeholders = genPlaceholders(newSocials);
+    sql = `SELECT JSON_ARRAYAGG(uso.website_id) AS socials FROM user_socials uso
+        WHERE uso.user_id = ? AND NOT uso.website_id IN (${placeholders})`;
+    values = [id, ...newSocials];
+    const [removingSocials] = await pool.query(sql, values);
+    // Remove socials if any were found
+    if (removingSocials[0].socials) {
+      placeholders = genPlaceholders(removingSocials[0].socials);
+      sql = `DELETE FROM user_socials WHERE user_id = ? AND website_id IN (${placeholders})`;
+      values = [id, ...removingSocials[0].socials];
+      await pool.query(sql, values);
+    }
+    // Add new socials or update if already in database
+    sql = `INSERT INTO user_socials (user_id, website_id, url) VALUES (?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE user_id = new.user_id, website_id = new.website_id, url = new.url`;
+    for (let social of socials) {
+      await pool.query(sql, [id, social.id, social.url]);
+    }
 
     return res.status(200).json({
       status: 200,
@@ -654,7 +653,7 @@ const updateProfilePicture = async (req, res) => {
   try {
     // Download user's uploaded image. Convert to webp and reduce file size
     const fileName = `${id}profile${Date.now()}.webp`;
-    const saveTo = join(__dirname, '../images/profiles/');
+    const saveTo = join(dirname, '../images/profiles/');
     const filePath = join(saveTo, fileName);
 
     await sharp(req.file.buffer).webp({ quality: 50 }).toFile(filePath);
@@ -1233,6 +1232,11 @@ const deleteUserFollowing = async (req, res) => {
   }
 };
 
+// Removed due to Vite compilation error, still need to be added at some point
+// blockUser,
+// unblockUser,
+// reportUser,
+
 // Block a user
 export default {
   login,
@@ -1263,7 +1267,4 @@ export default {
   getUserFollowing,
   addUserFollowing,
   deleteUserFollowing,
-  blockUser,
-  unblockUser,
-  reportUser,
 };

@@ -11,12 +11,12 @@ export const RoleListing = (props) => {
   const toggleDescription = (i) => {
     descHidden = !descHidden;
     if (!editMode) {
-      let roleListing = document.getElementById('role-desc-' + i);
+      const roleListing = document.getElementById('role-desc-' + i);
       roleListing
         ? roleListing.classList.toggle('role-list-description')
         : console.log('cannot find listing');
     } else {
-      let roleInput = document.getElementById('role-desc-edit-' + i);
+      const roleInput = document.getElementById('role-desc-edit-' + i);
       roleInput
         ? roleInput.classList.toggle('role-list-desc-input')
         : console.log('cannot find listing');
@@ -32,9 +32,9 @@ export const RoleListing = (props) => {
     //assign elements to modify
     //listParent - element containing name, amount of positions, & buttons
     //desc - element containing description; descInput - element containing the edit input for description
-    let listParent = document.getElementById('role-list-' + i);
-    let desc = document.getElementById('role-desc-' + i);
-    let descInput = document.getElementById('role-desc-edit-' + i);
+    const listParent = document.getElementById('role-list-' + i);
+    const desc = document.getElementById('role-desc-' + i);
+    const descInput = document.getElementById('role-desc-edit-' + i);
 
     //hide/show different elements inside listParent
     //The below errors are due to typescript. It would take so many different checks to make sure they're not 'undefined', so I'm not doing them.
@@ -59,18 +59,18 @@ export const RoleListing = (props) => {
   //Reveals an 'undo' button that undoes this
   const removeRole = (roleIndex) => {
     if (!descHidden) {
-      let desc = document.getElementById('role-desc-' + roleIndex);
+      const desc = document.getElementById('role-desc-' + roleIndex);
       desc ? desc.classList.toggle('role-list-description') : console.log('cannot find listing');
       descHidden = true;
     }
-    let cover = document.getElementById('role-cover-' + roleIndex);
+    const cover = document.getElementById('role-cover-' + roleIndex);
     cover ? cover.classList.toggle('role-cover') : console.log('error');
     props.removeRole(roleIndex);
   };
 
   //Undoes a role deletion & reverts display
   const undoRemoveRole = (roleIndex) => {
-    let cover = document.getElementById('role-cover-' + roleIndex);
+    const cover = document.getElementById('role-cover-' + roleIndex);
     cover ? cover.classList.toggle('role-cover') : console.log('error');
     props.undoRemoveRole(roleIndex);
   };
@@ -79,7 +79,7 @@ export const RoleListing = (props) => {
   //Changes are not finalized until 'save changes' is pressed & window is subsequently closed
   //Again, errors here are due to typescript. code still functions as intended.
   const doneEdit = (roleIndex) => {
-    let listParent = document.getElementById('role-list-' + roleIndex);
+    const listParent = document.getElementById('role-list-' + roleIndex);
 
     //contains the name, number of positions, & description of edited inputs
     let roleName, roleNum, roleDesc;
@@ -99,7 +99,7 @@ export const RoleListing = (props) => {
     document.getElementById('role-desc-' + roleIndex).innerHTML = roleDesc;
 
     //Creates a roleObject to replace the current role data
-    let roleObject: { Role: string; amount: number; description: string } = {
+    const roleObject: { Role: string; amount: number; description: string } = {
       Role: roleName,
       amount: roleNum,
       description: roleDesc,

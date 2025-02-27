@@ -35,7 +35,7 @@ export const SearchBar: FC<SearchBarProps> = memo(({ dataSets, onSearch }) => {
     );
 
     onSearch(filteredResults);
-  }
+  };
 
   useLayoutEffect(() => {
     if (query !== '') {

@@ -17,7 +17,7 @@ export const PostReplies = (props) => {
     if (props.replyingToPost) {
       //Change values to indicate the user is not replying directly to the post
       props.setReplyingToPost(false);
-      let promptButton = document.getElementById('reply-prompt-reset');
+      const promptButton = document.getElementById('reply-prompt-reset');
       //shows a button to cancel and change reply target back to the post itself
       promptButton ? promptButton.classList.toggle('show') : console.log('element not found');
     }
@@ -25,8 +25,8 @@ export const PostReplies = (props) => {
     props.setReplyTarget(targetId);
     //Change display to show the owner of the comment being replied to
     //If comment data can't be found, use a default name
-    let replyPrompt = document.getElementById('reply-prompt-display');
-    let replyTargetAuthor =
+    const replyPrompt = document.getElementById('reply-prompt-display');
+    const replyTargetAuthor =
       comments.find((currentComment) => currentComment._id === targetId) || comments[0];
     replyPrompt
       ? (replyPrompt.innerHTML = 'Replying to ' + profiles[replyTargetAuthor.author].username)

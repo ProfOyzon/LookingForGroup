@@ -7,20 +7,20 @@ import { useState, useCallback } from 'react';
 // used on the messages page to contain the conversations are displayed to the user to click into
 export const MessagesDisplay = ({ userID }) => {
   // --- Searching ---
-  let searchList = [{}];
+  const searchList = [{}];
   searchList.pop();
 
   const [filteredMessages, setFilteredMessages] = useState(messages);
 
   // takes the search results and filters them into a new array to be properly displayed
   const HandleSearch = useCallback((results) => {
-    let filteredBlocks = [results[0]];
+    const filteredBlocks = [results[0]];
     filteredBlocks.pop();
     let isMessage = false;
     let alreadyFiltered = false;
     // loops through the results and adds them to the filteredBlocks array as messages
-    for (let r of results[0]) {
-      for (let m of messages) {
+    for (const r of results[0]) {
+      for (const m of messages) {
         // if the result is a message, adds it to the array as is
         if (r == m) {
           if (filteredBlocks.includes(r)) {
@@ -36,9 +36,9 @@ export const MessagesDisplay = ({ userID }) => {
       // if the result is a profile, this finds the associated message and adds that to the array
       // Only runs if it was not a message
       if (!isMessage) {
-        for (let p of profiles) {
+        for (const p of profiles) {
           if (r == p) {
-            for (let m of messages) {
+            for (const m of messages) {
               if (p._id == m.senderID) {
                 if (filteredBlocks.includes(m)) {
                   alreadyFiltered = true;
@@ -59,9 +59,9 @@ export const MessagesDisplay = ({ userID }) => {
 
   // adds all the messages received by the user, and all the profiles >
   // the user has recieved messages from into an array to be searched
-  for (let m of messages) {
+  for (const m of messages) {
     if (m.recipientID == userID) {
-      for (let p of profiles) {
+      for (const p of profiles) {
         if (m.senderID == p._id) {
           searchList.push(p);
         }

@@ -1,11 +1,80 @@
 # LookingForGroup
 
-Looking for Group
+- [Getting Started](#getting-started)
+- [Running the Project](#running-the-project)
+- [Linting and Formatting](#linting-and-formatting)
 
-# How To Run
+## Getting Started
 
-- Use 'npm i' in the root folder as well as in the client folder to install dependencies
-- If working with html and css only, you can use 'npm run client'
-- If you need to work with the backend, database or need the api to work then you can use 'npm run server'
-- 'npm run server' requires running a 'npm run build' each time you want to see an updated version of the frontend
-- Using 'npm run dev' will launch both in separate browser tabs
+1. Navigate to the `root` folder and install dependencies:
+
+```bash
+npm install
+```
+
+2. Navigate to the `client` folder and install its dependencies:
+
+```bash
+cd client
+npm install
+```
+
+## Running the Project
+
+- Frontend Only (HTML & CSS):
+
+```bash
+npm run client
+## or
+cd client
+npm run start
+```
+
+- Backend & API (including database):
+
+```bash
+npm run server
+```
+
+- Running both frontend and backend together:
+
+```bash
+npm run dev
+## or
+npm run server
+cd client
+npm run start
+```
+
+## Linting and Formatting
+
+### Linting
+
+> [!WARNING]
+> Must be in `client` directory
+
+Run ESLint to check for issues:
+
+```bash
+npm run lint
+```
+
+To automatically fix issues:
+
+```bash
+npm run lint:fix
+```
+
+### Formatting
+
+> [!WARNING]
+> Must be in `root` directory
+
+Format code using Prettier:
+
+```bash
+npm run format
+```
+
+
+

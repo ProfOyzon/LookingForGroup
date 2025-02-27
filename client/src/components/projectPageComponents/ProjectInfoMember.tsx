@@ -68,7 +68,7 @@ export const ProjectInfoMember = (props) => {
   //'roleName' holds whatever new role name will be used if 'setting' is 0
   //nothing needs to be passed into 'rolename' if 'setting' is anything other than 0
   const updateMemberSettings = (setting, memberId, roleName = undefined) => {
-    let editingMember: { userID: number; admin: boolean; owner: boolean; role: string } =
+    const editingMember: { userID: number; admin: boolean; owner: boolean; role: string } =
       tempSettings.projectMembers.find((member) => member.userID === Number(memberId));
     if (editingMember === undefined && setting !== 4) {
       console.log('member not found');
@@ -91,7 +91,7 @@ export const ProjectInfoMember = (props) => {
       case 3:
         //Get the array index of the member being deleted
         //References defaultSettings instead of tempSettings due to potential index changes caused by other member removals
-        let deletedItem = defaultSettings.projectMembers.find(
+        const deletedItem = defaultSettings.projectMembers.find(
           (member) => member.userID === memberId
         );
         let deletedItemIndex;
@@ -106,7 +106,7 @@ export const ProjectInfoMember = (props) => {
       case 4:
         //Get the original array index of the member being restored
         //Gets data on the member using memberId, then finds the index of that data in defaultSettings
-        let deletedMember = defaultSettings.projectMembers.find(
+        const deletedMember = defaultSettings.projectMembers.find(
           (member) => member.userID === memberId
         );
         if (deletedMember === undefined) {
@@ -116,7 +116,7 @@ export const ProjectInfoMember = (props) => {
         let deletedMemberIndex = defaultSettings.projectMembers.indexOf(deletedMember);
         //Also assign an originalIndex value as a reference to the original index value
         //original index is used for comparison, while deletedMemberIndex is changed depending on the comparison
-        let originalIndex = defaultSettings.projectMembers.indexOf(deletedMember);
+        const originalIndex = defaultSettings.projectMembers.indexOf(deletedMember);
         for (let i = 0; i < deletedMemberIndexList.length; i++) {
           if (originalIndex > deletedMemberIndexList[i]) {
             deletedMemberIndex--;
@@ -131,10 +131,10 @@ export const ProjectInfoMember = (props) => {
   };
 
   //Store settings tab components for switching between tabs
-  let generalTab = (
+  const generalTab = (
     <GeneralSettings projectId={props.projectData._id} tempSettings={tempSettings} />
   );
-  let membersTab = (
+  const membersTab = (
     <MemberSettings
       projectId={props.projectData._id}
       tempSettings={tempSettings}
@@ -143,13 +143,13 @@ export const ProjectInfoMember = (props) => {
   );
 
   //useState variable used to set what is displayed in settings popup
-  let [tabContent, setTabContent] = useState(generalTab);
+  const [tabContent, setTabContent] = useState(generalTab);
 
   //useState variables used when rendering edit roles interface
-  let [currentlyNeededRoles, setCurrentlyNeededRoles] = useState(tempRoleSettings);
+  const [currentlyNeededRoles, setCurrentlyNeededRoles] = useState(tempRoleSettings);
 
   //Used to track which members have been deleted
-  let deletedMemberIndexList: number[] = [];
+  const deletedMemberIndexList: number[] = [];
   //Used to track the indexes of deleted roles
   let deletedRoleIndexList: number[] = [];
 
@@ -188,7 +188,7 @@ export const ProjectInfoMember = (props) => {
   //Updates tempSettings with any inputted setting changes, called when switching tabs or when saving settings
   const updateSettings = () => {
     if (currentTab === 'general') {
-      let nameInput = document.getElementById('name-edit');
+      const nameInput = document.getElementById('name-edit');
       nameInput ? (tempSettings.projectName = nameInput.value) : console.log('error'); //error on 'value' is due to typescript, code still functions correclty
     }
   };
@@ -197,7 +197,7 @@ export const ProjectInfoMember = (props) => {
   //Will require code to take the input from settings and write to the database
   const saveSettings = () => {
     updateSettings();
-    let currentProject = projects.find((p) => p._id === Number(props.projectData._id));
+    const currentProject = projects.find((p) => p._id === Number(props.projectData._id));
     if (currentProject !== undefined) {
       currentProject.name = tempSettings.projectName;
       currentProject.members = tempSettings.projectMembers;
@@ -220,8 +220,8 @@ export const ProjectInfoMember = (props) => {
     if (tab === 'general') {
       currentTab = 'general';
       setTabContent(generalTab);
-      let generalTabElement = document.getElementById('general-tab');
-      let memberTabElement = document.getElementById('member-tab');
+      const generalTabElement = document.getElementById('general-tab');
+      const memberTabElement = document.getElementById('member-tab');
       if (generalTabElement && memberTabElement) {
         generalTabElement.className = 'tab-selected';
         memberTabElement.className = 'tab';
@@ -230,8 +230,8 @@ export const ProjectInfoMember = (props) => {
       updateSettings();
       currentTab = 'members';
       setTabContent(membersTab);
-      let generalTabElement = document.getElementById('general-tab');
-      let memberTabElement = document.getElementById('member-tab');
+      const generalTabElement = document.getElementById('general-tab');
+      const memberTabElement = document.getElementById('member-tab');
       if (generalTabElement && memberTabElement) {
         generalTabElement.className = 'tab';
         memberTabElement.className = 'tab-selected';
@@ -243,9 +243,9 @@ export const ProjectInfoMember = (props) => {
   //Adds a role to tempRoleSettings
   const addRole = () => {
     //get input values
-    let nameInput = document.getElementById('role-name-input-box').value;
-    let numInput = document.getElementById('role-num-input-box').value;
-    let descInput = document.getElementById('role-desc-input-box').value;
+    const nameInput = document.getElementById('role-name-input-box').value;
+    const numInput = document.getElementById('role-num-input-box').value;
+    const descInput = document.getElementById('role-desc-input-box').value;
     //check to make sure all values contain data, cancels function if not
     // * Will also require checks or encryption to prevent code injection
     if (nameInput === '' || numInput === '' || descInput === '') {
@@ -253,7 +253,7 @@ export const ProjectInfoMember = (props) => {
       return;
     }
     //create new role
-    let newRole: { Role: string; amount: number; description: string } = {
+    const newRole: { Role: string; amount: number; description: string } = {
       Role: nameInput,
       amount: numInput,
       description: descInput,
@@ -299,7 +299,7 @@ export const ProjectInfoMember = (props) => {
     deletedRoleIndexList = [];
 
     //Saves new role data to project data
-    let currentProject = projects.find((p) => p._id === Number(props.projectData._id));
+    const currentProject = projects.find((p) => p._id === Number(props.projectData._id));
     if (currentProject !== undefined) {
       currentProject.neededRoles = tempRoleSettings;
     }

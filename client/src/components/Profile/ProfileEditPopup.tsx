@@ -13,7 +13,7 @@ import '../Styles/pages.css';
 
 import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
-import { LinksTab } from '../tabs/LinksTab';
+import { LinksTab, getSocials } from '../tabs/LinksTab';
 import { RoleSelector } from '../RoleSelector';
 import { MajorSelector } from '../MajorSelector';
 import { SearchBar } from '../SearchBar';
@@ -46,11 +46,14 @@ const onSaveClicked = async (e) => {
     funFact: getInputValue('funFact'),
     bio: getInputValue('bio'),
     skills: getInputValue('skills'),
-    socials: getInputValue('socials'),
+    socials: getSocials(),
   };
+  console.log(data);
+
   const userID = await fetchUserID();
   await sendPut(`/api/users/${userID}`, data);
   await saveImage(userID, e.target);
+
   window.location.reload(); // reload page
 };
 
@@ -58,10 +61,10 @@ const saveImage = (userID, data) => {
   // saves the profile pic if there has been a change
   const formElement = document.getElementById('profile-creator-editor') as HTMLFormElement;
   sendFile(`/api/users/${userID}/profile-picture`, formElement);
-}
+};
 
 const setUpInputs = async (data) => {
-  let profileData = data[0];
+  const profileData = data[0];
   let roles, majors;
 
   const getRolesAndMajors = async () => {
@@ -75,7 +78,7 @@ const setUpInputs = async (data) => {
   };
 
   const setUpFunc = (input, data) => {
-    let inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
+    const inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     if (inputElement) {
       // if (inputElement.tagName.toLowerCase() === 'input' || inputElement.tagName.toLowerCase() === 'textarea') {
       //   inputElement.value = data;
@@ -93,7 +96,7 @@ const setUpInputs = async (data) => {
   setUpFunc('major', majors.find((r) => r.label === profileData.major).major_id);
   setUpFunc('academicYear', profileData.academic_year);
   setUpFunc('location', profileData.location);
-  setUpFunc('headline', profileData.headline); 
+  setUpFunc('headline', profileData.headline);
   setUpFunc('funFact', profileData.fun_fact);
   setUpFunc('bio', profileData.bio);
 };
@@ -216,7 +219,7 @@ const ProjectsTab = () => {
 
 const SkillsTab = () => {
   const [currentTagsTab, setCurrentTagsTab] = useState(0);
-  let tagSearchTabs = tagTabs.map((tag, i) => {
+  const tagSearchTabs = tagTabs.map((tag, i) => {
     return (
       <button
         onClick={() => setCurrentTagsTab(i)}
@@ -239,7 +242,7 @@ const SkillsTab = () => {
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={{}} onSearch={() => { }} />
+        <SearchBar dataSets={{}} onSearch={() => {}} />
         <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
         <hr />
         <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
@@ -250,13 +253,29 @@ const SkillsTab = () => {
 
 export const ProfileEditPopup = () => {
   let currentTab = 0;
+  const [profile, setProfile] = useState(); // Profile Data holder
+
+  useEffect(() => {
+    const setUpProfileData = async () => {
+      // Pick which socials to use based on type
+      // fetch for profile on ID
+      const userID = await fetchUserID();
+      const response = await fetch(`api/users/${userID}`);
+      const { data } = await response.json(); // use data[0]
+      console.log(data[0]);
+      
+      setProfile(data[0]);
+    };
+    setUpProfileData();
+  }, []);
+
   let TabContent = () => {
     return (
       <div id="profile-editor-content">
         <AboutTab />
         <ProjectsTab />
         <SkillsTab />
-        <LinksTab />
+        <LinksTab type={'profile'}/>
       </div>
     );
   };
@@ -276,7 +295,7 @@ export const ProfileEditPopup = () => {
 
     // Get current tab
     let currentElement;
-    let currTab = document.querySelector(`#profile-tab-${pageTabs[currentTab]}`);
+    const currTab = document.querySelector(`#profile-tab-${pageTabs[currentTab]}`);
     switch (pageTabs[currentTab]) {
       case 'About':
         currentElement = document.querySelector(`#profile-editor-about`);
@@ -303,8 +322,7 @@ export const ProfileEditPopup = () => {
     }
   };
 
-  let editorTabs;
-  editorTabs = pageTabs.map((tag, i) => {
+  let editorTabs = pageTabs.map((tag, i) => {
     return (
       <button
         onClick={(e) => {
@@ -319,26 +337,6 @@ export const ProfileEditPopup = () => {
     );
   });
 
-  // let currentTabContent;
-  // switch (pageTabs[currentTab]) {
-  //   case 'About':
-  //     // Hide everything but the selected tab
-  //     currentTabContent = <AboutTab />;
-  //     break;
-  //   case 'Projects':
-  //     currentTabContent = <ProjectsTab />;
-  //     break;
-  //   case 'Skills':
-  //     currentTabContent = <SkillsTab />;
-  //     break;
-  //   case 'Links':
-  //     currentTabContent = <LinksTab />;
-  //     break;
-  //   default:
-  //     currentTabContent = <AboutTab />;
-  //     break;
-  // }
-
   return (
     <Popup>
       <PopupButton buttonId="project-info-edit">Edit Profile</PopupButton>
@@ -348,7 +346,12 @@ export const ProfileEditPopup = () => {
           <div id="profile-editor-tabs">{editorTabs}</div>
           <TabContent />
           {/* <button id="profile-editor-save" onClick={onSaveClicked}>Save Changes</button> */}
-          <input type='submit' id="profile-editor-save" onClick={onSaveClicked} value={'Save Changes'} />
+          <input
+            type="submit"
+            id="profile-editor-save"
+            onClick={onSaveClicked}
+            value={'Save Changes'}
+          />
           {/* </div> */}
         </form>
       </PopupContent>

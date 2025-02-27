@@ -1,7 +1,6 @@
 import express from 'express';
 import session from 'express-session';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import morgan from 'morgan';
 import usersRouter from './routes/users.js';
 import projectsRouter from './routes/projects.js';
@@ -9,13 +8,13 @@ import datasetsRouter from './routes/datasets.js';
 import envConfig from './config/env.js';
 import pool from './config/database.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const dirname = import.meta.dirname;
 const app = express();
 const port = envConfig.port;
 
 // Serve frontend files and images
-app.use(express.static(join(__dirname, '../client/build')));
-app.use('/images', express.static(join(__dirname, './images')));
+app.use(express.static(join(dirname, '../client/build')));
+app.use('/images', express.static(join(dirname, './images')));
 
 app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));
@@ -41,7 +40,7 @@ app.get('/api', (req, res) => {
 });
 
 app.get('/*', (req, res) => {
-  res.sendFile('index.html', { root: join(__dirname, '../client/build/') });
+  res.sendFile('index.html', { root: join(dirname, '../client/build/') });
 });
 
 // Clean up tokens once a day

@@ -1,11 +1,10 @@
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import { unlink } from 'fs/promises';
 import sharp from 'sharp';
 import pool from '../config/database.js';
 import { genPlaceholders } from '../utils/sqlUtil.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const dirname = import.meta.dirname;
 
 const getProjects = async (req, res) => {
   try {
@@ -406,7 +405,7 @@ const updateProject = async (req, res) => {
         ON DUPLICATE KEY UPDATE project_id = new.project_id, user_id = new.user_id, title_id = new.title_id`;
     for (let member of members) {
       // find title_id with matching job title (members.label and member.job_title)
-      const titleSql = `SELECT jt.title_id FROM job_titles jt WHERE jt.label = ?`
+      const titleSql = `SELECT jt.title_id FROM job_titles jt WHERE jt.label = ?`;
       values = [member.job_title];
       const [matchingTitle] = await pool.query(titleSql, values);
       member.title_id = matchingTitle[0].title_id;
@@ -473,7 +472,7 @@ const updateThumbnail = async (req, res) => {
   try {
     // Download user's uploaded image. Convert to webp and reduce file size
     const fileName = `${id}thumbnail${Date.now()}.webp`;
-    const saveTo = join(__dirname, '../images/thumbnails/');
+    const saveTo = join(dirname, '../images/thumbnails/');
     const filePath = join(saveTo, fileName);
 
     await sharp(req.file.buffer).webp({ quality: 50 }).toFile(filePath);
@@ -549,7 +548,7 @@ const addPicture = async (req, res) => {
   try {
     // Download user's uploaded image. Convert to webp and reduce file size
     const fileName = `${id}picture${Date.now()}.webp`;
-    const saveTo = join(__dirname, '../images/projects');
+    const saveTo = join(dirname, '../images/projects');
     const filePath = join(saveTo, fileName);
 
     await sharp(req.file.buffer).webp({ quality: 50 }).toFile(filePath);
@@ -619,7 +618,7 @@ const deletePicture = async (req, res) => {
 
   try {
     // Remove project's picture from server and database
-    const filePath = join(__dirname, '../images/projects/');
+    const filePath = join(dirname, '../images/projects/');
     await unlink(filePath + image);
 
     await pool.query('DELETE FROM project_images WHERE image = ? AND project_id = ?', [image, id]);

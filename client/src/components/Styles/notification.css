@@ -93,7 +93,7 @@ Notification modal style rules
   width: 33px;
   height: 33px;
   border: none;
-  background-image: url('../../../public/images/icons/s-arrow.png');
+  background-image: url('/images/icons/s-arrow.png');
   background-size: cover;
   background-color: transparent;
   /* -webkit-transform: scaleX(-1);

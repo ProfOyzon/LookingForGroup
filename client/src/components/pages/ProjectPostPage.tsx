@@ -50,10 +50,10 @@ const ProjectPostPage = (props) => {
 
   //replyingToPost shows whether or not the user is currently replying to the post itself or a comment
   // true = replies given are to the post itself; false = replies given are to a specific comment of the post
-  let [replyingToPost, setReplyingToPost] = useState(true);
+  const [replyingToPost, setReplyingToPost] = useState(true);
 
   //If not replying directly to the post, replyTarget indicates which comment it is replying to, identified by id
-  let [replyTarget, setReplyTarget] = useState(0);
+  const [replyTarget, setReplyTarget] = useState(0);
 
   //Resets the target of any reply inputs back to the post itself
   //Called when clicking the 'reply-prompt-reset' button, which shows if replyingToPost = false
@@ -63,16 +63,16 @@ const ProjectPostPage = (props) => {
       //Change value to indicate replying to post
       setReplyingToPost(true);
       //Reset displays to default
-      let replyPrompt = document.getElementById('reply-prompt-display');
+      const replyPrompt = document.getElementById('reply-prompt-display');
       replyPrompt ? (replyPrompt.innerHTML = 'Replying to Post') : console.log('element not found');
-      let promptButton = document.getElementById('reply-prompt-reset');
+      const promptButton = document.getElementById('reply-prompt-reset');
       promptButton ? promptButton.classList.toggle('show') : console.log('element not found');
     }
   };
 
   const navigate = useNavigate();
   //Get which post to load using search query
-  let urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(window.location.search);
   postId = urlParams.get('postID');
   //If post isn't found, load a default one instead
   if (postId === null) {
@@ -84,7 +84,7 @@ const ProjectPostPage = (props) => {
 
   //commentComponent holds the current component data, setCommentComponent should be used whenever
   //  reply data is updated
-  let [commentComponent, setCommentComponent] = useState(
+  const [commentComponent, setCommentComponent] = useState(
     <PostReplies postComments={postData.comments} />
   );
 
@@ -94,7 +94,7 @@ const ProjectPostPage = (props) => {
   const sendReply = () => {
     //get user's reply input
     //May require some encoding to prevent code injection
-    let replyInput = document.getElementById('reply-input');
+    const replyInput = document.getElementById('reply-input');
     let replyContent;
     replyInput ? (replyContent = replyInput.value) : console.log('error finding input container');
     if (replyContent === '') {
@@ -107,9 +107,9 @@ const ProjectPostPage = (props) => {
     while (comments.find((comment) => comment._id === newId) !== undefined) {
       newId = Math.trunc(Math.random() * 100000000);
     }
-    let date = new Date();
+    const date = new Date();
     //construct new reply
-    let newReplyObject = {
+    const newReplyObject = {
       _id: newId,
       author: 0, //author is currently set to a default, should be updated to funciton with current user info later
       replies: [],
@@ -122,14 +122,14 @@ const ProjectPostPage = (props) => {
     //If replying to post, adds id to that post's comments array
     //If replying to another comment, adds id to that comment's replies array
     if (replyingToPost) {
-      let currentPost = posts.find((p) => p._id === Number(postId));
+      const currentPost = posts.find((p) => p._id === Number(postId));
       currentPost ? currentPost.comments.push(newId) : console.log('error finding post');
     } else {
-      let commentTarget = comments.find((p) => p._id === replyTarget);
+      const commentTarget = comments.find((p) => p._id === replyTarget);
       commentTarget ? commentTarget.replies.push(newId) : console.log('error finding comment');
     }
     //update display to feature new reply
-    let newPostData = posts.find((p) => p._id === Number(postId)) || posts[0];
+    const newPostData = posts.find((p) => p._id === Number(postId)) || posts[0];
     setCommentComponent(
       <PostReplies
         postComments={newPostData.comments}

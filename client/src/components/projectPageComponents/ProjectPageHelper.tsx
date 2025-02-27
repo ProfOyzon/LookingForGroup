@@ -83,7 +83,7 @@ const createMemberCount = (projectData) => {
 //Opens/closes the additional project options dropdown menu
 //Works for both the project member and non-project member views
 const toggleOptionDisplay = () => {
-  let popup = document.getElementById('more-options-popup');
+  const popup = document.getElementById('more-options-popup');
   popup ? popup.classList.toggle('show') : console.log('element not found');
 };
 

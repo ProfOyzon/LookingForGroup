@@ -23,8 +23,8 @@ export const MemberSettings = (props) => {
   const projectData = projects.find((p) => p._id === Number(props.projectId)) || projects[0];
 
   //Creates an array of objects containing data to use for the search function
-  let members = projectData.members.map((member) => {
-    let profile = profiles.find((p) => p._id === Number(member.userID));
+  const members = projectData.members.map((member) => {
+    const profile = profiles.find((p) => p._id === Number(member.userID));
     if (profile !== undefined) {
       return {
         name: profile.name,

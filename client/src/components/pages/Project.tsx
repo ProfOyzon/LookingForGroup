@@ -78,14 +78,14 @@ const Project = (props) => {
     posts: [],
   };
 
-  let keys = [0, 0, 0, 0]; //keys are not required for functionality, but react will give an error without it when using .map functions later
+  const keys = [0, 0, 0, 0]; //keys are not required for functionality, but react will give an error without it when using .map functions later
 
   //useState for members popup
   const [showPopup, setShowPopup] = useState(false);
 
   //*** Pulls project ID number from search query (should be stored as 'p') ***
   //(ex. [site path]/project?p=x , where x = the project ID number)
-  let urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(window.location.search);
   projectId = urlParams.get('projID');
 
   //If search query doesn't yield anything, use a default project id

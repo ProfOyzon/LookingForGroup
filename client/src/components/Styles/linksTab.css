@@ -1,12 +1,12 @@
 #profile-editor-links {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
 }
 
 .link-input {
-    display: flex;
-    column-gap: 0.5rem;
+  display: flex;
+  column-gap: 0.5rem;
 }
 
 #project-editor-add-link {
@@ -18,4 +18,26 @@
     height: 2ch;
     padding-bottom: 0;
     padding-top: 0;
+}
+
+.link-input-wrapper {
+    position: relative;
+    max-width: 100%;
+    width: 400px;
+}
+
+.close-btn {
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    height: 50%;
+    aspect-ratio: 1;
+
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateX(-10%) translateY(50%);
+}
+
+.close-btn .fa {
+    color: var(--invert-text);
 }

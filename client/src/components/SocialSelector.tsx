@@ -17,18 +17,20 @@ const getSocials = async () => {
   // TODO: create error handling, try catch block
   const response = await fetch('/api/datasets/socials');
   const { data } = await response.json();
-  // console.log(data);
   return data;
 };
 
-export const SocialSelector = () => {
+export const SocialSelector = (props) => {
   const [options, setOptions] = useState(null);
 
   useEffect(() => {
     const setUpSocialSelector = async () => {
       const socials = await getSocials();
-      const selectorOptions = socials.map((social) => {
-        return <option value={social.website_id}>{social.label}</option>;
+      const selectorOptions = socials.map((social, i) => {
+        if(`${props.value}` === `${i}`) {
+          return <option value={social.id} selected>{social.label}</option>;
+        }
+        return <option value={social.id}>{social.label}</option>;
       });
       setOptions(selectorOptions);
     };
@@ -37,7 +39,7 @@ export const SocialSelector = () => {
 
   return (
     <div className="editor-input-item">
-      <select id="profile-editor-social">{options}</select>
+      <select id="profile-editor-social" onChange={props.onChange}>{options}</select>
     </div>
   );
 };

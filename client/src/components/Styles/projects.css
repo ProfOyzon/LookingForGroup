@@ -239,6 +239,12 @@ Project Creator and Editor style rules
   color: var(--main-text);
 }
 
+@media (min-width: 1172px) {
+  #project-creator-editor {
+    width: 1120px;
+  }
+}
+
 #project-editor-tabs {
   display: flex;
   justify-content: space-around;
@@ -304,11 +310,28 @@ Project Creator and Editor style rules
   font-style: italic;
 }
 
+.project-link-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.project-link-input-wrapper input {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 15px;
+  flex-grow: 1;
+  background-color: var(--bg-color);
+  color: var(--main-text);
+  font-size: 1.6ch;
+  outline: none;
+}
+
 #project-editor-content select,
 #project-editor-general input,
 #project-editor-content textarea,
 #project-team-add-member-name input {
-  margin-top: 10px;
   border: 1px solid var(--border-color);
   border-radius: 10px;
   padding: 15px;
@@ -673,6 +696,7 @@ Project Creator and Editor style rules
   width: 30px;
   height: 30px;
   background-color: var(--primary-color) !important;
+  border: none;
   border-radius: 100%;
   display: flex;
   align-items: center;
@@ -694,6 +718,7 @@ Project Creator and Editor style rules
   min-width: 234px;
   gap: 10px;
   flex-direction: row;
+  border: none;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
@@ -802,14 +827,15 @@ Project Creator and Editor style rules
   align-items: start;
 }
 
-#team-positions-popup-list-buttons img {
+#team-positions-popup-list-buttons img,
+.add-item-button img {
   width: 21px;
   height: 21px;
 }
 
 #team-positions-popup-list-buttons button,
 #position-edit-save {
-  background-color: var(--header-color);
+  background-color: transparent;
   border: none;
   border-radius: 30px;
   padding: 0 17px;
@@ -948,6 +974,43 @@ select.edit-position-compensation {
   flex-direction: column;
   gap: 8px;
   flex: 1 0 0;
+}
+
+#project-editor-links > .project-editor-extra-info {
+  margin-bottom: 15px;
+}
+
+#project-editor-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.project-editor-link-item {
+  display: flex;
+  gap: 8px;
+  justify-items: center;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.project-editor-link-item select {
+  max-width: 166px;
+  width: 100%;
+}
+
+.remove-link-button {
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  right: 12px;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 50%;
+}
+
+.remove-link-button > .fa-minus {
+  color: var(--invert-text);
 }
 
 /*
@@ -1956,6 +2019,7 @@ New Project Page style rules
   display: flex;
   height: 28px;
   margin-left: auto;
+  align-items: center;
 }
 
 #project-info-buttons button {
@@ -1969,6 +2033,7 @@ New Project Page style rules
 
 #project-info-edit {
   font-size: 1.8ch;
+  border: none;
   border-radius: 30px;
   background-color: var(--primary-color) !important;
   color: var(--invert-text);
@@ -2076,24 +2141,23 @@ New Project Page style rules
   height: 28px;
 }
 
-#add-position-button > button {
+.add-item-button > button {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
   padding: 0 10px;
+  background: transparent;
+  border: none;
 }
 
-#add-position-button * {
+.add-item-button * {
   font-size: 16px;
   color: var(--neutral-gray);
 }
 
-#add-position-button img {
+.add-item-button img {
   transform: rotate(45deg);
-  width: 10px;
-  height: 10px;
-  scale: 1.75;
   filter: var(--image-filter);
 }
 

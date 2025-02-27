@@ -10,7 +10,7 @@ const MessageHistory = (props) => {
   const fromUser = 1;
 
   const getName = (id: number) => {
-    for (let p of profiles) {
+    for (const p of profiles) {
       if (p._id == id) return p.username;
     }
   };

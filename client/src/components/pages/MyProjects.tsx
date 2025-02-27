@@ -36,7 +36,7 @@ const MyProjects = () => {
   const getProjects = async (userID: number) => {
     const url = `/api/users/${userID}/projects`;
     try {
-      let response = await fetch(url);
+      const response = await fetch(url);
 
       const rawData = await response.json();
       setProjectsList(rawData.data);
@@ -70,7 +70,7 @@ const MyProjects = () => {
   // }
 
   const checkIfAnyWordStartsWith = (title: string, snippit: string) => {
-    let words = title.split(' ');
+    const words = title.split(' ');
     for (let i = 0; i < words.length; i++) {
       if (words[i].substring(0, snippit.length) == snippit) {
         return true;
@@ -81,7 +81,7 @@ const MyProjects = () => {
 
   const sortProjects = () => {
     if (projectsList !== undefined) {
-      let tempList = new Array(0);
+      const tempList = new Array(0);
       if (currentSearch === '') {
         for (let i = 0; i < projectsList.length; i++) {
           tempList.push(projectsList[i]);
@@ -133,7 +133,7 @@ const MyProjects = () => {
 
   let projectListSection = <></>;
   if (displayMode === 'grid') {
-    let tempList = sortProjects();
+    const tempList = sortProjects();
     projectListSection = (
       <>
         {/* Projects List */}
@@ -147,7 +147,7 @@ const MyProjects = () => {
       </>
     );
   } else if (displayMode === 'list') {
-    let tempList = sortProjects();
+    const tempList = sortProjects();
     projectListSection = (
       <>
         {/* Projects List Header */}

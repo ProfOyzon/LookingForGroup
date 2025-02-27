@@ -28,7 +28,9 @@ export const SocialSelector = (props) => {
       const socials = await getSocials();
       const selectorOptions = socials.map((social, i) => {
         if(`${props.value}` === `${i}`) {
-          return <option value={social.id} selected>{social.label}</option>;
+          console.log(social.label.toLowerCase());
+          
+          return <option value={social.id} selected><i className={`fa-brands fa-${social.label.toLowerCase()}`}></i>{social.label}</option>;
         }
         return <option value={social.id}>{social.label}</option>;
       });

@@ -30,9 +30,19 @@ export const LinksTab = (props) => {
   useEffect(() => {
     const loadSocials = async () => {
       // Pick which socials to use based on type
-      // fetch for profile on ID
       const userID = await fetchUserID();
-      const response = await fetch(`api/users/${userID}`);
+      let url;
+      switch (type) {
+        case 'project':
+          url = `api/users/${userID}`; // Replace with project url
+          break;
+        default:
+          url = `api/users/${userID}`;
+          break;
+
+      }
+      // fetch for profile on ID
+      const response = await fetch(url);
       const { data } = await response.json(); // use data[0]
       socials = data[0].socials;
       // Setup links
@@ -88,7 +98,7 @@ export const LinksTab = (props) => {
 
     useEffect(() => {
       console.log(props.data);
-      
+
       if (links[props.index]) {
         // If there exists a value for it in the array
         // Load in the value
@@ -157,9 +167,7 @@ export const LinksTab = (props) => {
       </div>
       <div id="project-editor-link-list">
         <LinkContainer />
-        <button id="project-editor-add-link" onClick={onAddLinkClicked}>
-          + Add Social Profile
-        </button>
+        <button id="project-editor-add-link" onClick={onAddLinkClicked}>+ Add Social Profile</button>
       </div>
     </div>
   );

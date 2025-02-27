@@ -1,4 +1,7 @@
 # LookingForGroup
+> [!CAUTION]
+> This branch, vite, was merged into main on February 26,2025<br>
+> Do NOT edit in this branch
 
 ## Getting Started
 

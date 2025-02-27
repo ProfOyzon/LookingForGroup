@@ -1,5 +1,9 @@
 # LookingForGroup
 
+- [Getting Started](#getting-started)
+- [Running the Project](#running-the-project)
+- [Linting and Formatting](#linting-and-formatting)
+
 ## Getting Started
 
 1. Navigate to the root folder and install dependencies:
@@ -17,7 +21,7 @@ npm install
 
 ## Running the Project
 
-- Frontend only (HTML & CSS work):
+- Frontend Only (HTML & CSS):
 
 ```bash
 npm run client
@@ -26,13 +30,13 @@ cd client
 npm run start
 ```
 
-- Backend & API (including database functionality):
+- Backend & API (including database):
 
 ```bash
 npm run server
 ```
 
-- Run both frontend and backend together:
+- Running both frontend and backend together:
 
 ```bash
 npm run dev
@@ -41,3 +45,28 @@ npm run server
 cd client
 npm run start
 ```
+
+## Linting and Formatting
+
+### Linting
+Run ESLint to check for issues:
+
+```bash
+npm run lint
+```
+
+To automatically fix issues:
+
+```bash
+npm run lint:fix
+```
+
+### Formatting
+Format code using Prettier:
+
+```bash
+npm run format
+```
+
+
+

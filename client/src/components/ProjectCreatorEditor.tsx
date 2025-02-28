@@ -16,6 +16,7 @@ import { Popup, PopupButton, PopupContent } from './Popup';
 import { SearchBar } from './SearchBar';
 import profileImage from '../icons/profile-user.png';
 import editIcon from '../icons/edit.png';
+import { ImageUploader } from './ImageUploader';
 
 //THIS COMPONENT NEEDS TO BE WORKED ON
 
@@ -999,13 +1000,23 @@ export const ProjectCreatorEditor = () => {
           </div>
           <div id="project-editor-image-ui">
             {/* TODO: Add image elements/components here based on currently uploaded images */}
+            {
+              modifiedProject.images.map((image) => {
+                return (
+                  <div className='project-editor-image-container'>
+                    <img src={`images/projects/${image.image}`} alt="" />
+                  </div>
+                );
+              })
+            }
             <div id="project-editor-add-image">
-              <img src="assets/white/upload_file_white.png" alt="" />
+              <ImageUploader />
+              {/* <img src="assets/white/upload_file_white.png" alt="" />
               <div className="project-editor-extra-info">
-                Drop your image here, or {/*TODO: click to upload file<input type="file">*/}browse
+                Drop your image here, or {/*TODO: click to upload file<input type="file">browse*/}
                 {/*</input>*/}
-              </div>
-              <div className="project-editor-extra-info">Supports: JPEG, PNG</div>
+              {/* </div> */}
+              {/* <div className="project-editor-extra-info">Supports: JPEG, PNG</div> */}
             </div>
           </div>
         </div>

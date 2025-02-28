@@ -531,14 +531,21 @@ Project Creator and Editor style rules
 
 #project-editor-image-ui {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 20px;
   margin: 10px 0;
 }
 
-#project-editor-image-ui > * {
-  width: calc(33% - 10px);
-  height: 200px;
+.project-editor-image-container {
+  
+}
+
+.project-editor-image-container img {
+  max-height: 200px;
+  border: 2px solid white;
   border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+  object-fit: cover;
 }
 
 #project-editor-add-image {

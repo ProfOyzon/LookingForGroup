@@ -684,7 +684,8 @@ const updateProfilePicture = async (req, res) => {
 
 const getAccount = async (req, res) => {
   // Get data
-  const { id } = req.params;
+  //const { id } = req.params;
+  const id = parseInt(req.params.id);
 
   // Checks
   if (req.session.userId !== id) {

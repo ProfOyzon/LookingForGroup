@@ -30,13 +30,13 @@ Settings page style rules
 }
 
 #settings-page {
-  display: flex;
+  /* display: flex;
   align-items: center;
   flex-direction: column;
-  width: 100%;
+  width: 100%; */
   /* border: 1px solid lightsalmon; */
-  height: auto;
-  margin-bottom: 200px;
+  /* height: auto;
+  margin-bottom: 200px; */
   /* https://www.w3schools.com/howto/howto_css_hide_scrollbars.asp */
   -ms-overflow-style: none;
   /* IE and Edge */
@@ -268,4 +268,112 @@ input:checked + .slider:before {
 
 @media only screen and (max-width: 800px) {
   /*responsiveness goes here*/
+}
+
+/* Settings page redesign styling */
+#settings-page {
+  hr {
+    color: var(--primary-color);
+  }
+
+  h2 {
+    font-size: 33px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 27px;
+  }
+
+  label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  .settings-row {
+    display: flex;
+    flex-direction: row;
+    margin: 0px min(8.47vw, 128px) 0px min(3.17vw,48px);
+    justify-content: space-between;
+  }
+
+  .subsection {
+    margin-bottom: 24px;
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: row;
+    width: 322px;
+    padding: 8px 15px; 
+    height: 29px;
+    border-radius: 10px;
+    background-color: var(--header-color);
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .interact-option {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: var(--primary-color);
+    font-style: italic;
+  }
+
+  input {
+    border: none;
+    background-color: var(--header-color);
+    color: var(--neutral-gray);
+  }
+
+  #options-theme-btn, #options-visibility-btn {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0px 0px;
+  }
+
+  #options-theme-dropdown, #options-visibility-dropdown {
+    box-shadow: 0 0 10px 0 var(--shadow-color);
+    border-radius: 10px;
+  }
+
+  .options-dropdown-parent-btn {
+    width: 10px;
+    height: 5px;
+  }
+
+  .options-dropdown-button {
+    border: none;
+    background-color: var(--dropdown-color);
+    padding: 10px 15px;
+    width: 352px;
+    height: 50px;
+    color: var(--main-text);
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .options-dropdown-button:hover {
+    background-color: var(--panel-hover);
+    color: var(--invert-text);
+
+    .fa-solid {
+      color: var(--invert-text) !important;
+    }
+  }
+
+  .options-dropdown-button.start {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .options-dropdown-button.end {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 }

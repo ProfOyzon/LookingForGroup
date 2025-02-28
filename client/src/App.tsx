@@ -26,6 +26,7 @@ import NewProject from './components/pages/NewProject';
 import ProjectPostPage from './components/pages/ProjectPostPage';
 import { Discover, Meet } from './components/pages/DiscoverAndMeet';
 import Settings from './components/pages/Settings';
+import NewSettings from './components/pages/NewSettings';
 import NotFound from './components/pages/NotFound';
 import SideBar from './components/Sidebar';
 import MessageHistory from './components/pages/MessageHistory';
@@ -76,7 +77,7 @@ function App() {
           <Route path={paths.routes.NEWPROJECT} element={<NewProject />} />
           <Route path={paths.routes.CREATEPROJECT} element={<CreateProject />} />
           <Route path={paths.routes.PROJECTPOST} element={<ProjectPostPage />} />
-          <Route
+          {/* <Route
             path={paths.routes.SETTINGS}
             element={
               <Settings
@@ -86,7 +87,8 @@ function App() {
                 setProfileImage={setProfileImage}
               />
             }
-          />
+          /> */}
+          <Route path={paths.routes.SETTINGS} element={<NewSettings />} />
           <Route path={paths.routes.NOTFOUND} element={<NotFound />} />
           <Route path={paths.routes.MESSAGEHISTORY} element={<MessageHistory />} />
           <Route path={paths.routes.CREDITS} element={<Credits />} />

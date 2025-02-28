@@ -188,7 +188,9 @@ used for the more options dropdown menu and notifications
 
 .page-title {
   margin-bottom: 0;
-  font-size: 30px;
+  font-size: 42px;
+  margin-left: max(1.79vw, 27px);
+  color: var(--primary-color);
 }
 
 .error {

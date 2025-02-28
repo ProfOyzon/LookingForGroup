@@ -19,20 +19,20 @@ import { MajorSelector } from '../MajorSelector';
 import { SearchBar } from '../SearchBar';
 import { ImageUploader } from '../ImageUploader';
 import { sendPut, sendFile, fetchUserID } from '../../functions/fetch';
-import profileImage from '../../icons/profile-user.png';
-import editIcon from '../../icons/edit.png';
+// import profileImage from '../../icons/profile-user.png';
+// import editIcon from '../../icons/edit.png';
 
 const pageTabs = ['About', 'Projects', 'Skills', 'Links'];
 const tagTabs = ['Dev Skills', 'Design Skills', 'Soft Skills'];
 
 // Functions
-const onSaveClicked = async (e) => {
+const onSaveClicked = async (e : Event) => {
   e.preventDefault(); // prevents any default calls
   // Receive all inputted values
   // Prepare these values for a POST/PUT request
-  const getInputValue = (input) => {
+  const getInputValue = (input : string) => {
     const element = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
-    return element ? element.value : null;
+    return element ? element.value : ''; // null
   };
   const data = {
     firstName: getInputValue('firstName'),

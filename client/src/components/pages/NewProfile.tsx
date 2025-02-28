@@ -114,6 +114,9 @@ const NewProfile = () => {
     } else {
       isUsersProfile = `${profileID}` === `${userID}`;
     }
+    console.log(`profileID: ${profileID}, userID: ${userID}`);
+    console.log(`isUsersProfile: ${isUsersProfile}`);
+    
   };
 
   // Gets the userID
@@ -126,6 +129,7 @@ const NewProfile = () => {
   // Gets the profile data
   const getProfileData = async () => {
     userID = await fetchUserID();
+    
     isUsersProfile = `${userID}` === profileID; 
     setUpProfileID();
     const url = `/api/users/${profileID}`;
@@ -179,6 +183,8 @@ const NewProfile = () => {
   if (!profileLoaded) {
     //const userID = await fetchUserID();
     //isUsersProfile = `${userID}` === profileID;
+    console.log('being triggered');
+    
     getProfileData();
   }
 
@@ -207,6 +213,7 @@ const NewProfile = () => {
   // --------------------
   // Components
   // --------------------
+  console.log(`allow user to edit? ${isUsersProfile}`);
   const aboutMeButtons = isUsersProfile ? (
     <>
       {

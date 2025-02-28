@@ -648,7 +648,7 @@ Project Creator and Editor style rules
   flex: 1;
   margin-top: 15px;
   padding: 20px;
-  align-items: flex-start;
+  align-content: flex-start;
   border-radius: 10px;
   border: 1px solid var(--border-color);
   background: #0a0a0a;

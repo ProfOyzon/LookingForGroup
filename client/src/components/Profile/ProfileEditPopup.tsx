@@ -48,13 +48,17 @@ const onSaveClicked = async (e : Event) => {
     skills: getInputValue('skills'),
     socials: getSocials(),
   };
+  console.log('Saving data...');
+  
+  console.log(data.socials);
+  
   console.log(data);
 
   const userID = await fetchUserID();
   await sendPut(`/api/users/${userID}`, data);
   await saveImage(userID, e.target);
 
-  window.location.reload(); // reload page
+  // window.location.reload(); // reload page
 };
 
 const saveImage = (userID, data) => {

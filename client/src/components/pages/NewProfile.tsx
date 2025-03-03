@@ -11,7 +11,7 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Header } from '../Header';
 import { PanelBox } from '../PanelBox';
@@ -20,37 +20,47 @@ import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 import profilePicture from '../../images/blue_frog.png';
 import EditButton from '../Profile/ProfileEditButton';
 import { ThemeIcon } from '../ThemeIcon';
+import { fetchUserID } from '../../functions/fetch';
+
+// --------------------
+// Interfaces
+// --------------------
+interface Project {
+  name: string;
+  hook: string;
+}
+
+interface Tag {
+  type: string;
+  skill: string;
+}
+
+interface Profile {
+  first_name: string;
+  last_name: string;
+  username: string;
+  profile_image: HTMLImageElement;
+  headline: string;
+  pronouns: string;
+  job_title: string;
+  major: string;
+  academic_year: string;
+  location: string;
+  fun_fact: string;
+  bio: string;
+  skills: Tag[];
+}
+
+// Get URL parameters to tell what user we're looking for and store it
+let urlParams = new URLSearchParams(window.location.search);
+let profileID = urlParams.get('userID');
+
+// Stores if profile is loaded from server and if it's user's respectively
+// const [profileLoaded, setProfileLoaded] = useState(false);
+let userID: number;
+let isUsersProfile: boolean = false;
 
 const NewProfile = () => {
-  // --------------------
-  // Interfaces
-  // --------------------
-  interface Project {
-    name: string;
-    hook: string;
-  }
-
-  interface Tag {
-    type: string;
-    skill: string;
-  }
-
-  interface Profile {
-    first_name: string;
-    last_name: string;
-    username: string;
-    profile_image: HTMLImageElement;
-    headline: string;
-    pronouns: string;
-    job_title: string;
-    major: string;
-    academic_year: string;
-    location: string;
-    fun_fact: string;
-    bio: string;
-    skills: Tag[];
-  }
-
   // --------------------
   // Global variables
   // --------------------
@@ -75,17 +85,6 @@ const NewProfile = () => {
     skills: skills,
   };
 
-  //const location = useLocation();
-
-  // Get URL parameters to tell what user we're looking for and store it
-  const urlParams = new URLSearchParams(window.location.search);
-  let profileID = urlParams.get('userID');
-
-  // Stores if profile is loaded from server and if it's user's respectively
-  const [profileLoaded, setProfileLoaded] = useState(false);
-  let userID: number;
-  let isUsersProfile: boolean = false;
-
   let displayedProfile: Profile;
   let setDisplayedProfile: Function;
   [displayedProfile, setDisplayedProfile] = useState(defaultProfile);
@@ -97,60 +96,33 @@ const NewProfile = () => {
   [fullProjectList, setFullProjectList] = useState([]);
   [displayedProjects, setDisplayedProjects] = useState([]);
 
-  const projectSearchData = fullProjectList.map((project) => {
+  const projectSearchData = fullProjectList.map(
+    (project : {title: string, hook: string}) => {
     return { name: project.title, description: project.hook };
   });
 
   // --------------------
   // Helper functions
   // --------------------
-  // Get the profileID to pull data for whoever's profile it is
-  const setUpProfileID = () => {
-    profileID = urlParams.get('userID');
-    // If no profileID is in search query, set to be current user
-    if (profileID === undefined || profileID === null) {
-      profileID = userID;
-      isUsersProfile = true;
-    } else {
-      isUsersProfile = `${profileID}` === `${userID}`;
+  // Search bar doesn't really have a use, so might as well use it for projects
+  const searchProjects = (searchResults) => {
+    const tempProjList: Project[] = [];
+
+    for (const result of searchResults[0]) {
+      for (const proj of projectSearchData) {
+        if (result === proj) {
+          tempProjList.push(fullProjectList[projectSearchData.indexOf(proj)]);
+          continue;
+        }
+      }
     }
-    console.log(`profileID: ${profileID}, userID: ${userID}`);
-    console.log(`isUsersProfile: ${isUsersProfile}`);
-    
-  };
 
-  // Gets the userID
-  const fetchUserID = async () => {
-    const response = await fetch('/api/auth');
-    const { data } = await response.json();
-    return data;
-  };
-
-  // Gets the profile data
-  const getProfileData = async () => {
-    userID = await fetchUserID();
-    
-    isUsersProfile = `${userID}` === profileID; 
-    setUpProfileID();
-    const url = `/api/users/${profileID}`;
-
-    try {
-      const response = await fetch(url);
-      const { data } = await response.json();
-
-      // Only run this if profile data exists for user
-      if (data[0] !== undefined) {
-        setDisplayedProfile(data[0]);
-        await getProfileProjectData();
-      }
-
-      setProfileLoaded(true);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.log(`Unknown error: ${error}`);
-      }
+    // If no projects were found
+    if (tempProjList.length === 0) {
+      setDisplayedProjects([]); // Clear the displayed list
+      console.log('No matching projects found.');
+    } else {
+      setDisplayedProjects(tempProjList);
     }
   };
 
@@ -180,40 +152,53 @@ const NewProfile = () => {
     }
   };
 
-  if (!profileLoaded) {
-    //const userID = await fetchUserID();
-    //isUsersProfile = `${userID}` === profileID;
-    console.log('being triggered');
-    
-    getProfileData();
-  }
+  // Gets the profile data
+  useEffect( () => {
+    const getProfileData = async () => {
+      userID = await fetchUserID();
 
-  // Search bar doesn't really have a use, so might as well use it for projects
-  const searchProjects = (searchResults) => {
-    const tempProjList: Project[] = [];
+      // Get the profileID to pull data for whoever's profile it is
+      const setUpProfileID = () => {
+        profileID = urlParams.get('userID');
+        // If no profileID is in search query, set to be current user
+        if (profileID === undefined || profileID === null) {
+          profileID = `${userID}`;
+          console.log('No profileID found, so defaulting to is user');
+        }
+        // Check if the userID matches the profile
+        isUsersProfile = `${userID}` === profileID;
+        console.log(`profileID: ${profileID}, userID: ${userID}`);
+        console.log(`isUsersProfile: ${isUsersProfile}`);
 
-    for (const result of searchResults[0]) {
-      for (const proj of projectSearchData) {
-        if (result === proj) {
-          tempProjList.push(fullProjectList[projectSearchData.indexOf(proj)]);
-          continue;
+      };
+      setUpProfileID();
+      const url = `/api/users/${profileID}`;
+  
+      try {
+        const response = await fetch(url);
+        const { data } = await response.json();
+  
+        // Only run this if profile data exists for user
+        if (data[0] !== undefined) {
+          setDisplayedProfile(data[0]);
+          await getProfileProjectData();
+        }
+  
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error.message);
+        } else {
+          console.log(`Unknown error: ${error}`);
         }
       }
-    }
+    };
 
-    // If no projects were found
-    if (tempProjList.length === 0) {
-      setDisplayedProjects([]); // Clear the displayed list
-      console.log('No matching projects found.');
-    } else {
-      setDisplayedProjects(tempProjList);
-    }
-  };
+    getProfileData();
+  }, []);
 
   // --------------------
   // Components
   // --------------------
-  console.log(`allow user to edit? ${isUsersProfile}`);
   const aboutMeButtons = isUsersProfile ? (
     <>
       {

@@ -568,16 +568,16 @@ const updateUser = async (req, res) => {
 
     // ----- UPDATE USER'S SOCIALS -----
     // Create array from socials
-    const newSocials = socials.map((social) => social.id);
+    const newSocialIds = socials.map((social) => social.id);
     // Add 0 if empty to allow sql statement to still find exisiting data to be removed
-    if (newSocials.length === 0) {
-      newSocials.push(0);
+    if (newSocialIds.length === 0) {
+      newSocialIds.push(0);
     }
     // Get socials already in database that need to be removed
-    let placeholders = genPlaceholders(newSocials);
+    let placeholders = genPlaceholders(newSocialIds);
     sql = `SELECT JSON_ARRAYAGG(uso.website_id) AS socials FROM user_socials uso
         WHERE uso.user_id = ? AND NOT uso.website_id IN (${placeholders})`;
-    values = [id, ...newSocials];
+    values = [id, ...newSocialIds];
     const [removingSocials] = await pool.query(sql, values);
     // Remove socials if any were found
     if (removingSocials[0].socials) {
@@ -590,6 +590,7 @@ const updateUser = async (req, res) => {
     sql = `INSERT INTO user_socials (user_id, website_id, url) VALUES (?, ?, ?) AS new
         ON DUPLICATE KEY UPDATE user_id = new.user_id, website_id = new.website_id, url = new.url`;
     for (let social of socials) {
+      console.log(social);
       await pool.query(sql, [id, social.id, social.url]);
     }
 

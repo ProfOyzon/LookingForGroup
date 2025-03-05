@@ -12,7 +12,7 @@ const handleError = (message: string) => {
 /* Sends post requests to the server using fetch. Will look for various
     entries in the response JSON object, and will handle them appropriately.
 */
-const sendPost = async (url: string, data: FetchData, handler?: ResponseHandler): Promise<void> => {
+const sendPost = async (url: string, data: {}, handler?: Function): Promise<void> => {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -23,7 +23,12 @@ const sendPost = async (url: string, data: FetchData, handler?: ResponseHandler)
   await responseHandler(response, handler);
 };
 
-const sendFile = async (url, data, handler) => {
+/* Sends a PUT request to the server using fetch, converting the body into FormData,
+    making it suitable for file data transfer.
+    MUST BE CONTAINED in a <form> element, using the encType="multipart/form-data"
+*/
+
+const sendFile = async (url: string, data: {}, handler?: Function) => {
   const response = await fetch(url, {
     method: 'PUT',
     body: new FormData(data),
@@ -34,7 +39,7 @@ const sendFile = async (url, data, handler) => {
 /* Sends put requests to the server using fetch. Will look for various
     entries in the response JSON object, and will handle them appropriately.
 */
-const sendPut = async (url: string, data: FormData, handler?: ResponseHandler): Promise<void> => {
+const sendPut = async (url: string, data: FormData, handler?: Function): Promise<void> => {
   const response = await fetch(url, {
     method: 'PUT',
     headers: {
@@ -47,7 +52,7 @@ const sendPut = async (url: string, data: FormData, handler?: ResponseHandler): 
 
 const responseHandler = async (
   response: Response,
-  handler?: ResponseHandler
+  handler?: Function
 ): Promise<string | void> => {
   const result = await response.json();
   //document.getElementById('errorMessage').classList.add('hidden');
@@ -65,7 +70,7 @@ const responseHandler = async (
   }
 };
 
-const sendGet = async (url: string, handler?: ResponseHandler): Promise<void> => {
+const sendGet = async (url: string, handler?: Function): Promise<void> => {
   console.log(`URL: ${url}`);
 
   const response = await fetch(url, {

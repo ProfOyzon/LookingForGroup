@@ -717,7 +717,7 @@ const getAccount = async (req, res) => {
 
 const updateEmail = async (req, res) => {
   // Get data
-  const { id } = req.params;
+  const id = parseInt(req.params.id);
   const { email, confirm, password } = req.body;
 
   const [curPassword] = await pool.query('SELECT password FROM users WHERE user_id = ?', [id]);
@@ -766,7 +766,7 @@ const updateEmail = async (req, res) => {
 
 const updateUsername = async (req, res) => {
   // Get data
-  const { id } = req.params;
+  const id = parseInt(req.params.id);
   const { username, confirm, password } = req.body;
 
   const [curPassword] = await pool.query('SELECT password FROM users WHERE user_id = ?', [id]);
@@ -815,7 +815,7 @@ const updateUsername = async (req, res) => {
 
 const updatePassword = async (req, res) => {
   // Get data
-  const { id } = req.params;
+  const id = parseInt(req.params.id);
   const { newPassword, confirm, password } = req.body;
 
   const [curPassword] = await pool.query('SELECT password FROM users WHERE user_id = ?', [id]);

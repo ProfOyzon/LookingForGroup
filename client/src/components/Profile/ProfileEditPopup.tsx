@@ -64,6 +64,7 @@ const onSaveClicked = async (e : Event) => {
 const saveImage = (userID, data) => {
   // saves the profile pic if there has been a change
   const formElement = document.getElementById('profile-creator-editor') as HTMLFormElement;
+  console.log('form element', formElement);
   sendFile(`/api/users/${userID}/profile-picture`, formElement);
 };
 

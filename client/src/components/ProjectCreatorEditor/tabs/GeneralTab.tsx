@@ -1,0 +1,165 @@
+// --- Imports ---
+import { useEffect, useState } from "react";
+
+
+// --- Interfaces ---
+interface ProjectData {
+  title: string;
+  hook: string;
+  description: string;
+  purpose: string;
+  status: string;
+  audience: string;
+  project_types: { id: number; project_type: string }[];
+  tags: { id: number; position: number; tag: string; type: string }[];
+  jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string }[];
+  members: { first_name: string; last_name: string; job_title: string; profile_image: string; user_id: number }[];
+  images: { id: number; image: string; position: number }[];
+  socials: { id: number; url: string }[];
+}
+
+// --- Variables ---
+// Default project value
+const defaultProject: ProjectData = {
+  title: '',
+  hook: '',
+  description: '',
+  purpose: '',
+  status: '',
+  audience: '',
+  project_types: [],
+  tags: [],
+  jobs: [],
+  members: [],
+  images: [],
+  socials: []
+};
+
+// Project purpose and status options
+const purposeOptions = ['Personal', 'Portfolio Piece', 'Academic', 'Co-op'];
+const statusOptions = ['Planning', 'Development', 'Post-Production', 'Complete'];
+
+// --- Component ---
+export const GeneralTab = ({ isNewProject = false, projectData = defaultProject, setProjectData }) => {
+
+  // --- Hooks ---
+  // tracking project modifications
+  const [modifiedProject, setModifiedProject] = useState<ProjectData>(projectData);
+
+  // Update data when data is changed
+  useEffect(() => {
+    setModifiedProject(projectData);
+  }, [projectData]);
+
+  // Update parent state when data is changed
+  useEffect(() => {
+    setProjectData(modifiedProject);
+  }, [modifiedProject, setProjectData]);
+
+  // --- Complete component ---
+  return (
+    <div id="project-editor-general">
+      <div id="project-editor-title-input" className="project-editor-input-item">
+        <label>Title*</label>
+        <input
+          type="text"
+          className="title-input"
+          value={isNewProject ? '' : modifiedProject.title}
+          onChange={(e) => {
+            console.log('changing title!', e.target.value);
+            setModifiedProject({ ...modifiedProject, title: e.target.value });
+          }}
+        />
+      </div>
+
+      <div id="project-editor-status-input" className="project-editor-input-item">
+        <label>Status*</label>
+        <select
+          value={modifiedProject.status || 'Select'}
+          onChange={(e) => {
+            setModifiedProject({ ...modifiedProject, status: e.target.value });
+          }}
+        >
+          <option disabled selected={isNewProject}>
+            Select
+          </option>
+          {statusOptions.map((o) => (
+            <option selected={isNewProject ? false : modifiedProject.status === o}>{o}</option>
+          ))}
+        </select>
+      </div>
+
+      <div id="project-editor-purpose-input" className="project-editor-input-item">
+        <label>Purpose</label>
+        <select
+          value={isNewProject ? '' : modifiedProject.purpose}
+          onChange={(e) => {
+            setModifiedProject({ ...modifiedProject, purpose: e.target.value });
+          }}
+        >
+          <option disabled selected={isNewProject}>
+            Select
+          </option>
+          {purposeOptions.map((o) => (
+            <option selected={isNewProject ? false : modifiedProject.purpose === o}>{o}</option>
+          ))}
+        </select>
+      </div>
+
+      <div id="project-editor-audience-input" className="project-editor-input-item">
+        <label>Target Audience</label>
+        <div className="project-editor-extra-info">
+          Define who this project is intended for--consider age group, interest, industry, or
+          specific user needs.
+        </div>
+        <span className="character-count">
+          {modifiedProject.audience ? modifiedProject.audience.length : '0'}/100
+        </span>{' '}
+        <textarea
+          maxLength={100}
+          value={isNewProject ? '' : modifiedProject.audience}
+          onChange={(e) => {
+            setModifiedProject({ ...modifiedProject, audience: e.target.value });
+          }}
+        />
+      </div>
+
+      <div id="project-editor-description-input" className="project-editor-input-item">
+        <label>Short Description*</label>
+        <div className="project-editor-extra-info">
+          Share a brief summary of your project. This will be displayed in your project's
+          discover card.
+        </div>
+        <span className="character-count">
+          {modifiedProject.hook ? modifiedProject.hook.length : '0'}/300
+        </span>{' '}
+        <textarea
+          maxLength={300}
+          value={isNewProject ? '' : modifiedProject.hook}
+          onChange={(e) => {
+            setModifiedProject({ ...modifiedProject, hook: e.target.value });
+          }}
+        />
+      </div>
+
+      <div id="project-editor-long-description-input" className="project-editor-input-item">
+        <label>About This Project*</label>
+        <div className="project-editor-extra-info">
+          Use this space to go into detail about your project! Feel free to share it's
+          inspirations and goals, outline key features, and describe this impact you hope it
+          brings to others.
+        </div>
+        <span className="character-count">
+          {modifiedProject.description ? modifiedProject.description.length : '0'}/2000
+        </span>{' '}
+        <textarea
+          maxLength={2000}
+          value={isNewProject ? '' : modifiedProject.description}
+          onChange={(e) => {
+            setModifiedProject({ ...modifiedProject, description: e.target.value });
+          }}
+        />
+      </div>
+    </div>
+  );
+};

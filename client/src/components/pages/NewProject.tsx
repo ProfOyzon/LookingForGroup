@@ -18,7 +18,7 @@ import { Header } from '../Header';
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { ImageCarousel } from '../ImageCarousel';
-import { ProjectCreatorEditor } from '../ProjectCreatorEditor';
+import { ProjectCreatorEditor } from '../ProjectCreatorEditor/ProjectCreatorEditor';
 import profilePicture from '../../images/blue_frog.png';
 import profileImage from '../../icons/profile-user.png';
 import tallImage from '../../images/tall_img.png';

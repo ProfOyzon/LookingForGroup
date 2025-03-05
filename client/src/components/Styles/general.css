@@ -782,6 +782,20 @@ Page popup style rules
   /* height: 849px; */
 }
 
+/* Used inside of popup object for smaller popups */
+.small-popup {
+  max-width: 456px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--bg-color);
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
+  opacity: 100%;
+  z-index: 3;
+  padding: 20px 40px;
+}
+
 @media (max-width: 576px) {
   .popup {
     /* max-width: 921px;
@@ -842,6 +856,7 @@ Page popup style rules
   height: 40px !important;
   background: none !important;
   margin: 4px 4px 0 0 !important;
+  z-index: 4; /* Prevent it from being covered by small-popup */
 }
 
 .popup-close img {

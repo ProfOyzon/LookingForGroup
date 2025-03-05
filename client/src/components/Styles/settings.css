@@ -219,15 +219,15 @@ Settings page style rules
   transition: 0.4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: var(--primary-blue);
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0px 0px 10px 0px var(--shadow-color);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -274,6 +274,7 @@ input:checked + .slider:before {
 #settings-page {
   hr {
     color: var(--primary-color);
+    width: 100%;
   }
 
   h2 {
@@ -292,7 +293,7 @@ input:checked + .slider:before {
   .settings-row {
     display: flex;
     flex-direction: row;
-    margin: 0px min(8.47vw, 128px) 0px min(3.17vw,48px);
+    margin: 0px min(8.47vw, 128px) 0px min(3.17vw, 48px);
     justify-content: space-between;
   }
 
@@ -304,7 +305,7 @@ input:checked + .slider:before {
     display: flex;
     flex-direction: row;
     width: 322px;
-    padding: 8px 15px; 
+    padding: 8px 15px;
     height: 29px;
     border-radius: 10px;
     background-color: var(--header-color);
@@ -325,9 +326,12 @@ input:checked + .slider:before {
     border: none;
     background-color: var(--header-color);
     color: var(--neutral-gray);
+    outline: none;
+    width: 100%;
   }
 
-  #options-theme-btn, #options-visibility-btn {
+  #options-theme-btn,
+  #options-visibility-btn {
     background: none;
     border: none;
     outline: none;
@@ -335,7 +339,8 @@ input:checked + .slider:before {
     padding: 0px 0px;
   }
 
-  #options-theme-dropdown, #options-visibility-dropdown {
+  #options-theme-dropdown,
+  #options-visibility-dropdown {
     box-shadow: 0 0 10px 0 var(--shadow-color);
     border-radius: 10px;
   }
@@ -375,5 +380,104 @@ input:checked + .slider:before {
   .options-dropdown-button.end {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+  }
+
+  .small-popup {
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin: 0 0 15px;
+    }
+
+    .success {
+      background-color: var(--tag-green-selected);
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    .pass-reqs {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h4 {
+        color: var(--neutral-gray);
+        font-style: italic;
+        font-size: 16px;
+        margin: 0 0 15px 0;
+      }
+
+      ul {
+        width: inherit;
+        margin: 0 0 15px 0;
+      }
+
+      li {
+        color: var(--neutral-gray);
+        font-size: 16px;
+        font-weight: 400;
+        font-style: italic;
+      }
+    }
+
+    .input-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 15px 0px;
+      /* Cover top and bottom */
+    }
+
+    .confirm-deny-btns {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .confirm-btn {
+      border: none;
+      outline: none;
+      box-shadow: none;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--invert-text);
+      background-color: var(--primary-color);
+      padding: 10px 17px;
+      border-radius: 55px;
+      width: 106px;
+    }
+
+    .deny-btn {
+      background: none;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--main-text);
+      width: 106px;
+    }
+
+    .confirm-msg {
+      margin: 0 0 15px 0;
+      color: var(--neutral-gray);
+      font-style: italic;
+
+      span {
+        color: var(--neutral-gray);
+        font-style: italic;
+      }
+
+      .confirm-change-item {
+        font-style: italic;
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--primary-color)
+      }
+    }
   }
 }

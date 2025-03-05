@@ -14,6 +14,7 @@ import '../Styles/pages.css';
 import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { LinksTab, getSocials } from '../tabs/LinksTab';
+import { ProjectsTab } from '../tabs/ProjectsTab';
 import { RoleSelector } from '../RoleSelector';
 import { MajorSelector } from '../MajorSelector';
 import { SearchBar } from '../SearchBar';
@@ -49,23 +50,19 @@ const onSaveClicked = async (e : Event) => {
     socials: getSocials(),
   };
   console.log('Saving data...');
-  
-  console.log(data.socials);
-  
   console.log(data);
 
   const userID = await fetchUserID();
   await sendPut(`/api/users/${userID}`, data);
-  await saveImage(userID, e.target);
+  await saveImage(userID);
 
   // window.location.reload(); // reload page
 };
 
-const saveImage = (userID, data) => {
+const saveImage = async (userID) => {
   // saves the profile pic if there has been a change
   const formElement = document.getElementById('profile-creator-editor') as HTMLFormElement;
-  console.log('form element', formElement);
-  sendFile(`/api/users/${userID}/profile-picture`, formElement);
+  await sendFile(`/api/users/${userID}/profile-picture`, formElement);
 };
 
 const setUpInputs = async (data) => {
@@ -198,25 +195,6 @@ const AboutTab = () => {
           <span className="character-count">0/2000</span>
           <textarea id="profile-editor-bio" maxLength={2000} />
         </div>
-      </div>
-    </div>
-  );
-};
-
-const ProjectsTab = () => {
-  return (
-    <div id="profile-editor-projects" className="hidden">
-      <div className="project-editor-section-header">Projects</div>
-      <div className="project-editor-extra-info">
-        Choose to hide/show projects you've worked on.
-      </div>
-      <div id="profile-editor-project-selection">
-        {/* Insert user projects here, as blocks */}
-        <ul>
-          <li>You</li>
-          <li>Haven't worked</li>
-          <li>on a project yet!</li>
-        </ul>
       </div>
     </div>
   );

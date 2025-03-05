@@ -2,7 +2,7 @@ import '../Styles/pages.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import * as paths from '../../constants/routes';
-import { handleError, sendPost, sendGet, hideError } from '../../functions/fetch.js';
+import { handleError, sendPost, sendGet, hideError } from '../../functions/fetch';
 import passwordValidator from 'password-validator';
 
 const ResetPassword = ({}) => {

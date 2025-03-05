@@ -29,6 +29,8 @@ import { DropdownContext } from '../contexts/DropdownContext';
 type DropdownButtonProps = {
   children: React.ReactNode;
   buttonId?: string;
+  callback?: Function;
+  className?: string;
 };
 
 type DropdownContentProps = {
@@ -41,7 +43,12 @@ type DropdownProps = {
 };
 
 //Button component that will open/close dropdown
-export const DropdownButton: React.FC<DropdownButtonProps> = ({ children, buttonId = '' }) => {
+export const DropdownButton: React.FC<DropdownButtonProps> = ({ 
+  children, 
+  buttonId = '', 
+  className = '', 
+  callback = (e) => {} 
+}) => {
   const { open, setOpen } = useContext(DropdownContext);
 
   const toggleOpen = () => {
@@ -56,7 +63,10 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({ children, button
   // }, [open]);
 
   return (
-    <button id={buttonId} onClick={toggleOpen}>
+    <button id={buttonId} className={className} onClick={(e) => {
+      callback(e);
+      toggleOpen();
+    }}>
       {children}
     </button>
   );

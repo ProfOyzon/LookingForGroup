@@ -1,0 +1,15 @@
+#profile-editor-project-selection {
+    display: grid;
+    margin: 1rem 0;
+    width: auto;
+    /* width: 90%; */
+    height: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.projectTile {
+    border-radius: 15px;
+    aspect-ratio: 1 / 1;
+    border: solid 2px white;
+}

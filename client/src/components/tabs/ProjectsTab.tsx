@@ -10,6 +10,7 @@ import '../Styles/profile.css';
 import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
+import '../Styles/projectsTab.css';
 
 import { useState, useEffect } from 'react';
 import { sendPut, fetchUserID } from '../../functions/fetch';
@@ -18,7 +19,7 @@ import { sendPut, fetchUserID } from '../../functions/fetch';
 
 const ProjectTile = (props) => {
     return (
-        <div id={props.index}>
+        <div className='projectTile' id={props.index}>
             {/* <p>{props.data.title}</p> */}
             <p>This is project #{props.index}</p>
         </div>

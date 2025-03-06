@@ -15,16 +15,15 @@ import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { LinksTab, getSocials } from '../tabs/LinksTab';
 import { ProjectsTab } from '../tabs/ProjectsTab';
+import { SkillsTab } from '../tabs/SkillsTab';
 import { RoleSelector } from '../RoleSelector';
 import { MajorSelector } from '../MajorSelector';
-import { SearchBar } from '../SearchBar';
 import { ImageUploader } from '../ImageUploader';
 import { sendPut, sendFile, fetchUserID } from '../../functions/fetch';
 // import profileImage from '../../icons/profile-user.png';
 // import editIcon from '../../icons/edit.png';
 
 const pageTabs = ['About', 'Projects', 'Skills', 'Links'];
-const tagTabs = ['Dev Skills', 'Design Skills', 'Soft Skills'];
 
 // Functions
 const onSaveClicked = async (e : Event) => {
@@ -200,40 +199,6 @@ const AboutTab = () => {
   );
 };
 
-const SkillsTab = () => {
-  const [currentTagsTab, setCurrentTagsTab] = useState(0);
-  const tagSearchTabs = tagTabs.map((tag, i) => {
-    return (
-      <button
-        onClick={() => setCurrentTagsTab(i)}
-        className={`project-editor-tag-search-tab ${currentTagsTab === i ? 'tag-search-tab-active' : ''}`}
-      >
-        {tag}
-      </button>
-    );
-  });
-
-  return (
-    <div id="profile-editor-skills" className="hidden">
-      <div id="project-editor-selected-tags">
-        <div className="project-editor-section-header">Selected Tags</div>
-        {/* <div className='project-editor-warning'>*At least 1 tag is required</div> */}
-        <div className="project-editor-extra-info">Drag and drop to reorder</div>
-        <div id="project-editor-selected-tags-container">
-          {/* Add tags here, separate top 2 from others */}
-        </div>
-      </div>
-
-      <div id="project-editor-tag-search">
-        <SearchBar dataSets={{}} onSearch={() => {}} />
-        <div id="project-editor-tag-search-tabs">{tagSearchTabs}</div>
-        <hr />
-        <div id="project-editor-tag-search-container">{/* Insert current tab's tags here */}</div>
-      </div>
-    </div>
-  );
-};
-
 export const ProfileEditPopup = () => {
   let currentTab = 0;
   const [profile, setProfile] = useState(); // Profile Data holder
@@ -250,6 +215,9 @@ export const ProfileEditPopup = () => {
       setProfile(data[0]);
     };
     setUpProfileData();
+    // Fix tab switching
+    currentTab = 0;
+    switchTab(0);
   }, []);
 
   let TabContent = () => {
@@ -272,8 +240,11 @@ export const ProfileEditPopup = () => {
       prevElement.classList.toggle('hidden');
     }
     if (prevTab) {
+      console.log(`hiding ${prevTab.id}`);
       prevTab.classList.toggle('project-editor-tab-active');
     }
+
+    // Update Current Tab
     currentTab = tabIndex;
 
     // Get current tab
@@ -323,7 +294,7 @@ export const ProfileEditPopup = () => {
   return (
     <Popup>
       <PopupButton buttonId="project-info-edit">Edit Profile</PopupButton>
-      <PopupContent>
+      <PopupContent callback={()=>{switchTab(0);}}>
         <form id="profile-creator-editor" encType="multipart/form-data">
           {/* <div id="profile-creator-editor"> */}
           <div id="profile-editor-tabs">{editorTabs}</div>

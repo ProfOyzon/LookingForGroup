@@ -77,7 +77,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
         let extraData = await response.json();
         if (extraData.data !== undefined) {
           extraData.data.forEach((jobTitle: Skill) => data.push({ label: jobTitle.label, type: 'Role' }));
-        }      
+        }
 
         // Get majors and append it to full data
         response = await fetch(`/api/datasets/majors`);
@@ -148,33 +148,36 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
   // Scrolls the list of tag filters right or left
   const scrollTags = (direction: string) => {
     // Check if left or right button was clicked
-    const tagFilterElement = document.getElementById('discover-tag-filters')!;
-    const leftScroll = document.getElementById('filters-left-scroll')!;
-    const rightScroll = document.getElementById('filters-right-scroll')!;
+    const tagFilterElement = document.getElementById('discover-tag-filters');
+    const leftScroll = document.getElementById('filters-left-scroll');
+    const rightScroll = document.getElementById('filters-right-scroll');
 
-    const scrollAmt = tagFilterElement.clientWidth;
+    // Ensure these elements exist before running code
+    if (tagFilterElement && leftScroll && rightScroll) {
+      const scrollAmt = tagFilterElement.clientWidth;
 
-    // Check if other button is hidden, if so...
-    if (leftScroll.classList.contains('hide') || rightScroll.classList.contains('hide')) {
-      // Un-hide the other scrolling button
-      leftScroll.classList.remove('hide');
-      rightScroll.classList.remove('hide');
-    }
-
-    // If we are going to hit the edge with this scroll...
-    if (direction === 'left') {
-      if (tagFilterElement.scrollLeft - scrollAmt <= 0) {
-        leftScroll.classList.add('hide');
+      // Check if other button is hidden, if so...
+      if (leftScroll.classList.contains('hide') || rightScroll.classList.contains('hide')) {
+        // Un-hide the other scrolling button
+        leftScroll.classList.remove('hide');
+        rightScroll.classList.remove('hide');
       }
 
-      tagFilterElement.scrollBy(-scrollAmt, 0);
-    } else if (direction === 'right') {
-      const scrolledAmt = tagFilterElement.scrollLeft + tagFilterElement.offsetWidth + scrollAmt;
-      if (scrolledAmt >= tagFilterElement.scrollWidth) {
-        rightScroll.classList.add('hide');
-      }
+      // If we are going to hit the edge with this scroll...
+      if (direction === 'left') {
+        if (tagFilterElement.scrollLeft - scrollAmt <= 0) {
+          leftScroll.classList.add('hide');
+        }
 
-      tagFilterElement.scrollBy(scrollAmt, 0);
+        tagFilterElement.scrollBy(-scrollAmt, 0);
+      } else if (direction === 'right') {
+        const scrolledAmt = tagFilterElement.scrollLeft + tagFilterElement.offsetWidth + scrollAmt;
+        if (scrolledAmt >= tagFilterElement.scrollWidth) {
+          rightScroll.classList.add('hide');
+        }
+
+        tagFilterElement.scrollBy(scrollAmt, 0);
+      }
     }
   };
 

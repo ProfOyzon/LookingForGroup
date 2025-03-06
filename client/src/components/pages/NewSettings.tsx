@@ -360,7 +360,7 @@ const Settings = ({ }) => {
                                                 />
                                             </div>
                                         </DropdownButton>
-                                        <DropdownContent rightAlign={true}>
+                                        <DropdownContent>
                                             <div id='options-theme-dropdown'>
                                                 <DropdownButton
                                                     className='options-dropdown-button start'
@@ -418,7 +418,7 @@ const Settings = ({ }) => {
                                                 />
                                             </div>
                                         </DropdownButton>
-                                        <DropdownContent rightAlign={true}>
+                                        <DropdownContent>
                                             <div id='options-visibility-dropdown'>
                                                 <DropdownButton
                                                     className='options-dropdown-button start'

@@ -11,7 +11,7 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useEffect, useState, useCallback, useMemo, JSX } from 'react';
+import { useEffect, useState } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { GeneralTab } from './tabs/GeneralTab';
 import { MediaTab } from './tabs/MediaTab';
@@ -19,17 +19,15 @@ import { LinksTab } from './tabs/LinksTab';
 import { TeamTab } from './tabs/TeamTab';
 import { TagsTab } from './tabs/TagsTab';
 
-//THIS COMPONENT NEEDS TO BE WORKED ON
-
-/*
-  This component is in an unfinished state. Not all css styling rules have been implemented/fine-tuned yet, 
-  and javascript functionality is at a bare minimum.
-  When completed, this component should allow for either editing existing projects or creating new projects entirely,
-  accessed via the ‘edit project’ button on project pages or the ‘create’ button on the sidebar, respectively.
-*/
-
+/**
+ * This component should allow for either editing existing projects or creating new projects entirely,
+ * accessed via the ‘edit project’ button on project pages or the ‘create’ button on the sidebar,
+ * respectively.
+ * 
+ * @returns React component Popup
+ */
 export const ProjectCreatorEditor = () => {
-  //Creating project?
+  //Creating project? TODO: create prop to handle if new project or not
 
   //Get project ID from search parameters
   const urlParams = new URLSearchParams(window.location.search);
@@ -64,24 +62,27 @@ export const ProjectCreatorEditor = () => {
     socials: [],
   };
 
-  //=================
-  // State variables
-  //=================
-  const [newProject, setNewProject] = useState(false);                    //tracking if creating a new project or editting existing (empty or populated fields)
-  const [projectData, setProjectData] = useState(emptyProject);           //store project data
-  const [modifiedProject, setModifiedProject] = useState(emptyProject);   //tracking temporary project changes before committing to a save
-  const [failCheck, setFailCheck] = useState(false);                      //check whether or not the data in the popup is valid
-  const [currentTab, setCurrentTab] = useState(0);                        //for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
-  const [closePopup, setClosePopup] = useState(true);                     //determine if a popup should close after press (PopupButton)
+  // --- Hooks ---
+  // tracking if creating a new project or editting existing (empty or populated fields)
+  const [newProject, setNewProject] = useState(false);
+
+  // store project data
+  const [projectData, setProjectData] = useState(emptyProject);
+
+  // tracking temporary project changes before committing to a save
+  const [modifiedProject, setModifiedProject] = useState(emptyProject);
+
+  // check whether or not the data in the popup is valid
+  const [failCheck, setFailCheck] = useState(false);
+
+  // for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
+  const [currentTab, setCurrentTab] = useState(0);
 
   // Errors
-  const [errorAddMember, setErrorAddMember] = useState('');               //sets error when adding a member to the team
-  const [errorAddPosition, setErrorAddPosition] = useState('');           //sets error when adding a position to the team
+  const [errorAddMember, setErrorAddMember] = useState('');
+  const [errorAddPosition, setErrorAddPosition] = useState('');
   const [errorLinks, setErrorLinks] = useState('');
 
-  //=============
-  // Uses
-  //=============  
   // Get project data on projectID change
   useEffect(() => {
     const getProjectData = async () => {
@@ -107,10 +108,6 @@ export const ProjectCreatorEditor = () => {
     getProjectData();
     
   }, [projectID]);
-
-  //================
-  // Helper Methods
-  //================
 
   // Handle events for tab switch
   useEffect(() => {
@@ -263,7 +260,7 @@ export const ProjectCreatorEditor = () => {
               currentTab === 0 ? <GeneralTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
               currentTab === 1 ? <MediaTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
               currentTab === 2 ? <TagsTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
-              currentTab === 3 ? <TeamTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
+              currentTab === 3 ? <TeamTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorMember={setErrorAddMember} setErrorPosition={setErrorAddPosition}/> :
               currentTab === 4 ? <LinksTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorLinks={setErrorLinks} /> :
               <></>
             }

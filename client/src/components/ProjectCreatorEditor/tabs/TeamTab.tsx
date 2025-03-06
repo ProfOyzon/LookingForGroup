@@ -61,7 +61,7 @@ const locationOptions = ['On-site', 'Remote', 'Hybrid'];
 const compensationOptions = ['Unpaid', 'Paid'];
 
 // --- Component ---
-export const TeamTab = ({ isNewProject = false, projectData = defaultProject, setProjectData }) => {
+export const TeamTab = ({ isNewProject = false, projectData = defaultProject, setProjectData, setErrorMember, setErrorPosition }) => {
 
   // --- Hooks ---
   // tracking project modifications
@@ -72,7 +72,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
   // HTML contents
   // const [teamTabContent, setTeamTabContent] = useState(<></>);
-  const [positionWindowContent, setPositionWindowContent] = useState(<></>);
+  // const [positionWindowContent, setPositionWindowContent] = useState(<></>);
 
   // tracking which team tab is currently being viewed: 0 - current team, 1 - open positions
   const [currentTeamTab, setCurrentTeamTab] = useState(0);
@@ -93,7 +93,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   // tracking if the user is making a new position (after pressing Add Position button)
   const [newPosition, setNewPosition] = useState(false);
 
-  //determine if a popup should close after press (PopupButton)
+  // determine if a popup should close after press (PopupButton)
   const [closePopup, setClosePopup] = useState(true);
 
   // errors
@@ -102,7 +102,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
   // Initial load
   useEffect(() => {
-    setPositionWindowContent(positionViewWindow);
+    // setPositionWindowContent(positionViewWindow);
   }, []);
 
   // Update data when data is changed
@@ -114,6 +114,14 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   useEffect(() => {
     setProjectData(modifiedProject);
   }, [modifiedProject, setProjectData]);
+
+  // Update parent state with error message
+  useEffect(() => {
+    setErrorMember(errorAddMember);
+  }, [errorAddMember, setErrorMember]);
+  useEffect(() => {
+    setErrorPosition(errorAddPosition);
+  }, [errorAddPosition, setErrorPosition]);
 
   // Get job list if allJobs is empty
   useEffect(() => {
@@ -261,222 +269,6 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       }
     );
   }, [modifiedProject.jobs]);
-
-  // positionWindowContent is one of these
-  // Open position display
-  // const positionViewWindow = useMemo(() => (
-  //   <>
-  //     <button
-  //       className="edit-project-member-button"
-  //       onClick={() => {
-  //         setCurrentJob(getProjectJob(currentRole));
-  //         setPositionWindowContent(positionEditWindow);
-  //         setEditMode(true);
-  //       }}
-  //     >
-  //       <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
-  //     </button>
-  //     <div className="positions-popup-info-title">{getProjectJob(currentRole).job_title}</div>
-  //     <div className="positions-popup-info-description">
-  //       <div id="position-description-content">{getProjectJob(currentRole).description}</div>
-  //     </div>
-  //     <div id="open-position-details">
-  //       <div id="open-position-details-left">
-  //         <div id="position-availability">
-  //           <span className="position-detail-indicator">Availability: </span>
-  //           {getProjectJob(currentRole).availability}
-  //         </div>
-  //         <div id="position-location">
-  //           <span className="position-detail-indicator">Location: </span>
-  //           {getProjectJob(currentRole).location}
-  //         </div>
-  //         <div id="open-position-contact">
-  //           <span className="position-detail-indicator">Contact: </span>
-  //           <span
-  //             // onClick={() =>
-  //             //   navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)
-  //             // }
-  //             id="position-contact-link"
-  //           >
-  //             <img src="/assets/creditProfiles/JF.png" alt="" />
-  //             {/* {projectLead.first_name} {projectLead.last_name} */}
-  //             Lily Carter
-  //           </span>
-  //         </div>
-  //       </div>
-  //       <div id="open-position-details-right">
-  //         <div id="position-duration">
-  //           <span className="position-detail-indicator">Duration: </span>
-  //           {getProjectJob(currentRole).duration}
-  //         </div>
-  //         <div id="position-compensation">
-  //           <span className="position-detail-indicator">Compensation: </span>
-  //           {getProjectJob(currentRole).compensation}
-  //         </div>
-  //       </div>
-  //     </div>
-  //     <Popup>
-  //       <PopupButton className="delete-position-button button-reset">
-  //         <img src="/images/icons/delete.svg" alt="trash can" />
-  //       </PopupButton>
-  //       <PopupContent useClose={false}>
-  //         <div id="project-team-delete-member-title">Delete Position</div>
-  //         <div id="project-team-delete-member-text" className="project-editor-extra-info">
-  //           Are you sure you want to delete{' '}
-  //           <span className="project-info-highlight">
-  //             {getProjectJob(currentRole).job_title}
-  //           </span>{' '}
-  //           from the project? This action cannot be undone.
-  //         </div>
-  //         <div className="project-editor-button-pair">
-  //           {/* TODO: make delete button work */}
-  //           <PopupButton className="delete-button" callback={() => deletePosition()}>
-  //             Delete
-  //           </PopupButton>
-  //           <PopupButton buttonId="team-delete-member-cancel-button">Cancel</PopupButton>
-  //         </div>
-  //       </PopupContent>
-  //     </Popup>
-  //   </>
-  // ), [currentRole, deletePosition, getProjectJob, positionEditWindow]);
-  // const positionEditWindow = useMemo(() => (
-  //   <>
-  //     <div id="edit-position-role">
-  //       {/* TODO: add place for error message (setErrorAddPosition) */}
-  //       <label>Role*</label>
-  //       <select
-  //         key={currentRole}
-  //         onChange={(e) => {
-  //           const selectedTitle = allJobs.find((j) => j.label === e.target.value);
-  //           if (selectedTitle)
-  //             setCurrentJob({
-  //               ...currentJob,
-  //               title_id: selectedTitle.title_id,
-  //               job_title: selectedTitle.label,
-  //             });
-  //         }}
-  //       >
-  //         <option disabled selected={newPosition}>
-  //           Select
-  //         </option>
-  //         {allJobs.map((job: { title_id: number; label: string }) => (
-  //           <option
-  //             key={job.title_id}
-  //             selected={newPosition ? false : job.title_id === currentRole}
-  //             onClick={() => {
-  //               const updatedJobs = modifiedProject.jobs.map((j) =>
-  //                 j.title_id === job.title_id ? { ...j, job_title: job.label } : j
-  //               );
-  //               setModifiedProject({ ...modifiedProject, jobs: updatedJobs });
-  //             }}
-  //           >
-  //             {job.label}
-  //           </option>
-  //         ))}
-  //       </select>
-  //       <div id="edit-position-buttons">
-  //         <div id="edit-position-button-pair">
-  //           <button onClick={savePosition} id="position-edit-save">
-  //             Save
-  //           </button>
-  //           <button
-  //             onClick={() => {
-  //               addPositionCallback();
-  //             }}
-  //             id="position-edit-cancel"
-  //             className="button-reset"
-  //           >
-  //             Cancel
-  //           </button>
-  //         </div>
-  //         <div className="error">{errorAddPosition}</div>
-  //       </div>
-  //     </div>
-
-  //     <div id="edit-position-description">
-  //       <label>Role Description*</label>
-  //       <textarea
-  //         onChange={(e) => setCurrentJob({ ...currentJob, description: e.target.value })}
-  //       >
-  //         {newPosition ? '' : getProjectJob(currentRole).description}
-  //       </textarea>
-  //     </div>
-
-  //     <div id="edit-position-details">
-  //       <div id="edit-position-details-left">
-  //         <label className="edit-position-availability">Availability</label>
-  //         <select
-  //           className="edit-position-availability"
-  //           onChange={(e) => setCurrentJob({ ...currentJob, availability: e.target.value })}
-  //         >
-  //           <option disabled selected={newPosition}>
-  //             Select
-  //           </option>
-  //           {availabilityOptions.map((o) => (
-  //             <option
-  //               key={o}
-  //               selected={newPosition ? false : getProjectJob(currentRole).availability === o}
-  //             >
-  //               {o}
-  //             </option>
-  //           ))}
-  //         </select>
-  //         <label className="edit-position-location">Location</label>
-  //         <select
-  //           className="edit-position-location"
-  //           onChange={(e) => setCurrentJob({ ...currentJob, location: e.target.value })}
-  //         >
-  //           <option disabled selected={newPosition}>
-  //             Select
-  //           </option>
-  //           {locationOptions.map((o) => (
-  //             <option
-  //               selected={newPosition ? false : getProjectJob(currentRole).location === o}
-  //             >
-  //               {o}
-  //             </option>
-  //           ))}
-  //         </select>
-  //         <label className="edit-position-contact">Main Contact</label>
-  //         <select className="edit-position-contact">{/* Put project lead here */}</select>
-  //       </div>
-  //       <div id="edit-position-details-right">
-  //         <label className="edit-position-duration">Duration</label>
-  //         <select
-  //           className="edit-position-duration"
-  //           onChange={(e) => setCurrentJob({ ...currentJob, duration: e.target.value })}
-  //         >
-  //           <option disabled selected={newPosition}>
-  //             Select
-  //           </option>
-  //           {durationOptions.map((o) => (
-  //             <option
-  //               selected={newPosition ? false : getProjectJob(currentRole).duration === o}
-  //             >
-  //               {o}
-  //             </option>
-  //           ))}
-  //         </select>
-  //         <label className="edit-position-compensation">Compensation</label>
-  //         <select
-  //           className="edit-position-compensation"
-  //           onChange={(e) => setCurrentJob({ ...currentJob, compensation: e.target.value })}
-  //         >
-  //           <option disabled selected={newPosition}>
-  //             Select
-  //           </option>
-  //           {compensationOptions.map((o) => (
-  //             <option
-  //               selected={newPosition ? false : getProjectJob(currentRole).compensation === o}
-  //             >
-  //               {o}
-  //             </option>
-  //           ))}
-  //         </select>
-  //       </div>
-  //     </div>
-  //   </>
-  // ), [addPositionCallback, allJobs, currentJob, currentRole, errorAddPosition, getProjectJob, modifiedProject, newPosition, savePosition]);
 
   //Save current inputs in position editing window
   const savePosition = useCallback(() => {
@@ -988,6 +780,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
     </>
   ), [addPositionCallback, editMode, modifiedProject.jobs, positionWindow]);
 
+  // Set content depending on what tab is selected
   const teamTabContent =
     currentTeamTab === 0 ? currentTeamContent :
     currentTeamTab === 1 ?  openPositionsContent :
@@ -1015,3 +808,221 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
     </div>
   );
 };
+
+// Because of hooks depending on each other, this is not implemented.
+// Relevant references are commented out above.
+  // positionWindowContent is one of these
+  // Open position display
+  // const positionViewWindow = useMemo(() => (
+  //   <>
+  //     <button
+  //       className="edit-project-member-button"
+  //       onClick={() => {
+  //         setCurrentJob(getProjectJob(currentRole));
+  //         setPositionWindowContent(positionEditWindow);
+  //         setEditMode(true);
+  //       }}
+  //     >
+  //       <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
+  //     </button>
+  //     <div className="positions-popup-info-title">{getProjectJob(currentRole).job_title}</div>
+  //     <div className="positions-popup-info-description">
+  //       <div id="position-description-content">{getProjectJob(currentRole).description}</div>
+  //     </div>
+  //     <div id="open-position-details">
+  //       <div id="open-position-details-left">
+  //         <div id="position-availability">
+  //           <span className="position-detail-indicator">Availability: </span>
+  //           {getProjectJob(currentRole).availability}
+  //         </div>
+  //         <div id="position-location">
+  //           <span className="position-detail-indicator">Location: </span>
+  //           {getProjectJob(currentRole).location}
+  //         </div>
+  //         <div id="open-position-contact">
+  //           <span className="position-detail-indicator">Contact: </span>
+  //           <span
+  //             // onClick={() =>
+  //             //   navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)
+  //             // }
+  //             id="position-contact-link"
+  //           >
+  //             <img src="/assets/creditProfiles/JF.png" alt="" />
+  //             {/* {projectLead.first_name} {projectLead.last_name} */}
+  //             Lily Carter
+  //           </span>
+  //         </div>
+  //       </div>
+  //       <div id="open-position-details-right">
+  //         <div id="position-duration">
+  //           <span className="position-detail-indicator">Duration: </span>
+  //           {getProjectJob(currentRole).duration}
+  //         </div>
+  //         <div id="position-compensation">
+  //           <span className="position-detail-indicator">Compensation: </span>
+  //           {getProjectJob(currentRole).compensation}
+  //         </div>
+  //       </div>
+  //     </div>
+  //     <Popup>
+  //       <PopupButton className="delete-position-button button-reset">
+  //         <img src="/images/icons/delete.svg" alt="trash can" />
+  //       </PopupButton>
+  //       <PopupContent useClose={false}>
+  //         <div id="project-team-delete-member-title">Delete Position</div>
+  //         <div id="project-team-delete-member-text" className="project-editor-extra-info">
+  //           Are you sure you want to delete{' '}
+  //           <span className="project-info-highlight">
+  //             {getProjectJob(currentRole).job_title}
+  //           </span>{' '}
+  //           from the project? This action cannot be undone.
+  //         </div>
+  //         <div className="project-editor-button-pair">
+  //           {/* TODO: make delete button work */}
+  //           <PopupButton className="delete-button" callback={() => deletePosition()}>
+  //             Delete
+  //           </PopupButton>
+  //           <PopupButton buttonId="team-delete-member-cancel-button">Cancel</PopupButton>
+  //         </div>
+  //       </PopupContent>
+  //     </Popup>
+  //   </>
+  // ), [currentRole, deletePosition, getProjectJob, positionEditWindow]);
+  // const positionEditWindow = useMemo(() => (
+  //   <>
+  //     <div id="edit-position-role">
+  //       {/* TODO: add place for error message (setErrorAddPosition) */}
+  //       <label>Role*</label>
+  //       <select
+  //         key={currentRole}
+  //         onChange={(e) => {
+  //           const selectedTitle = allJobs.find((j) => j.label === e.target.value);
+  //           if (selectedTitle)
+  //             setCurrentJob({
+  //               ...currentJob,
+  //               title_id: selectedTitle.title_id,
+  //               job_title: selectedTitle.label,
+  //             });
+  //         }}
+  //       >
+  //         <option disabled selected={newPosition}>
+  //           Select
+  //         </option>
+  //         {allJobs.map((job: { title_id: number; label: string }) => (
+  //           <option
+  //             key={job.title_id}
+  //             selected={newPosition ? false : job.title_id === currentRole}
+  //             onClick={() => {
+  //               const updatedJobs = modifiedProject.jobs.map((j) =>
+  //                 j.title_id === job.title_id ? { ...j, job_title: job.label } : j
+  //               );
+  //               setModifiedProject({ ...modifiedProject, jobs: updatedJobs });
+  //             }}
+  //           >
+  //             {job.label}
+  //           </option>
+  //         ))}
+  //       </select>
+  //       <div id="edit-position-buttons">
+  //         <div id="edit-position-button-pair">
+  //           <button onClick={savePosition} id="position-edit-save">
+  //             Save
+  //           </button>
+  //           <button
+  //             onClick={() => {
+  //               addPositionCallback();
+  //             }}
+  //             id="position-edit-cancel"
+  //             className="button-reset"
+  //           >
+  //             Cancel
+  //           </button>
+  //         </div>
+  //         <div className="error">{errorAddPosition}</div>
+  //       </div>
+  //     </div>
+
+  //     <div id="edit-position-description">
+  //       <label>Role Description*</label>
+  //       <textarea
+  //         onChange={(e) => setCurrentJob({ ...currentJob, description: e.target.value })}
+  //       >
+  //         {newPosition ? '' : getProjectJob(currentRole).description}
+  //       </textarea>
+  //     </div>
+
+  //     <div id="edit-position-details">
+  //       <div id="edit-position-details-left">
+  //         <label className="edit-position-availability">Availability</label>
+  //         <select
+  //           className="edit-position-availability"
+  //           onChange={(e) => setCurrentJob({ ...currentJob, availability: e.target.value })}
+  //         >
+  //           <option disabled selected={newPosition}>
+  //             Select
+  //           </option>
+  //           {availabilityOptions.map((o) => (
+  //             <option
+  //               key={o}
+  //               selected={newPosition ? false : getProjectJob(currentRole).availability === o}
+  //             >
+  //               {o}
+  //             </option>
+  //           ))}
+  //         </select>
+  //         <label className="edit-position-location">Location</label>
+  //         <select
+  //           className="edit-position-location"
+  //           onChange={(e) => setCurrentJob({ ...currentJob, location: e.target.value })}
+  //         >
+  //           <option disabled selected={newPosition}>
+  //             Select
+  //           </option>
+  //           {locationOptions.map((o) => (
+  //             <option
+  //               selected={newPosition ? false : getProjectJob(currentRole).location === o}
+  //             >
+  //               {o}
+  //             </option>
+  //           ))}
+  //         </select>
+  //         <label className="edit-position-contact">Main Contact</label>
+  //         <select className="edit-position-contact">{/* Put project lead here */}</select>
+  //       </div>
+  //       <div id="edit-position-details-right">
+  //         <label className="edit-position-duration">Duration</label>
+  //         <select
+  //           className="edit-position-duration"
+  //           onChange={(e) => setCurrentJob({ ...currentJob, duration: e.target.value })}
+  //         >
+  //           <option disabled selected={newPosition}>
+  //             Select
+  //           </option>
+  //           {durationOptions.map((o) => (
+  //             <option
+  //               selected={newPosition ? false : getProjectJob(currentRole).duration === o}
+  //             >
+  //               {o}
+  //             </option>
+  //           ))}
+  //         </select>
+  //         <label className="edit-position-compensation">Compensation</label>
+  //         <select
+  //           className="edit-position-compensation"
+  //           onChange={(e) => setCurrentJob({ ...currentJob, compensation: e.target.value })}
+  //         >
+  //           <option disabled selected={newPosition}>
+  //             Select
+  //           </option>
+  //           {compensationOptions.map((o) => (
+  //             <option
+  //               selected={newPosition ? false : getProjectJob(currentRole).compensation === o}
+  //             >
+  //               {o}
+  //             </option>
+  //           ))}
+  //         </select>
+  //       </div>
+  //     </div>
+  //   </>
+  // ), [addPositionCallback, allJobs, currentJob, currentRole, errorAddPosition, getProjectJob, modifiedProject, newPosition, savePosition]);

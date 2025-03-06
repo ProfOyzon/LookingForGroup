@@ -51,10 +51,6 @@ interface Profile {
   skills: Tag[];
 }
 
-// Get URL parameters to tell what user we're looking for and store it
-let urlParams = new URLSearchParams(window.location.search);
-let profileID = urlParams.get('userID');
-
 // Stores if profile is loaded from server and if it's user's respectively
 // const [profileLoaded, setProfileLoaded] = useState(false);
 let userID: number;
@@ -85,6 +81,10 @@ const NewProfile = () => {
     skills: skills,
   };
 
+  // Get URL parameters to tell what user we're looking for and store it
+  let urlParams = new URLSearchParams(window.location.search);
+  let profileID = urlParams.get('userID');
+
   let displayedProfile: Profile;
   let setDisplayedProfile: Function;
   [displayedProfile, setDisplayedProfile] = useState(defaultProfile);
@@ -97,9 +97,9 @@ const NewProfile = () => {
   [displayedProjects, setDisplayedProjects] = useState([]);
 
   const projectSearchData = fullProjectList.map(
-    (project : {title: string, hook: string}) => {
-    return { name: project.title, description: project.hook };
-  });
+    (project: { title: string, hook: string }) => {
+      return { name: project.title, description: project.hook };
+    });
 
   // --------------------
   // Helper functions
@@ -153,13 +153,14 @@ const NewProfile = () => {
   };
 
   // Gets the profile data
-  useEffect( () => {
+  useEffect(() => {
     const getProfileData = async () => {
       userID = await fetchUserID();
 
       // Get the profileID to pull data for whoever's profile it is
       const setUpProfileID = () => {
-        profileID = urlParams.get('userID');
+        // urlParams = new URLSearchParams(window.location.search);
+        // profileID = urlParams.get('userID');
         // If no profileID is in search query, set to be current user
         if (profileID === undefined || profileID === null) {
           profileID = `${userID}`;
@@ -167,23 +168,21 @@ const NewProfile = () => {
         }
         // Check if the userID matches the profile
         isUsersProfile = `${userID}` === profileID;
-        console.log(`profileID: ${profileID}, userID: ${userID}`);
-        console.log(`isUsersProfile: ${isUsersProfile}`);
-
       };
+
       setUpProfileID();
       const url = `/api/users/${profileID}`;
-  
+
       try {
         const response = await fetch(url);
         const { data } = await response.json();
-  
+
         // Only run this if profile data exists for user
         if (data[0] !== undefined) {
           setDisplayedProfile(data[0]);
           await getProfileProjectData();
         }
-  
+
       } catch (error) {
         if (error instanceof Error) {
           console.error(error.message);
@@ -194,7 +193,7 @@ const NewProfile = () => {
     };
 
     getProfileData();
-  }, []);
+  }, [profileID]);
 
   // --------------------
   // Components

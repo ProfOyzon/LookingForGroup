@@ -297,6 +297,13 @@ input:checked+.slider:before {
     justify-content: space-between;
   }
 
+  @media (max-width: 1100px) {
+    .settings-row {
+      flex-direction: column;
+      margin: 0px auto 0px min(3.17vw,48px);
+    }
+  }
+
   .subsection {
     margin-bottom: 24px;
   }

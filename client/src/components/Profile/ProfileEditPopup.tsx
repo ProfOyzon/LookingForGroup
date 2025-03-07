@@ -215,9 +215,6 @@ export const ProfileEditPopup = () => {
       setProfile(data[0]);
     };
     setUpProfileData();
-    // Fix tab switching
-    currentTab = 0;
-    switchTab(0);
   }, []);
 
   let TabContent = () => {
@@ -240,7 +237,6 @@ export const ProfileEditPopup = () => {
       prevElement.classList.toggle('hidden');
     }
     if (prevTab) {
-      console.log(`hiding ${prevTab.id}`);
       prevTab.classList.toggle('project-editor-tab-active');
     }
 
@@ -296,17 +292,14 @@ export const ProfileEditPopup = () => {
       <PopupButton buttonId="project-info-edit">Edit Profile</PopupButton>
       <PopupContent callback={()=>{switchTab(0);}}>
         <form id="profile-creator-editor" encType="multipart/form-data">
-          {/* <div id="profile-creator-editor"> */}
           <div id="profile-editor-tabs">{editorTabs}</div>
           <TabContent />
-          {/* <button id="profile-editor-save" onClick={onSaveClicked}>Save Changes</button> */}
           <input
             type="submit"
             id="profile-editor-save"
             onClick={onSaveClicked}
             value={'Save Changes'}
           />
-          {/* </div> */}
         </form>
       </PopupContent>
     </Popup>

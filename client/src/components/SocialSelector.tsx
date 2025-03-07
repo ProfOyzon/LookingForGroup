@@ -10,6 +10,7 @@ import './Styles/profile.css';
 import './Styles/projects.css';
 import './Styles/settings.css';
 import './Styles/pages.css';
+import '../../public/FontAwesome/css/brands.css';
 
 import { useState, useEffect } from 'react';
 
@@ -28,11 +29,12 @@ export const SocialSelector = (props) => {
       const socials = await getSocials();
       const selectorOptions = socials.map((social, i) => {
         if(`${props.value}` === `${i}`) {
+          console.log('Social Website:');
           console.log(social.label.toLowerCase());
           
           return <option value={social.id} selected><i className={`fa-brands fa-${social.label.toLowerCase()}`}></i>{social.label}</option>;
         }
-        return <option value={social.id}>{social.label}</option>;
+        return <option value={social.id}><i className={`fa-brands fa-${social.label.toLowerCase()}`}></i>{social.label}</option>;
       });
       setOptions(selectorOptions);
     };

@@ -7,7 +7,7 @@ const getSkills = async (req, res) => {
   try {
     // Get skills of specfic type when the "type" query parameter is given
     if (type) {
-      const sql = `SELECT * FROM skills WHERE type = ?`;
+      const sql = `SELECT * FROM tags WHERE type = ?`;
       const [skills] = await pool.query(sql, [type]);
 
       return res.status(200).json({
@@ -17,7 +17,8 @@ const getSkills = async (req, res) => {
     }
 
     // Get all skills
-    const sql = `SELECT * FROM skills`;
+    const sql = `SELECT * FROM tags WHERE type = "Developer Skill" 
+      OR type = "Designer Skill" OR type = "Soft Skill"`;
     const [skills] = await pool.query(sql);
 
     return res.status(200).json({
@@ -52,7 +53,8 @@ const getTags = async (req, res) => {
 
     // Get all tags
     //const sql = `SELECT * FROM tags`;
-    const sql = `SELECT * FROM tags`;
+    const sql = `SELECT * FROM tags WHERE NOT type = "Developer Skill" 
+      AND NOT type = "Designer Skill" AND NOT type = "Soft Skill"`;
     const [tags] = await pool.query(sql);
 
     return res.status(200).json({

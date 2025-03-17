@@ -367,7 +367,7 @@ const getUserById = async (req, res) => {
   try {
     // Get data of a user
     const sql = `SELECT u.user_id, u.first_name, u.last_name, u.username, u.profile_image, u.headline, u.pronouns, 
-            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, s.skills, so.socials
+            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, u.visibility, s.skills, so.socials
             FROM users u
             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
                 FROM job_titles jt) jt
@@ -699,7 +699,7 @@ const getAccount = async (req, res) => {
   try {
     // Get account information
     const sql =
-      'SELECT u.user_id, u.primary_email, u.rit_email, u.username FROM users u WHERE user_id = ?';
+      'SELECT u.user_id, u.primary_email, u.rit_email, u.username, u.visibility FROM users u WHERE user_id = ?';
     const values = [id];
     const [account] = await pool.query(sql, values);
 

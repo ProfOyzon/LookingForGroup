@@ -69,13 +69,13 @@ const Settings = ({ }) => {
                     {(prev !== '') ? <span>
                         &#32;from <span className='confirm-change-item'>
                             {(type === 'Username') ? `@${prev}` : prev}
-                            </span>
+                        </span>
                     </span> : <>
                     </>}
                     {(cur !== '') ? <span>
                         &#32;to <span className='confirm-change-item'>
                             {(type === 'Username') ? `@${cur}` : cur}
-                            </span>
+                        </span>
                     </span> : <>
                     </>}?
                 </p>
@@ -84,7 +84,24 @@ const Settings = ({ }) => {
                         className='confirm-btn'
                         callback={async () => {
                             // Displays success message on parent popup
-                            const onSuccess = (status) => setSuccess(`Your ${type.toLowerCase()} has been updated!`);
+                            const onSuccess = (status) => {
+                                if (type !== 'Password') {
+                                    // Create deep copy of object, make changes, then call state update
+                                    const tempInfo = { ...userInfo };
+                                    
+                                    if (type === 'Username') {
+                                        tempInfo.username = apiParams['username'];
+                                    } else {
+                                        // Primary Email
+                                        tempInfo.primary_email = apiParams['email'];
+                                    }
+
+                                    setUserInfo(tempInfo);
+                                }
+
+                                // Feedback popup
+                                setSuccess(`Your ${type.toLowerCase()} has been updated!`);
+                            }
 
                             const typeToChange = (type === 'Primary Email') ? 'email' : type.toLowerCase();
                             const url = `/api/users/${userInfo.user_id}/${typeToChange}`;
@@ -173,17 +190,17 @@ const Settings = ({ }) => {
         }
 
         return (
-            <div className='small-popup' onClick={() => {
-                // Removes success message if user clicks on popup
-                if ((successMsg !== '')) {
-                    setSuccess('');
-                }
-            }}>
+            <div className='small-popup'>
                 <h3>Edit {type}</h3>
                 {(type === 'Password') ? <PasswordChecker pass={firstParam} /> : <></>}
                 <div className='error'>{errorMsg}</div>
                 {((errorMsg === '') && (successMsg !== '')) ? (
-                    <div className='success'>{successMsg}</div>
+                    <div className='success' onClick={() => {
+                        // Removes success message if user clicks on popup
+                        if ((successMsg !== '')) {
+                            setSuccess('');
+                        }
+                    }}>{successMsg}</div>
                 ) : (
                     <></>
                 )}
@@ -250,6 +267,27 @@ const Settings = ({ }) => {
                 </div>
             </div>
         );
+    };
+
+    // Makes request to API to update user's visibility
+    // Visibility num corresponds to private vs public
+    // 0 - private
+    // 1 - public
+    const updateVisibility = async (visibilityNum) => {
+        // Don't run if the value hasn't changed
+        if (visibilityNum !== userInfo.visibility) {
+            const url = `/api/users/${userInfo.user_id}/visibility`;
+            const response = await sendPut(url, { newVisibility: visibilityNum });
+
+            if (response !== undefined && response.error) {
+                console.log(response.error);
+            } else {
+                // Update userInfo with newly updated visibility value
+                const tempInfo = { ...userInfo };
+                tempInfo.visibility = visibilityNum;
+                setUserInfo(tempInfo);
+            }
+        }
     };
 
     return (
@@ -406,7 +444,7 @@ const Settings = ({ }) => {
                                             <div className='input-container'>
                                                 <input
                                                     id='option-theme'
-                                                    placeholder={visibilityOption}
+                                                    placeholder={(userInfo.visibility === 1) ? 'Public Account' : 'Private Account'}
                                                     type='text'
                                                     disabled
                                                 />
@@ -423,7 +461,7 @@ const Settings = ({ }) => {
                                                 <DropdownButton
                                                     className='options-dropdown-button start'
                                                     callback={(e) => {
-                                                        setVisibilityOption(e.target.innerText);
+                                                        updateVisibility(1);
                                                     }}
                                                 >
                                                     <i className="fa-solid fa-eye"></i>
@@ -432,7 +470,7 @@ const Settings = ({ }) => {
                                                 <DropdownButton
                                                     className='options-dropdown-button end'
                                                     callback={(e) => {
-                                                        setVisibilityOption(e.target.innerText);
+                                                        updateVisibility(0);
                                                     }}
                                                 >
                                                     <i className="fa-solid fa-user"></i>

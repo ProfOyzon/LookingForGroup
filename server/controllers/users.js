@@ -874,9 +874,6 @@ const updateUserVisibility = async (req, res) => {
   const id = parseInt(req.params.id);
   const { newVisibility } = req.body;
 
-  console.log(id);
-  console.log(req.session.userId);
-
   // Checks
   if (req.session.userId !== id) {
     return res.status(401).json({

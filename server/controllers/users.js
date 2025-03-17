@@ -866,6 +866,45 @@ const updatePassword = async (req, res) => {
   }
 };
 
+// Sets project visibility to either 'public' or 'private
+// 0 - private
+// 1 - public
+const updateUserVisibility = async (req, res) => {
+  // Get data
+  const id = parseInt(req.params.id);
+  const { newVisibility } = req.body;
+
+  // Checks
+  if (req.session.userId !== id) {
+    return res.status(401).json({
+      status: 401,
+      error: 'Unauthorized',
+    });
+  } else if (newVisibility < 0 || newVisibility > 1) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Invalid value for visibility',
+    });
+  }
+
+  try {
+    // Update user's visibility
+    const sql = 'UPDATE users SET visibility = ? WHERE user_id = ?';
+    const values = [newVisibility, id];
+    await pool.query(sql, values);
+
+    return res.status(200).json({
+      status: 200,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      status: 400,
+      error: "An error occurred while updating user's visibility",
+    });
+  }
+}
+
 const getMyProjects = async (req, res) => {
   // Get id from url
   const { id } = req.params;
@@ -1260,6 +1299,7 @@ export default {
   updateEmail,
   updateUsername,
   updatePassword,
+  updateUserVisibility,
   getMyProjects,
   getVisibleProjects,
   updateProjectVisibility,

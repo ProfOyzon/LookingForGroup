@@ -85,22 +85,24 @@ const Settings = ({ }) => {
                         callback={async () => {
                             // Displays success message on parent popup
                             const onSuccess = (status) => {
-                                if (type !== 'Password') {
-                                    // Create deep copy of object, make changes, then call state update
-                                    const tempInfo = { ...userInfo };
-                                    
-                                    if (type === 'Username') {
-                                        tempInfo.username = apiParams['username'];
-                                    } else {
-                                        // Primary Email
-                                        tempInfo.primary_email = apiParams['email'];
-                                    }
-
-                                    setUserInfo(tempInfo);
-                                }
-
                                 // Feedback popup
                                 setSuccess(`Your ${type.toLowerCase()} has been updated!`);
+                                
+                                // TO-DO: Figure out why below code stops successMsg from rendering
+
+                                // if (type !== 'Password') {
+                                //     // Create deep copy of object, make changes, then call state update
+                                //     const tempInfo = { ...userInfo };
+                                    
+                                //     if (type === 'Username') {
+                                //         tempInfo.username = apiParams['username'];
+                                //     } else {
+                                //         // Primary Email
+                                //         tempInfo.primary_email = apiParams['email'];
+                                //     }
+
+                                //     setUserInfo(tempInfo);
+                                // }
                             }
 
                             const typeToChange = (type === 'Primary Email') ? 'email' : type.toLowerCase();
@@ -190,16 +192,17 @@ const Settings = ({ }) => {
         }
 
         return (
-            <div className='small-popup'>
+            <div className='small-popup' onClick={() => {
+                console.log(successMsg);
+            }}>
                 <h3>Edit {type}</h3>
                 {(type === 'Password') ? <PasswordChecker pass={firstParam} /> : <></>}
                 <div className='error'>{errorMsg}</div>
                 {((errorMsg === '') && (successMsg !== '')) ? (
                     <div className='success' onClick={() => {
                         // Removes success message if user clicks on popup
-                        if ((successMsg !== '')) {
-                            setSuccess('');
-                        }
+                        console.log('Empty SuccessMsg');
+                        setSuccess('');
                     }}>{successMsg}</div>
                 ) : (
                     <></>

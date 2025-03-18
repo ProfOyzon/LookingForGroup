@@ -87,22 +87,6 @@ const Settings = ({ }) => {
                             const onSuccess = (status) => {
                                 // Feedback popup
                                 setSuccess(`Your ${type.toLowerCase()} has been updated!`);
-                                
-                                // TO-DO: Figure out why below code stops successMsg from rendering
-
-                                // if (type !== 'Password') {
-                                //     // Create deep copy of object, make changes, then call state update
-                                //     const tempInfo = { ...userInfo };
-                                    
-                                //     if (type === 'Username') {
-                                //         tempInfo.username = apiParams['username'];
-                                //     } else {
-                                //         // Primary Email
-                                //         tempInfo.primary_email = apiParams['email'];
-                                //     }
-
-                                //     setUserInfo(tempInfo);
-                                // }
                             }
 
                             const typeToChange = (type === 'Primary Email') ? 'email' : type.toLowerCase();
@@ -193,17 +177,24 @@ const Settings = ({ }) => {
 
         return (
             <div className='small-popup' onClick={() => {
-                console.log(successMsg);
+                if (successMsg !== '') {
+                    setSuccess('');
+
+                    // Update userInfo properly
+                    if (type !== 'Password') {
+                        // Create deep copy of object, make changes, then call state update
+                        const tempInfo = { ...userInfo };
+                        tempInfo[type.replace(' ', '_').toLowerCase()] = firstParam;
+
+                        setUserInfo(tempInfo);
+                    }
+                }
             }}>
                 <h3>Edit {type}</h3>
                 {(type === 'Password') ? <PasswordChecker pass={firstParam} /> : <></>}
                 <div className='error'>{errorMsg}</div>
                 {((errorMsg === '') && (successMsg !== '')) ? (
-                    <div className='success' onClick={() => {
-                        // Removes success message if user clicks on popup
-                        console.log('Empty SuccessMsg');
-                        setSuccess('');
-                    }}>{successMsg}</div>
+                    <div className='success'>{successMsg}</div>
                 ) : (
                     <></>
                 )}

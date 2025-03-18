@@ -17,7 +17,6 @@ import { Header } from '../Header';
 import { PanelBox } from '../PanelBox';
 import { ProfileEditPopup } from '../Profile/ProfileEditPopup';
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
-import profilePicture from '../../images/blue_frog.png';
 import EditButton from '../Profile/ProfileEditButton';
 import { ThemeIcon } from '../ThemeIcon';
 import { fetchUserID } from '../../functions/fetch';
@@ -65,20 +64,35 @@ const NewProfile = () => {
   const skills: Tag[] = skillsStr.map((skillStr) => {
     return { type: 'Soft', skill: skillStr };
   });
+  // const defaultProfile: Profile = {
+  //   first_name: 'User',
+  //   last_name: 'Name',
+  //   username: 'someguy',
+  //   profile_image: profilePicture,
+  //   headline: `Here's a quick lil blurb about me!`,
+  //   pronouns: 'Was/Were',
+  //   job_title: 'Profession',
+  //   major: 'Professional Typer',
+  //   academic_year: '13th',
+  //   location: 'Middle of, Nowhere',
+  //   fun_fact: `I'm not a real person, I'm just a digital representation of one!`,
+  //   bio: 'A bunch of Lorem Ipsum text, not bothering to type it out.',
+  //   skills: skills,
+  // };
   const defaultProfile: Profile = {
-    first_name: 'User',
-    last_name: 'Name',
-    username: 'someguy',
-    profile_image: profilePicture,
-    headline: `Here's a quick lil blurb about me!`,
-    pronouns: 'Was/Were',
-    job_title: 'Profession',
-    major: 'Professional Typer',
-    academic_year: '13th',
-    location: 'Middle of, Nowhere',
-    fun_fact: `I'm not a real person, I'm just a digital representation of one!`,
-    bio: 'A bunch of Lorem Ipsum text, not bothering to type it out.',
-    skills: skills,
+    first_name: 'Private',
+    last_name: 'User',
+    username: 'privateuser',
+    profile_image: `private.webp`,
+    headline: `This user is private`,
+    pronouns: 'NA/NA',
+    job_title: 'NA',
+    major: 'NA',
+    academic_year: 'NA',
+    location: 'NA, NA',
+    fun_fact: ``,
+    bio: '',
+    skills: [],
   };
 
   // Get URL parameters to tell what user we're looking for and store it
@@ -179,8 +193,11 @@ const NewProfile = () => {
 
         // Only run this if profile data exists for user
         if (data[0] !== undefined) {
-          setDisplayedProfile(data[0]);
-          await getProfileProjectData();
+          // If profile is private, and isn't the user's, don't display it
+          if (isUsersProfile || data[0].visibility == 1) {
+            setDisplayedProfile(data[0]);
+            await getProfileProjectData();
+          }
         }
 
       } catch (error) {

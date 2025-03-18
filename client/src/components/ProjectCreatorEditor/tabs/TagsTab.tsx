@@ -1,5 +1,5 @@
 // --- Imports ---
-import { JSX, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SearchBar } from "../../SearchBar";
 
 
@@ -21,12 +21,6 @@ interface ProjectData {
 
 interface Tag {
   tag_id: number;
-  label: string;
-  type: string;
-}
-
-interface Skill {
-  skill_id: number;
   label: string;
   type: string;
 }
@@ -56,32 +50,29 @@ const defaultProject: ProjectData = {
 // --- Methods ---
 // Get appropriate tag color for tag
 const getTagColor = (type: string) => {
+
+  console.log('type', type);
   // Genre
-  if (type === 'Creative' ||
-    type === 'Technical' ||
-    type === 'Games' ||
-    type === 'Multimedia' ||
-    type === 'Music' ||
-    type === 'Other'
-  ) {
+  if (type === 'Genre') {
     return 'green';
   }
 
   // Developer Skills
-  if (type === 'Developer') {
+  if (type === 'Developer Skill') {
     return 'yellow';
   }
 
   // Designer Skills
-  if (type === 'Designer') {
+  if (type === 'Designer Skill') {
     return 'red';
   }
 
   // Soft Skills
-  if (type === 'Soft') {
+  if (type === 'Soft Skill') {
     return 'purple';
   }
 
+  // Project Type
   return 'blue';
 }
 
@@ -94,16 +85,16 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
   // Complete list of...
   const [allProjectTypes, setAllProjectTypes] = useState<ProjectType[]>([]);
   const [allTags, setAllTags] = useState<Tag[]>([]);
-  const [allSkills, setAllSkills] = useState<Skill[]>([]);
+  const [allSkills, setAllSkills] = useState<Tag[]>([]);
 
   // sets error when adding a link to the project
-  const [error, setError] = useState('');
+  // const [error, setError] = useState('');
 
   //tracking which tab of tags is currently viewed: 0 - project type, 1 - genre, 2 - dev skills, 3 - design skills, 4 - soft skills
   const [currentTagsTab, setCurrentTagsTab] = useState(0);
 
   //filtered results from tag search bar
-  const [searchedTags, setSearchedTags] = useState<(Tag | Skill | ProjectType)[]>([]);
+  const [searchedTags, setSearchedTags] = useState<(Tag | ProjectType)[]>([]);
 
   // Update data when data is changed
   useEffect(() => {
@@ -130,7 +121,6 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
           return;
         }
         setAllProjectTypes(projectTypeData);
-        console.log('project types', projectTypeData);
       } catch (error) {
         console.error(error);
       }
@@ -170,12 +160,12 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         const response = await fetch(url);
 
         const skills = await response.json();
-        const skillsData = skills.data;
+        const skillData = skills.data;
 
-        if (skillsData === undefined) {
+        if (skillData === undefined) {
           return;
         }
-        setAllSkills(skillsData);
+        setAllSkills(skillData);
 
       } catch (error) {
         console.error(error);
@@ -192,20 +182,35 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
       case 0:
         return [{ data: allProjectTypes }];
       case 1:
-        return [{ data: allTags }];
+        return [{ data: allTags.filter((t) => t.type === 'Genre') }];
       case 2:
-        return [{ data: allSkills.filter((s) => s.type === 'Developer') }];
+        return [{ data: allSkills.filter((s) => s.type === 'Developer Skill') }];
       case 3:
-        return [{ data: allSkills.filter((s) => s.type === 'Designer') }];
+        return [{ data: allSkills.filter((s) => s.type === 'Designer Skill') }];
       case 4:
-        return [{ data: allSkills.filter((s) => s.type === 'Soft') }];
+        return [{ data: allSkills.filter((s) => s.type === 'Soft Skill') }];
       default:
         return [{ data: [] }];
     }
   }, [currentTagsTab, allProjectTypes, allTags, allSkills]);
 
   // Find if a tag is present on the project
-  const isTagSelected = useCallback((tab: number, id: number, label: string) => {
+  const isTagSelected = useCallback((id: number, label: string, tab: number = -1) => {
+    // if no tab, iterate through all categories
+    if (tab === -1) {
+      // search project types
+      if (modifiedProject.project_types.some(t => t.id === id && t.project_type === label)) {
+        return 'selected';
+      }
+
+      // search tags
+      if (modifiedProject.tags.some(t => t.id === id && t.tag === label)) {
+        return 'selected';
+      }
+
+      return 'unselected';
+    }
+
     // Project Type
     if (tab === 0) {
       return modifiedProject.project_types.some(t => t.id === id && t.project_type === label) ?
@@ -217,37 +222,33 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         'selected' : 'unselected';
     }
     //TODO: complete other skills
-    // // Developer Skills
-    // if (tab === 2) {
-    //   return modifiedProject.skills.some(t => t.id === id && t.tag === label) ?
-    //     'selected' : 'unselected';
-    // }
-    // // Designer Skills
-    // if (tab === 3) {
-    //   return modifiedProject.tags.some(t => t.id === id && t.tag === label) ?
-    //     'selected' : 'unselected';
-    // }
-    // // Soft Skills
-    // if (tab === 4) {
-    //   return modifiedProject.tags.some(t => t.id === id && t.tag === label) ?
-    //     'selected' : 'unselected';
-    // }
+    // Developer Skills
+    if (tab === 2) {
+      return modifiedProject.tags.some(t => t.id === id && t.tag === label) ?
+        'selected' : 'unselected';
+    }
+    // Designer Skills
+    if (tab === 3) {
+      return modifiedProject.tags.some(t => t.id === id && t.tag === label) ?
+        'selected' : 'unselected';
+    }
+    // Soft Skills
+    if (tab === 4) {
+      return modifiedProject.tags.some(t => t.id === id && t.tag === label) ?
+        'selected' : 'unselected';
+    }
     return 'unselected';
   }, [modifiedProject]);
 
   // Handle tag selection
-  const handleTagSelect = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('clicked on a tag!');
-    
+  const handleTagSelect = useCallback((e) => {    
     // trim whitespace to get tag name
     const tag: string = e.target.innerText.trim();
     
     // if tag is unselected
     if (e.target.className.includes('unselected')) {
-      console.log('tag class before', e.target.className);
       // change tag class
       e.target.className = e.target.className.replace('unselected', 'selected');
-      console.log('tag class after', e.target.className);
       
       // change icon class
       e.target.querySelector('i').className = 'fa fa-close';
@@ -255,40 +256,35 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
       // get tag id and type according to type of tag
       let id: number = -1;
       let type: string = '';
-      if (currentTagsTab === 0) { // project type
+      if (e.target.className.includes('blue')) { // project type
         id = allProjectTypes.find((t) => t.label === tag)?.type_id ?? -1;
         type = 'Project Type';
       }
-      else if (currentTagsTab === 1) { // genre
+      else if (e.target.className.includes('green')) { // genre
         id = allTags.find((t) => t.label === tag)?.tag_id ?? -1;
         type = 'Genre';
       }
-      else if (currentTagsTab === 2) { // developer skills
-        id = allSkills.find((s) => s.type === 'Developer' && s.label === tag)?.skill_id ?? -1;
-        type = 'Developer';
+      else if (e.target.className.includes('yellow')) { // developer skills
+        id = allSkills.find((s) => s.type === 'Developer Skill' && s.label === tag)?.tag_id ?? -1;
+        type = 'Developer Skill';
       }
-      else if (currentTagsTab === 3) { // designer skills
-        id = allSkills.find((s) => s.type === 'Designer' && s.label === tag)?.skill_id ?? -1;
-        type = 'Designer';
+      else if (e.target.className.includes('red')) { // designer skills
+        id = allSkills.find((s) => s.type === 'Designer Skill' && s.label === tag)?.tag_id ?? -1;
+        type = 'Designer Skill';
       }
-      else if (currentTagsTab === 4) { // soft skills
-        id = allSkills.find((s) => s.type === 'Soft' && s.label === tag)?.skill_id ?? -1;
-        type = 'Soft';
-      }
-      else {
-        console.log('invalid tag tab');
+      else if (e.target.className.includes('purple')) { // soft skills
+        id = allSkills.find((s) => s.type === 'Soft Skill' && s.label === tag)?.tag_id ?? -1;
+        type = 'Soft Skill';
       }
 
       // error check: no tag found
       if (id === -1) {
-        console.error('no tag found');
         return;
       }
       
       // add tag to project
       if (type === 'Project Type') {
         setModifiedProject({ ...modifiedProject, project_types: [...modifiedProject.project_types, { id: id, project_type: tag }] });
-        console.log('added project type', modifiedProject.project_types);
       } else {
         setModifiedProject({ ...modifiedProject, tags: [...modifiedProject.tags, {
           id: id,
@@ -296,47 +292,34 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
           tag: tag,
           type: type
         }] });
-        console.log('added tag', modifiedProject.tags);
       }
     }
     // if tag is selected
     else {
       // remove tag from project
-      setModifiedProject({ ...modifiedProject, project_types: modifiedProject.project_types.filter((t) => t.project_type !== tag) });
+      setModifiedProject({ ...modifiedProject,
+        project_types: modifiedProject.project_types.filter((t) => t.project_type !== tag),
+        tags: modifiedProject.tags.filter((t) => t.tag !== tag)
+      });
       
       // deselect tag
-      console.log('tag class before', e.target.className);
       e.target.className = e.target.className.replace('selected', 'unselected');
-      console.log('tag class after', e.target.className);
 
       // change icon class
       e.target.querySelector('i').className = 'fa fa-plus';
-
-      console.log('removed tag', modifiedProject.tags);
     }
-  }, [allProjectTypes, allSkills, allTags, currentTagsTab, modifiedProject]);
+  }, [allProjectTypes, allSkills, allTags, modifiedProject]);
 
   // Create elements for selected tags in sidebar
-  const loadProjectTags = useCallback(() => {
-    // container for all tags to be displayed
-    const elements: JSX.Element[] = [];
-
-    // iterate through all tag tabs for possible selected tags
-    for (let i = 0; i < 5; i++) {
-      modifiedProject.tags.forEach((t) => {
-        if (isTagSelected(i, t.id, t.tag) === 'selected') {
-          elements.push(
-            <button className={`tag-button tag-button-${getTagColor(t.type)}-selected`} onClick={(e) => handleTagSelect(e)}>
-              <i className="fa fa-close"></i>
-              &nbsp;{t.tag}
-            </button>
-          );
-        }
-      });
-    }
-    
-    return elements;
-  }, [modifiedProject, isTagSelected, handleTagSelect]);
+  const loadProjectTags = useMemo(() => {
+    return modifiedProject.tags
+      .map((t) => (
+          <button className={`tag-button tag-button-${getTagColor(t.type)}-selected`} onClick={(e) => handleTagSelect(e)}>
+            <i className="fa fa-close"></i>
+            &nbsp;{t.tag}
+          </button>
+      ))
+  }, [modifiedProject.tags, handleTagSelect]);
   
   // Create element for each tag
   const renderTags = useCallback(() => {
@@ -348,32 +331,29 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
           let id: number = -1; // bad default value
           if ('tag_id' in t) {
             id = t.tag_id;
-          } else if ('skill_id' in t) {
-            id = t.skill_id;
           } else if ('type_id' in t) {
             id = t.type_id;
           }
 
-        return (
-          <button
-            className={`tag-button tag-button-${'type' in t ? getTagColor(t.type) : 'blue'}-${isTagSelected(
-              currentTagsTab,
-              id,
-              t.label
-            )}`}
-            onClick={(e) => handleTagSelect(e)}
-          >
-            <i
-              className={
-                isTagSelected(currentTagsTab, id, t.label) === 'selected'
-                  ? 'fa fa-close'
-                  : 'fa fa-plus'
-              }
-            ></i>
-            &nbsp;{t.label}
-          </button>
-        );
-
+          return (
+            <button
+              className={`tag-button tag-button-${'type' in t ? getTagColor(t.type) : 'blue'}-${isTagSelected(
+                id,
+                t.label,
+                currentTagsTab
+              )}`}
+              onClick={(e) => handleTagSelect(e)}
+            >
+              <i
+                className={
+                  isTagSelected(id, t.label, currentTagsTab) === 'selected'
+                    ? 'fa fa-close'
+                    : 'fa fa-plus'
+                }
+              ></i>
+              &nbsp;{t.label}
+            </button>
+          );
         })
       )
     }
@@ -381,12 +361,12 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
     if (currentTagsTab === 0) {
       return allProjectTypes.map((t) => (
         <button
-          className={`tag-button tag-button-blue-${isTagSelected(currentTagsTab, t.type_id, t.label)}`}
+          className={`tag-button tag-button-blue-${isTagSelected(t.type_id, t.label, currentTagsTab)}`}
           onClick={(e) => handleTagSelect(e)}
         >
           <i
             className={
-              isTagSelected(currentTagsTab, t.type_id, t.label) === 'selected'
+              isTagSelected(t.type_id, t.label, currentTagsTab) === 'selected'
                 ? 'fa fa-close'
                 : 'fa fa-plus'
             }
@@ -395,50 +375,52 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         </button>
       ));
     } else if (currentTagsTab === 1) {
-      return allTags.map((t) => (
-        <button
-          className={`tag-button tag-button-green-${isTagSelected(currentTagsTab, t.tag_id, t.label)}`}
-          onClick={(e) => handleTagSelect(e)}
-        >
-          <i
-            className={
-              isTagSelected(currentTagsTab, t.tag_id, t.label) === 'selected'
-                ? 'fa fa-close'
-                : 'fa fa-plus'
-            }
-          ></i>
-          &nbsp;{t.label}
-        </button>
-      ));
-    } else if (currentTagsTab === 2) {
-      return allSkills
-        .filter((s) => s.type === 'Designer')
-        .map((s) => (
+      return allTags
+        .filter((t) => t.type === 'Genre')
+        .map((t) => (
           <button
-            className={`tag-button tag-button-red-${isTagSelected(currentTagsTab, s.skill_id, s.label)}`}
+            className={`tag-button tag-button-green-${isTagSelected(t.tag_id, t.label, currentTagsTab)}`}
             onClick={(e) => handleTagSelect(e)}
           >
             <i
               className={
-                isTagSelected(currentTagsTab, s.skill_id, s.label) === 'selected'
+                isTagSelected(t.tag_id, t.label, currentTagsTab) === 'selected'
+                  ? 'fa fa-close'
+                  : 'fa fa-plus'
+              }
+            ></i>
+            &nbsp;{t.label}
+          </button>
+      ));
+    } else if (currentTagsTab === 2) {
+      return allSkills
+        .filter((s) => s.type === 'Developer Skill')
+        .map((s) => (
+          <button
+            className={`tag-button tag-button-yellow-${isTagSelected(s.tag_id, s.label, currentTagsTab)}`}
+            onClick={(e) => handleTagSelect(e)}
+          >
+            <i
+              className={
+                isTagSelected(s.tag_id, s.label, currentTagsTab) === 'selected'
                   ? 'fa fa-close'
                   : 'fa fa-plus'
               }
             ></i>
             &nbsp;{s.label}
           </button>
-        ));
+      ));
     } else if (currentTagsTab === 3) {
       return allSkills
-        .filter((s) => s.type === 'Developer')
+        .filter((s) => s.type === 'Designer Skill')
         .map((s) => (
           <button
-            className={`tag-button tag-button-yellow-${isTagSelected(currentTagsTab, s.skill_id, s.label)}`}
+            className={`tag-button tag-button-red-${isTagSelected(s.tag_id, s.label, currentTagsTab)}`}
             onClick={(e) => handleTagSelect(e)}
           >
             <i
               className={
-                isTagSelected(currentTagsTab, s.skill_id, s.label) === 'selected'
+                isTagSelected(s.tag_id, s.label, currentTagsTab) === 'selected'
                   ? 'fa fa-close'
                   : 'fa fa-plus'
               }
@@ -448,15 +430,15 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         ));
     }
     return allSkills
-      .filter((s) => s.type === 'Soft')
+      .filter((s) => s.type === 'Soft Skill')
       .map((s) => (
         <button
-          className={`tag-button tag-button-purple-${isTagSelected(currentTagsTab, s.skill_id, s.label)}`}
+          className={`tag-button tag-button-purple-${isTagSelected(s.tag_id, s.label, currentTagsTab)}`}
           onClick={(e) => handleTagSelect(e)}
         >
           <i
             className={
-              isTagSelected(currentTagsTab, s.skill_id, s.label) === 'selected'
+              isTagSelected(s.tag_id, s.label, currentTagsTab) === 'selected'
                 ? 'fa fa-close'
                 : 'fa fa-plus'
             }
@@ -468,7 +450,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
 
   // Update shown tags according to search results
   // FIXME: results do not update when switching tabs with no query
-  const handleSearch = useCallback((results: (Tag | Skill | ProjectType)[][]) => {
+  const handleSearch = useCallback((results: (Tag | ProjectType)[][]) => {
     // setSearchResults(results);
     console.log('handling search');
     console.log('results', results);
@@ -507,23 +489,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         <div id="project-editor-selected-tags-container">
           <hr id="selected-tag-divider" />
           {/* TODO: Separate top 2 tags from others with hr element */}
-          {
-            // iterate through array values
-            [1, 2, 3, 4].map((i) => (
-              modifiedProject.tags.map((t) => (
-                isTagSelected(i, t.id, t.tag) === 'selected' && (
-                  <button
-                    className={`tag-button tag-button-${getTagColor(t.type)}-selected`} 
-                    onClick={(e) => handleTagSelect(e)}
-                  >
-                    <i className="fa fa-close"></i>
-                    &nbsp;{t.tag}
-                  </button>
-                )
-              ))
-            ))
-            // loadProjectTags()
-          }
+          { loadProjectTags }
         </div>
       </div>
 

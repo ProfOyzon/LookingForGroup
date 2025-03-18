@@ -9,15 +9,18 @@
   column-gap: 0.5rem;
 }
 
-#project-editor-add-link {
+#add-link-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+#profile-editor-add-link {
     background-color: #0000;
     border: none;
     border-radius: 30px;
     font-size: 1.8ch;
     font-weight: 700;
     height: 2ch;
-    padding-bottom: 0;
-    padding-top: 0;
 }
 
 .link-input-wrapper {

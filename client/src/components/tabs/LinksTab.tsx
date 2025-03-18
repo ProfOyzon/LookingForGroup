@@ -167,7 +167,9 @@ export const LinksTab = (props) => {
       </div>
       <div id="project-editor-link-list">
         <LinkContainer />
-        <button id="project-editor-add-link" onClick={onAddLinkClicked}>+ Add Social Profile</button>
+        <div id='add-link-container'>
+          <button id="profile-editor-add-link" onClick={onAddLinkClicked}>+ Add Social Profile</button>
+        </div>
       </div>
     </div>
   );

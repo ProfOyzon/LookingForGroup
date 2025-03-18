@@ -21,9 +21,9 @@ export const projectTabs = {
 // ];
 
 export const peopleTabs = {
-  'Developer': { categoryTags: [], categoryName: 'Developer Skill', color: 'yellow' },
-  'Designer': { categoryTags: [], categoryName: 'Designer Skill', color: 'red' },
-  'Soft': { categoryTags: [], categoryName: 'Soft Skill', color: 'purple' },
+  'Developer Skill': { categoryTags: [], categoryName: 'Developer Skill', color: 'yellow' },
+  'Designer Skill': { categoryTags: [], categoryName: 'Designer Skill', color: 'red' },
+  'Soft Skill': { categoryTags: [], categoryName: 'Soft Skill', color: 'purple' },
   'Role': { categoryTags: [], categoryName: 'Role', color: 'grey' },
   'Major': { categoryTags: [], categoryName: 'Major', color: 'orange' },
 };

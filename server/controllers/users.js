@@ -367,7 +367,7 @@ const getUserById = async (req, res) => {
   try {
     // Get data of a user
     const sql = `SELECT u.user_id, u.first_name, u.last_name, u.username, u.profile_image, u.headline, u.pronouns, 
-            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, s.skills, so.socials
+            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.bio, u.visibility, s.skills, so.socials
             FROM users u
             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
                 FROM job_titles jt) jt
@@ -699,7 +699,7 @@ const getAccount = async (req, res) => {
   try {
     // Get account information
     const sql =
-      'SELECT u.user_id, u.primary_email, u.rit_email, u.username FROM users u WHERE user_id = ?';
+      'SELECT u.user_id, u.primary_email, u.rit_email, u.username, u.visibility FROM users u WHERE user_id = ?';
     const values = [id];
     const [account] = await pool.query(sql, values);
 
@@ -865,6 +865,45 @@ const updatePassword = async (req, res) => {
     });
   }
 };
+
+// Sets project visibility to either 'public' or 'private
+// 0 - private
+// 1 - public
+const updateUserVisibility = async (req, res) => {
+  // Get data
+  const id = parseInt(req.params.id);
+  const { newVisibility } = req.body;
+
+  // Checks
+  if (req.session.userId !== id) {
+    return res.status(401).json({
+      status: 401,
+      error: 'Unauthorized',
+    });
+  } else if (newVisibility < 0 || newVisibility > 1) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Invalid value for visibility',
+    });
+  }
+
+  try {
+    // Update user's visibility
+    const sql = 'UPDATE users SET visibility = ? WHERE user_id = ?';
+    const values = [newVisibility, id];
+    await pool.query(sql, values);
+
+    return res.status(200).json({
+      status: 200,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      status: 400,
+      error: "An error occurred while updating user's visibility",
+    });
+  }
+}
 
 const getMyProjects = async (req, res) => {
   // Get id from url
@@ -1260,6 +1299,7 @@ export default {
   updateEmail,
   updateUsername,
   updatePassword,
+  updateUserVisibility,
   getMyProjects,
   getVisibleProjects,
   updateProjectVisibility,

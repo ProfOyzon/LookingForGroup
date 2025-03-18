@@ -28,6 +28,7 @@ router.get('/api/users/:id/account', mid.checkLogin, userCtrl.getAccount);
 router.put('/api/users/:id/email', mid.checkLogin, userCtrl.updateEmail);
 router.put('/api/users/:id/username', mid.checkLogin, userCtrl.updateUsername);
 router.put('/api/users/:id/password', mid.checkLogin, userCtrl.updatePassword);
+router.put('/api/users/:id/visibility', mid.checkLogin, userCtrl.updateUserVisibility);
 router.get('/api/users/:id/projects', mid.checkLogin, userCtrl.getMyProjects);
 router.get('/api/users/:id/projects/profile', userCtrl.getVisibleProjects);
 router.put('/api/users/:id/projects/visibility', mid.checkLogin, userCtrl.updateProjectVisibility);

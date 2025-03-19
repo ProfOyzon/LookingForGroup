@@ -178,7 +178,6 @@ const NewProfile = () => {
         // If no profileID is in search query, set to be current user
         if (profileID === undefined || profileID === null) {
           profileID = `${userID}`;
-          console.log('No profileID found, so defaulting to is user');
         }
         // Check if the userID matches the profile
         isUsersProfile = `${userID}` === profileID;

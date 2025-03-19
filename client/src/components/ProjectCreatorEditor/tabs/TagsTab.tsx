@@ -50,8 +50,6 @@ const defaultProject: ProjectData = {
 // --- Methods ---
 // Get appropriate tag color for tag
 const getTagColor = (type: string) => {
-
-  console.log('type', type);
   // Genre
   if (type === 'Genre') {
     return 'green';

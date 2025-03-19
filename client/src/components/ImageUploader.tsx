@@ -2,7 +2,7 @@ import './Styles/general.css';
 import { useState, useEffect } from 'react';
 import { sendPost } from '../functions/fetch';
 
-const init = () => {
+const init = (keepImage: boolean) => {
   // get all components
   const dropArea = document.getElementById('drop-area') as HTMLElement;
   const imageUploader = document.getElementById('image-uploader') as HTMLInputElement;
@@ -12,9 +12,11 @@ const init = () => {
     // real-time update to view selected picture
     // Not for backend uploading
     const imgLink = URL.createObjectURL(imageUploader.files[0]);
-    imageView.style.backgroundImage = `url(${imgLink})`;
-    imageView.textContent = '';
-    imageView.style.border = '';
+    if (keepImage) {
+      imageView.style.backgroundImage = `url(${imgLink})`;
+      imageView.textContent = '';
+      imageView.style.border = '';
+    }
   };
 
   imageUploader.addEventListener('change', uploadImage);
@@ -27,13 +29,13 @@ const init = () => {
   });
 };
 
-export const ImageUploader = () => {
+export const ImageUploader = ( { keepImage = true, callback = () => {} } ) => {
   useEffect(() => {
-    init();
+    init(keepImage);
   }, []);
   return (
     <label htmlFor="image-uploader" id="drop-area">
-      <input type="file" name="image" id="image-uploader" accept="image/png, image/jpg" hidden />
+      <input type="file" name="image" id="image-uploader" accept="image/png, image/jpg" onChange={callback} hidden />
       <div id="img-view">
         <img src="assets/white/upload_image.png" />
         <p className="project-editor-extra-info">Drop your image here, or browse</p>

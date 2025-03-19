@@ -325,6 +325,7 @@ const resetPassword = async (req, res) => {
   }
 };
 
+// Returns all public users. Does not return private ones
 const getUsers = async (req, res) => {
   try {
     // Get data on all users
@@ -344,6 +345,7 @@ const getUsers = async (req, res) => {
                     ON us.skill_id = s.skill_id
                 GROUP BY us.user_id) s
             ON u.user_id = s.user_id
+            WHERE u.visibility = '1'
         `;
     const [users] = await pool.query(sql);
 

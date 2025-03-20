@@ -36,13 +36,13 @@ export const CarouselTabs = ({ className = '' }) => {
 
     return (
         <div className={`carousel-tabs ${className}`}>
-            {dataList.map((index) => {
-                const tabClassName = 'carousel-tab' + ((index === currentIndex) ? 'carousel-tab-active' : '');
+            {dataList.map((data, index) => {
+                const active = (index === currentIndex) ? ' carousel-tab-active' : '';
                 
                 // Create tabs for every single
                 return (
                     <button
-                        className={tabClassName}
+                        className={`carousel-tab ${active}`}
                         onClick={() => handleIndexChange(index)}
                         key={index}
                     ></button>

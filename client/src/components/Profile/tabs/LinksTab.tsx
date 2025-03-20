@@ -1,19 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { sendPut, sendFile, fetchUserID } from '../../functions/fetch';
-import { SocialSelector } from '../SocialSelector';
-
-import '../Styles/credits.css';
-import '../Styles/discoverMeet.css';
-import '../Styles/emailConfirmation.css';
-import '../Styles/general.css';
-import '../Styles/loginSignup.css';
-import '../Styles/messages.css';
-import '../Styles/notification.css';
-import '../Styles/profile.css';
-import '../Styles/projects.css';
-import '../Styles/settings.css';
-import '../Styles/pages.css';
-import '../Styles/linksTab.css';
+import { sendPut, sendFile, fetchUserID } from '../../../functions/fetch';
+import { SocialSelector } from '../../SocialSelector';
 
 interface LinkData {
   id: Number;

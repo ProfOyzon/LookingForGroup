@@ -1,23 +1,9 @@
-//Styles
-import '../Styles/credits.css';
-import '../Styles/discoverMeet.css';
-import '../Styles/emailConfirmation.css';
-import '../Styles/general.css';
-import '../Styles/loginSignup.css';
-import '../Styles/messages.css';
-import '../Styles/notification.css';
-import '../Styles/profile.css';
-import '../Styles/projects.css';
-import '../Styles/settings.css';
-import '../Styles/pages.css';
-import '../Styles/projectsTab.css';
-
 import { useState, useEffect } from 'react';
-import { sendPut, fetchUserID } from '../../functions/fetch';
+import { sendPut, fetchUserID } from '../../../functions/fetch';
 
 // let userProjects : [];
 
-const ProjectTile = (props) => {
+const ProjectTile = (props: {index: string}) => {
     return (
         <div className='projectTile' id={props.index}>
             {/* <p>{props.data.title}</p> */}
@@ -26,7 +12,7 @@ const ProjectTile = (props) => {
     );
 }
 
-export const ProjectsTab = () => {
+export const ProjectsTab = (props: {profile: {}}) => {
     const [userProjects, setUserProjects] = useState([]);
     useEffect(() => {
         // Load in userProfile and then the projects

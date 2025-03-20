@@ -13,17 +13,28 @@ import '../Styles/pages.css';
 
 import { useState, useEffect } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
-import { AboutTab } from '../tabs/AboutTab';
-import { LinksTab, getSocials } from '../tabs/LinksTab';
-import { ProjectsTab } from '../tabs/ProjectsTab';
-import { SkillsTab } from '../tabs/SkillsTab';
-import { RoleSelector } from '../RoleSelector';
-import { MajorSelector } from '../MajorSelector';
-import { ImageUploader } from '../ImageUploader';
 import { sendPut, sendFile, fetchUserID } from '../../functions/fetch';
-// import profileImage from '../../icons/profile-user.png';
-// import editIcon from '../../icons/edit.png';
+// Tabs
+import { AboutTab } from './tabs/AboutTab';
+import { LinksTab, getSocials } from './tabs/LinksTab';
+import { ProjectsTab } from './tabs/ProjectsTab';
+import { SkillsTab } from './tabs/SkillsTab';
 
+export interface ProfileData {
+  first_name: string;
+  last_lame: string;
+  pronouns: string;
+  role: string;
+  major: string;
+  academic_year: string;
+  location: string;
+  fun_fact: string;
+  headline: string;
+  bio: string;
+  socials: { id: number; url: string }[];
+}
+
+let profile: ProfileData;
 const pageTabs = ['About', 'Projects', 'Skills', 'Links'];
 
 // Functions
@@ -35,7 +46,7 @@ const onSaveClicked = async (e : Event) => {
     const element = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     return element ? element.value : ''; // null
   };
-  const data = {
+  const dataToStore = {
     firstName: getInputValue('firstName'),
     lastName: getInputValue('lastName'),
     headline: getInputValue('headline'),
@@ -50,13 +61,13 @@ const onSaveClicked = async (e : Event) => {
     socials: getSocials(),
   };
   console.log('Saving data...');
-  console.log(data);
+  console.log(dataToStore);
 
   const userID = await fetchUserID();
-  await sendPut(`/api/users/${userID}`, data);
+  await sendPut(`/api/users/${userID}`, dataToStore);
   await saveImage(userID);
 
-  // window.location.reload(); // reload page
+  window.location.reload(); // reload page
 };
 
 const saveImage = async (userID) => {
@@ -65,10 +76,8 @@ const saveImage = async (userID) => {
   await sendFile(`/api/users/${userID}/profile-picture`, formElement);
 };
 
-const setUpInputs = async (data) => {
-  const profileData = data[0];
+const setUpInputs = async (profileData) => {
   let roles, majors;
-
   const getRolesAndMajors = async () => {
     const roleResponse = await fetch(`/api/datasets/job-titles`);
     const majorResponse = await fetch(`/api/datasets/majors`);
@@ -82,9 +91,6 @@ const setUpInputs = async (data) => {
   const setUpFunc = (input, data) => {
     const inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     if (inputElement) {
-      // if (inputElement.tagName.toLowerCase() === 'input' || inputElement.tagName.toLowerCase() === 'textarea') {
-      //   inputElement.value = data;
-      // }
       inputElement.value = data;
     }
   };
@@ -103,11 +109,9 @@ const setUpInputs = async (data) => {
   setUpFunc('bio', profileData.bio);
 };
 
-// Tab Pages
-
 export const ProfileEditPopup = () => {
   let currentTab = 0;
-  const [profile, setProfile] = useState(); // Profile Data holder
+  // const [profile, setProfile] = useState({}); // Profile Data holder
 
   useEffect(() => {
     const setUpProfileData = async () => {
@@ -116,20 +120,20 @@ export const ProfileEditPopup = () => {
       const userID = await fetchUserID();
       const response = await fetch(`api/users/${userID}`);
       const { data } = await response.json(); // use data[0]
-      console.log(data[0]);
       
-      setProfile(data[0]);
+      profile = await data[0];
     };
     setUpProfileData();
   }, []);
+  // Profile should be set up on intialization
 
   let TabContent = () => {
     return (
       <div id="profile-editor-content">
-        <AboutTab setUpInputs={setUpInputs} />
-        <ProjectsTab />
-        <SkillsTab />
-        <LinksTab type={'profile'}/>
+        <AboutTab profile={profile} setUpInputs={setUpInputs} />
+        <ProjectsTab profile={profile} />
+        <SkillsTab profile={profile} />
+        <LinksTab profile={profile} type={'profile'}/>
       </div>
     );
   };

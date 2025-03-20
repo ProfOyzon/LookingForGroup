@@ -13,6 +13,8 @@ textarea {
   width: 90vw;
   max-width: 1120px;
   height: calc(90vh - 200px);
+   /* Comment height for the pop-up to stretch to any size,
+   Dynamic sizing  */
   padding: 50px;
   border: none;
   border-radius: 10px;

@@ -1,4 +1,5 @@
 import { CarouselButton, CarouselTabs, CarouselContent, Carousel } from "./ImageCarouselNew";
+import * as paths from '../constants/routes';
 import placeholderThumbnail from '../images/project_temp.png';
 
 export const DiscoverCarousel = ({ dataList = [] }) => {
@@ -19,7 +20,10 @@ export const DiscoverCarousel = ({ dataList = [] }) => {
                 <div className='discover-project-about'>
                     <h2>{project.title}</h2>
                     <p>{project.hook}</p>
-                    <button className='learn-more'>Learn more -&gt;</button>
+                    <a 
+                        className='learn-more'
+                        href={`${paths.routes.NEWPROJECT}?projectID=${project.project_id}`}
+                    >Learn more -&gt;</a>
                 </div>
             </>
         );

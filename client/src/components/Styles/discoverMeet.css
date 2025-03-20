@@ -713,6 +713,7 @@ Discover image carousel style rules
     position: absolute;
     right: min(26px, calc(100vw * (26 / 1512)));
     bottom: 23px;
+    text-decoration: none;
   }
 
   .learn-more:hover {
@@ -739,4 +740,24 @@ Discover image carousel style rules
 .carousel-tab:hover,
 .carousel-tab-active {
   background-color: var(--primary-color);
+}
+
+@media screen and (max-width: 1020px) {
+  .carousel-contents {
+    height: auto;
+  }
+
+  .discover-carousel-content {
+    flex-direction: column;
+  }
+
+  .discover-project-image {
+    width: 100%;
+    height: 375px;
+  }
+
+  .discover-project-about {
+    width: 100%;
+    height: fit-content;
+  }
 }

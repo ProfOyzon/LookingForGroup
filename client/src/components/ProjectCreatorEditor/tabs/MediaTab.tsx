@@ -1,7 +1,6 @@
 // --- Imports ---
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ImageUploader } from "../../ImageUploader";
-
 
 // --- Interfaces ---
 interface ProjectData {
@@ -38,20 +37,28 @@ const defaultProject: ProjectData = {
 
 // --- Methods ---
 // Save image to modifiedProject
-//TODO: implement 
-const updateImages = () => {
+const updateImages = (modifiedProject, setModifiedProject, loadContent) => {
   // From ProfileEditPopup.tsx:60
   // const formElement = document.getElementById('profile-creator-editor') as HTMLFormElement;
   // sendFile(`/api/users/${userID}/profile-picture`, formElement);
 
-  // create array for new images
-  const newImages: {id: number, image: string, position: number}[] = [];
-
   // get new image link
+  const imageUploader = document.getElementById('image-uploader') as HTMLInputElement;
+  if (imageUploader.files) {
+    const imgLink = URL.createObjectURL(imageUploader.files[0]);
 
-  // 
+    // add to project images
+    setModifiedProject({ ...modifiedProject,
+      images: [...modifiedProject.images, { id: modifiedProject.images.length, image: imgLink, position: modifiedProject.images.length }]
+    });
+
+    // recreate HTML
+    loadContent();
+  }
+  else {
+    console.error('No image file found');
+  }
 };
-
 
 // --- Component ---
 export const MediaTab = ({ isNewProject = false, projectData = defaultProject, setProjectData }) => {
@@ -70,6 +77,28 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
     setProjectData(modifiedProject);
   }, [modifiedProject, setProjectData]);
 
+  // Handle image upload
+  const handleImageUpload = useCallback(() => {
+    const imageUploader = document.getElementById('image-uploader') as HTMLInputElement;
+    if (imageUploader && imageUploader.files && imageUploader.files.length > 0) {
+      const imgLink = URL.createObjectURL(imageUploader.files[0]);
+
+      // Add the new image to the project
+      setModifiedProject({
+        ...modifiedProject,
+        images: [
+          ...modifiedProject.images,
+          { id: modifiedProject.images.length, image: imgLink, position: modifiedProject.images.length },
+        ],
+      });
+
+      // // Remove image from uploader
+      // imageUploader.style.backgroundImage = '';
+    } else {
+      console.error('No image file found');
+    }
+  }, [modifiedProject]);
+
   // --- Complete component ---
   return (
     <div id="project-editor-media">
@@ -82,15 +111,23 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
         {/* TODO: Add image elements/components here based on currently uploaded images */}
         {
           modifiedProject.images.map((image) => {
+            let src;
+            if (image.image.startsWith('blob')){
+              // temporary image, not uploaded
+              src = image.image;
+            }
+            else {
+              src = `images/projects/${image.image}`;
+            }
             return (
               <div className='project-editor-image-container'>
-                <img src={`images/projects/${image.image}`} alt="" />
+                <img src={src} alt="" />
               </div>
             );
           })
         }
         <div id="project-editor-add-image">
-          <ImageUploader />
+          <ImageUploader keepImage={false} callback={handleImageUpload}/>
         </div>
       </div>
     </div>

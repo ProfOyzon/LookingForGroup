@@ -50,13 +50,11 @@ export const Header = ({ dataSets, onSearch }) => {
     const fetchUsername = async () => {
       try {
         const response2 = await fetch('/api/auth');
-        console.log('Auth response: ' + response2.status);
 
         if (response2.status != 401) {
           loggedIn = true;
           const response = await fetch('/api/users/get-username-session');
           const { data } = await response.json();
-          console.log(data);
           const { username, primary_email, first_name, last_name } = await data;
 
           setUsername(await username);

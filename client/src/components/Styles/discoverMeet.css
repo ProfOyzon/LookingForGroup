@@ -148,6 +148,7 @@ Discover and Meet page style rules
 
 #discover-filters {
   width: auto;
+  /* margin: 20px calc(100vw * (65 / 1512)); */
   margin: 20px 50px;
   display: flex;
   flex-direction: row;
@@ -602,7 +603,8 @@ Discover and Meet page style rules
   flex-wrap: wrap;
   justify-content: center;
   grid-gap: 20px; */
-  margin: 0 50px 50px 50px;
+  /* margin: 0 calc(100vw * (65 / 1512)) 50px; */
+  margin: 0 50px 50px;
 }
 
 /*
@@ -611,104 +613,151 @@ Discover image carousel style rules
 ------------------------------------------------------------------------------------------------
 */
 
-#discover-carousel-bar {
+.discover-carousel {
+  margin: 0px 20px; /* TEMPORARY, should change after more styling is done */
+  display: flex;
+  flex-direction: column;
+}
+
+.carousel-row {
   display: flex;
   flex-direction: row;
-  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
-#discover-carousel-left,
-#discover-carousel-right {
+.discover-carousel-btn {
+  background: none;
+  box-shadow: none;
   border: none;
-  width: 60px;
-  height: auto;
-  padding: 0;
-  background-color: rgba(0, 0, 0, 0);
+  margin-left: min(18px, calc(100vw * (18 / 1512)));
+  padding: 0px;
+  height: fit-content;
+
+  img {
+    width: 100%;
+    max-height: 68px;
+  }
 }
 
-#discover-carousel-left img,
-#discover-carousel-right img {
-  width: 30px;
-  height: 60px;
-  margin-left: 20px;
-  margin-right: 20px;
-  /*specific filters obtained through https://codepen.io/sosuke/pen/Pjoqqp */
-  /*filter:invert(78%) sepia(100%) saturate(2099%) hue-rotate(182deg) brightness(98%) contrast(106%);*/
-  /* filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%); */
+.discover-carousel-btn:hover {
+  transition-duration: 0.2s;
+  scale: 1.1;
+
+  img {
+    max-height: calc(68px * 1.1);
+  }
 }
 
-#discover-carousel-left img {
+.carousel-btn-left {
   transform: rotateY(180deg);
+  margin-left: 0px;
+  margin-right: min(18px, calc(100vw * (18 / 1512)));
 }
 
-#discover-carousel-content {
+.carousel-contents {
   display: flex;
   flex-wrap: nowrap;
   overflow: hidden;
-  height: 100%;
+  height: 375px;
   border-radius: 10px;
+  background-color: var(--header-color);
+  max-width: calc((100vw - 220px) * (1600 / 1700));
 }
 
-.discover-carousel-item {
-  display: grid;
-  text-align: left;
-  column-gap: 20px;
-  grid-template:
-    'image title title' 70px
-    'image desc desc' auto
-    'image blank button' 60px /
-    3fr 2fr auto;
-  background-color: var(--background-light);
+.discover-carousel-content {
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  min-width: 100%;
+  min-width: calc((100vw - 220px) * (1600 / 1700));
+  height: 100%;
   transition: 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 
-.discover-carousel-image {
-  grid-area: image;
-  object-fit: contain;
-  height: 20vw;
-  width: 100%;
+.discover-project-image {
+  border-radius: 10px 0px 0px 10px;
+  width: 57.2%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
-.discover-carousel-title {
-  grid-area: title;
-  margin-top: 20px;
-  font-size: 4ch;
-  font-weight: 700;
-  color: var(--primary-color);
+.discover-project-about {
+  border-radius: 0px 10px 10px 0px;
+  padding: 23px min(26px, calc(100vw * (26 / 1512)));
+  width: 42.8%;
+
+  h2 {
+    margin: 0 0 20px;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  p {
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  .learn-more {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-color);
+    background: none;
+    box-shadow: none;
+    border: none;
+    padding: 0px;
+    position: absolute;
+    right: min(26px, calc(100vw * (26 / 1512)));
+    bottom: 23px;
+    text-decoration: none;
+  }
+
+  .learn-more:hover {
+    text-decoration: underline;
+  }
 }
 
-.discover-carousel-description {
-  grid-area: desc;
-}
-
-.discover-carousel-link {
-  grid-area: button;
-  display: flex;
-  align-items: center;
-  border: none;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0);
-  color: var(--primary-color);
-  font-size: 2ch;
-  font-weight: 700;
-  margin: 10px;
-  margin-top: 240px;
-}
-
-.discover-carousel-link:hover {
-  background-color: var(--purple-light);
-}
-
-.discover-carousel-link img {
-  transform: rotateY(180deg);
-  width: 30px;
-  /* filter: invert(10%) sepia(51%) saturate(3855%) hue-rotate(241deg) brightness(100%) contrast(98%); */
-}
-
-#discover-carousel-tabs {
+.discover-carousel-tabs {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+  margin-top: 13px;
+}
+
+.carousel-tab {
+  border: none;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  background-color: var(--header-color);
+}
+
+.carousel-tab:hover,
+.carousel-tab-active {
+  background-color: var(--primary-color);
+}
+
+@media screen and (max-width: 1020px) {
+  .carousel-contents {
+    height: auto;
+  }
+
+  .discover-carousel-content {
+    flex-direction: column;
+  }
+
+  .discover-project-image {
+    width: 100%;
+    height: 375px;
+  }
+
+  .discover-project-about {
+    width: 100%;
+    height: fit-content;
+  }
 }

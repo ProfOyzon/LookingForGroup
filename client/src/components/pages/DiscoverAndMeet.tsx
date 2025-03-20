@@ -13,6 +13,7 @@ import '../Styles/pages.css';
 
 import { useState, useMemo } from 'react';
 import CreditsFooter from '../CreditsFooter';
+import { DiscoverCarousel } from '../DiscoverCarousel';
 import { DiscoverFilters } from '../DiscoverFilters';
 import { Header } from '../Header';
 import { ImageCarousel } from '../ImageCarousel';
@@ -39,7 +40,7 @@ const DiscoverAndMeet = ({ category }) => {
   // --------------------
   //Hero banner for profile display
   const profileHero = (
-    <>
+    <div id='discover-hero'>
       {
         <div id="profile-hero-bg1">
           <div id="profile-hero">
@@ -82,7 +83,7 @@ const DiscoverAndMeet = ({ category }) => {
           </div>
         </div>
       }
-    </>
+    </div>
   );
 
   // --------------------
@@ -111,8 +112,9 @@ const DiscoverAndMeet = ({ category }) => {
     return [{ data: itemSearchData }];
   }, [itemSearchData]);
 
+  // When passing in data for project carousel, just pass in first three projects
   const heroContent =
-    category === 'projects' ? <ImageCarousel carouselType="Discover" /> : profileHero;
+    category === 'projects' ? <DiscoverCarousel dataList={fullItemList.slice(0, 3)} /> : profileHero;
 
   // --------------------
   // Helper functions
@@ -213,11 +215,8 @@ const DiscoverAndMeet = ({ category }) => {
     <div className="page">
       {/* Search bar and profile/notification buttons */}
       <Header dataSets={dataSet} onSearch={searchItems} />
-      {/* Contains the hero display, carossel if projects, profile intro if profiles*/}
-      <div id="discover-hero">
-        {heroContent}
-        <br></br>
-      </div>
+      {/* Contains the hero display, carousel if projects, profile intro if profiles*/}
+      {heroContent}
 
       {/* Contains tag filters & button to access more filters 
                 When page loads, determine if project tags or profile tags should be used

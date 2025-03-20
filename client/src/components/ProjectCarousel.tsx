@@ -1,1 +1,1 @@
-import { ImageCarousel } from "./ImageCarouselNew";
+import { CarouselButton, CarouselTabs, CarouselContent, Carousel } from "./ImageCarouselNew";

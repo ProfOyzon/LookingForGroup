@@ -18,7 +18,7 @@ export const CarouselButton = ({ direction, className = '' }) => {
 
     return (
         <button
-            className={`${className} carousel-${direction}`}
+            className={`${className} carousel-btn-${direction}`}
             onClick={() => handleIndexChange(currentIndex + directionNum)}
         >
             <ThemeIcon 
@@ -56,11 +56,27 @@ export const CarouselTabs = ({ className = '' }) => {
 export const CarouselContent = ({ className = '' }) => {
     const { currentIndex, handleHover, dataList } = useContext(CarouselContext);
 
-    return <div
-        className={className}
-        onMouseEnter={() => handleHover(true)}
-        onMouseLeave={() => handleHover(false)}
-    >{dataList[currentIndex]}</div>
+    // return <div
+    //     className={className}
+    //     onMouseEnter={() => handleHover(true)}
+    //     onMouseLeave={() => handleHover(false)}
+
+    // >{dataList[currentIndex]}</div>
+
+    return (
+        <div className='carousel-contents'>
+            {dataList.map((data) => {
+                return (
+                    <div
+                        className={className}
+                        onMouseEnter={() => handleHover(true)}
+                        onMouseLeave={() => handleHover(false)}
+                        style={{ transform: `translate(-${currentIndex * 100}%)` }}
+                    >{data}</div>
+                );
+            })}
+        </div>
+    )
 };
 
 // Primary component all Carousel components should be wrapped in

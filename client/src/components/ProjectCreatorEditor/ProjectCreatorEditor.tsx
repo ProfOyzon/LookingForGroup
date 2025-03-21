@@ -19,6 +19,48 @@ import { LinksTab } from './tabs/LinksTab';
 import { TeamTab } from './tabs/TeamTab';
 import { TagsTab } from './tabs/TagsTab';
 
+interface Image {
+  id: number;
+  image: string;
+  position: number;
+  file: File
+}
+
+interface ProjectData {
+  audience: string;
+  description: string;
+  hook: string;
+  images: Image[];
+  jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
+  members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
+  project_id: number;
+  project_types: { id: number, project_type: string}[];
+  purpose: string;
+  socials: { id: number, url: string }[];
+  status: string;
+  tags: { id: number, position: number, tag: string, type: string}[];
+  thumbnail: string;
+  title: string;
+}
+
+// default value for project data
+const emptyProject: ProjectData = {
+  audience: '',
+  description: '',
+  hook: '',
+  images: [],
+  jobs: [],
+  members: [],
+  project_id: -1,
+  project_types: [],
+  purpose: '',
+  socials: [],
+  status: '',
+  tags: [],
+  thumbnail: '',
+  title: '',
+};
+
 /**
  * This component should allow for either editing existing projects or creating new projects entirely,
  * accessed via the ‘edit project’ button on project pages or the ‘create’ button on the sidebar,
@@ -32,35 +74,6 @@ export const ProjectCreatorEditor = () => {
   //Get project ID from search parameters
   const urlParams = new URLSearchParams(window.location.search);
   const projectID = urlParams.get('projectID');
-
-  // project template and default value for variable
-  const emptyProject: {
-    title: string;
-    hook: string;
-    description: string;
-    purpose: string;
-    status: string;
-    audience: string;
-    project_types: { id: number, project_type: string}[];
-    tags: { id: number, position: number, tag: string, type: string}[];
-    jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
-    members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
-    images: { id: number, image: string, position: number}[];
-    socials: { id: number, url: string }[]; // not implemented?
-  } = {
-    title: '',
-    hook: '',
-    description: '',
-    purpose: '',
-    status: '',
-    audience: '',
-    project_types: [],
-    tags: [],
-    jobs: [],
-    members: [],
-    images: [],
-    socials: [],
-  };
 
   // --- Hooks ---
   // tracking if creating a new project or editting existing (empty or populated fields)
@@ -131,8 +144,96 @@ export const ProjectCreatorEditor = () => {
       return;
     }
 
-    // Send PUT request (editor)
+    // --- Editor ---
     try {
+      // Update images
+      let dbImages: Image[] = [];
+      // Get images on database
+      const picturesResponse = await fetch(`/api/projects/${projectID}/pictures`);
+      const imagesResponse = await picturesResponse.json();
+      const imageData = imagesResponse.data;
+
+      // add images to reference later
+      dbImages = imageData;
+
+      // Compare new images to database to find images to delete
+      console.log('comparing images to database');
+      const imagesToDelete: Image[] = dbImages.filter(
+        image => !modifiedProject.images.find( newImage => newImage.image === image.image)
+      );
+
+      // Delete images
+      await Promise.all(
+        imagesToDelete.map(async (image) => {
+          // remove image from database
+          await fetch(`/api/projects/${projectID}/pictures`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ image: image.image })
+          });
+        })
+      );
+
+      // Add new images to database
+      console.log('adding new images to database');
+
+      // Wrap upload in promise
+      const uploadImages = modifiedProject.images.map(async (image) => {
+        if (!dbImages.find((dbImage) => dbImage.image === image.image)) {
+          // file must be new: recreate file
+          const fileResponse = await fetch(image.image);
+          const fileBlob = await fileResponse.blob();
+          const file = new File([fileBlob], image.image, { type: fileBlob.type });
+
+          // create form data to send
+          const formData = new FormData();
+          formData.append('image', file);
+          formData.append('position', image.position.toString());
+
+          // add image to database
+          await fetch(`/api/projects/${projectID}/pictures`, {
+            method: 'POST',
+            body: formData
+          });
+        }
+      });
+
+      // Wait for all images to upload
+      await Promise.all(uploadImages);
+
+      // Reestablish image positions
+      console.log('reestablishing image positions');
+      await fetch(`/api/projects/${projectID}/pictures`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ images: modifiedProject.images })
+      });
+
+      // Compare thumbnail
+      if (modifiedProject.thumbnail !== projectData.thumbnail) {
+        // get thumbnail
+        const thumbnailResponse = await fetch(`/api/projects/${projectID}/thumbnail`);
+
+        // create file
+        const thumbnailBlob = await thumbnailResponse.blob();
+        const thumbnailFile = new File([thumbnailBlob], modifiedProject.thumbnail, { type: thumbnailBlob.type });
+
+        const formData = new FormData();
+        formData.append('image', thumbnailFile);
+
+        // update thumbnail
+        await fetch(`/api/projects/${projectID}/thumbnail`, {
+          method: 'PUT',
+          body: formData
+        });
+
+      }
+
+      // Send PUT request for general project info
       console.log(`Sending PUT request to /api/projects/${projectID} for body: `, modifiedProject);
       await fetch(`/api/projects/${projectID}`, {
         method: 'PUT',
@@ -143,12 +244,11 @@ export const ProjectCreatorEditor = () => {
       });
 
       setProjectData(modifiedProject);
-      return true;
+
     } catch (error) {
       console.error(error);
       return false;
     }
-    // window.location.reload();
   };
 
   // Save links to modifiedProject

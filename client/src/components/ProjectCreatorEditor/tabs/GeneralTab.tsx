@@ -1,38 +1,44 @@
 // --- Imports ---
 import { useEffect, useState } from "react";
+import { Dropdown, DropdownButton, DropdownContent } from "../../Dropdown";
+import { ThemeIcon } from "../../ThemeIcon";
 
 
 // --- Interfaces ---
 interface ProjectData {
-  title: string;
-  hook: string;
-  description: string;
-  purpose: string;
-  status: string;
   audience: string;
-  project_types: { id: number; project_type: string }[];
-  tags: { id: number; position: number; tag: string; type: string }[];
-  jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string }[];
-  members: { first_name: string; last_name: string; job_title: string; profile_image: string; user_id: number }[];
-  images: { id: number; image: string; position: number }[];
-  socials: { id: number; url: string }[];
+  description: string;
+  hook: string;
+  images: Image[];
+  jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
+  members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
+  project_id: number;
+  project_types: { id: number, project_type: string}[];
+  purpose: string;
+  socials: { id: number, url: string }[];
+  status: string;
+  tags: { id: number, position: number, tag: string, type: string}[];
+  thumbnail: string;
+  title: string;
 }
 
 // --- Variables ---
 // Default project value
 const defaultProject: ProjectData = {
-  title: '',
-  hook: '',
-  description: '',
-  purpose: '',
-  status: '',
   audience: '',
-  project_types: [],
-  tags: [],
+  description: '',
+  hook: '',
+  images: [],
   jobs: [],
   members: [],
-  images: [],
-  socials: []
+  project_id: -1,
+  project_types: [],
+  purpose: '',
+  socials: [],
+  status: '',
+  tags: [],
+  thumbnail: '',
+  title: '',
 };
 
 // Project purpose and status options
@@ -74,6 +80,27 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
 
       <div id="project-editor-status-input" className="project-editor-input-item">
         <label>Status*</label>
+        {/* <Dropdown> TODO: implement dropdown and styling
+          <DropdownButton buttonId="status-btn">
+            {modifiedProject.status || 'Select'}
+            <ThemeIcon
+              light={'assets/dropdown_light.png'}
+              dark={'assets/dropdown_dark.png'}
+              id="dropdown-arrow"
+            />
+          </DropdownButton>
+          <DropdownContent>
+            {statusOptions.map((o) => (
+              <button
+                onClick={() => {
+                  setModifiedProject({ ...modifiedProject, status: o });
+                }}
+              >
+                {o}
+              </button>
+            ))}
+          </DropdownContent>
+        </Dropdown> */}
         <select
           value={modifiedProject.status || 'Select'}
           onChange={(e) => {

@@ -5,18 +5,20 @@ import { SearchBar } from "../../SearchBar";
 
 // --- Interfaces ---
 interface ProjectData {
-  title: string;
-  hook: string;
-  description: string;
-  purpose: string;
-  status: string;
   audience: string;
-  project_types: { id: number; project_type: string }[];
-  tags: { id: number; position: number; tag: string; type: string }[];
-  jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string }[];
-  members: { first_name: string; last_name: string; job_title: string; profile_image: string; user_id: number }[];
-  images: { id: number; image: string; position: number }[];
-  socials: { id: number; url: string }[];
+  description: string;
+  hook: string;
+  images: Image[];
+  jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
+  members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
+  project_id: number;
+  project_types: { id: number, project_type: string}[];
+  purpose: string;
+  socials: { id: number, url: string }[];
+  status: string;
+  tags: { id: number, position: number, tag: string, type: string}[];
+  thumbnail: string;
+  title: string;
 }
 
 interface Tag {
@@ -33,18 +35,20 @@ interface ProjectType {
 // --- Variables ---
 // Default project value
 const defaultProject: ProjectData = {
-  title: '',
-  hook: '',
-  description: '',
-  purpose: '',
-  status: '',
   audience: '',
-  project_types: [],
-  tags: [],
+  description: '',
+  hook: '',
+  images: [],
   jobs: [],
   members: [],
-  images: [],
-  socials: []
+  project_id: -1,
+  project_types: [],
+  purpose: '',
+  socials: [],
+  status: '',
+  tags: [],
+  thumbnail: '',
+  title: '',
 };
 
 // --- Methods ---

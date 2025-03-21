@@ -4,60 +4,39 @@ import { ImageUploader } from "../../ImageUploader";
 
 // --- Interfaces ---
 interface ProjectData {
-  title: string;
-  hook: string;
-  description: string;
-  purpose: string;
-  status: string;
   audience: string;
-  project_types: { id: number; project_type: string }[];
-  tags: { id: number; position: number; tag: string; type: string }[];
-  jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string }[];
-  members: { first_name: string; last_name: string; job_title: string; profile_image: string; user_id: number }[];
-  images: { id: number; image: string; position: number }[];
-  socials: { id: number; url: string }[];
+  description: string;
+  hook: string;
+  images: Image[];
+  jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
+  members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
+  project_id: number;
+  project_types: { id: number, project_type: string}[];
+  purpose: string;
+  socials: { id: number, url: string }[];
+  status: string;
+  tags: { id: number, position: number, tag: string, type: string}[];
+  thumbnail: string;
+  title: string;
 }
 
 // --- Variables ---
 // Default project value
 const defaultProject: ProjectData = {
-  title: '',
-  hook: '',
-  description: '',
-  purpose: '',
-  status: '',
   audience: '',
-  project_types: [],
-  tags: [],
+  description: '',
+  hook: '',
+  images: [],
   jobs: [],
   members: [],
-  images: [],
-  socials: []
-};
-
-// --- Methods ---
-// Save image to modifiedProject
-const updateImages = (modifiedProject, setModifiedProject, loadContent) => {
-  // From ProfileEditPopup.tsx:60
-  // const formElement = document.getElementById('profile-creator-editor') as HTMLFormElement;
-  // sendFile(`/api/users/${userID}/profile-picture`, formElement);
-
-  // get new image link
-  const imageUploader = document.getElementById('image-uploader') as HTMLInputElement;
-  if (imageUploader.files) {
-    const imgLink = URL.createObjectURL(imageUploader.files[0]);
-
-    // add to project images
-    setModifiedProject({ ...modifiedProject,
-      images: [...modifiedProject.images, { id: modifiedProject.images.length, image: imgLink, position: modifiedProject.images.length }]
-    });
-
-    // recreate HTML
-    loadContent();
-  }
-  else {
-    console.error('No image file found');
-  }
+  project_id: -1,
+  project_types: [],
+  purpose: '',
+  socials: [],
+  status: '',
+  tags: [],
+  thumbnail: '',
+  title: '',
 };
 
 // --- Component ---
@@ -75,10 +54,17 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
   // Update parent state when data is changed
   useEffect(() => {
     setProjectData(modifiedProject);
+    console.log('data changes, new images', modifiedProject.images);
   }, [modifiedProject, setProjectData]);
 
   // Handle image upload
   const handleImageUpload = useCallback(() => {
+
+    // Get file of uploaded image
+    const formElement = document.getElementById('profile-creator-editor') as HTMLFormElement;
+    console.log('formElement', formElement);
+
+    // Get image in input element
     const imageUploader = document.getElementById('image-uploader') as HTMLInputElement;
     if (imageUploader && imageUploader.files && imageUploader.files.length > 0) {
       const imgLink = URL.createObjectURL(imageUploader.files[0]);
@@ -88,16 +74,19 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
         ...modifiedProject,
         images: [
           ...modifiedProject.images,
-          { id: modifiedProject.images.length, image: imgLink, position: modifiedProject.images.length },
+          { id: modifiedProject.images.length + 1, image: imgLink, position: modifiedProject.images.length + 1 },
         ],
       });
-
-      // // Remove image from uploader
-      // imageUploader.style.backgroundImage = '';
+      
     } else {
       console.error('No image file found');
     }
   }, [modifiedProject]);
+
+  // Handle image deletion
+  const handleImageDelete = useCallback((id: number) => {
+    //TODO: implement
+  }, []);
 
   // --- Complete component ---
   return (

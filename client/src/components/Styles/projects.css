@@ -2000,14 +2000,76 @@ New Project Page style rules
   grid-template:
     'carousel info' 370px
     'overview people' auto
-    'overview positions' auto /
-    17fr 15fr;
+    'overview positions' auto / 17fr 15fr;
   margin: 0 50px;
   gap: 20px;
 }
 
-#project-image-carousel {
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Project Carousel style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+.project-carousel {
   grid-area: carousel;
+  display: flex;
+  flex-direction: column;
+
+  .carousel-contents {
+    height: 370px;
+    width: 100%;
+  }
+
+  .project-carousel-content {
+    display: flex;
+    flex-direction: row;
+    transition: 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
+    min-width: 100%;
+  }
+
+  .project-carousel-btn {
+    background: none;
+    box-shadow: none;
+    border: none;
+    height: fit-content;
+    margin: 0;
+    margin-top: 8px;
+
+    img {
+      width: 100%;
+      max-height: 17px;
+    }
+  }
+
+  .project-carousel-btn:hover {
+    transition-duration: 0.2s;
+    
+    /* Transition TBD */
+  }
+
+  .carousel-btn-left {
+    margin: 0;
+    margin-top: 8px;
+    transform: rotateY(180deg);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project-carousel-tabs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+    margin-left: 36px;
+    margin-right: 36px;
+  }
 }
 
 #project-info-panel {

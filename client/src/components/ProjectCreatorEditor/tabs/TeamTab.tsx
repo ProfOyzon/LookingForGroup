@@ -2,38 +2,50 @@
 import { JSX, useCallback, useEffect, useMemo, useState } from "react";
 import { Popup, PopupButton, PopupContent } from "../../Popup";
 import profileImage from '../../../icons/profile-user.png';
+import { SearchBar } from "../../SearchBar";
 
 // --- Interfaces ---
 interface ProjectData {
-  title: string;
-  hook: string;
-  description: string;
-  purpose: string;
-  status: string;
   audience: string;
-  project_types: { id: number; project_type: string }[];
-  tags: { id: number; position: number; tag: string; type: string }[];
-  jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string }[];
-  members: { first_name: string; last_name: string; job_title: string; profile_image: string; user_id: number }[];
-  images: { id: number; image: string; position: number }[];
-  socials: { id: number; url: string }[];
+  description: string;
+  hook: string;
+  images: Image[];
+  jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
+  members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
+  project_id: number;
+  project_types: { id: number, project_type: string}[];
+  purpose: string;
+  socials: { id: number, url: string }[];
+  status: string;
+  tags: { id: number, position: number, tag: string, type: string}[];
+  thumbnail: string;
+  title: string;
+}
+
+interface User {
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  profile_image: string;
 }
 
 // --- Variables ---
 // Default project value
 const defaultProject: ProjectData = {
-  title: '',
-  hook: '',
-  description: '',
-  purpose: '',
-  status: '',
   audience: '',
-  project_types: [],
-  tags: [],
+  description: '',
+  hook: '',
+  images: [],
   jobs: [],
   members: [],
-  images: [],
-  socials: []
+  project_id: -1,
+  project_types: [],
+  purpose: '',
+  socials: [],
+  status: '',
+  tags: [],
+  thumbnail: '',
+  title: '',
 };
 
 const emptyMember = {
@@ -67,8 +79,9 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   // tracking project modifications
   const [modifiedProject, setModifiedProject] = useState<ProjectData>(projectData);
 
-  // for complete list of jobs
+  // for complete list of...
   const [allJobs, setAllJobs] = useState<{title_id: number, label: string}[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
 
   // HTML contents
   // const [teamTabContent, setTeamTabContent] = useState(<></>);
@@ -94,7 +107,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   const [newPosition, setNewPosition] = useState(false);
 
   // determine if a popup should close after press (PopupButton)
-  const [closePopup, setClosePopup] = useState(true);
+  const [closePopup, setClosePopup] = useState(false);
 
   // errors
   const [errorAddMember, setErrorAddMember] = useState('');
@@ -146,6 +159,31 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       getJobsList();
     }
   }, [allJobs]);
+
+  // Get user list if allUsers is empty
+  useEffect(() => {
+    const getUsersList = async () => {
+      const url = `/api/users`;
+
+      try {
+        const response = await fetch(url);
+
+        const users = await response.json();
+        const userData = users.data;
+
+        if (userData === undefined) {
+          return;
+        }
+        setAllUsers(userData);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    if (allUsers.length === 0) {
+      getUsersList();
+    }
+    console.log('users', allUsers);
+  }, [allUsers]);
 
   // Assign active buttons in Open Positions
   const isTeamTabOpen = currentTeamTab === 1;

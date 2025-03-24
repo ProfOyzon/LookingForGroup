@@ -21,12 +21,14 @@ import { ImageCarousel } from '../ImageCarousel';
 import { ProjectCreatorEditor } from '../ProjectCreatorEditor/ProjectCreatorEditor';
 import profilePicture from '../../images/blue_frog.png';
 import profileImage from '../../icons/profile-user.png';
+import { ProjectCarousel } from '../ProjectCarousel';
 import tallImage from '../../images/tall_img.png';
 import heart from '../../icons/heart.png';
 import * as tags from '../../constants/tags';
 import * as paths from '../../constants/routes';
 import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
+import { ProjectCarousel } from '../ProjectCarousel';
 
 //To-do
 //Have team member listings link to their respective profiles
@@ -262,9 +264,10 @@ const NewProject = () => {
       ) : (
         <div id="project-page-content">
           {/* May need to adjust width/height styles to account for description/carousel sizes */}
-          <div id="project-image-carousel">
+          {/* <div id="project-image-carousel">
             <ImageCarousel carouselType="Project" dataList={displayedProject.images} />
-          </div>
+          </div> */}
+          <ProjectCarousel project={displayedProject}></ProjectCarousel>
 
           <div id="project-info-panel">
             <div id="project-info-header">

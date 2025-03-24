@@ -537,15 +537,74 @@ Project Creator and Editor style rules
 }
 
 .project-editor-image-container {
-  
-}
-
-.project-editor-image-container img {
-  max-height: 200px;
+  position: relative;
+  max-height: 182px;
   border: 2px solid white;
   border-radius: 10px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+}
+
+.project-editor-image-container button {
+  padding: 0px;
+}
+
+.project-editor-image-container img {
   object-fit: cover;
+  max-height: inherit;
+  border-radius: 10px;
+}
+
+.project-editor-image-container:hover .project-image-hover {
+  opacity: 1;
+}
+
+.project-image-hover {
+  border-radius: 10px;
+  background-color: var(--panel-hover);
+  color: var(--invert-text);
+  opacity: 0;
+  position: absolute;
+  transition: opacity 0.2s;
+  padding: 9px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#selected-thumbnail, .star, .star-filled, .delete-image {
+  position: absolute;
+  border: none;
+  background: transparent;
+  right: 9px;
+  width: 22px;
+  height: 22px;
+}
+#selected-thumbnail > img, .star > img, .star-filled > img, .delete-image > img {
+  width: 22px;
+  height: 22px;
+}
+
+#selected-thumbnail {
+  filter: var(--image-filter);
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  height: 22px;
+  width: 22px;
+  padding: 0px;
+}
+
+.star {
+  filter: var(--image-filter);
+}
+
+.star, .star-filled {
+  top: 9px;
+}
+
+.delete-image {
+  bottom: 9px;
 }
 
 #project-editor-add-image {

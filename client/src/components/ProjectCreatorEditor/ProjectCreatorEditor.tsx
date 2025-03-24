@@ -1,14 +1,8 @@
 //Styles
-import '../Styles/credits.css';
 import '../Styles/discoverMeet.css';
-import '../Styles/emailConfirmation.css';
 import '../Styles/general.css';
-import '../Styles/loginSignup.css';
-import '../Styles/messages.css';
 import '../Styles/notification.css';
-import '../Styles/profile.css';
 import '../Styles/projects.css';
-import '../Styles/settings.css';
 import '../Styles/pages.css';
 
 import { useEffect, useState } from 'react';
@@ -157,7 +151,6 @@ export const ProjectCreatorEditor = () => {
       dbImages = imageData;
 
       // Compare new images to database to find images to delete
-      console.log('comparing images to database');
       const imagesToDelete: Image[] = dbImages.filter(
         image => !modifiedProject.images.find( newImage => newImage.image === image.image)
       );
@@ -177,8 +170,6 @@ export const ProjectCreatorEditor = () => {
       );
 
       // Add new images to database
-      console.log('adding new images to database');
-
       // Wrap upload in promise
       const uploadImages = modifiedProject.images.map(async (image) => {
         if (!dbImages.find((dbImage) => dbImage.image === image.image)) {
@@ -216,11 +207,11 @@ export const ProjectCreatorEditor = () => {
       // Compare thumbnail
       if (modifiedProject.thumbnail !== projectData.thumbnail) {
         // get thumbnail
-        const thumbnailResponse = await fetch(`/api/projects/${projectID}/thumbnail`);
+        const thumbnailResponse = await fetch(`/images/projects/${modifiedProject.thumbnail}`);
 
         // create file
         const thumbnailBlob = await thumbnailResponse.blob();
-        const thumbnailFile = new File([thumbnailBlob], modifiedProject.thumbnail, { type: thumbnailBlob.type });
+        const thumbnailFile = new File([thumbnailBlob], modifiedProject.thumbnail, { type: "image/png" }); // type is valid if its added to modifiedProject
 
         const formData = new FormData();
         formData.append('image', thumbnailFile);
@@ -230,7 +221,6 @@ export const ProjectCreatorEditor = () => {
           method: 'PUT',
           body: formData
         });
-
       }
 
       // Send PUT request for general project info

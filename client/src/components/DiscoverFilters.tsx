@@ -99,6 +99,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
       data.forEach((tag: Skill) => {
         let type = tag.type;
 
+        //TODO: clean this up. data should all be of type 'Genre' now
         // All these tags should be under Genre
         if (
           type === 'Creative' ||

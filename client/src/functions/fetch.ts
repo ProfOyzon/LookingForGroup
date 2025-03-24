@@ -50,6 +50,16 @@ const sendPut = async (url: string, data: FormData, handler?: Function): Promise
   await responseHandler(response, handler);
 };
 
+const sendDelete = async (url: string, handler?: Function) => {
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+  await responseHandler(response, handler);
+}
+
 const responseHandler = async (
   response: Response,
   handler?: Function
@@ -138,4 +148,14 @@ const fetchUserID = async (): Promise<any> => {
   return data;
 };
 
-export { POST, GET, handleError, sendPost, sendPut, sendFile, sendGet, hideError, fetchUserID };
+export { 
+  POST, GET, 
+  handleError, 
+  sendGet, 
+  sendPost, 
+  sendPut, 
+  sendFile, 
+  sendDelete,
+  hideError, 
+  fetchUserID, 
+};

@@ -2022,6 +2022,13 @@ Project Carousel style rules
     width: 100%;
   }
 
+  .project-carousel-content {
+    display: flex;
+    flex-direction: row;
+    transition: 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
+    min-width: 100%;
+  }
+
   .project-carousel-btn {
     background: none;
     box-shadow: none;
@@ -2056,7 +2063,7 @@ Project Carousel style rules
 
   .project-carousel-tabs {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 10px;
     margin-top: 8px;

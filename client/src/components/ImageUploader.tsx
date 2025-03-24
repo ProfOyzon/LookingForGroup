@@ -2,34 +2,41 @@ import './Styles/general.css';
 import { useState, useEffect } from 'react';
 import { sendPost } from '../functions/fetch';
 
+let dropArea: HTMLElement
+let imageView: HTMLElement;
+let imageUploader: HTMLInputElement;
+
+const uploadImageFile = (keepImage: boolean) => {
+  // real-time update to view selected picture
+  // Not for backend uploading
+  const imgLink = URL.createObjectURL(imageUploader.files[0]);
+  if (keepImage) {
+    uploadImage(imgLink);
+  }
+};
+
+export const uploadImage = (url: string) => {
+  imageView.style.backgroundImage = `url(${url})`;
+  imageView.textContent = '';
+  imageView.style.border = '';
+}
+
 const init = (keepImage: boolean) => {
   // get all components
-  const dropArea = document.getElementById('drop-area') as HTMLElement;
-  const imageUploader = document.getElementById('image-uploader') as HTMLInputElement;
-  const imageView = document.getElementById('img-view') as HTMLElement;
-
-  const uploadImage = () => {
-    // real-time update to view selected picture
-    // Not for backend uploading
-    const imgLink = URL.createObjectURL(imageUploader.files[0]);
-    if (keepImage) {
-      imageView.style.backgroundImage = `url(${imgLink})`;
-      imageView.textContent = '';
-      imageView.style.border = '';
-    }
-  };
-
-  imageUploader.addEventListener('change', uploadImage);
+  dropArea = document.getElementById('drop-area') as HTMLElement;
+  imageUploader = document.getElementById('image-uploader') as HTMLInputElement;
+  imageView = document.getElementById('img-view') as HTMLElement;
+  imageUploader.addEventListener('change', uploadImageFile);
 
   dropArea.addEventListener('dragover', (e) => e.preventDefault());
   dropArea.addEventListener('drop', (e) => {
     e.preventDefault();
     imageUploader.files = e.dataTransfer.files;
-    uploadImage();
+    uploadImageFile(keepImage);
   });
 };
 
-export const ImageUploader = ( { keepImage = true, callback = () => {} } ) => {
+export const ImageUploader = ({ keepImage = true, callback = () => { } }) => {
   useEffect(() => {
     init(keepImage);
   }, []);

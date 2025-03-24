@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { ThemeIcon } from './ThemeIcon';
 
-//This post was used to help create this component (found by Ben Gomez)
+// This post was used to help create this component (found by Ben Gomez)
 // https://blog.bitsrc.io/simple-carousel-in-react-2aac73887243
 
 const CarouselContext = createContext({
@@ -55,13 +55,6 @@ export const CarouselTabs = ({ className = '' }) => {
 // Only displays the current index of dataList (dataList MUST be an array of elements to work)
 export const CarouselContent = ({ className = '' }) => {
     const { currentIndex, handleHover, dataList } = useContext(CarouselContext);
-
-    // return <div
-    //     className={className}
-    //     onMouseEnter={() => handleHover(true)}
-    //     onMouseLeave={() => handleHover(false)}
-
-    // >{dataList[currentIndex]}</div>
 
     return (
         <div className='carousel-contents'>

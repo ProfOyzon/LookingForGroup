@@ -2,10 +2,53 @@ import { useState, useEffect } from 'react';
 import { ProfileData } from '../ProfileEditPopup';
 import { RoleSelector } from '../../RoleSelector';
 import { MajorSelector } from '../../MajorSelector';
-import { ImageUploader } from '../../ImageUploader';
+import { ImageUploader, uploadImage } from '../../ImageUploader';
 
+// Methods
+const setUpInputs = async (profileData: ProfileData) => {
+    console.log(profileData);
+    
+    // Obtain roles and majors to obtain the proper label for the Role Selector and Major Selector
+    let roles: any, majors: any;
+    const getRolesAndMajors = async () => {
+        const roleResponse = await fetch(`/api/datasets/job-titles`);
+        const majorResponse = await fetch(`/api/datasets/majors`);
+
+        roles = await roleResponse.json();
+        majors = await majorResponse.json();
+        roles = roles.data;
+        majors = majors.data;
+    };
+
+    // Used to avoid repetition and map values onto element IDs.
+    const pairInputToData = (input: string, data: any) => {
+        const inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
+        if (inputElement) {
+            inputElement.value = data;
+        }
+    };
+
+    // Obtain information
+    await getRolesAndMajors();
+    // Pair information
+    pairInputToData('firstName', profileData.first_name);
+    pairInputToData('lastName', profileData.last_name);
+    pairInputToData('pronouns', profileData.pronouns);
+    pairInputToData('jobTitle', roles.find((r: any) => r.label === profileData.job_title).title_id);
+    pairInputToData('major', majors.find((r: any) => r.label === profileData.major).major_id);
+    pairInputToData('academicYear', profileData.academic_year);
+    pairInputToData('location', profileData.location);
+    pairInputToData('headline', profileData.headline);
+    pairInputToData('funFact', profileData.fun_fact);
+    pairInputToData('bio', profileData.bio);
+    // Load in the profile picture
+    uploadImage(`/images/profiles/${profileData.profile_image}`);
+};
+
+// Components
 const TextArea = (props: { title: string, description: string, count: number, maxLength: number, id: string }) => {
-    const [wordCount, setWordCount] = useState(props.count);
+    // Keeps track of the character count
+    const [charCount, setCharCount] = useState(props.count);
 
     return (
         <div className="editor-input-item editor-input-textarea">
@@ -13,21 +56,22 @@ const TextArea = (props: { title: string, description: string, count: number, ma
             <div className="project-editor-extra-info">
                 {props.description}
             </div>
-            <span className="character-count">{wordCount}/{props.maxLength}</span>
+            <span className="character-count">{charCount}/{props.maxLength}</span>
             <textarea id={`profile-editor-${props.id}`} maxLength={props.maxLength} onChange={
                 e => {
-                    setWordCount(e.target.value.length);
+                    setCharCount(e.target.value.length);
                 }
-            }/>
+            } />
         </div>
     );
 }
 
-export const AboutTab = (props: { profile: ProfileData, setUpInputs: Function }) => {
+// Main Component
+export const AboutTab = (props: { profile: ProfileData }) => {
     // Effects
     useEffect(() => {
         const setUp = async () => {
-            await props.setUpInputs(props.profile);
+            await setUpInputs(props.profile);
         }
         setUp();
     }, []);
@@ -72,42 +116,32 @@ export const AboutTab = (props: { profile: ProfileData, setUpInputs: Function })
                 <div className="about-row row-3">
                     <div className="editor-input-item">
                         <label>Location</label>
-                        {/* <br /> */}
                         <input id="profile-editor-location" type="text"></input>
                     </div>
                 </div>
             </div>
             <div className="edit-profile-section-2">
-                <TextArea 
-                title={'Personal Quote'} 
-                description={'Write a fun and catchy phrase that captures your unique personality!'} 
-                count={props.profile.headline.length} 
-                maxLength={100}
-                id={'headline'}/>
+                <TextArea
+                    title={'Personal Quote'}
+                    description={'Write a fun and catchy phrase that captures your unique personality!'}
+                    count={props.profile.headline.length}
+                    maxLength={100}
+                    id={'headline'} />
 
-                <TextArea 
-                title={'Fun Fact'} 
-                description={'Share a fun fact about yourself that will surprise others!'} 
-                count={props.profile.fun_fact.length}
-                maxLength={100}
-                id={'funFact'} />
+                <TextArea
+                    title={'Fun Fact'}
+                    description={'Share a fun fact about yourself that will surprise others!'}
+                    count={props.profile.fun_fact.length}
+                    maxLength={100}
+                    id={'funFact'} />
             </div>
             <div className="edit-profile-section-3">
-                {/* <div className="editor-input-item editor-input-textarea">
-
-                    <label>About You*</label>
-                    <div className="project-editor-extra-info">
-                        Share a brief overview of who you are, your interests, and what drives you!
-                    </div>
-                    <span className="character-count">0/2000</span>
-                    <textarea id="profile-editor-bio" maxLength={2000} />
-                </div> */}
-                <TextArea 
-                title={'About You*'} 
-                description={'Share a brief overview of who you are, your interests, and what drives you!'} 
-                count={props.profile.bio.length}
-                maxLength={2000}
-                id={'bio'} />
+                <TextArea
+                    title={'About You*'}
+                    description={'Share a brief overview of who you are, your interests, and what drives you!'}
+                    count={props.profile.bio.length}
+                    maxLength={2000}
+                    id={'bio'} />
             </div>
         </div>
     );

@@ -1,0 +1,19 @@
+/* IMAGE UPLOADER */
+#img-view {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-position: center;
+    background-size: cover;
+}
+
+#drop-area {
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}

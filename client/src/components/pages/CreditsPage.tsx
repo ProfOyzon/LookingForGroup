@@ -78,6 +78,14 @@ const Credits = () => {
         </div>
 
         <div className="lfg-contributor">
+          <img className="project-contributor-profile" src="assets/creditProfiles/CB.png" />
+          <div className="project-contributor-info">
+            <h2 className="team-member-name">Corie Beale</h2>
+            <p className="team-member-role">Full Stack Developer</p>
+          </div>
+        </div>
+
+        <div className="lfg-contributor">
           <img className="project-contributor-profile" src="assets/creditProfiles/CM.png" />
           <div className="project-contributor-info">
             <h2 className="team-member-name">Charlie Mendes</h2>

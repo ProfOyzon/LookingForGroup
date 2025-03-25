@@ -1,4 +1,5 @@
 import './Styles/general.css';
+import './Styles/imageUploader.css';
 import { useState, useEffect } from 'react';
 import { sendPost } from '../functions/fetch';
 
@@ -18,6 +19,7 @@ const uploadImageFile = (keepImage: boolean) => {
 export const uploadImage = (url: string) => {
   imageView.style.backgroundImage = `url(${url})`;
   imageView.textContent = '';
+  imageView.innerHTML = `<img class="bottom-right" src="assets/white/upload_image.png" />`;
   imageView.style.border = '';
 }
 

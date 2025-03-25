@@ -22,7 +22,8 @@ import { SkillsTab } from './tabs/SkillsTab';
 
 export interface ProfileData {
   first_name: string;
-  last_lame: string;
+  last_name: string;
+  job_title: string;
   pronouns: string;
   role: string;
   major: string;
@@ -31,6 +32,7 @@ export interface ProfileData {
   fun_fact: string;
   headline: string;
   bio: string;
+  profile_image: string;
   socials: { id: number; url: string }[];
 }
 
@@ -76,39 +78,6 @@ const saveImage = async (userID) => {
   await sendFile(`/api/users/${userID}/profile-picture`, formElement);
 };
 
-const setUpInputs = async (profileData) => {
-  let roles, majors;
-  const getRolesAndMajors = async () => {
-    const roleResponse = await fetch(`/api/datasets/job-titles`);
-    const majorResponse = await fetch(`/api/datasets/majors`);
-
-    roles = await roleResponse.json();
-    majors = await majorResponse.json();
-    roles = roles.data;
-    majors = majors.data;
-  };
-
-  const setUpFunc = (input, data) => {
-    const inputElement = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
-    if (inputElement) {
-      inputElement.value = data;
-    }
-  };
-
-  await getRolesAndMajors();
-
-  setUpFunc('firstName', profileData.first_name);
-  setUpFunc('lastName', profileData.last_name);
-  setUpFunc('pronouns', profileData.pronouns);
-  setUpFunc('jobTitle', roles.find((r) => r.label === profileData.job_title).title_id);
-  setUpFunc('major', majors.find((r) => r.label === profileData.major).major_id);
-  setUpFunc('academicYear', profileData.academic_year);
-  setUpFunc('location', profileData.location);
-  setUpFunc('headline', profileData.headline);
-  setUpFunc('funFact', profileData.fun_fact);
-  setUpFunc('bio', profileData.bio);
-};
-
 export const ProfileEditPopup = () => {
   let currentTab = 0;
   // const [profile, setProfile] = useState({}); // Profile Data holder
@@ -130,7 +99,7 @@ export const ProfileEditPopup = () => {
   let TabContent = () => {
     return (
       <div id="profile-editor-content">
-        <AboutTab profile={profile} setUpInputs={setUpInputs} />
+        <AboutTab profile={profile}/>
         <ProjectsTab profile={profile} />
         <SkillsTab profile={profile} />
         <LinksTab profile={profile} type={'profile'}/>

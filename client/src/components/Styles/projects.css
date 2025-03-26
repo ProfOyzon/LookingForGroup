@@ -130,6 +130,22 @@ Project Panel component style rules
   cursor: pointer;
 }
 
+@media only screen and (any-pointer: coarse) {
+  .project-panel {
+    height: 400px;
+  
+    .project-panel-hover {
+      z-index: 1;
+      opacity: 1;
+      box-shadow: 0;
+  
+      /* Position directly on top of standard project-panel element */
+      position: absolute;
+      top: 0;
+    }
+  }
+}
+
 /*
 ------------------------------------------------------------------------------------------------
 Project image carousel style rules

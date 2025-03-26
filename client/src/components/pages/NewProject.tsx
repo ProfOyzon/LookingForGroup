@@ -139,7 +139,7 @@ const NewProject = () => {
     <>
       {
         <>
-          <ProjectCreatorEditor />
+          <ProjectCreatorEditor newProject={false} />
         </>
       }
     </>

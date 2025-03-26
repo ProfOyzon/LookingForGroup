@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from '../constants/routes';
 import { useSelector } from 'react-redux';
-import LFGLogoLight from '../images/lfg light mode logo.png';
-import LFGLogoDark from '../images/lfg dark mode logo.png';
-
 import Notifications from './pages/Notifications';
 import { ThemeIcon } from './ThemeIcon';
+import { ProjectCreatorEditor } from './ProjectCreatorEditor/ProjectCreatorEditor';
 
 //Style changes to do:
 //Remove blue background image, replace with single color (or gradient?)
@@ -19,7 +17,6 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
 
   // const [headerText, setHeaderText] = useState('Group'); // State to manage the h1 text
   const navigate = useNavigate(); // Hook for navigation
-  const currentURL = window.location.pathname;
 
   let startingPage: string;
 
@@ -50,6 +47,25 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
   const [activePage, setActivePage] = useState(startingPage); // State to manage the active page [Discover, Meet, My Projects, Messages, Profile, Settings]
 
   const [showNotifications, setShowNotifications] = useState(false); // State to manage the notifications modal
+
+  const [createError, setCreateError] = useState(false);
+
+  const getAuth = useCallback(async () => {
+    // Is user authenticated?
+    // Get auth
+    try {
+      const response = await fetch('/api/auth');
+
+      // Set error accordingly
+      if (response.status !== 401) {
+        setCreateError(false);
+      } else {
+        setCreateError(true);
+      }
+    } catch (err) {
+      console.log('Error getting authentication: ' + err);
+    }
+  }, []);
 
   // Function to handle the button clicks and update the h1 text
   const handleTextChange = (text, path) => {
@@ -144,26 +160,23 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
 
           {/* <button onClick={() => { setShowNotifications(!showNotifications); }}>
           <img src={bell} className="navIcon" alt="Notifications" />
-        </button> */}
+          </button> */}
 
           {/*           {/* <button className={activePage === 'Messages' ? 'active' : ''} onClick={() => handleTextChange('Messages', paths.routes.MESSAGES)}>
           <img src="images/icons/nav/msg-nav.png" className="navIcon" alt="Messages" /> Messages
-        </button> */}
-          {/* <button className={activePage === 'Profile' ? 'active' : ''} onClick={() => handleTextChange('Profile', paths.routes.PROFILE)}>
-          <img src="assets/icons/nav/profile-white.png" className="navIcon" alt="Profile" /> Profile
-        </button> */}
-          {/* <button className={activePage === 'Settings' ? 'active' : ''} onClick={() => handleTextChange('Settings', paths.routes.SETTINGS)}>
-          <img src="images/icons/nav/settings.png" className="navIcon" alt="Setting" /> Settings
-        </button> */}
+          </button> */}
         </div>
 
-        {/* <div className='Logout'>
-        <button onClick={() => { navigate(paths.routes.LOGIN) }}>Log Out</button>
-      </div> */}
         <div className="Create">
-          <button>
-            <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} /> Create
-          </button>
+          {createError ? (
+            <>
+              <p className="error">Log in first!</p>
+              <button>
+                <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} /> Create
+              </button>
+            </>
+          ) : <ProjectCreatorEditor newProject={true} buttonCallback={getAuth}/>
+          }
         </div>
       </div>
 

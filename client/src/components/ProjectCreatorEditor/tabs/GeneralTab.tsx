@@ -70,9 +70,8 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
         <input
           type="text"
           className="title-input"
-          value={isNewProject ? '' : modifiedProject.title}
+          value={modifiedProject.title}
           onChange={(e) => {
-            console.log('changing title!', e.target.value);
             setModifiedProject({ ...modifiedProject, title: e.target.value });
           }}
         />
@@ -119,7 +118,7 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
       <div id="project-editor-purpose-input" className="project-editor-input-item">
         <label>Purpose</label>
         <select
-          value={isNewProject ? '' : modifiedProject.purpose}
+          value={modifiedProject.purpose || 'Select'}
           onChange={(e) => {
             setModifiedProject({ ...modifiedProject, purpose: e.target.value });
           }}
@@ -144,7 +143,7 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
         </span>{' '}
         <textarea
           maxLength={100}
-          value={isNewProject ? '' : modifiedProject.audience}
+          value={modifiedProject.audience}
           onChange={(e) => {
             setModifiedProject({ ...modifiedProject, audience: e.target.value });
           }}
@@ -162,7 +161,7 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
         </span>{' '}
         <textarea
           maxLength={300}
-          value={isNewProject ? '' : modifiedProject.hook}
+          value={modifiedProject.hook}
           onChange={(e) => {
             setModifiedProject({ ...modifiedProject, hook: e.target.value });
           }}
@@ -181,7 +180,7 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
         </span>{' '}
         <textarea
           maxLength={2000}
-          value={isNewProject ? '' : modifiedProject.description}
+          value={modifiedProject.description}
           onChange={(e) => {
             setModifiedProject({ ...modifiedProject, description: e.target.value });
           }}

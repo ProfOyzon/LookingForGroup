@@ -651,14 +651,22 @@ Sidebar Nav style rules
     cursor: pointer;
 } */
 
+
 /*create button*/
 .Create {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.Create button {
+.Create > .error {
+  text-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px; 
+  position: absolute;
+  bottom: 100px;
+}
+
+.Create > button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -682,7 +690,7 @@ Sidebar Nav style rules
   }
 }
 
-/* .Create button:hover {
+/* .Create > button:hover {
     background-color: var(--primary-color);
     color: white;
 

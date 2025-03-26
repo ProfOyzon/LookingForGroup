@@ -2073,11 +2073,22 @@ New Project Page style rules
 #project-page-content {
   display: grid;
   grid-template:
-    'carousel info' 370px
+    'carousel info' auto
     'overview people' auto
     'overview positions' auto / 17fr 15fr;
   margin: 0 50px;
   gap: 20px;
+}
+
+@media screen and (max-width: 1199px) {
+  #project-page-content {
+    grid-template: 
+    'info' auto
+    'carousel' auto
+    'overview' auto
+    'people' auto
+    'positions' auto;
+  }
 }
 
 /*
@@ -2093,7 +2104,7 @@ Project Carousel style rules
   flex-direction: column;
 
   .carousel-contents {
-    height: 370px;
+    /* height: 370px; */
     width: 100%;
   }
 
@@ -2512,12 +2523,14 @@ Project Carousel style rules
 }
 
 .project-contributor {
-  flex: 0 0 calc(50% - 45px);
+  /* flex: 0 0 calc(50% - 45px); */
   background-color: var(--header-color);
   display: flex;
   align-items: center;
   padding: 12px 15px;
   border-radius: 10px;
+  width: calc(50% - 45px);
+  min-width: 234px;
 }
 
 .project-contributor-profile {
@@ -2526,6 +2539,7 @@ Project Carousel style rules
   border-radius: 50%;
   border: 2px solid white;
   object-fit: cover;
+  margin-right: 10px; /* Should prevent things from looking cramped */
 }
 
 .project-contributor-info {

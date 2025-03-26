@@ -1063,7 +1063,7 @@ Header style rules
     */
   background-image: linear-gradient(var(--bg-color) 85%, rgba(0, 0, 0, 0));
   /* width: calc(100% - 50px); */
-  width: 94%; /* This should make it responsive to parent element where it wasn't necessarily before */
+  margin: 0 50px;
   height: 90px;
   position: sticky;
   top: 0;

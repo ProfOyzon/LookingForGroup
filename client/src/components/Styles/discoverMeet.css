@@ -662,7 +662,7 @@ Discover image carousel style rules
   height: 375px;
   border-radius: 10px;
   background-color: var(--header-color);
-  max-width: calc((100vw - 220px) * (1600 / 1700));
+  max-width: calc(100vw - 320px); /* Should match up with everything else */
 }
 
 .discover-carousel-content {

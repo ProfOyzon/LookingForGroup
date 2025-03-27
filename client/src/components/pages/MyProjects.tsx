@@ -225,7 +225,6 @@ const MyProjects = () => {
                 className='my-projects-sort-list-btn'
                 value={'newest'}
                 onClick={(e) => {
-                  console.log(e.target);
                   setSortMethod(e.target.value);
                   setSortMethodHTML(
                     <>

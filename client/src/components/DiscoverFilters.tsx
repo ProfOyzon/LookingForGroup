@@ -188,19 +188,21 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
     const leftScroll = document.getElementById('filters-left-scroll')!;
     const rightScroll = document.getElementById('filters-right-scroll')!;
 
-    // Check if left scroll should be shown or hidden
-    if (tagFilterElement.scrollLeft <= 0 && !leftScroll.classList.contains('hide')) {
-      leftScroll.classList.add('hide');
-    } else if (tagFilterElement.scrollLeft > 0 && leftScroll.classList.contains('hide')) {
-      leftScroll.classList.remove('hide');
-    }
+    if (tagFilterElement && leftScroll && rightScroll) {
+      // Check if left scroll should be shown or hidden
+      if (tagFilterElement.scrollLeft <= 0 && !leftScroll.classList.contains('hide')) {
+        leftScroll.classList.add('hide');
+      } else if (tagFilterElement.scrollLeft > 0 && leftScroll.classList.contains('hide')) {
+        leftScroll.classList.remove('hide');
+      }
 
-    // Check if right scroll should be shown or hidden
-    const scrollAmt = tagFilterElement.scrollLeft + tagFilterElement.offsetWidth;
-    if (scrollAmt >= tagFilterElement.scrollWidth && !rightScroll.classList.contains('hide')) {
-      rightScroll.classList.add('hide');
-    } else if (scrollAmt < tagFilterElement.scrollWidth && rightScroll.classList.contains('hide')) {
-      rightScroll.classList.remove('hide');
+      // Check if right scroll should be shown or hidden
+      const scrollAmt = tagFilterElement.scrollLeft + tagFilterElement.offsetWidth;
+      if (scrollAmt >= tagFilterElement.scrollWidth && !rightScroll.classList.contains('hide')) {
+        rightScroll.classList.add('hide');
+      } else if (scrollAmt < tagFilterElement.scrollWidth && rightScroll.classList.contains('hide')) {
+        rightScroll.classList.remove('hide');
+      }
     }
   };
 

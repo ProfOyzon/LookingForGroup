@@ -2765,7 +2765,42 @@ My projects page style rules
   font-family: Inter, FontAwesome;
   line-height: normal;
   letter-spacing: 0%;
-  width: fit-content;
+  width: 141.35px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.my-projects-sort-list-dropdown {
+  box-sizing: border-box;
+  background-color: var(--header-color);
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+
+  .my-projects-sort-list-btn {
+    background: none;
+    color: inherit;
+    border: none;
+    border-radius: 10px;
+    padding: 0 10px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    width: 141.35px;
+    height: 47px;
+
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .my-projects-sort-list-btn:hover {
+    background-color: var(--dropdown-color);
+  }
 }
 
 .my-projects-display-switch {

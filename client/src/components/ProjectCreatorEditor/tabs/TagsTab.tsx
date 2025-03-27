@@ -4,6 +4,13 @@ import { SearchBar } from "../../SearchBar";
 
 
 // --- Interfaces ---
+interface Image {
+  id: number;
+  image: string;
+  position: number;
+  file: File
+}
+
 interface ProjectData {
   audience: string;
   description: string;
@@ -11,7 +18,7 @@ interface ProjectData {
   images: Image[];
   jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
   members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
-  project_id: number;
+  project_id?: number;
   project_types: { id: number, project_type: string}[];
   purpose: string;
   socials: { id: number, url: string }[];
@@ -19,6 +26,7 @@ interface ProjectData {
   tags: { id: number, position: number, tag: string, type: string}[];
   thumbnail: string;
   title: string;
+  userId?: number;
 }
 
 interface Tag {

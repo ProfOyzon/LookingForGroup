@@ -6,6 +6,14 @@ import Notifications from './pages/Notifications';
 import { ThemeIcon } from './ThemeIcon';
 import { ProjectCreatorEditor } from './ProjectCreatorEditor/ProjectCreatorEditor';
 
+interface User {
+  first_name: string,
+  last_name: string,
+  username: string,
+  primary_email: string,
+  userId: number
+}
+
 //Style changes to do:
 //Remove blue background image, replace with single color (or gradient?)
 //Change shape of active buttons to be more rounded
@@ -48,7 +56,11 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
 
   const [showNotifications, setShowNotifications] = useState(false); // State to manage the notifications modal
 
+  // Error to handle if Create button opens project creator
   const [createError, setCreateError] = useState(false);
+
+  // Store user data, if authenticated
+  const [userData, setUserData] = useState<User>();
 
   const getAuth = useCallback(async () => {
     // Is user authenticated?
@@ -58,8 +70,30 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
 
       // Set error accordingly
       if (response.status !== 401) {
+        // Authenticated
         setCreateError(false);
+        // Save user id
+        const { data } = await response.json();
+        const id = data;
+    
+        // Get and save user data
+        const getUserData = async () => {
+          const userResponse = await fetch('/api/users/get-username-session');
+          const { data } = await userResponse.json();
+          const _userData = {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            username: data.username,
+            primary_email: data.primary_email,
+            userId: id
+          }
+          setUserData(_userData);
+          console.log('user data', data);
+        }
+        getUserData();
+
       } else {
+        // Not authenticated
         setCreateError(true);
       }
     } catch (err) {
@@ -175,7 +209,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
                 <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} /> Create
               </button>
             </>
-          ) : <ProjectCreatorEditor newProject={true} buttonCallback={getAuth}/>
+          ) : <ProjectCreatorEditor newProject={true} buttonCallback={getAuth} user={userData}/>
           }
         </div>
       </div>

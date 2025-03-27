@@ -29,7 +29,7 @@ interface ProjectData {
   images: Image[];
   jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
   members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
-  project_id: number;
+  project_id?: number;
   project_types: { id: number, project_type: string}[];
   purpose: string;
   socials: { id: number, url: string }[];
@@ -37,11 +37,21 @@ interface ProjectData {
   tags: { id: number, position: number, tag: string, type: string}[];
   thumbnail: string;
   title: string;
+  userId?: number;
+}
+
+interface User {
+  first_name: string,
+  last_name: string,
+  username: string,
+  primary_email: string,
+  userId: number
 }
 
 interface Props {
   newProject: boolean;
   buttonCallback?: () => void;
+  user?: User
 }
 
 // default value for project data
@@ -52,7 +62,6 @@ const emptyProject: ProjectData = {
   images: [],
   jobs: [],
   members: [],
-  project_id: -1,
   project_types: [],
   purpose: '',
   socials: [],
@@ -69,7 +78,7 @@ const emptyProject: ProjectData = {
  * 
  * @returns React component Popup
  */
-export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = () => {} }) => {
+export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = () => {}, user }) => {
   //Get project ID from search parameters
   const urlParams = new URLSearchParams(window.location.search);
   const projectID = urlParams.get('projectID');
@@ -94,30 +103,69 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
 
   // Get project data on projectID change
   useEffect(() => {
-    const getProjectData = async () => {
-      const url = `/api/projects/${projectID}`;
-      try {
-        const response = await fetch(url);
-
-        const projectResponse = await response.json();
-        const projectData = projectResponse.data[0];
-        console.log('got project data', projectData);
-
-        if (projectData === undefined) {
-          return;
+    if (!newProject) {
+      const getProjectData = async () => {
+        const url = `/api/projects/${projectID}`;
+        try {
+          const response = await fetch(url);
+  
+          const projectResponse = await response.json();
+          const projectData = projectResponse.data[0];
+  
+          if (projectData === undefined) {
+            return;
+          }
+  
+          projectData.userId = user?.userId;
+  
+          // save project data
+          setProjectData(projectData);
+          setModifiedProject(projectData);
+        } catch (error) {
+          console.error(error);
         }
+      };
+      getProjectData();
+    }
+    else {
+      const makeDefaultProjectData = async () => {
+        // adjust default and set as project data
+        const projectData = emptyProject;
+        projectData.userId = user?.userId;
 
-        // save project data
-        setProjectData(projectData);
-        setModifiedProject(projectData);
-      } catch (error) {
-        console.error(error);
+        // Get user profile image
+        try {
+          const response = await fetch(`/api/users/${user?.userId}`);
+          const userResponse = await response.json();
+          const data = userResponse.data[0];
+          console.log('data', data);
+          console.log('user id used', user?.userId);
+          console.log('user: ', user);
+
+          // Add creator as Project Lead
+          const member = {
+            first_name: user?.first_name || '',
+            last_name: user?.last_name || '',
+            job_title: 'Project Lead',
+            title_id: 73,
+            profile_image: data.profile_image || '',
+            user_id: user?.userId || 0
+          };
+
+          projectData.members = [member];
+          console.log('added base member: ', projectData.members);
+
+          // Save to temp project
+          setModifiedProject(projectData);
+
+        } catch (error) {
+          console.error(error);
+        }
       }
-    };
-
-    if (!newProject) getProjectData();
+      makeDefaultProjectData();
+    }
     
-  }, [newProject, projectID]);
+  }, [newProject, projectID, user]);
 
   // Handle events for tab switch
   useEffect(() => {
@@ -244,9 +292,63 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
         return false;
       }
     }
+    // Creator
     else {
-      // Creator
-      console.log('Saving new project!');
+      try {
+        // Send POST request for general project info
+        console.log(`Sending POST request to /api/projects/ for body: `, modifiedProject);
+        await fetch(`/api/projects`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(modifiedProject),
+        });
+
+        setProjectData(modifiedProject);
+
+        // Add images, if any
+        modifiedProject.images.map(async (image) => {
+          // file must be new: recreate file
+          const fileResponse = await fetch(image.image);
+          const fileBlob = await fileResponse.blob();
+          const file = new File([fileBlob], image.image, { type: fileBlob.type });
+
+          // create form data to send
+          const formData = new FormData();
+          formData.append('image', file);
+          formData.append('position', image.position.toString());
+
+          // add image to database
+          await fetch(`/api/projects/${projectID}/pictures`, {
+            method: 'POST',
+            body: formData
+          });
+        });
+
+        // Update thumbnail if a thumbnail is set
+        if (modifiedProject.thumbnail !== '') {
+          // get thumbnail
+          const thumbnailResponse = await fetch(`/images/projects/${modifiedProject.thumbnail}`);
+
+          // create file
+          const thumbnailBlob = await thumbnailResponse.blob();
+          const thumbnailFile = new File([thumbnailBlob], modifiedProject.thumbnail, { type: "image/png" }); // type is valid if its added to modifiedProject
+
+          const formData = new FormData();
+          formData.append('image', thumbnailFile);
+
+          // update thumbnail
+          await fetch(`/api/projects/${projectID}/thumbnail`, {
+            method: 'PUT',
+            body: formData
+          });
+        }
+
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
     }
   };
 

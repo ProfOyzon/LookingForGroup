@@ -153,7 +153,7 @@ export const desSkills = [
   'Clip Studio Paint',
 ];
 
-export const peopleTags = ['All', 'Developers', 'Designers', 'Other'];
+export const peopleTags = ['Developers', 'Designers', 'Other'];
 
 //Used for profiles and position listings on projects
 export const proficiencies = [

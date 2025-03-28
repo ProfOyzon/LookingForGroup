@@ -97,7 +97,12 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
       // Construct the finalized version of the data to be moved into filterPopupTabs
       let tabs = JSON.parse(JSON.stringify((category === 'projects') ? projectTabs : peopleTabs));
       data.forEach((tag: Skill) => {
+        let filterTag = { label: tag.label, type: tag.type };
         let type = tag.type;
+
+        if (tag.tag_id) {
+          filterTag['tag_id'] = tag.tag_id;
+        }
 
         //TODO: clean this up. data should all be of type 'Genre' now
         // All these tags should be under Genre
@@ -112,8 +117,9 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
           type = 'Genre';
         }
 
-        tabs[type].categoryTags.push(tag.label);
+        tabs[type].categoryTags.push(filterTag);
       });
+
       setFilterPopupTabs(Object.values(tabs));
 
     } catch (error) {
@@ -358,7 +364,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                                 : 'fa fa-plus'
                             }
                           ></i>
-                          &nbsp;{tag}
+                          &nbsp;{tag.label}
                         </button>
                       ))
                     )}
@@ -379,7 +385,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                         }}
                       >
                         <i className="fa fa-close"></i>
-                        &nbsp;{tag.tag}
+                        &nbsp;{tag.tag.label}
                       </button>
                     ))}
                   </div>
@@ -391,20 +397,38 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                     activeTagFilters = [];
                     const discoverFilters = document.getElementsByClassName('discover-tag-filter');
 
-                    for (let i = 0; i < enabledFilters.length; i++) {
-                      // Other from 'Projects' and Other from 'Genres' are treated the same when searching
-                      activeTagFilters.push(enabledFilters[i].tag.toLowerCase());
+                    // for (let i = 0; i < enabledFilters.length; i++) {
+                    //   console.log(enabledFilters);
 
-                      // Check if any enabled filters matches a discover tag, and visually toggle it
-                      for (let j = 0; j < discoverFilters.length; j++) {
-                        if (
-                          discoverFilters[j].innerHTML.toLowerCase() ===
-                          enabledFilters[i].tag.toLowerCase()
-                        ) {
-                          discoverFilters[j].classList.add('discover-tag-filter-selected');
+                    //   // Other from 'Projects' and Other from 'Genres' are treated the same when searching
+                    //   activeTagFilters.push(enabledFilters[i].tag.toLowerCase());
+
+                    //   // Check if any enabled filters matches a discover tag, and visually toggle it
+                    //   for (let j = 0; j < discoverFilters.length; j++) {
+
+
+                    //     if (
+                    //       discoverFilters[j].innerHTML.toLowerCase() ===
+                    //       enabledFilters[i].tag.toLowerCase()
+                    //     ) {
+                    //       discoverFilters[j].classList.add('discover-tag-filter-selected');
+                    //     }
+                    //   }
+                    // }
+                    enabledFilters.forEach((filter) => {
+                      activeTagFilters.push(filter.tag);
+
+                      // Check if any enabled filters match a discover tag, and visually toggle it
+                      // If the filter has a tag_id, it's either a Tag or a Skill, and not a Project Type
+                      // Available for selection on the discover filters page
+                      if (!filter.tag.tag_id) {
+                        for (let i = 0; i < discoverFilters.length; i++) {
+                          if (discoverFilters[i].innerHTML.toLowerCase() === filter.tag.label.toLowerCase()) {
+                            discoverFilters[i].classList.add('discover-tag-filter-selected');
+                          }
                         }
                       }
-                    }
+                    });
 
                     // Update the project list
                     updateItemList(activeTagFilters);

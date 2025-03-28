@@ -184,24 +184,115 @@ const DiscoverAndMeet = ({ category }) => {
   };
 
   // Make new list of items by mapping new filtered list
+  // const updateItemList = (activeTagFilters) => {
+  //   console.log(activeTagFilters);
+
+  //   // Check which items should be included based on filters
+  //   let tagFilteredList = tempItemList.filter((item) => {
+  //     let tagFilterCheck = true;
+  //     let lowercaseTags = [];
+
+  //     // If on meet page, checks skills instead
+  //     if (item.tags) {
+  //       lowercaseTags = item.tags.map((tag) => tag.tag.toLowerCase());
+  //     } else if (item.skills) {
+  //       lowercaseTags = item.skills.map((skill) => skill.skill.toLowerCase());
+  //     }
+
+  //     // If item in filtered list contains all tags in taglist, include it
+  //     for (const tag of activeTagFilters) {
+  //       if (!lowercaseTags.includes(tag)) {
+  //         tagFilterCheck = false;
+  //         break;
+  //       }
+  //     }
+
+  //     return tagFilterCheck;
+  //   });
+
+  //   // If no tags are currently selected, render all projects
+  //   // !! Needs to be skipped if searchbar has any input !!
+  //   if (tagFilteredList.length === 0 && activeTagFilters.length === 0) {
+  //     tagFilteredList = JSON.parse(JSON.stringify(fullItemList));
+  //   }
+
+  //   // Set displayed projects
+  //   setFilteredItemList(tagFilteredList);
+  // };
+
   const updateItemList = (activeTagFilters) => {
-    // Check which items should be included based on filters
     let tagFilteredList = tempItemList.filter((item) => {
       let tagFilterCheck = true;
-      let lowercaseTags = [];
 
-      // If on meet page, checks skills instead
-      if (item.tags) {
-        lowercaseTags = item.tags.map((tag) => tag.tag.toLowerCase());
-      } else if (item.skills) {
-        lowercaseTags = item.skills.map((skill) => skill.skill.toLowerCase());
-      }
+      console.log(activeTagFilters);
 
-      // If item in filtered list contains all tags in taglist, include it
       for (const tag of activeTagFilters) {
-        if (!lowercaseTags.includes(tag)) {
-          tagFilterCheck = false;
-          break;
+        if (category === 'projects') {
+          // Check project type by name since IDs are not unique relative to tags
+          if (tag.type === 'Project Type') {
+            if (item.project_types) {
+              let projectTypes = item.project_types.map((tag) => tag.project_type.toLowerCase());
+
+              if (!projectTypes.includes(tag.label.toLowerCase())) {
+                tagFilterCheck = false;
+                break;
+              } 
+            } else {
+              tagFilterCheck = false;
+              break;
+            }
+          }
+          
+          // Tag check can be done by ID
+          if (tag.tag_id) {
+            if (item.tags) {
+              let tagIDs = item.tags.map((tag) => tag.id);
+
+              if (!tagIDs.includes(tag.tag_id)) {
+                tagFilterCheck = false;
+                break;
+              }
+            } else {
+              tagFilterCheck = false;
+              break;
+            }
+          }
+        } else {
+          // Check role and major by name since IDs are not unique relative to tags
+          if (tag.type === 'Role') {
+            if (item.job_title) {
+              if (item.job_title.toLowerCase() !== tag.label.toLowerCase()) {
+                tagFilterCheck = false;
+                break;
+              }
+            } else {
+              tagFilterCheck = false;
+              break;
+            }
+          } else if (tag.type === 'Major') {
+            if (item.major) {
+              if (item.major.toLowerCase() !== tag.label.toLowerCase()) {
+                tagFilterCheck = false;
+                break;
+              }
+            } else {
+              tagFilterCheck = false;
+              break;
+            }
+          } else if (tag.tag_id) {
+            // Skill check can be done by ID
+            if (item.skills) {
+              let skillIDs = item.skills.map((skill) => skill.id);
+
+              if (!skillIDs.includes(tag.tag_id)) {
+                tagFilterCheck = false;
+                break;
+              }
+            } else {
+              tagFilterCheck = false;
+              break;
+            }
+          }
         }
       }
 

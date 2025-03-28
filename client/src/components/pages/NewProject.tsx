@@ -28,7 +28,6 @@ import * as tags from '../../constants/tags';
 import * as paths from '../../constants/routes';
 import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
-import { ProjectCarousel } from '../ProjectCarousel';
 
 //To-do
 //Have team member listings link to their respective profiles

@@ -11,9 +11,8 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Header } from '../Header';
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 import { Popup, PopupButton, PopupContent } from '../Popup';
@@ -24,11 +23,9 @@ import profileImage from '../../icons/profile-user.png';
 import { ProjectCarousel } from '../ProjectCarousel';
 import tallImage from '../../images/tall_img.png';
 import heart from '../../icons/heart.png';
-import * as tags from '../../constants/tags';
 import * as paths from '../../constants/routes';
 import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
-import { ProjectCarousel } from '../ProjectCarousel';
 
 //To-do
 //Have team member listings link to their respective profiles

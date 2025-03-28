@@ -5,6 +5,12 @@ import { ThemeIcon } from "../../ThemeIcon";
 
 
 // --- Interfaces ---
+interface Image {
+  id: number;
+  image: string;
+  position: number;
+}
+
 interface ProjectData {
   audience: string;
   description: string;
@@ -12,7 +18,7 @@ interface ProjectData {
   images: Image[];
   jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
   members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
-  project_id: number;
+  project_id?: number;
   project_types: { id: number, project_type: string}[];
   purpose: string;
   socials: { id: number, url: string }[];
@@ -20,6 +26,7 @@ interface ProjectData {
   tags: { id: number, position: number, tag: string, type: string}[];
   thumbnail: string;
   title: string;
+  userId?: number;
 }
 
 // --- Variables ---
@@ -70,9 +77,8 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
         <input
           type="text"
           className="title-input"
-          value={isNewProject ? '' : modifiedProject.title}
+          value={modifiedProject.title}
           onChange={(e) => {
-            console.log('changing title!', e.target.value);
             setModifiedProject({ ...modifiedProject, title: e.target.value });
           }}
         />
@@ -119,7 +125,7 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
       <div id="project-editor-purpose-input" className="project-editor-input-item">
         <label>Purpose</label>
         <select
-          value={isNewProject ? '' : modifiedProject.purpose}
+          value={modifiedProject.purpose || 'Select'}
           onChange={(e) => {
             setModifiedProject({ ...modifiedProject, purpose: e.target.value });
           }}
@@ -144,7 +150,7 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
         </span>{' '}
         <textarea
           maxLength={100}
-          value={isNewProject ? '' : modifiedProject.audience}
+          value={modifiedProject.audience}
           onChange={(e) => {
             setModifiedProject({ ...modifiedProject, audience: e.target.value });
           }}
@@ -162,7 +168,7 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
         </span>{' '}
         <textarea
           maxLength={300}
-          value={isNewProject ? '' : modifiedProject.hook}
+          value={modifiedProject.hook}
           onChange={(e) => {
             setModifiedProject({ ...modifiedProject, hook: e.target.value });
           }}
@@ -181,7 +187,7 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
         </span>{' '}
         <textarea
           maxLength={2000}
-          value={isNewProject ? '' : modifiedProject.description}
+          value={modifiedProject.description}
           onChange={(e) => {
             setModifiedProject({ ...modifiedProject, description: e.target.value });
           }}

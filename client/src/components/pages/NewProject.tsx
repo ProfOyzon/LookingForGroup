@@ -11,9 +11,8 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Header } from '../Header';
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 import { Popup, PopupButton, PopupContent } from '../Popup';
@@ -24,11 +23,9 @@ import profileImage from '../../icons/profile-user.png';
 import { ProjectCarousel } from '../ProjectCarousel';
 import tallImage from '../../images/tall_img.png';
 import heart from '../../icons/heart.png';
-import * as tags from '../../constants/tags';
 import * as paths from '../../constants/routes';
 import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
-import { ProjectCarousel } from '../ProjectCarousel';
 
 //To-do
 //Have team member listings link to their respective profiles
@@ -139,7 +136,7 @@ const NewProject = () => {
     <>
       {
         <>
-          <ProjectCreatorEditor />
+          <ProjectCreatorEditor newProject={false} />
         </>
       }
     </>
@@ -181,20 +178,24 @@ const NewProject = () => {
   const peopleContent =
     projectMembers.length > 0 ? (
       <>
-        {projectMembers.map((user) => (
-          <div
-            className="project-contributor"
-            onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
-          >
-            <img className="project-contributor-profile" src={profilePicture} alt="profile" />
-            <div className="project-contributor-info">
-              <div className="team-member-name">
-                {user.first_name} {user.last_name}
+        {projectMembers.map((user) => {
+          const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
+          
+          return (
+            <div
+              className="project-contributor"
+              onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
+            >
+              <img className="project-contributor-profile" src={imgSrc} alt="profile" />
+              <div className="project-contributor-info">
+                <div className="team-member-name">
+                  {user.first_name} {user.last_name}
+                </div>
+                <div className="team-member-role">{user.job_title}</div>
               </div>
-              <div className="team-member-role">{user.job_title}</div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </>
     ) : (
       <div>Somehow, there are no team members.</div>
@@ -205,20 +206,24 @@ const NewProject = () => {
     projectContributors !== undefined ? (
       projectContributors.length > 0 ? (
         <>
-          {projectContributors.map((user) => (
-            <div
-              className="project-contributor"
-              onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
-            >
-              <img className="project-contributor-profile" src={profilePicture} alt="profile" />
-              <div className="project-contributor-info">
-                <div>
-                  {user.first_name} {user.last_name}
+          {projectContributors.map((user) => {
+            const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
+            
+            return (
+              <div
+                className="project-contributor"
+                onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
+              >
+                <img className="project-contributor-profile" src={imgSrc} alt="profile" />
+                <div className="project-contributor-info">
+                  <div>
+                    {user.first_name} {user.last_name}
+                  </div>
+                  <div>{user.job_title}</div>
                 </div>
-                <div>{user.job_title}</div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </>
       ) : (
         <div>There are no other contributors right now.</div>
@@ -334,7 +339,10 @@ const NewProject = () => {
                           }
                           id="position-contact-link"
                         >
-                          <img src={profilePicture} />
+                          <img src={(projectLead.profile_image) 
+                            ? `images/profiles/${projectLead.profile_image}` 
+                            : profilePicture} 
+                          />
                           {projectLead.first_name} {projectLead.last_name}
                         </span>
                       </div>

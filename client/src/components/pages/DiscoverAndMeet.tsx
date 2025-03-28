@@ -188,7 +188,14 @@ const DiscoverAndMeet = ({ category }) => {
     // Check which items should be included based on filters
     let tagFilteredList = tempItemList.filter((item) => {
       let tagFilterCheck = true;
-      const lowercaseTags = item.tags.map((tag) => tag.tag.toLowerCase());
+      let lowercaseTags = [];
+
+      // If on meet page, checks skills instead
+      if (item.tags) {
+        lowercaseTags = item.tags.map((tag) => tag.tag.toLowerCase());
+      } else if (item.skills) {
+        lowercaseTags = item.skills.map((skill) => skill.skill.toLowerCase());
+      }
 
       // If item in filtered list contains all tags in taglist, include it
       for (const tag of activeTagFilters) {

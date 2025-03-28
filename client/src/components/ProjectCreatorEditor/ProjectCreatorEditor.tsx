@@ -1,17 +1,19 @@
 //Styles
 import '../Styles/discoverMeet.css';
 import '../Styles/general.css';
+import '../Styles/imageUploader.css'
 import '../Styles/notification.css';
 import '../Styles/projects.css';
 import '../Styles/pages.css';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, FC } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { GeneralTab } from './tabs/GeneralTab';
 import { MediaTab } from './tabs/MediaTab';
 import { LinksTab } from './tabs/LinksTab';
 import { TeamTab } from './tabs/TeamTab';
 import { TagsTab } from './tabs/TagsTab';
+import { ThemeIcon } from '../ThemeIcon';
 
 interface Image {
   id: number;
@@ -27,7 +29,7 @@ interface ProjectData {
   images: Image[];
   jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
   members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
-  project_id: number;
+  project_id?: number;
   project_types: { id: number, project_type: string}[];
   purpose: string;
   socials: { id: number, url: string }[];
@@ -35,6 +37,21 @@ interface ProjectData {
   tags: { id: number, position: number, tag: string, type: string}[];
   thumbnail: string;
   title: string;
+  userId?: number;
+}
+
+interface User {
+  first_name: string,
+  last_name: string,
+  username: string,
+  primary_email: string,
+  userId: number
+}
+
+interface Props {
+  newProject: boolean;
+  buttonCallback?: () => void;
+  user?: User
 }
 
 // default value for project data
@@ -45,7 +62,6 @@ const emptyProject: ProjectData = {
   images: [],
   jobs: [],
   members: [],
-  project_id: -1,
   project_types: [],
   purpose: '',
   socials: [],
@@ -62,17 +78,12 @@ const emptyProject: ProjectData = {
  * 
  * @returns React component Popup
  */
-export const ProjectCreatorEditor = () => {
-  //Creating project? TODO: create prop to handle if new project or not
-
+export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = () => {}, user }) => {
   //Get project ID from search parameters
   const urlParams = new URLSearchParams(window.location.search);
   const projectID = urlParams.get('projectID');
 
   // --- Hooks ---
-  // tracking if creating a new project or editting existing (empty or populated fields)
-  const [newProject, setNewProject] = useState(false);
-
   // store project data
   const [projectData, setProjectData] = useState(emptyProject);
 
@@ -92,29 +103,69 @@ export const ProjectCreatorEditor = () => {
 
   // Get project data on projectID change
   useEffect(() => {
-    const getProjectData = async () => {
-      const url = `/api/projects/${projectID}`;
-      try {
-        const response = await fetch(url);
-
-        const projectResponse = await response.json();
-        const projectData = projectResponse.data[0];
-        console.log('got project data', projectData);
-
-        if (projectData === undefined) {
-          return;
+    if (!newProject) {
+      const getProjectData = async () => {
+        const url = `/api/projects/${projectID}`;
+        try {
+          const response = await fetch(url);
+  
+          const projectResponse = await response.json();
+          const projectData = projectResponse.data[0];
+  
+          if (projectData === undefined) {
+            return;
+          }
+  
+          projectData.userId = user?.userId;
+  
+          // save project data
+          setProjectData(projectData);
+          setModifiedProject(projectData);
+        } catch (error) {
+          console.error(error);
         }
+      };
+      getProjectData();
+    }
+    else {
+      const makeDefaultProjectData = async () => {
+        // adjust default and set as project data
+        const projectData = emptyProject;
+        projectData.userId = user?.userId;
 
-        // save project data
-        setProjectData(projectData);
-        setModifiedProject(projectData);
-      } catch (error) {
-        console.error(error);
+        // Get user profile image
+        try {
+          const response = await fetch(`/api/users/${user?.userId}`);
+          const userResponse = await response.json();
+          const data = userResponse.data[0];
+          console.log('data', data);
+          console.log('user id used', user?.userId);
+          console.log('user: ', user);
+
+          // Add creator as Project Lead
+          const member = {
+            first_name: user?.first_name || '',
+            last_name: user?.last_name || '',
+            job_title: 'Project Lead',
+            title_id: 73,
+            profile_image: data.profile_image || '',
+            user_id: user?.userId || 0
+          };
+
+          projectData.members = [member];
+          console.log('added base member: ', projectData.members);
+
+          // Save to temp project
+          setModifiedProject(projectData);
+
+        } catch (error) {
+          console.error(error);
+        }
       }
-    };
-    getProjectData();
+      makeDefaultProjectData();
+    }
     
-  }, [projectID]);
+  }, [newProject, projectID, user]);
 
   // Handle events for tab switch
   useEffect(() => {
@@ -139,40 +190,125 @@ export const ProjectCreatorEditor = () => {
     }
 
     // --- Editor ---
-    try {
-      // Update images
-      let dbImages: Image[] = [];
-      // Get images on database
-      const picturesResponse = await fetch(`/api/projects/${projectID}/pictures`);
-      const imagesResponse = await picturesResponse.json();
-      const imageData = imagesResponse.data;
+    if (!newProject) {
+      try {
+        // Update images
+        let dbImages: Image[] = [];
+        // Get images on database
+        const picturesResponse = await fetch(`/api/projects/${projectID}/pictures`);
+        const imagesResponse = await picturesResponse.json();
+        const imageData = imagesResponse.data;
 
-      // add images to reference later
-      dbImages = imageData;
+        // add images to reference later
+        dbImages = imageData;
 
-      // Compare new images to database to find images to delete
-      const imagesToDelete: Image[] = dbImages.filter(
-        image => !modifiedProject.images.find( newImage => newImage.image === image.image)
-      );
+        // Compare new images to database to find images to delete
+        const imagesToDelete: Image[] = dbImages.filter(
+          image => !modifiedProject.images.find( newImage => newImage.image === image.image)
+        );
 
-      // Delete images
-      await Promise.all(
-        imagesToDelete.map(async (image) => {
-          // remove image from database
-          await fetch(`/api/projects/${projectID}/pictures`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ image: image.image })
+        // Delete images
+        await Promise.all(
+          imagesToDelete.map(async (image) => {
+            // remove image from database
+            await fetch(`/api/projects/${projectID}/pictures`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ image: image.image })
+            });
+          })
+        );
+
+        // Add new images to database
+        // Wrap upload in promise
+        const uploadImages = modifiedProject.images.map(async (image) => {
+          if (!dbImages.find((dbImage) => dbImage.image === image.image)) {
+            // file must be new: recreate file
+            const fileResponse = await fetch(image.image);
+            const fileBlob = await fileResponse.blob();
+            const file = new File([fileBlob], image.image, { type: fileBlob.type });
+
+            // create form data to send
+            const formData = new FormData();
+            formData.append('image', file);
+            formData.append('position', image.position.toString());
+
+            // add image to database
+            await fetch(`/api/projects/${projectID}/pictures`, {
+              method: 'POST',
+              body: formData
+            });
+          }
+        });
+
+        // Wait for all images to upload
+        await Promise.all(uploadImages);
+
+        // Reestablish image positions
+        console.log('reestablishing image positions');
+        await fetch(`/api/projects/${projectID}/pictures`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ images: modifiedProject.images })
+        });
+
+        // Compare thumbnail
+        if (modifiedProject.thumbnail !== projectData.thumbnail) {
+          // get thumbnail
+          const thumbnailResponse = await fetch(`/images/projects/${modifiedProject.thumbnail}`);
+
+          // create file
+          const thumbnailBlob = await thumbnailResponse.blob();
+          const thumbnailFile = new File([thumbnailBlob], modifiedProject.thumbnail, { type: "image/png" }); // type is valid if its added to modifiedProject
+
+          const formData = new FormData();
+          formData.append('image', thumbnailFile);
+
+          // update thumbnail
+          await fetch(`/api/projects/${projectID}/thumbnail`, {
+            method: 'PUT',
+            body: formData
           });
-        })
-      );
+        }
 
-      // Add new images to database
-      // Wrap upload in promise
-      const uploadImages = modifiedProject.images.map(async (image) => {
-        if (!dbImages.find((dbImage) => dbImage.image === image.image)) {
+        // Send PUT request for general project info
+        console.log(`Sending PUT request to /api/projects/${projectID} for body: `, modifiedProject);
+        await fetch(`/api/projects/${projectID}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(modifiedProject),
+        });
+
+        setProjectData(modifiedProject);
+
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+    }
+    // Creator
+    else {
+      try {
+        // Send POST request for general project info
+        console.log(`Sending POST request to /api/projects/ for body: `, modifiedProject);
+        await fetch(`/api/projects`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(modifiedProject),
+        });
+
+        setProjectData(modifiedProject);
+
+        // Add images, if any
+        modifiedProject.images.map(async (image) => {
           // file must be new: recreate file
           const fileResponse = await fetch(image.image);
           const fileBlob = await fileResponse.blob();
@@ -188,56 +324,31 @@ export const ProjectCreatorEditor = () => {
             method: 'POST',
             body: formData
           });
-        }
-      });
-
-      // Wait for all images to upload
-      await Promise.all(uploadImages);
-
-      // Reestablish image positions
-      console.log('reestablishing image positions');
-      await fetch(`/api/projects/${projectID}/pictures`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ images: modifiedProject.images })
-      });
-
-      // Compare thumbnail
-      if (modifiedProject.thumbnail !== projectData.thumbnail) {
-        // get thumbnail
-        const thumbnailResponse = await fetch(`/images/projects/${modifiedProject.thumbnail}`);
-
-        // create file
-        const thumbnailBlob = await thumbnailResponse.blob();
-        const thumbnailFile = new File([thumbnailBlob], modifiedProject.thumbnail, { type: "image/png" }); // type is valid if its added to modifiedProject
-
-        const formData = new FormData();
-        formData.append('image', thumbnailFile);
-
-        // update thumbnail
-        await fetch(`/api/projects/${projectID}/thumbnail`, {
-          method: 'PUT',
-          body: formData
         });
+
+        // Update thumbnail if a thumbnail is set
+        if (modifiedProject.thumbnail !== '') {
+          // get thumbnail
+          const thumbnailResponse = await fetch(`/images/projects/${modifiedProject.thumbnail}`);
+
+          // create file
+          const thumbnailBlob = await thumbnailResponse.blob();
+          const thumbnailFile = new File([thumbnailBlob], modifiedProject.thumbnail, { type: "image/png" }); // type is valid if its added to modifiedProject
+
+          const formData = new FormData();
+          formData.append('image', thumbnailFile);
+
+          // update thumbnail
+          await fetch(`/api/projects/${projectID}/thumbnail`, {
+            method: 'PUT',
+            body: formData
+          });
+        }
+
+      } catch (error) {
+        console.error(error);
+        return false;
       }
-
-      // Send PUT request for general project info
-      console.log(`Sending PUT request to /api/projects/${projectID} for body: `, modifiedProject);
-      await fetch(`/api/projects/${projectID}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(modifiedProject),
-      });
-
-      setProjectData(modifiedProject);
-
-    } catch (error) {
-      console.error(error);
-      return false;
     }
   };
 
@@ -294,7 +405,13 @@ export const ProjectCreatorEditor = () => {
 
   return (  
     <Popup>
-      <PopupButton buttonId="project-info-edit">Edit Project</PopupButton>
+      {
+        newProject ? (
+          <PopupButton callback={buttonCallback} buttonId='' > <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} /> Create </PopupButton>
+        ) : (
+          <PopupButton callback={buttonCallback} buttonId="project-info-edit">Edit Project</PopupButton>
+        )
+      }
       <PopupContent>
         <div id="project-creator-editor">
           <div id="project-editor-tabs">

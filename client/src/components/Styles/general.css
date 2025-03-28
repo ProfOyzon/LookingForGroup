@@ -651,14 +651,22 @@ Sidebar Nav style rules
     cursor: pointer;
 } */
 
+
 /*create button*/
 .Create {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.Create button {
+.Create > .error {
+  text-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px; 
+  position: absolute;
+  bottom: 100px;
+}
+
+.Create > button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -682,7 +690,7 @@ Sidebar Nav style rules
   }
 }
 
-/* .Create button:hover {
+/* .Create > button:hover {
     background-color: var(--primary-color);
     color: white;
 
@@ -692,7 +700,7 @@ Sidebar Nav style rules
 } */
 
 /*responsive stuff for sidebar*/
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 799px) {
   .sideBarContainer {
     width: 100vw;
     height: 50px;
@@ -1063,7 +1071,7 @@ Header style rules
     */
   background-image: linear-gradient(var(--bg-color) 85%, rgba(0, 0, 0, 0));
   /* width: calc(100% - 50px); */
-  width: 94%; /* This should make it responsive to parent element where it wasn't necessarily before */
+  margin: 0 50px;
   height: 90px;
   position: sticky;
   top: 0;

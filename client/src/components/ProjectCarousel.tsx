@@ -2,15 +2,21 @@ import { CarouselButton, CarouselTabs, CarouselContent, Carousel } from "./Image
 import placeholderThumbnail from '../images/project_temp.png';
 
 export const ProjectCarousel = ({ project }) => {
-    // For now, projects only have a thumbnail. Once added,
-    // Update implementation to reference all available photos
-    const carouselContents = project.images.map((imageData) => {
-        console.log(imageData);
+    // If no images exist, just use thumbnail
+    let carouselContents;
 
-        return (
-            <img src={`images/projects/${imageData.image}`}></img>
-        );
-    });
+    if (!project.images) {
+        carouselContents = [];
+        carouselContents.push(<img src={`/assets/project_temp-DoyePTay.png`} />);
+    } else {
+        carouselContents = project.images.map((imageData) => {
+            console.log(imageData);
+    
+            return (
+                <img src={`images/projects/${imageData.image}`}></img>
+            );
+        });
+    }
 
     return (
         <Carousel dataList={carouselContents}>

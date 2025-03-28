@@ -146,9 +146,10 @@ const createProject = async (req, res) => {
 
     // Add project's members to database
     for (let member of members) {
+      console.log('inserting member', member);
       await pool.query('INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?)', [
         projectId[0].project_id,
-        member.id,
+        member.user_id,
         member.title_id,
       ]);
     }

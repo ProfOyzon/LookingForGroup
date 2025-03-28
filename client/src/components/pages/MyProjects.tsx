@@ -12,6 +12,7 @@ import MyProjectsDisplayGrid from '../MyProjectsDisplayGrid';
 import { Header } from '../Header';
 import { ThemeIcon } from '../ThemeIcon';
 import DeleteProjectPopup from '../DeleteProjectPopup';
+import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 
 const MyProjects = () => {
   // const [UID, setUID] = useState(profiles[0]._id);
@@ -24,6 +25,7 @@ const MyProjects = () => {
   // - grid
   // - list
   const [sortMethod, setSortMethod] = useState('newest');
+  const [sortMethodHTML, setSortMethodHTML] = useState(<><i className="fa-solid fa-arrow-down-short-wide"></i>Newest</>);
   // Can be:
   // - newest
   // - oldest
@@ -141,8 +143,8 @@ const MyProjects = () => {
           {tempList === undefined
             ? ''
             : tempList.map((project) => {
-                return <MyProjectsDisplayGrid projectData={project}></MyProjectsDisplayGrid>;
-              })}
+              return <MyProjectsDisplayGrid projectData={project}></MyProjectsDisplayGrid>;
+            })}
         </div>
       </>
     );
@@ -163,8 +165,8 @@ const MyProjects = () => {
           {tempList === undefined
             ? ''
             : tempList.map((project) => {
-                return <MyProjectsDisplayList projectData={project}></MyProjectsDisplayList>;
-              })}
+              return <MyProjectsDisplayList projectData={project}></MyProjectsDisplayList>;
+            })}
         </div>
       </>
     );
@@ -200,29 +202,88 @@ const MyProjects = () => {
       {/* Header */}
       <div className="my-projects-header-row">
         {/* All Projects Button */}
-        <button className="my-projects-all-projects-button" onClick={(e) => {}}>
+        <button className="my-projects-all-projects-button" onClick={(e) => { }}>
           All Projects
         </button>
 
         {/* Sort By Drop Down */}
-        <select
-          className="my-projects-sort-list"
-          value={sortMethod}
-          onChange={(e) => {
-            setSortMethod(e.target.value);
-          }}
-        >
-          <option value="sort" disabled>
-            Sort by
-          </option>
-          {/* Not really a good way of adding icons to this unfortunately.
-          Option strips all inside HTML, so you can't have FA icons that way.
-          Probably best to leave it without them, but could maybe strip */}
-          <option value="newest">&#xf017;&nbsp; Newest</option>
-          <option value="oldest">&#xf017;&nbsp; Oldest</option>
-          <option value="a-z">&#xf062;&nbsp; A-Z</option>
-          <option value="z-a">&#xf063;&nbsp; Z-A</option>
-        </select>
+        <Dropdown>
+          <DropdownButton className='my-projects-sort-list'>
+            {sortMethodHTML}
+            <i 
+              className="fa-solid fa-angle-down"
+              style={{
+                position: 'absolute',
+                right: '15px',
+                bottom: '15px',
+              }}
+            ></i>
+          </DropdownButton>
+          <DropdownContent>
+            <div className='my-projects-sort-list-dropdown'>
+              <button
+                className='my-projects-sort-list-btn'
+                value={'newest'}
+                onClick={(e) => {
+                  setSortMethod(e.target.value);
+                  setSortMethodHTML(
+                    <>
+                      <i className={e.target.firstChild.className}></i>
+                      {e.target.innerText}
+                    </>
+                  );
+                }}
+              >
+                <i className="fa-solid fa-arrow-down-short-wide"></i>Newest
+              </button>
+              <button
+                className='my-projects-sort-list-btn'
+                value={'oldest'}
+                onClick={(e) => {
+                  setSortMethod(e.target.value);
+                  setSortMethodHTML(
+                    <>
+                      <i className={e.target.firstChild.className}></i>
+                      {e.target.innerText}
+                    </>
+                  );
+                }}
+              >
+                <i className="fa-solid fa-arrow-down-wide-short"></i>Oldest
+              </button>
+              <button
+                className='my-projects-sort-list-btn'
+                value={'a-z'}
+                onClick={(e) => {
+                  setSortMethod(e.target.value);
+                  setSortMethodHTML(
+                    <>
+                      <i className={e.target.firstChild.className}></i>
+                      {e.target.innerText}
+                    </>
+                  );
+                }}
+              >
+                <i className="fa-solid fa-arrow-down-a-z"></i>A-Z
+              </button>
+              <button
+                className='my-projects-sort-list-btn'
+                value={'z-a'}
+                onClick={(e) => {
+                  setSortMethod(e.target.value);
+                  setSortMethodHTML(
+                    <>
+                      <i className={e.target.firstChild.className}></i>
+                      {e.target.innerText}
+                    </>
+                  );
+                }}
+              >
+                <i className="fa-solid fa-arrow-down-z-a"></i>Z-A
+              </button>
+            </div>
+          </DropdownContent>
+        </Dropdown>
 
         {/* Display Switch */}
         <div
@@ -240,7 +301,7 @@ const MyProjects = () => {
         </div>
 
         {/* New Project Button */}
-        <button className="my-projects-new-project-button" onClick={(e) => {}}>
+        <button className="my-projects-new-project-button" onClick={(e) => { }}>
           + New Project
         </button>
         <button className="delete" onClick={() => setIsDeletePopupOpen(true)}>

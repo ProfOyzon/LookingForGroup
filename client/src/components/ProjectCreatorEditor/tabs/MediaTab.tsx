@@ -1,6 +1,5 @@
 // --- Imports ---
 import { useCallback, useEffect, useState } from "react";
-import { ImageUploader } from "../../ImageUploader";
 
 // --- Interfaces ---
 interface Image {
@@ -16,7 +15,7 @@ interface ProjectData {
   images: Image[];
   jobs: { title_id: number; job_title: string; description: string; availability: string; location: string; duration: string; compensation: string; }[];
   members: { first_name: string, last_name: string, job_title: string, profile_image: string, user_id: number}[];
-  project_id: number;
+  project_id?: number;
   project_types: { id: number, project_type: string}[];
   purpose: string;
   socials: { id: number, url: string }[];
@@ -24,6 +23,7 @@ interface ProjectData {
   tags: { id: number, position: number, tag: string, type: string}[];
   thumbnail: string;
   title: string;
+  userId?: number;
 }
 
 // --- Variables ---
@@ -60,7 +60,6 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
   // Update parent state when data is changed
   useEffect(() => {
     setProjectData(modifiedProject);
-    console.log('data changes, new images', modifiedProject.images);
   }, [modifiedProject, setProjectData]);
 
   // Handle image upload
@@ -91,19 +90,14 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
   }, [modifiedProject]);
 
   // Handle new thumbnail
-  const handleThumbnailChange = useCallback((e, image: string) => {
-    console.log('changing thumbnail to', image);
-
+  const handleThumbnailChange = useCallback((image: string) => {
     // Remove thumbnail
-    if (modifiedProject.thumbnail === image) {
-      console.log('Removing thumbnail');
-      
+    if (modifiedProject.thumbnail === image) {      
       // Clear thumbnail entry
       setModifiedProject({
         ...modifiedProject,
         thumbnail: '',
       });
-      
       return;
     }
 
@@ -116,11 +110,13 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
   }, [modifiedProject]);
 
   // Handle image deletion
-  const handleImageDelete = useCallback((e, image: Image) => {
-    //TODO: implement
-    console.log('delete image', image);
-  }, []);
-
+  const handleImageDelete = useCallback((image: Image) => {
+    //Remove from project
+    setModifiedProject({
+      ...modifiedProject,
+      images: modifiedProject.images.filter((i) => i !== image)
+    });
+  }, [modifiedProject]);
 
   // --- Complete component ---
   return (
@@ -153,11 +149,11 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
                   <button
                     id={ modifiedProject.thumbnail === image.image ? "selected-thumbnail" : ""}
                     className={ modifiedProject.thumbnail === image.image ? "star-filled" : "star"}
-                    onClick={(e) => handleThumbnailChange(e, image.image)}
+                    onClick={() => handleThumbnailChange(image.image)}
                   >
                     <img src={ modifiedProject.thumbnail === image.image ? "/images/icons/star-filled.svg" : "/images/icons/star.svg"} alt="star"></img>
                   </button>
-                  <button className="delete-image" onClick={(e) => handleImageDelete(e, image)}>
+                  <button className="delete-image" onClick={() => handleImageDelete(image)}>
                     <img src="/images/icons/delete-black.svg" alt="trash"></img>
                   </button>
                 </div>
@@ -166,7 +162,14 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
           })
         }
         <div id="project-editor-add-image">
-          <ImageUploader keepImage={false} callback={handleImageUpload}/>
+          <label htmlFor="image-uploader" id="drop-area">
+            <input type="file" name="image" id="image-uploader" accept="image/png, image/jpg" onChange={handleImageUpload} hidden />
+            <div id="img-view">
+              <img src="assets/white/upload_image.png" />
+              <p className="project-editor-extra-info">Drop your image here, or browse</p>
+              <span className="project-editor-extra-info">Supports: JPEG, PNG</span>
+            </div>
+          </label>
         </div>
       </div>
     </div>

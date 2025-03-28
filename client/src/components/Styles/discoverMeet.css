@@ -662,14 +662,13 @@ Discover image carousel style rules
   height: 375px;
   border-radius: 10px;
   background-color: var(--header-color);
-  max-width: calc((100vw - 220px) * (1600 / 1700));
+  max-width: calc(100vw - 320px); /* Should match up with everything else */
 }
 
 .discover-carousel-content {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  min-width: calc((100vw - 220px) * (1600 / 1700));
+  min-width: 100%;
   height: 100%;
   transition: 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
 }
@@ -757,7 +756,19 @@ Discover image carousel style rules
   }
 
   .discover-project-about {
-    width: 100%;
+    padding: 23px max(16px, calc(100vw * (16 / 375)));
+    width: calc(100% - (max(16px, calc(100vw * (16 / 375))) * 2));
     height: fit-content;
+
+    .learn-more {
+      right: max(16px, calc(100vw * (16 / 375)));
+    }
+  }
+}
+
+@media screen and (max-width: 799px) {
+  .carousel-contents {
+    height: auto;
+    max-width: calc(100vw - 100px);
   }
 }

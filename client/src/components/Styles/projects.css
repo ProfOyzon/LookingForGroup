@@ -130,6 +130,22 @@ Project Panel component style rules
   cursor: pointer;
 }
 
+@media only screen and (any-pointer: coarse) {
+  .project-panel {
+    height: 400px;
+  
+    .project-panel-hover {
+      z-index: 1;
+      opacity: 1;
+      box-shadow: 0;
+  
+      /* Position directly on top of standard project-panel element */
+      position: absolute;
+      top: 0;
+    }
+  }
+}
+
 /*
 ------------------------------------------------------------------------------------------------
 Project image carousel style rules
@@ -2057,11 +2073,22 @@ New Project Page style rules
 #project-page-content {
   display: grid;
   grid-template:
-    'carousel info' 370px
+    'carousel info' auto
     'overview people' auto
     'overview positions' auto / 17fr 15fr;
   margin: 0 50px;
   gap: 20px;
+}
+
+@media screen and (max-width: 1199px) {
+  #project-page-content {
+    grid-template: 
+    'info' auto
+    'carousel' auto
+    'overview' auto
+    'people' auto
+    'positions' auto;
+  }
 }
 
 /*
@@ -2077,7 +2104,7 @@ Project Carousel style rules
   flex-direction: column;
 
   .carousel-contents {
-    height: 370px;
+    /* height: 370px; */
     width: 100%;
   }
 
@@ -2135,7 +2162,7 @@ Project Carousel style rules
   grid-area: info;
   display: flex;
   flex-direction: column;
-  background-color: var(--background-light);
+  background-color: var(--header-color);
   border-radius: 10px;
   text-align: left;
   padding: 20px;
@@ -2496,12 +2523,14 @@ Project Carousel style rules
 }
 
 .project-contributor {
-  flex: 0 0 calc(50% - 45px);
+  /* flex: 0 0 calc(50% - 45px); */
   background-color: var(--header-color);
   display: flex;
   align-items: center;
   padding: 12px 15px;
   border-radius: 10px;
+  width: calc(50% - 45px);
+  min-width: 234px;
 }
 
 .project-contributor-profile {
@@ -2510,6 +2539,7 @@ Project Carousel style rules
   border-radius: 50%;
   border: 2px solid white;
   object-fit: cover;
+  margin-right: 10px; /* Should prevent things from looking cramped */
 }
 
 .project-contributor-info {
@@ -2735,7 +2765,42 @@ My projects page style rules
   font-family: Inter, FontAwesome;
   line-height: normal;
   letter-spacing: 0%;
-  width: fit-content;
+  width: 141.35px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.my-projects-sort-list-dropdown {
+  box-sizing: border-box;
+  background-color: var(--header-color);
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+
+  .my-projects-sort-list-btn {
+    background: none;
+    color: inherit;
+    border: none;
+    border-radius: 10px;
+    padding: 0 10px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    width: 141.35px;
+    height: 47px;
+
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .my-projects-sort-list-btn:hover {
+    background-color: var(--dropdown-color);
+  }
 }
 
 .my-projects-display-switch {

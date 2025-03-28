@@ -1,7 +1,7 @@
 import '../Styles/pages.css';
 
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
-import { sendPut } from '../../functions/fetch';
+import { sendPut, fetchUserID, sendDelete } from '../../functions/fetch';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { ThemeIcon } from '../ThemeIcon';
@@ -10,6 +10,17 @@ import { useId, useState, useContext, useLayoutEffect } from 'react';
 import CreditsFooter from '../CreditsFooter';
 import PasswordValidator from 'password-validator';
 import ToTopButton from '../ToTopButton';
+
+const deleteAccountPressed = async () => {
+    // Take the user ID and delete it
+    console.log('Delete Pressed!');
+    const userID = await fetchUserID();
+    console.log(userID);
+    await sendDelete(`/api/users/${userID}`, 
+        // Log Out of the account after deleting it
+        // The logout endpoint redirects to the home page
+        async() => {await sendPut('/api/logout');});
+}
 
 const Settings = ({ }) => {
     // --------------------
@@ -368,7 +379,6 @@ const Settings = ({ }) => {
                         </div>
 
                         {/* Bottom row: Appearance and Account Visibility */}
-                        {/* Bottom row: Appearance and Account Visibility */}
                         <div className='settings-row'>
                             {/* Appearance */}
                             <div className='settings-column'>
@@ -473,6 +483,32 @@ const Settings = ({ }) => {
                                             </div>
                                         </DropdownContent>
                                     </Dropdown>
+                                </div>
+                            </div>
+                            {/* Account Deletion */}
+                            <div className='settings-column'>
+                                <div className='subsection'>
+                                    <Popup>
+                                        <PopupButton className="delete-button">Delete Account</PopupButton>
+                                        <PopupContent>
+                                            <div className="delete-user-title">Delete Account</div>
+                                            <div
+                                                className="delete-user-extra-info"
+                                            >
+                                                Are you sure you want to delete your account?
+                                                This action cannot be undone.
+                                            </div>
+                                            <div className="delete-user-button-pair">
+                                                <button className="delete-button" onClick={deleteAccountPressed}>Delete</button>
+                                                <PopupButton
+                                                    buttonId="cancel-button"
+                                                    className="button-reset"
+                                                >
+                                                    Cancel
+                                                </PopupButton>
+                                            </div>
+                                        </PopupContent>
+                                    </Popup>
                                 </div>
                             </div>
                         </div>

@@ -124,14 +124,14 @@ export const AboutTab = (props: { profile: ProfileData }) => {
                 <TextArea
                     title={'Personal Quote'}
                     description={'Write a fun and catchy phrase that captures your unique personality!'}
-                    count={props.profile.headline.length}
+                    count={props.profile.headline ? props.profile.headline.length : 0}
                     maxLength={100}
                     id={'headline'} />
 
                 <TextArea
                     title={'Fun Fact'}
                     description={'Share a fun fact about yourself that will surprise others!'}
-                    count={props.profile.fun_fact.length}
+                    count={props.profile.fun_fact ? props.profile.fun_fact.length : 0}
                     maxLength={100}
                     id={'funFact'} />
             </div>
@@ -139,7 +139,7 @@ export const AboutTab = (props: { profile: ProfileData }) => {
                 <TextArea
                     title={'About You*'}
                     description={'Share a brief overview of who you are, your interests, and what drives you!'}
-                    count={props.profile.bio.length}
+                    count={props.profile.bio ? props.profile.bio.length : 0}
                     maxLength={2000}
                     id={'bio'} />
             </div>

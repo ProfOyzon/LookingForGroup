@@ -62,7 +62,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
   // Store user data, if authenticated
   const [userData, setUserData] = useState<User>();
 
-  const getAuth = useCallback(async () => {
+  const getAuth = async () => {
     // Is user authenticated?
     // Get auth
     try {
@@ -99,7 +99,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
     } catch (err) {
       console.log('Error getting authentication: ' + err);
     }
-  }, []);
+  };
 
   // Function to handle the button clicks and update the h1 text
   const handleTextChange = (text, path) => {

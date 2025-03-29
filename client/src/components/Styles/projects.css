@@ -346,6 +346,7 @@ Project Creator and Editor style rules
   outline: none;
 }
 
+/* Project Editor/Creator General Tab */
 #project-editor-content select,
 #project-editor-general input,
 #project-editor-content textarea,
@@ -545,6 +546,7 @@ Project Creator and Editor style rules
   grid-area: about;
 }
 
+/* Project Editor/Creator Media Tab */
 #project-editor-image-ui {
   display: flex;
   flex-wrap: wrap;
@@ -632,6 +634,7 @@ Project Creator and Editor style rules
   gap: 10px;
 }
 
+/* Project Editor/Creator Tags Tab */
 #project-editor-tags {
   display: grid;
   grid-template:
@@ -702,6 +705,7 @@ Project Creator and Editor style rules
   font-size: 1.6ch;
 }
 
+/* Project Editor/Creator Team Tab */
 .project-editor-team-tab {
   padding: 0;
   color: var(--neutral-gray);
@@ -830,6 +834,44 @@ Project Creator and Editor style rules
   font-weight: 700;
   color: var(--header-color);
   font-size: 1.6ch;
+}
+
+/* User search in Add Member button */
+#user-search-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+#user-search-container .search-bar { /* Override for default SearchBar component */
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-color);
+  width: inherit;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+#user-search-container .search-input { /* Override for default SearchBar component */
+  border: none;
+  background-color: transparent;
+}
+#user-search-results {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 50px;
+  z-index: 1;
+}
+.user-search-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 13px 15px;
+}
+.user-search-name {
+  color: var(--main--text);
+}
+.user-search-username {
+  color: var(--neutral-gray)
 }
 
 #project-editor-project-members > .popup-container > .popup,
@@ -1072,6 +1114,7 @@ select.edit-position-compensation {
   flex: 1 0 0;
 }
 
+/* Project Editor/Creator Links Tab */
 #project-editor-links > .project-editor-extra-info {
   margin-bottom: 15px;
 }

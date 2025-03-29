@@ -39,7 +39,7 @@ const sendFile = async (url: string, data: {}, handler?: Function) => {
 /* Sends put requests to the server using fetch. Will look for various
     entries in the response JSON object, and will handle them appropriately.
 */
-const sendPut = async (url: string, data: FormData, handler?: Function): Promise<void> => {
+const sendPut = async (url: string, data?: FormData, handler?: Function): Promise<void> => {
   const response = await fetch(url, {
     method: 'PUT',
     headers: {

@@ -611,9 +611,11 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   // Get data
   const { id } = req.params;
+  console.log(typeof id);
+  console.log(typeof req.session.userId);
 
   // Checks
-  if (req.session.userId !== id) {
+  if (req.session.userId !== Number(id)) {
     return res.status(401).json({
       status: 401,
       error: 'Unauthorized',

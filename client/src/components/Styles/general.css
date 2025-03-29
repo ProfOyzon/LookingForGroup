@@ -203,6 +203,12 @@ used for the more options dropdown menu and notifications
 .button-reset {
   background-color: transparent;
   border: none;
+  padding: 10px 20px;
+  font-size: 2ch;
+  font-weight: 700;
+  
+  width: max-content;
+  margin: auto;
 }
 
 button {

@@ -282,7 +282,7 @@ Card component style rules
 }
 
 /*make them grow and shrink with the window */
-#discover-card-body > * {
+#discover-card-body>* {
   flex: 1;
 }
 
@@ -448,7 +448,7 @@ orange-button class makes the button orange, white-button class makes the button
   height: 50px;
 }
 
-.icon-button > img {
+.icon-button>img {
   width: 100%;
 }
 
@@ -660,13 +660,13 @@ Sidebar Nav style rules
   justify-content: center;
 }
 
-.Create > .error {
-  text-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px; 
+.Create>.error {
+  text-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px;
   position: absolute;
   bottom: 100px;
 }
 
-.Create > button {
+.Create>button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -850,7 +850,8 @@ Page popup style rules
   align-items: center;
 
   img {
-    height: 24px; /* Font-size is meant to be 20pt, which corresponds to 24px here */
+    height: 24px;
+    /* Font-size is meant to be 20pt, which corresponds to 24px here */
   }
 }
 
@@ -864,7 +865,8 @@ Page popup style rules
   height: 40px !important;
   background: none !important;
   margin: 4px 4px 0 0 !important;
-  z-index: 4; /* Prevent it from being covered by small-popup */
+  z-index: 4;
+  /* Prevent it from being covered by small-popup */
 }
 
 .popup-close img {
@@ -1082,7 +1084,7 @@ Header style rules
   grid-area: search;
 }
 
-#header-searchbar > .search-wrapper > .search-bar {
+#header-searchbar>.search-wrapper>.search-bar {
   margin: 0;
 }
 
@@ -1217,7 +1219,8 @@ Search style rules
 .search-bar {
   height: 25px;
   /* width: 100%; */
-  width: calc(100% - 2em); /* Keeps width within parent element */
+  width: calc(100% - 2em);
+  /* Keeps width within parent element */
   /* padding: 10px 15px; */
   padding: 10px 1em;
   /*border: 3px solid gray;*/
@@ -1420,4 +1423,43 @@ Image Carousel style rules
   position: absolute;
   bottom: 1rem;
   right: 1rem;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Spinning loader style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+*/
+.spinning-loader {
+  border: 8px solid var(--neutral-gray);
+  border-radius: 50%;
+  border-top: 8px solid var(--primary-color);
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 1.5s ease-in-out infinite;
+  /* Safari */
+  animation: spin 1.5s ease-in-out infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

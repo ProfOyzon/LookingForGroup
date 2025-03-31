@@ -247,6 +247,21 @@ Discover and Meet page style rules
   }
 }
 
+.applied-filters {
+  width: auto;
+  margin: 20px 50px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+
+  p {
+    margin: 0 0;
+    font-weight: 700;
+  }
+}
+
 .filter-category {
   display: flex;
   flex-direction: column;
@@ -605,6 +620,8 @@ Discover and Meet page style rules
   grid-gap: 20px; */
   /* margin: 0 calc(100vw * (65 / 1512)) 50px; */
   margin: 0 50px 50px;
+  display: flex;
+  justify-content: center;
 }
 
 /*

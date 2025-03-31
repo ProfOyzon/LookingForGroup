@@ -11,12 +11,11 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import CreditsFooter from '../CreditsFooter';
 import { DiscoverCarousel } from '../DiscoverCarousel';
 import { DiscoverFilters } from '../DiscoverFilters';
 import { Header } from '../Header';
-import { ImageCarousel } from '../ImageCarousel';
 import { PanelBox } from '../PanelBox';
 import { ThemeIcon } from '../ThemeIcon';
 import ToTopButton from '../ToTopButton';
@@ -92,14 +91,9 @@ const DiscoverAndMeet = ({ category }) => {
   // Important for ensuring data has properly loaded
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  // Pulls the full list of either projects or profiles from database
-  let fullItemList, filteredItemList: Item[];
-  let setFullItemList, setFilteredItemList: Function;
-  // May need to call outside of useState() init to properly render components
-  [fullItemList, setFullItemList] = useState([]);
-
-  // This list is what will actually be displayed, and adjust based on SearchData
-  [filteredItemList, setFilteredItemList] = useState([]);
+  // Full data and displayed data based on filter/search query
+  const [fullItemList, setFullItemList] = useState<Item[]>([]);
+  const [filteredItemList, setFilteredItemList] = useState<Item[]>([]);
 
   // Need this for searching
   let tempItemList: Item[] = fullItemList;
@@ -183,48 +177,9 @@ const DiscoverAndMeet = ({ category }) => {
     }
   };
 
-  // Make new list of items by mapping new filtered list
-  // const updateItemList = (activeTagFilters) => {
-  //   console.log(activeTagFilters);
-
-  //   // Check which items should be included based on filters
-  //   let tagFilteredList = tempItemList.filter((item) => {
-  //     let tagFilterCheck = true;
-  //     let lowercaseTags = [];
-
-  //     // If on meet page, checks skills instead
-  //     if (item.tags) {
-  //       lowercaseTags = item.tags.map((tag) => tag.tag.toLowerCase());
-  //     } else if (item.skills) {
-  //       lowercaseTags = item.skills.map((skill) => skill.skill.toLowerCase());
-  //     }
-
-  //     // If item in filtered list contains all tags in taglist, include it
-  //     for (const tag of activeTagFilters) {
-  //       if (!lowercaseTags.includes(tag)) {
-  //         tagFilterCheck = false;
-  //         break;
-  //       }
-  //     }
-
-  //     return tagFilterCheck;
-  //   });
-
-  //   // If no tags are currently selected, render all projects
-  //   // !! Needs to be skipped if searchbar has any input !!
-  //   if (tagFilteredList.length === 0 && activeTagFilters.length === 0) {
-  //     tagFilteredList = JSON.parse(JSON.stringify(fullItemList));
-  //   }
-
-  //   // Set displayed projects
-  //   setFilteredItemList(tagFilteredList);
-  // };
-
   const updateItemList = (activeTagFilters) => {
     let tagFilteredList = tempItemList.filter((item) => {
       let tagFilterCheck = true;
-
-      console.log(activeTagFilters);
 
       for (const tag of activeTagFilters) {
         if (category === 'projects') {
@@ -325,7 +280,12 @@ const DiscoverAndMeet = ({ category }) => {
 
       {/* Panel container. itemAddInterval can be whatever. 25 feels good for now */}
       <div id="discover-panel-box">
-        <PanelBox category={category} itemList={filteredItemList} itemAddInterval={25} />
+        {/* If filteredItemList isn't done loading, display a loading bar */}
+        {(filteredItemList.length === 0) ? (
+          <div className='spinning-loader'></div>
+        ) : (
+          <PanelBox category={category} itemList={filteredItemList} itemAddInterval={25} />
+        )}
       </div>
       <CreditsFooter />
       <ToTopButton />

@@ -281,7 +281,7 @@ const DiscoverAndMeet = ({ category }) => {
       {/* Panel container. itemAddInterval can be whatever. 25 feels good for now */}
       <div id="discover-panel-box">
         {/* If filteredItemList isn't done loading, display a loading bar */}
-        {(filteredItemList.length === 0) ? (
+        {(!dataLoaded && filteredItemList.length === 0) ? (
           <div className='spinning-loader'></div>
         ) : (
           <PanelBox category={category} itemList={filteredItemList} itemAddInterval={25} />

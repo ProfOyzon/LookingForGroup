@@ -1,7 +1,7 @@
 import '../Styles/pages.css';
 
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
-import { sendPut, fetchUserID, sendDelete } from '../../functions/fetch';
+import { sendPost, fetchUserID, sendDelete } from '../../functions/fetch';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { ThemeIcon } from '../ThemeIcon';
@@ -16,10 +16,7 @@ const deleteAccountPressed = async () => {
     console.log('Delete Pressed!');
     const userID = await fetchUserID();
     console.log(userID);
-    await sendDelete(`/api/users/${userID}`, 
-        // Log Out of the account after deleting it
-        // The logout endpoint redirects to the home page
-        async() => {await sendPut('/api/logout');});
+    await sendDelete(`/api/users/${userID}`, async()=>{await sendPost('/api/logout');});
 }
 
 const Settings = ({ }) => {

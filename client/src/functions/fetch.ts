@@ -12,7 +12,7 @@ const handleError = (message: string) => {
 /* Sends post requests to the server using fetch. Will look for various
     entries in the response JSON object, and will handle them appropriately.
 */
-const sendPost = async (url: string, data: {}, handler?: Function): Promise<void> => {
+const sendPost = async (url: string, data?: {}, handler?: Function): Promise<void> => {
   const response = await fetch(url, {
     method: 'POST',
     headers: {

@@ -184,13 +184,13 @@ const getProjectById = async (req, res) => {
     const sql = `SELECT p.project_id, p.user_id, p.title, p.hook, p.description, p.thumbnail, p.purpose, p.status, p.audience, g.project_types, 
             t.tags, j.jobs, m.members, pi.images, so.socials
             FROM projects p
-            JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
+            LEFT JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                 FROM project_genres pg 
                 JOIN genres g 
                     ON pg.type_id = g.type_id
                 GROUP BY pg.project_id) g
             ON p.project_id = g.project_id
-            JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label, "type", t.type,
+            LEFT JOIN (SELECT pt.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", t.tag_id, "tag", t.label, "type", t.type,
                 "position", pt.position)) AS tags
                 FROM project_tags pt 
                 JOIN tags t 
@@ -204,7 +204,7 @@ const getProjectById = async (req, res) => {
 			        ON j.title_id = jt.title_id
                 WHERE j.project_id = ?) j
             ON p.project_id = j.project_id
-            JOIN (SELECT m.project_id, JSON_ARRAYAGG(JSON_OBJECT("user_id", m.user_id, "first_name", u.first_name, 
+            LEFT JOIN (SELECT m.project_id, JSON_ARRAYAGG(JSON_OBJECT("user_id", m.user_id, "first_name", u.first_name, 
             "last_name", u.last_name, "profile_image", u.profile_image, "job_title", jt.label)) AS members
                 FROM members m
                 JOIN users u 

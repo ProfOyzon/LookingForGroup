@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { act, useState } from 'react';
 import { Popup, PopupButton, PopupContent } from './Popup';
 import { SearchBar } from './SearchBar';
 import { ThemeIcon } from './ThemeIcon';
@@ -140,16 +140,38 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
 
   // Function called when a tag is clicked, adds tag to list of filters
   const toggleTag = (e, tagName: string) => {
-    // Add tag if it isn't yet in the list
-    if (!activeTagFilters.includes(tagName)) {
-      activeTagFilters.push(tagName);
-    } else {
-      // Remove tag from the list
-      activeTagFilters.splice(activeTagFilters.indexOf(tagName), 1);
+    const discoverFilters = document.getElementsByClassName('discover-tag-filter');
+
+    for (let i = 0; i < discoverFilters.length; i++) {
+      const tagText = discoverFilters[i].innerText;
+      let hasTag = false;
+      let tagIndex = -1;
+
+      for (let j = 0; j < activeTagFilters.length; j++) {
+        if ((tagText.toLowerCase() === activeTagFilters[j].label.toLowerCase())
+          && (activeTagFilters[j].type === 'Project Type')) {
+          hasTag = true;
+          tagIndex = j;
+          break;
+        }
+      }
+
+      if (hasTag) {
+        if (tagText !== 'New' || tagName === 'new') {
+          activeTagFilters.splice(tagIndex, 1);
+
+          // If not the selected tag, remove discover-tag-filter-selected
+          if (discoverFilters[i] !== e.target) {
+            discoverFilters[i].classList.remove('discover-tag-filter-selected');
+          }
+        }
+      }
     }
 
-    // Toggle tag filter display and update panel display
-    e.target.classList.toggle('discover-tag-filter-selected');
+    if (e.target.classList.toggle('discover-tag-filter-selected')) {
+      activeTagFilters.push({ label: tagName, type: 'Project Type' });
+    }
+
     updateItemList(activeTagFilters);
   };
 
@@ -228,7 +250,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
   // Checks if enabledFilters contains a particular tag
   const isTagEnabled = (tag: string, color: string) => {
     for (let i = 0; i < enabledFilters.length; i++) {
-      if (enabledFilters[i].tag === tag && enabledFilters[i].color === color) {
+      if (enabledFilters[i].tag.label === tag.label && enabledFilters[i].color === color) {
         return i;
       }
     }
@@ -337,12 +359,33 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                             onClick={(e) => {
                               const element = e.target as HTMLElement;
                               const selecIndex = isTagEnabled(tag, searchedTags.color);
+                              let tempEnabled = enabledFilters;
+
+                              if (tag.type === 'Project Type' || tag.type === 'Purpose' || tag.type === 'Role' || tag.type === 'Major') {
+                                // Remove all other tags of the same type except the one selected
+                                const filterTags = document.querySelector('#filter-tags')!;
+                                const tagList = filterTags.getElementsByClassName(`tag-button-${searchedTags.color}-selected`);
+
+                                for (let i = 0; i < tagList.length; i++) {
+                                  const tagObj = { label: tagList[i].innerText.trim(), type: tag.type };
+                                  const tagTypeIndex = isTagEnabled(tagObj, searchedTags.color);
+
+                                  if (tagList[i].innerText.trim() !== tag.label) {
+                                    tagList[i].classList.replace(
+                                      `tag-button-${searchedTags.color}-selected`,
+                                      `tag-button-${searchedTags.color}-unselected`
+                                    );
+
+                                    tempEnabled = tempEnabled.toSpliced(tagTypeIndex, 1);
+                                  }
+                                }
+                              }
 
                               if (selecIndex === -1) {
                                 // Creates an object to store text and category
                                 //setEnabledFilters([...enabledFilters, { tag, color: searchedTags.color }]);
                                 setEnabledFilters([
-                                  ...enabledFilters,
+                                  ...tempEnabled,
                                   { tag, color: searchedTags.color },
                                 ]);
                                 element.classList.replace(
@@ -351,7 +394,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                                 );
                               } else {
                                 // Remove tag from list of enabled filters
-                                setEnabledFilters(enabledFilters.toSpliced(selecIndex, 1));
+                                setEnabledFilters(tempEnabled.toSpliced(selecIndex, 1));
                                 element.classList.replace(
                                   `tag-button-${searchedTags.color}-selected`,
                                   `tag-button-${searchedTags.color}-unselected`
@@ -439,28 +482,28 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
         <div className='applied-filters'>
           <p>Applied Filters:</p>
           {appliedFiltersDisplay.map((filter, index) => {
-              if (filter.tag.type === 'Project Type') {
-                return <></>;
-              }
+            if (filter.tag.type === 'Project Type') {
+              return <></>;
+            }
 
-              return (
-                <button
-                  className={`tag-button tag-button-${filter.color}-selected`}
-                  onClick={(e) => {
-                    console.log('clicked!');
+            return (
+              <button
+                className={`tag-button tag-button-${filter.color}-selected`}
+                onClick={(e) => {
+                  console.log('clicked!');
 
-                    // Remove tag from list of enabled filters, re-rendering component
-                    let tempList = appliedFiltersDisplay.toSpliced(index, 1);
-                    activeTagFilters = tempList.map((filter) => filter.tag);
-                    setAppliedFiltersDisplay(tempList);
-                    updateItemList(activeTagFilters);
-                  }}
-                >
-                  <i className='fa fa-close'></i>
-                  &nbsp;{filter.tag.label}
-                </button>
-              );
-            })}
+                  // Remove tag from list of enabled filters, re-rendering component
+                  let tempList = appliedFiltersDisplay.toSpliced(index, 1);
+                  activeTagFilters = tempList.map((filter) => filter.tag);
+                  setAppliedFiltersDisplay(tempList);
+                  updateItemList(activeTagFilters);
+                }}
+              >
+                <i className='fa fa-close'></i>
+                &nbsp;{filter.tag.label}
+              </button>
+            );
+          })}
         </div>
       ) : (
         <></>

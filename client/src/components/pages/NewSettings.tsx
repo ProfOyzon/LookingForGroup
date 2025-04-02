@@ -13,9 +13,8 @@ import ToTopButton from '../ToTopButton';
 
 const deleteAccountPressed = async () => {
     // Take the user ID and delete it
-    console.log('Delete Pressed!');
+    // console.log('Delete Pressed!');
     const userID = await fetchUserID();
-    console.log(userID);
     await sendDelete(`/api/users/${userID}`, async()=>{await sendPost('/api/logout');});
 }
 

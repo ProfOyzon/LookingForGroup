@@ -20,6 +20,7 @@ import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 import EditButton from '../Profile/ProfileEditButton';
 import { ThemeIcon } from '../ThemeIcon';
 import { fetchUserID } from '../../functions/fetch';
+import profilePicture from '../../images/blue_frog.png';
 
 // --------------------
 // Interfaces
@@ -313,7 +314,10 @@ const NewProfile = () => {
         {/* New profile display using css grid, will contain all info except for projects */}
         <div id="profile-information-grid">
           <img
-            src={`/images/profiles/${displayedProfile.profile_image}`}
+            src={(displayedProfile.profile_image) 
+              ? `/images/profiles/${displayedProfile.profile_image}` 
+              : profilePicture
+            }
             id="profile-image"
             alt="profile image"
           />

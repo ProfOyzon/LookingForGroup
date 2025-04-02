@@ -116,6 +116,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   // determine if a popup should close after press (PopupButton)
   const [closePopup, setClosePopup] = useState(false);
 
+  const [searchResults, setSearchResults] = useState<User[]>([]); 
+
   // errors
   const [errorAddMember, setErrorAddMember] = useState('');
   const [errorAddPosition, setErrorAddPosition] = useState('');
@@ -181,7 +183,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         if (userData === undefined) {
           return;
         }
-        setAllUsers(userData);
+        setAllUsers([users]);
       } catch (error) {
         console.error(error.message);
       }
@@ -285,18 +287,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
   // Get project job info
   const getProjectJob = useCallback((id: number) => {
-    const job = modifiedProject.jobs.find((job: { title_id: number }) => job.title_id === id);
-    return (
-      job || {
-        title_id: 0,
-        job_title: '',
-        description: '',
-        availability: '',
-        location: '',
-        duration: '',
-        compensation: '',
-      }
-    );
+    return modifiedProject.jobs.find((job: { title_id: number }) => job.title_id === id);
   }, [modifiedProject.jobs]);
 
   //Save current inputs in position editing window
@@ -393,19 +384,19 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       >
         <img className="edit-project-member-icon" src="/images/icons/pencil.png" alt="" />
       </button>
-      <div className="positions-popup-info-title">{getProjectJob(currentRole).job_title}</div>
+      <div className="positions-popup-info-title">{getProjectJob(currentRole)?.job_title}</div>
       <div className="positions-popup-info-description">
-        <div id="position-description-content">{getProjectJob(currentRole).description}</div>
+        <div id="position-description-content">{getProjectJob(currentRole)?.description}</div>
       </div>
       <div id="open-position-details">
         <div id="open-position-details-left">
           <div id="position-availability">
             <span className="position-detail-indicator">Availability: </span>
-            {getProjectJob(currentRole).availability}
+            {getProjectJob(currentRole)?.availability}
           </div>
           <div id="position-location">
             <span className="position-detail-indicator">Location: </span>
-            {getProjectJob(currentRole).location}
+            {getProjectJob(currentRole)?.location}
           </div>
           <div id="open-position-contact">
             <span className="position-detail-indicator">Contact: </span>
@@ -424,11 +415,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         <div id="open-position-details-right">
           <div id="position-duration">
             <span className="position-detail-indicator">Duration: </span>
-            {getProjectJob(currentRole).duration}
+            {getProjectJob(currentRole)?.duration}
           </div>
           <div id="position-compensation">
             <span className="position-detail-indicator">Compensation: </span>
-            {getProjectJob(currentRole).compensation}
+            {getProjectJob(currentRole)?.compensation}
           </div>
         </div>
       </div>
@@ -441,7 +432,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <div id="project-team-delete-member-text" className="project-editor-extra-info">
             Are you sure you want to delete{' '}
             <span className="project-info-highlight">
-              {getProjectJob(currentRole).job_title}
+              {getProjectJob(currentRole)?.job_title}
             </span>{' '}
             from the project? This action cannot be undone.
           </div>
@@ -515,7 +506,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         <textarea
           onChange={(e) => setCurrentJob({ ...currentJob, description: e.target.value })}
         >
-          {newPosition ? '' : getProjectJob(currentRole).description}
+          {newPosition ? '' : getProjectJob(currentRole)?.description}
         </textarea>
       </div>
 
@@ -532,7 +523,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             {availabilityOptions.map((o) => (
               <option
                 key={o}
-                selected={newPosition ? false : getProjectJob(currentRole).availability === o}
+                selected={getProjectJob(currentRole)?.availability === o}
               >
                 {o}
               </option>
@@ -548,7 +539,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             </option>
             {locationOptions.map((o) => (
               <option
-                selected={newPosition ? false : getProjectJob(currentRole).location === o}
+                selected={getProjectJob(currentRole)?.location === o}
               >
                 {o}
               </option>
@@ -568,7 +559,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             </option>
             {durationOptions.map((o) => (
               <option
-                selected={newPosition ? false : getProjectJob(currentRole).duration === o}
+                selected={getProjectJob(currentRole)?.duration === o}
               >
                 {o}
               </option>
@@ -584,7 +575,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             </option>
             {compensationOptions.map((o) => (
               <option
-                selected={newPosition ? false : getProjectJob(currentRole).compensation === o}
+                selected={newPosition ? false : getProjectJob(currentRole)?.compensation === o}
               >
                 {o}
               </option>
@@ -597,6 +588,22 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
   // Check if team tab is in edit mode
   const positionWindow = editMode === true ? positionEditWindow : positionViewWindow;
+
+  // Handle search results
+  const handleSearch = useCallback((results: User[][]) => {
+    // Check if too many results
+    if (results.length === allUsers.length) {
+      setSearchResults([]);
+    }
+    // Set results
+    setSearchResults(results[0]);
+  }, [allUsers.length]);
+
+  const handleUserSelect = useCallback(() => {
+    // set text input
+    
+    // clear search results
+  }, []);
 
   // teamTabContent is one of these
   const currentTeamContent: JSX.Element = useMemo(() => (
@@ -725,8 +732,23 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           </div>
           <div id="project-team-add-member-name">
             <label>Name</label>
-            <SearchBar dataSets={allUsers}></SearchBar>
-            <input type="text" id="new-member-name"></input>
+            <div id='user-search-container'>
+              <SearchBar dataSets={allUsers} onSearch={handleSearch}></SearchBar>
+              {/* <input type="text" id="new-member-name"></input> */}
+              <div id='user-search-results'>
+                {
+                  searchResults.map((user) => (
+                    <button
+                      className='user-search-item'
+                      onClick={handleUserSelect}
+                    >
+                      <p className='user-search-name'>{user.first_name} {user.last_name}</p>
+                      <p className='user-search-username'>username</p>
+                    </button>
+                  ))
+                }
+              </div>
+            </div>
           </div>
           <div id="project-team-add-member-role">
             <label>Role</label>
@@ -756,13 +778,13 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         </PopupContent>
       </Popup>
     </div>
-  ), [allJobs, allUsers, closePopup, currentMember, currentRole, errorAddMember, handleNewMember, modifiedProject]);
+  ), [allJobs, allUsers, closePopup, currentMember, currentRole, errorAddMember, handleNewMember, handleSearch, handleUserSelect, modifiedProject, searchResults]);
   const openPositionsContent: JSX.Element = useMemo(() => (
     <div id="project-team-open-positions-popup">
       <div className="positions-popup-list">
         <div id="team-positions-popup-list-header">Open Positions</div>
         <div id="team-positions-popup-list-buttons">
-          {modifiedProject.jobs.map((job: { job_title: string; title_id: number }) => (
+          {modifiedProject.jobs?.map((job: { job_title: string; title_id: number }) => (
             <div className="team-positions-button">
               <img src="/images/icons/drag.png" alt="" />
               <button

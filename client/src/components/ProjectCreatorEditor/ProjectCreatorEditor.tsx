@@ -6,7 +6,7 @@ import '../Styles/notification.css';
 import '../Styles/projects.css';
 import '../Styles/pages.css';
 
-import { useEffect, useState, FC } from 'react';
+import { useEffect, useState, FC, useMemo } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { GeneralTab } from './tabs/GeneralTab';
 import { MediaTab } from './tabs/MediaTab';
@@ -103,6 +103,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
 
   // Get project data on projectID change
   useEffect(() => {
+    console.log('new project', newProject);
     if (!newProject) {
       const getProjectData = async () => {
         const url = `/api/projects/${projectID}`;
@@ -126,8 +127,15 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
         }
       };
       getProjectData();
-    }
-    else {
+    }    
+  }, [newProject, projectID, user]);
+
+  // Handle events for tab switch
+  useEffect(() => {
+    // reset link error
+    setErrorLinks('');
+    if (newProject) {
+      console.log('new tab and new project, making base member')
       const makeDefaultProjectData = async () => {
         // adjust default and set as project data
         const projectData = emptyProject;
@@ -148,7 +156,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
             last_name: user?.last_name || '',
             job_title: 'Project Lead',
             title_id: 73,
-            profile_image: data.profile_image || '',
+            profile_image: data?.profile_image || '',
             user_id: user?.userId || 0
           };
 
@@ -164,13 +172,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
       }
       makeDefaultProjectData();
     }
-    
-  }, [newProject, projectID, user]);
-
-  // Handle events for tab switch
-  useEffect(() => {
-    // reset link error
-    setErrorLinks('');
   }, [currentTab]);
 
   //Save project editor changes

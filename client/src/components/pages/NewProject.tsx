@@ -291,7 +291,7 @@ const NewProject = () => {
                     <div className="positions-popup-list">
                       <div id="positions-popup-list-header">Open Positions</div>
                       <div id="positions-popup-list-buttons">
-                        {displayedProject.jobs.map((job, index) => (
+                        {displayedProject.jobs?.map((job, index) => (
                           <button
                             className={`positions-popup-list-item ${index === viewedPosition ? 'positions-popup-list-item-active' : ''}`}
                             onClick={() => setViewedPosition(index)}
@@ -305,45 +305,46 @@ const NewProject = () => {
 
                     <div id="positions-popup-info">
                       <div id="positions-popup-info-title">
-                        {displayedProject.jobs[viewedPosition].job_title}
+                        {displayedProject.jobs[viewedPosition]?.job_title}
                       </div>
                       <div id="positions-popup-info-description">
                         <div id="position-description-header">What we are looking for:</div>
                         <div id="position-description-content">
-                          {displayedProject.jobs[viewedPosition].description}
+                          {displayedProject.jobs[viewedPosition]?.description}
                         </div>
                       </div>
                       <div id="position-details">
                         <div id="position-availability">
                           <span className="position-detail-indicator">Availability: </span>
-                          {displayedProject.jobs[viewedPosition].availability}
+                          {displayedProject.jobs[viewedPosition]?.availability}
                         </div>
                         <div id="position-duration">
                           <span className="position-detail-indicator">Duration: </span>
-                          {displayedProject.jobs[viewedPosition].duration}
+                          {displayedProject.jobs[viewedPosition]?.duration}
                         </div>
                         <div id="position-location">
                           <span className="position-detail-indicator">Location: </span>
-                          {displayedProject.jobs[viewedPosition].location}
+                          {displayedProject.jobs[viewedPosition]?.location}
                         </div>
                         <div id="position-compensation">
                           <span className="position-detail-indicator">Compensation: </span>
-                          {displayedProject.jobs[viewedPosition].compensation}
+                          {displayedProject.jobs[viewedPosition]?.compensation}
                         </div>
                       </div>
                       <div id="position-contact">
                         If interested, please contact:{' '}
                         <span
                           onClick={() =>
-                            navigate(`${paths.routes.PROFILE}?userID=${projectLead.user_id}`)
+                            navigate(`${paths.routes.PROFILE}?userID=${projectLead?.user_id}`)
                           }
                           id="position-contact-link"
                         >
-                          <img src={(projectLead.profile_image) 
-                            ? `images/profiles/${projectLead.profile_image}` 
+                          {/* {FIXME: get project lead profile image in a different way} */}
+                          {/* <img src={(projectLead?.profile_image) 
+                            ? `images/profiles/${projectLead?.profile_image}` 
                             : profilePicture} 
-                          />
-                          {projectLead.first_name} {projectLead.last_name}
+                          /> */}
+                          {projectLead?.first_name} {projectLead?.last_name}
                         </span>
                       </div>
                     </div>

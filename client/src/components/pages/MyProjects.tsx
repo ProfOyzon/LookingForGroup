@@ -25,7 +25,7 @@ const MyProjects = () => {
   // - grid
   // - list
   const [sortMethod, setSortMethod] = useState('newest');
-  const [sortMethodHTML, setSortMethodHTML] = useState(<><i className="fa-solid fa-arrow-down-short-wide"></i>Newest</>);
+  const [sortMethodHTML, setSortMethodHTML] = useState(<i className='sort-by'>Sort by</i>);
   // Can be:
   // - newest
   // - oldest
@@ -222,7 +222,7 @@ const MyProjects = () => {
           <DropdownContent>
             <div className='my-projects-sort-list-dropdown'>
               <button
-                className='my-projects-sort-list-btn'
+                className='my-projects-sort-list-btn top'
                 value={'newest'}
                 onClick={(e) => {
                   setSortMethod(e.target.value);
@@ -267,7 +267,7 @@ const MyProjects = () => {
                 <i className="fa-solid fa-arrow-down-a-z"></i>A-Z
               </button>
               <button
-                className='my-projects-sort-list-btn'
+                className='my-projects-sort-list-btn bottom'
                 value={'z-a'}
                 onClick={(e) => {
                   setSortMethod(e.target.value);

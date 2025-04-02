@@ -2758,7 +2758,7 @@ My projects page style rules
   box-sizing: border-box;
   background-color: var(--header-color);
   border: 0px;
-  border-right: 15px solid var(--header-color);
+  /* border-right: 15px solid var(--header-color); */
   border-radius: 10px;
   padding: 13.5px 15px;
   color: var(--main-text);
@@ -2766,15 +2766,20 @@ My projects page style rules
   font-family: Inter, FontAwesome;
   line-height: normal;
   letter-spacing: 0%;
-  width: 141.35px;
+  width: 160px;
   display: flex;
   flex-direction: row;
   gap: 10px;
+
+  /* Placeholder text */
+  .sort-by {
+    color: var(--neutral-gray);
+  }
 }
 
 .my-projects-sort-list-dropdown {
   box-sizing: border-box;
-  background-color: var(--header-color);
+  background-color: var(--dropdown-color);
   border-radius: 10px;
   box-shadow: 0 0 10px 0 var(--shadow-color);
   display: flex;
@@ -2785,22 +2790,36 @@ My projects page style rules
     background: none;
     color: inherit;
     border: none;
-    border-radius: 10px;
-    padding: 0 10px;
+    padding: 10px 15px;
     font: inherit;
     cursor: pointer;
     outline: inherit;
-    width: 141.35px;
-    height: 47px;
+    width: 165px;
+    height: 40px;
 
+    gap: 15px;
     display: flex;
     flex-direction: row;
-    gap: 10px;
     align-items: center;
   }
 
+  .my-projects-sort-list-btn.top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .my-projects-sort-list-btn.bottom {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
   .my-projects-sort-list-btn:hover {
-    background-color: var(--dropdown-color);
+    background-color: var(--primary-color);
+    color: var(--invert-text);
+
+    .fa-solid {
+      color: var(--invert-text) !important;
+    }
   }
 }
 

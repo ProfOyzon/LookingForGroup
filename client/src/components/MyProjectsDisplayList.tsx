@@ -1,7 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import * as paths from '../constants/routes';
 import { Dropdown, DropdownButton, DropdownContent } from './Dropdown';
 
 const MyProjectsDisplayList = ({ projectData }) => {
+  // Navigation hook
+  const navigate = useNavigate();
+
   const [status, setStatus] = useState();
   const [optionsShown, setOptionsShown] = useState(false);
 
@@ -59,24 +64,28 @@ const MyProjectsDisplayList = ({ projectData }) => {
     return `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
   };
 
+  //Constructs url linking to relevant project page
+  const projectURL = `${paths.routes.NEWPROJECT}?projectID=${projectData.project_id}`;
+
   return (
     <div className="my-project-list-card">
       <div className="list-card-section1">
         {/* Thumbnail */}
-        {projectData.thumbnail === null ||
-        projectData.thumbnail === undefined ||
-        projectData.thumbnail === '' ? (
-          <div className="list-card-image" style={{ backgroundColor: 'white' }}></div>
-        ) : (
-          <img
-            className="list-card-image"
-            src={`/images/thumbnails/${projectData.thumbnail}`}
-            alt={`${projectData.title} Thumbnail`}
-          ></img>
-        )}
+        <img
+          className="list-card-image"
+          src={(projectData.thumbnail)
+            ? `/images/thumbnails/${projectData.thumbnail}`
+            : `/assets/project_temp-DoyePTay.png`
+          }
+          alt={`${projectData.title} Thumbnail`}
+          onClick={() => navigate(projectURL)}
+        ></img>
 
         {/* Title */}
-        <div className="list-card-title">{projectData.title}</div>
+        <div 
+          className="list-card-title"
+          onClick={() => navigate(projectURL)}
+        >{projectData.title}</div>
       </div>
 
       {/* Status */}
@@ -85,8 +94,8 @@ const MyProjectsDisplayList = ({ projectData }) => {
       {/* Data Created */}
       <div className="list-card-date">
         {projectData.created_at === null ||
-        projectData.created_at === undefined ||
-        projectData.created_at === ''
+          projectData.created_at === undefined ||
+          projectData.created_at === ''
           ? 'No data'
           : createDate(projectData.created_at)}
       </div>
@@ -96,7 +105,7 @@ const MyProjectsDisplayList = ({ projectData }) => {
         <DropdownButton buttonId="list-card-options-button">•••</DropdownButton>
         <DropdownContent rightAlign={true}>
           <div className="list-card-options-list">
-            <button className="card-leave-button" onClick={(e) => {}}>
+            <button className="card-leave-button" onClick={(e) => { }}>
               <i
                 className="fa-slid fa-arrow-right-from-bracket"
                 style={{ fontStyle: 'normal' }}

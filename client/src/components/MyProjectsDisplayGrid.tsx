@@ -45,22 +45,15 @@ const MyProjectsDisplayGrid = ({ projectData }) => {
   return (
     <div className="my-project-grid-card">
       {/* Thumbnail */}
-      {projectData.thumbnail === null ||
-      projectData.thumbnail === undefined ||
-      projectData.thumbnail === '' ? (
-        <div
-          className="grid-card-image"
-          style={{ backgroundColor: 'white' }}
-          onClick={() => navigate(projectURL)}
-        ></div>
-      ) : (
-        <img
-          className="grid-card-image"
-          src={`/images/thumbnails/${projectData.thumbnail}`}
-          alt={`${projectData.title} Thumbnail`}
-          onClick={() => navigate(projectURL)}
-        ></img>
-      )}
+      <img
+        className="grid-card-image"
+        src={(projectData.thumbnail)
+          ? `/images/thumbnails/${projectData.thumbnail}`
+          : `/assets/project_temp-DoyePTay.png`
+        }
+        alt={`${projectData.title} Thumbnail`}
+        onClick={() => navigate(projectURL)}
+      ></img>
 
       {/* Title */}
       <div className="grid-card-title" onClick={() => navigate(projectURL)}>
@@ -72,14 +65,14 @@ const MyProjectsDisplayGrid = ({ projectData }) => {
         <DropdownButton buttonId="grid-card-options-button">•••</DropdownButton>
         <DropdownContent rightAlign={true}>
           <div className="grid-card-options-list">
-            <button className="card-leave-button" onClick={(e) => {}}>
+            <button className="card-leave-button" onClick={(e) => { }}>
               <i
                 className="fa-slid fa-arrow-right-from-bracket"
                 style={{ fontStyle: 'normal' }}
               ></i>
               &nbsp; Leave Project
             </button>
-            <button className="card-delete-button" onClick={(e) => {}}>
+            <button className="card-delete-button" onClick={(e) => { }}>
               <i
                 className="fa-solid fa-trash-can"
                 style={{ fontStyle: 'normal', color: '#ff3859' }}

@@ -934,6 +934,10 @@ Project Creator and Editor style rules
   font-weight: 700;
 }
 
+.delete-button:hover {
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
+}
+
 #project-team-open-positions-popup {
   display: flex;
   gap: 25px;
@@ -2872,6 +2876,7 @@ My projects page style rules
   border: 0px;
   border-radius: 100px;
   padding: 0px;
+  cursor: pointer;
 
   display: flex;
   width: fit-content;
@@ -2921,6 +2926,11 @@ My projects page style rules
   border-color: var(--header-color);
   margin-left: 60px;
   margin-right: 64px;
+}
+
+.placeholder-spacing {
+  margin: 0 60px;
+  display: flex;
 }
 
 .my-projects-grid {
@@ -2973,6 +2983,10 @@ My projects page style rules
   cursor: pointer;
 }
 
+.grid-card-title:hover {
+  text-decoration: underline;
+}
+
 .grid-card-options {
   position: relative;
   text-align: right;
@@ -2982,23 +2996,28 @@ My projects page style rules
 
 .dropdown-container:has(#grid-card-options-button) {
   grid-area: options;
+  margin: 0 0 auto auto;
 }
 
 .grid-card-options-button,
 #grid-card-options-button {
   box-sizing: border-box;
-  background-color: #00000000;
+  background-color: var(--bg-color);
   border: 0px;
-  border-radius: 0px;
-  color: var(--primary-color);
+  border-radius: 20px;
+  color: var(--main-text);
   margin: 0px;
-  padding: 0px;
+  /* padding: 0px; */
   text-align: right;
-  font-size: 18px;
+  font-size: 12px;
   font-family: Inter;
   font-weight: normal;
-  line-height: 28px;
   letter-spacing: 2px;
+}
+
+.grid-card-options-button:hover,
+#grid-card-options-button:hover {
+  background-color: var(--border-color);
 }
 
 .dropdown:has(.grid-card-options-list) {
@@ -3015,7 +3034,7 @@ My projects page style rules
   border-radius: 10px;
   width: max-content;
   height: fit-content;
-  padding: 10px 0px;
+  padding: 10px 10px;
   z-index: 1;
 
   display: flex;
@@ -3086,6 +3105,7 @@ My projects page style rules
   width: 150px;
   height: 70px;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .list-card-title {
@@ -3097,6 +3117,11 @@ My projects page style rules
   font-weight: bold;
   line-height: 28px;
   letter-spacing: 0%;
+  cursor: pointer;
+}
+
+.list-card-title:hover {
+  text-decoration: underline;
 }
 
 .list-card-status {
@@ -3183,9 +3208,9 @@ My projects page style rules
   box-sizing: border-box;
   background-color: #00000000;
   border: 0px;
-  border-radius: 0px;
+  border-radius: 10px;
   margin: 0px;
-  padding: 5px 15px;
+  padding: 5px 5px;
   text-align: left;
   font-family: Inter, FontAwesome;
   transition: background-color 0.2s;

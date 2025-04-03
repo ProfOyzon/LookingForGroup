@@ -35,20 +35,47 @@ const MyProjects = () => {
   const [currentSearch, setCurrentSearch] = useState('');
   // const [bannerImage, setBannerImage] = useState(require("../../images/projects_header_light.png"));
 
-  const getProjects = async (userID: number) => {
-    const url = `/api/users/${userID}/projects`;
-    try {
-      const response = await fetch(url);
+  // Here to prevent reloading data after every re-render
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
-      const rawData = await response.json();
-      setProjectsList(rawData.data);
-    } catch (error) {
-      console.log(error);
+  // --------------------
+  // Helper functions
+  // --------------------
+  // Checks if user is logged in and pulls all relevant data
+  const getUserProjects = async () => {
+    const authResponse = await fetch('/api/auth');
+    const authData = await authResponse.json();
+
+    // User is logged in, pull their data
+    if (authData.status === 200) {
+      setLoggedIn(true);
+      const projectsURL = `/api/users/${authData.data}/projects`;
+      const projectsRes = await fetch(projectsURL);
+      const data = await projectsRes.json();
+
+      if ((data.status === 200) && (data.data[0] !== undefined)) {
+        setProjectsList(data.data);
+      }
     }
-  };
 
-  if (projectsList === undefined) {
-    getProjects(1);
+    setDataLoaded(true);
+  }
+
+  // const getProjects = async (userID: number) => {
+  //   const url = `/api/users/${userID}/projects`;
+  //   try {
+  //     const response = await fetch(url);
+
+  //     const rawData = await response.json();
+  //     setProjectsList(rawData.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  if (!dataLoaded) {
+    getUserProjects();
   }
   // else {
   //     if (projectsList.length < 20) {
@@ -81,33 +108,37 @@ const MyProjects = () => {
     return false;
   };
 
-  const sortProjects = () => {
-    if (projectsList !== undefined) {
+  const sortProjects = (projects) => {
+    if (projects !== undefined) {
       const tempList = new Array(0);
-      if (currentSearch === '') {
-        for (let i = 0; i < projectsList.length; i++) {
-          tempList.push(projectsList[i]);
+
+      if (currentSearch) {
+        // No search has been made, just use all results
+        for (let i = 0; i < projects.length; i++) {
+          tempList.push(projects[i]);
         }
       } else {
-        for (let i = 0; i < projectsList.length; i++) {
+        // Filter list based on search results
+        for (let i = 0; i < projects.length; i++) {
           if (
             checkIfAnyWordStartsWith(
-              projectsList[i].title.toLowerCase(),
+              projects[i].title.toLowerCase(),
               currentSearch.toLowerCase()
             )
           ) {
-            tempList.push(projectsList[i]);
+            tempList.push(projects[i]);
           }
         }
       }
 
+      // Sort depending on type selected by user. Default is Newest -> Oldest
       switch (sortMethod) {
-        case 'newest':
-          return tempList.toSorted((a, b) => a.created_at - b.created_at);
-          break;
-
         case 'oldest':
-          return tempList.toSorted((a, b) => b.created_at - a.created_at);
+          return tempList.toSorted((a, b) => {
+            const aTime = new Date(a.created_at).getTime();
+            const bTime = new Date(b.created_at).getTime();
+            return bTime - aTime;
+          });
           break;
 
         case 'a-z':
@@ -121,6 +152,13 @@ const MyProjects = () => {
             b.title.toLowerCase().localeCompare(a.title.toLowerCase())
           );
           break;
+        default:
+          return tempList.toSorted((a, b) => {
+            const aTime = new Date(a.created_at).getTime();
+            const bTime = new Date(b.created_at).getTime();
+            return aTime - bTime;
+          });
+          break;
       }
     }
   };
@@ -133,26 +171,22 @@ const MyProjects = () => {
     }
   };
 
-  let projectListSection = <></>;
-  if (displayMode === 'grid') {
-    const tempList = sortProjects();
-    projectListSection = (
+  const GridDisplay = ({ userProjects }) => {
+    return (
       <>
-        {/* Projects List */}
-        <div className="my-projects-grid">
-          {tempList === undefined
-            ? ''
-            : tempList.map((project) => {
-              return <MyProjectsDisplayGrid projectData={project}></MyProjectsDisplayGrid>;
-            })}
+        <div className='my-projects-grid'>
+          {userProjects.map(project => (
+            <MyProjectsDisplayGrid projectData={project} />
+          ))}
         </div>
       </>
     );
-  } else if (displayMode === 'list') {
-    const tempList = sortProjects();
-    projectListSection = (
+  };
+
+  const ListDisplay = ({ userProjects }) => {
+    return (
       <>
-        {/* Projects List Header */}
+        {/* Projects List header */}
         <div className="my-projects-list-header">
           <div className="project-header-label title">Project Title</div>
           <div className="project-header-label status">Status</div>
@@ -160,17 +194,68 @@ const MyProjects = () => {
           <div className="project-header-label options"></div>
         </div>
 
-        {/* Projects List */}
-        <div className="my-projects-list">
-          {tempList === undefined
-            ? ''
-            : tempList.map((project) => {
-              return <MyProjectsDisplayList projectData={project}></MyProjectsDisplayList>;
-            })}
+        <div className='my-projects-list'>
+          {userProjects.map(project => (
+            <MyProjectsDisplayList projectData={project} />
+          ))}
         </div>
       </>
     );
-  }
+  };
+
+  const ProjectListSection = ({ userProjects }) => {
+    // Sort projects based on the method selected
+    const sortedProjects = sortProjects(userProjects);
+
+    if (sortedProjects) {
+      if (displayMode === 'grid') {
+        return <GridDisplay userProjects={sortedProjects} />;
+      }
+
+      return <ListDisplay userProjects={sortedProjects} />;
+    }
+
+    return <></>;
+  };
+
+  // let projectListSection = <></>;
+  // if (displayMode === 'grid') {
+  //   const tempList = sortProjects();
+  //   projectListSection = (
+  //     <>
+  //       {/* Projects List */}
+  //       <div className="my-projects-grid">
+  //         {tempList === undefined
+  //           ? ''
+  //           : tempList.map((project) => {
+  //             return <MyProjectsDisplayGrid projectData={project}></MyProjectsDisplayGrid>;
+  //           })}
+  //       </div>
+  //     </>
+  //   );
+  // } else if (displayMode === 'list') {
+  //   const tempList = sortProjects();
+  //   projectListSection = (
+  //     <>
+  //       {/* Projects List Header */}
+  //       <div className="my-projects-list-header">
+  //         <div className="project-header-label title">Project Title</div>
+  //         <div className="project-header-label status">Status</div>
+  //         <div className="project-header-label date">Date Created</div>
+  //         <div className="project-header-label options"></div>
+  //       </div>
+
+  //       {/* Projects List */}
+  //       <div className="my-projects-list">
+  //         {tempList === undefined
+  //           ? ''
+  //           : tempList.map((project) => {
+  //             return <MyProjectsDisplayList projectData={project}></MyProjectsDisplayList>;
+  //           })}
+  //       </div>
+  //     </>
+  //   );
+  // }
 
   return (
     <div className="page" id="my-projects">
@@ -210,7 +295,7 @@ const MyProjects = () => {
         <Dropdown>
           <DropdownButton className='my-projects-sort-list'>
             {sortMethodHTML}
-            <i 
+            <i
               className="fa-solid fa-angle-down"
               style={{
                 position: 'absolute',
@@ -313,7 +398,23 @@ const MyProjects = () => {
       <hr />
 
       {/* Project Grid/List */}
-      {projectListSection}
+      {(!dataLoaded) ? (
+        <div 
+          className='placeholder-spacing'
+          style={{justifyContent: 'center'}}
+        >
+          <div className='spinning-loader'></div>
+        </div>
+      ) : (
+        // Check if user is logged in, and display text if not
+        (!loggedIn) ? (
+          <div className='placeholder-spacing'>
+            <p>You have no projects, you're not logged in!</p>
+          </div>
+        ) : (
+          <ProjectListSection userProjects={projectsList} />
+        )
+      )}
       <CreditsFooter />
     </div>
   );

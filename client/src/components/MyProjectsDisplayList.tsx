@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import * as paths from '../constants/routes';
 import { Dropdown, DropdownButton, DropdownContent } from './Dropdown';
 
-const MyProjectsDisplayList = ({ projectData }) => {
+const MyProjectsDisplayList = ({ projectData, isOwner }) => {
   // Navigation hook
   const navigate = useNavigate();
 
@@ -105,25 +105,28 @@ const MyProjectsDisplayList = ({ projectData }) => {
         <DropdownButton buttonId="list-card-options-button">•••</DropdownButton>
         <DropdownContent rightAlign={true}>
           <div className="list-card-options-list">
-            <button className="card-leave-button" onClick={(e) => { }}>
-              <i
-                className="fa-slid fa-arrow-right-from-bracket"
-                style={{ fontStyle: 'normal' }}
-              ></i>
-              &nbsp; Leave Project
-            </button>
-            <button
-              className="card-delete-button"
-              onClick={() => {
-                deleteProject();
-              }}
-            >
-              <i
-                className="fa-solid fa-trash-can"
-                style={{ fontStyle: 'normal', color: '#ff3859' }}
-              ></i>
-              &nbsp; Delete Project
-            </button>
+            {!isOwner ? (
+              <button className="card-leave-button" onClick={(e) => { }}>
+                <i
+                  className="fa-solid fa-arrow-right-from-bracket"
+                  style={{ fontStyle: 'normal' }}
+                ></i>
+                &nbsp; Leave Project
+              </button>
+            ) : (
+              <button
+                className="card-delete-button"
+                onClick={() => {
+                  deleteProject();
+                }}
+              >
+                <i
+                  className="fa-solid fa-trash-can"
+                  style={{ fontStyle: 'normal', color: '#ff3859' }}
+                ></i>
+                &nbsp; Delete Project
+              </button>
+            )}
           </div>
         </DropdownContent>
       </Dropdown>

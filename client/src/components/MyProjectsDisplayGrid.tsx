@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from '../constants/routes';
+import { sendDelete } from '../functions/fetch';
 import { Dropdown, DropdownButton, DropdownContent } from './Dropdown';
 
-const MyProjectsDisplayGrid = ({ projectData }) => {
+const MyProjectsDisplayGrid = ({ projectData, isOwner }) => {
   //Navigation hook
   const navigate = useNavigate();
 
@@ -65,20 +66,33 @@ const MyProjectsDisplayGrid = ({ projectData }) => {
         <DropdownButton buttonId="grid-card-options-button">•••</DropdownButton>
         <DropdownContent rightAlign={true}>
           <div className="grid-card-options-list">
-            <button className="card-leave-button" onClick={(e) => { }}>
-              <i
-                className="fa-slid fa-arrow-right-from-bracket"
-                style={{ fontStyle: 'normal' }}
-              ></i>
-              &nbsp; Leave Project
-            </button>
-            <button className="card-delete-button" onClick={(e) => { }}>
-              <i
-                className="fa-solid fa-trash-can"
-                style={{ fontStyle: 'normal', color: '#ff3859' }}
-              ></i>
-              &nbsp; Delete Project
-            </button>
+            {!isOwner ? (
+              <button className="card-leave-button" onClick={(e) => { }}>
+                <i
+                  className="fa-solid fa-arrow-right-from-bracket"
+                  style={
+                    {
+                      fontStyle: 'normal',
+                      transform: 'rotate(180deg)',
+                    }
+                  }
+                ></i>
+                &nbsp; Leave Project
+              </button>
+            ) : (
+              <button 
+                className="card-delete-button" 
+                onClick={() => { 
+                  sendDelete(`/api/projects/${projectData.project_id}`);
+                }}
+              >
+                <i
+                  className="fa-solid fa-trash-can"
+                  style={{ fontStyle: 'normal', color: '#ff3859' }}
+                ></i>
+                &nbsp; Delete Project
+              </button>
+            )}
           </div>
         </DropdownContent>
       </Dropdown>

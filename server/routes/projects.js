@@ -8,6 +8,7 @@ router.get('/api/projects', projCtrl.getProjects);
 router.post('/api/projects', mid.checkLogin, projCtrl.createProject);
 router.get('/api/projects/:id', projCtrl.getProjectById);
 router.put('/api/projects/:id', mid.checkLogin, projCtrl.updateProject);
+router.delete('/api/projects/:id', mid.checkLogin, projCtrl.deleteProject);
 router.put(
   '/api/projects/:id/thumbnail',
   mid.checkLogin,

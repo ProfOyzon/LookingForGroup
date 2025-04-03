@@ -37,7 +37,7 @@ const MyProjects = () => {
 
   // Here to prevent reloading data after every re-render
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(0);
 
   // --------------------
   // Helper functions
@@ -49,7 +49,7 @@ const MyProjects = () => {
 
     // User is logged in, pull their data
     if (authData.status === 200) {
-      setLoggedIn(true);
+      setLoggedIn(authData.data);
       const projectsURL = `/api/users/${authData.data}/projects`;
       const projectsRes = await fetch(projectsURL);
       const data = await projectsRes.json();
@@ -175,9 +175,17 @@ const MyProjects = () => {
     return (
       <>
         <div className='my-projects-grid'>
-          {userProjects.map(project => (
-            <MyProjectsDisplayGrid projectData={project} />
-          ))}
+          {userProjects.map(project => {
+            // Check if user is the owner of this project
+            const isOwner = (project.user_id === loggedIn);
+
+            return (
+              <MyProjectsDisplayGrid 
+                projectData={project} 
+                isOwner={isOwner}
+              />
+            );
+          })}
         </div>
       </>
     );
@@ -195,9 +203,17 @@ const MyProjects = () => {
         </div>
 
         <div className='my-projects-list'>
-          {userProjects.map(project => (
-            <MyProjectsDisplayList projectData={project} />
-          ))}
+          {userProjects.map(project => {
+            // Check if user is the owner of this project
+            const isOwner = (project.user_id === loggedIn);
+            
+            return (
+              <MyProjectsDisplayList 
+                projectData={project}
+                isOwner={isOwner} 
+              />
+            );
+          })}
         </div>
       </>
     );

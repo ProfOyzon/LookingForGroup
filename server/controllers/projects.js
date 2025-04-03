@@ -458,6 +458,41 @@ const updateProject = async (req, res) => {
   }
 };
 
+// Delete a project. Must be project owner to delete
+const deleteProject = async (req, res) => {
+  // Get data
+  const projId = parseInt(req.params.id);
+  const userId = parseInt(req.session.userId);
+
+  try {
+    // Get creator/owner ID of project to verify it matches userId
+    const [ownerData] = await pool.query('SELECT p.user_id FROM projects p WHERE p.project_id = ?', [projId]);
+    const ownerId = ownerData[0].user_id;
+
+    // TO-DO: Feed back bad request if userId != ownerId
+    // Otherwise, delete the project
+    if (userId !== ownerId) {
+      return res.status(400).json({
+        status: 400,
+        error: 'You must be the project owner in order to delete a project',
+      });
+    }
+
+    // Delete the project from the server
+    await pool.query('DELETE FROM projects WHERE project_id = ?', [projId]);
+
+    return res.status(200).json({
+      status: 200,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      status: 500,
+      error: 'An error occurred while deleting project',
+    });
+  }
+};
+
 const updateThumbnail = async (req, res) => {
   // Get id from url
   const { id } = req.params;
@@ -662,6 +697,7 @@ export default {
   createProject,
   getProjectById,
   updateProject,
+  deleteProject,
   updateThumbnail,
   getPictures,
   addPicture,

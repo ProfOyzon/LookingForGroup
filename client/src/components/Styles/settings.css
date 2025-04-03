@@ -460,6 +460,10 @@ input:checked+.slider:before {
       width: 106px;
     }
 
+    .confirm-btn:hover {
+      box-shadow: 0px 0px 10px 0px var(--shadow-color);
+    }
+
     .deny-btn {
       background: none;
       border: none;
@@ -469,6 +473,12 @@ input:checked+.slider:before {
       font-weight: 700;
       color: var(--main-text);
       width: 106px;
+      border-radius: 55px;
+    }
+
+    .deny-btn:hover {
+      background-color: var(--neutral-gray);
+      color: var(--invert-text);
     }
 
     .confirm-msg {

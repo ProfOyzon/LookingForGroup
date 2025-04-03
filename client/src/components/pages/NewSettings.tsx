@@ -480,9 +480,7 @@ const Settings = ({ }) => {
                                         </DropdownContent>
                                     </Dropdown>
                                 </div>
-                            </div>
-                            {/* Account Deletion */}
-                            <div className='settings-column'>
+                                {/* Account Deletion */}
                                 <div className='subsection'>
                                     <Popup>
                                         <PopupButton className="delete-button">Delete Account</PopupButton>

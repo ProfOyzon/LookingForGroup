@@ -1,5 +1,5 @@
 // --- Imports ---
-import { JSX, useCallback, useEffect, useMemo, useState } from "react";
+import { JSX, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Popup, PopupButton, PopupContent } from "../../Popup";
 import profileImage from '../../../icons/profile-user.png';
 import { SearchBar } from "../../SearchBar";
@@ -30,7 +30,7 @@ interface ProjectData {
 }
 
 interface User {
-  user_id: number;
+  username: string;
   first_name: string;
   last_name: string;
   profile_image: string;
@@ -88,7 +88,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
   // for complete list of...
   const [allJobs, setAllJobs] = useState<{title_id: number, label: string}[]>([]);
-  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [allUsers, setAllUsers] = useState<{ data: User[] }>({ data: [] });
 
   // HTML contents
   // const [teamTabContent, setTeamTabContent] = useState(<></>);
@@ -116,7 +116,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   // determine if a popup should close after press (PopupButton)
   const [closePopup, setClosePopup] = useState(false);
 
-  const [searchResults, setSearchResults] = useState<User[]>([]); 
+  // store search results without forcing a re-render
+  // const searchResults = useRef<{ data: User[] }>({ data: [] });
+  const [searchResults, setSearchResults] = useState<{ data: User[] }>({ data: [] });
+  // const [renderSwitch, setRenderSwitch] = useState(0);
+  const [renderSwitch, setRenderSwitch] = useState(false);
 
   // errors
   const [errorAddMember, setErrorAddMember] = useState('');
@@ -178,20 +182,33 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         const response = await fetch(url);
 
         const users = await response.json();
-        const userData = users.data;
 
-        if (userData === undefined) {
+        // list of users to search. users searchable by first name, last name, or username
+        const searchableUsers = await Promise.all(users.data.map(async user => {
+          // get username
+          const usernameResponse = await fetch(`/api/users/${user.user_id}`);
+          const usernameJson = await usernameResponse.json();
+
+          // get make searchable user
+          const filteredUser = {
+            "username": usernameJson.data[0].username,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+          };
+          return filteredUser;
+        }));
+
+        if (searchableUsers === undefined) {
           return;
         }
-        setAllUsers([users]);
+        setAllUsers({data: searchableUsers});
       } catch (error) {
         console.error(error.message);
       }
     };
-    if (allUsers.length === 0) {
+    if (!allUsers || allUsers.data.length === 0) {
       getUsersList();
     }
-    console.log('users', allUsers);
   }, [allUsers]);
 
   // Assign active buttons in Open Positions
@@ -378,7 +395,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       <button
         className="edit-project-member-button"
         onClick={() => {
-          setCurrentJob(getProjectJob(currentRole));
+          setCurrentJob(getProjectJob(currentRole) || emptyJob);
           setEditMode(true);
         }}
       >
@@ -591,13 +608,22 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
   // Handle search results
   const handleSearch = useCallback((results: User[][]) => {
+    console.log('results from query', results);
     // Check if too many results
-    if (results.length === allUsers.length) {
-      setSearchResults([]);
+    if (!allUsers || results[0].length === allUsers.data.length) {
+      // Check if results are the same, do nothing
+      // if (searchResults.current.data.length === 0) return;
+      if (searchResults.data.length === 0) return;
+      console.log('passed len 0');
+      setSearchResults({ data: [] });
     }
+    // Check if results are the same, do nothing
+    if (JSON.stringify(searchResults.data) === JSON.stringify(results[0])) return;
+    console.log('search data', searchResults.data);
+    console.log('results', results[0]);
     // Set results
-    setSearchResults(results[0]);
-  }, [allUsers.length]);
+    setSearchResults({ data: results[0] });
+  }, [allUsers, searchResults.data]);
 
   const handleUserSelect = useCallback(() => {
     // set text input
@@ -733,17 +759,17 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <div id="project-team-add-member-name">
             <label>Name</label>
             <div id='user-search-container'>
-              <SearchBar dataSets={allUsers} onSearch={handleSearch}></SearchBar>
+              <SearchBar dataSets={[allUsers]} onSearch={(results) => handleSearch(results)}></SearchBar>
               {/* <input type="text" id="new-member-name"></input> */}
               <div id='user-search-results'>
                 {
-                  searchResults.map((user) => (
+                  searchResults.data.map((user) => (
                     <button
                       className='user-search-item'
                       onClick={handleUserSelect}
                     >
                       <p className='user-search-name'>{user.first_name} {user.last_name}</p>
-                      <p className='user-search-username'>username</p>
+                      <p className='user-search-username'>{user.username}</p>
                     </button>
                   ))
                 }
@@ -778,7 +804,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         </PopupContent>
       </Popup>
     </div>
-  ), [allJobs, allUsers, closePopup, currentMember, currentRole, errorAddMember, handleNewMember, handleSearch, handleUserSelect, modifiedProject, searchResults]);
+  ), [allJobs, allUsers, closePopup, currentMember, currentRole, errorAddMember, handleNewMember, handleSearch, handleUserSelect, modifiedProject, searchResults.data]);
   const openPositionsContent: JSX.Element = useMemo(() => (
     <div id="project-team-open-positions-popup">
       <div className="positions-popup-list">

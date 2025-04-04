@@ -27,15 +27,13 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
   // Important for ensuring data has properly loaded
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  let currentTags, searchedTags, enabledFilters, appliedFiltersDisplay: Tag[];
-  let setCurrentTags, setSearchedTags, setEnabledFilters, setAppliedFiltersDisplay: Function;
-  [currentTags, setCurrentTags] = useState([]);
-  [searchedTags, setSearchedTags] = useState({
+  const [currentTags, setCurrentTags] = useState([]);
+  const [searchedTags, setSearchedTags] = useState({
     tags: [],
     color: 'grey',
   });
-  [enabledFilters, setEnabledFilters] = useState([]);
-  [appliedFiltersDisplay, setAppliedFiltersDisplay] = useState([]);
+  const [enabledFilters, setEnabledFilters] = useState([]);
+  const [appliedFiltersDisplay, setAppliedFiltersDisplay] = useState([]);
 
   // Formatted for SearchBar dataSets prop
   const [dataSet, setDataSet] = useState([{ data: currentTags }]);

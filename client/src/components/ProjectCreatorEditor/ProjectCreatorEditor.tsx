@@ -6,7 +6,7 @@ import '../Styles/notification.css';
 import '../Styles/projects.css';
 import '../Styles/pages.css';
 
-import { useEffect, useState, FC, useMemo } from 'react';
+import { useEffect, useState, FC } from 'react';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { GeneralTab } from './tabs/GeneralTab';
 import { MediaTab } from './tabs/MediaTab';
@@ -172,7 +172,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
       }
       makeDefaultProjectData();
     }
-  }, [currentTab]);
+  }, [currentTab, newProject, user]);
 
   //Save project editor changes
   const saveProject = async () => {

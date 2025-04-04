@@ -1,8 +1,9 @@
 // --- Imports ---
-import { JSX, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { JSX, useCallback, useEffect, useMemo, useState } from "react";
 import { Popup, PopupButton, PopupContent } from "../../Popup";
 import profileImage from '../../../icons/profile-user.png';
 import { SearchBar } from "../../SearchBar";
+import { Dropdown, DropdownButton, DropdownContent } from "../../Dropdown";
 
 // --- Interfaces ---
 interface Image {
@@ -29,7 +30,15 @@ interface ProjectData {
   userId?: number;
 }
 
+interface SearchableUser {
+  username: string;
+  first_name: string;
+  last_name: string;
+}
+
+// only includes properties relevant to this component
 interface User {
+  user_id: number;
   username: string;
   first_name: string;
   last_name: string;
@@ -73,7 +82,7 @@ const emptyJob = {
   compensation: '',
 };
 
-// Job detail options
+// Job detail options (according to documentation enums)
 const availabilityOptions = ['Full-time', 'Part-time', 'Flexible'];
 const durationOptions = ['Short-term', 'Long-term'];
 const locationOptions = ['On-site', 'Remote', 'Hybrid'];
@@ -88,7 +97,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
   // for complete list of...
   const [allJobs, setAllJobs] = useState<{title_id: number, label: string}[]>([]);
-  const [allUsers, setAllUsers] = useState<{ data: User[] }>({ data: [] });
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [searchableUsers, setSearchableUsers] = useState<{ data: SearchableUser[] }>({ data: [] });
 
   // HTML contents
   // const [teamTabContent, setTeamTabContent] = useState(<></>);
@@ -116,11 +126,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   // determine if a popup should close after press (PopupButton)
   const [closePopup, setClosePopup] = useState(false);
 
-  // store search results without forcing a re-render
-  // const searchResults = useRef<{ data: User[] }>({ data: [] });
+  // store search results
   const [searchResults, setSearchResults] = useState<{ data: User[] }>({ data: [] });
-  // const [renderSwitch, setRenderSwitch] = useState(0);
-  const [renderSwitch, setRenderSwitch] = useState(false);
 
   // errors
   const [errorAddMember, setErrorAddMember] = useState('');
@@ -183,8 +190,10 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
         const users = await response.json();
 
+        setAllUsers(users.data);
+
         // list of users to search. users searchable by first name, last name, or username
-        const searchableUsers = await Promise.all(users.data.map(async user => {
+        const searchableUsers = await Promise.all(users.data.map(async (user: User) => {
           // get username
           const usernameResponse = await fetch(`/api/users/${user.user_id}`);
           const usernameJson = await usernameResponse.json();
@@ -201,12 +210,12 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         if (searchableUsers === undefined) {
           return;
         }
-        setAllUsers({data: searchableUsers});
+        setSearchableUsers({data: searchableUsers});
       } catch (error) {
         console.error(error.message);
       }
     };
-    if (!allUsers || allUsers.data.length === 0) {
+    if (!allUsers || allUsers.length === 0) {
       getUsersList();
     }
   }, [allUsers]);
@@ -236,37 +245,42 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
     }
   }, [currentRole, isTeamTabOpen]);
 
+
+
+  // --- Data retrieval ---
+  // Get project job info
+  const getProjectJob = useCallback((id: number) => {
+    return modifiedProject.jobs.find((job: { title_id: number }) => job.title_id === id);
+  }, [modifiedProject.jobs]);
+
+
+
+  // --- Member handlers ---
   // Error checks for adding a new member
   const handleNewMember = useCallback(() => {
+    console.log('handling new member');
     //do not close as default
     setClosePopup(false);
 
-    const member = emptyMember;
+    const member = newMember;
 
     // get name
-    const nameInput = document.querySelector<HTMLInputElement>('#new-member-name');
-    if (nameInput) {
-      member.first_name = nameInput.value.split(' ')[0] || '';
-      member.last_name = nameInput.value.split(' ')[1] || '';
-    } else {
+    if (!newMember.first_name || !newMember.last_name) {
       setErrorAddMember('Error getting name data');
       setClosePopup(false);
       return;
     }
 
     // get job title
-    const jobTitleInput = document.querySelector('#project-team-add-member-role-select') as HTMLInputElement;
-    if (jobTitleInput) {
-      member.job_title = jobTitleInput.value;
-    } else {
+    if (!newMember.job_title) {
       setErrorAddMember('Error getting job data');
       setClosePopup(false);
       return;
     }
 
-    //TODO: assign proper user_id and profile_image
-    member.profile_image = '';
-    member.user_id = 0;
+    // Match this user with all users to get profile image
+    const matchedUser = allUsers.find((u) => u.user_id === member.user_id);
+    member.profile_image = matchedUser ? matchedUser.profile_image : '';
 
     // check if member has name
     if (!member.first_name || !member.last_name) {
@@ -283,7 +297,95 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       modifiedProject.members.push(newMember);
       console.log('new members!', modifiedProject.members);
     }
-  }, [modifiedProject.members, newMember]);
+  }, [allUsers, modifiedProject.members, newMember]);
+
+  // Handle search results
+  const handleSearch = useCallback((results: User[][]) => {
+    // Check if too many results
+    if (!allUsers || results[0].length === allUsers.length) {
+      // Check if results are the same, do nothing
+      if (searchResults.data.length === 0) return;
+      setSearchResults({ data: [] });
+    }
+    // Check if results are the same, do nothing
+    if (JSON.stringify(searchResults.data) === JSON.stringify(results[0])) return;
+    // Set results
+    setSearchResults({ data: results[0] });
+  }, [allUsers, searchResults.data]);
+
+  // Handle clicking on a member in the search dropdown
+  const handleUserSelect = useCallback((user: User) => {
+    // set text input
+    const input = document.querySelector<HTMLInputElement>('#user-search-container .search-input');
+    if (input) {
+      input.value = `${user.first_name} ${user.last_name} (${user.username})`;
+    } else {
+      console.log('couldn\'t find input', input);
+    }
+
+    // get matching user data
+    const matchedUser = allUsers.find((u) => u.username === user.username);
+
+    if (!matchedUser) {
+      setErrorAddMember('User not found');
+      return;
+    }
+
+    const mem = {
+      first_name: matchedUser.first_name,
+      last_name: matchedUser.last_name,
+      profile_image: matchedUser.profile_image,
+      job_title: '', // Placeholder value
+      user_id: matchedUser.user_id,
+    }
+    console.log('clicked user, got data', mem);
+
+    // set new member
+    setNewMember(mem);
+    
+    // clear search results
+    setSearchResults({ data: [] });
+  }, [allUsers]);
+
+
+
+  // --- Position handlers ---
+  // update position edit window for creating a new position
+  const addPositionCallback = useCallback(() => {
+    // going back to previous state (cancel button)
+    if (newPosition || editMode) {
+      // no longer new position
+      setNewPosition(false);
+      // clear temp job
+      setCurrentJob(emptyJob);
+      // return to selected role
+      const positions = document.querySelectorAll('.positions-popup-list-item');
+      for (const p of positions) {
+        const dataId = p.getAttribute('data-id');
+        if (dataId && parseInt(dataId) === currentRole) {
+          // found matching id, set element as active
+          p.id = 'team-positions-active-button';
+          break;
+        }
+      }
+      // change to position view window
+      // setPositionWindowContent(positionViewWindow);
+      setEditMode(false);
+    }
+    // opening add position
+    else {
+      // empty input fields
+      setNewPosition(true);
+      // clear selected role
+      setCurrentJob(emptyJob);
+      const activePosition = document.querySelector('#team-positions-active-button');
+      if (activePosition) activePosition.id = '';
+      // change to position edit window
+      // setPositionWindowContent(positionEditWindow);
+      setEditMode(true);
+    }
+    setErrorAddPosition('');
+  }, [currentRole, editMode, newPosition]);
 
   // Remove position listing
   const deletePosition = useCallback(() => {
@@ -301,11 +403,6 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       setCurrentRole(Number(defaultButton!.dataset.id));
     }
   }, [currentRole, modifiedProject]);
-
-  // Get project job info
-  const getProjectJob = useCallback((id: number) => {
-    return modifiedProject.jobs.find((job: { title_id: number }) => job.title_id === id);
-  }, [modifiedProject.jobs]);
 
   //Save current inputs in position editing window
   const savePosition = useCallback(() => {
@@ -352,43 +449,9 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
     setCurrentRole(currentJob.title_id);
   }, [currentJob, modifiedProject, newPosition]);
 
-  // update position edit window for creating a new position
-  const addPositionCallback = useCallback(() => {
-    // going back to previous state (cancel button)
-    if (newPosition || editMode) {
-      // no longer new position
-      setNewPosition(false);
-      // clear temp job
-      setCurrentJob(emptyJob);
-      // return to selected role
-      const positions = document.querySelectorAll('.positions-popup-list-item');
-      for (const p of positions) {
-        const dataId = p.getAttribute('data-id');
-        if (dataId && parseInt(dataId) === currentRole) {
-          // found matching id, set element as active
-          p.id = 'team-positions-active-button';
-          break;
-        }
-      }
-      // change to position view window
-      // setPositionWindowContent(positionViewWindow);
-      setEditMode(false);
-    }
-    // opening add position
-    else {
-      // empty input fields
-      setNewPosition(true);
-      // clear selected role
-      setCurrentJob(emptyJob);
-      const activePosition = document.querySelector('#team-positions-active-button');
-      if (activePosition) activePosition.id = '';
-      // change to position edit window
-      // setPositionWindowContent(positionEditWindow);
-      setEditMode(true);
-    }
-    setErrorAddPosition('');
-  }, [currentRole, editMode, newPosition]);
 
+
+  // --- Content variables ---
   // Open position display
   const positionViewWindow = (
     <>
@@ -606,31 +669,6 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   // Check if team tab is in edit mode
   const positionWindow = editMode === true ? positionEditWindow : positionViewWindow;
 
-  // Handle search results
-  const handleSearch = useCallback((results: User[][]) => {
-    console.log('results from query', results);
-    // Check if too many results
-    if (!allUsers || results[0].length === allUsers.data.length) {
-      // Check if results are the same, do nothing
-      // if (searchResults.current.data.length === 0) return;
-      if (searchResults.data.length === 0) return;
-      console.log('passed len 0');
-      setSearchResults({ data: [] });
-    }
-    // Check if results are the same, do nothing
-    if (JSON.stringify(searchResults.data) === JSON.stringify(results[0])) return;
-    console.log('search data', searchResults.data);
-    console.log('results', results[0]);
-    // Set results
-    setSearchResults({ data: results[0] });
-  }, [allUsers, searchResults.data]);
-
-  const handleUserSelect = useCallback(() => {
-    // set text input
-    
-    // clear search results
-  }, []);
-
   // teamTabContent is one of these
   const currentTeamContent: JSX.Element = useMemo(() => (
     <div id="project-editor-project-members">
@@ -759,21 +797,26 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <div id="project-team-add-member-name">
             <label>Name</label>
             <div id='user-search-container'>
-              <SearchBar dataSets={[allUsers]} onSearch={(results) => handleSearch(results)}></SearchBar>
-              {/* <input type="text" id="new-member-name"></input> */}
-              <div id='user-search-results'>
-                {
-                  searchResults.data.map((user) => (
-                    <button
-                      className='user-search-item'
-                      onClick={handleUserSelect}
-                    >
-                      <p className='user-search-name'>{user.first_name} {user.last_name}</p>
-                      <p className='user-search-username'>{user.username}</p>
-                    </button>
-                  ))
-                }
-              </div>
+              <Dropdown>
+                <DropdownButton buttonId='user-search-dropdown-button'>
+                  <SearchBar dataSets={[searchableUsers]} onSearch={(results) => handleSearch(results)}></SearchBar>
+                </DropdownButton>
+                <DropdownContent>
+                  <div id='user-search-results'>
+                  {
+                    searchResults.data.map((user) => (
+                      <DropdownButton
+                        className='user-search-item'
+                        callback={() => handleUserSelect(user)}
+                      >
+                        <p className='user-search-name'>{user.first_name} {user.last_name}</p>
+                        <p className='user-search-username'>{user.username}</p>
+                      </DropdownButton>
+                    ))
+                  }
+                  </div>
+                </DropdownContent>
+              </Dropdown>              
             </div>
           </div>
           <div id="project-team-add-member-role">
@@ -804,7 +847,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         </PopupContent>
       </Popup>
     </div>
-  ), [allJobs, allUsers, closePopup, currentMember, currentRole, errorAddMember, handleNewMember, handleSearch, handleUserSelect, modifiedProject, searchResults.data]);
+  ), [allJobs, closePopup, currentMember, currentRole, errorAddMember, handleNewMember, handleSearch, handleUserSelect, modifiedProject, searchResults.data, searchableUsers]);
   const openPositionsContent: JSX.Element = useMemo(() => (
     <div id="project-team-open-positions-popup">
       <div className="positions-popup-list">
@@ -850,6 +893,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
     currentTeamTab === 0 ? currentTeamContent :
     currentTeamTab === 1 ?  openPositionsContent :
     <></>;
+
+
 
   // --- Complete component ---
   return (

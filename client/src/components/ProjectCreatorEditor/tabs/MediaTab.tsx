@@ -92,7 +92,7 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
   // Handle new thumbnail
   const handleThumbnailChange = useCallback((image: string) => {
     // Remove thumbnail
-    if (modifiedProject.thumbnail === image) {      
+    if (modifiedProject.thumbnail === image) {
       // Clear thumbnail entry
       setModifiedProject({
         ...modifiedProject,
@@ -128,7 +128,7 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
       </div>
       <div id="project-editor-image-ui">
         {
-          modifiedProject.images.map((image) => {
+          modifiedProject.images?.map((image) => {
             let src; // get image source
             if (image.image.startsWith('blob')){
               // temporary image, not uploaded

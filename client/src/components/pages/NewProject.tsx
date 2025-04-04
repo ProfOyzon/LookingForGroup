@@ -168,7 +168,8 @@ const NewProject = () => {
 
   //Lists of users who have worked on this project
   //Members - people who actively work on the project
-  const projectMembers = displayedProject === undefined ? [] : displayedProject.members;
+  // const projectMembers = displayedProject === undefined ? [] : displayedProject.members;
+  const projectMembers = displayedProject?.members; //FIXME: add profile image data to display in HTML
   //Contributors - people who have helped, but aren't actively working on the project
   const projectContributors = [];
   //People list holds whatever list is currently being displayed
@@ -176,10 +177,12 @@ const NewProject = () => {
 
   //HTML containing info on the members of the project
   const peopleContent =
-    projectMembers.length > 0 ? (
+    (projectMembers?.length && projectMembers.length > 0) ? (
       <>
-        {projectMembers.map((user) => {
-          const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
+        {projectMembers?.map((user) => {
+          //FIXME: get profile image from API call
+          // const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
+          const imgSrc = profilePicture; // temporary
           
           return (
             <div
@@ -201,6 +204,7 @@ const NewProject = () => {
       <div>Somehow, there are no team members.</div>
     );
 
+  //FIXME: contributors are not implemented in the database or within the project editor: implement or remove feature
   //HTML containing info on people who have contributed to the project (not necessarily members)
   const contributorContent =
     projectContributors !== undefined ? (
@@ -297,7 +301,7 @@ const NewProject = () => {
                             onClick={() => setViewedPosition(index)}
                             key={index}
                           >
-                            {job.job_title}
+                            {job?.job_title}
                           </button>
                         ))}
                       </div>
@@ -305,7 +309,7 @@ const NewProject = () => {
 
                     <div id="positions-popup-info">
                       <div id="positions-popup-info-title">
-                        {displayedProject.jobs[viewedPosition]?.job_title}
+                        {displayedProject.jobs[viewedPosition]?.job_title ?? undefined}
                       </div>
                       <div id="positions-popup-info-description">
                         <div id="position-description-header">What we are looking for:</div>

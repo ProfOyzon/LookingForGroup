@@ -673,10 +673,28 @@ const deletePicture = async (req, res) => {
 
 const deleteMember = async (req, res) => {
   // Get data
-  const { id } = req.params;
-  const { userId } = req.body;
+  const { id, userId } = req.params;
+  //const { userId } = req.body;
 
   try {
+    // Check if user making request is part of project
+    const [memberData] = await pool.query('SELECT m.user_id FROM members m WHERE m.project_id = ?', [id]);
+    let userIsMember = false;
+
+    for (let i = 0; i < memberData.length; i++) {
+      if (memberData[i].user_id === parseInt(userId)) {
+        userIsMember = true;
+        break;
+      }
+    }
+
+    if (!userIsMember) {
+      return res.status(400).json({
+        status: 400,
+        error: 'You must be a part of the project to remove a member!',
+      });
+    }
+
     // Remove member from a project
     await pool.query('DELETE FROM members WHERE project_id = ? AND user_id = ?', [id, userId]);
 

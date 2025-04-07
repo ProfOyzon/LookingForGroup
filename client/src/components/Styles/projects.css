@@ -2817,6 +2817,7 @@ My projects page style rules
   display: flex;
   flex-direction: row;
   gap: 10px;
+  position: relative;
 
   /* Placeholder text */
   .sort-by {
@@ -3191,7 +3192,7 @@ My projects page style rules
   border-radius: 10px;
   width: max-content;
   height: fit-content;
-  padding: 10px 0px;
+  padding: 10px;
   z-index: 1;
 
   display: flex;
@@ -3224,6 +3225,91 @@ My projects page style rules
 .card-delete-button:hover {
   background-color: #00000040;
   transition: background-color 0.2s;
+}
+
+.grid-card-options-list .small-popup,
+.list-card-options-list .small-popup {
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0 0 15px;
+  }
+
+  /* Covering stuff with !important sucks, but it shouldn't
+     have any significant consequences in this case */
+  hr {
+    border-color: var(--primary-color) !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .confirm-msg {
+    margin: 0 0 15px 0;
+    color: var(--neutral-gray);
+    font-style: italic;
+
+    span {
+      color: var(--neutral-gray);
+      font-style: italic;
+    }
+  }
+
+  .confirm-deny-btns {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .confirm-btn {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--invert-text);
+    background-color: var(--primary-color);
+    padding: 10px 17px;
+    border-radius: 55px;
+    min-width: 106px;
+    width: fit-content;
+  }
+
+  .confirm-btn:hover {
+    box-shadow: 0px 0px 10px 0px var(--shadow-color);
+  }
+
+  .deny-btn {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--main-text);
+    min-width: 106px;
+    width: fit-content;
+    border-radius: 55px;
+  }
+
+  .deny-btn:hover {
+    background-color: var(--neutral-gray);
+    color: var(--invert-text);
+  }
+}
+
+#popup-result .small-popup {
+  .success-msg {
+    font-weight: 700;
+    color: var(--tag-green-selected);
+    font-style: italic;
+  }
+
+  .error-msg {
+    font-weight: 700;
+    color: var(--error-delete-color);
+    font-style: italic;
+  }
 }
 
 /*

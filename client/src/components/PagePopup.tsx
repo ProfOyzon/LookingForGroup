@@ -56,32 +56,36 @@ export const openClosePopup = (state, setState) => {
 //  If multiple popups are being used on a page, use this to differentiate their layers
 //show - the useState variable determining whether the popup is visible or not
 //setShow - the function that sets the previously mentioned useState variable
-export const PagePopup = ({ children, width, height, popupId, zIndex, show, setShow }) => {
+export const PagePopup = ({ children, width, height, popupId, zIndex, show, setShow, onClose = () => {} }) => {
   if (!show) {
     return null;
   }
   return (
     <>
       <div id={`popup-cover-${popupId}`} className="popup-cover" style={{ zIndex: zIndex }} />
-      <div
-        id={`popup-container-${popupId}`}
-        className="popup"
-        style={{
-          width: width,
-          height: height,
-          top: `clamp(2.5vh, calc((100% - ${height})/2), 100%)`,
-          left: `clamp(2.5vw, calc((100% - ${width})/2), 100%)`,
-          zIndex: zIndex,
-        }}
-      >
-        <button
-          id="popup-close"
-          className="icon-button"
-          onClick={() => openClosePopup(show, setShow)}
+      <div id={`popup-container-${popupId}`} className='popup-container'>
+        <div
+          id={`popup-${popupId}`}
+          className="popup"
+          style={{
+            width: width,
+            height: height,
+            top: `clamp(2.5vh, calc((100% - ${height})/2), 100%)`,
+            left: `clamp(2.5vw, calc((100% - ${width})/2), 100%)`,
+            zIndex: zIndex,
+          }}
         >
-          <img src="images/icons/cancel.png" alt="close" />
-        </button>
-        {children}
+          <button
+            className="popup-close"
+            onClick={() => {
+              onClose();
+              openClosePopup(show, setShow);
+            }}
+          >
+            <img src="images/icons/cancel.png" alt="X" />
+          </button>
+          {children}
+        </div>
       </div>
     </>
   );

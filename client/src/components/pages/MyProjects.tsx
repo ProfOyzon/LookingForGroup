@@ -3,7 +3,7 @@ import '../Styles/projects.css';
 
 // import { MyProjectsDisplay } from "../MyProjectsDisplay";
 // import { profiles } from "../../constants/fakeData";
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 // import { PagePopup, openClosePopup } from "../PagePopup";
 import ToTopButton from '../ToTopButton';
 import CreditsFooter from '../CreditsFooter';
@@ -13,6 +13,7 @@ import { Header } from '../Header';
 import { ThemeIcon } from '../ThemeIcon';
 import DeleteProjectPopup from '../DeleteProjectPopup';
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
+import { LeaveDeleteContext } from '../../contexts/LeaveDeleteContext';
 
 const MyProjects = () => {
   // const [UID, setUID] = useState(profiles[0]._id);
@@ -180,10 +181,18 @@ const MyProjects = () => {
             const isOwner = (project.user_id === loggedIn);
 
             return (
-              <MyProjectsDisplayGrid 
-                projectData={project} 
-                isOwner={isOwner}
-              />
+              <LeaveDeleteContext.Provider
+                value={{
+                  isOwner,
+                  projId: project.project_id,
+                  userId: loggedIn,
+                  reloadProjects: getUserProjects,
+                }}
+              >
+                <MyProjectsDisplayGrid
+                  projectData={project}
+                />
+              </LeaveDeleteContext.Provider>
             );
           })}
         </div>
@@ -206,12 +215,20 @@ const MyProjects = () => {
           {userProjects.map(project => {
             // Check if user is the owner of this project
             const isOwner = (project.user_id === loggedIn);
-            
+
             return (
-              <MyProjectsDisplayList 
-                projectData={project}
-                isOwner={isOwner} 
-              />
+              <LeaveDeleteContext.Provider
+                value={{
+                  isOwner,
+                  projId: project.project_id,
+                  userId: loggedIn,
+                  reloadProjects: getUserProjects,
+                }}
+              >
+                <MyProjectsDisplayList
+                  projectData={project}
+                />
+              </LeaveDeleteContext.Provider>
             );
           })}
         </div>
@@ -414,23 +431,25 @@ const MyProjects = () => {
       <hr />
 
       {/* Project Grid/List */}
-      {(!dataLoaded) ? (
-        <div 
-          className='placeholder-spacing'
-          style={{justifyContent: 'center'}}
-        >
-          <div className='spinning-loader'></div>
-        </div>
-      ) : (
-        // Check if user is logged in, and display text if not
-        (!loggedIn) ? (
-          <div className='placeholder-spacing'>
-            <p>You have no projects, you're not logged in!</p>
+      <div>
+        {(!dataLoaded) ? (
+          <div
+            className='placeholder-spacing'
+            style={{ justifyContent: 'center' }}
+          >
+            <div className='spinning-loader'></div>
           </div>
         ) : (
-          <ProjectListSection userProjects={projectsList} />
-        )
-      )}
+          // Check if user is logged in, and display text if not
+          (!loggedIn) ? (
+            <div className='placeholder-spacing'>
+              <p>You have no projects, you're not logged in!</p>
+            </div>
+          ) : (
+            <ProjectListSection userProjects={projectsList} />
+          )
+        )}
+      </div>
       <CreditsFooter />
     </div>
   );

@@ -457,7 +457,8 @@ input:checked+.slider:before {
       background-color: var(--primary-color);
       padding: 10px 17px;
       border-radius: 55px;
-      width: 106px;
+      min-width: 106px;
+      width: fit-content;
     }
 
     .confirm-btn:hover {
@@ -472,7 +473,8 @@ input:checked+.slider:before {
       font-size: 20px;
       font-weight: 700;
       color: var(--main-text);
-      width: 106px;
+      min-width: 106px;
+      width: fit-content;
       border-radius: 55px;
     }
 

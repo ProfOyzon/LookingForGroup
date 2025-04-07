@@ -504,7 +504,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={currentDataSet} onSearch={handleSearch} />
+        <SearchBar dataSets={currentDataSet} onSearch={(results) => handleSearch(results)} />
         <div id="project-editor-tag-wrapper">
           <div id="project-editor-tag-search-tabs">
             <button

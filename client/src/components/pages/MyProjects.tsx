@@ -19,7 +19,7 @@ const MyProjects = () => {
   // const [UID, setUID] = useState(profiles[0]._id);
   // const [activePage, setActivePage] = useState(0);
 
-  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  // const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
 
   const [displayMode, setDisplayMode] = useState('grid');
   // Can be:
@@ -422,10 +422,10 @@ const MyProjects = () => {
         <button className="my-projects-new-project-button" onClick={(e) => { }}>
           + New Project
         </button>
-        <button className="delete" onClick={() => setIsDeletePopupOpen(true)}>
+        {/* <button className="delete" onClick={() => setIsDeletePopupOpen(true)}>
           -Delete Project test
         </button>
-        <DeleteProjectPopup show={isDeletePopupOpen} setShow={setIsDeletePopupOpen} />
+        <DeleteProjectPopup show={isDeletePopupOpen} setShow={setIsDeletePopupOpen} /> */}
       </div>
 
       <hr />

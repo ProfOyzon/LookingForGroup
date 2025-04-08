@@ -805,6 +805,9 @@ Project Creator and Editor style rules
 .project-editor-project-member > .edit-project-member-button {
   top: 6px;
   right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .edit-project-member-icon {

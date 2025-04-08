@@ -4,6 +4,7 @@ import { Popup, PopupButton, PopupContent } from "../../Popup";
 import profileImage from '../../../icons/profile-user.png';
 import { SearchBar } from "../../SearchBar";
 import { Dropdown, DropdownButton, DropdownContent } from "../../Dropdown";
+import { ThemeIcon } from "../../ThemeIcon";
 
 // --- Interfaces ---
 interface Image {
@@ -690,10 +691,16 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           </div>
           <Popup>
             <PopupButton className="edit-project-member-button">
-              <img
+              {/* <img
                 className="edit-project-member-icon"
                 src="/images/icons/pencil.png"
                 alt=""
+              /> */}
+              <ThemeIcon 
+                light={'assets/black/pencil.png'}
+                dark={'assets/white/pencil.png'}
+                alt={"edit"}
+                addClass={"edit-project-member-icon"}
               />
             </PopupButton>
             {/* Edit member button */}

@@ -180,6 +180,13 @@ const NewProject = () => {
     (projectMembers?.length && projectMembers.length > 0) ? (
       <>
         {projectMembers?.map((user) => {
+          // Don't show users that chose to hide themselves as a member of this project
+          if (user.profile_visibility !== 'public') {
+            return (
+              <></>
+            );
+          }
+
           //FIXME: get profile image from API call
           // const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
           const imgSrc = profilePicture; // temporary

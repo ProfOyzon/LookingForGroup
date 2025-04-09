@@ -204,8 +204,8 @@ const getProjectById = async (req, res) => {
 			        ON j.title_id = jt.title_id
                 WHERE j.project_id = ?) j
             ON p.project_id = j.project_id
-            LEFT JOIN (SELECT m.project_id, JSON_ARRAYAGG(JSON_OBJECT("user_id", m.user_id, "first_name", u.first_name, 
-            "last_name", u.last_name, "profile_image", u.profile_image, "job_title", jt.label)) AS members
+            LEFT JOIN (SELECT m.project_id, JSON_ARRAYAGG(JSON_OBJECT("user_id", m.user_id, "first_name", u.first_name, "last_name", u.last_name,
+            "profile_image", u.profile_image, "job_title", jt.label, "permissions", m.permissions, "profile_visibility", m.profile_visibility)) AS members
                 FROM members m
                 JOIN users u 
                     ON m.user_id = u.user_id
@@ -671,6 +671,156 @@ const deletePicture = async (req, res) => {
   }
 };
 
+// Adds a member to a project. Every column in member SQL table is required
+const addMember = async (req, res) => {
+  // Get data
+  const projId = parseInt(req.params.id);
+  const userId = parseInt(req.body.userId);
+  const titleId = parseInt(req.body.titleId);
+  const permission = parseInt(req.body.permission);
+
+  // Checks
+  if (!projId || projId < 1) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Missing or invalid project id',
+    });
+  } else if (!userId || userId < 1) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Missing or invalid user id',
+    });
+  } else if (!titleId || titleId < 1) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Missing or invalid job title id',
+    });
+  } else if (!permission || permission < 0) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Missing or invalid member permissions',
+    });
+  }
+
+  try {
+    // Make sure user making request is part of the project
+    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [projId]);
+    let requester = null;
+
+    for (let i = 0; i < memberData.length; i++) {
+      if (memberData[i].user_id === userId) {
+        requester = memberData[i];
+        break;
+      }
+    }
+
+    if (!requester) {
+      return res.status(400).json({
+        status: 400,
+        error: 'You must be a member of this project to add another member.',
+      });
+    } else if (requester.permissions <= 0) {
+      return res.status(400).json({
+        status: 400,
+        error: 'You do not have permission to add another member to this project.',
+      });
+    }
+
+    // Add member to project
+    const sql = `INSERT INTO members (project_id, user_id, title_id, permissions) VALUES (?, ?, ?, ?)`;
+    const values = [projId, userId, titleId, permission];
+    await pool.query(sql, values);
+
+    return res.status(201).json({
+      status: 201,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      status: 400,
+      error: 'An error occurred while adding a member to this project',
+    });
+  }
+};
+
+const updateMember = async (req, res) => {
+  // Get data
+  const projId = parseInt(req.params.id);
+  const userId = parseInt(req.body.userId);
+  const titleId = parseInt(req.body.titleId);
+  const permission = parseInt(req.body.permission);
+
+  // Checks
+  if (!projId || projId < 1) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Missing or invalid project id',
+    });
+  } else if (!userId || userId < 1) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Missing or invalid user id',
+    });
+  } else if (!titleId || titleId < 1) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Missing or invalid job title id',
+    });
+  } else if (!permission || permission < 0) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Missing or invalid member permissions',
+    });
+  }
+
+  try {
+    // Make sure user is part of the project
+    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [id]);
+    let requester = null;
+    let recipient = null;
+
+    for (let i = 0; i < memberData.length; i++) {
+      if (memberData[i] === userId) {
+        recipient = memberData[i];
+      } else if (memberData[i] === req.session.userId) {
+        requester = memberData[i];
+      }
+    }
+
+    if (!requester) {
+      return res.status(400).json({
+        status: 400,
+        error: 'You must be a member of this project to update another member.',
+      });
+    } else if (!recipient) {
+      return res.status(400).json({
+        status: 400,
+        error: 'User is not currently a member of this project.',
+      });
+    } else if ((userId !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
+      return res.status(400).json({
+        status: 403,
+        error: `You don't have the required permissions to update this user.`
+      })
+    }
+
+    // Update contents of project
+    const sql = `UPDATE members SET title_id = ?, permissions = ?
+      WHERE project_id = ? AND WHERE user_id = ?`;
+    const values = [titleId, permission, visibility, projId, userId];
+    await pool.query(sql, values);
+
+    return res.status(200).json({
+      status: 200,
+    });
+  } catch (err) {
+    return res.status(400).json({
+      status: 400,
+      error: 'Something went wrong while updating user membership',
+    });
+  }
+};
+
 const deleteMember = async (req, res) => {
   // Get data
   const { id, userId } = req.params;
@@ -678,20 +828,33 @@ const deleteMember = async (req, res) => {
 
   try {
     // Check if user making request is part of project
-    const [memberData] = await pool.query('SELECT m.user_id FROM members m WHERE m.project_id = ?', [id]);
-    let userIsMember = false;
+    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [id]);
+    let requester = null;
+    let recipient = null;
 
     for (let i = 0; i < memberData.length; i++) {
       if (memberData[i].user_id === parseInt(userId)) {
-        userIsMember = true;
-        break;
+        recipient = memberData[i];
+      } else if (memberData[i].user_id === req.session.userId) {
+        requester = memberData[i];
       }
     }
 
-    if (!userIsMember) {
+    if (!requester) {
+      // Make sure user in current session is a member of project, and have lower permissions
       return res.status(400).json({
         status: 400,
-        error: 'You must be a part of the project to remove a member!',
+        error: 'You must be a member of the project to remove another member.',
+      });
+    } else if (!recipient) {
+      return res.status(400).json({
+        status: 400,
+        error: 'User is not currently a member of this project.',
+      });
+    } else if ((userId !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
+      return res.status(400).json({
+        status: 403,
+        error: `You don't have the required permissions to remove this user from the project.`
       });
     }
 
@@ -705,7 +868,7 @@ const deleteMember = async (req, res) => {
     console.log(err);
     return res.status(400).json({
       status: 400,
-      error: "An error occurred while removing a project's member",
+      error: "An error occurred while attempting to removing a project's member",
     });
   }
 };
@@ -721,5 +884,7 @@ export default {
   addPicture,
   updatePicturePositions,
   deletePicture,
+  addMember,
+  updateMember,
   deleteMember,
 };

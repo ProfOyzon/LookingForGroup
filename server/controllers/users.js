@@ -473,7 +473,7 @@ const getUsernameBySession = async (req, res) => {
 
 const updateUser = async (req, res) => {
   // Get input data
-  const { id } = req.params;
+  const id = parseInt(req.params.id);
   const {
     firstName,
     lastName,
@@ -1004,7 +1004,7 @@ const getVisibleProjects = async (req, res) => {
 
 const updateProjectVisibility = async (req, res) => {
   // Get input data
-  const { id } = req.params;
+  const id = parseInt(req.params.id);
   const { projectId, visibility } = req.body;
 
   // Checks

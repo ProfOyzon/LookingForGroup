@@ -19,6 +19,8 @@ router.get('/api/projects/:id/pictures', projCtrl.getPictures);
 router.post('/api/projects/:id/pictures', mid.checkLogin, mid.checkImageFile, projCtrl.addPicture);
 router.put('/api/projects/:id/pictures', mid.checkLogin, projCtrl.updatePicturePositions);
 router.delete('/api/projects/:id/pictures', mid.checkLogin, projCtrl.deletePicture);
+router.post('/api/projects/:id/members', mid.checkLogin, projCtrl.addMember);
+router.put('/api/projects/:id/members', mid.checkLogin, projCtrl.updateMember);
 router.delete('/api/projects/:id/members/:userId', mid.checkLogin, projCtrl.deleteMember);
 
 export default router;

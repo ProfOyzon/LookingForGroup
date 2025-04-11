@@ -102,7 +102,8 @@ const NewProject = () => {
 
   // State variable used to determine permissions level, and if user should have edit access
   const [userPerms, setUserPerms] = useState(-1);
-  const [userId, setUserId] = useState(0);
+
+  const [user, setUser] = useState();
 
   const [followCount, setFollowCount] = useState(0);
   const [isFollowing, setFollowing] = useState(false);
@@ -125,7 +126,10 @@ const NewProject = () => {
       const authData = await authRes.json();
 
       if (authData.data) {
-        setUserId(authData.data);
+        const userRes = await fetch(`/api/users/${authData.data}`);
+        const userData = await userRes.json();
+
+        setUser(userData[0]);
         const projectMembers = projectData.data[0].members;
 
         for (let i = 0; i < projectMembers.length; i++) {
@@ -199,12 +203,11 @@ const NewProject = () => {
 
   //HTML elements containing buttons used in the info panel
   //Change depending on who's viewing the project page (Outside user, project member, project owner, etc.)
-  // Conditional should be: (userPerms > 0). Set to true for testing
-  const buttonContent = (true) ? (
+  const buttonContent = (userPerms > 0) ? (
     <>
       {
         <>
-          <ProjectCreatorEditor newProject={false} />
+          <ProjectCreatorEditor newProject={false} permissions={userPerms} />
         </>
       }
     </>
@@ -212,7 +215,7 @@ const NewProject = () => {
     <>
       {
         <>
-          {(userId !== 0) ? (
+          {(user.user_id !== 0) ? (
             <>
               { /* Heart icon, with number indicating follows */}
               <div className='project-info-followers'>
@@ -222,7 +225,7 @@ const NewProject = () => {
                 <button
                   className={`follow-icon ${isFollowing ? 'following' : ''}`}
                   onClick={() => {
-                    let url = `/api/users/${userId}/followings/projects`;
+                    let url = `/api/users/${user.user_id}/followings/projects`;
 
                     if (!isFollowing) {
                       sendPost(url, { projectId: projectID }, () => {
@@ -280,7 +283,7 @@ const NewProject = () => {
                               <PopupButton
                                 className='confirm-btn'
                                 callback={async () => {
-                                  const url = `/api/projects/${projectID}/members/${userId}`;
+                                  const url = `/api/projects/${projectID}/members/${user.user_id}`;
 
                                   // For now, just reload the page. Ideally, there'd be something more
                                   sendDelete(url, () => {

@@ -51,7 +51,8 @@ interface User {
 interface Props {
   newProject: boolean;
   buttonCallback?: () => void;
-  user?: User
+  user?: User;
+  permissions?: number;
 }
 
 // default value for project data
@@ -78,7 +79,7 @@ const emptyProject: ProjectData = {
  * 
  * @returns React component Popup
  */
-export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = () => {}, user }) => {
+export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = () => {}, user, permissions }) => {
   //Get project ID from search parameters
   const urlParams = new URLSearchParams(window.location.search);
   const projectID = urlParams.get('projectID');
@@ -468,7 +469,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
               currentTab === 0 ? <GeneralTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
               currentTab === 1 ? <MediaTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
               currentTab === 2 ? <TagsTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
-              currentTab === 3 ? <TeamTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorMember={setErrorAddMember} setErrorPosition={setErrorAddPosition}/> :
+              currentTab === 3 ? <TeamTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorMember={setErrorAddMember} setErrorPosition={setErrorAddPosition} permissions={permissions} /> :
               currentTab === 4 ? <LinksTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorLinks={setErrorLinks} /> :
               <></>
             }

@@ -199,7 +199,8 @@ const NewProject = () => {
 
   //HTML elements containing buttons used in the info panel
   //Change depending on who's viewing the project page (Outside user, project member, project owner, etc.)
-  const buttonContent = (userPerms > 0) ? (
+  // Conditional should be: (userPerms > 0). Set to true for testing
+  const buttonContent = (true) ? (
     <>
       {
         <>

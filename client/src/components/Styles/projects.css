@@ -2240,10 +2240,106 @@ Project Carousel style rules
   height: 28px;
   margin-left: auto;
   align-items: center;
-}
+  margin-bottom: 10px; /* For alignment with Project Title */
+  gap: 7px;
 
-#project-info-buttons button {
-  text-wrap: nowrap;
+  button {
+    text-wrap: nowrap;
+  }
+
+  .project-info-followers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .follow-amt {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--primary-color);
+    height: fit-content;
+    transition: 0.2s;
+  }
+
+  .follow-amt.following {
+    color: #F14F76;
+  }
+
+  .follow-icon {
+    border: none;
+    background: none;
+    outline: none;
+    transition: 0.2s;
+    height: fit-content;
+    font-size: 25px;
+  }
+
+  .follow-icon.following {
+    color: #F14F76;
+
+    .fa-heart {
+      color: #F14F76 !important;
+    }
+  }
+
+  .follow-icon:hover {
+    transform: scale(1.2);
+  }
+
+  .project-info-dropdown-btn {
+    box-sizing: border-box;
+    background-color: var(--header-color);
+    border: 0px;
+    border-radius: 20px;
+    color: var(--primary-color);
+    margin: 0;
+    text-align: right;
+    font-size: 12px;
+    font-family: Inter;
+    font-weight: 400;
+    letter-spacing: 2px;
+  }
+
+  .project-info-dropdown-btn:hover {
+    background-color: var(--border-color);
+  }
+
+  #project-info-dropdown {
+    text-align: left;
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color: var(--dropdown-color);
+    box-shadow: 0 0 10px 0 var(--shadow-color);
+    border: none;
+    padding: 10px;
+  }
+
+  .project-info-dropdown-option {
+    font-weight: 400 !important;
+    background: none;
+    display: flex;
+    width: 100%;
+    border-radius: 10px;
+    gap: 10px;
+    align-items: center;
+    margin: 0;
+    flex-shrink: 0;
+    color: var(--main-text);
+    border: none;
+    height: 25px;
+  }
+
+  .project-info-dropdown-option:hover {
+    background-color: var(--header-color) !important;
+  }
+
+  #project-info-report {
+    color: var(--error-delete-color);
+
+    .fa-solid {
+      color: var(--error-delete-color);
+    }
+  }
 }
 
 /* #project-info-buttons img {

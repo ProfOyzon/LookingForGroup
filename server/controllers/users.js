@@ -455,7 +455,7 @@ const getUserByEmail = async (req, res) => {
 const getUsernameBySession = async (req, res) => {
   try {
     const [user] = await pool.query(
-      `SELECT first_name, last_name, username, primary_email FROM users WHERE user_id = ?`,
+      `SELECT first_name, last_name, username, primary_email, profile_image FROM users WHERE user_id = ?`,
       [req.session.userId]
     );
     return res.status(200).json({
@@ -1087,8 +1087,8 @@ const getProjectFollowing = async (req, res) => {
 
 const addProjectFollowing = async (req, res) => {
   // Get input data
-  const { id } = req.params;
-  const { projectId } = req.body;
+  const id = parseInt(req.params.id);
+  const projectId = parseInt(req.body.projectId);
 
   // Checks
   if (req.session.userId !== id) {
@@ -1124,8 +1124,8 @@ const addProjectFollowing = async (req, res) => {
 
 const deleteProjectFollowing = async (req, res) => {
   // Get input data
-  const { id } = req.params;
-  const { projectId } = req.body;
+  const id = parseInt(req.params.id);
+  const projId = parseInt(req.params.projId);
 
   // Checks
   if (req.session.userId !== id) {
@@ -1133,7 +1133,7 @@ const deleteProjectFollowing = async (req, res) => {
       status: 401,
       error: 'Unauthorized',
     });
-  } else if (!projectId || projectId < 1) {
+  } else if (!projId || projId < 1) {
     return res.status(400).json({
       status: 400,
       error: 'Missing project id',
@@ -1144,7 +1144,7 @@ const deleteProjectFollowing = async (req, res) => {
     // Delete a project the user was following
     await pool.query('DELETE FROM project_followings WHERE user_id = ? AND project_id = ?', [
       id,
-      projectId,
+      projId,
     ]);
 
     return res.status(200).json({

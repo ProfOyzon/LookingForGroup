@@ -1141,6 +1141,12 @@ Header style rules
     width: 32px;
   }
 
+  #profile-img-icon.rounded {
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid var(--primary-color);
+  }
+
   #dropdown-arrow {
     width: 15px;
     margin-top: 5px;
@@ -1181,6 +1187,12 @@ Header style rules
 #header-profile-dropdown img {
   height: 28px;
   width: 28px;
+}
+
+#header-profile-dropdown img.rounded {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--primary-color);
 }
 
 #header-profile-dropdown button {

@@ -270,6 +270,7 @@ const NewProfile = () => {
               alt={'Like'}
             />
           </button>
+          { /* TO-DO: Implement Share, Block, and Report functionality */ }
           <Dropdown>
             <DropdownButton>
               <ThemeIcon

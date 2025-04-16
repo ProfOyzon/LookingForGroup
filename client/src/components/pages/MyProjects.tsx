@@ -337,18 +337,22 @@ const MyProjects = () => {
               { 
                 markup: <><i className="fa-solid fa-arrow-down-short-wide"></i>Newest</>,
                 value: 'newest',
+                disabled: false,
               },
               {
                 markup: <><i className="fa-solid fa-arrow-down-wide-short"></i>Oldest</>,
                 value: 'oldest',
+                disabled: false,
               },
               {
                 markup: <><i className="fa-solid fa-arrow-down-a-z"></i>A-Z</>,
                 value: 'a-z',
+                disabled: false,
               },
               {
                 markup: <><i className="fa-solid fa-arrow-down-z-a"></i>Z-A</>,
-                value: 'z-a'
+                value: 'z-a',
+                disabled: false,
               },
             ]}
           />

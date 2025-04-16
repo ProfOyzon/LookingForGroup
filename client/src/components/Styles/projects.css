@@ -430,6 +430,10 @@ Project Creator and Editor style rules
   select {
     background-color: var(--bg-color);
   }
+
+  .select-button {
+    background-color: var(--bg-color);
+  }
 }
 
 .project-editor-input-item > .project-editor-extra-info,

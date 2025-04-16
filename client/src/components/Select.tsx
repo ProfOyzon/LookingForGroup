@@ -13,6 +13,7 @@ type SelectContextProps = {
 
 type SelectButtonProps = {
     placeholder: string;
+    initialVal: string;
     buttonId?: string;
     callback?: Function;
     className?: string;
@@ -21,6 +22,7 @@ type SelectButtonProps = {
 type SelectOptions = {
     markup: ReactElement;
     value: string;
+    disabled: boolean;
 }
 
 type SelectOptionsProps = {
@@ -50,6 +52,7 @@ export const SelectContext = createContext<SelectContextProps>({
 // Button component
 export const SelectButton: React.FC<SelectButtonProps> = ({
     placeholder,
+    initialVal = '',
     buttonId = '',
     className = '',
     callback = (e) => {}
@@ -69,8 +72,8 @@ export const SelectButton: React.FC<SelectButtonProps> = ({
                 toggleOpen();
             }}
         >
-            {(value) ? (
-                <div className='value'>{value}</div>
+            {(value || initialVal) ? (
+                <div className='value'>{(value) ? value : initialVal}</div>
             ) : (
                 <span className='placeholder'>{placeholder}</span>
             )}
@@ -89,7 +92,7 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
     rightAlign = false,
     callback = () => {} 
 }) => {
-    const { open, setValue } = useContext(SelectContext);
+    const { open, setOpen, setValue } = useContext(SelectContext);
     
     if (open) {
         return (
@@ -102,6 +105,7 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
                     <button
                         key={index}
                         value={option.value}
+                        disabled={option.disabled}
                         className={
                             `${className} 
                             select-option 
@@ -110,6 +114,7 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
                         onClick={(e) => {
                             setValue(option.markup);
                             callback(e);
+                            setOpen(false);
                         }}
                     >{option.markup}</button>
                 )}

@@ -935,7 +935,8 @@ Project Creator and Editor style rules
 }
 
 #project-team-add-member-name,
-#project-team-add-member-role {
+#project-team-add-member-role,
+#project-team-add-member-permissions {
   display: flex;
   align-items: center;
   align-self: stretch;

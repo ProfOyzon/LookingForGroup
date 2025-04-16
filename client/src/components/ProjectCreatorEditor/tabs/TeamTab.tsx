@@ -45,6 +45,7 @@ interface User {
   first_name: string;
   last_name: string;
   profile_image: string;
+  permissions: number;
 }
 
 // --- Variables ---
@@ -72,6 +73,7 @@ const emptyMember = {
   job_title: '',
   profile_image: '',
   user_id: -1,
+  permissions: -1,
 };
 
 const emptyJob = {
@@ -89,6 +91,7 @@ const availabilityOptions = ['Full-time', 'Part-time', 'Flexible'];
 const durationOptions = ['Short-term', 'Long-term'];
 const locationOptions = ['On-site', 'Remote', 'Hybrid'];
 const compensationOptions = ['Unpaid', 'Paid'];
+const permissionOptions = ['Project Member', 'Project Manager', 'Project Owner'];
 
 // --- Component ---
 export const TeamTab = ({ isNewProject = false, projectData = defaultProject, setProjectData, setErrorMember, setErrorPosition, permissions }) => {
@@ -766,6 +769,28 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                       />
                     </Select>
                   </div>
+                  <div id="project-team-add-member-permissions">
+                    <label>Permissions</label>
+                    <Select>
+                      <SelectButton
+                        placeholder=''
+                        initialVal={permissionOptions[m.permissions]}
+                        className=''
+                      />
+                      <SelectOptions
+                        callback={(e) => {
+                          activeMember.permissions = parseInt(e.target.value);
+                        }}
+                        options={permissionOptions.map((perm, index) => {
+                          return {
+                            markup: <>{perm}</>,
+                            value: `${index}`,
+                            disabled: (permissions < index),
+                          };
+                        })}
+                      />
+                    </Select>
+                  </div>
                   {/* Action buttons */}
                   <div className="project-editor-button-pair">
                     <PopupButton
@@ -775,7 +800,10 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                         const members = modifiedProject.members.map((m) =>
                           m.user_id === activeMember.user_id ? activeMember : m
                         );
-                        setModifiedProject({ ...modifiedProject, members });
+                        
+                        const tempProject = { ...modifiedProject, members };
+                        console.log(tempProject);
+                        setModifiedProject(tempProject);
                       }}
                     >
                       Save
@@ -884,7 +912,6 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
               />
               <SelectOptions
                 callback={(e) => {
-                  console.log(e.target.value);
                   setNewMember({ ...newMember, job_title: e.target.value });
                 }}
                 options={allJobs.map((job: { title_id: number; label: string }) => {
@@ -892,6 +919,28 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                     markup: <>{job.label}</>,
                     value: job.label,
                     disabled: false,
+                  };
+                })}
+              />
+            </Select>
+          </div>
+          <div id="project-team-add-member-permissions">
+            <label>Permissions</label>
+            <Select>
+              <SelectButton
+                placeholder='Select'
+                initialVal=''
+                className=''
+              />
+              <SelectOptions
+                callback={(e) => {
+                  setNewMember({ ...newMember, permissions: parseInt(e.target.value) })
+                }}
+                options={permissionOptions.map((perm, index) => {
+                  return {
+                    markup: <>{perm}</>,
+                    value: `${index}`,
+                    disabled: (permissions < index),
                   };
                 })}
               />

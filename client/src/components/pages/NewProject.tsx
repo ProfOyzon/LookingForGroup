@@ -103,7 +103,7 @@ const NewProject = () => {
   // State variable used to determine permissions level, and if user should have edit access
   const [userPerms, setUserPerms] = useState(-1);
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
   const [followCount, setFollowCount] = useState(0);
   const [isFollowing, setFollowing] = useState(false);
@@ -215,7 +215,7 @@ const NewProject = () => {
     <>
       {
         <>
-          {(user.user_id !== 0) ? (
+          {(user && user.user_id !== 0) ? (
             <>
               { /* Heart icon, with number indicating follows */}
               <div className='project-info-followers'>

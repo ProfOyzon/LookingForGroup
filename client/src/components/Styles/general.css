@@ -10,6 +10,7 @@ Component Style rules
     -Header
     -Search
     -Dropdown
+    - Select
     -Scrollbar
     -Tag Filter
     -Image carousel
@@ -1310,6 +1311,94 @@ Dropdown style rules
   position: absolute;
   background: none;
   z-index: 2;
+}
+
+/*
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+------------------------------------------------------------------------------------------------
+Select style rules
+------------------------------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+*/
+.select-container {
+  position: relative;
+}
+
+.select {
+  border-radius: 10px;
+  position: absolute;
+  background: none;
+  z-index: 2;
+  margin-top: 5px;
+  box-shadow: 0px 0px 10px 0px var(--shadow-color);
+}
+
+.select-button {
+  width: 166px;
+  height: 45px;
+  display: flex;
+  border: none;
+  border-radius: 10px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--header-color);
+  padding: 15px 15px;
+  font-size: 15px;
+
+  .value {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .placeholder {
+    color: var(--neutral-gray);
+    font-style: italic;
+  }
+}
+
+.select-button-arrow {
+  width: 12px;
+  height: 8px;
+  transform: scale(1, 1);
+}
+
+.select-button-arrow.opened {
+  transform: scale(1, -1);
+}
+
+.select-option {
+  width: 166px;
+  height: 45px;
+  border: none;
+  background-color: var(--dropdown-color);
+  padding: 15px 15px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  gap: 15px;
+}
+
+.select-option:hover {
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+
+  .fa, .fa-solid, .fa-regular {
+    color: var(--invert-text) !important;
+  }
+}
+
+.select-option.top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.select-option.bottom {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 /*

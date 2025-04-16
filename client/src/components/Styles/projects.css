@@ -849,14 +849,29 @@ Project Creator and Editor style rules
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+#user-search-dropdown-button {
+  background: none;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+#user-search-container .dropdown {
+  width: 100%;
 }
 #user-search-container .search-bar { /* Override for default SearchBar component */
   display: flex;
   align-items: center;
-  background-color: var(--bg-color);
-  width: inherit;
+  background-color: var(--header-color);
+  color: var(--main-text);
+  width: 100%;
   border-radius: 10px;
-  border: 1px solid var(--border-color);
+  box-sizing: border-box;
+  height: fit-content;
+  /* border: 1px solid var(--border-color); */
 }
 #user-search-container .search-input { /* Override for default SearchBar component */
   border: none;
@@ -866,20 +881,44 @@ Project Creator and Editor style rules
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 50px;
   z-index: 1;
+  width: 100%;
+  max-height: 225px;
+  overflow-y: scroll;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin-top: 5px;
+  box-shadow: 0 0 10px 0 var(--shadow-color);
 }
 .user-search-item {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 13px 15px;
+  padding: 15px;
+  width: 100%;
+  min-height: 45px;
+  background-color: var(--dropdown-color);
+  border: none;
+}
+.user-search-item.top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.user-search-item.bottom {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.user-search-item:hover {
+  background-color: var(--primary-color);
+  color: var(--invert-text);
 }
 .user-search-name {
   color: var(--main--text);
+  margin: 0;
 }
 .user-search-username {
-  color: var(--neutral-gray)
+  color: var(--neutral-gray);
+  margin: 0;
 }
 
 #project-editor-project-members > .popup-container > .popup,
@@ -892,7 +931,7 @@ Project Creator and Editor style rules
   padding: 20px 40px;
   align-items: center;
   gap: 15px;
-  background: var(--header-color);
+  background: var(--bg-color);
 }
 
 #project-team-add-member-name,
@@ -908,13 +947,23 @@ Project Creator and Editor style rules
 }
 
 #project-team-add-member-name input,
-#project-team-add-member-role select {
+#project-team-add-member-role select,
+#project-team-add-member-role .select-button {
   margin: 0;
-  padding: 15px;
+  padding: 0 15px;
+  background-color: var(--header-color);
+}
+
+#project-team-add-member-role .select {
+  max-height: 225px;
 }
 
 #project-team-edit-member-card {
-  background-color: #0a0a0a;
+  background-color: var(--header-color);
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 20px;
+  max-width: 100%;
 }
 
 #project-team-delete-member-text {

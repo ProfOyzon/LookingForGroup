@@ -129,7 +129,9 @@ const NewProject = () => {
         const userRes = await fetch(`/api/users/${authData.data}`);
         const userData = await userRes.json();
 
-        setUser(userData[0]);
+        console.log('user')
+        console.log(userData.data);
+        setUser(userData.data[0]);
         const projectMembers = projectData.data[0].members;
 
         for (let i = 0; i < projectMembers.length; i++) {
@@ -207,7 +209,7 @@ const NewProject = () => {
     <>
       {
         <>
-          <ProjectCreatorEditor newProject={false} permissions={userPerms} />
+          <ProjectCreatorEditor newProject={false} permissions={userPerms} user={user} />
         </>
       }
     </>

@@ -5,6 +5,7 @@ import profileImage from '../../../icons/profile-user.png';
 import { SearchBar } from "../../SearchBar";
 import { Dropdown, DropdownButton, DropdownContent } from "../../Dropdown";
 import { ThemeIcon } from "../../ThemeIcon";
+import { Select, SelectButton, SelectOptions } from "../../Select";
 
 // --- Interfaces ---
 interface Image {
@@ -677,7 +678,9 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       {modifiedProject.members.map((m) => {
         console.log(`User permissions: ${permissions}`);
         console.log(`${m.first_name} permissions: ${m.permissions}`);
-        
+
+        let activeMember = m;
+
         return (
           <div className="project-editor-project-member">
             <img
@@ -693,7 +696,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                 {m.job_title}
               </div>
             </div>
-            {(m.permissions < permissions) ? (
+            {((m.permissions < permissions) || (modifiedProject.userId === m.user_id)) ? (
               <Popup>
                 <PopupButton className="edit-project-member-button">
                   {/* <img
@@ -726,7 +729,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                   </div>
                   <div id="project-team-add-member-role">
                     <label>Role</label>
-                    <select
+                    {/* <select
                       key={currentRole}
                       onChange={(e) => {
                         // update member's role temporarily
@@ -742,7 +745,26 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                           {job.label}
                         </option>
                       ))}
-                    </select>
+                    </select> */}
+                    <Select>
+                      <SelectButton
+                        placeholder=''
+                        initialVal={m.job_title}
+                        className=''
+                      />
+                      <SelectOptions
+                        callback={(e) => {
+                          activeMember.job_title = e.target.value;
+                        }}
+                        options={allJobs.map((job: { title_id: number; label: string }) => {
+                          return {
+                            markup: <>{job.label}</>,
+                            value: job.label,
+                            disabled: false,
+                          };
+                        })}
+                      />
+                    </Select>
                   </div>
                   {/* Action buttons */}
                   <div className="project-editor-button-pair">
@@ -751,7 +773,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                       callback={() => {
                         // update members
                         const members = modifiedProject.members.map((m) =>
-                          m.user_id === currentMember.user_id ? currentMember : m
+                          m.user_id === activeMember.user_id ? activeMember : m
                         );
                         setModifiedProject({ ...modifiedProject, members });
                       }}
@@ -826,9 +848,13 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                 <DropdownContent>
                   <div id='user-search-results'>
                     {
-                      searchResults.data.map((user) => (
+                      searchResults.data.map((user, index) => (
                         <DropdownButton
-                          className='user-search-item'
+                          className={
+                            `user-search-item 
+                            ${(index === 0) ? 'top' : ''}
+                            ${(index === searchResults.data.length - 1) ? 'bottom' : ''}`
+                          }
                           callback={() => handleUserSelect(user)}
                         >
                           <p className='user-search-name'>{user.first_name} {user.last_name}</p>
@@ -843,13 +869,33 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           </div>
           <div id="project-team-add-member-role">
             <label>Role</label>
-            <select id="project-team-add-member-role-select" key={currentRole}>
+            {/* <select id="project-team-add-member-role-select" key={currentRole}>
               {allJobs.map((job: { title_id: number; label: string }) => (
                 <option key={job.title_id} selected={job.title_id === currentRole}>
                   {job.label}
                 </option>
               ))}
-            </select>
+            </select> */}
+            <Select>
+              <SelectButton
+                placeholder='Select'
+                initialVal=''
+                className=''
+              />
+              <SelectOptions
+                callback={(e) => {
+                  console.log(e.target.value);
+                  setNewMember({ ...newMember, job_title: e.target.value });
+                }}
+                options={allJobs.map((job: { title_id: number; label: string }) => {
+                  return {
+                    markup: <>{job.label}</>,
+                    value: job.label,
+                    disabled: false,
+                  };
+                })}
+              />
+            </Select>
           </div>
           {/* Action buttons */}
           <div className="project-editor-button-pair">

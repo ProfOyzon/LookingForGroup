@@ -51,7 +51,7 @@ export const SelectContext = createContext<SelectContextProps>({
 // --------------------
 // Button component
 export const SelectButton: React.FC<SelectButtonProps> = ({
-    placeholder,
+    placeholder = '',
     initialVal = '',
     buttonId = '',
     className = '',
@@ -100,10 +100,10 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
                 className='select'
                 style={rightAlign ? { right: 0 } : {}}
             >
-                {/* Using index as key is usually bad, but order shouldn't change */}
+                {/* Using index as key is usually bad, but order is not changing here */}
                 {options.map((option, index) => 
                     <button
-                        key={index}
+                        key={`${index}-${option.value}`}
                         value={option.value}
                         disabled={option.disabled}
                         className={

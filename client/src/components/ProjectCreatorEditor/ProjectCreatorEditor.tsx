@@ -45,7 +45,7 @@ interface User {
   last_name: string,
   username: string,
   primary_email: string,
-  userId: number
+  user_id: number
 }
 
 interface Props {
@@ -118,7 +118,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
             return;
           }
   
-          projectData.userId = user?.userId;
+          projectData.userId = user?.user_id;
   
           // save project data
           setProjectData(projectData);
@@ -140,15 +140,15 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
       const makeDefaultProjectData = async () => {
         // adjust default and set as project data
         const projectData = emptyProject;
-        projectData.userId = user?.userId;
+        projectData.userId = user?.user_id;
 
         // Get user profile image
         try {
-          const response = await fetch(`/api/users/${user?.userId}`);
+          const response = await fetch(`/api/users/${user?.user_id}`);
           const userResponse = await response.json();
           const data = userResponse.data[0];
           console.log('data', data);
-          console.log('user id used', user?.userId);
+          console.log('user id used', user?.user_id);
           console.log('user: ', user);
 
           // Add creator as Project Lead
@@ -158,7 +158,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
             job_title: 'Project Lead',
             title_id: 73,
             profile_image: data?.profile_image || '',
-            user_id: user?.userId || 0
+            user_id: user?.user_id || 0
           };
 
           projectData.members = [member];

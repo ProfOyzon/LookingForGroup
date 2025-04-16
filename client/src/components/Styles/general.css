@@ -1322,6 +1322,7 @@ Select style rules
 */
 .select-container {
   position: relative;
+  width: 100%;
 }
 
 .select {
@@ -1388,6 +1389,12 @@ Select style rules
   align-items: center;
   cursor: pointer;
   gap: 15px;
+}
+
+.select-option:disabled {
+  background-color: var(--tag-grey-unselected);
+  color: var(--neutral-gray);
+  cursor: not-allowed;
 }
 
 .select-option:hover {

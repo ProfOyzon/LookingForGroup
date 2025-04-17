@@ -104,7 +104,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
 
   // Get project data on projectID change
   useEffect(() => {
-    console.log('new project', newProject);
     if (!newProject) {
       const getProjectData = async () => {
         const url = `/api/projects/${projectID}`;
@@ -136,7 +135,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
     // reset link error
     setErrorLinks('');
     if (newProject) {
-      console.log('new tab and new project, making base member')
       const makeDefaultProjectData = async () => {
         // adjust default and set as project data
         const projectData = emptyProject;
@@ -162,7 +160,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
           };
 
           projectData.members = [member];
-          console.log('added base member: ', projectData.members);
 
           // Save to temp project
           setModifiedProject(projectData);
@@ -475,7 +472,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
             }
           </div>
 
-          <PopupButton buttonId="project-editor-save" callback={saveProject} doNotClose={!failCheck}>
+          <PopupButton buttonId="project-editor-save" callback={saveProject} doNotClose={() => !failCheck}>
             Save Changes
           </PopupButton>
         </div>

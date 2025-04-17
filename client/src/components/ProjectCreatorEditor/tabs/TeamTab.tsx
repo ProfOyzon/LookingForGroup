@@ -269,18 +269,33 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
     const member = newMember;
 
+    // check if member is already in project
+    const isMember = modifiedProject.members.find((m) => m.user_id === member.user_id);
+    if (isMember) {
+      setErrorAddMember('User is already on the team');
+      setClosePopup(false);
+      return;
+    }
+
     // get name
     if (!newMember.first_name || !newMember.last_name) {
-      setErrorAddMember('Error getting name data');
+      setErrorAddMember('Can\'t find user');
       setClosePopup(false);
       return;
     }
 
     // get job title
     if (!newMember.job_title) {
-      setErrorAddMember('Error getting job data');
-      setClosePopup(false);
-      return;
+      // try to get job title from role selection
+      const role = document.querySelector<HTMLSelectElement>('#project-team-add-member-role-select');
+      if (role && role.value !== 'Select') {
+        newMember.job_title = role.value;
+      }
+      else {
+        setErrorAddMember('Select a role');
+        setClosePopup(false);
+        return;
+      }
     }
 
     // Match this user with all users to get profile image
@@ -297,10 +312,10 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       setErrorAddMember('');
       // close popup
       setClosePopup(true);
+      // reset member
+      setNewMember(emptyMember);
       // add member
-      setNewMember(member);
-      modifiedProject.members.push(newMember);
-      console.log('new members!', modifiedProject.members);
+      modifiedProject.members.push(member);
     }
   }, [allUsers, modifiedProject.members, newMember]);
 
@@ -319,7 +334,10 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   }, [allUsers, searchResults.data]);
 
   // Handle clicking on a member in the search dropdown
-  const handleUserSelect = useCallback((user: User) => {
+  const handleUserSelect = useCallback(async (user: User) => {
+    // reset error
+    setErrorAddMember('');
+
     // set text input
     const input = document.querySelector<HTMLInputElement>('#user-search-container .search-input');
     if (input) {
@@ -328,9 +346,22 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       console.log('couldn\'t find input', input);
     }
 
-    // get matching user data
-    const matchedUser = allUsers.find((u) => u.username === user.username);
+    // get user id of this user to compare
+    let userId = -1;
+    const getUserId = async () => {
+      console.log('getting userid');
+      try {
+        const response = await fetch(`/api/users/search-username/${user.username}`);
+        const userJson = await response.json();
+        userId = userJson.data[0].user_id;
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+    await Promise.all([getUserId()]);
 
+    // get matching user data from user id
+    const matchedUser = allUsers.find((u) => u.user_id === userId);
     if (!matchedUser) {
       setErrorAddMember('User not found');
       return;
@@ -343,7 +374,6 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       job_title: '', // Placeholder value
       user_id: matchedUser.user_id,
     }
-    console.log('clicked user, got data', mem);
 
     // set new member
     setNewMember(mem);
@@ -856,7 +886,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           />
           <div id="project-team-add-member-text">Add Member</div>
         </PopupButton>
-        <PopupContent useClose={false}>
+        <PopupContent useClose={closePopup}>
           <div id="project-team-add-member-title">Add Member</div>
           <div className="error" id="error-add-member">
             {errorAddMember}
@@ -894,7 +924,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             <label>Role</label>
             {/* <select id="project-team-add-member-role-select" key={currentRole}>
               {allJobs.map((job: { title_id: number; label: string }) => (
-                <option key={job.title_id} selected={job.title_id === currentRole}>
+                <option key={job.title_id}>
                   {job.label}
                 </option>
               ))}
@@ -948,7 +978,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
               callback={() => {
                 handleNewMember();
               }}
-              doNotClose={!closePopup}
+              doNotClose={() => closePopup}
             >
               Add
             </PopupButton>

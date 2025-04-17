@@ -1,7 +1,7 @@
 // --- Imports ---
 import { JSX, useCallback, useEffect, useMemo, useState } from "react";
 import { Popup, PopupButton, PopupContent } from "../../Popup";
-import profileImage from '../../../icons/profile-user.png';
+import profileImage from '../../../images/blue_frog.png';
 import { SearchBar } from "../../SearchBar";
 import { Dropdown, DropdownButton, DropdownContent } from "../../Dropdown";
 import { ThemeIcon } from "../../ThemeIcon";
@@ -715,7 +715,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <div className="project-editor-project-member">
             <img
               className="project-member-image"
-              src={`/images/profiles/${m.profile_image}`}
+              src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
               alt=""
             />
             <div className="project-editor-project-member-info">

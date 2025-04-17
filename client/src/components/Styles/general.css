@@ -1357,6 +1357,7 @@ Select style rules
     display: flex;
     flex-direction: row;
     gap: 15px;
+    align-items: center;
   }
 
   .placeholder {
@@ -1401,7 +1402,7 @@ Select style rules
   background-color: var(--primary-color);
   color: var(--invert-text);
 
-  .fa, .fa-solid, .fa-regular {
+  .fa, .fa-solid, .fa-regular, .fa-brands {
     color: var(--invert-text) !important;
   }
 }

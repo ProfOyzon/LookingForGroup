@@ -329,6 +329,7 @@ const MyProjects = () => {
         <Select>
           <SelectButton 
             placeholder='Sort by'
+            initialVal=''
             buttonId='my-projects-sort-btn'
           />
           <SelectOptions 

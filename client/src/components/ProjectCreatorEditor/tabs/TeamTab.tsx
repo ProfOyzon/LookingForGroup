@@ -679,10 +679,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
     <div id="project-editor-project-members">
       {/* List out project members */}
       {modifiedProject.members.map((m) => {
-        console.log(`User permissions: ${permissions}`);
-        console.log(`${m.first_name} permissions: ${m.permissions}`);
-
-        let activeMember = m;
+        const activeMember = m;
 
         return (
           <div className="project-editor-project-member">
@@ -800,10 +797,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                         const members = modifiedProject.members.map((m) =>
                           m.user_id === activeMember.user_id ? activeMember : m
                         );
-                        
-                        const tempProject = { ...modifiedProject, members };
-                        console.log(tempProject);
-                        setModifiedProject(tempProject);
+
+                        setModifiedProject({ ...modifiedProject, members });
                       }}
                     >
                       Save

@@ -329,6 +329,15 @@ Project Creator and Editor style rules
   font-style: italic;
 }
 
+.project-link-select-wrapper {
+  width: fit-content;
+}
+
+.project-link-select-wrapper .project-link-select {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+}
+
 .project-link-input-wrapper {
   position: relative;
   width: 100%;

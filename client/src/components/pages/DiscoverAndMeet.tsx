@@ -101,6 +101,9 @@ const DiscoverAndMeet = ({ category }) => {
   // List that holds trimmed data for searching. Empty before fullItemList is initialized
   const [itemSearchData, setItemSearchData] = useState([]);
 
+  // Stores userId for ability to follow users/projects
+  const [userId, setUserId] = useState(0);
+
   // Format data for use with SearchBar, which requires it to be: [{ data: }]
   const dataSet = useMemo(() => {
     return [{ data: itemSearchData }];
@@ -113,7 +116,19 @@ const DiscoverAndMeet = ({ category }) => {
   // --------------------
   // Helper functions
   // --------------------
+  const getAuth = async () => {
+    const res = await fetch(`/api/auth`);
+    const data = await res.json();
+    
+    if (data.data) {
+      setUserId(data.data);
+    }
+  }
+
   const getData = async () => {
+    // Get user profile
+    await getAuth();
+
     const url = `/api/${category === 'projects' ? 'projects' : 'users'}`;
 
     try {
@@ -284,7 +299,7 @@ const DiscoverAndMeet = ({ category }) => {
         {(!dataLoaded && filteredItemList.length === 0) ? (
           <div className='spinning-loader'></div>
         ) : (
-          <PanelBox category={category} itemList={filteredItemList} itemAddInterval={25} />
+          <PanelBox category={category} itemList={filteredItemList} itemAddInterval={25} userId={userId} />
         )}
       </div>
       <CreditsFooter />

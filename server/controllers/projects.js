@@ -9,7 +9,7 @@ const dirname = import.meta.dirname;
 const getProjects = async (req, res) => {
   try {
     // Get all projects
-    const sql = `SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
+    const sql = `SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags, f.followers
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                 FROM project_genres pg 
@@ -24,6 +24,11 @@ const getProjects = async (req, res) => {
                     ON pt.tag_id = t.tag_id
                 GROUP BY pt.project_id) t
             ON p.project_id = t.project_id
+            JOIN (SELECT pf.project_id, JSON_ARRAYAGG(JSON_OBJECT('id', pf.user_id))
+				        AS followers
+                FROM project_followings pf
+                GROUP BY pf.project_id) f
+			      ON p.project_id = f.project_id;
         `;
     const [projects] = await pool.query(sql);
 

@@ -12,10 +12,8 @@ export const ProjectPanel = ({ project, userId }) => {
   const navigate = useNavigate();
   const projectURL = `${paths.routes.NEWPROJECT}?projectID=${project.project_id}`;
   
-  const [followCount, setFollowCount] = useState(project.followers.length);
-  const [isFollowing, setFollowing] = useState(project.followers.find((follower) => follower.id === userId));
-
-  console.log(project);
+  const [followCount, setFollowCount] = useState(project.followers.count);
+  const [isFollowing, setFollowing] = useState(project.followers.isFollowing);
 
   // Formats follow-count based on Figma design. Returns a string
   const formatFollowCount = (followers) => {
@@ -67,11 +65,11 @@ export const ProjectPanel = ({ project, userId }) => {
             <button
               className={`follow-icon ${isFollowing ? 'following' : ''}`}
               onClick={(e) => {
-                // Prevent parent onclick element from running
+                // Prevent parent onClick event from running
                 if (e.stopPropagation) e.stopPropagation();
 
+                // Only follow project if logged in. Go to login otherwise
                 if (!userId || userId === 0) {
-                  console.log('navigate to login');
                   navigate(`${paths.routes.LOGIN}`);
                 } else {
                   let url = `/api/users/${userId}/followings/projects`;

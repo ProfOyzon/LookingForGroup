@@ -6,6 +6,10 @@ import { genPlaceholders } from '../utils/sqlUtil.js';
 
 const dirname = import.meta.dirname;
 
+
+// --------------------
+// Request Handlers
+// --------------------
 const getProjects = async (req, res) => {
   try {
     // Get all projects
@@ -31,6 +35,16 @@ const getProjects = async (req, res) => {
 			      ON p.project_id = f.project_id;
         `;
     const [projects] = await pool.query(sql);
+
+    // Format the follower section so it doesn't provide IDs
+    projects.forEach((project) => {
+      let followers = project.followers;
+
+      project.followers = {
+        count: followers.length,
+        isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+      };
+    });
 
     return res.status(200).json({
       status: 200,
@@ -236,6 +250,14 @@ const getProjectById = async (req, res) => {
         `;
     const values = [id, id, id, id, id];
     const [project] = await pool.query(sql, values);
+
+    // Format the follower section so it doesn't provide IDs
+    let followers = project[0].followers;
+
+    project[0].followers = {
+      count: followers.length,
+      isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+    };
 
     return res.status(200).json({
       status: 200,
@@ -791,7 +813,7 @@ const updateMember = async (req, res) => {
     for (let i = 0; i < memberData.length; i++) {
       if (memberData[i] === userId) {
         recipient = memberData[i];
-      } 
+      }
 
       if (memberData[i] === req.session.userId) {
         requester = memberData[i];
@@ -848,8 +870,8 @@ const deleteMember = async (req, res) => {
     for (let i = 0; i < memberData.length; i++) {
       if (parseInt(memberData[i].user_id) === parseInt(userId)) {
         recipient = memberData[i];
-      } 
-      
+      }
+
       if (parseInt(memberData[i].user_id) === parseInt(req.session.userId)) {
         requester = memberData[i];
       }
@@ -868,7 +890,7 @@ const deleteMember = async (req, res) => {
       });
     } else if ((parseInt(userId) !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
       console.log(`userId: ${userId} vs. sessionId: ${req.session.userId}`);
-      
+
       return res.status(403).json({
         status: 403,
         error: `You don't have the required permissions to remove this user from the project.`

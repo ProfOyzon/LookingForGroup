@@ -141,21 +141,21 @@ const NewProject = () => {
           }
         }
 
-        // Get all projects user is following to see if they follow this one
-        const followRes = await fetch(`/api/users/${authData.data}/followings/projects`);
-        const followData = await followRes.json();
+        // // Get all projects user is following to see if they follow this one
+        // const followRes = await fetch(`/api/users/${authData.data}/followings/projects`);
+        // const followData = await followRes.json();
 
-        if (followData.data) {
-          const followedProjects = followData.data;
+        // if (followData.data) {
+        //   const followedProjects = followData.data;
 
-          for (let i = 0; i < followedProjects.length; i++) {
+        //   for (let i = 0; i < followedProjects.length; i++) {
 
-            if (parseInt(followedProjects[i].project_id) === parseInt(projectID)) {
-              setFollowing(true);
-              break;
-            }
-          }
-        }
+        //     if (parseInt(followedProjects[i].project_id) === parseInt(projectID)) {
+        //       setFollowing(true);
+        //       break;
+        //     }
+        //   }
+        // }
       }
 
       // Log follower count, and determine if user is a follower
@@ -169,7 +169,8 @@ const NewProject = () => {
         followerNum = `${followerNum}K ${multOfHundred ? '+' : ''}`;
       }
 
-      setFollowCount(projectData.data[0].followers.length);
+      setFollowCount(projectData.data[0].followers.count);
+      setFollowing(projectData.data[0].followers.isFollowing);
       setDisplayedProject(projectData.data[0]);
     } catch (error) {
       console.error(error.message);

@@ -407,7 +407,7 @@ const NewProfile = () => {
         <div id="profile-projects">
           <h2>Projects</h2>
           {/* Probably fine to use 25 for itemAddInterval */}
-          <PanelBox category={'projects'} itemList={displayedProjects} itemAddInterval={25} />
+          <PanelBox category={'projects'} itemList={displayedProjects} itemAddInterval={25} userId={userID} />
         </div>
       </div>
     </div>

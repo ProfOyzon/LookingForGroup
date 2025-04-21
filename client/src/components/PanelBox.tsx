@@ -4,7 +4,7 @@ import { ProfilePanel } from './ProfilePanel';
 
 // Item list should use "useState" so that it'll re-render on the fly
 // And so that no search functionality needs to be included in this component
-export const PanelBox = ({ category, itemList, itemAddInterval, userId }) => {
+export const PanelBox = ({ category, itemList, itemAddInterval, userId = 0 }) => {
   // Don't display all items at first, load them in periodically
   const [displayedItems, setDisplayedItems] = useState(itemList.slice(0, itemAddInterval));
   const [itemListCopy, setItemListCopy] = useState(itemList);

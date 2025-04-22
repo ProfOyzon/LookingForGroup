@@ -33,6 +33,7 @@ export interface ProfileData {
   headline: string;
   bio: string;
   profile_image: string;
+  skills: [];
   socials: { id: number; url: string }[];
 }
 

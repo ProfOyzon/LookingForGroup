@@ -16,7 +16,6 @@ import { Dropdown, DropdownButton, DropdownContent } from './Dropdown';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef, useContext } from 'react';
 import * as paths from '../constants/routes';
-import profileImage from '../icons/profile-user.png';
 import { sendPost } from '../functions/fetch';
 import { ThemeIcon } from './ThemeIcon';
 import { ThemeContext } from '../contexts/ThemeContext';
@@ -36,6 +35,7 @@ let loggedIn;
 export const Header = ({ dataSets, onSearch }) => {
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState(null);
+  const [profileImg, setProfileImg] = useState<string>('');
 
   // Pull the theme and setTheme function from useState() via a context
   const theme = useContext(ThemeContext)['theme'];
@@ -55,10 +55,11 @@ export const Header = ({ dataSets, onSearch }) => {
           loggedIn = true;
           const response = await fetch('/api/users/get-username-session');
           const { data } = await response.json();
-          const { username, primary_email, first_name, last_name } = await data;
+          const { username, primary_email, first_name, last_name, profile_image } = await data;
 
           setUsername(await username);
           setEmail(await primary_email);
+          setProfileImg(await profile_image);
         } else {
           setUsername('Guest');
         }
@@ -108,11 +109,19 @@ export const Header = ({ dataSets, onSearch }) => {
         </Dropdown> */}
         <Dropdown>
           <DropdownButton buttonId="profile-btn">
-            <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
-              id={'profile-img-icon'}
-            />
+            {(profileImg) ? (
+              <img
+                src={`images/profiles/${profileImg}`}
+                id={'profile-img-icon'}
+                className={'rounded'}
+              />
+            ) : (
+              <ThemeIcon
+                light={'assets/profile_light.png'}
+                dark={'assets/profile_dark.png'}
+                id={'profile-img-icon'}
+              />
+            )}
             <ThemeIcon
               light={'assets/dropdown_light.png'}
               dark={'assets/dropdown_dark.png'}
@@ -136,11 +145,19 @@ export const Header = ({ dataSets, onSearch }) => {
                 </button>
               ) : (
                 <button onClick={() => handleProfileAccess()} id="header-profile-user">
-                  <ThemeIcon
-                    light={'assets/profile_light.png'}
-                    dark={'assets/profile_dark.png'}
-                    alt={'X'}
-                  />
+                  {(profileImg) ? (
+                    <img
+                      src={`images/profiles/${profileImg}`}
+                      className={'rounded'}
+                      alt={'X'}
+                    />
+                  ) : (
+                    <ThemeIcon
+                      light={'assets/profile_light.png'}
+                      dark={'assets/profile_dark.png'}
+                      alt={'X'}
+                    />
+                  )}
                   <div>
                     {username}
                     <br />

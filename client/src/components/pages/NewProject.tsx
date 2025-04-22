@@ -26,6 +26,7 @@ import heart from '../../icons/heart.png';
 import * as paths from '../../constants/routes';
 import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
+import { sendPost, sendDelete } from '../../functions/fetch';
 
 //To-do
 //Have team member listings link to their respective profiles
@@ -42,51 +43,51 @@ const runningServer = true;
 const defaultProject = runningServer
   ? undefined
   : {
-      title: 'Title Here',
-      hook: 'Hook text Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-      description: 'Description text Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-      purpose: 'Insert purpose here',
-      status: 'currentStatus',
-      audience: 'Insert target audience here',
-      project_types: [{ id: 1, project_type: 'Video Game' }],
-      tags: [
-        { id: 6, tag: 'Action', type: 'Creative', position: 1 },
-        { id: 40, tag: 'Rogue-Like', type: 'Games', position: 2 },
-        { id: 1, tag: 'Sci-Fi', type: 'Creative', position: 3 },
-      ],
-      jobs: [
-        {
-          duration: 'Short-term',
-          location: 'On-site',
-          title_id: 8,
-          job_title: 'Video Game Developer',
-          description: 'We are looking for game developers familiar with Unreal Engine 5',
-          availability: 'Full-time',
-          compensation: 'Paid',
-        },
-        {
-          duration: 'Long-term',
-          location: 'Remote',
-          title_id: 51,
-          job_title: '2D Artist',
-          description: 'We are looking for artists who know how to draw bees',
-          availability: 'Part-time',
-          compensation: 'Paid',
-        },
-      ],
-      members: [
-        { user_id: 1, job_title: 'Project Lead', first_name: 'Lily', last_name: 'Carter' },
-        { user_id: 2, job_title: '2D Artist', first_name: 'Maya', last_name: 'Bennett' },
-        { user_id: 3, job_title: 'Video Game Developer', first_name: 'Aiden', last_name: 'Brooks' },
-        { user_id: 4, job_title: 'Philosopher', first_name: 'Aris', last_name: 'Tottle' },
-        { user_id: 5, job_title: 'Impersonator', first_name: 'Imi', last_name: 'Tatter' },
-      ],
-      images: [
-        { id: 1, image: profilePicture, position: 1 },
-        { id: 2, image: tallImage, position: 2 },
-        { id: 3, image: heart, position: 3 },
-      ],
-    };
+    title: 'Title Here',
+    hook: 'Hook text Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    description: 'Description text Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    purpose: 'Insert purpose here',
+    status: 'currentStatus',
+    audience: 'Insert target audience here',
+    project_types: [{ id: 1, project_type: 'Video Game' }],
+    tags: [
+      { id: 6, tag: 'Action', type: 'Creative', position: 1 },
+      { id: 40, tag: 'Rogue-Like', type: 'Games', position: 2 },
+      { id: 1, tag: 'Sci-Fi', type: 'Creative', position: 3 },
+    ],
+    jobs: [
+      {
+        duration: 'Short-term',
+        location: 'On-site',
+        title_id: 8,
+        job_title: 'Video Game Developer',
+        description: 'We are looking for game developers familiar with Unreal Engine 5',
+        availability: 'Full-time',
+        compensation: 'Paid',
+      },
+      {
+        duration: 'Long-term',
+        location: 'Remote',
+        title_id: 51,
+        job_title: '2D Artist',
+        description: 'We are looking for artists who know how to draw bees',
+        availability: 'Part-time',
+        compensation: 'Paid',
+      },
+    ],
+    members: [
+      { user_id: 1, job_title: 'Project Lead', first_name: 'Lily', last_name: 'Carter' },
+      { user_id: 2, job_title: '2D Artist', first_name: 'Maya', last_name: 'Bennett' },
+      { user_id: 3, job_title: 'Video Game Developer', first_name: 'Aiden', last_name: 'Brooks' },
+      { user_id: 4, job_title: 'Philosopher', first_name: 'Aris', last_name: 'Tottle' },
+      { user_id: 5, job_title: 'Impersonator', first_name: 'Imi', last_name: 'Tatter' },
+    ],
+    images: [
+      { id: 1, image: profilePicture, position: 1 },
+      { id: 2, image: tallImage, position: 2 },
+      { id: 3, image: heart, position: 3 },
+    ],
+  };
 
 const NewProject = () => {
   //Navigation hook
@@ -99,13 +100,20 @@ const NewProject = () => {
   //state variable used to check whether or not data was successfully obtained from database
   const [failCheck, setFailCheck] = useState(false);
 
+  // State variable used to determine permissions level, and if user should have edit access
+  const [userPerms, setUserPerms] = useState(-1);
+
+  const [user, setUser] = useState(null);
+
+  const [followCount, setFollowCount] = useState(0);
+  const [isFollowing, setFollowing] = useState(false);
+
   //Function used to get project data
   const getProjectData = async () => {
     const url = `/api/projects/${projectID}`;
 
     try {
       const response = await fetch(url);
-
       const projectData = await response.json();
 
       if (projectData.data[0] === undefined) {
@@ -113,6 +121,56 @@ const NewProject = () => {
         return;
       }
 
+      // Get user data and check if user is part of the project
+      const authRes = await fetch(`/api/auth`);
+      const authData = await authRes.json();
+
+      if (authData.data) {
+        const userRes = await fetch(`/api/users/${authData.data}`);
+        const userData = await userRes.json();
+
+        console.log('user')
+        console.log(userData.data);
+        setUser(userData.data[0]);
+        const projectMembers = projectData.data[0].members;
+
+        for (let i = 0; i < projectMembers.length; i++) {
+          if (projectMembers[i].user_id === authData.data) {
+            setUserPerms(projectMembers[i].permissions);
+            break;
+          }
+        }
+
+        // // Get all projects user is following to see if they follow this one
+        // const followRes = await fetch(`/api/users/${authData.data}/followings/projects`);
+        // const followData = await followRes.json();
+
+        // if (followData.data) {
+        //   const followedProjects = followData.data;
+
+        //   for (let i = 0; i < followedProjects.length; i++) {
+
+        //     if (parseInt(followedProjects[i].project_id) === parseInt(projectID)) {
+        //       setFollowing(true);
+        //       break;
+        //     }
+        //   }
+        // }
+      }
+
+      // Log follower count, and determine if user is a follower
+      let followerNum = projectData.data[0].followers.length;
+      // Start displaying in X.X+ format if >= 1000
+      if (followerNum >= 1000) {
+        const multOfHundred = (followerNum % 100) === 0;
+
+        followerNum /= 1000.0;
+        followerNum = followerNum.toFixed(1);
+        followerNum = `${followerNum}K ${multOfHundred ? '+' : ''}`;
+      }
+
+      setFollowCount(projectData.data[0].followers.count);
+      setFollowing(projectData.data[0].followers.isFollowing);
       setDisplayedProject(projectData.data[0]);
     } catch (error) {
       console.error(error.message);
@@ -128,15 +186,31 @@ const NewProject = () => {
   }
 
   //Checks to see whether or not the current user is the maker/owner of the project being displayed
-  const usersProject = true;
+  // const usersProject = true;
+
+  // Formats follow-count based on Figma design. Returns a string
+  const formatFollowCount = (followers) => {
+    let followerNum = followers;
+
+    // Start displaying in X.X+ format if >= 1000
+    if (followerNum >= 1000) {
+      const multOfHundred = (followerNum % 100) === 0;
+
+      followerNum /= 1000.0;
+      followerNum = followerNum.toFixed(1);
+      followerNum = `${followerNum}K ${multOfHundred ? '+' : ''}`;
+    }
+
+    return `${followerNum}`;
+  }
 
   //HTML elements containing buttons used in the info panel
   //Change depending on who's viewing the project page (Outside user, project member, project owner, etc.)
-  const buttonContent = usersProject ? (
+  const buttonContent = (userPerms > 0) ? (
     <>
       {
         <>
-          <ProjectCreatorEditor newProject={false} />
+          <ProjectCreatorEditor newProject={false} permissions={userPerms} user={user} />
         </>
       }
     </>
@@ -144,23 +218,101 @@ const NewProject = () => {
     <>
       {
         <>
-          <button>
-            <img src={heart} />
-          </button>
-          <Dropdown>
-            <DropdownButton>
-              <ThemeIcon
-                light={'assets/menu_light.png'}
-                dark={'assets/menu_dark.png'}
-                alt={'...'}
-              />
-            </DropdownButton>
-            <DropdownContent rightAlign={true}>
-              <button>Share</button>
-              <button>Report</button>
-              <button>Leave</button>
-            </DropdownContent>
-          </Dropdown>
+          {(user && user.user_id !== 0) ? (
+            <>
+              { /* Heart icon, with number indicating follows */}
+              <div className='project-info-followers'>
+                <p className={`follow-amt ${isFollowing ? 'following' : ''}`}>
+                  {formatFollowCount(followCount)}
+                </p>
+                <button
+                  className={`follow-icon ${isFollowing ? 'following' : ''}`}
+                  onClick={() => {
+                    let url = `/api/users/${user.user_id}/followings/projects`;
+
+                    if (!isFollowing) {
+                      sendPost(url, { projectId: projectID }, () => {
+                        setFollowing(true);
+                        setFollowCount(followCount + 1);
+                      });
+                    } else {
+                      url += `/${projectID}`;
+                      sendDelete(url, () => {
+                        setFollowing(false);
+                        setFollowCount(followCount - 1);
+                      });
+                    }
+                  }}
+                >
+                  <i
+                    className={`fa-solid fa-heart ${isFollowing ? 'following' : ''}`}
+                  ></i>
+                </button>
+              </div>
+              { /* Share, leave, and report dropdown */}
+              <Dropdown>
+                <DropdownButton
+                  className='project-info-dropdown-btn'
+                >
+                  •••
+                </DropdownButton>
+                <DropdownContent rightAlign={true}>
+                  <div id="project-info-dropdown">
+                    { /* TO-DO: Add functionality to share. Probably copy link to clipboard. Should also alert user */}
+                    <button className="project-info-dropdown-option">
+                      <i className="fa-solid fa-share"></i>
+                      Share
+                    </button>
+                    { /* Only be able to leave if you're a member of the project */}
+                    {userPerms === 0 ? (
+                      <Popup>
+                        <PopupButton
+                          className='project-info-dropdown-option'
+                        >
+                          <i
+                            className='fa-solid fa-arrow-right-from-bracket'
+                            style={{ fontStyle: 'normal', transform: 'rotate(180deg)' }}
+                          ></i>
+                          Leave
+                        </PopupButton>
+                        <PopupContent>
+                          <div className='small-popup'>
+                            <h3>Leave Project</h3>
+                            <p className='confirm-msg'>
+                              Are you sure you want to leave this project? You won't be able
+                              to rejoin unless you're re-added by a project member.
+                            </p>
+                            <div className='confirm-deny-btns'>
+                              <PopupButton
+                                className='confirm-btn'
+                                callback={async () => {
+                                  const url = `/api/projects/${projectID}/members/${user.user_id}`;
+
+                                  // For now, just reload the page. Ideally, there'd be something more
+                                  sendDelete(url, () => {
+                                    location.reload();
+                                  });
+                                }}
+                              >Confirm</PopupButton>
+                              <PopupButton className='deny-btn'>Cancel</PopupButton>
+                            </div>
+                          </div>
+                        </PopupContent>
+                      </Popup>
+                    ) : (
+                      <></>
+                    )}
+                    <button className="project-info-dropdown-option" id="project-info-report">
+                      <i className="fa-solid fa-flag"></i>
+                      Report
+                    </button>
+                  </div>
+                </DropdownContent>
+              </Dropdown>
+            </>
+          ) : (
+            <></>
+          )}
         </>
       }
     </>
@@ -188,9 +340,9 @@ const NewProject = () => {
           }
 
           //FIXME: get profile image from API call
-          // const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
-          const imgSrc = profilePicture; // temporary
-          
+          const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
+          //const imgSrc = profilePicture; // temporary
+
           return (
             <div
               className="project-contributor"
@@ -219,7 +371,7 @@ const NewProject = () => {
         <>
           {projectContributors.map((user) => {
             const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
-            
+
             return (
               <div
                 className="project-contributor"
@@ -273,7 +425,7 @@ const NewProject = () => {
 
   return (
     <div className="page">
-      <Header dataSets={{ data: [] }} onSearch={() => {}} />
+      <Header dataSets={{ data: [] }} onSearch={() => { }} />
 
       {displayedProject === undefined ? (
         loadingProject

@@ -35,7 +35,7 @@ router.put('/api/users/:id/projects/visibility', mid.checkLogin, userCtrl.update
 router.get('/api/users/:id/followings/projects', userCtrl.getProjectFollowing);
 router.post('/api/users/:id/followings/projects', mid.checkLogin, userCtrl.addProjectFollowing);
 router.delete(
-  '/api/users/:id/followings/projects',
+  '/api/users/:id/followings/projects/:projId',
   mid.checkLogin,
   userCtrl.deleteProjectFollowing
 );

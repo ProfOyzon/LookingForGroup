@@ -6,10 +6,14 @@ import { genPlaceholders } from '../utils/sqlUtil.js';
 
 const dirname = import.meta.dirname;
 
+
+// --------------------
+// Request Handlers
+// --------------------
 const getProjects = async (req, res) => {
   try {
     // Get all projects
-    const sql = `SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
+    const sql = `SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags, f.followers
             FROM projects p
             JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                 FROM project_genres pg 
@@ -24,8 +28,23 @@ const getProjects = async (req, res) => {
                     ON pt.tag_id = t.tag_id
                 GROUP BY pt.project_id) t
             ON p.project_id = t.project_id
+            JOIN (SELECT pf.project_id, JSON_ARRAYAGG(JSON_OBJECT('id', pf.user_id))
+				        AS followers
+                FROM project_followings pf
+                GROUP BY pf.project_id) f
+			      ON p.project_id = f.project_id;
         `;
     const [projects] = await pool.query(sql);
+
+    // Format the follower section so it doesn't provide IDs
+    projects.forEach((project) => {
+      let followers = project.followers;
+
+      project.followers = {
+        count: followers.length,
+        isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+      };
+    });
 
     return res.status(200).json({
       status: 200,
@@ -182,7 +201,7 @@ const getProjectById = async (req, res) => {
   try {
     // Get data of a project
     const sql = `SELECT p.project_id, p.user_id, p.title, p.hook, p.description, p.thumbnail, p.purpose, p.status, p.audience, g.project_types, 
-            t.tags, j.jobs, m.members, pi.images, so.socials
+            t.tags, j.jobs, m.members, pi.images, pf.followers, so.socials
             FROM projects p
             LEFT JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                 FROM project_genres pg 
@@ -214,19 +233,31 @@ const getProjectById = async (req, res) => {
                 WHERE m.project_id = ?) m
             ON p.project_id = m.project_id
             LEFT JOIN (SELECT pi.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", pi.image_id, "image", pi.image, "position", pi.position)) AS images
-				FROM project_images pi
-				WHERE pi.project_id = ?) pi
-			ON p.project_id = pi.project_id
+                FROM project_images pi
+                WHERE pi.project_id = ?) pi
+            ON p.project_id = pi.project_id
+            LEFT JOIN (SELECT pf.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", pf.user_id)) AS followers
+				        FROM project_followings pf
+                WHERE pf.project_id = ?) pf
+			      ON p.project_id = pf.project_id
             LEFT JOIN (SELECT ps.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", so.website_id, "website", so.label, "url", ps.url)) AS socials
                 FROM project_socials ps 
                 JOIN socials so
                     ON ps.website_id = so.website_id
                 GROUP BY ps.project_id) so
             ON p.project_id = so.project_id
-            WHERE p.project_id = ?
+            WHERE p.project_id = ?;
         `;
-    const values = [id, id, id, id];
+    const values = [id, id, id, id, id];
     const [project] = await pool.query(sql, values);
+
+    // Format the follower section so it doesn't provide IDs
+    let followers = project[0].followers;
+
+    project[0].followers = {
+      count: followers.length,
+      isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+    };
 
     return res.status(200).json({
       status: 200,
@@ -402,15 +433,15 @@ const updateProject = async (req, res) => {
       await pool.query(sql, values);
     }
     // Add new members or update if already in database
-    sql = `INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?) AS new
-        ON DUPLICATE KEY UPDATE project_id = new.project_id, user_id = new.user_id, title_id = new.title_id`;
+    sql = `INSERT INTO members (project_id, user_id, title_id, permissions) VALUES (?, ?, ?, ?) AS new
+        ON DUPLICATE KEY UPDATE project_id = new.project_id, user_id = new.user_id, title_id = new.title_id, permissions = new.permissions`;
     for (let member of members) {
       // find title_id with matching job title (members.label and member.job_title)
       const titleSql = `SELECT jt.title_id FROM job_titles jt WHERE jt.label = ?`;
       values = [member.job_title];
       const [matchingTitle] = await pool.query(titleSql, values);
       member.title_id = matchingTitle[0].title_id;
-      await pool.query(sql, [id, member.user_id, member.title_id]);
+      await pool.query(sql, [id, member.user_id, member.title_id, member.permissions]);
     }
 
     // ----- UPDATE PROJECT'S SOCIALS -----
@@ -715,13 +746,13 @@ const addMember = async (req, res) => {
     }
 
     if (!requester) {
-      return res.status(400).json({
-        status: 400,
+      return res.status(403).json({
+        status: 403,
         error: 'You must be a member of this project to add another member.',
       });
     } else if (requester.permissions <= 0) {
-      return res.status(400).json({
-        status: 400,
+      return res.status(403).json({
+        status: 403,
         error: 'You do not have permission to add another member to this project.',
       });
     }
@@ -782,14 +813,16 @@ const updateMember = async (req, res) => {
     for (let i = 0; i < memberData.length; i++) {
       if (memberData[i] === userId) {
         recipient = memberData[i];
-      } else if (memberData[i] === req.session.userId) {
+      }
+
+      if (memberData[i] === req.session.userId) {
         requester = memberData[i];
       }
     }
 
     if (!requester) {
-      return res.status(400).json({
-        status: 400,
+      return res.status(403).json({
+        status: 403,
         error: 'You must be a member of this project to update another member.',
       });
     } else if (!recipient) {
@@ -797,8 +830,8 @@ const updateMember = async (req, res) => {
         status: 400,
         error: 'User is not currently a member of this project.',
       });
-    } else if ((userId !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
-      return res.status(400).json({
+    } else if ((parseInt(userId) !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
+      return res.status(403).json({
         status: 403,
         error: `You don't have the required permissions to update this user.`
       })
@@ -832,18 +865,22 @@ const deleteMember = async (req, res) => {
     let requester = null;
     let recipient = null;
 
+    console.log()
+
     for (let i = 0; i < memberData.length; i++) {
-      if (memberData[i].user_id === parseInt(userId)) {
+      if (parseInt(memberData[i].user_id) === parseInt(userId)) {
         recipient = memberData[i];
-      } else if (memberData[i].user_id === req.session.userId) {
+      }
+
+      if (parseInt(memberData[i].user_id) === parseInt(req.session.userId)) {
         requester = memberData[i];
       }
     }
 
     if (!requester) {
       // Make sure user in current session is a member of project, and have lower permissions
-      return res.status(400).json({
-        status: 400,
+      return res.status(403).json({
+        status: 403,
         error: 'You must be a member of the project to remove another member.',
       });
     } else if (!recipient) {
@@ -851,8 +888,10 @@ const deleteMember = async (req, res) => {
         status: 400,
         error: 'User is not currently a member of this project.',
       });
-    } else if ((userId !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
-      return res.status(400).json({
+    } else if ((parseInt(userId) !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
+      console.log(`userId: ${userId} vs. sessionId: ${req.session.userId}`);
+
+      return res.status(403).json({
         status: 403,
         error: `You don't have the required permissions to remove this user from the project.`
       });

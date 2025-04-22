@@ -45,13 +45,14 @@ interface User {
   last_name: string,
   username: string,
   primary_email: string,
-  userId: number
+  user_id: number
 }
 
 interface Props {
   newProject: boolean;
   buttonCallback?: () => void;
-  user?: User
+  user?: User;
+  permissions?: number;
 }
 
 // default value for project data
@@ -78,7 +79,7 @@ const emptyProject: ProjectData = {
  * 
  * @returns React component Popup
  */
-export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = () => {}, user }) => {
+export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = () => {}, user, permissions }) => {
   //Get project ID from search parameters
   const urlParams = new URLSearchParams(window.location.search);
   const projectID = urlParams.get('projectID');
@@ -103,7 +104,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
 
   // Get project data on projectID change
   useEffect(() => {
-    console.log('new project', newProject);
     if (!newProject) {
       const getProjectData = async () => {
         const url = `/api/projects/${projectID}`;
@@ -117,7 +117,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
             return;
           }
   
-          projectData.userId = user?.userId;
+          projectData.userId = user?.user_id;
   
           // save project data
           setProjectData(projectData);
@@ -135,19 +135,18 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
     // reset link error
     setErrorLinks('');
     if (newProject) {
-      console.log('new tab and new project, making base member')
       const makeDefaultProjectData = async () => {
         // adjust default and set as project data
         const projectData = emptyProject;
-        projectData.userId = user?.userId;
+        projectData.userId = user?.user_id;
 
         // Get user profile image
         try {
-          const response = await fetch(`/api/users/${user?.userId}`);
+          const response = await fetch(`/api/users/${user?.user_id}`);
           const userResponse = await response.json();
           const data = userResponse.data[0];
           console.log('data', data);
-          console.log('user id used', user?.userId);
+          console.log('user id used', user?.user_id);
           console.log('user: ', user);
 
           // Add creator as Project Lead
@@ -157,11 +156,10 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
             job_title: 'Project Lead',
             title_id: 73,
             profile_image: data?.profile_image || '',
-            user_id: user?.userId || 0
+            user_id: user?.user_id || 0
           };
 
           projectData.members = [member];
-          console.log('added base member: ', projectData.members);
 
           // Save to temp project
           setModifiedProject(projectData);
@@ -468,13 +466,13 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
               currentTab === 0 ? <GeneralTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
               currentTab === 1 ? <MediaTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
               currentTab === 2 ? <TagsTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
-              currentTab === 3 ? <TeamTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorMember={setErrorAddMember} setErrorPosition={setErrorAddPosition}/> :
+              currentTab === 3 ? <TeamTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorMember={setErrorAddMember} setErrorPosition={setErrorAddPosition} permissions={permissions} /> :
               currentTab === 4 ? <LinksTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorLinks={setErrorLinks} /> :
               <></>
             }
           </div>
 
-          <PopupButton buttonId="project-editor-save" callback={saveProject} doNotClose={!failCheck}>
+          <PopupButton buttonId="project-editor-save" callback={saveProject} doNotClose={() => !failCheck}>
             Save Changes
           </PopupButton>
         </div>

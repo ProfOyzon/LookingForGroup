@@ -12,6 +12,7 @@ import MyProjectsDisplayGrid from '../MyProjectsDisplayGrid';
 import { Header } from '../Header';
 import { ThemeIcon } from '../ThemeIcon';
 import DeleteProjectPopup from '../DeleteProjectPopup';
+import { Select, SelectButton, SelectOptions } from '../Select';
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 import { LeaveDeleteContext } from '../../contexts/LeaveDeleteContext';
 
@@ -325,7 +326,40 @@ const MyProjects = () => {
         </button>
 
         {/* Sort By Drop Down */}
-        <Dropdown>
+        <Select>
+          <SelectButton 
+            placeholder='Sort by'
+            initialVal=''
+            buttonId='my-projects-sort-btn'
+          />
+          <SelectOptions 
+            callback={(e) => setSortMethod(e.target.value)}
+            options={[
+              { 
+                markup: <><i className="fa-solid fa-arrow-down-short-wide"></i>Newest</>,
+                value: 'newest',
+                disabled: false,
+              },
+              {
+                markup: <><i className="fa-solid fa-arrow-down-wide-short"></i>Oldest</>,
+                value: 'oldest',
+                disabled: false,
+              },
+              {
+                markup: <><i className="fa-solid fa-arrow-down-a-z"></i>A-Z</>,
+                value: 'a-z',
+                disabled: false,
+              },
+              {
+                markup: <><i className="fa-solid fa-arrow-down-z-a"></i>Z-A</>,
+                value: 'z-a',
+                disabled: false,
+              },
+            ]}
+          />
+        </Select>
+
+        {/* <Dropdown>
           <DropdownButton className='my-projects-sort-list'>
             {sortMethodHTML}
             <i
@@ -401,7 +435,7 @@ const MyProjects = () => {
               </button>
             </div>
           </DropdownContent>
-        </Dropdown>
+        </Dropdown> */}
 
         {/* Display Switch */}
         <div

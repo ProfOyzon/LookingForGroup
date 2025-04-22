@@ -455,7 +455,7 @@ const getUserByEmail = async (req, res) => {
 const getUsernameBySession = async (req, res) => {
   try {
     const [user] = await pool.query(
-      `SELECT first_name, last_name, username, primary_email FROM users WHERE user_id = ?`,
+      `SELECT first_name, last_name, username, primary_email, profile_image FROM users WHERE user_id = ?`,
       [req.session.userId]
     );
     return res.status(200).json({
@@ -967,7 +967,7 @@ const getVisibleProjects = async (req, res) => {
     // Get projects the user is a member and is set to be publicly visible
     const sql = `SELECT p.* 
             FROM members m
-            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags
+            JOIN (SELECT p.project_id, p.title, p.hook, p.thumbnail, p.created_at, g.project_types, t.tags, f.followers
                 FROM projects p
                 JOIN (SELECT pg.project_id, JSON_ARRAYAGG(JSON_OBJECT("id", g.type_id, "project_type", g.label)) AS project_types 
                     FROM project_genres pg 
@@ -981,12 +981,26 @@ const getVisibleProjects = async (req, res) => {
                     JOIN tags t 
                         ON pt.tag_id = t.tag_id
                     GROUP BY pt.project_id) t
-                ON p.project_id = t.project_id) p
+                ON p.project_id = t.project_id
+                JOIN (SELECT pf.project_id, JSON_ARRAYAGG(JSON_OBJECT('id', pf.user_id)) AS followers
+                    FROM project_followings pf
+                    GROUP BY pf.project_id) f
+                ON p.project_id = f.project_id) p
             ON m.project_id = p.project_id
             WHERE m.user_id = ? AND profile_visibility = "public"
         `;
     const values = [id];
     const [projects] = await pool.query(sql, values);
+
+    // Format the follower section so it doesn't provide IDs
+    projects.forEach((project) => {
+      let followers = project.followers;
+
+      project.followers = {
+        count: followers.length,
+        isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+      };
+    });
 
     return res.status(200).json({
       status: 200,
@@ -1087,8 +1101,8 @@ const getProjectFollowing = async (req, res) => {
 
 const addProjectFollowing = async (req, res) => {
   // Get input data
-  const { id } = req.params;
-  const { projectId } = req.body;
+  const id = parseInt(req.params.id);
+  const projectId = parseInt(req.body.projectId);
 
   // Checks
   if (req.session.userId !== id) {
@@ -1124,8 +1138,8 @@ const addProjectFollowing = async (req, res) => {
 
 const deleteProjectFollowing = async (req, res) => {
   // Get input data
-  const { id } = req.params;
-  const { projectId } = req.body;
+  const id = parseInt(req.params.id);
+  const projId = parseInt(req.params.projId);
 
   // Checks
   if (req.session.userId !== id) {
@@ -1133,7 +1147,7 @@ const deleteProjectFollowing = async (req, res) => {
       status: 401,
       error: 'Unauthorized',
     });
-  } else if (!projectId || projectId < 1) {
+  } else if (!projId || projId < 1) {
     return res.status(400).json({
       status: 400,
       error: 'Missing project id',
@@ -1144,7 +1158,7 @@ const deleteProjectFollowing = async (req, res) => {
     // Delete a project the user was following
     await pool.query('DELETE FROM project_followings WHERE user_id = ? AND project_id = ?', [
       id,
-      projectId,
+      projId,
     ]);
 
     return res.status(200).json({

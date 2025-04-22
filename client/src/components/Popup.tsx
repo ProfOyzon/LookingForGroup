@@ -28,7 +28,7 @@ import close from '../icons/cancel.png';
 const PopupContext = createContext({
   open: false,
   setOpen: (open: boolean) => {},
-});
+}); 
 
 //Button component that will open/close the popup
 export const PopupButton = ({
@@ -36,7 +36,7 @@ export const PopupButton = ({
   buttonId = '',
   className = '',
   callback = () => {},
-  doNotClose = false,
+  doNotClose = () => false,
 }) => {
   const { open, setOpen } = useContext(PopupContext);
 
@@ -45,7 +45,7 @@ export const PopupButton = ({
     setOpen(!open);
   };
 
-  if (doNotClose) {
+  if (doNotClose()) {
     return (
       <button id={buttonId} className={className} onClick={callback}>
         {children}

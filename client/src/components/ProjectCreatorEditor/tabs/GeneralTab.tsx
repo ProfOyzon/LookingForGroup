@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Dropdown, DropdownButton, DropdownContent } from "../../Dropdown";
 import { ThemeIcon } from "../../ThemeIcon";
+import { Select, SelectButton, SelectOptions } from "../../Select";
 
 
 // --- Interfaces ---
@@ -107,7 +108,26 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
             ))}
           </DropdownContent>
         </Dropdown> */}
-        <select
+        <Select>
+          <SelectButton 
+            placeholder='Select'
+            initialVal={modifiedProject.status || ''}
+            className='project-editor-input-item'
+          />
+          <SelectOptions 
+            callback={(e) => {
+              setModifiedProject({ ...modifiedProject, status: e.target.value });
+            }}
+            options={statusOptions.map((o) => {
+              return {
+                markup: <>{o}</>,
+                value: o,
+                disabled: false,
+              };
+            })}
+          />
+        </Select>
+        {/* <select
           value={modifiedProject.status || 'Select'}
           onChange={(e) => {
             setModifiedProject({ ...modifiedProject, status: e.target.value });
@@ -119,12 +139,12 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
           {statusOptions.map((o) => (
             <option selected={isNewProject ? false : modifiedProject.status === o}>{o}</option>
           ))}
-        </select>
+        </select> */}
       </div>
 
       <div id="project-editor-purpose-input" className="project-editor-input-item">
         <label>Purpose</label>
-        <select
+        {/* <select
           value={modifiedProject.purpose || 'Select'}
           onChange={(e) => {
             setModifiedProject({ ...modifiedProject, purpose: e.target.value });
@@ -136,7 +156,26 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
           {purposeOptions.map((o) => (
             <option selected={isNewProject ? false : modifiedProject.purpose === o}>{o}</option>
           ))}
-        </select>
+        </select> */}
+        <Select>
+          <SelectButton 
+            placeholder='Select'
+            initialVal={modifiedProject.purpose || ''}
+            className='project-editor-input-item'
+          />
+          <SelectOptions 
+            callback={(e) => {
+              setModifiedProject({ ...modifiedProject, purpose: e.target.value });
+            }}
+            options={purposeOptions.map((o) => {
+              return {
+                markup: <>{o}</>,
+                value: o,
+                disabled: false,
+              };
+            })}
+          />
+        </Select>
       </div>
 
       <div id="project-editor-audience-input" className="project-editor-input-item">

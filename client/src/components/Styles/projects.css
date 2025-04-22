@@ -87,6 +87,61 @@ Project Panel component style rules
     border-radius: 10px 10px 0 0;
   }
 
+  .project-title-likes {
+    padding: 0 20px;
+    margin: 14px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    h2 {
+      padding: 0;
+      margin: 0;
+    }
+
+    .project-likes {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      align-items: center;
+
+      .follow-amt {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--primary-color);
+        height: fit-content;
+        transition: 0.2s;
+      }
+    
+      .follow-amt.following {
+        color: #F14F76;
+      }
+    
+      .follow-icon {
+        border: none;
+        background: none;
+        outline: none;
+        transition: 0.2s;
+        height: fit-content;
+        font-size: 25px;
+        padding: 0;
+      }
+    
+      .follow-icon.following {
+        color: #F14F76;
+    
+        .fa-heart {
+          color: #F14F76 !important;
+        }
+      }
+    
+      .follow-icon:hover {
+        transform: scale(1.2);
+      }
+    }
+  }
+
   /* Name */
   h2 {
     padding: 0 20px;
@@ -329,6 +384,15 @@ Project Creator and Editor style rules
   font-style: italic;
 }
 
+.project-link-select-wrapper {
+  width: fit-content;
+}
+
+.project-link-select-wrapper .project-link-select {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+}
+
 .project-link-input-wrapper {
   position: relative;
   width: 100%;
@@ -428,6 +492,10 @@ Project Creator and Editor style rules
   }
 
   select {
+    background-color: var(--bg-color);
+  }
+
+  .select-button {
     background-color: var(--bg-color);
   }
 }
@@ -845,14 +913,29 @@ Project Creator and Editor style rules
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+#user-search-dropdown-button {
+  background: none;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+#user-search-container .dropdown {
+  width: 100%;
 }
 #user-search-container .search-bar { /* Override for default SearchBar component */
   display: flex;
   align-items: center;
-  background-color: var(--bg-color);
-  width: inherit;
+  background-color: var(--header-color);
+  color: var(--main-text);
+  width: 100%;
   border-radius: 10px;
-  border: 1px solid var(--border-color);
+  box-sizing: border-box;
+  height: fit-content;
+  /* border: 1px solid var(--border-color); */
 }
 #user-search-container .search-input { /* Override for default SearchBar component */
   border: none;
@@ -862,20 +945,44 @@ Project Creator and Editor style rules
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 50px;
   z-index: 1;
+  width: 100%;
+  max-height: 225px;
+  overflow-y: scroll;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin-top: 5px;
+  box-shadow: 0 0 10px 0 var(--shadow-color);
 }
 .user-search-item {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 13px 15px;
+  padding: 15px;
+  width: 100%;
+  min-height: 45px;
+  background-color: var(--dropdown-color);
+  border: none;
+}
+.user-search-item.top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.user-search-item.bottom {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.user-search-item:hover {
+  background-color: var(--primary-color);
+  color: var(--invert-text);
 }
 .user-search-name {
   color: var(--main--text);
+  margin: 0;
 }
 .user-search-username {
-  color: var(--neutral-gray)
+  color: var(--neutral-gray);
+  margin: 0;
 }
 
 #project-editor-project-members > .popup-container > .popup,
@@ -888,11 +995,12 @@ Project Creator and Editor style rules
   padding: 20px 40px;
   align-items: center;
   gap: 15px;
-  background: var(--header-color);
+  background: var(--bg-color);
 }
 
 #project-team-add-member-name,
-#project-team-add-member-role {
+#project-team-add-member-role,
+#project-team-add-member-permissions {
   display: flex;
   align-items: center;
   align-self: stretch;
@@ -904,13 +1012,23 @@ Project Creator and Editor style rules
 }
 
 #project-team-add-member-name input,
-#project-team-add-member-role select {
+#project-team-add-member-role select,
+#project-team-add-member-role .select-button {
   margin: 0;
-  padding: 15px;
+  padding: 0 15px;
+  background-color: var(--header-color);
+}
+
+#project-team-add-member-role .select {
+  max-height: 225px;
 }
 
 #project-team-edit-member-card {
-  background-color: #0a0a0a;
+  background-color: var(--header-color);
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 20px;
+  max-width: 100%;
 }
 
 #project-team-delete-member-text {
@@ -2240,10 +2358,108 @@ Project Carousel style rules
   height: 28px;
   margin-left: auto;
   align-items: center;
-}
+  margin-bottom: 10px; /* For alignment with Project Title */
+  gap: 7px;
 
-#project-info-buttons button {
-  text-wrap: nowrap;
+  button {
+    text-wrap: nowrap;
+  }
+
+  .project-info-followers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .follow-amt {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--primary-color);
+    height: fit-content;
+    transition: 0.2s;
+  }
+
+  .follow-amt.following {
+    color: #F14F76;
+  }
+
+  .follow-icon {
+    border: none;
+    background: none;
+    outline: none;
+    transition: 0.2s;
+    height: fit-content;
+    font-size: 25px;
+    padding: 0;
+  }
+
+  .follow-icon.following {
+    color: #F14F76;
+
+    .fa-heart {
+      color: #F14F76 !important;
+    }
+  }
+
+  .follow-icon:hover {
+    transform: scale(1.2);
+  }
+
+  .project-info-dropdown-btn {
+    box-sizing: border-box;
+    background-color: var(--header-color);
+    border: 0px;
+    border-radius: 20px;
+    color: var(--primary-color);
+    margin: 0;
+    text-align: right;
+    font-size: 12px;
+    font-family: Inter;
+    font-weight: 400;
+    letter-spacing: 2px;
+  }
+
+  .project-info-dropdown-btn:hover {
+    background-color: var(--border-color);
+  }
+
+  #project-info-dropdown {
+    text-align: left;
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color: var(--dropdown-color);
+    box-shadow: 0 0 10px 0 var(--shadow-color);
+    border: none;
+    padding: 10px;
+  }
+
+  .project-info-dropdown-option {
+    font-weight: 400 !important;
+    background: none;
+    display: flex;
+    width: 100%;
+    border-radius: 10px;
+    gap: 10px;
+    align-items: center;
+    margin: 0;
+    flex-shrink: 0;
+    color: var(--main-text);
+    border: none;
+    height: 25px;
+  }
+
+  .project-info-dropdown-option:hover {
+    background-color: var(--header-color) !important;
+  }
+
+  #project-info-report {
+    color: var(--error-delete-color);
+
+    .fa-solid {
+      color: var(--error-delete-color);
+    }
+  }
 }
 
 /* #project-info-buttons img {

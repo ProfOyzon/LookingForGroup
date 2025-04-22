@@ -11,15 +11,20 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
+// Utilities and React functions
 import { useState, useEffect } from 'react';
-import { Popup, PopupButton, PopupContent } from '../Popup';
 import { sendPut, sendFile, fetchUserID } from '../../functions/fetch';
+
+// Components
+import { Popup, PopupButton, PopupContent } from '../Popup';
+
 // Tabs
 import { AboutTab } from './tabs/AboutTab';
 import { LinksTab, getSocials } from './tabs/LinksTab';
 import { ProjectsTab } from './tabs/ProjectsTab';
 import { SkillsTab } from './tabs/SkillsTab';
 
+// exportable interface for TypeScript errors
 export interface ProfileData {
   first_name: string;
   last_name: string;
@@ -37,6 +42,7 @@ export interface ProfileData {
   socials: { id: number; url: string }[];
 }
 
+// The profile to view is independent upon the site's state changes
 let profile: ProfileData;
 const pageTabs = ['About', 'Projects', 'Skills', 'Links'];
 
@@ -44,11 +50,11 @@ const pageTabs = ['About', 'Projects', 'Skills', 'Links'];
 const onSaveClicked = async (e : Event) => {
   e.preventDefault(); // prevents any default calls
   // Receive all inputted values
-  // Prepare these values for a POST/PUT request
   const getInputValue = (input : string) => {
     const element = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
     return element ? element.value : ''; // null
   };
+  // Prepare these values for a POST/PUT request
   const dataToStore = {
     firstName: getInputValue('firstName'),
     lastName: getInputValue('lastName'),
@@ -63,8 +69,8 @@ const onSaveClicked = async (e : Event) => {
     skills: getInputValue('skills'),
     socials: getSocials(),
   };
-  console.log('Saving data...');
-  console.log(dataToStore);
+  // console.log('Saving data...');
+  // console.log(dataToStore);
 
   const userID = await fetchUserID();
   await sendPut(`/api/users/${userID}`, dataToStore);
@@ -80,9 +86,10 @@ const saveImage = async (userID) => {
 };
 
 export const ProfileEditPopup = () => {
+  // Keeps track of what tab we are in
   let currentTab = 0;
-  // const [profile, setProfile] = useState({}); // Profile Data holder
 
+  // Profile should be set up on intialization
   useEffect(() => {
     const setUpProfileData = async () => {
       // Pick which socials to use based on type
@@ -95,8 +102,8 @@ export const ProfileEditPopup = () => {
     };
     setUpProfileData();
   }, []);
-  // Profile should be set up on intialization
 
+  // Component to organize the main tab content
   let TabContent = () => {
     return (
       <div id="profile-editor-content">
@@ -108,8 +115,10 @@ export const ProfileEditPopup = () => {
     );
   };
 
-  const switchTab = (tabIndex) => {
-    // Toggle the visibility for the previous Tab
+  // Method to switch between tabs
+  const switchTab = (tabIndex: number) => {
+    // This method toggles the visibility for the previous tab and then the selected tab
+    // First toggle visibility for the previous tab
     const previousTabIndex = pageTabs[currentTab].toLowerCase();
     const prevElement = document.querySelector(`#profile-editor-${previousTabIndex}`);
     const prevTab = document.querySelector(`#profile-tab-${pageTabs[currentTab]}`);
@@ -143,7 +152,7 @@ export const ProfileEditPopup = () => {
         currentElement = document.querySelector(`#profile-editor-about`);
         break;
     }
-    // Toggle its visibility
+    // Toggle current tab's visibility
     if (currentElement) {
       currentElement.classList.toggle('hidden');
     }
@@ -152,6 +161,7 @@ export const ProfileEditPopup = () => {
     }
   };
 
+  // Maps the pageTabs into interactable page tabs, to switch between the Tab Content
   let editorTabs = pageTabs.map((tag, i) => {
     return (
       <button

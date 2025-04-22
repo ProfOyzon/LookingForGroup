@@ -1,6 +1,8 @@
 /*
   This class is copied from tagsTab in the ProjectCreatorEditor tabs
-*/
+  Currently, this tab does not work
+  Feel free to replace this entire file, or try and debug the code
+  */
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { SearchBar } from '../../SearchBar';
 import { ProfileData } from '../ProfileEditPopup';

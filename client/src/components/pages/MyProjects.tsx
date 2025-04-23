@@ -3,7 +3,7 @@ import '../Styles/projects.css';
 
 // import { MyProjectsDisplay } from "../MyProjectsDisplay";
 // import { profiles } from "../../constants/fakeData";
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 // import { PagePopup, openClosePopup } from "../PagePopup";
 import ToTopButton from '../ToTopButton';
 import CreditsFooter from '../CreditsFooter';
@@ -11,9 +11,7 @@ import MyProjectsDisplayList from '../MyProjectsDisplayList';
 import MyProjectsDisplayGrid from '../MyProjectsDisplayGrid';
 import { Header } from '../Header';
 import { ThemeIcon } from '../ThemeIcon';
-import DeleteProjectPopup from '../DeleteProjectPopup';
 import { Select, SelectButton, SelectOptions } from '../Select';
-import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 import { LeaveDeleteContext } from '../../contexts/LeaveDeleteContext';
 
 const MyProjects = () => {
@@ -27,7 +25,6 @@ const MyProjects = () => {
   // - grid
   // - list
   const [sortMethod, setSortMethod] = useState('newest');
-  const [sortMethodHTML, setSortMethodHTML] = useState(<i className='sort-by'>Sort by</i>);
   // Can be:
   // - newest
   // - oldest
@@ -485,6 +482,7 @@ const MyProjects = () => {
         )}
       </div>
       <CreditsFooter />
+      <ToTopButton />
     </div>
   );
 };

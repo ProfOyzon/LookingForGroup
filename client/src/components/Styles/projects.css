@@ -430,6 +430,16 @@ Project Creator and Editor style rules
   position: relative;
 }
 
+#project-editor-content .select-container {
+  width: auto;
+  flex-grow: 1;
+}
+
+#project-editor-content .select-button {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+}
+
 #project-editor-content select::after {
   content: url('../../../build/assets/dropdown_dark.png');
   position: absolute;
@@ -1077,6 +1087,9 @@ Project Creator and Editor style rules
   position: absolute;
   top: 17px;
   right: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .delete-position-button {
   position: absolute;
@@ -1179,6 +1192,9 @@ label.edit-position-availability {
 select.edit-position-availability {
   grid-area: availability-input;
 }
+.edit-position-details-left .select-container {
+  grid-area: availability-input;
+}
 label.edit-position-location {
   grid-area: location-label;
 }
@@ -1188,8 +1204,20 @@ select.edit-position-location {
 label.edit-position-contact {
   grid-area: contact-label;
 }
-select.edit-position-contact {
+button.edit-position-contact {
   grid-area: contact-input;
+  display: flex;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 3px;
+  cursor: default;
+
+  img {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--border-color);
+  }
 }
 
 #edit-position-details-right {

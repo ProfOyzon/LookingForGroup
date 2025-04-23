@@ -896,23 +896,6 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                   </div>
                   <div id="project-team-add-member-role">
                     <label>Role</label>
-                    {/* <select
-                      key={currentRole}
-                      onChange={(e) => {
-                        // update member's role temporarily
-                        handleNewMember();
-                        // TODO: make this work without onchange
-                        // const tempMember = { ...m };
-                        // tempMember.job_title = e.target.value;
-                        // setCurrentMember(tempMember);
-                      }}
-                    >
-                      {allJobs.map((job: { title_id: number; label: string }) => (
-                        <option key={job.title_id} selected={job.label === m.job_title}>
-                          {job.label}
-                        </option>
-                      ))}
-                    </select> */}
                     <Select>
                       <SelectButton
                         placeholder=''
@@ -1028,8 +1011,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <div className="error" id="error-add-member">
             {errorAddMember}
           </div>
-          <div id="project-team-add-member-name">
-            <label>Name</label>
+          <div id="project-team-add-member-info">
+            <label id="project-team-add-member-name">Name</label>
             <div id='user-search-container'>
               <Dropdown>
                 <DropdownButton buttonId='user-search-dropdown-button'>
@@ -1056,16 +1039,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                 </DropdownContent>
               </Dropdown>
             </div>
-          </div>
-          <div id="project-team-add-member-role">
-            <label>Role</label>
-            {/* <select id="project-team-add-member-role-select" key={currentRole}>
-              {allJobs.map((job: { title_id: number; label: string }) => (
-                <option key={job.title_id}>
-                  {job.label}
-                </option>
-              ))}
-            </select> */}
+            <label id="project-team-add-member-role">Role</label>
             <Select>
               <SelectButton
                 placeholder='Select'
@@ -1085,28 +1059,28 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                 })}
               />
             </Select>
-          </div>
-          <div id="project-team-add-member-permissions">
-            <label>Permissions</label>
-            <Select>
-              <SelectButton
-                placeholder='Select'
-                initialVal=''
-                className=''
-              />
-              <SelectOptions
-                callback={(e) => {
-                  setNewMember({ ...newMember, permissions: parseInt(e.target.value) })
-                }}
-                options={permissionOptions.map((perm, index) => {
-                  return {
-                    markup: <>{perm}</>,
-                    value: `${index}`,
-                    disabled: (permissions < index),
-                  };
-                })}
-              />
-            </Select>
+            <div id="project-team-add-member-permissions">
+              <label>Permissions</label>
+              <Select>
+                <SelectButton
+                  placeholder='Select'
+                  initialVal=''
+                  className=''
+                />
+                <SelectOptions
+                  callback={(e) => {
+                    setNewMember({ ...newMember, permissions: parseInt(e.target.value) })
+                  }}
+                  options={permissionOptions.map((perm, index) => {
+                    return {
+                      markup: <>{perm}</>,
+                      value: `${index}`,
+                      disabled: (permissions < index),
+                    };
+                  })}
+                />
+              </Select>
+            </div>
           </div>
           {/* Action buttons */}
           <div className="project-editor-button-pair">

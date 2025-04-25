@@ -462,10 +462,8 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
   // FIXME: results do not update when switching tabs with no query
   const handleSearch = useCallback((results: (Tag | ProjectType)[][]) => {
     // setSearchResults(results);
-    console.log('handling search');
-    console.log('results', results);
     if (results.length === 0 && currentDataSet.length !== 0) {
-      console.log('no results or current data set');
+      // no results or current data set
       setSearchedTags(currentDataSet[0].data);
     }
     else {

@@ -264,7 +264,6 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   // --- Member handlers ---
   // Error checks for adding a new member
   const handleNewMember = useCallback(() => {
-    console.log('handling new member');
     //do not close as default
     setClosePopup(false);
 
@@ -343,14 +342,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
     const input = document.querySelector<HTMLInputElement>('#user-search-container .search-input');
     if (input) {
       input.value = `${user.first_name} ${user.last_name} (${user.username})`;
-    } else {
-      console.log('couldn\'t find input', input);
     }
 
     // get user id of this user to compare
     let userId = -1;
     const getUserId = async () => {
-      console.log('getting userid');
       try {
         const response = await fetch(`/api/users/search-username/${user.username}`);
         const userJson = await response.json();
@@ -627,8 +623,6 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           />
           <SelectOptions 
             callback={(e) => {
-              console.log(allJobs.find((j) => j.title_id === currentRole)!.label);
-
               const selectedTitle = allJobs.find((j) => j.label === e.target.value);
 
               if (selectedTitle) {
@@ -982,7 +976,6 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                   <PopupButton
                     buttonId="team-edit-member-cancel-button"
                     className="button-reset"
-                    callback={() => console.log(modifiedProject.members)}
                   >
                     Cancel
                   </PopupButton>

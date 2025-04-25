@@ -88,7 +88,6 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
             userId: id
           }
           setUserData(_userData);
-          console.log('user data', data);
         }
         getUserData();
 
@@ -97,7 +96,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
         setCreateError(true);
       }
     } catch (err) {
-      console.log('Error getting authentication: ' + err);
+      console.error(err);
     }
   };
 

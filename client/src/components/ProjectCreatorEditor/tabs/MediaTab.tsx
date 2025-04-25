@@ -71,8 +71,7 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
       // Check for valid image type
       if (!(imageUploader.files[0].type === 'image/jpeg' || imageUploader.files[0].type === 'image/png')) {
         // Do not keep file, invalid
-        // - This checks against "All Files" in file search, since "accepts" attribute is not perfect
-        console.error('Invalid file type, must be JPEG or PNG');
+        // This checks against "All Files" in file search, since "accepts" attribute is not perfect
         return;
       }
 

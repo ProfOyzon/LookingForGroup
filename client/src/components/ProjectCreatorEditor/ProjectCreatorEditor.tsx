@@ -145,9 +145,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
           const response = await fetch(`/api/users/${user?.user_id}`);
           const userResponse = await response.json();
           const data = userResponse.data[0];
-          console.log('data', data);
-          console.log('user id used', user?.user_id);
-          console.log('user: ', user);
 
           // Add creator as Project Lead
           const member = {
@@ -183,7 +180,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
     if (errorAddMember !== '' ||
         errorAddPosition !== '' ||
         errorLinks !== '') {
-      console.log('errors present');
       setFailCheck(true);
       return;
     }
@@ -246,7 +242,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
         await Promise.all(uploadImages);
 
         // Reestablish image positions
-        console.log('reestablishing image positions');
         await fetch(`/api/projects/${projectID}/pictures`, {
           method: 'PUT',
           headers: {
@@ -275,7 +270,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
         }
 
         // Send PUT request for general project info
-        console.log(`Sending PUT request to /api/projects/${projectID} for body: `, modifiedProject);
         await fetch(`/api/projects/${projectID}`, {
           method: 'PUT',
           headers: {
@@ -295,7 +289,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
     else {
       try {
         // Send POST request for general project info
-        console.log(`Sending POST request to /api/projects/ for body: `, modifiedProject);
         await fetch(`/api/projects`, {
           method: 'POST',
           headers: {
@@ -376,7 +369,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
       
       // if no values at all, ignore and remove
       if (!id && !url) {
-        console.log('empty link found, ignoring');
         return;
       }
       // check for valid id
@@ -394,9 +386,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
       
       // remove error
       setErrorLinks('');
-  });
-
-    console.log('new socials', newSocials);
+    });
 
     // update socials
     setModifiedProject({ ...modifiedProject, socials: newSocials });

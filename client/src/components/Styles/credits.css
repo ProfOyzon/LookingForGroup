@@ -61,9 +61,11 @@ Credits style rules
     width: 200px;
     background-color: var(--header-color);
     display: flex;
+    justify-content: center;
     align-items: center;
     padding: 12px 15px;
     border-radius: 10px;
     margin: 10px 0 0 10px;
+    text-align: center;
   }
 }

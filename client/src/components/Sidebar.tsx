@@ -75,7 +75,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
         // Save user id
         const { data } = await response.json();
         const id = data;
-    
+
         // Get and save user data
         const getUserData = async () => {
           const userResponse = await fetch('/api/users/get-username-session');
@@ -156,7 +156,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
     <div>
       <div className="SideBarContainer">
         <div className="headerContainer">
-          <h1 style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}>
+          <h1 style={{ cursor: 'pointer' }} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
             lfg.
           </h1>
         </div>
@@ -208,7 +208,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
                 <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} /> Create
               </button>
             </>
-          ) : <ProjectCreatorEditor newProject={true} buttonCallback={getAuth} user={userData}/>
+          ) : <ProjectCreatorEditor newProject={true} buttonCallback={getAuth} user={userData} />
           }
         </div>
       </div>

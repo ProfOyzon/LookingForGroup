@@ -161,7 +161,7 @@ const ProjectPostPage = (props) => {
         <h2 id="post-project-name">{projects[projectId].name}</h2>
         <button className="orange-button">Follow</button>
         <button className="icon-button">
-          <ThemeIcon light={'/assets/menu_light.png'} dark={'/assets/menu_dark.png'} alt={'...'} />
+          <ThemeIcon light={'/assets/menu_light.png'} dark={'/assets/menu_dark.png'} alt={'More Options'} />
         </button>
       </div>
 

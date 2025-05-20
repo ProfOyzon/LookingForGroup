@@ -269,7 +269,7 @@ export const LinksTab = ({ isNewProject = false, projectData = defaultProject, s
 
             setModifiedProject({ ...modifiedProject, socials: tempSocials });
           }}>
-            <img src={'/images/icons/cancel.png'} alt="+" />
+            <img src={'/images/icons/cancel.png'} alt="add" />
             <span className="project-editor-extra-info">Add social profile</span>
           </button>
         </div>

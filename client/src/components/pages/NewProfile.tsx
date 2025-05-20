@@ -276,7 +276,7 @@ const NewProfile = () => {
               <ThemeIcon
                 light={'assets/menu_light.png'}
                 dark={'assets/menu_dark.png'}
-                alt={'...'}
+                alt={'More options'}
                 addClass={'dropdown-menu'}
               />
             </DropdownButton>

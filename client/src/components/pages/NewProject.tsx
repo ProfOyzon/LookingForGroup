@@ -348,7 +348,7 @@ const NewProject = () => {
               className="project-contributor"
               onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
             >
-              <img className="project-contributor-profile" src={imgSrc} alt="profile" />
+              <img className="project-contributor-profile" src={imgSrc} alt="contributor profile" />
               <div className="project-contributor-info">
                 <div className="team-member-name">
                   {user.first_name} {user.last_name}
@@ -377,7 +377,7 @@ const NewProject = () => {
                 className="project-contributor"
                 onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
               >
-                <img className="project-contributor-profile" src={imgSrc} alt="profile" />
+                <img className="project-contributor-profile" src={imgSrc} alt="contributor profile" />
                 <div className="project-contributor-info">
                   <div>
                     {user.first_name} {user.last_name}

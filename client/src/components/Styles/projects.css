@@ -536,6 +536,11 @@ Project Creator and Editor style rules
   color: var(--bg-color);
 }
 
+/* To fix unnecessary horizontal scrollbar */
+.select {
+  overflow-x: hidden;
+}
+
 .character-count {
   font-style: italic;
   font-size: 1.6ch;

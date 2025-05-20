@@ -166,7 +166,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
             className={activePage === 'Discover' ? 'active' : ''}
             onClick={() => handleTextChange('Discover', paths.routes.HOME)}
           >
-            <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} />{'discover'}
+            <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} alt={'discover'}/>
             Discover
           </button>
           <button

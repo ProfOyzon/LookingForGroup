@@ -847,7 +847,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             <img
               className="project-member-image"
               src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
-              alt=""
+              alt="profile image"
             />
             <div className="project-editor-project-member-info">
               <div className="project-editor-project-member-name">
@@ -882,7 +882,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                     <img
                       className="project-member-image"
                       src={`/images/profiles/${m.profile_image}`}
-                      alt=""
+                      alt="profile image"
                     />
                     <div className="project-editor-project-member-name">
                       {m.first_name} {m.last_name}
@@ -1121,7 +1121,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                 }
               }}
             >
-              <img src={'/images/icons/cancel.png'} alt="+" />
+              <img src={'/images/icons/cancel.png'} alt="add" />
               <span className="project-editor-extra-info">Add position</span>
             </button>
           </div>

@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
+
+//load .env file varibles
 dotenv.config({ path: './.env' });
 
+//object for environment varibles
 const envConfig = {
   env: process.env.NODE_ENV,
   dbHost: process.env.DB_HOST,

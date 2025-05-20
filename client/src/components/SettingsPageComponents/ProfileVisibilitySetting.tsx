@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ProfileVisibilirySetting = () => {
+const ProfileVisibilitySetting = () => {
   return (
     <div className="setting-in-page">
       <h3>
@@ -44,4 +44,4 @@ const ProfileVisibilirySetting = () => {
   );
 };
 
-export default ProfileVisibilirySetting;
+export default ProfileVisibilitySetting;

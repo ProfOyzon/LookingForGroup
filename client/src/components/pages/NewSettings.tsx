@@ -393,7 +393,7 @@ const Settings = ({ }) => {
                                                 <ThemeIcon
                                                     light={'assets/dropdown_light.png'}
                                                     dark={'assets/dropdown_dark.png'}
-                                                    alt={'v'}
+                                                    alt={'Current Theme'}
                                                     addClass={'options-dropdown-parent-btn'}
                                                 />
                                             </div>
@@ -451,7 +451,7 @@ const Settings = ({ }) => {
                                                 <ThemeIcon
                                                     light={'assets/dropdown_light.png'}
                                                     dark={'assets/dropdown_dark.png'}
-                                                    alt={'v'}
+                                                    alt={'Visibility'}
                                                     addClass={'options-dropdown-parent-btn'}
                                                 />
                                             </div>

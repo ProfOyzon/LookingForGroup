@@ -1101,7 +1101,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         <div id="team-positions-popup-list-buttons">
           {modifiedProject.jobs?.map((job: { job_title: string; title_id: number }) => (
             <div className="team-positions-button">
-              <img src="/images/icons/drag.png" alt="" />
+              <img src="/images/icons/drag.png" alt="positions" />
               <button
                 className="positions-popup-list-item"
                 id=""

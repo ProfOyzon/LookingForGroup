@@ -349,7 +349,7 @@ const NewProfile = () => {
                 dark={'assets/white/major.png'}
                 alt={'Major'}
               />
-              {displayedProfile.major}, {displayedProfile.academic_year}
+              {displayedProfile.major} {displayedProfile.academic_year}
             </div>
             <div className="profile-extra">
               <ThemeIcon

@@ -1,19 +1,18 @@
 import profilePicture from '../images/blue_frog.png';
-import profileImage from '../icons/profile-user.png';
 import { useNavigate } from 'react-router-dom';
 import { ThemeIcon } from './ThemeIcon';
 import * as paths from '../constants/routes';
-//Component that will contain info about a profile, used in the discovery page (for now)
-//Smaller and more concise than ProfileCard.tsx
 
-//Takes in a 'profile' value which contains info on the profile it will display
 export const ProfilePanel = ({ profileData }) => {
   const navigate = useNavigate();
   const profileURL = `${paths.routes.NEWPROFILE}?userID=${profileData.user_id}`;
 
   return (
     <div className={'profile-panel'}>
-      <img src={`images/profiles/${profileData.profile_image}`} alt={'profile image'} />
+      <img
+        src={profileData.profile_image ? `images/profiles/${profileData.profile_image}` : profilePicture}
+        alt={'profile image'}
+      />
       <h2>
         {profileData.first_name} {profileData.last_name}
       </h2>

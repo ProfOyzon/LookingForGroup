@@ -11,7 +11,12 @@ export const ProfilePanel = ({ profileData }) => {
     <div className={'profile-panel'}>
       <img
         src={profileData.profile_image ? `images/profiles/${profileData.profile_image}` : profilePicture}
-        alt={'profile image'}
+        alt='profile image'
+        // default profile picture if profile image doesn't load
+        onError={(e) => {
+          const profileImg = e.target as HTMLImageElement;
+          profileImg.src = profilePicture;
+        }}
       />
       <h2>
         {profileData.first_name} {profileData.last_name}

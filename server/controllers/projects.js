@@ -10,6 +10,7 @@ const dirname = import.meta.dirname;
 // --------------------
 // Request Handlers
 // --------------------
+//
 const getProjects = async (req, res) => {
   try {
     // Get all projects

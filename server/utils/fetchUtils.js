@@ -18,12 +18,12 @@ fetch(apiURL)
     });
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\
 \/\/\/\/\/\/\\\//\/\\/\\\\/\\/\/\/\\/\\/
-General Fetch API for POST/PUT requests
+General Fetch API for POST/PUT/DELETE requests
 apiURL
 data {};
 
 request options {
-    method: post
+    method: post/put/delete
     headers: {
         Content-Type: application/json
     },
@@ -43,3 +43,23 @@ catch error
 Base apiURL is:
 */
 
+const apiURL = '';
+
+function GET() {
+    fetch(apiURL)
+        .then( response => {
+            if( response.ok ) {
+                return response.json();
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        })
+        .then( data => {
+            console.log(data); 
+            return data; //returns get with jsonified data
+        })
+        .catch( error => {
+            console.error('there was a problem with the fetch operation:',error);
+            return "400";
+        })
+}

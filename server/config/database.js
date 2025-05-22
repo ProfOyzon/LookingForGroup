@@ -13,6 +13,7 @@ try {
   });
 } catch (err) {
   console.log(err);
+  console.log("Creating a pool connection threw an error.");
 }
 
 export default pool;

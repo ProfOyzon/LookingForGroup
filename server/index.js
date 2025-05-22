@@ -35,6 +35,10 @@ app.use(usersRouter);
 app.use(projectsRouter);
 app.use(datasetsRouter);
 
+// development purpose
+import usersV2Router from './routes/usersV2.js';
+app.use(usersV2Router);
+
 app.get('/api', (req, res) => {
   return res.json({ message: 'You Reached The Looking For Group API' });
 });

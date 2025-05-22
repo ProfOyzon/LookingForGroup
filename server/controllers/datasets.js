@@ -41,7 +41,6 @@ const getTags = async (req, res) => {
   try {
     // Get tags of specfic type when the "type" query parameter is given
     if (type) {
-      //const sql = `SELECT * FROM tags WHERE type = ?`;
       const sql = `SELECT * FROM tags WHERE type = ?`;
       const [tags] = await pool.query(sql, [type]);
 

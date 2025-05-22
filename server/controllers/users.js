@@ -237,7 +237,7 @@ const requestPasswordReset = async (req, res) => {
     // Email content
     const html = `
         <p>Hi,<br>
-        Forgot you password? You have 15 minutes to reset your password. Click the button below.
+        Forgot your password? You have 15 minutes to reset your password. Click the button below.
         </p>
         
         <div style="margin: 2rem 1rem">

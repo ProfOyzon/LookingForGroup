@@ -4,11 +4,21 @@ import userCtrl from '../controllers/users.js';
 
 const router = Router();
 
+//Creates a login
 router.post('/api/login', userCtrl.login);
+
+//Recieves response to authorization
 router.get('/api/auth', userCtrl.getAuth);
+
+//Creates a user logout
 router.post('/api/logout', userCtrl.logout);
+
+//For a new user, create signup
 router.post('/api/signup', userCtrl.signup);
+
+//Recieves the token for a signed-up user
 router.get('/api/signup/:token', userCtrl.createUser);
+
 router.post('/api/resets/password', userCtrl.requestPasswordReset);
 router.post('/api/resets/password/:token', userCtrl.resetPassword);
 router.get('/api/users/get-username-session', mid.checkLogin, userCtrl.getUsernameBySession);

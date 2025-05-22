@@ -139,7 +139,7 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
             }
             return (
               <div className='project-editor-image-container'>
-                <img src={src} alt="" />
+                <img src={src} alt="project images" />
                 {
                   modifiedProject.thumbnail === image.image &&
                   <img src="/images/icons/star-filled.svg" alt="star" className="star-filled"></img>

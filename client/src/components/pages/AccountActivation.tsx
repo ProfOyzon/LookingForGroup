@@ -16,13 +16,23 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import * as paths from '../../constants/routes';
 //import * as fetch from "../../functions/fetch";
 
-const EmailConfirmation = (props: any) => {
+interface ResponseData {
+  status?: number;
+  error?: string;
+}
+
+interface EmailConfirmationProps {
+  responseData?: ResponseData;
+  reloadResponseData?: number | string | boolean;
+}
+
+const EmailConfirmation = (props: EmailConfirmationProps) => {
   // THINGS TO DO:
   // Add Page Components (info box stating email is confirmed) x
   // Style page to match Figma (both light and dark modes)
   // Auto redirect to discover page (as well as link to discover page if redirect doesn't work) x
   // Include token in link as (react search parameter or query parameter) and work with database to verify users email (grab token and fetch to /api/signup/[insert token here]) x
-  const [responseData, setResponseData] = useState(props.responseData);
+  const [responseData, setResponseData] = useState<ResponseData | undefined>(props.responseData);
   const [counter, setCounter] = useState(5);
 
   //Gets current location
@@ -57,7 +67,7 @@ const EmailConfirmation = (props: any) => {
       const url = `/api/signup/${path.substring(path.lastIndexOf('/') + 1, path.length)}`;
       try {
         const response = await fetch(url);
-        const data = await response.json();
+        const data: ResponseData = await response.json();
         console.log(`Status: ${data.status}`);
         if (data.error) {
           console.log(`Error: ${data.error}`);
@@ -85,7 +95,7 @@ const EmailConfirmation = (props: any) => {
         h1Text = 'Your LFG account is now activated!';
         break;
       case 400:
-        h1Text = responseData.error;
+        h1Text = responseData.error || 'Bad Request';
         break;
     }
   }
@@ -109,7 +119,7 @@ const EmailConfirmation = (props: any) => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  });
+  }, []);
 
   return (
     <div id="email-confirmation-page" className="background-cover">

@@ -1,11 +1,5 @@
 import pool from '../config/database.js';
 
-/* 
-This controller handles the metadata queries from database
-ALL DATA is a read only GET request gotten via MySQL
-*/
-
-//fetch all skills or filtered type
 /** 
 * Get skills through a request.
 * @param request - req.query-type of specific skill, default '' to return all skills.
@@ -46,7 +40,13 @@ const getSkills = async (req, res) => {
   }
 };
 
-//fetches tags that are not skills
+
+/**
+ * Get tags through request.
+ * @param request - req.query-specific tag to return, otherwise returns all
+ * @param response
+ * @returns response - {status:200, data:tags} if successful, or {status:400, error:...}
+ */
 const getTags = async (req, res) => {
   // Get search query
   const { type } = req.query;
@@ -82,7 +82,13 @@ const getTags = async (req, res) => {
   }
 };
 
-//fetch all jobs titles
+
+/**
+ * 
+ * @param req - request - unused?
+ * @param response - 
+ * @returns result - {status:200, data: all jobTitles} if successful, or {status:400, error:...}
+ */
 const getJobTitles = async (req, res) => {
   try {
     // Get all job titles
@@ -102,7 +108,13 @@ const getJobTitles = async (req, res) => {
   }
 };
 
-//fetch all majors
+
+/**
+ * Returns ALL majors
+ * @param request - unused.
+ * @param res - response
+ * @returns res - {status:200, data:[majors]} if successful, {status:400, error:...}
+ */
 const getMajors = async (req, res) => {
   try {
     // Get all majors
@@ -122,7 +134,12 @@ const getMajors = async (req, res) => {
   }
 };
 
-//fetches all project types
+/**
+ * Gets ALL genres from request
+ * @param req-unused
+ * @param result - 
+ * @returns res - {status:200, data[projectTypes]} if successful, or {status:400, error:...}
+ */
 const getProjectTypes = async (req, res) => {
   try {
     // Get all project types
@@ -142,7 +159,13 @@ const getProjectTypes = async (req, res) => {
   }
 };
 
-//fetches all social sites
+
+/**
+ * Gets ALL social media sites from request
+ * @param req-unused
+ * @param result - 
+ * @returns res - {status:200, data[socials]} if successful, or {status:400, error:...}
+ */
 const getSocials = async (req, res) => {
   try {
     // Get all social sites

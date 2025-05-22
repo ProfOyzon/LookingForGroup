@@ -6,12 +6,18 @@ ALL DATA is a read only GET request gotten via MySQL
 */
 
 //fetch all skills or filtered type
+/** 
+* Get skills through a request.
+* @param request - req.query-type of specific skill, default '' to return all skills.
+* @param res - response
+* @returns res.status - {status:200,data:[skills]} if successful, else {status:400,error:...}
+*/
 const getSkills = async (req, res) => {
   // Get search query
   const { type } = req.query;
 
   try {
-    // Get skills of specfic type when the "type" query parameter is given
+    // Get skills of specific type when the "type" query parameter is given
     if (type) {
       const sql = `SELECT * FROM tags WHERE type = ?`;
       const [skills] = await pool.query(sql, [type]);

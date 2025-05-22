@@ -321,6 +321,10 @@ const NewProfile = () => {
             }
             id="profile-image"
             alt="profile image"
+            onError={(e) => {
+              const profileImg = e.target as HTMLImageElement;
+              profileImg.src = profilePicture;
+            }}
           />
 
           <div id="profile-bio">{displayedProfile.headline}</div>

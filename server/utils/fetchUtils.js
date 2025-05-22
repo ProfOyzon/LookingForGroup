@@ -51,7 +51,7 @@ Base apiURL is:
  * @param {*} apiURL - API to be called, if you are using parameters customize the url
  * @returns response - JSONified data or error code.
  */
-function GET(apiURL, newData) {
+function GET(apiURL) {
 
 
     fetch(apiURL)

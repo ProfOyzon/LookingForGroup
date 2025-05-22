@@ -1,5 +1,11 @@
 import pool from '../config/database.js';
 
+/* 
+This controller handles the metadata queries from database
+ALL DATA is a read only GET request gotten via MySQL
+*/
+
+//fetch all skills or filtered type
 const getSkills = async (req, res) => {
   // Get search query
   const { type } = req.query;
@@ -34,6 +40,7 @@ const getSkills = async (req, res) => {
   }
 };
 
+//fetches tags that are not skills
 const getTags = async (req, res) => {
   // Get search query
   const { type } = req.query;
@@ -70,6 +77,7 @@ const getTags = async (req, res) => {
   }
 };
 
+//fetch all jobs titles
 const getJobTitles = async (req, res) => {
   try {
     // Get all job titles
@@ -89,6 +97,7 @@ const getJobTitles = async (req, res) => {
   }
 };
 
+//fetch all majors
 const getMajors = async (req, res) => {
   try {
     // Get all majors
@@ -108,6 +117,7 @@ const getMajors = async (req, res) => {
   }
 };
 
+//fetches all project types
 const getProjectTypes = async (req, res) => {
   try {
     // Get all project types
@@ -127,6 +137,7 @@ const getProjectTypes = async (req, res) => {
   }
 };
 
+//fetches all social sites
 const getSocials = async (req, res) => {
   try {
     // Get all social sites

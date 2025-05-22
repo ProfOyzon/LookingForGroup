@@ -21,7 +21,6 @@ import { ProfileProjects } from '../Profile/ProfileProjects';
 import { useEffect, useState } from 'react';
 import ToTopButton from '../ToTopButton';
 import EditButton from '../Profile/ProfileEditButton';
-import { sendGet } from '../../functions/fetch';
 
 const fetchUserID = async () => {
   const response = await fetch('/api/auth');

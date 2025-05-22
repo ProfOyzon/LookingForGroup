@@ -221,23 +221,23 @@ const NewProfile = () => {
         <div id="about-me-buttons">
           <button
             onClick={() => {
-              window.location.href = 'https://www.w3schools.com';
+              window.location.href = 'https://www.linkedin.com/';
             }}
           >
             <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
+              light={'assets/black/linkedIn_black.png'}
+              dark={'assets/white/linkedIn_white.png'}
               alt={'LinkedIn'}
             />
           </button>
           <button
             onClick={() => {
-              window.location.href = 'https://www.w3schools.com';
+              window.location.href = 'https://www.instagram.com/';
             }}
           >
             <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
+              light={'assets/black/instagram_black.png'}
+              dark={'assets/white/instagram_white.png'}
               alt={'Instagram'}
             />
           </button>
@@ -251,23 +251,23 @@ const NewProfile = () => {
         <div id="about-me-buttons" className="about-me-buttons-minimal">
           <button>
             <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
+              light={'assets/black/linkedIn_black.png'}
+              dark={'assets/white/linkedIn_white.png'}
               alt={'LinkedIn'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
+              light={'assets/black/instagram_black.png'}
+              dark={'assets/white/instagram_white.png'}
               alt={'Instagram'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
-              alt={'Like'}
+              light={'assets/bell_light.png'}
+              dark={'assets/bell_dark.png'}
+              alt={'Like/Follow'}
             />
           </button>
           { /* TO-DO: Implement Share, Block, and Report functionality */ }

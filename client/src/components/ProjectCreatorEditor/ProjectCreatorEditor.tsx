@@ -127,7 +127,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
         }
       };
       getProjectData();
-    }    
+    } 
   }, [newProject, projectID, user]);
 
   // Handle events for tab switch
@@ -182,6 +182,18 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
         errorLinks !== '') {
       setFailCheck(true);
       return;
+    }
+
+    // --- Creator ---
+    if(newProject) {
+      try {
+        // Record information from inputs
+
+      } 
+      catch (error) {
+        console.error(error);
+        return false;
+      }
     }
 
     // --- Editor ---
@@ -396,7 +408,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
     <Popup>
       {
         newProject ? (
-          <PopupButton callback={buttonCallback} buttonId='' > <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} /> Create </PopupButton>
+          <PopupButton callback={buttonCallback} buttonId='project-info-create' > <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} /> Create </PopupButton>
         ) : (
           <PopupButton callback={buttonCallback} buttonId="project-info-edit">Edit Project</PopupButton>
         )
@@ -404,7 +416,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
       <PopupContent>
         <div id="project-creator-editor">
           <div id="project-editor-tabs">
-            <button
+            <button id="general-tab"
               onClick={() => {
                 if (currentTab === 4) updateLinks();
                 setCurrentTab(0);
@@ -413,7 +425,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
             >
               General
             </button>
-            <button
+            <button id="media-tab"
               onClick={() => {
                 if (currentTab === 4) updateLinks();
                 setCurrentTab(1);
@@ -422,7 +434,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
             >
               Media
             </button>
-            <button
+            <button id="tags-tab"
               onClick={() => {
                 if (currentTab === 4) updateLinks();
                 setCurrentTab(2);
@@ -431,7 +443,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
             >
               Tags
             </button>
-            <button
+            <button id='team-tab'
               onClick={() => {
                 if (currentTab === 4) updateLinks();
                 setCurrentTab(3);
@@ -440,7 +452,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
             >
               Team
             </button>
-            <button
+            <button id='links-tab'
               onClick={() => {
                 if (currentTab === 4) updateLinks();
                 setCurrentTab(4);

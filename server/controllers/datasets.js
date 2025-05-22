@@ -1,11 +1,11 @@
 import pool from '../config/database.js';
 
-/** 
-* Get skills through a request.
-* @param request - req.query-type of specific skill, default '' to return all skills.
-* @param res - response
-* @returns res.status - {status:200,data:[skills]} if successful, else {status:400,error:...}
+/* 
+This controller handles the metadata queries from database
+ALL DATA is a read only GET request gotten via MySQL
 */
+
+//fetch all skills or filtered type
 const getSkills = async (req, res) => {
   // Get search query
   const { type } = req.query;

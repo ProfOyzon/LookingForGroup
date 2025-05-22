@@ -43,9 +43,18 @@ catch error
 Base apiURL is:
 */
 
-const apiURL = '';
+//const apiURL = '';
 
-function GET() {
+
+/**
+ * Basic GET function for utilities
+ * @param {*} apiURL - API to be called
+ * @param {*} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
+ * @returns response - JSONified data or error code.
+ */
+function GET(apiURL, newData) {
+
+
     fetch(apiURL)
         .then( response => {
             if( response.ok ) {
@@ -63,3 +72,4 @@ function GET() {
             return "400";
         })
 }
+

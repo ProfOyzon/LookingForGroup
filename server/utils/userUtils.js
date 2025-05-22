@@ -1,4 +1,5 @@
 import { createUser } from '../controllers/users';
+import { GET, POST, PUT, DELETE } from './fetchUtils';
 
 
 /**
@@ -11,4 +12,29 @@ function createNewUser ( token, email ) {
 
     
 
+}
+
+/**
+ * Gets data on all public users. Does not return private ones
+ * @returns result - JSONified data of all users, else if error, '400'.
+ */
+function getUsers() {
+    apiURL = 'lfg.gccis.rit.edu/api/users';
+    response = GET(apiURL);
+    if( response = "400" ) return "400";
+
+    return response;
+}
+
+/**
+ * Gets data on one specific user, specified by URL.
+ * 
+ */
+
+
+
+
+export default {
+    createNewUser,
+    getUsers,
 }

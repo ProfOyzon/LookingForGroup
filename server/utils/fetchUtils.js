@@ -97,9 +97,11 @@ function POST(apiURL, newData)
     })
     .then(data => {
         console.log(data); 
+        return data;
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
+        return "400";
     });
 }
 
@@ -125,9 +127,11 @@ function PUT(apiURL, newData) {
     })
     .then(data => {
         console.log(data); 
+        return data;
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
+        return "400";
     });
 }
 
@@ -135,7 +139,6 @@ function PUT(apiURL, newData) {
 /**
  * Basic DELETE function for utilities
  * @param {*} apiURL - API to be called
- * @param {*} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
  * @returns response - JSONified data or error code.
  */
 function DELETE(apiURL) {
@@ -143,8 +146,7 @@ function DELETE(apiURL) {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newData)
+        }
     })
     .then(response => {
         if (!response.ok) {
@@ -154,8 +156,10 @@ function DELETE(apiURL) {
     })
     .then(data => {
         console.log(data); 
+        return data;
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
+        return "400";
     });
 }

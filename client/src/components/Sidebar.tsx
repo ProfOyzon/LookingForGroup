@@ -6,7 +6,7 @@ import Notifications from './pages/Notifications';
 import { ThemeIcon } from './ThemeIcon';
 import { ProjectCreatorEditor } from './ProjectCreatorEditor/ProjectCreatorEditor';
 
-interface User {
+export interface User {
   first_name: string,
   last_name: string,
   username: string,
@@ -200,6 +200,8 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
           </button> */}
         </div>
 
+        {/* "Create" button in bottom left, made by ProjectCreatorManager */}
+        {/*Creates red error text above the button if not signed in*/}
         <div className="Create">
           {createError ? (
             <>

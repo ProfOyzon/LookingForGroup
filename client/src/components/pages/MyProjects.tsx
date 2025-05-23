@@ -4,6 +4,7 @@ import '../Styles/projects.css';
 // import { MyProjectsDisplay } from "../MyProjectsDisplay";
 // import { profiles } from "../../constants/fakeData";
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import { PagePopup, openClosePopup } from "../PagePopup";
 import ToTopButton from '../ToTopButton';
 import CreditsFooter from '../CreditsFooter';
@@ -14,7 +15,18 @@ import { ThemeIcon } from '../ThemeIcon';
 import { Select, SelectButton, SelectOptions } from '../Select';
 import { LeaveDeleteContext } from '../../contexts/LeaveDeleteContext';
 
+import { ProjectCreatorEditor } from '../ProjectCreatorEditor/ProjectCreatorEditor';
+import { User } from '../Sidebar'; // For use with project creation button
+
 const MyProjects = () => {
+
+  const navigate = useNavigate();
+
+  const loggedIntest = true;
+
+  // Taken from Sidebar.tsx
+  const [userData, setUserData] = useState<User>();
+
   // const [UID, setUID] = useState(profiles[0]._id);
   // const [activePage, setActivePage] = useState(0);
 
@@ -324,15 +336,15 @@ const MyProjects = () => {
 
         {/* Sort By Drop Down */}
         <Select>
-          <SelectButton 
+          <SelectButton
             placeholder='Sort by'
             initialVal=''
             buttonId='my-projects-sort-btn'
           />
-          <SelectOptions 
+          <SelectOptions
             callback={(e) => setSortMethod(e.target.value)}
             options={[
-              { 
+              {
                 markup: <><i className="fa-solid fa-arrow-down-short-wide"></i>Newest</>,
                 value: 'newest',
                 disabled: false,
@@ -449,10 +461,53 @@ const MyProjects = () => {
           </div>
         </div>
 
-        {/* New Project Button */}
-        <button className="my-projects-new-project-button" onClick={(e) => { }}>
-          + New Project
-        </button>
+        {/*Create Project Button*/}
+        {/* All of the following options end up replacing the button with the ProjectCreatorEditor button -
+        this is because that component always creates a SPECIFIC button, and cannot be hooked up to ANY button.
+        Right now, teams have been told to avoid touching that file.*/}
+
+        {/*Currently, the button is set to always appear, non-functional. */}
+        <>
+          <button className="my-projects-new-project-button">
+            + New Project
+          </button>
+        </>
+
+        {/*Create Project Button - Only works if user is logged in. No error message is displayed for logged out users.*/}
+        {/* {!loggedIn ? (
+          <>
+            <button className="my-projects-new-project-button" onClick={() => {
+              console.log("read me if you're not logged in");
+            }}>
+              + New Project
+            </button>
+          </>
+        ) : <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
+        } */}
+
+        {/*Create Project Button - Only APPEARS if user is logged in.*/}
+        {/*loggedIn ? (
+          <>
+            <button className="my-projects-new-project-button" onClick={() => {
+              <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
+            }}>
+              + New Project
+            </button>
+          </>
+        ) : <> </>/* Do nothing */
+        }
+
+        {/*Create Project Button - Redirects user when not logged in.*/}
+        {/* {!loggedIn ? (
+          <>
+            <button className="my-projects-new-project-button" onClick={() => navigate('/login')}>
+              + New Project
+            </button>
+          </>
+        ) : <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
+        } */}
+
+
         {/* <button className="delete" onClick={() => setIsDeletePopupOpen(true)}>
           -Delete Project test
         </button>

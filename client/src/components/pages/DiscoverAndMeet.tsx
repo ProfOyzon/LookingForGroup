@@ -149,6 +149,12 @@ interface Item {
     }
   }
 
+  /*
+    Fetches data from the server to populate the discover page.
+    The data is filtered based on the selected category (projects or profiles).
+    The function also handles errors and updates the state with the fetched data.
+    It uses the getAuth function to get the user ID for follow functionality.
+  */
   const getData = async () => {
     // Get user profile
     await getAuth();
@@ -217,6 +223,7 @@ interface Item {
     }
   };
 
+  // Updates filtered project list with new tag info
   const updateItemList = (activeTagFilters) => {
     let tagFilteredList = tempItemList.filter((item) => {
       let tagFilterCheck = true;
@@ -304,6 +311,7 @@ interface Item {
     setFilteredItemList(tagFilteredList);
   };
 
+  // Main render function
   return (
     <div className="page">
       {/* Search bar and profile/notification buttons */}

@@ -92,6 +92,24 @@ function getUsers() {
 }
 
 /**
+ * Get account information of a user through ID
+ * @param user_id - int, id of the user
+ * @returns data - JSONified data from account information. 400 if not valid.
+ * @returns user_id, primary_email, rit_email, username, visibility
+ */
+function getAccountInformation ( id ) {
+    apiURL = `lfg.gccis.rit.edu/api/users/${id}/account`;
+    response = GET(apiURL);
+    if( response = "400" ) {
+        return "400";
+    }
+
+    console.log("User accound information recieved")
+    return response;
+}
+
+
+/**
  * Gets all data on one specific user, specified by URL.
  * @param id - user_id for user
  * @returns result - JSONified data of specified user.
@@ -151,9 +169,41 @@ function updateProfilePicture( id, _image ) {
     return "200";
 }
 
+/**
+ * Update email for a user
+ * @param id = user_id for the profile wishing to change email.
+ * @param email - email to change to
+ * @param confirm_email - secondary entering of email to confirm
+ * @param password - the user's current password.
+ * @returns response, 200 if valid, 400 if not, 401 if emails do not match.
+ */
+function updateEmail ( id, _email, _confirm_email, _password) {
+    apiURL = `lfg.gccis.rit.edu/api/users/${id}/email`;
+    if( _email != _confirm_email) {
+        console.log("Not the same email, try again.");
+        return "401";
+    }
+    data = {
+        email: _email,
+        confirm: _confirm_email,
+        password: _password
+    };
+
+    response = PUT(apiURL, data);
+    if( response = "400" ){
+        console.log("error updating email.");
+        return "400";
+    }
+    console.log("Updated primary email for user.")
+    return "200";
+}
+
 export default {
     createNewUser,
     getUsers,
     editUser,
     deleteUser,
+    userInDatabase,
+    updateProfilePicture,
+    getAccountInformation,
 }

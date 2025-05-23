@@ -174,7 +174,7 @@ const ProjectPostPage = (props) => {
             <ThemeIcon
               light={'/assets/menu_light.png'}
               dark={'/assets/menu_dark.png'}
-              alt={'...'}
+              alt={'menu'}
             />
           </button>
 

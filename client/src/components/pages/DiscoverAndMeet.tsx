@@ -20,19 +20,43 @@ import { PanelBox } from '../PanelBox';
 import { ThemeIcon } from '../ThemeIcon';
 import ToTopButton from '../ToTopButton';
 
-const DiscoverAndMeet = ({ category }) => {
+type DiscoverAndMeetProps = {
+  category: 'projects' | 'profiles';
+};
+
+const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
   // Should probably move Interfaces to separate file to prevent duplicates
   // --------------------
   // Interfaces
   // --------------------
-  interface Item {
-    tags: Tag[];
-  }
+interface Tag {
+  tag: string;
+  color: string;
+  id: number;
+}
 
-  interface Tag {
-    tag: string;
-    color: string;
-  }
+interface Skill {
+  id: number;
+  name: string;
+}
+
+interface ProjectType {
+  project_type: string;
+}
+
+interface Item {
+  tags?: Tag[];
+  title?: string;
+  hook?: string;
+  project_types?: ProjectType[];
+  job_title?: string;
+  major?: string;
+  skills?: Skill[];
+  first_name?: string;
+  last_name?: string;
+  username?: string;
+  bio?: string;
+}
 
   // --------------------
   // Components
@@ -125,6 +149,12 @@ const DiscoverAndMeet = ({ category }) => {
     }
   }
 
+  /*
+    Fetches data from the server to populate the discover page.
+    The data is filtered based on the selected category (projects or profiles).
+    The function also handles errors and updates the state with the fetched data.
+    It uses the getAuth function to get the user ID for follow functionality.
+  */
   const getData = async () => {
     // Get user profile
     await getAuth();
@@ -140,6 +170,7 @@ const DiscoverAndMeet = ({ category }) => {
         setFullItemList(data.data);
         setFilteredItemList(data.data);
         setItemSearchData(
+          
           data.data.map((item) => {
             if (category === 'projects') {
               return { name: item.title, description: item.hook };
@@ -192,6 +223,7 @@ const DiscoverAndMeet = ({ category }) => {
     }
   };
 
+  // Updates filtered project list with new tag info
   const updateItemList = (activeTagFilters) => {
     let tagFilteredList = tempItemList.filter((item) => {
       let tagFilterCheck = true;
@@ -201,7 +233,7 @@ const DiscoverAndMeet = ({ category }) => {
           // Check project type by name since IDs are not unique relative to tags
           if (tag.type === 'Project Type') {
             if (item.project_types) {
-              let projectTypes = item.project_types.map((tag) => tag.project_type.toLowerCase());
+              const projectTypes = item.project_types.map((tag) => tag.project_type.toLowerCase());
 
               if (!projectTypes.includes(tag.label.toLowerCase())) {
                 tagFilterCheck = false;
@@ -216,7 +248,7 @@ const DiscoverAndMeet = ({ category }) => {
           // Tag check can be done by ID
           if (tag.tag_id) {
             if (item.tags) {
-              let tagIDs = item.tags.map((tag) => tag.id);
+              const tagIDs = item.tags.map((tag) => tag.id);
 
               if (!tagIDs.includes(tag.tag_id)) {
                 tagFilterCheck = false;
@@ -252,7 +284,7 @@ const DiscoverAndMeet = ({ category }) => {
           } else if (tag.tag_id) {
             // Skill check can be done by ID
             if (item.skills) {
-              let skillIDs = item.skills.map((skill) => skill.id);
+              const skillIDs = item.skills.map((skill) => skill.id);
 
               if (!skillIDs.includes(tag.tag_id)) {
                 tagFilterCheck = false;
@@ -279,6 +311,7 @@ const DiscoverAndMeet = ({ category }) => {
     setFilteredItemList(tagFilteredList);
   };
 
+  // Main render function
   return (
     <div className="page">
       {/* Search bar and profile/notification buttons */}

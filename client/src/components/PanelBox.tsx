@@ -21,6 +21,7 @@ export const PanelBox = ({ category, itemList, itemAddInterval, userId = 0 }) =>
     const panelBoxName = `${category === 'projects' ? 'project' : 'profile'}-panel-box`;
     const { scrollTop, scrollHeight, clientHeight } = document.querySelector(panelBoxName)!;
 
+    // Check if the user has scrolled to the bottom of the panel box
     if (scrollTop + clientHeight >= scrollHeight) {
       const startIndex = displayedItems.length - 1;
       const newItems = itemList.slice(startIndex, startIndex + itemAddInterval);

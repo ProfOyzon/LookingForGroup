@@ -1,6 +1,6 @@
 import '../Styles/pages.css';
 
-//go here if link is invalid
+// Not Found page: Go here if link is invalid
 const NotFound = (props) => {
   return <div>NotFound</div>;
 };

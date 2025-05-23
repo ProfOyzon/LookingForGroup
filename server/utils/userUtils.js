@@ -226,6 +226,65 @@ function updateUsername( id, _username, _confirm_user, _password ) {
     return "200";
 }
 
+/**
+ * Update Password for user specified with user_id
+ * @param id = int, user id for the user wishing to change 
+ * @param newPassword = string, new password
+ * @param password_confirm - string, confirm password to be the same as the new password
+ * @param password - string, user's current password
+ */
+function updatePassword ( id, _newPassword, _password_confirm, _password) {
+    apiURL = `lfg.gccis.rit.edu/api/users/${id}/password`;
+    if(_newPassword != _password_confirm) {
+        console.log("Password and confirmation are not the same.");
+        return "401";
+    }
+
+    data = {
+        newPassword: _newPassword,
+        confirm: _password_confirm,
+        password: _password
+    };
+    response = PUT(apiURL, data);
+    if( response = "400" ){
+        console.log("error updating password.");
+        return "400";
+    }
+    console.log("Updated password for user.")
+    return "200";
+}
+
+
+/**
+ * Updates user visibility, between 0 (private) and 1 (public). just a switch. 
+ * @param id - user_id for the user
+ * @returns "400" if error, "200" if valid
+ */
+function updateUserVisibility ( id ) {
+    apiUrl = `lfg.gccis.rit.edu/api/users/${id}`;
+    data = GET(apiURL);
+    parsedata = JSON.parse(data);
+    vis = parsedata.visibility;
+    
+
+    if(vis = 1) {
+        data = {
+            visibility: 0
+        };
+        result = editUser(id,data);
+    } else if(vis = 0) {
+        data = {
+            visibility: 1
+        };
+        result = editUser(id,data);
+    }
+    if(result = "400") {
+        console.log("Error editing user.");
+        return "400";
+    }
+    return "200";
+}
+
 export default {
     createNewUser,
     getUsers,
@@ -236,4 +295,6 @@ export default {
     getAccountInformation,
     updateEmail,
     updateUsername,
+    updatePassword,
+    updateUserVisibility,
 }

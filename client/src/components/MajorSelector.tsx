@@ -13,6 +13,7 @@ import './Styles/pages.css';
 
 import { useState, useEffect } from 'react';
 
+// Async function to fetch majors from the server
 const getMajors = async () => {
   // TODO: create error handling, try catch block
   const response = await fetch('/api/datasets/majors');
@@ -21,9 +22,12 @@ const getMajors = async () => {
   return data;
 };
 
+// MajorSelector component allows users to select their major from a dropdown list
 export const MajorSelector = () => {
+  // State to hold the options for the dropdown
   const [options, setOptions] = useState(null);
 
+  // useEffect runs once when the component mounts to fetch the majors and set the options
   useEffect(() => {
     const setUp = async () => {
       const jobTitles = await getMajors();

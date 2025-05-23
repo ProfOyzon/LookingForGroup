@@ -117,7 +117,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
                 <ThemeIcon
                   light={'assets/arrow_light.png'}
                   dark={'assets/arrow_dark.png'}
-                  alt={'<'}
+                  alt={'left'}
                 />
               </button>
               <div id="carousel-tabs">
@@ -142,7 +142,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
                 <ThemeIcon
                   light={'assets/arrow_light.png'}
                   dark={'assets/arrow_dark.png'}
-                  alt={'>'}
+                  alt={'right'}
                 />
               </button>
             </div>
@@ -166,7 +166,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
                 <ThemeIcon
                   light={'assets/arrow_light.png'}
                   dark={'assets/arrow_dark.png'}
-                  alt={'>'}
+                  alt={'left'}
                 />
               </button>
               <div
@@ -199,7 +199,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
                 <ThemeIcon
                   light={'assets/arrow_light.png'}
                   dark={'assets/arrow_dark.png'}
-                  alt={'>'}
+                  alt={'right'}
                 />
               </button>
 
@@ -210,7 +210,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
                 <ThemeIcon
                   light={'assets/arrow_light.png'}
                   dark={'assets/arrow_dark.png'}
-                  alt={'>'}
+                  alt={'right'}
                 />
               </button>
             </div>

@@ -1,11 +1,11 @@
 import '../Styles/pages.css';
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from '../../constants/routes';
 import { ThemeIcon } from '../ThemeIcon';
-import { handleError, sendPost, sendGet, hideError } from '../../functions/fetch.js';
+import { sendPost } from '../../functions/fetch.js';
 
-const ForgotPassword = ({}) => {
+const ForgotPassword: React.FC = () => {
   const navigate = useNavigate(); // Hook for navigation
 
   // State variables
@@ -38,13 +38,12 @@ const ForgotPassword = ({}) => {
         setError('Sending email...');
 
         // All checks passed, issue a password change request
-        const response = await sendPost('/api/resets/password', { email: emailInput });
-        if (response && response.error) {
-          setError(response.error);
-        } else {
-          // Success message
-          setError('Email sent');
-        }
+  const response = await sendPost('/api/resets/password', { email: emailInput }) as unknown as { error?: string; message?: string };
+if (response && response.error) {
+  setError(response.error);
+} else {
+  setError('Email sent');
+}
 
         // Navigate back to LOGIN
         navigate(paths.routes.LOGIN);

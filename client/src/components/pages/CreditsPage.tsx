@@ -11,7 +11,7 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useState } from 'react';
+
 import { Header } from '../Header';
 
 const Credits = () => {
@@ -23,7 +23,7 @@ const Credits = () => {
   // MORE (PROBABLY)
 
   // list of og members and their roles
-  const ogMembers = {
+  const ogMembers: { [key: string]: string } = {
     'Abraham Furlan': 'Web Developer',
     'Aeris Peng': 'UI/UX Designer',
     'Alexander Bok': 'UI/UX Designer',
@@ -138,7 +138,7 @@ const Credits = () => {
 
       <div id="credit-members-container">
         {Object.keys(ogMembers).map((name) => (
-          <div className="og-lfg-contributor">
+          <div className="og-lfg-contributor" key={name}>
             <div className="project-contributor-info">
               <h2 className="team-member-name">{name}</h2>
               <p className="team-member-role">{ogMembers[name]}</p>

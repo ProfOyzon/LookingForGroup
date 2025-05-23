@@ -76,7 +76,7 @@ export const PopupContent = ({ children, useClose = true, callback = () => {} })
         <div className="popup-container">
           <div className="popup">
             <button className="popup-close" onClick={closePopup}>
-              <img src={close} alt="X" />
+              <img src={close} alt="close" />
             </button>
             {children}
           </div>

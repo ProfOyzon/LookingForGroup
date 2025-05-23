@@ -76,8 +76,10 @@ const Profile = (props) => {
 
   window.scrollTo(0, 0);
 
+  
   const [userData, setUserData] = useState();
 
+  //Get user data from API
   const getUserData = async (userID: number) => {
     const url = `http://localhost:8081/api/users/${userID}`;
     try {

@@ -1,7 +1,7 @@
 import '../Styles/pages.css';
 
 //go here if link is invalid
-const NotFound = (props) => {
+const NotFound = () => {
   return <div>NotFound</div>;
 };
 

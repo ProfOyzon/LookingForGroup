@@ -4,7 +4,7 @@ import { MessageLine } from '../MessageLine';
 import { profiles } from '../../constants/fakeData'; // FIXME: use user data in db
 
 interface MessageHistoryProps {
- //For future props
+  //For future props
 }
 
 //message history for a single user- accessed by clicking on a message card
@@ -13,10 +13,11 @@ const MessageHistory: React.FC<MessageHistoryProps> = () => {
   const asUser = 0;
   const fromUser = 1;
 
-  const getName = (id: number) => {
+  const getName = (id: number): string => {
     for (const p of profiles) {
       if (p._id == id) return p.username;
     }
+    return ''; // Fallback to avoid undefined
   };
 
   return (

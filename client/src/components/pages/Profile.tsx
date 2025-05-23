@@ -38,7 +38,7 @@ const getProfiles = async () => {
   return users;
 };
 
-const Profile = (props) => {
+const Profile = () => {
   const [profileID, setProfileID] = useState<string | null>(null);
   const [profiles, setProfiles] = useState<{ _id: number; username: string }[]>([]);
 

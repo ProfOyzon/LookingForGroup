@@ -22,8 +22,6 @@ const MyProjects = () => {
 
   const navigate = useNavigate();
 
-  const loggedIntest = true;
-
   // Taken from Sidebar.tsx
   const [userData, setUserData] = useState<User>();
 

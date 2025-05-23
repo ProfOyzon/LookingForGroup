@@ -198,6 +198,34 @@ function updateEmail ( id, _email, _confirm_email, _password) {
     return "200";
 }
 
+/**
+ * Update username through id.
+ * @param username - username to change to
+ * @param confirm_user - secondary entering of username to confirm
+ * @param password - the user's current password.
+ * @returns response, 200 if valid, 400 if not, 401 if users do not match.
+ */
+function updateUsername( id, _username, _confirm_user, _password ) {
+    apiURL = `lfg.gccis.rit.edu/api/users/${id}/username`;
+    if(_username != _confirm_user) {
+        console.log("Usernames are not the same.");
+        return "401";
+    }
+    data = {
+        username: _username,
+        confirm_user: _confirm_user,
+        password: _password
+    };
+
+    response = PUT(apiURL, data);
+    if( response = "400" ){
+        console.log("error updating username.");
+        return "400";
+    }
+    console.log("Updated primary username for user.")
+    return "200";
+}
+
 export default {
     createNewUser,
     getUsers,
@@ -206,4 +234,6 @@ export default {
     userInDatabase,
     updateProfilePicture,
     getAccountInformation,
+    updateEmail,
+    updateUsername,
 }

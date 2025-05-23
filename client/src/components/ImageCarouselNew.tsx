@@ -24,7 +24,7 @@ export const CarouselButton = ({ direction, className = '' }) => {
             <ThemeIcon 
                 light={'assets/arrow_light.png'}
                 dark={'assets/arrow_dark.png'}
-                alt={(direction === 'left') ? '<' : '>'}
+                alt={(direction === 'left') ? 'left' : 'right'}
             />
         </button>
     );

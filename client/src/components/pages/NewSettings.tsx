@@ -11,8 +11,8 @@ import CreditsFooter from '../CreditsFooter';
 import PasswordValidator from 'password-validator';
 import ToTopButton from '../ToTopButton';
 
+   // Take the user ID and delete it
 const deleteAccountPressed = async () => {
-    // Take the user ID and delete it
     // console.log('Delete Pressed!');
     const userID = await fetchUserID();
     await sendDelete(`/api/users/${userID}`, async()=>{await sendPost('/api/logout');});
@@ -65,8 +65,10 @@ const Settings = ({ }) => {
     }
 
     // --------------------
-    // Components
+    // Components:
     // --------------------
+
+    // Confirmation for changed settings
     const ConfirmChange = ({ type, prev = '', cur = '', apiParams, setError, setSuccess }) => {
         return (
             <div className='small-popup'>
@@ -112,6 +114,7 @@ const Settings = ({ }) => {
         );
     };
 
+    // User form for changing username/password/email
     const ChangeForm = ({ type }) => {
         // Variables
         const [errorMsg, setError] = useState('');

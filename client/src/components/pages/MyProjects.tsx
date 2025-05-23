@@ -107,6 +107,7 @@ const MyProjects = () => {
   //     }
   // }
 
+  // Compare words: check if the snippet is found in the title
   const checkIfAnyWordStartsWith = (title: string, snippit: string) => {
     const words = title.split(' ');
     for (let i = 0; i < words.length; i++) {
@@ -117,6 +118,7 @@ const MyProjects = () => {
     return false;
   };
 
+  // Sort projects: variety of methods
   const sortProjects = (projects) => {
     if (projects !== undefined) {
       const tempList = new Array(0);
@@ -172,6 +174,7 @@ const MyProjects = () => {
     }
   };
 
+  // Set the display mode: list or grid
   const toggleDisplayMode = () => {
     if (displayMode === 'grid') {
       setDisplayMode('list');
@@ -180,6 +183,7 @@ const MyProjects = () => {
     }
   };
 
+  // Projects in grid display
   const GridDisplay = ({ userProjects }) => {
     return (
       <>
@@ -208,6 +212,7 @@ const MyProjects = () => {
     );
   };
 
+  // Projects in list display
   const ListDisplay = ({ userProjects }) => {
     return (
       <>
@@ -244,6 +249,7 @@ const MyProjects = () => {
     );
   };
 
+  // Return sorted projects either in Grid or List mode
   const ProjectListSection = ({ userProjects }) => {
     // Sort projects based on the method selected
     const sortedProjects = sortProjects(userProjects);

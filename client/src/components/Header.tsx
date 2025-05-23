@@ -158,7 +158,7 @@ export const Header = ({ dataSets, onSearch }) => {
                   <ThemeIcon
                     light={'assets/black/mode.png'}
                     dark={'assets/white/mode.png'}
-                    alt={'X'}
+                    alt={'current mode'}
                   />
                   {modeToggle}
                 </button>{' '}
@@ -168,7 +168,7 @@ export const Header = ({ dataSets, onSearch }) => {
                   <ThemeIcon
                     light={'assets/black/logout.png'}
                     dark={'assets/white/logout.png'}
-                    alt={'X'}
+                    alt={'log in'}
                   />
                   Log In
                 </button>
@@ -206,7 +206,7 @@ export const Header = ({ dataSets, onSearch }) => {
                   <ThemeIcon
                     light={'assets/black/mode.png'}
                     dark={'assets/white/mode.png'}
-                    alt={'X'}
+                    alt={'current mode'}
                   />
                   {modeToggle}
                 </button>{' '}
@@ -216,7 +216,7 @@ export const Header = ({ dataSets, onSearch }) => {
                   <ThemeIcon
                     light={'assets/black/settings.png'}
                     dark={'assets/white/settings.png'}
-                    alt={'X'}
+                    alt={'settings'}
                   />
                   Settings
                 </button>

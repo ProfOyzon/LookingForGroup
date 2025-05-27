@@ -26,7 +26,7 @@ function createNewUser ( token, email, _firstName, _lastName, _headline, _pronou
     //check if token is valid
     apiURL = `lfg.gccis.rit.edu/api/signup/${token}`
     response = GET(apiURL);
-    if(response == "400") {
+    if(response.status === "400") {
         console.log("Token does not exist.");
         return "400";
     }
@@ -52,7 +52,7 @@ function createNewUser ( token, email, _firstName, _lastName, _headline, _pronou
         };
 
         response = POST( apiURL, data);
-        if ( response = "400" ) {
+        if ( response.status === "400" ) {
             console.log("Error creating a new user.");
             return "400";
         }
@@ -71,7 +71,7 @@ function createNewUser ( token, email, _firstName, _lastName, _headline, _pronou
 function userInDatabase(email) {
     apiURL = `lfg.gccis.rit.edu/api/users/search-email/${email}`;
     response = GET(apiURL);
-    if( response = "400" ) {
+    if( response.status === "400" ) {
         console.log("No user with that email in the database.");
         return false;
     } else {
@@ -87,9 +87,9 @@ function userInDatabase(email) {
 function getUsers() {
     apiURL = 'lfg.gccis.rit.edu/api/users';
     response = GET(apiURL);
-    if( response = "400" ) return "400";
+    if( response.status === "400" ) return "400";
 
-    return response;
+    return response.data;
 }
 
 /**
@@ -101,12 +101,12 @@ function getUsers() {
 function getAccountInformation ( id ) {
     apiURL = `lfg.gccis.rit.edu/api/users/${id}/account`;
     response = GET(apiURL);
-    if( response = "400" ) {
+    if( response.status === "400" ) {
         return "400";
     }
 
     console.log("User accound information recieved")
-    return response;
+    return response.data;
 }
 
 
@@ -118,9 +118,9 @@ function getAccountInformation ( id ) {
 function getUsers(id) {
     apiURL = `lfg.gccis.rit.edu/api/users/${id}`;
     response = GET(apiURL);
-    if( response = "400" ) return "400"; //error
+    if( response.status === "400" ) return "400"; //error
 
-    return response;
+    return response.data;
 }
 
 /**
@@ -132,9 +132,9 @@ function getUsers(id) {
 function editUser(id, data) {
     apiURL = `lfg.gccis.rit.edu/api/users/${id}`;
     response = PUT(apiURL, data);
-    if( response = "400" ) return "400";
+    if( response.status === "400" ) return "400";
 
-    return response;
+    return response.data;
 }
 
 
@@ -146,9 +146,9 @@ function editUser(id, data) {
 function deleteUser(id) {
     apiURL = `lfg.gccis.rit.edu/api/users/${id}`;
     response = DELETE(apiURL);
-    if( response = "400" ) return "400";
+    if( response === "400" ) return "400";
 
-    return response;
+    return response.data;
 }
 
 
@@ -162,12 +162,12 @@ function updateProfilePicture( id, _image ) {
     apiURL = `lfg.gccis.rit.edu/api/users/${id}/profile-picture`;
     data = {image: _image};
     response = PUT(apiURL, data);
-    if( response = "400" ){
+    if( response.status === "400" ){
         console.log("error updating profile picture.");
         return "400";
     }
     console.log("Updated Profile Picture for user.")
-    return "200";
+    return response.status;
 }
 
 /**
@@ -191,12 +191,12 @@ function updateEmail ( id, _email, _confirm_email, _password) {
     };
 
     response = PUT(apiURL, data);
-    if( response = "400" ){
+    if( response.status === "400" ){
         console.log("error updating email.");
-        return "400";
+        return response.status;
     }
     console.log("Updated primary email for user.")
-    return "200";
+    return response.status;
 }
 
 /**
@@ -219,12 +219,12 @@ function updateUsername( id, _username, _confirm_user, _password ) {
     };
 
     response = PUT(apiURL, data);
-    if( response = "400" ){
+    if( response.status === "400" ){
         console.log("error updating username.");
-        return "400";
+        return response.status;
     }
     console.log("Updated primary username for user.")
-    return "200";
+    return response.status;
 }
 
 
@@ -257,9 +257,9 @@ async function requestPasswordReset ( email ) {
         };
         response = POST(`https://lookingforgrp/resetPassword`,data);
 
-        if(response = "400") {
+        if(response.status === "400") {
             console.error("Error posting token for password reset.");
-            return "400";
+            return response.status;
         } 
         console.log("Token put into database.");
 
@@ -294,7 +294,7 @@ async function requestPasswordReset ( email ) {
     } catch (err) {
         console.log(err);
         console.log("An error occured during password reset request");
-        return "400";
+        return response.status;
     }
 }
 
@@ -324,9 +324,9 @@ async function updatePassword ( id, _newPassword, _password_confirm, _password, 
         //get email if token is valid
         url = `https://lfg.gccis.rit.edu/api/resets/password/${_token}`;
         response = GET(url);
-        if(!response.email) {
+        if(!response.data.email) {
             console.log("Your token has expired.");
-            return "400";
+            return response.status;
         }
         console.log("Token accepted, email verified.");
 
@@ -336,9 +336,9 @@ async function updatePassword ( id, _newPassword, _password_confirm, _password, 
             password: hashPass,
         };
         response = PUT(url,data);
-        if(response = "400") {
+        if(response.status === "400") {
             console.log("Error putting new password.")
-            return "400";
+            return response.status;
         }
 
         console.log("User password updated successfully.");
@@ -390,12 +390,12 @@ function updateUserVisibility ( id ) {
 function getUserByUsername ( username ) {
     url = `https://lfg.gccis.rit.edu/api/users/search-username/${username}`;
     response = GET(url);
-    if(response = "400") {
+    if(response.status === "400") {
         console.log("Error getting user.");
         return "400";
     } 
     console.log("Data recieved.");
-    return response;
+    return response.data;
 }
 
 
@@ -407,12 +407,12 @@ function getUserByUsername ( username ) {
 function getUserByEmail ( email ) {
     url = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
     response = GET(url);
-    if(response = "400") {
+    if(response.status === "400") {
         console.log("Error getting user.");
         return "400";
     } 
     console.log("Data recieved.");
-    return response;
+    return response.data;
 }
 
 
@@ -424,12 +424,12 @@ function getUserByEmail ( email ) {
 function getUserFollowing ( id ) {
     url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/people`;
     response = GET(url);
-    if(response = "400") {
+    if(response.status === "400") {
         console.log("Error getting users.");
         return "400";
     } 
     console.log("Data recieved.");
-    return response;
+    return response.data;
 }
 
 
@@ -441,7 +441,7 @@ function getUserFollowing ( id ) {
 function getVisibleProjects ( id ) {
     url = `https://lfg.gccis.rit.edu/api/users/${id}/projects/profile`;
     response = GET(url);
-    if(response = "400") {
+    if(response.staus === "400") {
         console.log("Error getting projects.");
         return "400";
     } 
@@ -464,7 +464,7 @@ function updateProjectVisibility ( userID, projectID,_visibility ) {
     };
 
     response = PUT(url, data);
-    if (response = "400") {
+    if (response.status === "400") {
         console.log("Error editing projects.");
         return "400";
     }
@@ -481,12 +481,12 @@ function updateProjectVisibility ( userID, projectID,_visibility ) {
 function getProjectFollowing ( id ) {
     url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/projects`;
     response = GET(url);
-    if(response = "400") {
+    if(response.status === "400") {
         console.log("Error getting projects.");
         return "400";
     } 
     console.log("Data recieved.");
-    return response;
+    return response.data;
 }
 
 
@@ -502,7 +502,7 @@ function addProjectFollowing ( id, projectID ) {
         projectId: projectID,
     };
     response = POST(url, data);
-    if(response = "400") {
+    if(response.status === "400") {
         console.log("Error creating project following.");
         return "400";
     }
@@ -520,7 +520,7 @@ function addProjectFollowing ( id, projectID ) {
 function deleteProjectFollowing ( id, projID ) {
     url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/projects/${projID}`;
     response = DELETE(url);
-    if(response = "400") {
+    if(response.status === "400") {
         console.log("Error deleting project following.");
         return "400";
     }
@@ -536,12 +536,12 @@ function deleteProjectFollowing ( id, projID ) {
 function getUserFollowing ( id ) {
     url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/people`;
     response = GET(url);
-    if(response = "400") {
+    if(response.status === "400") {
         console.log("Error getting users.");
         return "400";
     } 
     console.log("Data recieved.");
-    return response;
+    return response.data;
 }
 
 /**
@@ -556,7 +556,7 @@ function addUserFollowing ( id, followID ){
         userId: followID,
     };
     response = POST(url, data);
-    if (response="400") {
+    if (response.status === "400") {
         console.log("Error creating user following.");
         return "400";
     }
@@ -598,4 +598,4 @@ export default {
     deleteProjectFollowing,
     addUserFollowing,
 
-}
+};

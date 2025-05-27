@@ -1,3 +1,4 @@
+import { permission } from 'process';
 import { GET, PUT, POST, DELETE } from './fetchUtils';
 
 /**
@@ -35,11 +36,11 @@ const createNewProject = (_userId, _title, _hook, _desc, _purpose, _status, _aud
     }
 
     let response = POST(apiURL, data);
-    if(response === "400"){
+    if(response.status === "400"){
         console.log("Error creating new project.");
         return "400";
     }
-    console.log(`Created project names "${_title}"`);
+    console.log(`Created project named "${_title}"`);
     return "200";
 }
 
@@ -50,7 +51,10 @@ const createNewProject = (_userId, _title, _hook, _desc, _purpose, _status, _aud
 const getProjects = () => {
     const apiURL = `lfg.gccis.rit.edu/api/projects`;
     let response = GET(apiURL);
-    return response;
+    if(response.status === "400"){
+        return "400";
+    }
+    return response.data;
 }
 
 /**
@@ -61,7 +65,10 @@ const getProjects = () => {
 const getByID = (ID) => {
     const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}`;
     let response = GET(apiURL);
-    return response;
+    if(response.status === "400"){
+        return "400";
+    }
+    return response.data;
 }
 
 /**
@@ -73,7 +80,7 @@ const getByID = (ID) => {
 const updateProject = (ID, data) => {
     const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}`;
     let response = PUT(apiURL, data);
-    return response;
+    return response.status;
 }
 
 /**
@@ -83,39 +90,128 @@ const updateProject = (ID, data) => {
 const deleteProject = () => {
     const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}`;
     let response = DELETE(apiURL);
-    return response;
+    return response.status;
 }
 
-const updateThumbnail = () => {
-    // TODO
+/**
+ * Updates the thumbnail image for a project
+ * @param ID - ID of the project to update
+ * @param image - Image file of new thumbnail
+ * @returns The new thumbnail image + the filename if valid, 400 if not
+ */
+const updateThumbnail = (ID, _image) => {
+    const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/thumbnail`;
+    const data = { image: _image };
+    let response = PUT(apiURL, data);
+    if(response.status === "400"){
+        return "400";
+    }
+    return response.data;
 }
 
-const getPics = () => {
-    // TODO
+/**
+ * Gets the pictures used in a project's carousel
+ * @param ID - ID of the target project
+ * @returns Array of image objects if valid, 400 if not
+ */
+const getPics = (ID) => {
+    const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/pictures`;
+    let response = GET(apiURL);
+    if(response.status === "400"){
+        return "400";
+    }
+    return response.data;
 }
 
-const addPic = () => {
-    // TODO
+/**
+ * Adds a picture to a project's carousel
+ * @param ID - ID of the target project
+ * @param image - Image file to be added
+ * @param position - Position of the image in the carousel
+ * @returns Response status
+ */
+const addPic = (ID, _image, _position) => {
+    const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/pictures`;
+    const data = {
+        image: _image,
+        position: _position,
+    };
+    let response = POST(apiURL, data);
+    return response.status;
 }
 
-const updatePicPositions = () => {
-    // TODO
+/**
+ * Updates position order of a project's carousel pictures
+ * @param ID - ID of the target project
+ * @param images - Array of objects, which contain the image "id" and new "position"
+ * @returns Response status
+ */
+const updatePicPositions = (ID, images) => {
+    const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/pictures`;
+    let response = PUT(apiURL, images);
+    return response.status;
 }
 
-const deletePic = () => {
-    // TODO
+/**
+ * Deletes a picture in a project
+ * @param ID - ID of the target project
+ * @param image - Filename of the image to delete
+ * @returns Response status
+ */
+const deletePic = (ID, image) => {
+    const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/pictures`;
+    let response = DELETE(apiURL, image);
+    return response.status;
 }
 
-const addMember = () => {
-    // TODO
+/**
+ * Adds a member to a project
+ * @param ID - ID of the target project
+ * @param userId - ID of the user to add
+ * @param titleId - ID of the user's role
+ * @param permission - The user's access level
+ * @returns Response status
+ */
+const addMember = (ID, _userId, _titleId, _permission) => {
+    const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/members`;
+    const data = {
+        userId: _userId,
+        titleId: _titleId,
+        permission: _permission,
+    };
+    let response = POST(apiURL, data);
+    return response.status;
 }
 
-const updateMember = () => {
-    // TODO
+/**
+ * Updates an existing member in a project
+ * @param ID - ID of the target project
+ * @param userId - ID of the user to update
+ * @param titleId - ID of the user's role
+ * @param permission - The user's access level
+ * @returns Response status
+ */
+const updateMember = (ID, _userId, _titleId, _permission) => {
+    const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/members`;
+    const data = {
+        userId: _userId,
+        titleId: _titleId,
+        permission: _permission,
+    };
+    let response = PUT(apiURL, data);
+    return response.status;
 }
 
-const deleteMember = () => {
-    // TODO
+/**
+ * Removes a member from a project
+ * @param ID - ID of the target project
+ * @param userId - ID of the target user
+ * @returns Response status
+ */
+const deleteMember = (ID, userId) => {
+    const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/members/${userId}`;
+    let response = DELETE(apiURL);
+    return response.status;
 }
 
 export default{

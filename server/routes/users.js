@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import mid from '../middleware/index.js';
 import userCtrl from '../controllers/users.js';
+import pool from '../config/database.js';
 
 const router = Router();
 
@@ -66,6 +67,35 @@ router.get('/api/users/get-username-session', mid.checkLogin, userCtrl.getUserna
  * @returns HTTP response
  */
 router.get('/api/users', userCtrl.getUsers);
+
+/**
+ * Gets users v2
+ * @param attributes attributes that filter out users
+ * @returns users match attributes
+ * @returns HTTP response
+ */
+router.get('/api/2/users', async (req, res) => {
+  try {
+    let sql = 'SELECT * FROM users WHERE visibility = 1';
+
+    for (const [key, value] of Object.entries(req.query)) {
+      sql += ` AND ${key} = ${value}`;
+    }
+
+    const [users] = await pool.query(sql);
+
+    return res.status(200).json({
+      status: 200,
+      data: users,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      status: 400,
+      error: err,
+    });
+  }
+});
 
 /**
  * Gets users by id

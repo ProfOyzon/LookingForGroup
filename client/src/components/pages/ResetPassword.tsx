@@ -53,8 +53,8 @@ const ResetPassword = ({}) => {
     }
   };
 
-  const validatePassword = (pass) => {
     // Don't check password if there's nothing there
+  const validatePassword = (pass) => {
     if (pass === '') {
       return '';
     }

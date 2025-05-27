@@ -22,6 +22,7 @@ import { useEffect, useState } from 'react';
 import ToTopButton from '../ToTopButton';
 import EditButton from '../Profile/ProfileEditButton';
 
+// Get user ID from API
 const fetchUserID = async () => {
   const response = await fetch('/api/auth');
   const {
@@ -30,6 +31,7 @@ const fetchUserID = async () => {
   return userID;
 };
 
+// Get list of users on site from API
 const getProfiles = async () => {
   const response = await fetch('/api/users');
   const {
@@ -38,6 +40,7 @@ const getProfiles = async () => {
   return users;
 };
 
+// Main Profile component
 const Profile = (props) => {
   const [profileID, setProfileID] = useState<string | null>(null);
   const [profiles, setProfiles] = useState<{ _id: number; username: string }[]>([]);

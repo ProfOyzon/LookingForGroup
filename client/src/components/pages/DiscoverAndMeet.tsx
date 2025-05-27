@@ -72,6 +72,7 @@ interface Item {
                 light={'assets/bannerImages/people1_light.png'}
                 dark={'assets/bannerImages/people1_dark.png'}
                 id={'profile-hero-img-1'}
+                alt={'banner image'}
               />
               {/* <div>
                             <span className='profile-hero-highlight'>Explore profiles</span> to see each other's personality, expertise, and project history.
@@ -84,6 +85,7 @@ interface Item {
                 light={'assets/bannerImages/people2_light.png'}
                 dark={'assets/bannerImages/people2_dark.png'}
                 id={'profile-hero-img-2'}
+                alt={'banner image'}
               />
               {/* <div className="panel-text">
                             Find someone interesting? <span className='profile-hero-highlight'>Send a message!</span><br/>
@@ -97,6 +99,7 @@ interface Item {
                 light={'assets/bannerImages/people3_light.png'}
                 dark={'assets/bannerImages/people3_dark.png'}
                 id={'profile-hero-img-3'}
+                alt={'banner image'}
               />
               {/* <div>
                             Keep your profile up to date with your skills, project preferences, and interests to 
@@ -171,6 +174,7 @@ interface Item {
         setFilteredItemList(data.data);
         setItemSearchData(
           
+          // loop through JSON, get data based on category
           data.data.map((item) => {
             if (category === 'projects') {
               return { name: item.title, description: item.hook };
@@ -341,10 +345,12 @@ interface Item {
   );
 };
 
+// Return projects category
 export const Discover = () => {
   return <DiscoverAndMeet category={'projects'} />;
 };
 
+// Return profiles category
 export const Meet = () => {
   return <DiscoverAndMeet category={'profiles'} />;
 };

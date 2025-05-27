@@ -1,3 +1,4 @@
+import envConfig from '../config/env';
 import { createUser } from '../controllers/users';
 import { GET, POST, PUT, DELETE } from './fetchUtils';
 
@@ -226,6 +227,78 @@ function updateUsername( id, _username, _confirm_user, _password ) {
     return "200";
 }
 
+
+/**
+ * Request for the forget password page, send the user an email for resetting their password.
+ * @param email - email to send password reset to.
+ * @returns 201 if email sent, 400 if error.
+ */
+async function requestPasswordReset ( email ) {
+    //check if email exists
+    if(!email) {
+        console.log("Error: Missing email.");
+        return "400";
+    }
+
+    // Generate a token for password reset
+    const _token = crypto.randomUUID();
+
+    let url = ``;
+    if(envConfig.env === 'production') {
+        url = `https://lookingforgrp.com/resetPassword/${token}`;
+    } else {
+        url = `http://localhost:8081/resetPassword/${token}`;
+    }
+
+    try {
+        // Add token to online
+        data = {
+            token: _token,
+        };
+        response = POST(`https://lookingforgrp/resetPassword`,data);
+
+        if(response = "400") {
+            console.error("Error posting token for password reset.");
+            return "400";
+        } 
+        console.log("Token put into database.");
+
+        const emailMessage = `
+            <p>Hi, <br>
+            Forgot your password? You have 15 minutes to reset it. Click the button below.
+            </p>
+
+            <div style="margin:2rem 1rem">
+            <a style="font-size:1.25rem; color:#FFFFFF; background-color:#271D66; text-align:center; margin:2rem 0; padding:1rem; text-decoration:none;"
+            href="${url}" target="_blank">Reset Password</a>
+            </div>
+
+            <p>If the button doesn't work, use the following link:</p>
+            <a href="${url}" target="_blank">Need a link</a>
+            
+            <p>Kind regards,<br>
+            LFG Team</p>
+            `;
+        const message = {
+            from: envConfig.mailerEmail,
+            to: email,
+            subject: 'Reset Your LFG Password',
+            html: emailMessage,
+        };
+
+        // send account activation email
+        await transporter.sendMail(message);
+
+        console.log("Email sent successfully.");
+        return "201";
+    } catch (err) {
+        console.log(err);
+        console.log("An error occured during password reset request");
+        return "400";
+    }
+}
+
+
 /**
  * Update Password for user specified with user_id
  * @param id = int, user id for the user wishing to change 
@@ -233,25 +306,48 @@ function updateUsername( id, _username, _confirm_user, _password ) {
  * @param password_confirm - string, confirm password to be the same as the new password
  * @param password - string, user's current password
  */
-function updatePassword ( id, _newPassword, _password_confirm, _password) {
+async function updatePassword ( id, _newPassword, _password_confirm, _password, _token) {
     apiURL = `lfg.gccis.rit.edu/api/users/${id}/password`;
-    if(_newPassword != _password_confirm) {
-        console.log("Password and confirmation are not the same.");
-        return "401";
-    }
-
-    data = {
-        newPassword: _newPassword,
-        confirm: _password_confirm,
-        password: _password
-    };
-    response = PUT(apiURL, data);
-    if( response = "400" ){
-        console.log("error updating password.");
+    if(!_newPassword || !_password_confirm) {
+        console.log("Missing passwords.")
         return "400";
     }
-    console.log("Updated password for user.")
-    return "200";
+    if(_newPassword != _password_confirm) {
+        console.log("Password and confirmation are not the same.");
+        return "400";
+    }
+
+    //hash password
+    const hashPass = await bcrypt.hash(_newPassword,10);
+    
+    try {
+        //get email if token is valid
+        url = `https://lfg.gccis.rit.edu/api/resets/password/${_token}`;
+        response = GET(url);
+        if(!response.email) {
+            console.log("Your token has expired.");
+            return "400";
+        }
+        console.log("Token accepted, email verified.");
+
+        //update user password
+        url = `https://lfg.gccis.rit.edu/api/users/${id}/password`;
+        data = {
+            password: hashPass,
+        };
+        response = PUT(url,data);
+        if(response = "400") {
+            console.log("Error putting new password.")
+            return "400";
+        }
+
+        console.log("User password updated successfully.");
+        return "201";
+    } catch(err) {
+        console.log(err);
+        console.log("An error occurred while updating user's password");
+        return "400";
+    }
 }
 
 
@@ -285,6 +381,200 @@ function updateUserVisibility ( id ) {
     return "200";
 }
 
+
+/**
+ * Get User by Username
+ * @param username - Username of user to be recieved
+ * @return data, list of 1 user, or 400 if not successful
+ */
+function getUserByUsername ( username ) {
+    url = `https://lfg.gccis.rit.edu/api/users/search-username/${username}`;
+    response = GET(url);
+    if(response = "400") {
+        console.log("Error getting user.");
+        return "400";
+    } 
+    console.log("Data recieved.");
+    return response;
+}
+
+
+/**
+ * Get User by email
+ * @param username - Username of user to be recieved
+ * @return data, list of 1 user, or 400 if not successful
+ */
+function getUserByEmail ( email ) {
+    url = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
+    response = GET(url);
+    if(response = "400") {
+        console.log("Error getting user.");
+        return "400";
+    } 
+    console.log("Data recieved.");
+    return response;
+}
+
+
+/**
+ * Get people that a user is following.
+ * @param id - id of the user that we are searching.
+ * @returns array of users following, or 400 if unsuccessful.
+ */
+function getUserFollowing ( id ) {
+    url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/people`;
+    response = GET(url);
+    if(response = "400") {
+        console.log("Error getting users.");
+        return "400";
+    } 
+    console.log("Data recieved.");
+    return response;
+}
+
+
+/**
+ * Get all projects the user is a member of and has set to be public for the profile page
+ * @param id - user to search
+ * @return - array of projects, or 400 if unsuccessful.
+ */
+function getVisibleProjects ( id ) {
+    url = `https://lfg.gccis.rit.edu/api/users/${id}/projects/profile`;
+    response = GET(url);
+    if(response = "400") {
+        console.log("Error getting projects.");
+        return "400";
+    } 
+    console.log("Data recieved.");
+    return response;
+}
+
+/**
+ * Update the project visibility for a project a user is a member of.
+ * @param userID - user's ID
+ * @param projectID - Id of the project
+ * @param visibility - either "public" or "private", set visibility
+ * @return 201 if successful, 400 if not
+ */
+function updateProjectVisibility ( userID, projectID,_visibility ) {
+    url = `https://lfg.gccis.rit.edu/api/users/${userID}/projects/visibility`;
+    data = {
+        projectId: projectID,
+        visibility: _visibility,
+    };
+
+    response = PUT(url, data);
+    if (response = "400") {
+        console.log("Error editing projects.");
+        return "400";
+    }
+    console.log("Data edited.");
+    return "201";
+}
+
+
+/**
+ * Get projects the user is following.
+ * @param id - ID of the user.
+ * @returns array of projects, or 400 if error.
+ */
+function getProjectFollowing ( id ) {
+    url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/projects`;
+    response = GET(url);
+    if(response = "400") {
+        console.log("Error getting projects.");
+        return "400";
+    } 
+    console.log("Data recieved.");
+    return response;
+}
+
+
+/**
+ * Follow a project for a user.
+ * @param id - user ID trying to follow a project.
+ * @param projectID - ID of the project trying to follow.
+ * @returns 201 if successful, 400 if not.
+ */
+function addProjectFollowing ( id, projectID ) {
+    url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/projects`;
+    data = {
+        projectId: projectID,
+    };
+    response = POST(url, data);
+    if(response = "400") {
+        console.log("Error creating project following.");
+        return "400";
+    }
+    console.log("Created project following.");
+    return "200";
+}
+
+
+/**
+ * Unfollow a project for a user.
+ * @param id - user id 
+ * @param projId - project Id to be unfollowed.
+ * @returns 201 if successful, 400 if not.
+ */
+function deleteProjectFollowing ( id, projID ) {
+    url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/projects/${projID}`;
+    response = DELETE(url);
+    if(response = "400") {
+        console.log("Error deleting project following.");
+        return "400";
+    }
+    console.log("Deleted project following.");
+    return "200";
+}
+
+/**
+ * Get people the user is following
+ * @param id - user ID
+ * @returns - array of users, or 400 if not successful
+ */
+function getUserFollowing ( id ) {
+    url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/people`;
+    response = GET(url);
+    if(response = "400") {
+        console.log("Error getting users.");
+        return "400";
+    } 
+    console.log("Data recieved.");
+    return response;
+}
+
+/**
+ * Follow a person for a user.
+ * @param id - user's id
+ * @param followID - user to be followed.
+ * @returns 201 if successful, 400 if not
+ */
+function addUserFollowing ( id, followID ){
+    url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/people`;
+    data = {
+        userId: followID,
+    };
+    response = POST(url, data);
+    if (response="400") {
+        console.log("Error creating user following.");
+        return "400";
+    }
+    console.log("Created user following.");
+    return "201";
+}
+
+
+/**
+ * Unfollow person for a user.
+ * @param id - user id of the user.
+ * @param unfollowID - user id to be unfollowed.
+ */
+// function deleteUserFollowing ( id, unfollowID ) {
+
+// }
+
+
 export default {
     createNewUser,
     getUsers,
@@ -297,4 +587,15 @@ export default {
     updateUsername,
     updatePassword,
     updateUserVisibility,
+    requestPasswordReset,
+    getUserByUsername,
+    getUserByEmail,
+    getUserFollowing,
+    getVisibleProjects,
+    updateProjectVisibility,
+    getProjectFollowing,
+    addProjectFollowing,
+    deleteProjectFollowing,
+    addUserFollowing,
+
 }

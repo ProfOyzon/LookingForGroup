@@ -68,6 +68,12 @@ router.get('/api/users/get-username-session', mid.checkLogin, userCtrl.getUserna
  */
 router.get('/api/users', userCtrl.getUsers);
 
+/**
+ * Gets users v2
+ * @param attributes attributes that filter out users
+ * @returns users match attributes
+ * @returns HTTP response
+ */
 router.get('/api/2/users', async (req, res) => {
   try {
     let sql = 'SELECT * FROM users WHERE visibility = 1';

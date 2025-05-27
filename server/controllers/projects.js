@@ -14,7 +14,7 @@ const dirname = import.meta.dirname;
 
 /**
  * Get all project through request
- * @param req - request  (uses req.seesion.userId to check status)
+ * @param req - request  (uses req.session.userId to check status)
  * @param res - response 
  * @returns res.status - {status:200, data:[projects]} if success, else {status:400, error:...}
  */

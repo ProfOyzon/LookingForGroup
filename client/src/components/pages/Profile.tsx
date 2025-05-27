@@ -40,12 +40,8 @@ const getProfiles = async () => {
   return users;
 };
 
-<<<<<<< HEAD
-const Profile = () => {
-=======
 // Main Profile component
 const Profile = (props) => {
->>>>>>> 37ac98e7022063dd1babd0608d570f23f6066f75
   const [profileID, setProfileID] = useState<string | null>(null);
   const [profiles, setProfiles] = useState<{ _id: number; username: string }[]>([]);
 

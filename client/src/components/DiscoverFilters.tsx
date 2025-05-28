@@ -566,3 +566,4 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
     </>
   );
 };
+

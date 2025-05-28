@@ -9,7 +9,7 @@ import { ThemeIcon } from './ThemeIcon';
 //Finish Discover page version of this component
 
 //Default list of images to use
-const imageList = [image1, image2, image3];
+const imageList: string[] = [image1, image2, image3];
 
 //Variable is identical in function to pages.
 //warnings about this variable can be found in Joseph Dunne's page documentation
@@ -20,7 +20,13 @@ const runningServer = true;
 // https://blog.bitsrc.io/simple-carousel-in-react-2aac73887243
 
 //Will need to take in a list of images to render
-export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
+export const ImageCarousel = ({
+  carouselType,
+  dataList = imageList,
+}: {
+  carouselType: 'Project' | 'Discover';
+  dataList?: string[];
+}) => {
   //State variable tracking what the currently displayed image's index is
   const [currentIndex, setCurrentIndex] = useState(0);
   //State variable tracking whether or not the user's mouse is hovering over this component
@@ -44,7 +50,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
     setCurrentIndex(newIndex);
   };
 
-  const handleHover = (hovering) => {
+  const handleHover = (hovering: boolean) => {
     if (hovering) {
       skipAuto.current = true;
       setHovering(true);
@@ -95,7 +101,7 @@ export const ImageCarousel = ({ carouselType, dataList = imageList }) => {
               onMouseLeave={() => handleHover(false)}
             >
               {dataList.map((image, index) => {
-                const imageLink = runningServer ? `/images/projects/${image.image}` : image.image;
+                const imageLink = runningServer ? `/images/projects/${image}` : image;
                 return (
                   <div
                     className="project-image-carousel-item"

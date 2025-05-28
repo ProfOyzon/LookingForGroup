@@ -31,7 +31,7 @@ const ForgotPassword: React.FC = () => {
       const data = await response.json();
 
       if (!data) {
-        setError('Email not associated with an account');
+        setError('If that account exists, an email has been sent.');
         return;
       } else {
         // Success message

@@ -171,14 +171,15 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
         // type based on the page: Role/Project Type
         const buttonType = button.getAttribute('data-type');
         // remove select if type is the same, don't remove "New"
-        if ((buttonType === tagType) && (button.innerText.toLowerCase() !== "new")) {
+        if (button.innerText.toLowerCase() !== "new") {
           button.classList.remove('discover-tag-filter-selected');
         }
       }
     }
 
-    // remove filters of same type
-    activeTagFilters = activeTagFilters.filter(tag => tag.type !== tagType);
+    // clear out tags
+    activeTagFilters.splice(0, activeTagFilters.length);
+    // old filtering: --> activeTagFilters = activeTagFilters.filter(tag => tag.type !== tagType);
 
     if (newAlreadyActive) { activeTagFilters.push({ label: 'New', type: 'Project Type' }); } // Add back new if necessary!
     if (anyActiveBeforeNew !== "") { activeTagFilters.push({ label: anyActiveBeforeNew, type: 'Project Type' }); } // Add back existing if necessary!

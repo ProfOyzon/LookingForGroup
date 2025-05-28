@@ -145,22 +145,47 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
     const isSelected = clicked.classList.contains('discover-tag-filter-selected');
     const discoverFilters = document.getElementsByClassName('discover-tag-filter');
 
-    // remove 'selected' class from all buttons of this type
-    for (let i = 0; i < discoverFilters.length; i++) {
-      // get current button & type
-      const button = discoverFilters[i];
-      // type based on the page: Role/Project Type
-      const buttonType = button.getAttribute('data-type');
-      // remove select if type is the same
-      if (buttonType === tagType) {
-        button.classList.remove('discover-tag-filter-selected');
+    let newAlreadyActive = false; // Handles if a filter is clicked when NEW is already active.
+    let anyActiveBeforeNew = ""; // Handles if NEW is clicked when another filter is already active.
+
+    // Handling visuals: Hide all, only add back if necessary.
+    // If "New" button was clicked - don't hide other any other selection, only New
+    if (clicked.innerText.toLowerCase() === "new") {
+      clicked.classList.remove('discover-tag-filter-selected');
+
+      // if new is clicked when something is already active, it shouldnt clear that filter, but should clear its own (new) (no matter what!)
+      for (let i = 0; i < discoverFilters.length; i++) {
+        if (discoverFilters[i].classList.contains('discover-tag-filter-selected') && discoverFilters[i].innerText.toLowerCase() !== "new") {
+          anyActiveBeforeNew = discoverFilters[i].innerText;
+        }
+      }
+    }
+    else {
+      // if any filter is clicked when new is already active, it shouldnt clear new, but should clear its own (no matter what!)
+      if (discoverFilters[0].innerText.toLowerCase() === "new" && discoverFilters[0].classList.contains('discover-tag-filter-selected')) { newAlreadyActive = true; }
+
+      // remove 'selected' class from all buttons of this type (EXCEPT "New")
+      for (let i = 0; i < discoverFilters.length; i++) {
+        // get current button & type
+        const button = discoverFilters[i];
+        // type based on the page: Role/Project Type
+        const buttonType = button.getAttribute('data-type');
+        // remove select if type is the same, don't remove "New"
+        if ((buttonType === tagType) && (button.innerText.toLowerCase() !== "new")) {
+          button.classList.remove('discover-tag-filter-selected');
+        }
       }
     }
 
     // remove filters of same type
     activeTagFilters = activeTagFilters.filter(tag => tag.type !== tagType);
 
-    // if invisible, make visible and push
+    if (newAlreadyActive) { activeTagFilters.push({ label: 'New', type: 'Project Type' }); } // Add back new if necessary!
+    if (anyActiveBeforeNew !== "") { activeTagFilters.push({ label: anyActiveBeforeNew, type: 'Project Type' }); } // Add back existing if necessary!
+
+    console.log(activeTagFilters);
+
+    // if initially invisible, make visible and push
     if (!isSelected) {
       clicked.classList.add('discover-tag-filter-selected');
       activeTagFilters.push({ label: tagName, type: tagType });

@@ -147,18 +147,13 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
 
     // remove 'selected' class from all buttons of this type
     for (let i = 0; i < discoverFilters.length; i++) {
-      // get current button & type
-      const button = discoverFilters[i];
-      // type based on the page: Role/Project Type
-      const buttonType = button.getAttribute('data-type');
-      // remove select if type is the same
-      if (buttonType === tagType) {
-        button.classList.remove('discover-tag-filter-selected');
-      }
+      // remove select REGARDLESS of type
+        discoverFilters[i].classList.remove('discover-tag-filter-selected');
     }
 
-    // remove filters of same type
-    activeTagFilters = activeTagFilters.filter(tag => tag.type !== tagType);
+    // clear out tags
+    activeTagFilters.splice(0, activeTagFilters.length);
+    // old filtering: --> activeTagFilters = activeTagFilters.filter(tag => tag.type !== tagType);
 
     // if invisible, make visible and push
     if (!isSelected) {

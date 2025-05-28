@@ -2,6 +2,7 @@
   "name": "looking-for-group",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "license": "CC0-1.0",
   "scripts": {
     "test": "jest",

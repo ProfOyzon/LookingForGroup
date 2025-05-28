@@ -47,12 +47,14 @@ Credits style rules
 
   .lfg-contributor {
     width: 255px;
+    justify-content: center;
     background-color: var(--header-color);
     display: flex;
     align-items: center;
     padding: 12px 15px;
     border-radius: 10px;
     margin: 15px 35px;
+     text-align: center;
 
     scale: 1.2;
   }

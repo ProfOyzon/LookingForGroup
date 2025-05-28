@@ -140,6 +140,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     }
   };
 
+  // Function to handle password validation 
   const validatePassword = (pass) => {
     // Don't check password if there's nothing there
     if (pass === '') {

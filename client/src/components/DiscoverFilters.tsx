@@ -6,6 +6,7 @@ import { tags, peopleTags, projectTabs, peopleTabs } from '../constants/tags';
 
 // Has to be outside component to avoid getting reset on re-render
 let activeTagFilters: string[] = [];
+let displayFiltersText = false; // toggles "Applied Filters:" paragraph when necessary
 
 export const DiscoverFilters = ({ category, updateItemList }: { category: String, updateItemList: Function }) => {
   // --------------------
@@ -168,7 +169,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
 
     if (e.target.classList.toggle('discover-tag-filter-selected')) {
       activeTagFilters.push({ label: tagName, type: 'Project Type' });
-    }
+    };
 
     updateItemList(activeTagFilters);
   };
@@ -440,6 +441,12 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                       activeTagFilters = [];
                       const discoverFilters = document.getElementsByClassName('discover-tag-filter');
 
+                      // Remove any/all other clicked discover tags (this fixes a bug)
+                      for (let i = 0; i < discoverFilters.length; i++) {
+                        discoverFilters[i].classList.remove('discover-tag-filter-selected');
+                      }
+
+
                       enabledFilters.forEach((filter) => {
                         activeTagFilters.push(filter.tag);
 
@@ -459,6 +466,17 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
 
                       // Update the project list
                       updateItemList(activeTagFilters);
+
+                      //Add "Applied Filters" div if it is missing and if the paragraph exists
+                      if (activeTagFilters.length > 0) {
+                        displayFiltersText = false; // Checking to make sure more filters are applied than just a discover tag filter
+                        for (let i = 0; i < activeTagFilters.length; i++) {
+                          if (activeTagFilters[i].type != 'Project Type') {
+                            displayFiltersText = true;
+                            break;
+                          }
+                        }
+                      }
                     }}
                   >
                     Apply
@@ -475,8 +493,8 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
         >
           <i className="fa fa-caret-right"></i>
         </button>
-      </div>
-      {(appliedFiltersDisplay.length > 0) ? (
+      </div >
+      {((appliedFiltersDisplay.length > 0) && (displayFiltersText)) ? (
         <div className='applied-filters'>
           <p>Applied Filters:</p>
           {appliedFiltersDisplay.map((filter, index) => {
@@ -495,6 +513,13 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                   activeTagFilters = tempList.map((filter) => filter.tag);
                   setAppliedFiltersDisplay(tempList);
                   updateItemList(activeTagFilters);
+
+                  if (activeTagFilters.length == 1) { // If the only tag still active is a discover tag, remove "applied filters" div
+                    if (activeTagFilters[0].type == 'Project Type') {
+                      displayFiltersText = false;
+                      console.log("one filter left and its a doozy")
+                    }
+                  }
                 }}
               >
                 <i className='fa fa-close'></i>

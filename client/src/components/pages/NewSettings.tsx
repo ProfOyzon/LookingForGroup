@@ -7,6 +7,7 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 import { ThemeIcon } from '../ThemeIcon';
 import { useNavigate } from 'react-router-dom';
 import { useId, useState, useContext, useLayoutEffect } from 'react';
+import { Header } from '../Header';
 import CreditsFooter from '../CreditsFooter';
 import PasswordValidator from 'password-validator';
 import ToTopButton from '../ToTopButton';
@@ -295,9 +296,21 @@ const Settings = ({ }) => {
     };
 
     return (
-        <div className='page'>
+    <div className='page'  style={{ position: 'relative' }}>
+    {/* Top-right profile dropdown */}
+    <div style={{
+      position: 'absolute',
+      top: 20,
+      right: 30,
+      zIndex: 1000
+    }}></div>
+    
+    {/* Search bar is not used in settings */}
             <div id='settings-page'>
+                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                 <h1 className='page-title'>Settings</h1>
+                <Header hideSearchBar/>
+                </div>
                 <hr />
                 {(userInfo === undefined) ? (
                     <p>You aren't logged in!</p>

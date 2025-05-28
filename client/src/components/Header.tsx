@@ -32,7 +32,7 @@ let loggedIn;
 //Add functions to buttons (profile/settings = navigate to those pages; light mode: toggle light/dark mode)
 //(logout = logout the user and send them to home page or equivalent)
 
-export const Header = ({ dataSets, onSearch }) => {
+export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState(null);
   const [profileImg, setProfileImg] = useState<string>('');
@@ -91,9 +91,12 @@ export const Header = ({ dataSets, onSearch }) => {
 
   return (
     <div id="header">
+      {/* Conditional rendering for search bar */}
+      {(!hideSearchBar) && (
       <div id="header-searchbar">
         <SearchBar dataSets={dataSets} onSearch={onSearch} />
       </div>
+      )}
       <div id="header-buttons">
         {/* Notififcations not being used rn */}
         {/* <Dropdown>

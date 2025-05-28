@@ -6,7 +6,7 @@ import { tags, peopleTags, projectTabs, peopleTabs } from '../constants/tags';
 
 // Has to be outside component to avoid getting reset on re-render
 let activeTagFilters: string[] = [];
-let displayFiltersText = false; // toggles "Applied Filters:" paragraph when necessary
+let displayFiltersText = false; // toggles "Applied Filters:" div when necessary
 
 export const DiscoverFilters = ({ category, updateItemList }: { category: String, updateItemList: Function }) => {
   // --------------------
@@ -141,25 +141,42 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
   const toggleTag = (e, tagName: string) => {
     const discoverFilters = document.getElementsByClassName('discover-tag-filter');
 
+    // For every filter in bar
     for (let i = 0; i < discoverFilters.length; i++) {
+      // Set tagText to current bar filter
       const tagText = discoverFilters[i].innerText;
       let hasTag = false;
       let tagIndex = -1;
 
+      // For every currently ACTIVE filter
       for (let j = 0; j < activeTagFilters.length; j++) {
+        // If current bar filter is the SAME as current active project filter
         if ((tagText.toLowerCase() === activeTagFilters[j].label.toLowerCase())
           && (activeTagFilters[j].type === 'Project Type')) {
+
+          // Set tagIndex to current active project filter position (could be 0-LOTS)
+          // Set tagText to current bar filter NAME (could be 0-8)
           hasTag = true;
           tagIndex = j;
           break;
         }
       }
 
+      // True ONLY on loops where there is a match.
       if (hasTag) {
+
+        console.log(tagText);
+        console.log(activeTagFilters[tagIndex]);
+
+        // Bar filter name new handling
         if (tagText !== 'New' || tagName === 'new') {
+
+          //  At position of tagIndex, remove the item! (Meaning, current match filter is NO LONGER ACTIVE.)
           activeTagFilters.splice(tagIndex, 1);
+          console.log("active tag filter at " + tagIndex + " successfully removed from active list.")
 
           // If not the selected tag, remove discover-tag-filter-selected
+
           if (discoverFilters[i] !== e.target) {
             discoverFilters[i].classList.remove('discover-tag-filter-selected');
           }
@@ -441,11 +458,10 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                       activeTagFilters = [];
                       const discoverFilters = document.getElementsByClassName('discover-tag-filter');
 
-                      // Remove any/all other clicked discover tags (this fixes a bug)
+                      // Remove any/all other clicked discover tags
                       for (let i = 0; i < discoverFilters.length; i++) {
                         discoverFilters[i].classList.remove('discover-tag-filter-selected');
                       }
-
 
                       enabledFilters.forEach((filter) => {
                         activeTagFilters.push(filter.tag);
@@ -517,7 +533,6 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                   if (activeTagFilters.length == 1) { // If the only tag still active is a discover tag, remove "applied filters" div
                     if (activeTagFilters[0].type == 'Project Type') {
                       displayFiltersText = false;
-                      console.log("one filter left and its a doozy")
                     }
                   }
                 }}

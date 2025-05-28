@@ -1,3 +1,4 @@
+//import util from '../utils/userUtils';
 const request = require('supertest');
 
 describe("GET users", () => {
@@ -57,7 +58,7 @@ describe("Create a new user (John Testing)", () => {
     })
 });
 
-//doesn't work because 
+//doesn't work because user isn't created yet 
 // describe("Edit user account information through data.", () => {
 //     it("Returns status 200 and response data.", async () => {
 //         const data = {

@@ -85,6 +85,7 @@ const updateProject = (ID, data) => {
 
 /**
  * Deletes an existing project
+ * @param ID - ID of the project to delete
  * @returns Response status
  */
 const deleteProject = (ID) => {

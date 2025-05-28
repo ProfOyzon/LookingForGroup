@@ -5,5 +5,4 @@
 /server/ @MJ-Parson
 
 # Front-end lead, allows approval of any PRs relating to client code
-# NEED front end lead name
-# /client/ 
+/client/ @DarthObliviator

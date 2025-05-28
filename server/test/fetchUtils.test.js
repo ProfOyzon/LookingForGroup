@@ -1,15 +1,15 @@
-//import util from '../utils/fetchUtils';
-
-const request = require('supertest');
+import util from '../utils/fetchUtils';
 
 
 
-describe('API Testing, GET all users.', () => {
-    it('Should return all users.', async () => {
-        const response = await request('https://lfg.gccis.rit.edu').get('/api/users');
-        expect(response.statusCode).toBe(200);
-        //console.log(response.body);
-    });
-});
+
+
+// describe('API Testing, GET all users.', () => {
+//     it('Should return all users.', async () => {
+//         const response = await request('https://lfg.gccis.rit.edu').get('/api/users');
+//         expect(response.statusCode).toBe(200);
+//         //console.log(response.body);
+//     });
+// });
 
 

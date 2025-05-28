@@ -87,7 +87,7 @@ const updateProject = (ID, data) => {
  * Deletes an existing project
  * @returns Response status
  */
-const deleteProject = () => {
+const deleteProject = (ID) => {
     const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}`;
     let response = DELETE(apiURL);
     return response.status;

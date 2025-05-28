@@ -1,6 +1,5 @@
-export default {
-  transformIgnorePatterns: ['node_modules/(?!(sucrase)/)'],
+module.exports = {
   transform: {
-    '^.+\\.(js|jsx|ts|tsx|mjs)$': 'babel-jest',
+    '^.+\\.jsx?$': 'babel-jest',
   },
-}
+};

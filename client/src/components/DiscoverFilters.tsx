@@ -137,8 +137,12 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
     getData();
   }
 
-  // Function called when a tag is clicked, adds tag to list of filters
-  const toggleTag = (e, tagName: string) => {
+  // Function called when a tag is clicked, adds/removes tag to list of filters
+  const toggleTag = (e, tagName: string, tagType: string) => {
+    // see if button is clicked
+    const clicked = e.target;
+    // is button selected?
+    const isSelected = clicked.classList.contains('discover-tag-filter-selected');
     const discoverFilters = document.getElementsByClassName('discover-tag-filter');
 
     // For every filter in bar
@@ -302,11 +306,24 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
           <i className="fa fa-caret-left"></i>
         </button>
         <div id="discover-tag-filters" onResize={resizeTagFilter}>
-          {tagList.map((tag) => (
-            <button className="discover-tag-filter" onClick={(e) => toggleTag(e, tag.toLowerCase())}>
-              {tag}
-            </button>
-          ))}
+          { /* make each tag button have proper label & type */}
+          {tagList.map((tag) => {
+            const label = tag === 'Developers'
+              ? 'Developer' : tag === 'Designers'
+                ? 'Designer' : tag;
+
+            const type = category === 'projects'
+              ? 'Project Type' : tag === 'Other'
+                ? 'Major' : 'Role';
+
+            return (
+              <button className="discover-tag-filter"
+                data-type={type}
+                onClick={(e) => toggleTag(e, label, type)}>
+                {tag}
+              </button>
+            )
+          })}
           {/* Container so more filters popup is aligned at the end */}
           <div id="discover-more-filters-container">
             {/* Additional filters popup */}

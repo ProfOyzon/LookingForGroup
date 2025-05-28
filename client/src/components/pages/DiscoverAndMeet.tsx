@@ -19,6 +19,7 @@ import { Header } from '../Header';
 import { PanelBox } from '../PanelBox';
 import { ThemeIcon } from '../ThemeIcon';
 import ToTopButton from '../ToTopButton';
+import { devSkills, desSkills } from '../../constants/tags';
 
 type DiscoverAndMeetProps = {
   category: 'projects' | 'profiles';
@@ -29,34 +30,34 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
   // --------------------
   // Interfaces
   // --------------------
-interface Tag {
-  tag: string;
-  color: string;
-  id: number;
-}
+  interface Tag {
+    tag: string;
+    color: string;
+    id: number;
+  }
 
-interface Skill {
-  id: number;
-  name: string;
-}
+  interface Skill {
+    id: number;
+    name: string;
+  }
 
-interface ProjectType {
-  project_type: string;
-}
+  interface ProjectType {
+    project_type: string;
+  }
 
-interface Item {
-  tags?: Tag[];
-  title?: string;
-  hook?: string;
-  project_types?: ProjectType[];
-  job_title?: string;
-  major?: string;
-  skills?: Skill[];
-  first_name?: string;
-  last_name?: string;
-  username?: string;
-  bio?: string;
-}
+  interface Item {
+    tags?: Tag[];
+    title?: string;
+    hook?: string;
+    project_types?: ProjectType[];
+    job_title?: string;
+    major?: string;
+    skills?: Skill[];
+    first_name?: string;
+    last_name?: string;
+    username?: string;
+    bio?: string;
+  }
 
   // --------------------
   // Components
@@ -146,7 +147,7 @@ interface Item {
   const getAuth = async () => {
     const res = await fetch(`/api/auth`);
     const data = await res.json();
-    
+
     if (data.data) {
       setUserId(data.data);
     }
@@ -173,7 +174,7 @@ interface Item {
         setFullItemList(data.data);
         setFilteredItemList(data.data);
         setItemSearchData(
-          
+
           // loop through JSON, get data based on category
           data.data.map((item) => {
             if (category === 'projects') {
@@ -242,13 +243,13 @@ interface Item {
               if (!projectTypes.includes(tag.label.toLowerCase())) {
                 tagFilterCheck = false;
                 break;
-              } 
+              }
             } else {
               tagFilterCheck = false;
               break;
             }
           }
-          
+
           // Tag check can be done by ID
           if (tag.tag_id) {
             if (item.tags) {
@@ -264,8 +265,51 @@ interface Item {
             }
           }
         } else {
+          // Check for tag label Developer
+          if (tag.label === 'Developer') {
+            if (item.skills) {
+              // Get all skills from users
+              const userSkills = item.skills.map((skill) => skill?.skill?.toLowerCase?.())
+                .filter((label) => typeof label === 'string');
+
+              // Check if skills match developer skills
+              const matched = devSkills.some((dev) => userSkills.includes(dev.toLowerCase().trim()));
+
+              if (!matched) {
+                // No match: exclude from results
+                tagFilterCheck = false;
+                break;
+              }
+            }
+            else {
+              // No skills: exclude from results
+              tagFilterCheck = false;
+              break;
+            }
+          }
+          // Check for tag label Designer
+          else if (tag.label === 'Designer') {
+            if (item.skills) {
+              // Get all skills from user
+              const userSkills = item.skills.map((skill) => skill?.skill?.toLowerCase?.())
+                .filter((label) => typeof label === 'string');
+
+              // Check if skills match designer skills
+              const matched = desSkills.some((des) => userSkills.includes(des.toLowerCase()));
+
+              if (!matched) {
+                // No match: exclude from results
+                tagFilterCheck = false;
+                break;
+              }
+            } else {
+              // No match: exclude from results
+              tagFilterCheck = false;
+              break;
+            }
+          }
           // Check role and major by name since IDs are not unique relative to tags
-          if (tag.type === 'Role') {
+          else if (tag.type === 'Role') {
             if (item.job_title) {
               if (item.job_title.toLowerCase() !== tag.label.toLowerCase()) {
                 tagFilterCheck = false;

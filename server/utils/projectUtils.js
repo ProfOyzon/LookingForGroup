@@ -97,7 +97,7 @@ const deleteProject = () => {
  * Updates the thumbnail image for a project
  * @param ID - ID of the project to update
  * @param image - Image file of new thumbnail
- * @returns The new thumbnail image + the filename if valid, 400 if not
+ * @returns The filename of the thumbnail image if valid, 400 if not
  */
 const updateThumbnail = (ID, _image) => {
     const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/thumbnail`;

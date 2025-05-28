@@ -52,9 +52,7 @@ Base apiURL is:
  * @returns response - JSONified data or error code.
  */
 function GET(apiURL) {
-
-
-    fetch(apiURL)
+  return fetch(apiURL)
         .then( response => {
             if( response.ok ) {
                 return response.json();
@@ -63,7 +61,7 @@ function GET(apiURL) {
             }
         })
         .then( data => {
-            console.log(data); 
+            console.log(data);
             return data; //returns get with jsonified data
         })
         .catch( error => {
@@ -80,7 +78,7 @@ function GET(apiURL) {
  * @returns response - JSONified data or error code.
  */
 
-function POST(apiURL, newData) 
+function POST(apiURL, newData)
 {
     fetch(apiURL, {
         method: 'POST',
@@ -96,7 +94,7 @@ function POST(apiURL, newData)
         return response.json();
     })
     .then(data => {
-        console.log(data); 
+        console.log(data);
         return data;
     })
     .catch(error => {
@@ -126,7 +124,7 @@ function PUT(apiURL, newData) {
         return response.json();
     })
     .then(data => {
-        console.log(data); 
+        console.log(data);
         return data;
     })
     .catch(error => {
@@ -155,11 +153,15 @@ function DELETE(apiURL) {
         return response.json();
     })
     .then(data => {
-        console.log(data); 
+        console.log(data);
         return data;
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
         return "400";
     });
+}
+
+export {
+  GET, POST, PUT, DELETE
 }

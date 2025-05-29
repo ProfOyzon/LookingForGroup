@@ -61,7 +61,7 @@ function GET(apiURL) {
             }
         })
         .then( data => {
-            console.log(data);
+            //console.log(data);
             return data; //returns get with jsonified data
         })
         .catch( error => {

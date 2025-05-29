@@ -30,7 +30,7 @@ const createNewProject = async (
   _members,
   _socials
 ) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects`;
+  const apiURL = `https://lfg.gccis.rit.edu/api/projects`;
 
   const data = {
     userId: _userId,

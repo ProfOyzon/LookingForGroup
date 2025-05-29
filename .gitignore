@@ -64,6 +64,7 @@ typings/
 /.pnp
 .pnp.js
 
+
 # testing
 /coverage
 
@@ -83,3 +84,6 @@ yarn-error.log*
 
 # profile picture and project images
 server/images/
+
+# Ignore .idea for Jetbrains developing tools
+.idea

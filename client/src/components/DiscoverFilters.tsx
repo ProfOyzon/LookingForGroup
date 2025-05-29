@@ -6,7 +6,7 @@ import { tags, peopleTags, projectTabs, peopleTabs } from '../constants/tags';
 
 // Has to be outside component to avoid getting reset on re-render
 let activeTagFilters: string[] = [];
-let displayFiltersText = false; // toggles "Applied Filters:" paragraph when necessary
+let displayFiltersText = false; // toggles "Applied Filters:" div when necessary
 
 export const DiscoverFilters = ({ category, updateItemList }: { category: String, updateItemList: Function }) => {
   // --------------------
@@ -137,39 +137,60 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
     getData();
   }
 
-  // Function called when a tag is clicked, adds tag to list of filters
-  const toggleTag = (e, tagName: string) => {
+  // Function called when a tag is clicked, adds/removes tag to list of filters
+  const toggleTag = (e, tagName: string, tagType: string) => {
+    // see if button is clicked
+    const clicked = e.target;
+    // is button selected?
+    const isSelected = clicked.classList.contains('discover-tag-filter-selected');
     const discoverFilters = document.getElementsByClassName('discover-tag-filter');
 
-    for (let i = 0; i < discoverFilters.length; i++) {
-      const tagText = discoverFilters[i].innerText;
-      let hasTag = false;
-      let tagIndex = -1;
+    let newAlreadyActive = false; // Handles if a filter is clicked when NEW is already active.
+    let anyActiveBeforeNew = ""; // Handles if NEW is clicked when another filter is already active.
 
-      for (let j = 0; j < activeTagFilters.length; j++) {
-        if ((tagText.toLowerCase() === activeTagFilters[j].label.toLowerCase())
-          && (activeTagFilters[j].type === 'Project Type')) {
-          hasTag = true;
-          tagIndex = j;
-          break;
+    // Handling visuals: Hide all, only add back if necessary.
+    // If "New" button was clicked - don't hide other any other selection, only New
+    if (clicked.innerText.toLowerCase() === "new") {
+      clicked.classList.remove('discover-tag-filter-selected');
+
+      // if new is clicked when something is already active, it shouldnt clear that filter, but should clear its own (new) (no matter what!)
+      for (let i = 0; i < discoverFilters.length; i++) {
+        if (discoverFilters[i].classList.contains('discover-tag-filter-selected') && discoverFilters[i].innerText.toLowerCase() !== "new") {
+          anyActiveBeforeNew = discoverFilters[i].innerText;
         }
       }
+    }
+    else {
+      // if any filter is clicked when new is already active, it shouldnt clear new, but should clear its own (no matter what!)
+      if (discoverFilters[0].innerText.toLowerCase() === "new" && discoverFilters[0].classList.contains('discover-tag-filter-selected')) { newAlreadyActive = true; }
 
-      if (hasTag) {
-        if (tagText !== 'New' || tagName === 'new') {
-          activeTagFilters.splice(tagIndex, 1);
-
-          // If not the selected tag, remove discover-tag-filter-selected
-          if (discoverFilters[i] !== e.target) {
-            discoverFilters[i].classList.remove('discover-tag-filter-selected');
-          }
+      // remove 'selected' class from all buttons of this type (EXCEPT "New")
+      for (let i = 0; i < discoverFilters.length; i++) {
+        // get current button & type
+        const button = discoverFilters[i];
+        // type based on the page: Role/Project Type
+        const buttonType = button.getAttribute('data-type');
+        // remove select if type is the same, don't remove "New"
+        if (button.innerText.toLowerCase() !== "new") {
+          button.classList.remove('discover-tag-filter-selected');
         }
       }
     }
 
-    if (e.target.classList.toggle('discover-tag-filter-selected')) {
-      activeTagFilters.push({ label: tagName, type: 'Project Type' });
-    };
+    // clear out tags
+    activeTagFilters.splice(0, activeTagFilters.length);
+    // old filtering: --> activeTagFilters = activeTagFilters.filter(tag => tag.type !== tagType);
+
+    if (newAlreadyActive) { activeTagFilters.push({ label: 'New', type: 'Project Type' }); } // Add back new if necessary!
+    if (anyActiveBeforeNew !== "") { activeTagFilters.push({ label: anyActiveBeforeNew, type: 'Project Type' }); } // Add back existing if necessary!
+
+    console.log(activeTagFilters);
+
+    // if initially invisible, make visible and push
+    if (!isSelected) {
+      clicked.classList.add('discover-tag-filter-selected');
+      activeTagFilters.push({ label: tagName, type: tagType });
+    }
 
     updateItemList(activeTagFilters);
   };
@@ -285,11 +306,24 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
           <i className="fa fa-caret-left"></i>
         </button>
         <div id="discover-tag-filters" onResize={resizeTagFilter}>
-          {tagList.map((tag) => (
-            <button className="discover-tag-filter" onClick={(e) => toggleTag(e, tag.toLowerCase())}>
-              {tag}
-            </button>
-          ))}
+          { /* make each tag button have proper label & type */}
+          {tagList.map((tag) => {
+            const label = tag === 'Developers'
+              ? 'Developer' : tag === 'Designers'
+                ? 'Designer' : tag;
+
+            const type = category === 'projects'
+              ? 'Project Type' : tag === 'Other'
+                ? 'Major' : 'Role';
+
+            return (
+              <button className="discover-tag-filter"
+                data-type={type}
+                onClick={(e) => toggleTag(e, label, type)}>
+                {tag}
+              </button>
+            )
+          })}
           {/* Container so more filters popup is aligned at the end */}
           <div id="discover-more-filters-container">
             {/* Additional filters popup */}
@@ -441,11 +475,10 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                       activeTagFilters = [];
                       const discoverFilters = document.getElementsByClassName('discover-tag-filter');
 
-                      // Remove any/all other clicked discover tags (this fixes a bug)
+                      // Remove any/all other clicked discover tags
                       for (let i = 0; i < discoverFilters.length; i++) {
                         discoverFilters[i].classList.remove('discover-tag-filter-selected');
                       }
-
 
                       enabledFilters.forEach((filter) => {
                         activeTagFilters.push(filter.tag);
@@ -517,7 +550,6 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                   if (activeTagFilters.length == 1) { // If the only tag still active is a discover tag, remove "applied filters" div
                     if (activeTagFilters[0].type == 'Project Type') {
                       displayFiltersText = false;
-                      console.log("one filter left and its a doozy")
                     }
                   }
                 }}
@@ -534,3 +566,4 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
     </>
   );
 };
+

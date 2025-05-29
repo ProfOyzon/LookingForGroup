@@ -61,7 +61,7 @@ function GET(apiURL) {
             }
         })
         .then( data => {
-            console.log(data);
+           // console.log(data);
             return data; //returns get with jsonified data
         })
         .catch( error => {
@@ -80,7 +80,7 @@ function GET(apiURL) {
 
 function POST(apiURL, newData)
 {
-    fetch(apiURL, {
+   return fetch(apiURL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -94,7 +94,7 @@ function POST(apiURL, newData)
         return response.json();
     })
     .then(data => {
-        console.log(data);
+      //  console.log(data);
         return data;
     })
     .catch(error => {
@@ -110,7 +110,7 @@ function POST(apiURL, newData)
  * @returns response - JSONified data or error code.
  */
 function PUT(apiURL, newData) {
-    fetch(apiURL, {
+   return fetch(apiURL, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -124,7 +124,7 @@ function PUT(apiURL, newData) {
         return response.json();
     })
     .then(data => {
-        console.log(data);
+       // console.log(data);
         return data;
     })
     .catch(error => {
@@ -140,7 +140,7 @@ function PUT(apiURL, newData) {
  * @returns response - JSONified data or error code.
  */
 function DELETE(apiURL) {
-    fetch(apiURL, {
+   return fetch(apiURL, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -153,7 +153,7 @@ function DELETE(apiURL) {
         return response.json();
     })
     .then(data => {
-        console.log(data);
+       // console.log(data);
         return data;
     })
     .catch(error => {

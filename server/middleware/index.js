@@ -2,6 +2,11 @@ import multer from 'multer';
 import multerConfig from '../config/multerConfig.js';
 
 const checkLogin = (req, res, next) => {
+  //bypass for testing
+  if(process.env.NODE_ENV === 'test'){
+    return next();
+  }
+
   // Prevent access to route if user isn't logged in
   if (!req.session.userId) {
     return res.status(401).json({

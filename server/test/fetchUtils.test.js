@@ -1,23 +1,29 @@
-import { GET, POST, PUT, DELETE } from '../utils/fetchUtils';
+const { GET } = require('../utils/fetchUtils');
 
-const api = 'http://lfg.gccis.rit.edu/api/users';
-let newUserId = null;
+describe("fetchUtils", () => {
+  beforeEach(() => {
+    global.fetch = jest.fn();
+  });
 
-describe('API Testing, GET all users.', () => {
-    it('GET: Should return all users.', async () => {
-        const r = await GET(api);
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
-        expect(r).not.toBe('400');
-        expect(r.status).toBe(200);
+  test("mocks GET request and checks response", async () => {
+    const mockJson = { message: "Success", id: 1 };
+    const mockResponse = {
+      json: jest.fn().mockResolvedValue(mockJson),
+      status: 200,
+      ok: true,
+    };
 
-        //is array?
-        expect(Array.isArray(r.data)).toBe(true);
+    global.fetch.mockResolvedValue(mockResponse);
 
-        //log one user
-        console.log(r.data[1])
+    const json = await GET("http://lfg.gccis.rit.edu/api/users");
 
-
-    });
+    expect(fetch).toHaveBeenCalledWith("http://lfg.gccis.rit.edu/api/users");
+    expect(json).toEqual(mockJson);
+  });
 });
 
 

@@ -437,7 +437,7 @@ const Settings = ({ }) => {
                                                     callback={(e) => {
                                                         // Checks for system theme preference
                                                         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { setTheme('dark'); }
-                                                        else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { setTheme('light'); }
+                                                        else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) { setTheme('light'); }
                                                         setThemeOption(e.target.innerText);
                                                     }}
                                                 >

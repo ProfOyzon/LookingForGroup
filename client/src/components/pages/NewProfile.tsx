@@ -376,7 +376,7 @@ const NewProfile = () => {
           <div id="profile-info-description">{displayedProfile.bio}</div>
 
           <div id="profile-info-funfact">
-            <span id="fun-fact-start">Fun Fact! </span>
+            <span id="fun-fact-start">{displayedProfile.fun_fact ? 'Fun Fact!' : 'No Fun Fact (Yet)!'}</span>
             {displayedProfile.fun_fact}
           </div>
 

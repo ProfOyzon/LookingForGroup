@@ -11,11 +11,11 @@ import CreditsFooter from '../CreditsFooter';
 import PasswordValidator from 'password-validator';
 import ToTopButton from '../ToTopButton';
 
-   // Take the user ID and delete it
+// Take the user ID and delete it
 const deleteAccountPressed = async () => {
     // console.log('Delete Pressed!');
     const userID = await fetchUserID();
-    await sendDelete(`/api/users/${userID}`, async()=>{await sendPost('/api/logout');});
+    await sendDelete(`/api/users/${userID}`, async () => { await sendPost('/api/logout'); });
 }
 
 const Settings = ({ }) => {
@@ -426,6 +426,9 @@ const Settings = ({ }) => {
                                                 <DropdownButton
                                                     className='options-dropdown-button end'
                                                     callback={(e) => {
+                                                        // Checks for system theme preference
+                                                        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { setTheme('dark'); }
+                                                        else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { setTheme('light'); }
                                                         setThemeOption(e.target.innerText);
                                                     }}
                                                 >

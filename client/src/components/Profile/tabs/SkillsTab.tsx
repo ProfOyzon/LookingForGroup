@@ -82,19 +82,21 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
 
   // Find if a tag is present on the project
   const isTagSelected = useCallback((id: number, label: string, tab: number = -1) => {
+    const skills = modifiedProfile?.skills ?? [];
+
     // Developer Skills
     if (tab === 0) {
-      return modifiedProfile.skills.some(t => t.id === id && t.tag === label) ?
+      return skills.some(t => t.id === id && t.tag === label) ?
         'selected' : 'unselected';
     }
     // Designer Skills
     if (tab === 1) {
-      return modifiedProfile.skills.some(t => t.id === id && t.tag === label) ?
+      return skills.some(t => t.id === id && t.tag === label) ?
         'selected' : 'unselected';
     }
     // Soft Skills
     if (tab === 2) {
-      return modifiedProfile.skills.some(t => t.id === id && t.tag === label) ?
+      return skills.some(t => t.id === id && t.tag === label) ?
         'selected' : 'unselected';
     }
     return 'unselected';
@@ -153,6 +155,8 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
 
   // Load projects
   const loadProjectTags = useMemo(() => {
+    if (!modifiedProfile?.skills) return [];
+
     return modifiedProfile.skills
       .map((s) => (
         <button className={`tag-button tag-button-${getTagColor(s.type)}-selected`} onClick={(e) => handleTagSelect(e)}>
@@ -297,7 +301,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
           Drag and drop to reorder
         </div>
         {/* Error tag */}
-        {modifiedProfile.skills.length === 0 ? <div className="error">*At least 1 tag is required</div> : <></>}
+        {modifiedProfile?.skills?.length === 0 ? <div className="error">*At least 1 tag is required</div> : <></>}
         <div id="project-editor-selected-tags-container">
           <hr id="selected-tag-divider" />
           {/* TODO: Separate top 2 tags from others with hr element */}

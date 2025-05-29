@@ -265,8 +265,8 @@ const NewProfile = () => {
           </button>
           <button>
             <ThemeIcon
-              light={'assets/bell_light.png'}
-              dark={'assets/bell_dark.png'}
+              light={'assets/follow_user_light.png'}
+              dark={'assets/follow_user_dark.png'}
               alt={'Like/Follow'}
             />
           </button>

@@ -211,6 +211,8 @@ const Settings = ({ }) => {
                 <hr />
                 <div className='input-fields'>
                     <div className='input-container'>
+                        { /* autoComplete to prevent browser autofill */ }
+                        <form autoComplete="off">
                         <input
                             placeholder={`Enter new ${type.toLowerCase()}`}
                             type={(type !== 'Password') ? 'text' : 'password'}
@@ -229,8 +231,11 @@ const Settings = ({ }) => {
                                 }
                             }}
                         />
+                        </form>
                     </div>
                     <div className='input-container'>
+                        { /* autoComplete to prevent browser autofill */ }
+                        <form autoComplete="off">
                         <input
                             placeholder={`Confirm new ${type.toLowerCase()}`}
                             type={(type !== 'Password') ? 'text' : 'password'}
@@ -244,13 +249,17 @@ const Settings = ({ }) => {
                                 }
                             }}
                         />
+                        </form>
                     </div>
                     <div className='input-container'>
+                        { /* autoComplete to prevent browser autofill */ }
+                        <form autoComplete="off">
                         <input
                             placeholder='Current password'
                             type='password'
                             onChange={(e) => setPassword(e.target.value)}
                         />
+                        </form>
                     </div>
                 </div>
                 <div className='confirm-deny-btns'>

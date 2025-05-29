@@ -1,5 +1,7 @@
-//import util from '../utils/userUtils';
-const request = require('supertest');
+import util from '../utils/userUtils';
+
+
+/* - - - GETs - - - */
 
 describe("GET users", () => {
     it('Should return the whole list of users.', async () => {

@@ -55,40 +55,72 @@ test('Add member to project - invalid', async () => {
 
 /* - - - PUTs - - - */
 
-// updateProject
-test('Update project', async () => {
+// updateProject (valid)
+test('Update project - valid', async () => {
   const r = await util.updateProject( /* TODO */);
 
-  console.log("Update project: " + r);
+  console.log("Update project valid: " + r);
 
   expect(r).not.toBe("400");
 });
+// updateProject (invalid)
+test('Update project - invalid', async () => {
+  const r = await util.updateProject();
 
-// updateProjectThumbnail
-test('Update thumbnail', async () => {
+  console.log("Update project invalid: " + r);
+
+  expect(r).toBe("400");
+});
+
+// updateProjectThumbnail (valid)
+test('Update thumbnail - valid', async () => {
   const r = await util.updateThumbnail(/* TODO */);
 
-  console.log("Update thumbnail: " + r);
+  console.log("Update thumbnail valid: " + r);
 
   expect(r).not.toBe("400");
 });
+// updateProjectThumbnail (invalid)
+test('Update thumbnail - invalid', async () => {
+  const r = await util.updateThumbnail();
 
-// updatePicPositions
-test('Update picture positions', async () => {
+  console.log("Update thumbnail invalid: " + r);
+
+  expect(r).toBe("400");
+});
+
+// updatePicPositions (valid)
+test('Update picture positions - valid', async () => {
   const r = await util.updatePicPositions(/* TODO */);
 
-  console.log("Update pic positions: " + r);
+  console.log("Update pic positions valid: " + r);
 
   expect(r).not.toBe("400");
 });
+// updatePicPositions (invalid)
+test('Update picture positions - invalid', async () => {
+  const r = await util.updatePicPositions();
 
-// updateMember
-test('Update member', async () => {
+  console.log("Update pic positions invalid: " + r);
+
+  expect(r).toBe("400");
+});
+
+// updateMember (valid)
+test('Update member - valid', async () => {
   const r = await util.updateMember(/* TODO */);
 
-  console.log("Update member: " + r);
+  console.log("Update member valid: " + r);
 
   expect(r).not.toBe("400");
+});
+// updateMember (invalid)
+test('Update member - invalid', async () => {
+  const r = await util.updateMember();
+
+  console.log("Update member invalid: " + r);
+
+  expect(r).toBe("400");
 });
 
 /* - - - GETs - - - */
@@ -102,49 +134,89 @@ test('Get all projects', async () => {
   expect(r).not.toBe("400");
 });
 
-// getByID
-test('Get project by ID', async () => {
+// getByID (valid)
+test('Get project by ID - valid', async () => {
   const r = await util.getByID(3);
 
-  console.log("Project by ID: " + r);
+  console.log("Project by ID valid: " + r);
 
   expect(r).not.toBe("400");
 });
+// getByID (invalid)
+test('Get project by ID - invalid', async () => {
+  const r = await util.getByID();
 
-// getPics
-test('Get project pics', async () => {
+  console.log("Project by ID invalid: " + r);
+
+  expect(r).toBe("400");
+});
+
+// getPics (valid)
+test('Get project pics - valid', async () => {
   const r = await util.getPics(3);
 
-  console.log("Picture: " + r);
+  console.log("Picture valid: " + r);
 
   expect(r).not.toBe("400");
+});
+// getPics (invalid)
+test('Get project pics - invalid', async () => {
+  const r = await util.getPics();
+
+  console.log("Picture invalid: " + r);
+
+  expect(r).toBe("400");
 });
 
 /* - - - DELETEs - - - */
 
-// deletePic
-test('Delete picture', async () => {
+// deletePic (valid)
+test('Delete picture - valid', async () => {
   const r = await util.deletePic(/* TODO */);
 
-  console.log("Delete picture: " + r);
+  console.log("Delete picture valid: " + r);
 
   expect(r).not.toBe("400");
 });
+// deletePic (invalid)
+test('Delete picture - invalid', async () => {
+  const r = await util.deletePic();
 
-// deleteMember
-test('Delete member', async () => {
+  console.log("Delete picture invalid: " + r);
+
+  expect(r).toBe("400");
+});
+
+// deleteMember (valid)
+test('Delete member - valid', async () => {
   const r = await util.deleteMember(/* TODO */);
 
-  console.log("Delete member: " + r);
+  console.log("Delete member valid: " + r);
 
   expect(r).not.toBe("400");
 });
+// deleteMember (invalid)
+test('Delete member - invalid', async () => {
+  const r = await util.deleteMember();
 
-// deleteProject
-test('Delete project', async () => {
+  console.log("Delete member invalid: " + r);
+
+  expect(r).toBe("400");
+});
+
+// deleteProject (valid)
+test('Delete project - valid', async () => {
   const r = await util.deleteProject(/* TODO */);
 
-  console.log("Delete project: " + r);
+  console.log("Delete project valid: " + r);
 
   expect(r).not.toBe("400");
+});
+// deleteProject (invalid)
+test('Delete project - invalid', async () => {
+  const r = await util.deleteProject();
+
+  console.log("Delete project invalid: " + r);
+
+  expect(r).toBe("400");
 });

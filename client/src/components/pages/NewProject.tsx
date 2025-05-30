@@ -89,6 +89,7 @@ const defaultProject = runningServer
     ],
   };
 
+//Main component for the project page
 const NewProject = () => {
   //Navigation hook
   const navigate = useNavigate();
@@ -348,7 +349,7 @@ const NewProject = () => {
               className="project-contributor"
               onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
             >
-              <img className="project-contributor-profile" src={imgSrc} alt="profile" />
+              <img className="project-contributor-profile" src={imgSrc} alt="contributor profile" />
               <div className="project-contributor-info">
                 <div className="team-member-name">
                   {user.first_name} {user.last_name}
@@ -377,7 +378,7 @@ const NewProject = () => {
                 className="project-contributor"
                 onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
               >
-                <img className="project-contributor-profile" src={imgSrc} alt="profile" />
+                <img className="project-contributor-profile" src={imgSrc} alt="contributor profile" />
                 <div className="project-contributor-info">
                   <div>
                     {user.first_name} {user.last_name}
@@ -409,6 +410,7 @@ const NewProject = () => {
     if (button) button.click();
   };
 
+  //State variable used to track which position is currently being viewed in the popup
   const [viewedPosition, setViewedPosition] = useState(0);
 
   //Find first member with the job title of 'Project Lead'
@@ -548,6 +550,7 @@ const NewProject = () => {
             </div>
           </div>
 
+          {/* Project overview section */}
           <div id="project-overview">
             <div id="project-overview-title">About This Project</div>
             <div id="project-overview-text">{displayedProject.description}</div>

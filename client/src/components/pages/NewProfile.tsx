@@ -221,23 +221,23 @@ const NewProfile = () => {
         <div id="about-me-buttons">
           <button
             onClick={() => {
-              window.location.href = 'https://www.w3schools.com';
+              window.location.href = 'https://www.linkedin.com/';
             }}
           >
             <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
+              light={'assets/black/linkedIn_black.png'}
+              dark={'assets/white/linkedIn_white.png'}
               alt={'LinkedIn'}
             />
           </button>
           <button
             onClick={() => {
-              window.location.href = 'https://www.w3schools.com';
+              window.location.href = 'https://www.instagram.com/';
             }}
           >
             <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
+              light={'assets/black/instagram_black.png'}
+              dark={'assets/white/instagram_white.png'}
               alt={'Instagram'}
             />
           </button>
@@ -251,23 +251,23 @@ const NewProfile = () => {
         <div id="about-me-buttons" className="about-me-buttons-minimal">
           <button>
             <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
+              light={'assets/black/linkedIn_black.png'}
+              dark={'assets/white/linkedIn_white.png'}
               alt={'LinkedIn'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
+              light={'assets/black/instagram_black.png'}
+              dark={'assets/white/instagram_white.png'}
               alt={'Instagram'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/profile_light.png'}
-              dark={'assets/profile_dark.png'}
-              alt={'Like'}
+              light={'assets/bell_light.png'}
+              dark={'assets/bell_dark.png'}
+              alt={'Like/Follow'}
             />
           </button>
           { /* TO-DO: Implement Share, Block, and Report functionality */ }
@@ -276,7 +276,7 @@ const NewProfile = () => {
               <ThemeIcon
                 light={'assets/menu_light.png'}
                 dark={'assets/menu_dark.png'}
-                alt={'...'}
+                alt={'More options'}
                 addClass={'dropdown-menu'}
               />
             </DropdownButton>
@@ -321,6 +321,10 @@ const NewProfile = () => {
             }
             id="profile-image"
             alt="profile image"
+            onError={(e) => {
+              const profileImg = e.target as HTMLImageElement;
+              profileImg.src = profilePicture;
+            }}
           />
 
           <div id="profile-bio">{displayedProfile.headline}</div>
@@ -349,7 +353,7 @@ const NewProfile = () => {
                 dark={'assets/white/major.png'}
                 alt={'Major'}
               />
-              {displayedProfile.major}, {displayedProfile.academic_year}
+              {displayedProfile.major} {displayedProfile.academic_year}
             </div>
             <div className="profile-extra">
               <ThemeIcon
@@ -372,7 +376,7 @@ const NewProfile = () => {
           <div id="profile-info-description">{displayedProfile.bio}</div>
 
           <div id="profile-info-funfact">
-            <span id="fun-fact-start">Fun Fact! </span>
+            <span id="fun-fact-start">{displayedProfile.fun_fact ? 'Fun Fact!' : 'No Fun Fact (Yet)!'}</span>
             {displayedProfile.fun_fact}
           </div>
 

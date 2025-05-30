@@ -39,7 +39,10 @@ export const ProfileCard = ({ profile }) => {
   const pathQuery = `?profID=${profile._id}`;
   return (
     <div className="discover-card">
-      <img id="discover-card-profile-picture" src={profilePicture} alt={profile.name} />
+      <img
+  src={profileData.profile_image ? `images/profiles/${profileData.profile_image}` : profilePicture}
+  alt={'profile image'}
+/>
       <div id="discover-card-body">
         <span>
           {/* When the title is clicked it navigates to the profile page */}

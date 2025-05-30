@@ -10,6 +10,14 @@ const dirname = import.meta.dirname;
 // --------------------
 // Request Handlers
 // --------------------
+//
+
+/**
+ * Get all project through request
+ * @param req - request  (uses req.session.userId to check status)
+ * @param res - response 
+ * @returns res.status - {status:200, data:[projects]} if success, else {status:400, error:...}
+ */
 const getProjects = async (req, res) => {
   try {
     // Get all projects
@@ -59,6 +67,12 @@ const getProjects = async (req, res) => {
   }
 };
 
+/**
+ * Creates a new project with all necassary data types, tags, jobs, members, and socials
+ * @param req - req.body - containing all project data
+ * @param res - response
+ * @returns res.status - {status;201, data:projectId} if success, else {status:400, error:...}
+ */
 const createProject = async (req, res) => {
   // Get input data
   const {
@@ -194,6 +208,12 @@ const createProject = async (req, res) => {
   }
 };
 
+/**
+ * Gets project data by the projects ID
+ * @param req - req.params - the project ID
+ * @param res - response
+ * @returns res.status - {status:200, data:[project]} if success, else {status:400, error:...}
+ */
 const getProjectById = async (req, res) => {
   // Get id from url
   const { id } = req.params;
@@ -272,6 +292,13 @@ const getProjectById = async (req, res) => {
   }
 };
 
+
+/**
+ * Update existing project and its data types, tags, member, socials
+ * @param req - req.params-project ID, req.body-updated project data
+ * @param res - response
+ * @returns res.status - {status:200} if successful, else {status:400, error:...}
+ */
 const updateProject = async (req, res) => {
   // Get input data
   const { id } = req.params;
@@ -489,7 +516,13 @@ const updateProject = async (req, res) => {
   }
 };
 
-// Delete a project. Must be project owner to delete
+
+/**
+ * Deletes project that user owns by ID
+ * @param req - req.params.id-the project ID, req.session.userId-the current logged in users ID
+ * @param res - response
+ * @returns res.status - {status:200} if succes, else {status:400 or 500, error:...}
+ */
 const deleteProject = async (req, res) => {
   // Get data
   const projId = parseInt(req.params.id);
@@ -524,6 +557,14 @@ const deleteProject = async (req, res) => {
   }
 };
 
+
+
+/**
+ * Updates the thumbnail image for a project
+ * @param req - req.params.id-project ID, req.file-file for the uploaded image
+ * @param res - response
+ * @returns res.status - {status:201, data:[{thumbnail}]} if success, else (status:400, error:...) 
+ */
 const updateThumbnail = async (req, res) => {
   // Get id from url
   const { id } = req.params;
@@ -568,6 +609,13 @@ const updateThumbnail = async (req, res) => {
   }
 };
 
+
+/**
+ * Get all pictures for project by project ID
+ * @param req - req.params.id- project ID
+ * @param res - response
+ * @returns res.status - {status:200, data:[{image_id, image, position}]} if success. else {status:400, error:...}
+ */
 const getPictures = async (req, res) => {
   // Get id from url
   const { id } = req.params;
@@ -594,6 +642,12 @@ const getPictures = async (req, res) => {
   }
 };
 
+/**
+ * Add new picture to a project
+ * @param req - req.params.id- project ID, req.file-file of uploaded image, req.body.position-number for image order
+ * @param res - response
+ * @returns res.status - {status:201} if success, else {status:400, error:...}
+ */
 const addPicture = async (req, res) => {
   // Get data
   const { id } = req.params;
@@ -637,6 +691,12 @@ const addPicture = async (req, res) => {
   }
 };
 
+/**
+ * Update the order of images in a project
+ * @param req - req.params.id- project ID, req.body.images- the array of images {id, position}
+ * @param res - response
+ * @returns res.status - {status:200} if success. else {status:400, error:...}
+ */
 const updatePicturePositions = async (req, res) => {
   // Get input data
   const { id } = req.params;
@@ -670,6 +730,13 @@ const updatePicturePositions = async (req, res) => {
   }
 };
 
+
+/**
+ * Delete picture from a project
+ * @param req - req.params.id- project ID, req.body.image-image file name 
+ * @param res - response
+ * @returns res.status - {status:200} if success. else {status:400, error:...}
+ */
 const deletePicture = async (req, res) => {
   // Get input data
   const { id } = req.params;
@@ -702,7 +769,14 @@ const deletePicture = async (req, res) => {
   }
 };
 
-// Adds a member to a project. Every column in member SQL table is required
+
+
+/**
+ * Add a member to a project. Needs all member feilds
+ * @param req - req.params.id- project ID, req.body.(userId|titleId|permission)- info about user being added
+ * @param res - response
+ * @returns res.status - {status:201} if success, else {status:400|403, error:...}
+ */
 const addMember = async (req, res) => {
   // Get data
   const projId = parseInt(req.params.id);
@@ -774,6 +848,14 @@ const addMember = async (req, res) => {
   }
 };
 
+
+/**
+ * Update a project members title and permission for the project
+ * Checks the permissions of current user to allow updates
+ * @param req - req.params.id- project ID, req.body.(userId|titleId|permission)- info about user being updated
+ * @param res - response
+ * @returns res.status - {status:200} if success, else {status:400|403, error:...}
+ */
 const updateMember = async (req, res) => {
   // Get data
   const projId = parseInt(req.params.id);
@@ -854,6 +936,14 @@ const updateMember = async (req, res) => {
   }
 };
 
+
+/**
+ * Delete a member from a project
+ * Checks current users permissions to allow for deletes
+ * @param req - req.params.id- project ID, req.body.userId- ID of user to remove
+ * @param res - response
+ * @returns res.status - {status:200} if success, else {status:400|403, error:...}
+ */
 const deleteMember = async (req, res) => {
   // Get data
   const { id, userId } = req.params;

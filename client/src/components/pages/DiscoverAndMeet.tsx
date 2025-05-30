@@ -19,19 +19,44 @@ import { Header } from '../Header';
 import { PanelBox } from '../PanelBox';
 import { ThemeIcon } from '../ThemeIcon';
 import ToTopButton from '../ToTopButton';
+import { devSkills, desSkills } from '../../constants/tags';
 
-const DiscoverAndMeet = ({ category }) => {
+type DiscoverAndMeetProps = {
+  category: 'projects' | 'profiles';
+};
+
+const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
   // Should probably move Interfaces to separate file to prevent duplicates
   // --------------------
   // Interfaces
   // --------------------
-  interface Item {
-    tags: Tag[];
-  }
-
   interface Tag {
     tag: string;
     color: string;
+    id: number;
+  }
+
+  interface Skill {
+    id: number;
+    name: string;
+  }
+
+  interface ProjectType {
+    project_type: string;
+  }
+
+  interface Item {
+    tags?: Tag[];
+    title?: string;
+    hook?: string;
+    project_types?: ProjectType[];
+    job_title?: string;
+    major?: string;
+    skills?: Skill[];
+    first_name?: string;
+    last_name?: string;
+    username?: string;
+    bio?: string;
   }
 
   // --------------------
@@ -48,6 +73,7 @@ const DiscoverAndMeet = ({ category }) => {
                 light={'assets/bannerImages/people1_light.png'}
                 dark={'assets/bannerImages/people1_dark.png'}
                 id={'profile-hero-img-1'}
+                alt={'banner image'}
               />
               {/* <div>
                             <span className='profile-hero-highlight'>Explore profiles</span> to see each other's personality, expertise, and project history.
@@ -60,6 +86,7 @@ const DiscoverAndMeet = ({ category }) => {
                 light={'assets/bannerImages/people2_light.png'}
                 dark={'assets/bannerImages/people2_dark.png'}
                 id={'profile-hero-img-2'}
+                alt={'banner image'}
               />
               {/* <div className="panel-text">
                             Find someone interesting? <span className='profile-hero-highlight'>Send a message!</span><br/>
@@ -73,6 +100,7 @@ const DiscoverAndMeet = ({ category }) => {
                 light={'assets/bannerImages/people3_light.png'}
                 dark={'assets/bannerImages/people3_dark.png'}
                 id={'profile-hero-img-3'}
+                alt={'banner image'}
               />
               {/* <div>
                             Keep your profile up to date with your skills, project preferences, and interests to 
@@ -119,12 +147,18 @@ const DiscoverAndMeet = ({ category }) => {
   const getAuth = async () => {
     const res = await fetch(`/api/auth`);
     const data = await res.json();
-    
+
     if (data.data) {
       setUserId(data.data);
     }
   }
 
+  /*
+    Fetches data from the server to populate the discover page.
+    The data is filtered based on the selected category (projects or profiles).
+    The function also handles errors and updates the state with the fetched data.
+    It uses the getAuth function to get the user ID for follow functionality.
+  */
   const getData = async () => {
     // Get user profile
     await getAuth();
@@ -140,6 +174,8 @@ const DiscoverAndMeet = ({ category }) => {
         setFullItemList(data.data);
         setFilteredItemList(data.data);
         setItemSearchData(
+
+          // loop through JSON, get data based on category
           data.data.map((item) => {
             if (category === 'projects') {
               return { name: item.title, description: item.hook };
@@ -192,6 +228,7 @@ const DiscoverAndMeet = ({ category }) => {
     }
   };
 
+  // Updates filtered project list with new tag info
   const updateItemList = (activeTagFilters) => {
     let tagFilteredList = tempItemList.filter((item) => {
       let tagFilterCheck = true;
@@ -201,22 +238,22 @@ const DiscoverAndMeet = ({ category }) => {
           // Check project type by name since IDs are not unique relative to tags
           if (tag.type === 'Project Type') {
             if (item.project_types) {
-              let projectTypes = item.project_types.map((tag) => tag.project_type.toLowerCase());
+              const projectTypes = item.project_types.map((tag) => tag.project_type.toLowerCase());
 
               if (!projectTypes.includes(tag.label.toLowerCase())) {
                 tagFilterCheck = false;
                 break;
-              } 
+              }
             } else {
               tagFilterCheck = false;
               break;
             }
           }
-          
+
           // Tag check can be done by ID
           if (tag.tag_id) {
             if (item.tags) {
-              let tagIDs = item.tags.map((tag) => tag.id);
+              const tagIDs = item.tags.map((tag) => tag.id);
 
               if (!tagIDs.includes(tag.tag_id)) {
                 tagFilterCheck = false;
@@ -228,8 +265,51 @@ const DiscoverAndMeet = ({ category }) => {
             }
           }
         } else {
+          // Check for tag label Developer
+          if (tag.label === 'Developer') {
+            if (item.skills) {
+              // Get all skills from users
+              const userSkills = item.skills.map((skill) => skill?.skill?.toLowerCase?.())
+                .filter((label) => typeof label === 'string');
+
+              // Check if skills match developer skills
+              const matched = devSkills.some((dev) => userSkills.includes(dev.toLowerCase().trim()));
+
+              if (!matched) {
+                // No match: exclude from results
+                tagFilterCheck = false;
+                break;
+              }
+            }
+            else {
+              // No skills: exclude from results
+              tagFilterCheck = false;
+              break;
+            }
+          }
+          // Check for tag label Designer
+          else if (tag.label === 'Designer') {
+            if (item.skills) {
+              // Get all skills from user
+              const userSkills = item.skills.map((skill) => skill?.skill?.toLowerCase?.())
+                .filter((label) => typeof label === 'string');
+
+              // Check if skills match designer skills
+              const matched = desSkills.some((des) => userSkills.includes(des.toLowerCase()));
+
+              if (!matched) {
+                // No match: exclude from results
+                tagFilterCheck = false;
+                break;
+              }
+            } else {
+              // No match: exclude from results
+              tagFilterCheck = false;
+              break;
+            }
+          }
           // Check role and major by name since IDs are not unique relative to tags
-          if (tag.type === 'Role') {
+          else if (tag.type === 'Role') {
             if (item.job_title) {
               if (item.job_title.toLowerCase() !== tag.label.toLowerCase()) {
                 tagFilterCheck = false;
@@ -252,7 +332,7 @@ const DiscoverAndMeet = ({ category }) => {
           } else if (tag.tag_id) {
             // Skill check can be done by ID
             if (item.skills) {
-              let skillIDs = item.skills.map((skill) => skill.id);
+              const skillIDs = item.skills.map((skill) => skill.id);
 
               if (!skillIDs.includes(tag.tag_id)) {
                 tagFilterCheck = false;
@@ -279,6 +359,7 @@ const DiscoverAndMeet = ({ category }) => {
     setFilteredItemList(tagFilteredList);
   };
 
+  // Main render function
   return (
     <div className="page">
       {/* Search bar and profile/notification buttons */}
@@ -308,10 +389,12 @@ const DiscoverAndMeet = ({ category }) => {
   );
 };
 
+// Return projects category
 export const Discover = () => {
   return <DiscoverAndMeet category={'projects'} />;
 };
 
+// Return profiles category
 export const Meet = () => {
   return <DiscoverAndMeet category={'profiles'} />;
 };

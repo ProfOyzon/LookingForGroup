@@ -4,7 +4,7 @@ import projCtrl from '../controllers/projects.js';
 
 const router = Router();
 
-//Recieve all projects
+//Receive all projects
 router.get('/api/projects', projCtrl.getProjects);
 
 //Create a new project
@@ -27,7 +27,7 @@ router.put(
   projCtrl.updateThumbnail
 );
 
-//Recieves picture from project through id
+//Receives picture from project through id
 router.get('/api/projects/:id/pictures', projCtrl.getPictures);
 
 //Creates a new picture for a project

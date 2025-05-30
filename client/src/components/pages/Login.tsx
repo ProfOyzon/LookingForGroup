@@ -1,67 +1,54 @@
 import '../Styles/pages.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from '../../constants/routes';
-import { sendPost, sendGet } from '../../functions/fetch.js';
+import { sendPost } from '../../functions/fetch.js';
 import { ThemeIcon } from '../ThemeIcon';
 
-const Login = ({}) => {
+type LoginResponse = {
+  error?: string;
+  message?: string;
+};
+
+const Login: React.FC = () => {
   const navigate = useNavigate(); // Hook for navigation
 
   // State variables
-  const [loginInput, setLoginInput] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // Error message for missing or incorrect information
+  const [loginInput, setLoginInput] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>(''); // Error message for missing or incorrect information
 
   // Function to handle the login button click
-  const handleLogin = async () => {
-    // Check if the loginInput and password are not empty
-    if (loginInput === '' || password === '') {
-      setError('Please fill in all information');
-      return;
-    }
+  // Function to handle the login button click
+const handleLogin = async () => {
+  // Check if the loginInput and password are not empty
+  if (loginInput === '' || password === '') {
+    setError('Please fill in all information');
+    return;
+  }
 
-    // Check if the login credentials are associated with an account
-    // search input as email
-    if (loginInput.includes('@') && loginInput.includes('.')) {
-      try {
-        const response = await fetch(`/api/users/search-email/${loginInput}`);
-        const data = await response.json();
-        if (data) {
-          // try login
-          try {
-            const response = await sendPost('/api/login', { loginInput, password });
-
-            const data = await response.json();
-            if (data.error) {
-              setError(data.error);
-              return false;
-            }
-          } catch (err) {
-            setError('An error occurred during login');
-            console.log(err);
-            return false;
-          }
-        }
-      } catch (err) {
-        setError('An error occurred during login');
-        console.log(err);
-        return false;
-      }
-    }
-    // search input as username
+  // Check if the login credentials are associated with an account
+  // search input as email
+  if (loginInput.includes('@') && loginInput.includes('.')) {
     try {
-      const response = await fetch(`/api/users/search-username/${loginInput}`);
+      const response = await fetch(`/api/users/search-email/${loginInput}`);
       const data = await response.json();
       if (data) {
         // try login
         try {
-          const response = await sendPost('/api/login', { loginInput, password });
-          setError(response);
+          sendPost('/api/login', { loginInput, password }, (response: LoginResponse) => {
+            if (response.error) {
+              setError(response.error);
+              return;
+            }
+            // Success message
+            setError('Logging in');
+          });
+          return; // Prevent executing additional code after login attempt
         } catch (err) {
           setError('An error occurred during login');
           console.log(err);
-          return false;
+          return;
         }
       }
     } catch (err) {
@@ -69,24 +56,53 @@ const Login = ({}) => {
       console.log(err);
       return false;
     }
+  }
+  // search input as username
+  try {
+    const response = await fetch(`/api/users/search-username/${loginInput}`);
+    const data = await response.json();
+    if (data) {
+      // try login
+      try {
+        sendPost('/api/login', { loginInput, password }, (response: LoginResponse) => {
+          if (response.error) {
+            setError(response.error);
+            return;
+          }
+          // Success message
+          setError('Logging in');
+        });
+        return; // Prevent executing additional code after login attempt
+      } catch (err) {
+        setError('An error occurred during login');
+        console.log(err);
+        return;
+      }
+    }
+  } catch (err) {
+    setError('An error occurred during login');
+    console.log(err);
+    return false;
+  }
 
-    // no errors, send login request
-    try {
-      // Success message
-      setError('Trying to log in');
-      const response = await sendPost('/api/login', { loginInput, password });
+  // no errors, send login request
+  try {
+    // Success message
+    setError('Trying to log in');
+    sendPost('/api/login', { loginInput, password }, (response: LoginResponse) => {
       if (response.error) {
         setError(response.error);
       } else {
         // Success message
         setError('Logging in');
       }
-    } catch (err) {
-      setError('An error occurred during login');
-      console.log(err);
-      return false;
-    }
-  };
+    });
+  } catch (err) {
+    setError('An error occurred during login');
+    console.log(err);
+    return false;
+  }
+};
 
   // Function to handle the forgot pass button click
   const handleForgotPass = () => {

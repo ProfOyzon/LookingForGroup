@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from '../constants/routes';
 import { useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import Notifications from './pages/Notifications';
 import { ThemeIcon } from './ThemeIcon';
 import { ProjectCreatorEditor } from './ProjectCreatorEditor/ProjectCreatorEditor';
 
-interface User {
+export interface User {
   first_name: string,
   last_name: string,
   username: string,
@@ -75,7 +75,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
         // Save user id
         const { data } = await response.json();
         const id = data;
-    
+
         // Get and save user data
         const getUserData = async () => {
           const userResponse = await fetch('/api/users/get-username-session');
@@ -122,25 +122,25 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
                 className={activePage === 'Discover' ? 'active' : ''}
                 onClick={() => handleTextChange('Discover', paths.routes.HOME)}
               >
-                <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} />
+                <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} alt={'discover'} />
               </button>
               <button
                 className={activePage === 'Meet' ? 'active' : ''}
                 onClick={() => handleTextChange('Meet', paths.routes.MEET)}
               >
-                <ThemeIcon light={'assets/black/meet.png'} dark={'assets/white/meet.png'} />
+                <ThemeIcon light={'assets/black/meet.png'} dark={'assets/white/meet.png'} alt={'meet users'} />
               </button>
               <button
                 className={activePage === 'My Projects' ? 'active' : ''}
                 onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}
               >
-                <ThemeIcon light={'assets/black/folder.png'} dark={'assets/white/folder.png'} />
+                <ThemeIcon light={'assets/black/folder.png'} dark={'assets/white/folder.png'} alt={'my projects'} />
               </button>
               <button
                 className={activePage === 'My Profile' ? 'active' : ''}
                 onClick={() => handleTextChange('My Profile', paths.routes.NEWPROFILE)}
               >
-                <ThemeIcon light={'assets/black/profile.png'} dark={'assets/white/profile.png'} />
+                <ThemeIcon light={'assets/black/profile.png'} dark={'assets/white/profile.png'} alt={'my profile'} />
               </button>
             </div>
           </div>
@@ -156,7 +156,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
     <div>
       <div className="SideBarContainer">
         <div className="headerContainer">
-          <h1 style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}>
+          <h1 style={{ cursor: 'pointer' }} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
             lfg.
           </h1>
         </div>
@@ -166,20 +166,20 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
             className={activePage === 'Discover' ? 'active' : ''}
             onClick={() => handleTextChange('Discover', paths.routes.HOME)}
           >
-            <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} />{' '}
+            <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} alt={'discover'}/>
             Discover
           </button>
           <button
             className={activePage === 'Meet' ? 'active' : ''}
             onClick={() => handleTextChange('Meet', paths.routes.MEET)}
           >
-            <ThemeIcon light={'assets/black/meet.png'} dark={'assets/white/meet.png'} /> Meet
+            <ThemeIcon light={'assets/black/meet.png'} dark={'assets/white/meet.png'} alt={'meet users'} /> Meet
           </button>
           <button
             className={activePage === 'My Projects' ? 'active' : ''}
             onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}
           >
-            <ThemeIcon light={'assets/black/folder.png'} dark={'assets/white/folder.png'} /> My
+            <ThemeIcon light={'assets/black/folder.png'} dark={'assets/white/folder.png'} alt={'my projects'} /> My
             Projects
           </button>
           {/* <button className={activePage === 'Following' ? 'active' : ''} onClick={() => handleTextChange('Following', paths.routes.SETTINGS)}>
@@ -200,15 +200,17 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
           </button> */}
         </div>
 
+        {/* "Create" button in bottom left, made by ProjectCreatorManager */}
+        {/*Creates red error text above the button if not signed in*/}
         <div className="Create">
           {createError ? (
             <>
               <p className="error">Log in first!</p>
               <button>
-                <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} /> Create
+                <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} alt={'create'}/> Create
               </button>
             </>
-          ) : <ProjectCreatorEditor newProject={true} buttonCallback={getAuth} user={userData}/>
+          ) : <ProjectCreatorEditor newProject={true} buttonCallback={getAuth} user={userData} />
           }
         </div>
       </div>

@@ -32,7 +32,7 @@ export const ProfileHeader = ({ user }) => {
               <ThemeIcon
                 light={'assets/menu_light.png'}
                 dark={'assets/menu_dark.png'}
-                alt={'...'}
+                alt={'More Options'}
               />
             </button>
             {/*div for the popup window for user options*/}

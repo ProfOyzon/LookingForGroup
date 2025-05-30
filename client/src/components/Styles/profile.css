@@ -94,6 +94,7 @@ Profile Panel component style rules
   justify-content: start;
   text-align: left;
   padding: 20px;
+  overflow: auto;
 }
 
 .profile-panel-hover-item {

@@ -15,7 +15,7 @@ export const ProjectInfo = (props) => {
   let key = 0; //key is not required for functionality, but react will give an error without it when using the .map function later
   return (
     <div id="project-info">
-      <img id="project-picture" src={profilePlaceholder} alt="" />
+      <img id="project-picture" src={profilePlaceholder} alt="project picture" />
 
       <div id="project-header">
         <h1 id="project-title">{props.projectData.name}</h1>

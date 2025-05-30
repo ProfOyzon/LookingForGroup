@@ -45,7 +45,6 @@ Base apiURL is:
 
 //const apiURL = 'lfg.gccis.rit.edu/api/...';
 
-
 /**
  * Basic GET function for utilities
  * @param {*} apiURL - API to be called, if you are using parameters customize the url
@@ -53,23 +52,22 @@ Base apiURL is:
  */
 function GET(apiURL) {
   return fetch(apiURL)
-        .then( response => {
-            if( response.ok ) {
-                return response.json();
-            } else {
-                throw new Error('Network response was not ok');
-            }
-        })
-        .then( data => {
-            console.log(data);
-            return data; //returns get with jsonified data
-        })
-        .catch( error => {
-            console.error('there was a problem with the fetch operation:',error);
-            return "400";
-        })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then((data) => {
+      //console.log(data);
+      return data; //returns get with jsonified data
+    })
+    .catch((error) => {
+      console.error('there was a problem with the fetch operation:', error);
+      return '400';
+    });
 }
-
 
 /**
  * Basic POST function for utilities
@@ -78,28 +76,27 @@ function GET(apiURL) {
  * @returns response - JSONified data or error code.
  */
 
-function POST(apiURL, newData)
-{
-    fetch(apiURL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newData)
+function POST(apiURL, newData) {
+  return fetch(apiURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
+    .then((data) => {
+      console.log(data);
+      return data;
     })
-    .then(data => {
-        console.log(data);
-        return data;
-    })
-    .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-        return "400";
+    .catch((error) => {
+      console.error('There was a problem with the fetch operation:', error);
+      return '400';
     });
 }
 
@@ -110,29 +107,28 @@ function POST(apiURL, newData)
  * @returns response - JSONified data or error code.
  */
 function PUT(apiURL, newData) {
-    fetch(apiURL, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newData)
+  return fetch(apiURL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
+    .then((data) => {
+      console.log(data);
+      return data;
     })
-    .then(data => {
-        console.log(data);
-        return data;
-    })
-    .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-        return "400";
+    .catch((error) => {
+      console.error('There was a problem with the fetch operation:', error);
+      return '400';
     });
 }
-
 
 /**
  * Basic DELETE function for utilities
@@ -140,28 +136,26 @@ function PUT(apiURL, newData) {
  * @returns response - JSONified data or error code.
  */
 function DELETE(apiURL) {
-    fetch(apiURL, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+  return fetch(apiURL, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
+    .then((data) => {
+      console.log(data);
+      return data;
     })
-    .then(data => {
-        console.log(data);
-        return data;
-    })
-    .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-        return "400";
+    .catch((error) => {
+      console.error('There was a problem with the fetch operation:', error);
+      return '400';
     });
 }
 
-export {
-  GET, POST, PUT, DELETE
-}
+export { GET, POST, PUT, DELETE };

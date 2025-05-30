@@ -130,6 +130,20 @@ function PUT(apiURL, newData) {
     });
 }
 
+async function PUT2(apiURL, newData) {
+  try {
+    const response = await fetch(apiURL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newData),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Caught inside PUT:', error);
+    throw error; // Let the caller deal with it
+  }
+}
+
 /**
  * Basic DELETE function for utilities
  * @param {*} apiURL - API to be called

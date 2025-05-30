@@ -111,7 +111,6 @@ export const AboutTab = (props: { profile: ProfileData }) => {
                             <option>3rd</option>
                             <option>4th</option>
                             <option>5th</option>
-                            <option>Grad</option>
                         </select>
                     </div>
                 </div>

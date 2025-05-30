@@ -91,7 +91,7 @@ General style rules
   --tag-purple-unselected-border: #d7bed3;
   --tag-grey-unselected-border: #d0d0d0;
 
-  --tag-text-selected: black;
+  --tag-text-selected: white;
 
   --tag-text-unselected-red: #ffa0b0;
   --tag-text-unselected-orange: #ffa381;

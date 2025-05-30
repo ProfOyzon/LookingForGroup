@@ -2,31 +2,55 @@ import util from '../utils/projectUtils';
 
 /* - - - POSTs - - - */
 
-// createNewProject
-test('Create a new project', async () => {
+// createNewProject (valid)
+test('Create a new project - valid', async () => {
   const r = await util.createNewProject(/* TODO */);
   
-  console.log("Create project: " + r);
+  console.log("Create project valid: " + r);
 
   expect(r).not.toBe("400");
 });
+// createNewProject (invalid)
+test('Create a new project - invalid', async () => {
+  const r = await util.createNewProject();
+  
+  console.log("Create project invalid: " + r);
 
-// addPic
-test ('Add picture to project', async () => {
+  expect(r).toBe("400");
+});
+
+// addPic (valid)
+test ('Add picture to project - valid', async () => {
   const r = await util.addPic( /* TODO */);
 
-  console.log("Add picture: " + r);
+  console.log("Add picture valid: " + r);
 
   expect(r).not.toBe("400");
 });
+// addPic (invalid)
+test ('Add picture to project - invalid', async () => {
+  const r = await util.addPic();
 
-// addMember
-test('Add member to project', async () => {
+  console.log("Add picture invalid: " + r);
+
+  expect(r).toBe("400");
+});
+
+// addMember (valid)
+test('Add member to project - valid', async () => {
   const r = await util.addMember(/* TODO */);
 
-  console.log("Add member: " + r);
+  console.log("Add member valid: " + r);
 
   expect(r).not.toBe("400");
+});
+// addMember (invalid)
+test('Add member to project - invalid', async () => {
+  const r = await util.addMember();
+
+  console.log("Add member invalid: " + r);
+
+  expect(r).toBe("400");
 });
 
 /* - - - PUTs - - - */

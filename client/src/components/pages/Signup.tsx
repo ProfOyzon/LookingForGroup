@@ -200,12 +200,20 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
   return (
     <div className="background-cover">
       <div className="login-signup-container" onKeyDown={handleKeyPress}>
+        <ThemeIcon //Back button to return to the previous page
+          light={'assets/back_light.png'}
+          dark={'assets/back_dark.png'}
+          alt="Back Button"
+          id="backPage-arrow"
+          onClick={() => navigate(-1)}
+          />
         {/*************************************************************
 
                     Signup Form inputs
 
                 *************************************************************/}
         <div className="signup-form column">
+          
           <h2>Sign Up</h2>
 
           <div className="error">{message}</div>

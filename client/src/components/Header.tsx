@@ -19,6 +19,7 @@ import * as paths from '../constants/routes';
 import { sendPost } from '../functions/fetch';
 import { ThemeIcon } from './ThemeIcon';
 import { ThemeContext } from '../contexts/ThemeContext';
+import { useLocation } from 'react-router-dom'; // Hook to access the current location
 
 //Header component to be used in pages
 
@@ -36,6 +37,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState(null);
   const [profileImg, setProfileImg] = useState<string>('');
+  const location = useLocation(); // Hook to access the current location
 
   // Pull the theme and setTheme function from useState() via a context
   const theme = useContext(ThemeContext)['theme'];
@@ -167,7 +169,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
                 </button>{' '}
 
                 {/* LOG IN Button */}
-                <button onClick={() => handlePageChange(paths.routes.LOGIN)}>
+                <button onClick={() => navigate(paths.routes.LOGIN, { state: { from: location.pathname } })}>
                   <ThemeIcon
                     light={'assets/black/logout.png'}
                     dark={'assets/white/logout.png'}

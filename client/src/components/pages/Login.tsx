@@ -1,6 +1,6 @@
 import '../Styles/pages.css';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import * as paths from '../../constants/routes';
 import { sendPost } from '../../functions/fetch.js';
 import { ThemeIcon } from '../ThemeIcon';
@@ -12,6 +12,8 @@ type LoginResponse = {
 
 const Login: React.FC = () => {
   const navigate = useNavigate(); // Hook for navigation
+  const location = useLocation(); // Hook to access the current location
+  const from = location.state?.from; // Get the previous page from the location state, if available
 
   // State variables
   const [loginInput, setLoginInput] = useState<string>('');
@@ -109,7 +111,7 @@ const handleLogin = async () => {
     // remove error message
     setError('');
     // Navigate to the Forgot Password Page
-    navigate(paths.routes.FORGOTPASSWORD);
+    navigate(paths.routes.FORGOTPASSWORD, { state: { from } });
   };
 
   // Function to handle Enter key press
@@ -129,6 +131,20 @@ const handleLogin = async () => {
 
                 *************************************************************/}
         <div className="login-form column">
+            <ThemeIcon //Back button to return to the previous page
+              light={'assets/back_light.png'}
+              dark={'assets/back_dark.png'}
+              alt="Back Button"
+              id="backPage-arrow"
+              onClick={() => {
+    // If the previous page is not forgot password, go back to it; otherwise, go home
+    if (from && from !== paths.routes.FORGOTPASSWORD && from !== paths.routes.RESETPASSWORD) {
+      navigate(from);
+    } else {
+      navigate(paths.routes.HOME); // or your default page
+    }
+  }}
+            />
           <h2>Log In</h2>
           <div className="error">{error}</div>
           <div className="login-form-inputs">

@@ -68,13 +68,18 @@ function createNewUser ( token, email, _firstName, _lastName, _headline, _pronou
  * @param email - RIT email, string
  * @returns result - boolean, true if they exist within database, false if not.
  */
-function userInDatabase(email) {
+async function userInDatabase(email) {
     const apiURL = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
-    const response = GET(apiURL);
+    const response = await GET(apiURL);
+    
     if( response.status === "400" ) {
-        console.log("No user with that email in the database.");
+        console.log("Error fetching email.");
         return false;
     } else {
+        if(!response.data){
+            console.log(response.data);
+            return false;
+        }
         console.log("User found with email",email);
         return true;
     }
@@ -87,9 +92,9 @@ function userInDatabase(email) {
 function getUsers() {
     const apiURL = 'https://lfg.gccis.rit.edu/api/users';
     const response = GET(apiURL);
-    if( response.status === "400" ) return "400";
-
-    return response.data;
+    if( !response.status === "400" ) return "400";
+    
+    return response;
 }
 
 /**
@@ -98,15 +103,15 @@ function getUsers() {
  * @returns data - JSONified data from account information. 400 if not valid.
  * @returns user_id, primary_email, rit_email, username, visibility
  */
-function getAccountInformation ( id ) {
+async function getAccountInformation ( id ) {
     const apiURL = `https://lfg.gccis.rit.edu/api/users/${id}/account`;
-    const response = GET(apiURL);
+    const response = await GET(apiURL);
     if( response.status === "400" ) {
         return "400";
     }
 
-    console.log("User accound information recieved")
-    return response.data;
+    console.log("User account information recieved")
+    return response;
 }
 
 
@@ -120,7 +125,7 @@ function getUsersById(id) {
     const response = GET(apiURL);
     if( response.status === "400" ) return "400"; //error
 
-    return response.data;
+    return response;
 }
 
 /**
@@ -134,7 +139,7 @@ function editUser(id, data) {
     const response = PUT(apiURL, data);
     if( response.status === "400" ) return "400";
 
-    return response.data;
+    return response;
 }
 
 
@@ -148,7 +153,7 @@ function deleteUser(id) {
     const response = DELETE(apiURL);
     if( response === "400" ) return "400";
 
-    return response.data;
+    return response;
 }
 
 
@@ -395,7 +400,7 @@ function getUserByUsername ( username ) {
         return "400";
     } 
     console.log("Data recieved.");
-    return response.data;
+    return response;
 }
 
 
@@ -412,7 +417,7 @@ function getUserByEmail ( email ) {
         return "400";
     } 
     console.log("Data recieved.");
-    return response.data;
+    return response;
 }
 
 
@@ -429,7 +434,7 @@ function getUserFollowing ( id ) {
         return "400";
     } 
     console.log("Data recieved.");
-    return response.data;
+    return response;
 }
 
 
@@ -486,7 +491,7 @@ function getProjectFollowing ( id ) {
         return "400";
     } 
     console.log("Data recieved.");
-    return response.data;
+    return response;
 }
 
 

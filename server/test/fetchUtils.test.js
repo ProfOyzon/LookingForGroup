@@ -1,6 +1,8 @@
-const { GET } = require('../utils/fetchUtils');
+const { GET, POST, PUT, DELETE } = require('../utils/fetchUtils');
 
-describe("fetchUtils", () => {
+
+//MOCK TESTING does not use real API calls
+describe("fetchUtils tests", () => {
   beforeEach(() => {
     global.fetch = jest.fn();
   });
@@ -9,8 +11,9 @@ describe("fetchUtils", () => {
     jest.restoreAllMocks();
   });
 
+  //GET
   test("mocks GET request and checks response", async () => {
-    const mockJson = { message: "Success", id: 1 };
+    const mockJson = { message: "Success", user_id: 123 };
     const mockResponse = {
       json: jest.fn().mockResolvedValue(mockJson),
       status: 200,
@@ -19,73 +22,76 @@ describe("fetchUtils", () => {
 
     global.fetch.mockResolvedValue(mockResponse);
 
-    const json = await GET("http://lfg.gccis.rit.edu/api/users");
+    const json = await GET("http://lfg.gccis.rit.edu/api-test/users");
 
-    expect(fetch).toHaveBeenCalledWith("http://lfg.gccis.rit.edu/api/users");
+    expect(fetch).toHaveBeenCalledWith("http://lfg.gccis.rit.edu/api-test/users");
     expect(json).toEqual(mockJson);
   });
+
+  //POST
+  test('POST: sends data and checks response', async () => {
+    const mockUser = { first_name: 'Tracy', last_name: 'Test' };
+    const mockResponse = { user_id: 123, ...mockUser };
+
+
+    global.fetch.mockResolvedValue({
+      ok: true,
+      status: 201,
+      json: jest.fn().mockResolvedValue(mockResponse),
+    });
+
+    const data = await POST('http://lfg.gccis.rit.edu/api-test/users', mockUser)
+
+    expect(fetch).toHaveBeenCalledWith('http://lfg.gccis.rit.edu/api-test/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(mockUser),
+    });
+
+    expect(data).toEqual(mockResponse);
+  });
+
+  //PUT
+  test('PUT: updates user and returns response', async () => {
+    const mockUpdate = { first_name: 'Ursala', last_name: 'Update' };
+    const mockResponse = { user_id: 123, ...mockUpdate };
+
+
+    global.fetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: jest.fn().mockResolvedValue(mockResponse),
+    });
+
+    const data = await PUT('http://lfg.gccis.rit.edu/api-test/users/123', mockUpdate)
+
+    expect(fetch).toHaveBeenCalledWith('http://lfg.gccis.rit.edu/api-test/users/123', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(mockUpdate),
+    });
+
+    expect(data).toEqual(mockResponse);
+  });
+
+  //DELETE
+  test('DELETE: removes user and returns response', async () => {
+    const mockResponse = { success: true, user_id: 123 };
+
+    global.fetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: jest.fn().mockResolvedValue(mockResponse),
+    });
+
+    const data = await DELETE('http://lfg.gccis.rit.edu/api-test/users/123');
+
+    expect(fetch).toHaveBeenCalledWith('http://lfg.gccis.rit.edu/api-test/users/123', {
+      method: 'DELETE',
+      headers: {'Content-Type': 'application/json' },
+    });
+
+    expect(data).toEqual(mockResponse);
+  });
+
 });
-
-
-//IM FIXING THIS STILL
-// describe('API Testing: GET, POST, PUT, DELETE for users', () => {
-
-//     //POST
-//     it('POST: create new user', async () => {
-//         const newUser = {
-//             first_name: "Tracy",
-//             last_name: "Test",
-//             profile_image: null,
-//             headline: 'Testing this user',
-//             pronouns: 'they/them',
-//             job_title: null,
-//             major: null,
-//             academic_year: null,
-//             location: 'Testalvania',
-//             fun_fact: 'This is a test',
-//             skills: []
-//         }
-
-//         const r = await POST(api, newUser);
-//         expect(r).not.toBe('400');
-//         expect(r.first_name).toBe('Tracy');
-
-//         //record userId for future tests
-//         newUserId = r.user_id;
-//         //console.log('Test user:', r);
-
-//         console.log(await res.json());
-
-//     });
-
-//     //PUT
-//     it('PUT: update creates users name', async () => {
-//         const updateUser = {
-//             first_name: 'Ursala',
-//             last_name: 'Update'
-//         }
-
-//         const r = await PUT(`${api}/${newUserId}`, updateUser);
-//         expect(r).not.toBe('400');
-//         //console.log('Test user:', r);
-
-//         console.log(await res.json());
-//     });
-
-
-//     //GET
-//     it('GET: get updated test user by ID', async () => {
-//         const r = await GET(`${api}/${newUserId}`);
-//         expect(r).not.toBe('400');
-//        // expect(r.first_name).toBe('Ursala');
-//         console.log('Test user:', r);
-//     });
-
-//     //DELETE
-//     it('DELETE: delete new created user', async () => {
-//         const r = await DELETE(`${api}/${newUserId}`);
-//         expect(r).not.toBe('400');
-//         console.log('Test user:', r);
-//     });
-
-// });

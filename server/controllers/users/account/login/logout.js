@@ -1,3 +1,5 @@
+import pool from '../config/database.js';
+
 /**
  * Checks if user is logged in
  * @param req - req.session - current session to destroy

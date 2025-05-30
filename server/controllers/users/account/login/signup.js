@@ -1,3 +1,5 @@
+import pool from '../config/database.js';
+
 /**
  * Takes sign up data to send confirmation e-mail. E-mail stored in database temporarily
  * @param req - req.body - {username, password, confirm, email, firstName, lastName} setup input data

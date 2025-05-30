@@ -1,3 +1,5 @@
+import pool from '../config/database.js';
+
 /**
  * Takes login information and retirieves accrount from database
  * @param req - req.body - {loginInput, password} for user login

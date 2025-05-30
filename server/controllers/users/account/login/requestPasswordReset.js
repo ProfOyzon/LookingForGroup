@@ -1,3 +1,5 @@
+import pool from '../config/database.js';
+
 /**
  * Makes request to reset a user password. Send email stored in database temporarily.
  * @param req - req.body - {email} the email adress to sent reset to

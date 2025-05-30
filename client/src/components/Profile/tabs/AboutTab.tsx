@@ -104,12 +104,14 @@ export const AboutTab = (props: { profile: ProfileData }) => {
                     {<RoleSelector />}
                     {<MajorSelector />}
                     <div className="editor-input-item">
-                        <label>Year</label>
+                        <label>Year*</label>
                         <select id="profile-editor-academicYear">
                             <option>1st</option>
                             <option>2nd</option>
                             <option>3rd</option>
                             <option>4th</option>
+                            <option>5th</option>
+                            <option>Grad</option>
                         </select>
                     </div>
                 </div>

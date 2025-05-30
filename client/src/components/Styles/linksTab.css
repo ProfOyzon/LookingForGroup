@@ -42,5 +42,6 @@
 }
 
 .close-btn .fa {
-    color: var(--invert-text);
+    color: rgb(253, 89, 89) !important;
+    font-size: 20px;
 }

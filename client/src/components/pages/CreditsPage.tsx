@@ -33,14 +33,12 @@ const Credits = () => {
   }, [membersSearchData]);
 
   // Updates filtered members list with new search info
-  const searchItems = (searchResults) => {
+  const searchMembers = (searchResults) => {
     // Clear list before handling search
     tempMembersList = [];
 
     //runs through each member to see if any match the search term
     for (const result of searchResults[0]) {
-      console.log(searchResults[0]);
-
       for (const member of membersSearchData) {
         if (result === member) {
           //if match is found, pushes that member to the temp member list
@@ -61,7 +59,7 @@ const Credits = () => {
 
   return (
     <div className="page" id="my-projects">
-      <Header dataSets={dataSet} onSearch={searchItems} />
+      <Header dataSets={dataSet} onSearch={searchMembers} />
 
       <h1 id="credits-title">Meet The LFG Team</h1>
 

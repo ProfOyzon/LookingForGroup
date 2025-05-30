@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "checkJs": true,
+    "allowJs": true,
+    "types": [
+      "@types/node",
+      "@types/bcrypt",
+      "@types/express",
+      "dotenv",
+      "@types/express-session",
+      "@types/morgan",
+      "@types/multer",
+      "mysql2",
+      "@types/nodemailer",
+      "sharp"
+    ]
+  },
+  "include": ["./server/**/*"]
+}

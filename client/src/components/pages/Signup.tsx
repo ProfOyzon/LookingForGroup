@@ -87,7 +87,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     }
 
     // check if username is valid
-    if (!(username.match(/^[a-zA-Z0-9]+$/) != null)) {
+    if (!(username.match(/^[a-zA-Z0-9_]+$/) != null)) {
       setMessage('Username can not include white space or special characters!');
       return false;
     }

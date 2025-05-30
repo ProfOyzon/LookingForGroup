@@ -104,6 +104,12 @@ const handleLogin = async () => {
     console.log(err);
     return false;
   }
+
+  // // Sends the user to the create project popup if they successfully logged in
+  // if(error == 'Logging in')
+  // {
+  //   navigate(paths.routes.CREATEPROJECT);
+  // }
 };
 
   // Function to handle the forgot pass button click

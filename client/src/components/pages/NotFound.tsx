@@ -2,7 +2,8 @@ import '../Styles/pages.css';
 import '../Styles/general.css';
 import '../Styles/Notfound.css';
 import '../../images/sad frog dark mode.png';
-import { Navigate } from 'react-router-dom';
+import * as paths from "../../constants/routes";
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Header } from '../Header';
 import { ThemeIcon } from '../ThemeIcon';
@@ -12,6 +13,7 @@ import { ThemeIcon } from '../ThemeIcon';
 const NotFoundPage = () => {
     const [projectsList, setProjectsList] = useState();
     const [currentSearch, setCurrentSearch] = useState('');
+    const navigate = useNavigate();
     return(
         <div className = "page">
             <Header dataSets={[{ projectsList }]} onSearch={setCurrentSearch} />
@@ -22,7 +24,7 @@ const NotFoundPage = () => {
                     {/*
                         This is the Home button, because it will return users home once the Home page is up. It currently returns to Discover page
                     */}
-                    <button>
+                    <button className = "" onClick={ (event: any) => navigate(paths.routes.HOME)}>
                         <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} alt={'discover'} /> {/*Home Button Icon*/}
                         {/*}<img className = 'theme-icon'></img>{*/}
                         Home

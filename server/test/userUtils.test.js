@@ -47,13 +47,17 @@ test('Check if Mistah Bones is in database.', async () => {
     expect(r).toBe(true);
 });
 
-test('Get account information for id 1', async () => {
-    const r = await util.getAccountInformation(1);
+test('Get account information for id 28 (Mistah Bones), invalid.', async () => {
+    const r = await util.getAccountInformation(28);
 
     console.log(r);
+
     expect(r).toBe("400"); // because no authorization
     expect(r).toBeDefined();
 });
+// test('Get account information for id 28 (Mistah Bones), valid.', async () => {
+    
+// });
 
 test('Get people user 1 is following.', async () => {
     const r = await util.getUserFollowing(1);

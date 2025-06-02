@@ -1,7 +1,7 @@
 import envConfig from '../config/env';
 import { GET, PUT, POST, DELETE } from './fetchUtils';
 
-const root = envConfig.env === 'development' ? `/api` : `https://lfg.gccis.rit.edu/api`;
+const root = envConfig.env === 'development' || envConfig.env === 'test' ? `http://localhost:8081/api` : `https://lfg.gccis.rit.edu/api`;
 
 /**
  * Creates a new project and adds it to the database. All params default to null.

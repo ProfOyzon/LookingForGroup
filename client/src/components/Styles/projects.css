@@ -805,6 +805,10 @@ Project Creator and Editor style rules
   font-size: 1.6ch;
 }
 
+#profile-editor-skills {
+  overflow-y: auto;
+}
+
 /* Project Editor/Creator Team Tab */
 .project-editor-team-tab {
   padding: 0;

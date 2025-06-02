@@ -308,7 +308,7 @@ const NewProfile = () => {
   return (
     <div className="page">
       {/* Should probably use the search bar for projects I guess? */}
-      <Header dataSets={{ data: fullProjectList }} onSearch={searchProjects} />
+      <Header dataSets={{ data: fullProjectList }} onSearch={searchProjects} hideSearchBar={true}  />
 
       {/* Checks if we have profile data to use, then determines what to render */}
       <div id="profile-page-content">

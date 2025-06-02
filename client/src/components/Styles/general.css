@@ -697,14 +697,15 @@ Sidebar Nav style rules
   }
 }
 
-/* .Create > button:hover {
-    background-color: var(--primary-color);
-    color: white;
+ .Create > button:hover {
+    background-color: var(--create-text);
+    color:var(--create-bg);
+    filter:drop-shadow(0px 5px 3px var(--shadow-color));
 
     img {
         filter: invert(1) saturate(0) brightness(2);
     }
-} */
+}
 
 /*responsive stuff for sidebar*/
 @media only screen and (max-width: 799px) {

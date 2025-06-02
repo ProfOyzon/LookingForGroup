@@ -26,6 +26,13 @@
     padding-top: 200px;
 }
 
+#error-image {
+  max-width: 100vh;
+  width: 500px;
+  width: auto;
+  align-self: center;
+}
+
 
 
 .error-button-container button:hover {
@@ -53,4 +60,10 @@
 .errorFrog{max-width: 25vh; width: auto; align-self: center;}
 
 .error-header{color: var(--text-color); font-size: 30px;}
+
+@media only screen and (max-width: 799px) {
+  .error-box > * {font-size: 50px; margin: 50px;}
+  .error-button-container{padding-bottom: 100px;}
+  .error-button-container button {padding: 20px 30px; font-size: 35px;}
+}
 

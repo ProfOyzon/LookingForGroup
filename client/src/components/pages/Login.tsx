@@ -117,6 +117,8 @@ const handleLogin = async () => {
     // remove error message
     setError('');
     // Navigate to the Forgot Password Page
+    // Pass the 'from' state to remember where to return after going back to login
+    // If 'from' is not defined, it will default to the home page 
     navigate(paths.routes.FORGOTPASSWORD, { state: { from } });
   };
 

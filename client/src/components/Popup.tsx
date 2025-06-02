@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from 'react';
+import { useState, createContext, useContext, useRef, useEffect } from 'react';
 import close from '../icons/cancel.png';
 //This is a reusable component that can be used to make popup windows on pages
 
@@ -63,11 +63,35 @@ export const PopupButton = ({
 //Main content of the popup
 export const PopupContent = ({ children, useClose = true, callback = () => {} }) => {
   const { open, setOpen } = useContext(PopupContext);
+  const popupRef = useRef(null);
 
   const closePopup = () => {
     callback();
     setOpen(false);
   };
+
+  // Close on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closePopup();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Close on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const refNode = popupRef.current as Node | null;
+      if (refNode && e.target instanceof Node && !refNode.contains(e.target)) {
+        closePopup();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  if (!open) return null;
 
   if (open && useClose) {
     return (
@@ -88,7 +112,7 @@ export const PopupContent = ({ children, useClose = true, callback = () => {} })
       <>
         <div className="popup-cover" />
         <div className="popup-container">
-          <div className="popup">{children}</div>
+          <div className="popup" ref={popupRef}>{children}</div>
         </div>
       </>
     );

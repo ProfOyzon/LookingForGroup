@@ -1,7 +1,7 @@
 import '../Styles/pages.css';
 import '../Styles/general.css';
 import '../Styles/Notfound.css';
-import '../../images/sad frog dark mode.png';
+import '../../images/sad_frog_dark_mode.png';
 import * as paths from "../../constants/routes";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -18,7 +18,12 @@ const NotFoundPage = () => {
         <div className = "page">
             <Header dataSets={[{ projectsList }]} onSearch={setCurrentSearch} />
             <div className = "error-box">
-                {}<img src='../../images/sad frog dark mode.png' className = "errorFrog"></img>{}
+                <ThemeIcon
+                            light={'assets/bannerImages/404_light.png'}
+                            dark={'assets/bannerImages/404_dark.png'}
+                            alt={'404 Not Found'}
+                            id={'error-image'}
+                          />
                 <h2 className='error-header'>Ooops! Seems like this page is missing or moved.</h2>
                 <div className = "error-button-container">
                     {/*

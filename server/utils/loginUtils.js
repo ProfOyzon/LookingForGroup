@@ -1,6 +1,7 @@
 ///import {login} from '../controllers/users';
 import envConfig from '../config/env';
 import { POST } from './fetchUtils';
+import bcrypt from 'bcrypt';
 
 // Add Shibboleth login here. Functions are set out in controllers/users.js to login, these are not utilized.
 
@@ -18,13 +19,18 @@ import { POST } from './fetchUtils';
  */
 async function sendSignup(_username, _password, _confirmPassword, _email, _firstName, _lastName) {
     //set up input data
+    let res = {
+        status:0,
+        body:'',
+        error:''
+    };
     if(!_username || !_password || !_confirmPassword ||! _email || !_firstName || !_lastName) {
-        return res.status(400).json({
+        return res({
             status: 400,
             error: 'Missing sign up information',
         });
     } else if (_password !== _confirmPassword) {
-        return res.status(400).json({
+        return res({
             status: 400,
             error: 'Passwords do not match',
         });
@@ -39,6 +45,8 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
     //     url = `https://lookingforgrp.com/activation/${_token}`;
     // } else {
         url = `http://localhost:8081/activation/${_token}`;
+        console.log(url);
+        console.log(_token);
     //}
     
     const data = {
@@ -56,7 +64,7 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
         if(response.ok) {
             console.log("Information put into database.");
         } else {
-            return res.status('400').json({
+            return res = ({
                 status: 400,
                 error: "Error posting into database.",
             });
@@ -89,17 +97,17 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
         await transporter.sendMail(message);
 
         if(envConfig.env === 'development') {
-            return res.status(201).json({
+            return res = ({
                 status: 201,
                 data: _token,
             });
         }
-        return res.status(201).json({
+        return res = ({
             status: 201,
         });
     } catch (err) {
         console.log(err);
-        return res.status(400).json({
+        return res = ({
             status:400,
             error: 'An error occured during sign up',
         });

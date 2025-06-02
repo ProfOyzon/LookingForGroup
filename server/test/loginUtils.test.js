@@ -6,8 +6,9 @@ test('Add user information to database, set up for account activtion', async () 
     const r = await utils.sendSignup('testaccount','password123','password123','jjp8541@rit.edu','John','Testing');
 
     console.log('Return code: ',r.status);
+    console.log('Error: ', r.error);
 
-    expect(r.status === 201);
+    expect(r.status).toBe(201);
 
     console.log('proposed token _______________ ',r.data);
 });

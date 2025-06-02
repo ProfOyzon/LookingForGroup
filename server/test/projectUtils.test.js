@@ -4,7 +4,34 @@ import util from '../utils/projectUtils';
 
 // createNewProject (valid)
 test('Create a new project - valid', async () => {
-  const r = await util.createNewProject(/* TODO */);
+  const r = await util.createNewProject(
+    28,
+    "Mistah Bones Game",
+    "MISTAH BONES",
+    "MISTAH BONESSSSSS",
+    "Victory",
+    "Eternal",
+    "You",
+    [
+      {
+        id: 0
+      }
+    ],
+    [
+      {
+        id: 1,
+        position: 0
+      }
+    ],
+    [],
+    [
+      {
+        id: 28,
+        titleId: 7
+      }
+    ],
+    []
+  );
   
   console.log("Create project valid: " + r);
 

@@ -35,7 +35,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
   const [currentTagsTab, setCurrentTagsTab] = useState(0);
   // filtered results from tag search bar
   const [searchedTags, setSearchedTags] = useState<(Tag | ProfileData)[]>([]);
-  
+
   // Update data when data is changed
   useEffect(() => {
     setModifiedProfile(props.profile);
@@ -103,6 +103,9 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
   }, [modifiedProfile]);
 
   const handleTagSelect = useCallback((e: any) => {
+    // prevent page from immediately re-rendering
+    e.preventDefault();
+
     // trim whitespace to get tag name
     const tag: string = e.target.innerText.trim();
 
@@ -135,14 +138,31 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
       if (id === -1) {
         return;
       }
+
+      // Update selected tags with new ones
+      setModifiedProfile((prev) => ({
+        ...prev,
+        skills: [
+          ...(prev.skills ?? []),
+          {
+            id: id,
+            position: prev.skills?.length ?? 0,
+            tag: tag,
+            skill: tag,
+            type: type
+          }
+        ]
+      }));
+
     }
     // if tag is selected
     else {
-      // remove tag from project
-      setModifiedProject({
-        ...modifiedProject,
-        project_types: modifiedProject.project_types.filter((t) => t.project_type !== tag),
-        tags: modifiedProject.tags.filter((t) => t.tag !== tag)
+      // remove skill from project
+      setModifiedProfile({
+        ...modifiedProfile,
+        skills: (modifiedProfile.skills ?? []).filter((s) => s.skill !== tag),
+        project_types: (modifiedProfile.project_types ?? []).filter((t) => t.project_type !== tag),
+        tags: (modifiedProfile.tags ?? []).filter((t) => t.tag !== tag)
       });
 
       // deselect tag
@@ -154,7 +174,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
   }, [allSkills, modifiedProfile]);
 
   // Load projects
-  const loadProjectTags = useMemo(() => {
+  const loadProfileTags = useMemo(() => {
     if (!modifiedProfile?.skills) return [];
 
     return modifiedProfile.skills
@@ -301,11 +321,11 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
           Drag and drop to reorder
         </div>
         {/* Error tag */}
-        {modifiedProfile?.skills?.length === 0 ? <div className="error">*At least 1 tag is required</div> : <></>}
+        {modifiedProfile.skills?.length === 0 ? <div className="error">*At least 1 tag is required</div> : <></>}
         <div id="project-editor-selected-tags-container">
           <hr id="selected-tag-divider" />
           {/* TODO: Separate top 2 tags from others with hr element */}
-          {loadProjectTags}
+          {loadProfileTags}
         </div>
       </div>
 

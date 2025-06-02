@@ -38,7 +38,7 @@ export interface ProfileData {
   headline: string;
   bio: string;
   profile_image: string;
-  skills: [];
+  skills: { id: number; skill: string, type: string, tag: string }[];
   socials: { id: number; url: string }[];
 }
 

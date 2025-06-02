@@ -54,3 +54,9 @@
 
 .error-header{color: var(--text-color); font-size: 30px;}
 
+@media only screen and (max-width: 799px) {
+  .error-box > * {font-size: 50px; margin: 50px;}
+  .error-button-container{padding-bottom: 100px;}
+  .error-button-container button {padding: 20px 30px; font-size: 35px;}
+}
+

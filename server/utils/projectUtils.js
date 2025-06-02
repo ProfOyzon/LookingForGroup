@@ -40,7 +40,7 @@ const createNewProject = async (
     purpose: _purpose,
     status: _status,
     audience: _audience,
-    projectTypes: _pTypes,
+    project_types: _pTypes,
     tags: _pTags,
     jobs: _jobs,
     members: _members,

@@ -14,7 +14,8 @@
       "@types/multer",
       "mysql2",
       "@types/nodemailer",
-      "sharp"
+      "sharp",
+      "@types/jest"
     ]
   },
   "include": ["./server/**/*"]

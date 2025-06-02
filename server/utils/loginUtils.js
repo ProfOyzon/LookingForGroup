@@ -105,3 +105,8 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
         });
     }
 }
+
+
+export default {
+    sendSignup,
+}

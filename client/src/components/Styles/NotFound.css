@@ -26,6 +26,13 @@
     padding-top: 200px;
 }
 
+#error-image {
+  max-width: 100vh;
+  width: 500px;
+  width: auto;
+  align-self: center;
+}
+
 
 
 .error-button-container button:hover {

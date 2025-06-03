@@ -5,19 +5,7 @@
     "checkJs": true,
     "allowJs": true,
     "strict": true,
-    "types": [
-      "@types/node",
-      "@types/bcrypt",
-      "@types/express",
-      "dotenv",
-      "@types/express-session",
-      "@types/morgan",
-      "@types/multer",
-      "mysql2",
-      "@types/nodemailer",
-      "sharp",
-      "@types/jest"
-    ]
+    "typeRoots": ["node_modules/@types", "./server/types"]
   },
   "include": ["./server/**/*"]
 }

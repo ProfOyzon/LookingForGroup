@@ -1,3 +1,4 @@
+import express from 'express';
 import { join } from 'path';
 import { unlink } from 'fs/promises';
 import sharp from 'sharp';
@@ -6,16 +7,10 @@ import { genPlaceholders } from '../utils/sqlUtil.js';
 
 const dirname = import.meta.dirname;
 
-
-// --------------------
-// Request Handlers
-// --------------------
-//
-
 /**
  * Get all project through request
- * @param req - request  (uses req.session.userId to check status)
- * @param res - response 
+ * @param {express.Request} req - request  (uses req.session.userId to check status)
+ * @param {express.Response} res - response
  * @returns res.status - {status:200, data:[projects]} if success, else {status:400, error:...}
  */
 const getProjects = async (req, res) => {
@@ -42,7 +37,7 @@ const getProjects = async (req, res) => {
                 GROUP BY pf.project_id) f
 			      ON p.project_id = f.project_id;
         `;
-    const [projects] = await pool.query(sql);
+    const projects = await pool.query(sql);
 
     // Format the follower section so it doesn't provide IDs
     projects.forEach((project) => {
@@ -50,7 +45,7 @@ const getProjects = async (req, res) => {
 
       project.followers = {
         count: followers.length,
-        isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+        isFollowing: followers.find((follower) => req.session.userId === follower.id) !== undefined,
       };
     });
 
@@ -69,8 +64,8 @@ const getProjects = async (req, res) => {
 
 /**
  * Creates a new project with all necassary data types, tags, jobs, members, and socials
- * @param req - req.body - containing all project data
- * @param res - response
+ * @param {express.Request} req - req.body - containing all project data
+ * @param {express.Response} res - response
  * @returns res.status - {status;201, data:projectId} if success, else {status:400, error:...}
  */
 const createProject = async (req, res) => {
@@ -210,8 +205,8 @@ const createProject = async (req, res) => {
 
 /**
  * Gets project data by the projects ID
- * @param req - req.params - the project ID
- * @param res - response
+ * @param {express.Request} req - req.params - the project ID
+ * @param {express.Response} res - response
  * @returns res.status - {status:200, data:[project]} if success, else {status:400, error:...}
  */
 const getProjectById = async (req, res) => {
@@ -276,7 +271,7 @@ const getProjectById = async (req, res) => {
 
     project[0].followers = {
       count: followers.length,
-      isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+      isFollowing: followers.find((follower) => req.session.userId === follower.id) !== undefined,
     };
 
     return res.status(200).json({
@@ -292,11 +287,10 @@ const getProjectById = async (req, res) => {
   }
 };
 
-
 /**
  * Update existing project and its data types, tags, member, socials
- * @param req - req.params-project ID, req.body-updated project data
- * @param res - response
+ * @param {express.Request} req - req.params-project ID, req.body-updated project data
+ * @param {express.Response} res - response
  * @returns res.status - {status:200} if successful, else {status:400, error:...}
  */
 const updateProject = async (req, res) => {
@@ -516,11 +510,10 @@ const updateProject = async (req, res) => {
   }
 };
 
-
 /**
  * Deletes project that user owns by ID
- * @param req - req.params.id-the project ID, req.session.userId-the current logged in users ID
- * @param res - response
+ * @param {express.Request} req - req.params.id-the project ID, req.session.userId-the current logged in users ID
+ * @param {express.Response} res - response
  * @returns res.status - {status:200} if succes, else {status:400 or 500, error:...}
  */
 const deleteProject = async (req, res) => {
@@ -530,7 +523,10 @@ const deleteProject = async (req, res) => {
 
   try {
     // Get creator/owner ID of project to verify it matches userId
-    const [ownerData] = await pool.query('SELECT p.user_id FROM projects p WHERE p.project_id = ?', [projId]);
+    const [ownerData] = await pool.query(
+      'SELECT p.user_id FROM projects p WHERE p.project_id = ?',
+      [projId]
+    );
     const ownerId = ownerData[0].user_id;
 
     // TO-DO: Feed back bad request if userId != ownerId
@@ -557,13 +553,11 @@ const deleteProject = async (req, res) => {
   }
 };
 
-
-
 /**
  * Updates the thumbnail image for a project
- * @param req - req.params.id-project ID, req.file-file for the uploaded image
- * @param res - response
- * @returns res.status - {status:201, data:[{thumbnail}]} if success, else (status:400, error:...) 
+ * @param {express.Request} req - req.params.id-project ID, req.file-file for the uploaded image
+ * @param {express.Response} res - response
+ * @returns res.status - {status:201, data:[{thumbnail}]} if success, else (status:400, error:...)
  */
 const updateThumbnail = async (req, res) => {
   // Get id from url
@@ -609,11 +603,10 @@ const updateThumbnail = async (req, res) => {
   }
 };
 
-
 /**
  * Get all pictures for project by project ID
- * @param req - req.params.id- project ID
- * @param res - response
+ * @param {express.Request} req - req.params.id- project ID
+ * @param {express.Response} res - response
  * @returns res.status - {status:200, data:[{image_id, image, position}]} if success. else {status:400, error:...}
  */
 const getPictures = async (req, res) => {
@@ -644,8 +637,8 @@ const getPictures = async (req, res) => {
 
 /**
  * Add new picture to a project
- * @param req - req.params.id- project ID, req.file-file of uploaded image, req.body.position-number for image order
- * @param res - response
+ * @param {express.Request} req - req.params.id- project ID, req.file-file of uploaded image, req.body.position-number for image order
+ * @param {express.Response} res - response
  * @returns res.status - {status:201} if success, else {status:400, error:...}
  */
 const addPicture = async (req, res) => {
@@ -693,8 +686,8 @@ const addPicture = async (req, res) => {
 
 /**
  * Update the order of images in a project
- * @param req - req.params.id- project ID, req.body.images- the array of images {id, position}
- * @param res - response
+ * @param {express.Request} req - req.params.id- project ID, req.body.images- the array of images {id, position}
+ * @param {express.Response} res - response
  * @returns res.status - {status:200} if success. else {status:400, error:...}
  */
 const updatePicturePositions = async (req, res) => {
@@ -730,11 +723,10 @@ const updatePicturePositions = async (req, res) => {
   }
 };
 
-
 /**
  * Delete picture from a project
- * @param req - req.params.id- project ID, req.body.image-image file name 
- * @param res - response
+ * @param {express.Request} req - req.params.id- project ID, req.body.image-image file name
+ * @param {express.Response} res - response
  * @returns res.status - {status:200} if success. else {status:400, error:...}
  */
 const deletePicture = async (req, res) => {
@@ -769,12 +761,10 @@ const deletePicture = async (req, res) => {
   }
 };
 
-
-
 /**
  * Add a member to a project. Needs all member feilds
- * @param req - req.params.id- project ID, req.body.(userId|titleId|permission)- info about user being added
- * @param res - response
+ * @param {express.Request} req - req.params.id- project ID, req.body.(userId|titleId|permission)- info about user being added
+ * @param {express.Response} res - response
  * @returns res.status - {status:201} if success, else {status:400|403, error:...}
  */
 const addMember = async (req, res) => {
@@ -809,7 +799,10 @@ const addMember = async (req, res) => {
 
   try {
     // Make sure user making request is part of the project
-    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [projId]);
+    const [memberData] = await pool.query(
+      'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
+      [projId]
+    );
     let requester = null;
 
     for (let i = 0; i < memberData.length; i++) {
@@ -848,12 +841,11 @@ const addMember = async (req, res) => {
   }
 };
 
-
 /**
  * Update a project members title and permission for the project
  * Checks the permissions of current user to allow updates
- * @param req - req.params.id- project ID, req.body.(userId|titleId|permission)- info about user being updated
- * @param res - response
+ * @param {express.Request} req - req.params.id- project ID, req.body.(userId|titleId|permission)- info about user being updated
+ * @param {express.Response} res - response
  * @returns res.status - {status:200} if success, else {status:400|403, error:...}
  */
 const updateMember = async (req, res) => {
@@ -888,7 +880,10 @@ const updateMember = async (req, res) => {
 
   try {
     // Make sure user is part of the project
-    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [id]);
+    const [memberData] = await pool.query(
+      'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
+      [id]
+    );
     let requester = null;
     let recipient = null;
 
@@ -912,11 +907,14 @@ const updateMember = async (req, res) => {
         status: 400,
         error: 'User is not currently a member of this project.',
       });
-    } else if ((parseInt(userId) !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
+    } else if (
+      parseInt(userId) !== req.session.userId &&
+      requester.permissions <= recipient.permissions
+    ) {
       return res.status(403).json({
         status: 403,
-        error: `You don't have the required permissions to update this user.`
-      })
+        error: `You don't have the required permissions to update this user.`,
+      });
     }
 
     // Update contents of project
@@ -936,12 +934,11 @@ const updateMember = async (req, res) => {
   }
 };
 
-
 /**
  * Delete a member from a project
  * Checks current users permissions to allow for deletes
- * @param req - req.params.id- project ID, req.body.userId- ID of user to remove
- * @param res - response
+ * @param {express.Request} req - req.params.id- project ID, req.body.userId- ID of user to remove
+ * @param {express.Response} res - response
  * @returns res.status - {status:200} if success, else {status:400|403, error:...}
  */
 const deleteMember = async (req, res) => {
@@ -951,11 +948,14 @@ const deleteMember = async (req, res) => {
 
   try {
     // Check if user making request is part of project
-    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [id]);
+    const [memberData] = await pool.query(
+      'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
+      [id]
+    );
     let requester = null;
     let recipient = null;
 
-    console.log()
+    console.log();
 
     for (let i = 0; i < memberData.length; i++) {
       if (parseInt(memberData[i].user_id) === parseInt(userId)) {
@@ -978,12 +978,15 @@ const deleteMember = async (req, res) => {
         status: 400,
         error: 'User is not currently a member of this project.',
       });
-    } else if ((parseInt(userId) !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
+    } else if (
+      parseInt(userId) !== req.session.userId &&
+      requester.permissions <= recipient.permissions
+    ) {
       console.log(`userId: ${userId} vs. sessionId: ${req.session.userId}`);
 
       return res.status(403).json({
         status: 403,
-        error: `You don't have the required permissions to remove this user from the project.`
+        error: `You don't have the required permissions to remove this user from the project.`,
       });
     }
 

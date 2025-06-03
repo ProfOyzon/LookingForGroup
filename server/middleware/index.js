@@ -36,6 +36,7 @@ const checkLogin = (req, res, next) => {
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next
+ * @returns {void}
  */
 const checkImageFile = (req, res, next) => {
   const upload = multer(multerConfig).single('image');
@@ -58,14 +59,16 @@ const checkImageFile = (req, res, next) => {
       } catch (err) {
         if (err instanceof Error) {
           console.log(err);
-          return res.status(400).json({
+          res.status(400).json({
             status: 400,
             error: err.message,
           });
+          return;
         }
       }
     } else {
-      return next();
+      next();
+      return;
     }
   });
 };

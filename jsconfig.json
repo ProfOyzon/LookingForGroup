@@ -4,6 +4,7 @@
     "moduleResolution": "nodenext",
     "checkJs": true,
     "allowJs": true,
+    "strict": true,
     "types": [
       "@types/node",
       "@types/bcrypt",

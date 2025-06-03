@@ -80,6 +80,12 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
     }
   }, [currentTagsTab, allSkills]);
 
+  // Reset tag list on tab change to default list
+  useEffect(() => {
+  const defaultTags = currentDataSet[0]?.data ?? [];
+  setSearchedTags(defaultTags);
+  }, [currentTagsTab, currentDataSet])
+
   // Find if a tag is present on the project
   const isTagSelected = useCallback((id: number, label: string, tab: number = -1) => {
     const skills = modifiedProfile?.skills ?? [];
@@ -222,6 +228,9 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
         })
       )
     }
+    else if (searchedTags && searchedTags.length === 0) {
+     return <div className="no-results-message">No results found!</div>;
+    }
     // Developer Skill
     if (currentTagsTab === 0) {
       return allSkills
@@ -285,22 +294,24 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
     // setSearchResults(results);
     console.log('handling search');
     console.log('results', results);
-    if (results.length === 0 && currentDataSet.length !== 0) {
+    // show no results
+    if (!results || results.length === 0 || results[0].length === 0) {
       console.log('no results or current data set');
-      setSearchedTags(currentDataSet[0].data);
+      setSearchedTags([]);
     }
     else {
       setSearchedTags(results[0]);
     }
-  }, [currentDataSet]);
+  }, []);
 
   // Components
   const TagSearchTabs = () => {
     let tabs = tagTabs.map((tag, i) => {
       return (
         <button
-          onClick={() => { setCurrentTagsTab(i); }}
-          className={`button-reset project-editor-tag-search-tab ${currentTagsTab === i ? 'tag-search-tab-active' : ''}`}
+        type="button"
+        onClick={() => setCurrentTagsTab(i)}
+        className={`button-reset project-editor-tag-search-tab ${currentTagsTab === i ? 'tag-search-tab-active' : ''}`}
         >
           {tag}
         </button>
@@ -330,7 +341,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={currentDataSet} onSearch={(results) => handleSearch(results)} />
+        <SearchBar key={currentTagsTab} dataSets={currentDataSet} onSearch={(results) => handleSearch(results)} />
         <div id="project-editor-tag-wrapper">
           <TagSearchTabs />
           <hr id="tag-search-divider" />

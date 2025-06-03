@@ -57,6 +57,16 @@ textarea {
   cursor: pointer;
 }
 
+.error-message {
+  display: none;
+}
+
+.error-message p {
+  padding-left: 32%;
+  font-size: 20px;
+  color: red;
+}
+
 .profile-edit-button {
   background-color: #271d66;
 }

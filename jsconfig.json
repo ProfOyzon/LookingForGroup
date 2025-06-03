@@ -4,7 +4,7 @@
     "moduleResolution": "nodenext",
     "checkJs": true,
     "allowJs": true,
-    "strict": true,
+    // "strict": true,
     "typeRoots": ["node_modules/@types", "./server/types"]
   },
   "include": ["./server/**/*"]

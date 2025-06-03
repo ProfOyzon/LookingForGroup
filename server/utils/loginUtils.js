@@ -3,6 +3,8 @@ import envConfig from '../config/env';
 import { POST } from './fetchUtils';
 import bcrypt from 'bcrypt';
 
+const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'https://localhost:8081/api' : 'https://lfg.gccis.rit.edu/api';
+
 // Add Shibboleth login here. Functions are set out in controllers/users.js to login, these are not utilized.
 
 
@@ -44,7 +46,7 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
     // if (envConfig.env === 'production') {
     //     url = `https://lookingforgrp.com/activation/${_token}`;
     // } else {
-        url = `http://localhost:8081/activation/${_token}`;
+        url = `${root}/${_token}`;
         console.log(url);
         console.log(_token);
     //}
@@ -97,6 +99,7 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
         await transporter.sendMail(message);
 
         if(envConfig.env === 'development') {
+            console.log("development");
             return res = ({
                 status: 201,
                 data: _token,
@@ -114,7 +117,90 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
     }
 }
 
+/**
+ * Login as the user.
+ * @param {*} loginInput - string, Username or email of the user
+ * @param {*} password - string, password
+ * @returns status
+ */
+async function login(_loginInput, _password) {
+    if(!_loginInput||!_password) {
+
+    }
+    data = {
+        loginInput: _login,
+        password: _password
+    };
+    const url = `${root}/login`;
+
+    try{
+        const r = await POST(url,data);
+        if(r.ok) {
+            console.log('Logged in.');
+            return res = ({
+                status: 201,
+                data: r.data,
+            });
+        }
+    } catch(err) {
+        console.log(err);
+        return res = ({
+            status: 400,
+            error: err,
+        });
+    }
+}
+
+/**
+ * Checks if user is logged in. 
+ * @param session - current session to destroy
+ * @returns status, redirect:'/' if success
+ */
+async function logout(session) {
+    if(session) {
+        session.destroy();
+    }
+    return res = ({
+        redirect: '/',
+    });
+}
+
+
+/**
+ * Checks if user is authenticated
+ * @param userID - int, user id checking logged in.
+ * @returns status
+ */
+async function getAuth (id) {
+    if(!id) {
+        console.log("no id.");
+        return res = ({
+            status: 401,
+            error: "Unauthorized, no id."
+        });
+    } else {
+        return res = ({
+            status:200,
+            data:id,
+        });
+    }
+}
+
+/**
+ * create a user using the token from signup.
+ * @param {*} token - token from signup, to verify user
+ * @returns status
+ */
+// async function createUser(token) {
+//     try {
+//         //get signup email if valid
+//         const email = await 
+//     }
+// }
 
 export default {
     sendSignup,
+    login,
+    getAuth,
+    logout, 
 }

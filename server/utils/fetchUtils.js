@@ -50,12 +50,14 @@ Base apiURL is:
  * @param {*} apiURL - API to be called, if you are using parameters customize the url
  * @returns response - JSONified data or error code.
  */
-function GET(apiURL) {
+const GET = (apiURL) => {
   return fetch(apiURL)
-    .then((response) => {
+    .then(async (response) => {
+      let obj = await response.json();
       if (response.ok) {
-        return response.json();
+        return obj;
       } else {
+        console.log(obj.error);
         throw new Error('Network response was not ok');
       }
     })
@@ -76,7 +78,7 @@ function GET(apiURL) {
  * @returns response - JSONified data or error code.
  */
 
-function POST(apiURL, newData) {
+const POST = (apiURL, newData) => {
   return fetch(apiURL, {
     method: 'POST',
     headers: {
@@ -84,11 +86,14 @@ function POST(apiURL, newData) {
     },
     body: JSON.stringify(newData),
   })
-    .then((response) => {
-      if (!response.ok) {
+    .then(async (response) => {
+      let obj = await response.json();
+      if (response.ok) {
+        return obj;
+      } else {
+        console.log(obj.error);
         throw new Error('Network response was not ok');
       }
-      return response.json();
     })
     .then((data) => {
       console.log(data);
@@ -106,7 +111,7 @@ function POST(apiURL, newData) {
  * @param {*} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
  * @returns response - JSONified data or error code.
  */
-function PUT(apiURL, newData) {
+const PUT = (apiURL, newData) => {
   return fetch(apiURL, {
     method: 'PUT',
     headers: {
@@ -114,11 +119,14 @@ function PUT(apiURL, newData) {
     },
     body: JSON.stringify(newData),
   })
-    .then((response) => {
-      if (!response.ok) {
+    .then(async (response) => {
+      let obj = await response.json();
+      if (response.ok) {
+        return obj;
+      } else {
+        console.log(obj.error);
         throw new Error('Network response was not ok');
       }
-      return response.json();
     })
     .then((data) => {
       console.log(data);
@@ -135,18 +143,21 @@ function PUT(apiURL, newData) {
  * @param {*} apiURL - API to be called
  * @returns response - JSONified data or error code.
  */
-function DELETE(apiURL) {
+const DELETE = (apiURL) => {
   return fetch(apiURL, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
     },
   })
-    .then((response) => {
-      if (!response.ok) {
+    .then(async (response) => {
+      let obj = await response.json();
+      if (response.ok) {
+        return obj;
+      } else {
+        console.log(obj.error);
         throw new Error('Network response was not ok');
       }
-      return response.json();
     })
     .then((data) => {
       console.log(data);

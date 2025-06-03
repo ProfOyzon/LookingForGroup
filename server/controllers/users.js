@@ -15,17 +15,18 @@ const dirname = import.meta.dirname;
  * Takes login information and retirieves accrount from database
  * @param {express.Request} req - req.body - {loginInput, password} for user login
  * @param {express.Response} res - response
- * @returns res.status - {status:200, redirect:'/'} if success, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:200, redirect:'/'} if success, else {status:400, error:...}
  */
 const login = async (req, res) => {
   const { loginInput, password } = req.body;
 
   // Checks
   if (!loginInput || !password) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing login credentials',
     });
+    return;
   }
 
   const userQuery =
@@ -35,45 +36,49 @@ const login = async (req, res) => {
   // check for user with matching loginInput
   if (!userResult[0]) {
     // no user found
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Wrong username or password',
     });
+    return;
   } else {
     // user found, check password
     const match = await bcrypt.compare(password, userResult[0].password);
     if (!match) {
-      return res.status(400).json({
+      res.status(400).json({
         status: 400,
         error: 'Wrong username or password',
       });
+      return;
     }
   }
 
   req.session.userId = userResult[0].user_id;
 
-  return res.json({ status: 200, redirect: '/' });
+  res.json({ status: 200, redirect: '/' });
+  return;
 };
 
 /**
  * Checks if user is authenticated
  * @param {express.Request} req - req.session.userId - the current logged in users ID
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:userId} if authorized, else {status:401, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:userId} if authorized, else {status:401, error:...}
  */
-const getAuth = (req, res) => {
+const getAuth = async (req, res) => {
   // Allow frontend to check if user is logged in
-
   if (!req.session.userId) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else {
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: req.session.userId,
     });
+    return;
   }
 };
 
@@ -81,21 +86,22 @@ const getAuth = (req, res) => {
  * Checks if user is logged in
  * @param {express.Request} req - req.session - current session to destroy
  * @param {express.Response} res - response
- * @returns res.status - {redirect:'/'} if success
+ * @returns {Promise<void>} res.status - {redirect:'/'} if success
  */
 const logout = async (req, res) => {
   if (req.session) {
     req.session.destroy();
   }
 
-  return res.json({ redirect: '/' });
+  res.json({ redirect: '/' });
+  return;
 };
 
 /**
  * Takes sign up data to send confirmation e-mail. E-mail stored in database temporarily
  * @param {express.Request} req - req.body - {username, password, confirm, email, firstName, lastName} setup input data
  * @param {express.Response} res - response
- * @returns res.status - {status:201} if success, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:201} if success, else {status:400, error:...}
  */
 const signup = async (req, res) => {
   const validEmails = ['@rit.edu', '@g.rit.edu'];
@@ -105,22 +111,25 @@ const signup = async (req, res) => {
 
   // Checks
   if (!username || !password || !confirm || !email || !firstName || !lastName) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing sign up information',
     });
+    return;
   } else if (password !== confirm) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Passwords do not match',
     });
+    return;
   } else if (email) {
     const valid = validEmails.some((endingStr) => email.endsWith(endingStr));
     if (!valid) {
-      return res.status(400).json({
+      res.status(400).json({
         status: 400,
         error: 'Use a RIT email',
       });
+      return;
     }
   }
 
@@ -171,15 +180,17 @@ const signup = async (req, res) => {
     // Send account activation email
     await transporter.sendMail(message);
 
-    return res.status(201).json({
+    res.status(201).json({
       status: 201,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred during sign up',
     });
+    return;
   }
 };
 
@@ -188,7 +199,7 @@ const signup = async (req, res) => {
  * Uses token from signup
  * @param {express.Request} req - req.params - {token} token to verify user
  * @param {express.Response} res - response
- * @returns res.status - {status:200} if success, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:200} if success, else {status:400, error:...}
  */
 const createUser = async (req, res) => {
   // Get token from url
@@ -201,20 +212,22 @@ const createUser = async (req, res) => {
       [token]
     );
     if (email.length < 1) {
-      return res.status(400).json({
+      res.status(400).json({
         status: 400,
         error: 'Your token has expired',
       });
+      return;
     }
     // Check if an user with the email already exists
     const [user] = await pool.query('SELECT rit_email FROM users WHERE rit_email = ?', [
       email[0].rit_email,
     ]);
     if (user.length > 0) {
-      return res.status(400).json({
+      res.status(400).json({
         status: 400,
         error: 'Your account has already been activated',
       });
+      return;
     }
 
     // Add user officially to database
@@ -226,15 +239,17 @@ const createUser = async (req, res) => {
     const values = [token];
     await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while activating the user's account",
     });
+    return;
   }
 };
 
@@ -242,7 +257,7 @@ const createUser = async (req, res) => {
  * Makes request to reset a user password. Send email stored in database temporarily.
  * @param {express.Request} req - req.body - {email} the email adress to sent reset to
  * @param {express.Response} res - response
- * @returns res.status - {status:201} if successful send, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:201} if successful send, else {status:400, error:...}
  */
 const requestPasswordReset = async (req, res) => {
   // Get input data
@@ -250,10 +265,11 @@ const requestPasswordReset = async (req, res) => {
 
   // Checks
   if (!email) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing email',
     });
+    return;
   }
 
   // Generate a token for password reset
@@ -301,15 +317,17 @@ const requestPasswordReset = async (req, res) => {
     // Send account activation email
     await transporter.sendMail(message);
 
-    return res.status(201).json({
+    res.status(201).json({
       status: 201,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred during password reset request',
     });
+    return;
   }
 };
 
@@ -317,7 +335,7 @@ const requestPasswordReset = async (req, res) => {
  * Replaces password of an existing user
  * @param {express.Request} req - req.params - {token} from password reset link - req.body - {password, confirm} inputs for new password
  * @param {express.Response} res - response
- * @returns res.status - {status:201} if successful send, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:201} if successful send, else {status:400, error:...}
  */
 const resetPassword = async (req, res) => {
   // Get data
@@ -325,15 +343,17 @@ const resetPassword = async (req, res) => {
   const { password, confirm } = req.body;
 
   if (!password || !confirm) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing passwords',
     });
+    return;
   } else if (password !== confirm) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Passwords do not match',
     });
+    return;
   }
 
   // Hash the password
@@ -347,10 +367,11 @@ const resetPassword = async (req, res) => {
       [token]
     );
     if (email.length < 1) {
-      return res.status(400).json({
+      res.status(400).json({
         status: 400,
         error: 'Your token has expired',
       });
+      return;
     }
 
     // Update user password
@@ -358,15 +379,17 @@ const resetPassword = async (req, res) => {
     const values = [hashPass, email[0].primary_email];
     await pool.query(sql, values);
 
-    return res.status(201).json({
+    res.status(201).json({
       status: 201,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while updating user's password",
     });
+    return;
   }
 };
 
@@ -374,7 +397,7 @@ const resetPassword = async (req, res) => {
  * Retrieves a list of all users from database
  * @param {express.Request} req - not used
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:[users]} if successful, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:[users]} if successful, else {status:400, error:...}
  */
 const getUsers = async (req, res) => {
   try {
@@ -399,16 +422,18 @@ const getUsers = async (req, res) => {
         `;
     const [users] = await pool.query(sql);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: users,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while getting all users',
     });
+    return;
   }
 };
 
@@ -416,7 +441,7 @@ const getUsers = async (req, res) => {
  * Retrieves a user based on thier user ID number
  * @param {express.Request} req - req.params - {id} the user ID of the being searched for
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:[user]} if successful, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:[user]} if successful, else {status:400, error:...}
  */
 const getUserById = async (req, res) => {
   // Get id from url
@@ -451,16 +476,18 @@ const getUserById = async (req, res) => {
     const values = [id];
     const [user] = await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: user,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while getting the user',
     });
+    return;
   }
 };
 
@@ -468,7 +495,7 @@ const getUserById = async (req, res) => {
  * Retrieves a user based on thier username
  * @param {express.Request} req - req.params - {username} the username of the user being searched for
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:[user]} if successful, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:[user]} if successful, else {status:400, error:...}
  */
 const getUserByUsername = async (req, res) => {
   // Get username from url
@@ -479,16 +506,18 @@ const getUserByUsername = async (req, res) => {
     const sql = `SELECT * FROM users WHERE username = ?`;
     const [user] = await pool.query(sql, [username]);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: user,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while getting the username',
     });
+    return;
   }
 };
 
@@ -496,7 +525,7 @@ const getUserByUsername = async (req, res) => {
  * Retrieves a user based on thier email
  * @param {express.Request} req - req.params - {email} the email of the user being searched for
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:[user]} if successful, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:[user]} if successful, else {status:400, error:...}
  */
 const getUserByEmail = async (req, res) => {
   // Get email from url
@@ -507,16 +536,18 @@ const getUserByEmail = async (req, res) => {
     const sql = `SELECT * FROM users WHERE primary_email = ? OR rit_email = ?`;
     const [user] = await pool.query(sql, [email, email]);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: user,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while getting the email',
     });
+    return;
   }
 };
 
@@ -524,7 +555,7 @@ const getUserByEmail = async (req, res) => {
  * Retrieves a username based on current logged in session user ID
  * @param {express.Request} req - req.session,userId - the user ID from session
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:user} if successful, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:user} if successful, else {status:400, error:...}
  */
 const getUsernameBySession = async (req, res) => {
   try {
@@ -532,16 +563,18 @@ const getUsernameBySession = async (req, res) => {
       `SELECT first_name, last_name, username, primary_email, profile_image FROM users WHERE user_id = ?`,
       [req.session.userId]
     );
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: user[0],
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while getting the user',
     });
+    return;
   }
 };
 
@@ -550,7 +583,7 @@ const getUsernameBySession = async (req, res) => {
  * @param {express.Request} req - req.params.id - current users ID
  * @param {express.Request} req - req.body - {firstname, lastname, ...} all user feilds to be updated
  * @param {express.Response} res - response
- * @returns res.status - {status:200} if successful, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200} if successful, else {status:400|401, error:...}
  */
 const updateUser = async (req, res) => {
   // Get input data
@@ -575,30 +608,35 @@ const updateUser = async (req, res) => {
 
   // Checks
   if (req.session.userId != id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (!firstName) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "Missing user's first name",
     });
+    return;
   } else if (!lastName) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "Missing user's last name",
     });
+    return;
   } else if (!jobTitleId || jobTitleId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing job title id',
     });
+    return;
   } else if (!majorId || jobTitleId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing major id',
     });
+    return;
   }
   // else if (!skills || skills.length < 1) {
   //   return res.status(400).json({
@@ -677,15 +715,17 @@ const updateUser = async (req, res) => {
       await pool.query(sql, [id, social.id, social.url]);
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while updating the user's profile",
     });
+    return;
   }
 };
 
@@ -693,7 +733,7 @@ const updateUser = async (req, res) => {
  * Deletes user by checking user ID to session ID
  * @param {express.Request} req - req.params.id the ID of user to delete, req.session.id session user ID
  * @param {express.Response} res - response
- * @returns res.status - {status:200} if successful, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200} if successful, else {status:400|401, error:...}
  */
 const deleteUser = async (req, res) => {
   // Get data
@@ -703,25 +743,28 @@ const deleteUser = async (req, res) => {
 
   // Checks
   if (req.session.userId !== Number(id)) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   }
 
   try {
     // Delete user
     await pool.query('DELETE FROM users WHERE user_id = ?', [id]);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while deleting the user',
     });
+    return;
   }
 };
 
@@ -730,7 +773,7 @@ const deleteUser = async (req, res) => {
  * @param {express.Request} req - req.params.id user ID, req.session.id session user ID
  * @param {express.Request} req - req.file - uploaded image file
  * @param {express.Response} res - response
- * @returns res.status - {status:201, data:[{profile_image}]} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:201, data:[{profile_image}]} if success, else {status:400|401, error:...}
  */
 const updateProfilePicture = async (req, res) => {
   // Get id from url
@@ -738,15 +781,17 @@ const updateProfilePicture = async (req, res) => {
 
   // Checks
   if (req.session.userId !== parseInt(id)) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (!req.file) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing image file',
     });
+    return;
   }
 
   try {
@@ -768,16 +813,18 @@ const updateProfilePicture = async (req, res) => {
     const values = [fileName, id];
     await pool.query(sql, values);
 
-    return res.status(201).json({
+    res.status(201).json({
       status: 201,
       data: [{ profile_image: fileName }],
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while saving the profile picture',
     });
+    return;
   }
 };
 
@@ -785,7 +832,7 @@ const updateProfilePicture = async (req, res) => {
  * Gets the current users account data
  * @param {express.Request} req - req.params.id user ID, req.session.id session user ID
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:account} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:account} if success, else {status:400|401, error:...}
  */
 const getAccount = async (req, res) => {
   // Get data
@@ -794,10 +841,11 @@ const getAccount = async (req, res) => {
 
   // Checks
   if (req.session.userId !== id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   }
 
   try {
@@ -807,16 +855,18 @@ const getAccount = async (req, res) => {
     const values = [id];
     const [account] = await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: account,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while getting the user's account information",
     });
+    return;
   }
 };
 
@@ -825,7 +875,7 @@ const getAccount = async (req, res) => {
  * @param {express.Request} req - req.params.id user ID, req.session.id session user ID
  * @param {express.Request} req - req.body - {email, confirm, password} info for the email change
  * @param {express.Response} res - response
- * @returns res.status - {status:200} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const updateEmail = async (req, res) => {
   // Get data
@@ -837,25 +887,29 @@ const updateEmail = async (req, res) => {
 
   // Checks
   if (req.session.userId !== id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (!email || !confirm || !password) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing input information',
     });
+    return;
   } else if (email !== confirm) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Emails do not match',
     });
+    return;
   } else if (!match) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Password is incorrect',
     });
+    return;
   }
 
   try {
@@ -864,15 +918,17 @@ const updateEmail = async (req, res) => {
     const values = [email, id];
     await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while updating the user's primary email",
     });
+    return;
   }
 };
 
@@ -881,7 +937,7 @@ const updateEmail = async (req, res) => {
  * @param {express.Request} req - req.params.id user ID, req.session.id session user ID
  * @param {express.Request} req - req.body - {username, confirm, password} info for the username change
  * @param {express.Response} res - response
- * @returns res.status - {status:200} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const updateUsername = async (req, res) => {
   // Get data
@@ -893,25 +949,29 @@ const updateUsername = async (req, res) => {
 
   // Checks
   if (req.session.userId !== id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (!username || !confirm || !password) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing input information',
     });
+    return;
   } else if (username !== confirm) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Usernames do not match',
     });
+    return;
   } else if (!match) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Password is incorrect',
     });
+    return;
   }
 
   try {
@@ -920,15 +980,17 @@ const updateUsername = async (req, res) => {
     const values = [username, id];
     await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while updating the user's username",
     });
+    return;
   }
 };
 
@@ -937,7 +999,7 @@ const updateUsername = async (req, res) => {
  * @param {express.Request} req - req.params.id user ID, req.session.id session user ID
  * @param {express.Request} req - req.body - {newPassword, confirm, password} info for the password change
  * @param {express.Response} res - response
- * @returns res.status - {status:200} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const updatePassword = async (req, res) => {
   // Get data
@@ -949,25 +1011,29 @@ const updatePassword = async (req, res) => {
 
   // Checks
   if (req.session.userId !== id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (!newPassword || !confirm || !password) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing input information',
     });
+    return;
   } else if (newPassword !== confirm) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Passwords do not match',
     });
+    return;
   } else if (!match) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Current password is incorrect',
     });
+    return;
   }
 
   // Hash the new password
@@ -979,15 +1045,17 @@ const updatePassword = async (req, res) => {
     const values = [hashPass, id];
     await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while updating the user's password",
     });
+    return;
   }
 };
 
@@ -996,7 +1064,7 @@ const updatePassword = async (req, res) => {
  * @param {express.Request} req - req.params.id user ID, req.session.id session user ID
  * @param {express.Request} req - req.body - {newVisibility} 0 or 1 to show visible or not
  * @param {express.Response} res - response
- * @returns res.status - {status:200} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const updateUserVisibility = async (req, res) => {
   // Get data
@@ -1005,15 +1073,17 @@ const updateUserVisibility = async (req, res) => {
 
   // Checks
   if (req.session.userId !== id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (newVisibility < 0 || newVisibility > 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Invalid value for visibility',
     });
+    return;
   }
 
   try {
@@ -1022,15 +1092,17 @@ const updateUserVisibility = async (req, res) => {
     const values = [newVisibility, id];
     await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while updating user's visibility",
     });
+    return;
   }
 };
 
@@ -1038,7 +1110,7 @@ const updateUserVisibility = async (req, res) => {
  * Retirves all projects the user is a member of
  * @param {express.Request} req - req.params.id user ID, req.session.id session user ID
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:projects} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:projects} if success, else {status:400|401, error:...}
  */
 const getMyProjects = async (req, res) => {
   // Get id from url
@@ -1046,10 +1118,11 @@ const getMyProjects = async (req, res) => {
 
   // Checks
   if (`${req.session.userId}` !== `${id}`) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   }
 
   try {
@@ -1077,16 +1150,18 @@ const getMyProjects = async (req, res) => {
     const values = [id];
     const [projects] = await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: projects,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while getting projects the user is a member of',
     });
+    return;
   }
 };
 
@@ -1094,7 +1169,7 @@ const getMyProjects = async (req, res) => {
  * Retirves all public visible projects the user is a member of
  * @param {express.Request} req - req.params.id - user ID
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:projects} if success, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:projects} if success, else {status:400, error:...}
  */
 const getVisibleProjects = async (req, res) => {
   // Get id from url
@@ -1139,17 +1214,19 @@ const getVisibleProjects = async (req, res) => {
       };
     });
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: projects,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error:
         'An error occurred while getting projects the user is a member of and that are publicly visible',
     });
+    return;
   }
 };
 
@@ -1158,7 +1235,7 @@ const getVisibleProjects = async (req, res) => {
  * @param {express.Request} req - req.params.id - user ID, req.session - seesion user ID
  * @param {express.Request} req - req.body - {projId, visibility}
  * @param {express.Response} res - response
- * @returns res.status - {status:200} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const updateProjectVisibility = async (req, res) => {
   // Get input data
@@ -1167,20 +1244,23 @@ const updateProjectVisibility = async (req, res) => {
 
   // Checks
   if (req.session.userId !== id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (!projectId || projectId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing project id',
     });
+    return;
   } else if (!visibility) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing a visibility',
     });
+    return;
   }
 
   try {
@@ -1189,15 +1269,17 @@ const updateProjectVisibility = async (req, res) => {
     const values = [visibility, projectId, id];
     await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while updating the visibility of a project on a user's profile",
     });
+    return;
   }
 };
 
@@ -1205,7 +1287,7 @@ const updateProjectVisibility = async (req, res) => {
  * Gets all projects the user is following
  * @param {express.Request} req - req.params.id - user ID
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:projects} if success, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:projects} if success, else {status:400, error:...}
  */
 const getProjectFollowing = async (req, res) => {
   // Get id from url
@@ -1236,16 +1318,18 @@ const getProjectFollowing = async (req, res) => {
     const values = [id];
     const [projects] = await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: projects,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while getting projects the user is following',
     });
+    return;
   }
 };
 
@@ -1253,7 +1337,7 @@ const getProjectFollowing = async (req, res) => {
  * Adds a link between a project and user that indicates the user is “following” that project to database.
  * @param {express.Request} req - req.params.id - user ID, req.body.projectId - project ID to follow
  * @param {express.Response} res - response
- * @returns res.status - {status:201} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:201} if success, else {status:400|401, error:...}
  */
 const addProjectFollowing = async (req, res) => {
   // Get input data
@@ -1262,15 +1346,17 @@ const addProjectFollowing = async (req, res) => {
 
   // Checks
   if (req.session.userId !== id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (!projectId || projectId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing project id',
     });
+    return;
   }
 
   try {
@@ -1280,15 +1366,17 @@ const addProjectFollowing = async (req, res) => {
       projectId,
     ]);
 
-    return res.status(201).json({
+    res.status(201).json({
       status: 201,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while adding a project the user wants to follow',
     });
+    return;
   }
 };
 
@@ -1296,7 +1384,7 @@ const addProjectFollowing = async (req, res) => {
  * Removes a link between a project and user that indicates the user is not “following” that project anymore from database.
  * @param {express.Request} req - req.params.id - user ID, req.params.projectId - project ID to unfollow
  * @param {express.Response} res - response
- * @returns res.status - {status:200} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const deleteProjectFollowing = async (req, res) => {
   // Get input data
@@ -1305,15 +1393,17 @@ const deleteProjectFollowing = async (req, res) => {
 
   // Checks
   if (req.session.userId !== id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (!projId || projId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing project id',
     });
+    return;
   }
 
   try {
@@ -1323,15 +1413,17 @@ const deleteProjectFollowing = async (req, res) => {
       projId,
     ]);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while removing a project the user wants to unfollow',
     });
+    return;
   }
 };
 
@@ -1339,7 +1431,7 @@ const deleteProjectFollowing = async (req, res) => {
  * Gets all other users the user is following
  * @param {express.Request} req - req.params.id - user ID
  * @param {express.Response} res - response
- * @returns res.status - {status:200, data:users} if success, else {status:400, error:...}
+ * @returns {Promise<void>} res.status - {status:200, data:users} if success, else {status:400, error:...}
  */
 const getUserFollowing = async (req, res) => {
   // Get id from url
@@ -1372,16 +1464,18 @@ const getUserFollowing = async (req, res) => {
     const values = [id];
     const [users] = await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: users,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while getting people the user is following',
     });
+    return;
   }
 };
 
@@ -1389,7 +1483,7 @@ const getUserFollowing = async (req, res) => {
  * Adds a link between two users to indicate one is “following” the other in database
  * @param {express.Request} req - req.params.id - user ID, req.body.userId - ID of target user to follow
  * @param {express.Response} res - response
- * @returns res.status - {status:201} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:201} if success, else {status:400|401, error:...}
  */
 const addUserFollowing = async (req, res) => {
   // Get input data
@@ -1398,15 +1492,17 @@ const addUserFollowing = async (req, res) => {
 
   // Checks
   if (req.session.userId !== id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (!userId || userId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing user id',
     });
+    return;
   }
 
   try {
@@ -1416,15 +1512,17 @@ const addUserFollowing = async (req, res) => {
       userId,
     ]);
 
-    return res.status(201).json({
+    res.status(201).json({
       status: 201,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while adding a person the user wants to follow',
     });
+    return;
   }
 };
 
@@ -1432,7 +1530,7 @@ const addUserFollowing = async (req, res) => {
  * Removes a link between two user to indicate one is not “following” the other anymore from database.
  * @param {express.Request} req - req.params.id - user ID, req.body.userId - ID of target user to unfollow
  * @param {express.Response} res - response
- * @returns res.status - {status:200} if success, else {status:400|401, error:...}
+ * @returns {Promise<void>} res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const deleteUserFollowing = async (req, res) => {
   // Get input data
@@ -1441,15 +1539,17 @@ const deleteUserFollowing = async (req, res) => {
 
   // Checks
   if (req.session.userId !== id) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   } else if (!userId || userId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing user id',
     });
+    return;
   }
 
   try {
@@ -1459,15 +1559,17 @@ const deleteUserFollowing = async (req, res) => {
       userId,
     ]);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while removing a person the user wants to unfollow',
     });
+    return;
   }
 };
 

@@ -2,6 +2,7 @@ import envConfig from '../config/env';
 //import { createUser } from '../controllers/users';
 import { GET, POST, PUT, DELETE } from './fetchUtils';
 
+const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'https://localhost:8081/api' : 'https://lfg.gccis.rit.edu/api';
 
 /**
  * Creates a new user, and adds them to the signups table. All data params default to null.

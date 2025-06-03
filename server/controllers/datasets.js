@@ -1,5 +1,5 @@
-import pool from '../config/database.js';
 import express from 'express';
+import pool from '../config/database.js';
 
 /**
  * Get skills through a request.

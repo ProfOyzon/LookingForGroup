@@ -5,7 +5,7 @@
     "checkJs": true,
     "allowJs": true,
     "strict": true,
-    "typeRoots": ["node_modules/@types", "./server/types"]
+    "typeRoots": ["node_modules/@types"]
   },
   "include": ["./server/**/*"]
 }

@@ -203,5 +203,4 @@ export default {
     login,
     getAuth,
     logout, 
-
 }

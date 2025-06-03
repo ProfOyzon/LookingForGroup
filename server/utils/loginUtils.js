@@ -3,6 +3,8 @@ import envConfig from '../config/env';
 import { POST } from './fetchUtils';
 import bcrypt from 'bcrypt';
 
+const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'https://localhost:8081/api' : 'https://lfg.gccis.rit.edu/api';
+
 // Add Shibboleth login here. Functions are set out in controllers/users.js to login, these are not utilized.
 
 

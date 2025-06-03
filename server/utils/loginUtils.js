@@ -3,6 +3,8 @@ import envConfig from '../config/env';
 import { POST } from './fetchUtils';
 import bcrypt from 'bcrypt';
 
+const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'https://localhost:8081/api' : 'https://lfg.gccis.rit.edu/api';
+
 // Add Shibboleth login here. Functions are set out in controllers/users.js to login, these are not utilized.
 
 
@@ -44,7 +46,7 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
     // if (envConfig.env === 'production') {
     //     url = `https://lookingforgrp.com/activation/${_token}`;
     // } else {
-        url = `http://localhost:8081/activation/${_token}`;
+        url = `${root}/${_token}`;
         console.log(url);
         console.log(_token);
     //}
@@ -129,7 +131,7 @@ async function login(_loginInput, _password) {
         loginInput: _login,
         password: _password
     };
-    const url = `https://lfg.gccis.rit.edu/api/login`;
+    const url = `${root}/login`;
 
     try{
         const r = await POST(url,data);
@@ -201,5 +203,4 @@ export default {
     login,
     getAuth,
     logout, 
-
 }

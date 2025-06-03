@@ -7,6 +7,5 @@
     "strict": true,
     "typeRoots": ["node_modules/@types", "./server/types"]
   },
-  "include": ["./server/**/*"],
-  "exclude": ["./server/controllers/**/*"]
+  "include": ["./server/**/*"]
 }

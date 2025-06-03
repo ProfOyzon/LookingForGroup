@@ -46,7 +46,7 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
     // if (envConfig.env === 'production') {
     //     url = `https://lookingforgrp.com/activation/${_token}`;
     // } else {
-        url = `http://localhost:8081/activation/${_token}`;
+        url = `${root}/${_token}`;
         console.log(url);
         console.log(_token);
     //}
@@ -131,7 +131,7 @@ async function login(_loginInput, _password) {
         loginInput: _login,
         password: _password
     };
-    const url = `https://lfg.gccis.rit.edu/api/login`;
+    const url = `${root}/login`;
 
     try{
         const r = await POST(url,data);

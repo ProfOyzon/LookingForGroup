@@ -7,25 +7,28 @@ import multerConfig from '../config/multerConfig.js';
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next
- * @returns
+ * @returns {void}
  */
 const checkLogin = (req, res, next) => {
   //bypass for testing
   if (process.env.NODE_ENV === 'test') {
-    return next();
+    next();
+    return;
   }
 
   // Prevent access to route if user isn't logged in
   // -------------- Remove ts-ignore once session object is correctly typed --------------
   // @ts-ignore
   if (!req.session.userId) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   }
 
-  return next();
+  next();
+  return;
 };
 
 /**

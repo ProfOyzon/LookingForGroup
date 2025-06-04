@@ -61,7 +61,8 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
     };
 
     //insert into database
-    try {
+    if(envConfig.env === 'production'){
+        try {
         const response = await POST(url,data);
         if(response.ok) {
             console.log("Information put into database.");
@@ -115,6 +116,8 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
             error: 'An error occured during sign up',
         });
     }
+    }
+    
 }
 
 /**

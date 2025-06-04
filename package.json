@@ -13,8 +13,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm run build --prefix client",
     "b": "npm run build && npm run server",
-    "format": "prettier --write .",
-    "lint": "eslint"
+    "format": "prettier --write server",
+    "lint": "eslint --fix server"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

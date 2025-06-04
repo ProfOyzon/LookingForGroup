@@ -43,13 +43,10 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
     let url = ``;
 
     //add user info to database, set up for account activation
-    // if (envConfig.env === 'production') {
-    //     url = `https://lookingforgrp.com/activation/${_token}`;
-    // } else {
-        url = `${root}/${_token}`;
-        console.log(url);
-        console.log(_token);
-    //}
+    
+    url = `https://lookingforgrp.com/activation/${_token}`;
+    console.log(url);
+    console.log(_token);
     
     const data = {
         token: _token,

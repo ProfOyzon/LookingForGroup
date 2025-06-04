@@ -1,8 +1,7 @@
 const { GET, POST, PUT, DELETE } = require('../utils/fetchUtils');
 
-
 //MOCK TESTING does not use real API calls
-describe("fetchUtils tests", () => {
+describe('fetchUtils tests', () => {
   beforeEach(() => {
     global.fetch = jest.fn();
   });
@@ -12,8 +11,8 @@ describe("fetchUtils tests", () => {
   });
 
   //GET
-  test("mocks GET request and checks response", async () => {
-    const mockJson = { message: "Success", user_id: 123 };
+  test('mocks GET request and checks response', async () => {
+    const mockJson = { message: 'Success', user_id: 123 };
     const mockResponse = {
       json: jest.fn().mockResolvedValue(mockJson),
       status: 200,
@@ -22,9 +21,9 @@ describe("fetchUtils tests", () => {
 
     global.fetch.mockResolvedValue(mockResponse);
 
-    const json = await GET("http://lfg.gccis.rit.edu/api-test/users");
+    const json = await GET('http://lfg.gccis.rit.edu/api-test/users');
 
-    expect(fetch).toHaveBeenCalledWith("http://lfg.gccis.rit.edu/api-test/users");
+    expect(fetch).toHaveBeenCalledWith('http://lfg.gccis.rit.edu/api-test/users');
     expect(json).toEqual(mockJson);
   });
 
@@ -33,14 +32,13 @@ describe("fetchUtils tests", () => {
     const mockUser = { first_name: 'Tracy', last_name: 'Test' };
     const mockResponse = { user_id: 123, ...mockUser };
 
-
     global.fetch.mockResolvedValue({
       ok: true,
       status: 201,
       json: jest.fn().mockResolvedValue(mockResponse),
     });
 
-    const data = await POST('http://lfg.gccis.rit.edu/api-test/users', mockUser)
+    const data = await POST('http://lfg.gccis.rit.edu/api-test/users', mockUser);
 
     expect(fetch).toHaveBeenCalledWith('http://lfg.gccis.rit.edu/api-test/users', {
       method: 'POST',
@@ -56,14 +54,13 @@ describe("fetchUtils tests", () => {
     const mockUpdate = { first_name: 'Ursala', last_name: 'Update' };
     const mockResponse = { user_id: 123, ...mockUpdate };
 
-
     global.fetch.mockResolvedValue({
       ok: true,
       status: 200,
       json: jest.fn().mockResolvedValue(mockResponse),
     });
 
-    const data = await PUT('http://lfg.gccis.rit.edu/api-test/users/123', mockUpdate)
+    const data = await PUT('http://lfg.gccis.rit.edu/api-test/users/123', mockUpdate);
 
     expect(fetch).toHaveBeenCalledWith('http://lfg.gccis.rit.edu/api-test/users/123', {
       method: 'PUT',
@@ -88,10 +85,9 @@ describe("fetchUtils tests", () => {
 
     expect(fetch).toHaveBeenCalledWith('http://lfg.gccis.rit.edu/api-test/users/123', {
       method: 'DELETE',
-      headers: {'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
     });
 
     expect(data).toEqual(mockResponse);
   });
-
 });

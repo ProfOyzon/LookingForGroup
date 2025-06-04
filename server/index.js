@@ -27,7 +27,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, maxAge: 60 * 60 * 6 * 1000 },
-  })
+  }),
 );
 
 // Routes
@@ -48,11 +48,11 @@ setInterval(
   async () => {
     await pool.query('DELETE FROM signups WHERE created_at <= DATE_SUB(NOW(), INTERVAL 1 DAY)');
     await pool.query(
-      'DELETE FROM password_resets WHERE created_at <= DATE_SUB(NOW(), INTERVAL 20 MINUTE)'
+      'DELETE FROM password_resets WHERE created_at <= DATE_SUB(NOW(), INTERVAL 20 MINUTE)',
     );
     console.log('Tokens clean up');
   },
-  24 * 60 * 60 * 1000
+  24 * 60 * 60 * 1000,
 );
 
 app.listen(port, (err) => {

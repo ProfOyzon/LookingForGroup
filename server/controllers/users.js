@@ -12,7 +12,7 @@ const dirname = import.meta.dirname;
 /**
  * Takes login information and retirieves accrount from database
  * @param req - req.body - {loginInput, password} for user login
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, redirect:'/'} if success, else {status:400, error:...}
  */
 const login = async (req, res) => {
@@ -56,7 +56,7 @@ const login = async (req, res) => {
 /**
  * Checks if user is authenticated
  * @param req - req.session.userId - the current logged in users ID
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:userId} if authorized, else {status:401, error:...}
  */
 const getAuth = (req, res) => {
@@ -75,11 +75,10 @@ const getAuth = (req, res) => {
   }
 };
 
-
 /**
  * Checks if user is logged in
  * @param req - req.session - current session to destroy
- * @param res - response 
+ * @param res - response
  * @returns res.status - {redirect:'/'} if success
  */
 const logout = async (req, res) => {
@@ -90,11 +89,10 @@ const logout = async (req, res) => {
   return res.json({ redirect: '/' });
 };
 
-
 /**
  * Takes sign up data to send confirmation e-mail. E-mail stored in database temporarily
- * @param req - req.body - {username, password, confirm, email, firstName, lastName} setup input data 
- * @param res - response 
+ * @param req - req.body - {username, password, confirm, email, firstName, lastName} setup input data
+ * @param res - response
  * @returns res.status - {status:201} if success, else {status:400, error:...}
  */
 const signup = async (req, res) => {
@@ -187,7 +185,7 @@ const signup = async (req, res) => {
  * Adds new user and thier data to database.
  * Uses token from signup
  * @param req - req.params - {token} token to verify user
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200} if success, else {status:400, error:...}
  */
 const createUser = async (req, res) => {
@@ -198,7 +196,7 @@ const createUser = async (req, res) => {
     // Get signup email if token is valid
     const [email] = await pool.query(
       'SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY)',
-      [token]
+      [token],
     );
     if (email.length < 1) {
       return res.status(400).json({
@@ -241,7 +239,7 @@ const createUser = async (req, res) => {
 /**
  * Makes request to reset a user password. Send email stored in database temporarily.
  * @param req - req.body - {email} the email adress to sent reset to
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:201} if successful send, else {status:400, error:...}
  */
 const requestPasswordReset = async (req, res) => {
@@ -313,12 +311,11 @@ const requestPasswordReset = async (req, res) => {
   }
 };
 
-
 /**
  * Replaces password of an existing user
  * @param req - req.params - {token} from password reset link
  * @param req - req.body - {password, confirm} inputs for new password
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:201} if successful send, else {status:400, error:...}
  */
 const resetPassword = async (req, res) => {
@@ -346,7 +343,7 @@ const resetPassword = async (req, res) => {
     // Add 5 minute leeway to the 15 minutes stated in email, to account for time taken for email to arrive
     const [email] = await pool.query(
       'SELECT primary_email FROM password_resets WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 20 MINUTE)',
-      [token]
+      [token],
     );
     if (email.length < 1) {
       return res.status(400).json({
@@ -372,11 +369,10 @@ const resetPassword = async (req, res) => {
   }
 };
 
-
 /**
  * Retrieves a list of all users from database
  * @param req - not used
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:[users]} if successful, else {status:400, error:...}
  */
 const getUsers = async (req, res) => {
@@ -415,11 +411,10 @@ const getUsers = async (req, res) => {
   }
 };
 
-
 /**
  * Retrieves a user based on thier user ID number
  * @param req - req.params - {id} the user ID of the being searched for
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:[user]} if successful, else {status:400, error:...}
  */
 const getUserById = async (req, res) => {
@@ -468,11 +463,10 @@ const getUserById = async (req, res) => {
   }
 };
 
-
 /**
  * Retrieves a user based on thier username
  * @param req - req.params - {username} the username of the user being searched for
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:[user]} if successful, else {status:400, error:...}
  */
 const getUserByUsername = async (req, res) => {
@@ -497,11 +491,10 @@ const getUserByUsername = async (req, res) => {
   }
 };
 
-
 /**
  * Retrieves a user based on thier email
  * @param req - req.params - {email} the email of the user being searched for
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:[user]} if successful, else {status:400, error:...}
  */
 const getUserByEmail = async (req, res) => {
@@ -526,18 +519,17 @@ const getUserByEmail = async (req, res) => {
   }
 };
 
-
 /**
  * Retrieves a username based on current logged in session user ID
  * @param req - req.session,userId - the user ID from session
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:user} if successful, else {status:400, error:...}
  */
 const getUsernameBySession = async (req, res) => {
   try {
     const [user] = await pool.query(
       `SELECT first_name, last_name, username, primary_email, profile_image FROM users WHERE user_id = ?`,
-      [req.session.userId]
+      [req.session.userId],
     );
     return res.status(200).json({
       status: 200,
@@ -552,12 +544,11 @@ const getUsernameBySession = async (req, res) => {
   }
 };
 
-
 /**
  * Updates users data in database
  * @param req - req.params.id - current users ID
  * @param req - req.body - {firstname, lastname, ...} all user feilds to be updated
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200} if successful, else {status:400|401, error:...}
  */
 const updateUser = async (req, res) => {
@@ -697,11 +688,10 @@ const updateUser = async (req, res) => {
   }
 };
 
-
 /**
  * Deletes user by checking user ID to session ID
  * @param req - req.params.id the ID of user to delete, req.session.id session user ID
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200} if successful, else {status:400|401, error:...}
  */
 const deleteUser = async (req, res) => {
@@ -738,7 +728,7 @@ const deleteUser = async (req, res) => {
  * Updates the profile image of user
  * @param req - req.params.id user ID, req.session.id session user ID
  * @param req - req.file - uploaded image file
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:201, data:[{profile_image}]} if success, else {status:400|401, error:...}
  */
 const updateProfilePicture = async (req, res) => {
@@ -793,7 +783,7 @@ const updateProfilePicture = async (req, res) => {
 /**
  * Gets the current users account data
  * @param req - req.params.id user ID, req.session.id session user ID
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:account} if success, else {status:400|401, error:...}
  */
 const getAccount = async (req, res) => {
@@ -833,7 +823,7 @@ const getAccount = async (req, res) => {
  * Replaces users email in database
  * @param req - req.params.id user ID, req.session.id session user ID
  * @param req - req.body - {email, confirm, password} info for the email change
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const updateEmail = async (req, res) => {
@@ -889,7 +879,7 @@ const updateEmail = async (req, res) => {
  * Replaces users username in database
  * @param req - req.params.id user ID, req.session.id session user ID
  * @param req - req.body - {username, confirm, password} info for the username change
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const updateUsername = async (req, res) => {
@@ -945,7 +935,7 @@ const updateUsername = async (req, res) => {
  * Replaces users password in database for when user knos current passord but want to change it
  * @param req - req.params.id user ID, req.session.id session user ID
  * @param req - req.body - {newPassword, confirm, password} info for the password change
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const updatePassword = async (req, res) => {
@@ -1004,7 +994,7 @@ const updatePassword = async (req, res) => {
  * Changes the users visibility of the profile (0=private, 1=public)
  * @param req - req.params.id user ID, req.session.id session user ID
  * @param req - req.body - {newVisibility} 0 or 1 to show visible or not
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const updateUserVisibility = async (req, res) => {
@@ -1041,12 +1031,12 @@ const updateUserVisibility = async (req, res) => {
       error: "An error occurred while updating user's visibility",
     });
   }
-}
+};
 
 /**
  * Retirves all projects the user is a member of
  * @param req - req.params.id user ID, req.session.id session user ID
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:projects} if success, else {status:400|401, error:...}
  */
 const getMyProjects = async (req, res) => {
@@ -1102,7 +1092,7 @@ const getMyProjects = async (req, res) => {
 /**
  * Retirves all public visible projects the user is a member of
  * @param req - req.params.id - user ID
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:projects} if success, else {status:400, error:...}
  */
 const getVisibleProjects = async (req, res) => {
@@ -1144,7 +1134,7 @@ const getVisibleProjects = async (req, res) => {
 
       project.followers = {
         count: followers.length,
-        isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+        isFollowing: followers.find((follower) => req.session.userId === follower.id) !== undefined,
       };
     });
 
@@ -1165,8 +1155,8 @@ const getVisibleProjects = async (req, res) => {
 /**
  * Changes the visibility of a users project (public or private)
  * @param req - req.params.id - user ID, req.session - seesion user ID
- * @param req - req.body - {projId, visibility} 
- * @param res - response 
+ * @param req - req.body - {projId, visibility}
+ * @param res - response
  * @returns res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const updateProjectVisibility = async (req, res) => {
@@ -1213,7 +1203,7 @@ const updateProjectVisibility = async (req, res) => {
 /**
  * Gets all projects the user is following
  * @param req - req.params.id - user ID
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:projects} if success, else {status:400, error:...}
  */
 const getProjectFollowing = async (req, res) => {
@@ -1261,7 +1251,7 @@ const getProjectFollowing = async (req, res) => {
 /**
  * Adds a link between a project and user that indicates the user is “following” that project to database.
  * @param req - req.params.id - user ID, req.body.projectId - project ID to follow
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:201} if success, else {status:400|401, error:...}
  */
 const addProjectFollowing = async (req, res) => {
@@ -1301,11 +1291,10 @@ const addProjectFollowing = async (req, res) => {
   }
 };
 
-
 /**
  * Removes a link between a project and user that indicates the user is not “following” that project anymore from database.
  * @param req - req.params.id - user ID, req.params.projectId - project ID to unfollow
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const deleteProjectFollowing = async (req, res) => {
@@ -1345,11 +1334,10 @@ const deleteProjectFollowing = async (req, res) => {
   }
 };
 
-
 /**
  * Gets all other users the user is following
  * @param req - req.params.id - user ID
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:users} if success, else {status:400, error:...}
  */
 const getUserFollowing = async (req, res) => {
@@ -1396,11 +1384,10 @@ const getUserFollowing = async (req, res) => {
   }
 };
 
-
 /**
  * Adds a link between two users to indicate one is “following” the other in database
  * @param req - req.params.id - user ID, req.body.userId - ID of target user to follow
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:201} if success, else {status:400|401, error:...}
  */
 const addUserFollowing = async (req, res) => {
@@ -1440,11 +1427,10 @@ const addUserFollowing = async (req, res) => {
   }
 };
 
-
 /**
  * Removes a link between two user to indicate one is not “following” the other anymore from database.
  * @param req - req.params.id - user ID, req.body.userId - ID of target user to unfollow
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200} if success, else {status:400|401, error:...}
  */
 const deleteUserFollowing = async (req, res) => {

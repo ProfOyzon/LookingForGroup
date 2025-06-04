@@ -34,7 +34,7 @@ try {
     // Wrong username or password
     case 'ER_ACCESS_DENIED_ERROR':
       console.error(
-        `There was an error connecting to the database with the entered credentials - ${err}`
+        `There was an error connecting to the database with the entered credentials - ${err}`,
       );
       break;
 

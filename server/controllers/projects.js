@@ -6,7 +6,6 @@ import { genPlaceholders } from '../utils/sqlUtil.js';
 
 const dirname = import.meta.dirname;
 
-
 // --------------------
 // Request Handlers
 // --------------------
@@ -15,7 +14,7 @@ const dirname = import.meta.dirname;
 /**
  * Get all project through request
  * @param req - request  (uses req.session.userId to check status)
- * @param res - response 
+ * @param res - response
  * @returns res.status - {status:200, data:[projects]} if success, else {status:400, error:...}
  */
 const getProjects = async (req, res) => {
@@ -50,7 +49,7 @@ const getProjects = async (req, res) => {
 
       project.followers = {
         count: followers.length,
-        isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+        isFollowing: followers.find((follower) => req.session.userId === follower.id) !== undefined,
       };
     });
 
@@ -141,7 +140,7 @@ const createProject = async (req, res) => {
     await pool.query(sql, values);
     const [projectId] = await pool.query(
       'SELECT project_id FROM projects WHERE title = ? AND user_id = ?',
-      [title, userId]
+      [title, userId],
     );
 
     // Add project's types to database
@@ -173,7 +172,7 @@ const createProject = async (req, res) => {
           job.location,
           job.compensation,
           job.description,
-        ]
+        ],
       );
     }
 
@@ -191,7 +190,7 @@ const createProject = async (req, res) => {
     for (let social of socials) {
       await pool.query(
         'INSERT INTO project_socials (project_id, website_id, url) VALUES (?, ?, ?)',
-        [projectId[0].project_id, social.id, social.url]
+        [projectId[0].project_id, social.id, social.url],
       );
     }
 
@@ -276,7 +275,7 @@ const getProjectById = async (req, res) => {
 
     project[0].followers = {
       count: followers.length,
-      isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+      isFollowing: followers.find((follower) => req.session.userId === follower.id) !== undefined,
     };
 
     return res.status(200).json({
@@ -291,7 +290,6 @@ const getProjectById = async (req, res) => {
     });
   }
 };
-
 
 /**
  * Update existing project and its data types, tags, member, socials
@@ -516,7 +514,6 @@ const updateProject = async (req, res) => {
   }
 };
 
-
 /**
  * Deletes project that user owns by ID
  * @param req - req.params.id-the project ID, req.session.userId-the current logged in users ID
@@ -530,7 +527,10 @@ const deleteProject = async (req, res) => {
 
   try {
     // Get creator/owner ID of project to verify it matches userId
-    const [ownerData] = await pool.query('SELECT p.user_id FROM projects p WHERE p.project_id = ?', [projId]);
+    const [ownerData] = await pool.query(
+      'SELECT p.user_id FROM projects p WHERE p.project_id = ?',
+      [projId],
+    );
     const ownerId = ownerData[0].user_id;
 
     // TO-DO: Feed back bad request if userId != ownerId
@@ -557,13 +557,11 @@ const deleteProject = async (req, res) => {
   }
 };
 
-
-
 /**
  * Updates the thumbnail image for a project
  * @param req - req.params.id-project ID, req.file-file for the uploaded image
  * @param res - response
- * @returns res.status - {status:201, data:[{thumbnail}]} if success, else (status:400, error:...) 
+ * @returns res.status - {status:201, data:[{thumbnail}]} if success, else (status:400, error:...)
  */
 const updateThumbnail = async (req, res) => {
   // Get id from url
@@ -608,7 +606,6 @@ const updateThumbnail = async (req, res) => {
     });
   }
 };
-
 
 /**
  * Get all pictures for project by project ID
@@ -730,10 +727,9 @@ const updatePicturePositions = async (req, res) => {
   }
 };
 
-
 /**
  * Delete picture from a project
- * @param req - req.params.id- project ID, req.body.image-image file name 
+ * @param req - req.params.id- project ID, req.body.image-image file name
  * @param res - response
  * @returns res.status - {status:200} if success. else {status:400, error:...}
  */
@@ -768,8 +764,6 @@ const deletePicture = async (req, res) => {
     });
   }
 };
-
-
 
 /**
  * Add a member to a project. Needs all member feilds
@@ -809,7 +803,10 @@ const addMember = async (req, res) => {
 
   try {
     // Make sure user making request is part of the project
-    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [projId]);
+    const [memberData] = await pool.query(
+      'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
+      [projId],
+    );
     let requester = null;
 
     for (let i = 0; i < memberData.length; i++) {
@@ -847,7 +844,6 @@ const addMember = async (req, res) => {
     });
   }
 };
-
 
 /**
  * Update a project members title and permission for the project
@@ -888,7 +884,10 @@ const updateMember = async (req, res) => {
 
   try {
     // Make sure user is part of the project
-    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [id]);
+    const [memberData] = await pool.query(
+      'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
+      [id],
+    );
     let requester = null;
     let recipient = null;
 
@@ -912,11 +911,14 @@ const updateMember = async (req, res) => {
         status: 400,
         error: 'User is not currently a member of this project.',
       });
-    } else if ((parseInt(userId) !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
+    } else if (
+      parseInt(userId) !== req.session.userId &&
+      requester.permissions <= recipient.permissions
+    ) {
       return res.status(403).json({
         status: 403,
-        error: `You don't have the required permissions to update this user.`
-      })
+        error: `You don't have the required permissions to update this user.`,
+      });
     }
 
     // Update contents of project
@@ -936,7 +938,6 @@ const updateMember = async (req, res) => {
   }
 };
 
-
 /**
  * Delete a member from a project
  * Checks current users permissions to allow for deletes
@@ -951,11 +952,14 @@ const deleteMember = async (req, res) => {
 
   try {
     // Check if user making request is part of project
-    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [id]);
+    const [memberData] = await pool.query(
+      'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
+      [id],
+    );
     let requester = null;
     let recipient = null;
 
-    console.log()
+    console.log();
 
     for (let i = 0; i < memberData.length; i++) {
       if (parseInt(memberData[i].user_id) === parseInt(userId)) {
@@ -978,12 +982,15 @@ const deleteMember = async (req, res) => {
         status: 400,
         error: 'User is not currently a member of this project.',
       });
-    } else if ((parseInt(userId) !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
+    } else if (
+      parseInt(userId) !== req.session.userId &&
+      requester.permissions <= recipient.permissions
+    ) {
       console.log(`userId: ${userId} vs. sessionId: ${req.session.userId}`);
 
       return res.status(403).json({
         status: 403,
-        error: `You don't have the required permissions to remove this user from the project.`
+        error: `You don't have the required permissions to remove this user from the project.`,
       });
     }
 

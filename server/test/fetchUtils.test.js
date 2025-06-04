@@ -11,7 +11,7 @@ describe('fetchUtils tests', () => {
   });
 
   //GET
-  test('mocks GET request and checks response', async () => {
+  test('GET: mocks GET request and checks response', async () => {
     const mockJson = { message: 'Success', user_id: 123 };
     const mockResponse = {
       json: jest.fn().mockResolvedValue(mockJson),

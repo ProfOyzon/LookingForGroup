@@ -169,4 +169,9 @@ const DELETE = (apiURL) => {
     });
 };
 
-export { GET, POST, PUT, DELETE };
+const RESPONSE = (_status, data, _error) => {
+  res = [{ data: data }];
+  return jsonify(res, (status = _status), (error = _error), (mimetype = 'application/json'));
+};
+
+export { GET, POST, PUT, DELETE, RESPONSE };

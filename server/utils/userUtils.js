@@ -4,7 +4,7 @@ import { GET, POST, PUT, DELETE } from './fetchUtils';
 
 const root =
   envConfig.env === 'development' || envConfig.env === 'test'
-    ? 'https://localhost:8081/api'
+    ? 'http://localhost:8081/api'
     : 'https://lfg.gccis.rit.edu/api';
 
 /**
@@ -25,7 +25,7 @@ const root =
  * @param socials - array[objects] List of socials. Socials = {int id, string url}
  * @returns status - 200 if valid, 400 if not
  */
-function createNewUser(
+async function createNewUser(
   token,
   email,
   _firstName,
@@ -42,14 +42,22 @@ function createNewUser(
   _socials,
 ) {
   //check if token is valid
-  const apiURL = `https://lfg.gccis.rit.edu/api/signup/${token}`;
-  response = GET(apiURL);
-  if (response.status === '400') {
-    console.log('Token does not exist.');
-    return '400';
+  const apiURL = `${root}/signup/${token}`;
+
+  if (process.env.NODE_ENV === 'development') {
+    //bypass for dev environment
+    console.log('DEV MODE: Skip token check');
+  } else {
+    //token validation
+    const response = await GET(apiURL);
+    if (response.status === '400') {
+      console.log('Token does not exist.');
+      return '400';
+    }
   }
+
   //else, token valid and check if a user with that email already exists.
-  if (userInDatabase(email)) {
+  if (await userInDatabase(email)) {
     console.log('User is already in database, create fails');
     return '400';
   } else {
@@ -69,13 +77,13 @@ function createNewUser(
       socials: _socials,
     };
 
-    response = POST(apiURL, data);
+    const response = await POST(apiURL, data);
     if (response.status === '400') {
       console.log('Error creating a new user.');
       return '400';
     }
     console.log(`User ${(email, _firstName, _lastName)} created.`);
-    return '200';
+    return { status: '201', user_id: response.user_id };
   }
 }
 
@@ -85,7 +93,7 @@ function createNewUser(
  * @returns result - boolean, true if they exist within database, false if not.
  */
 async function userInDatabase(email) {
-  const apiURL = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
+  const apiURL = `${root}/users/search-email/${email}`;
   const response = await GET(apiURL);
 
   if (response.status === '400') {
@@ -105,10 +113,10 @@ async function userInDatabase(email) {
  * Gets all data on all public users. Does not return private ones
  * @returns result - JSONified data of all users, else if error, '400'.
  */
-function getUsers() {
-  const apiURL = 'https://lfg.gccis.rit.edu/api/users';
-  const response = GET(apiURL);
-  if (!response.status === '400') return '400';
+async function getUsers() {
+  const apiURL = `${root}/users`;
+  const response = await GET(apiURL);
+  if (response.status === '400') return '400';
 
   return response;
 }
@@ -135,9 +143,9 @@ async function getAccountInformation(id) {
  * @param id - user_id for user
  * @returns result - JSONified data of specified user.
  */
-function getUsersById(id) {
+async function getUsersById(id) {
   const apiURL = `https://lfg.gccis.rit.edu/api/users/${id}`;
-  const response = GET(apiURL);
+  const response = await GET(apiURL);
   if (response.status === '400') return '400'; //error
 
   return response;
@@ -149,9 +157,9 @@ function getUsersById(id) {
  * @param data - mapped(eg {data1:'value1', data2:'value2'}) data to change for user
  * @returns response data
  */
-function editUser(id, data) {
-  const apiURL = `https://lfg.gccis.rit.edu/api/users/${id}`;
-  const response = PUT(apiURL, data);
+async function editUser(id, data) {
+  const apiURL = `${root}/api/users/${id}`;
+  const response = await PUT(apiURL, data);
   if (response.status === '400') return '400';
 
   return response;
@@ -162,9 +170,9 @@ function editUser(id, data) {
  * @param id - user_id to be deleted
  * @returns response data
  */
-function deleteUser(id) {
-  const apiURL = `https://lfg.gccis.rit.edu/api/users/${id}`;
-  const response = DELETE(apiURL);
+async function deleteUser(id) {
+  const apiURL = `${root}/users/${id}`;
+  const response = await DELETE(apiURL);
   if (response === '400') return '400';
 
   return response;
@@ -177,7 +185,7 @@ function deleteUser(id) {
  * @return status, 200 if successful, 400 if not, and data. data=array[object] with the profile_image, string, name of the file
  */
 function updateProfilePicture(id, _image) {
-  const apiURL = `https://lfg.gccis.rit.edu/api/users/${id}/profile-picture`;
+  const apiURL = `${root}/users/${id}/profile-picture`;
   const data = { image: _image };
   const response = PUT(apiURL, data);
   if (response.status === '400') {
@@ -197,7 +205,7 @@ function updateProfilePicture(id, _image) {
  * @returns response, 200 if valid, 400 if not, 401 if emails do not match.
  */
 function updateEmail(id, _email, _confirm_email, _password) {
-  const apiURL = `https://lfg.gccis.rit.edu/api/users/${id}/email`;
+  const apiURL = `${root}/users/${id}/email`;
   if (_email != _confirm_email) {
     console.log('Not the same email, try again.');
     return '401';
@@ -225,7 +233,7 @@ function updateEmail(id, _email, _confirm_email, _password) {
  * @returns response, 200 if valid, 400 if not, 401 if users do not match.
  */
 function updateUsername(id, _username, _confirm_user, _password) {
-  const apiURL = `https://lfg.gccis.rit.edu/api/users/${id}/username`;
+  const apiURL = `${root}/users/${id}/username`;
   if (_username != _confirm_user) {
     console.log('Usernames are not the same.');
     return '401';
@@ -372,8 +380,8 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
  * @returns "400" if error, "200" if valid
  */
 function updateUserVisibility(id) {
-  let apiUrl = `https://lfg.gccis.rit.edu/api/users/${id}`;
-  const data = GET(apiURL);
+  let url = `https://lfg.gccis.rit.edu/api/users/${id}`;
+  const data = GET(url);
   const parsedata = JSON.parse(data);
   const vis = parsedata.visibility;
 
@@ -416,13 +424,21 @@ function getUserByUsername(username) {
  * @param username - Username of user to be recieved
  * @return data, list of 1 user, or 400 if not successful
  */
-function getUserByEmail(email) {
+async function getUserByEmail(email) {
   let url = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
-  const response = GET(url);
+  const response = await GET(url);
+
   if (response.status === '400') {
     console.log('Error getting user.');
     return '400';
   }
+
+  //check if array is not empty
+  if (!response.data || response.data.length == 0) {
+    console.log('No user found');
+    return '400';
+  }
+
   console.log('Data recieved.');
   return response;
 }

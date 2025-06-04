@@ -759,7 +759,16 @@ Project Creator and Editor style rules
 
 #project-editor-selected-tags-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+#project-editor-type-tags-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: 8px;
 }

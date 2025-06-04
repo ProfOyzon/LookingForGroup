@@ -1,4 +1,3 @@
-// @ts-nocheck
 import express from 'express';
 import { join } from 'path';
 import { unlink } from 'fs/promises';

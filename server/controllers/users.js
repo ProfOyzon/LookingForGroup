@@ -1,4 +1,3 @@
-// @ts-nocheck
 import express from 'express';
 import bcrypt from 'bcrypt';
 import { join } from 'path';

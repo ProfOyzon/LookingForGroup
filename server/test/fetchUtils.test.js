@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { GET, POST, PUT, DELETE } from '../utils/fetchUtils.js';
 
 //MOCK TESTING does not use real API calls

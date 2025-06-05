@@ -11,6 +11,8 @@ Project Panel component style rules
   justify-content: space-between;
   gap: 20px;
   width: 100%;
+  /* keep panels below searchbar */ 
+  z-index: 0;
   /* margin: 0 50px 50px 50px; */
 }
 

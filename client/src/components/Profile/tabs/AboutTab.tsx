@@ -110,7 +110,6 @@ export const AboutTab = (props: { profile: ProfileData }) => {
                             <option>2nd</option>
                             <option>3rd</option>
                             <option>4th</option>
-                            <option>5th</option>
                         </select>
                     </div>
                 </div>

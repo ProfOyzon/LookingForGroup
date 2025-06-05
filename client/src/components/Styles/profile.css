@@ -1007,7 +1007,7 @@ New Profile page style rules
   width: 280px;
   height: 280px;
   grid-area: image;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 10px;
   border: 2px solid white;
 }

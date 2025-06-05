@@ -701,7 +701,7 @@ Sidebar Nav style rules
     background-color: var(--create-text);
     color:var(--create-bg);
     filter:drop-shadow(0px 5px 3px var(--shadow-color));
-    transition: 0.5s;
+    transition: 0.25s;
 
     img {
         filter: invert(1) saturate(0) brightness(2);

@@ -1,6 +1,6 @@
 import pfp from '../../icons/profile-user.png';
 import discordImg from '../../icons/discord.png';
-import twitterImg from '../../icons/x.png';
+//import twitterImg from '../../icons/x.png';
 import messageImg from '../../icons/message.png';
 import resumeImg from '../../icons/resume.png';
 import { PagePopup, openClosePopup } from '../PagePopup';
@@ -59,7 +59,7 @@ export const ProfileHeader = ({ user }) => {
               className="icon-button"
               onClick={() => (window.location.href = 'https://twitter.com')}
             >
-              <img src={twitterImg}></img>
+              {/* <img src={twitterImg}></img> */}
             </button>
             <button className="icon-button" onClick={() => (window.location.href = 'messages')}>
               <img src={messageImg}></img>

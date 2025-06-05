@@ -20,6 +20,7 @@ import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 import EditButton from '../Profile/ProfileEditButton';
 import { ThemeIcon } from '../ThemeIcon';
 import { fetchUserID } from '../../functions/fetch';
+import { ProfileInterests } from '../Profile/ProfileInterests';
 import profilePicture from '../../images/blue_frog.png';
 
 // --------------------
@@ -49,6 +50,7 @@ interface Profile {
   fun_fact: string;
   bio: string;
   skills: Tag[];
+  interests?: string[];
 }
 
 // Stores if profile is loaded from server and if it's user's respectively
@@ -379,7 +381,11 @@ const NewProfile = () => {
             <span id="fun-fact-start">{displayedProfile.fun_fact ? 'Fun Fact!' : 'No Fun Fact (Yet)!'}</span>
             {displayedProfile.fun_fact}
           </div>
-
+          <div id="profile-info-interest">
+              <ProfileInterests user={{interests: displayedProfile.interests || []}} 
+              isUsersProfile={true} />
+          </div>
+          
           <div id="profile-info-skills">
             {displayedProfile.skills !== null ? (
               /* Will take in a list of tags the user has selected, then */

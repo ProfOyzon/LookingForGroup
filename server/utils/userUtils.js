@@ -359,9 +359,6 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
         console.log("An error occurred while updating user's password");
         return "400";
     }
-
-    console.log('User password updated successfully.');
-    return '201';
   } catch (err) {
     console.log(err);
     console.log("An error occurred while updating user's password");

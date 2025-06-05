@@ -1,6 +1,6 @@
 import envConfig from '../config/env';
 //import { createUser } from '../controllers/users';
-import { GET, POST, PUT, DELETE } from './fetchUtils';
+import { GET, POST, PUT, DELETE, RESPONSE } from './fetchUtils';
 
 const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'http://localhost:8081/api' : 'https://lfg.gccis.rit.edu/api';
 
@@ -25,7 +25,7 @@ const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'http
 async function createNewUser(token, email, _firstName, _lastName, _headline, _pronouns, _jobTitleId, _majorId, _academicYear, _location, _funFact, _bio, _skills, _socials) {
 
     //check if token is valid
-    const apiURL = `${root}/signup/${token}`
+    const apiURL = `https://lfg.gccis.rit.edu/api/signup/${token}`
 
     if (process.env.NODE_ENV === 'development') {
         //bypass for dev environment
@@ -46,20 +46,24 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
         return "400"
     } else {
         //user is not in database, add them. 
-        const data = {
-            firstName: _firstName,
-            lastName: _lastName,
-            headline: _headline,
-            pronouns: _pronouns,
-            jobTitleId: _jobTitleId,
-            majorId: _majorId,
-            academicYear: _academicYear,
-            location: _location,
-            funFact: _funFact,
-            bio: _bio,
-            skills: _skills,
-            socials: _socials
-        };
+        //local 
+        if(envConfig.env === 'development' || envConfig.env === 'test') {
+
+        } else {
+            const data = {
+                firstName: _firstName,
+                lastName: _lastName,
+                headline: _headline,
+                pronouns: _pronouns,
+                jobTitleId: _jobTitleId,
+                majorId: _majorId,
+                academicYear: _academicYear,
+                location: _location,
+                funFact: _funFact,
+                bio: _bio,
+                skills: _skills,
+                socials: _socials
+            };
 
         const response = await POST(apiURL, data);
         if (response.status === "400") {
@@ -68,6 +72,8 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
         }
         console.log(`User ${email, _firstName, _lastName} created.`);
         return { status: '201', user_id: response.user_id };
+        }
+        
     }
 
 }
@@ -79,19 +85,33 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
  * @returns result - boolean, true if they exist within database, false if not.
  */
 async function userInDatabase(email) {
-    const apiURL = `${root}/users/search-email/${email}`;
-    const response = await GET(apiURL);
+    if(envConfig.env === 'development' || envConfig.env === 'test') {
+        const [user] = await pool.query('SELECT rit_email FROM users WHERE rit_email = ?', [
+            email,
+        ]);
 
-    if (response.status === "400") {
-        console.log("Error fetching email.");
-        return false;
-    } else {
-        if (!response.data) {
-            console.log(response.data);
+        if(user.length > 0) {
+            console.log( RESPONSE(400,'','Your account has already been activated.') );
             return false;
+        } else {
+            return true;
         }
-        console.log("User found with email", email);
-        return true;
+    } else {
+        const apiURL = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
+        const response = GET(apiURL);
+
+        if (response.status === "400") {
+            console.log("Error fetching email.");
+            return false;
+        } else {
+            if (!response.data) {
+                console.log(response.data);
+                return false;
+            }
+            console.log("User found with email", email);
+            return true;
+        }
+    
     }
 }
 

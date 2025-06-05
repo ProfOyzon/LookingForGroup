@@ -27,7 +27,7 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
     //check if token is valid
     const apiURL = `${root}/signup/${token}`
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
         //bypass for dev environment
         console.log('DEV MODE: Skip token check');
 
@@ -67,7 +67,8 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
             return "400";
         }
         console.log(`User ${email, _firstName, _lastName} created.`);
-        return { status: '201', user_id: response.user_id };
+        console.log(data);
+        return data;
     }
 
 }
@@ -86,7 +87,7 @@ async function userInDatabase(email) {
         console.log("Error fetching email.");
         return false;
     } else {
-        if (!response.data) {
+        if (!response.data || response.data.length === 0) {
             console.log(response.data);
             return false;
         }
@@ -114,7 +115,7 @@ async function getUsers() {
  * @returns user_id, primary_email, rit_email, username, visibility
  */
 async function getAccountInformation(id) {
-    const apiURL = `https://lfg.gccis.rit.edu/api/users/${id}/account`;
+    const apiURL = `${root}/users/${id}/account`;
     const response = await GET(apiURL);
     if (response.status === "400") {
         return "400";
@@ -131,7 +132,7 @@ async function getAccountInformation(id) {
  * @returns result - JSONified data of specified user.
  */
 async function getUsersById(id) {
-    const apiURL = `https://lfg.gccis.rit.edu/api/users/${id}`;
+    const apiURL = `${root}/users/${id}`;
     const response = await GET(apiURL);
     if (response.status === "400") return "400"; //error
 
@@ -322,7 +323,7 @@ async function requestPasswordReset(email) {
  * @param password - string, user's current password
  */
 async function updatePassword(id, _newPassword, _password_confirm, _password, _token) {
-    let apiURL = `https://lfg.gccis.rit.edu/api/users/${id}/password`;
+    let apiURL = `${root}/users/${id}/password`;
     if (!_newPassword || !_password_confirm) {
         console.log("Missing passwords.")
         return "400";
@@ -372,7 +373,7 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
  * @returns "400" if error, "200" if valid
  */
 function updateUserVisibility(id) {
-    let url = `https://lfg.gccis.rit.edu/api/users/${id}`;
+    let url = `${root}/users/${id}`;
     const data = GET(url);
     const parsedata = JSON.parse(data);
     const vis = parsedata.visibility;
@@ -402,13 +403,21 @@ function updateUserVisibility(id) {
  * @param username - Username of user to be recieved
  * @return data, list of 1 user, or 400 if not successful
  */
-function getUserByUsername(username) {
-    let url = `https://lfg.gccis.rit.edu/api/users/search-username/${username}`;
-    const response = GET(url);
+async function getUserByUsername(username) {
+    let url = `${root}/users/search-username/${username}`;
+    const response = await GET(url);
+
     if (response.status === "400") {
         console.log("Error getting user.");
         return "400";
     }
+
+    //check if array is not empty
+    if (!response.data || response.data.length === 0) {
+        console.log('No user found')
+        return "404";
+    }
+
     console.log("Data recieved.");
     return response;
 }
@@ -420,7 +429,7 @@ function getUserByUsername(username) {
  * @return data, list of 1 user, or 400 if not successful
  */
 async function getUserByEmail(email) {
-    let url = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
+    let url = `${root}/users/search-email/${email}`;
     const response = await GET(url);
 
     if (response.status === "400") {
@@ -429,9 +438,9 @@ async function getUserByEmail(email) {
     }
 
     //check if array is not empty
-    if (!response.data || response.data.length == 0) {
+    if (!response.data || response.data.length === 0) {
         console.log('No user found')
-        return "400"
+        return "404"
     }
 
     console.log("Data recieved.");
@@ -445,7 +454,7 @@ async function getUserByEmail(email) {
  * @returns array of users following, or 400 if unsuccessful.
  */
 function getUserFollowing(id) {
-    let url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/people`;
+    let url = `${root}/users/${id}/followings/people`;
     const response = GET(url);
     if (response.status === "400") {
         console.log("Error getting users.");
@@ -462,7 +471,7 @@ function getUserFollowing(id) {
  * @return - array of projects, or 400 if unsuccessful.
  */
 function getVisibleProjects(id) {
-    let url = `https://lfg.gccis.rit.edu/api/users/${id}/projects/profile`;
+    let url = `${root}/users/${id}/projects/profile`;
     const response = GET(url);
     if (response.staus === "400") {
         console.log("Error getting projects.");
@@ -480,7 +489,7 @@ function getVisibleProjects(id) {
  * @return 201 if successful, 400 if not
  */
 function updateProjectVisibility(userID, projectID, _visibility) {
-    let url = `https://lfg.gccis.rit.edu/api/users/${userID}/projects/visibility`;
+    let url = `${root}/users/${userID}/projects/visibility`;
     const data = {
         projectId: projectID,
         visibility: _visibility,
@@ -502,7 +511,7 @@ function updateProjectVisibility(userID, projectID, _visibility) {
  * @returns array of projects, or 400 if error.
  */
 function getProjectFollowing(id) {
-    let url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/projects`;
+    let url = `${root}/users/${id}/followings/projects`;
     const response = GET(url);
     if (response.status === "400") {
         console.log("Error getting projects.");
@@ -520,7 +529,7 @@ function getProjectFollowing(id) {
  * @returns 201 if successful, 400 if not.
  */
 function addProjectFollowing(id, projectID) {
-    let url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/projects`;
+    let url = `${root}/users/${id}/followings/projects`;
     const data = {
         projectId: projectID,
     };
@@ -541,7 +550,7 @@ function addProjectFollowing(id, projectID) {
  * @returns 201 if successful, 400 if not.
  */
 function deleteProjectFollowing(id, projID) {
-    let url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/projects/${projID}`;
+    let url = `${root}/users/${id}/followings/projects/${projID}`;
     const response = DELETE(url);
     if (response.status === "400") {
         console.log("Error deleting project following.");
@@ -559,7 +568,7 @@ function deleteProjectFollowing(id, projID) {
  * @returns 201 if successful, 400 if not
  */
 function addUserFollowing(id, followID) {
-    let url = `https://lfg.gccis.rit.edu/api/users/${id}/followings/people`;
+    let url = `${root}/users/${id}/followings/people`;
     const data = {
         userId: followID,
     };

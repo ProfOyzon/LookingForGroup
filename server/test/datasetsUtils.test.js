@@ -15,7 +15,7 @@ function dataTest(data, show = false) {
     test(`GET ${data} data`, async () => {
 
         const response = await request(api).get(`/datasets/${data}`);
-        expect(response.statusCode).toBe(200);
+        expect(response.status).toBe(200);
         expect(response.body).toBeDefined();
 
         //for console logging

@@ -8,7 +8,7 @@ test('GET: Get all users', async () => {
 
     console.log(r);
 
-    expect(r).not.toBe("400");
+    expect(r.status).toBe(200);
     expect(r).toBeDefined();
 });
 
@@ -17,37 +17,37 @@ test('GET: Get user id 1', async () => {
 
     console.log(r);
 
-    expect(r).not.toBe("400");
+    expect(r.status).toBe(200);
     expect(r).toBeDefined();
 });
 
-test('GET: Get user by email: Mistah Bones: jdp1701@rit.edu', async () => {
-    const r = await util.getUserByEmail('jdp1701@rit.edu');
+test('GET: Get user by email: Mistah Bones: jjp8541@rit.edu', async () => {
+    const r = await util.getUserByEmail('jjp8541@rit.edu');
 
     console.log(r);
 
-    expect(r).not.toBe("400");
-    expect(r).toBeDefined();
+    expect(r.status).toBe(200);
+    expect(r.data).toBeDefined();
 });
 
 test('GET: Get user by username: Mistah Bones.', async () => {
-    const r = await util.getUserByUsername("Mistah Bones");
+    const r = await util.getUserByUsername("Mr.Bones");
 
     console.log(r);
 
-    expect(r).not.toBe("400");
-    expect(r).toBeDefined();
+    expect(r.status).toBe(200);
+    expect(r.data).toBeDefined();
 });
 
 test('GET: Check if Mistah Bones is in database.', async () => {
-    const r = await util.userInDatabase('jdp1701@rit.edu');
+    const r = await util.userInDatabase('jjp8541@rit.edu');
     console.log(r);
 
     expect(r).toBe(true);
 });
 
-test('GET: Get account information for id 28 (Mistah Bones), invalid.', async () => {
-    const r = await util.getAccountInformation(28);
+test('GET: Get account information for id 19 (Mistah Bones), invalid.', async () => {
+    const r = await util.getAccountInformation(19);
 
     console.log(r);
 
@@ -60,7 +60,7 @@ test('GET: Get people user 1 is following.', async () => {
 
     console.log(r);
 
-    expect(r).not.toBe("400");
+    expect(r.status).toBe(200);
     expect(r).toBeDefined();
 });
 
@@ -69,7 +69,7 @@ test('GET: Get projects the user is a member of', async () => {
 
     console.log(r);
 
-    expect(r).not.toBe("400");
+    expect(r.status).toBe(200);
     expect(r).toBeDefined();
 });
 
@@ -78,13 +78,13 @@ test('GET: all projects user is following', async () => {
 
     console.log(r);
 
-    expect(r).not.toBe("400");
+    expect(r.status).toBe(200);
     expect(r).toBeDefined();
 });
 
 /* - - - POSTs - - - */
 
-// //test user id
+//test user id
 // let testId = null;
 
 // test('POST: Test creating new user.', async () => {
@@ -108,7 +108,7 @@ test('GET: all projects user is following', async () => {
 
 //     console.log(r);
 
-//     expect(r).not.toBe("400");
+//     expect(r.status).toBe(201);
 //     expect(r.user_id).toBeDefined();
 
 //     //get the user ID
@@ -128,7 +128,7 @@ test('GET: all projects user is following', async () => {
 
 //     console.log(r);
 
-//     expect(r).not.toBe("400");
+//     expect(r.status).toBe(201);
 // });
 
 
@@ -141,7 +141,7 @@ test('GET: all projects user is following', async () => {
 //     const r = await util.deleteUser(testId);
 
 //     console.log(r);
-//     expect(r).not.toBe("400");
+//     expect(r.status).toBe(200);
 
 // });
 

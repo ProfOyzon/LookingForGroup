@@ -69,15 +69,6 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
         console.log(`User ${email, _firstName, _lastName} created.`);
         return { status: '201', user_id: response.user_id };
     }
-
-    response = POST(apiURL, data);
-    if (response.status === '400') {
-      console.log('Error creating a new user.');
-      return '400';
-    }
-    console.log(`User ${(email, _firstName, _lastName)} created.`);
-    return '200';
-  }
 }
 
 /**

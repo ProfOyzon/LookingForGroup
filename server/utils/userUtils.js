@@ -48,7 +48,12 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
         //user is not in database, add them. 
         //local 
         if(envConfig.env === 'development' || envConfig.env === 'test') {
-
+            const sql = 'INSERT INTO users (username, primary_email, rit_email, password, first_name, last_name SELECT username, primary_email, rit_email, password, first_name, last_name FROM signups WHERE rit_email=?';
+            const values = [email];
+            await pool.query(sql,values);
+            console.log('Added into database.');
+            return RESPONSE(200,'','');
+            
         } else {
             const data = {
                 firstName: _firstName,
@@ -65,13 +70,13 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
                 socials: _socials
             };
 
-        const response = await POST(apiURL, data);
-        if (response.status === "400") {
-            console.log("Error creating a new user.");
-            return "400";
-        }
-        console.log(`User ${email, _firstName, _lastName} created.`);
-        return { status: '201', user_id: response.user_id };
+            const response = await POST(apiURL, data);
+            if (response.status === "400") {
+                console.log("Error creating a new user.");
+                return "400";
+            }
+            console.log(`User ${email, _firstName, _lastName} created.`);
+            return { status: '201', user_id: response.user_id };
         }
         
     }

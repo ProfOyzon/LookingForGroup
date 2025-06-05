@@ -1,0 +1,8 @@
+# PM master check, allows approval of any PR
+* @mmr6424
+
+# Back-end lead, allows approval of any PRs relating to server code
+/server/ @MJ-Parson
+
+# Front-end lead, allows approval of any PRs relating to client code
+/client/ @DarthObliviator

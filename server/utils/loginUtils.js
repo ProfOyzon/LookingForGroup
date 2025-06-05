@@ -45,13 +45,10 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
   let url = ``;
 
   //add user info to database, set up for account activation
-  // if (envConfig.env === 'production') {
-  //     url = `https://lookingforgrp.com/activation/${_token}`;
-  // } else {
-  url = `${root}/${_token}`;
+
+  url = `https://lookingforgrp.com/activation/${_token}`;
   console.log(url);
   console.log(_token);
-  //}
 
   const data = {
     token: _token,
@@ -73,41 +70,8 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
           status: 400,
           error: 'Error posting into database.',
         });
-    }
-
-    const hashPass = await bcrypt.hash(_password, 10);
-    const _token = crypto.randomUUID();
-    let url = ``;
-
-    //add user info to database, set up for account activation
-    
-    url = `https://lookingforgrp.com/activation/${_token}`;
-    console.log(url);
-    console.log(_token);
-    
-    const data = {
-        token: _token,
-        username: _username,
-        email: _email,
-        password: hashPass,
-        firstName: _firstName,
-        lastName: _lastName,
-    };
-
-    //insert into database
-    if(envConfig.env === 'production'){
-        try {
-          const response = await POST(url,data);
-          if(response.ok) {
-              console.log("Information put into database.");
-          } else {
-              return res = ({
-                  status: 400,
-                  error: "Error posting into database.",
-              });
-        }
-          
-        const emailhtml = `
+      }
+      const emailhtml = `
         <p>Hi ${firstName},<br>
         Thank you for signing up to LFG. You have 1 day to activate your account. Click the button below.
         </p>

@@ -991,7 +991,8 @@ New Profile page style rules
     'image desc desc' auto
     'image fact fact' auto
     'bio skills skills' auto /
-    300px auto 200px;
+    300px auto 200px
+    'contact' auto;
   background-color: var(--header-color);
   border-radius: 10px;
   padding: 30px;
@@ -1404,3 +1405,8 @@ New Profile page style rules
   grid-gap: 20px;
   text-align: left;
 }
+/*
+#profile-contacts-tab{
+  grid-area: "contact";
+}
+*/

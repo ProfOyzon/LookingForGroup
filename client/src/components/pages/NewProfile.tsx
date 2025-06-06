@@ -21,6 +21,7 @@ import EditButton from '../Profile/ProfileEditButton';
 import { ThemeIcon } from '../ThemeIcon';
 import { fetchUserID } from '../../functions/fetch';
 import profilePicture from '../../images/blue_frog.png';
+import ProfileContactTab from '../Profile/ProfileContactTab';
 
 // --------------------
 // Interfaces
@@ -181,7 +182,7 @@ const NewProfile = () => {
           profileID = `${userID}`;
         }
         // Check if the userID matches the profile
-        isUsersProfile = `${userID}` === profileID;
+        isUsersProfile  = `${userID}` === profileID;
       };
 
       setUpProfileID();
@@ -412,6 +413,9 @@ const NewProfile = () => {
           <h2>Projects</h2>
           {/* Probably fine to use 25 for itemAddInterval */}
           <PanelBox category={'projects'} itemList={displayedProjects} itemAddInterval={25} userId={userID} />
+        </div>
+        <div>
+            {/*ProfileContactTab(displayedProfile)*/}
         </div>
       </div>
     </div>

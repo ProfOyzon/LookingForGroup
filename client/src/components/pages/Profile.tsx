@@ -21,6 +21,7 @@ import { ProfileProjects } from '../Profile/ProfileProjects';
 import { useEffect, useState } from 'react';
 import ToTopButton from '../ToTopButton';
 import EditButton from '../Profile/ProfileEditButton';
+import ProfileContactTab from '../Profile/ProfileContactTab';
 
 // Get user ID from API
 const fetchUserID = async () => {
@@ -120,6 +121,7 @@ const Profile = (props) => {
           <ProfileEndorsements user={user} />
         </div>
         <ProfileProjects user={user} />
+        <ProfileContactTab user = {user}/>
       </div>
       {userData === undefined ? '' : <EditButton userData={userData} />}
 

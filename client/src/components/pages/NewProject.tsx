@@ -27,6 +27,7 @@ import * as paths from '../../constants/routes';
 import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
 import { sendPost, sendDelete } from '../../functions/fetch';
+import ProfileContactTab from '../Profile/ProfileContactTab';
 
 //To-do
 //Have team member listings link to their respective profiles

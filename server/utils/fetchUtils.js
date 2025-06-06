@@ -140,7 +140,7 @@ const PUT = (apiURL, newData) => {
 
 /**
  * Basic DELETE function for utilities
- * @param {String} apiURL - API to be called
+ * @param {string} apiURL - API to be called
  * @returns response - JSONified data or error code.
  */
 const DELETE = (apiURL) => {

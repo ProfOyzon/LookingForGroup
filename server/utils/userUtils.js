@@ -1,5 +1,6 @@
-import envConfig from '../config/env';
+import envConfig from '../config/env.js';
 //import { createUser } from '../controllers/users';
+
 import { GET, POST, PUT, DELETE, RESPONSE } from './fetchUtils';
 
 const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'http://localhost:8081/api' : 'https://lfg.gccis.rit.edu/api';
@@ -79,7 +80,9 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
             console.log(data);
             return data;
         }
-
+      
+        console.log(`User ${email, _firstName, _lastName} created.`);
+        return { status: '201', user_id: response.user_id };
     }
 }
 
@@ -174,13 +177,13 @@ async function getAccountInformation(id) {
     return response;
 }
 
-
 /**
  * Gets all data on one specific user, specified by URL.
  * @param id - user_id for user
  * @returns result - JSONified data of specified user.
  */
 async function getUsersById(id) {
+<<<<<<< HEAD
     if ( envConfig.env === 'development' || envConfig.env === 'test') {
 
     } else {
@@ -191,6 +194,14 @@ async function getUsersById(id) {
         return response;
     }
     
+=======
+
+   const apiURL = `${root}/users/${id}`;
+    const response = await GET(apiURL);
+    if (response.status === "400") return "400"; //error
+
+  return response;
+>>>>>>> 6c870be2e1214f126b45f907a4d387feb1643353
 }
 
 /**
@@ -200,13 +211,12 @@ async function getUsersById(id) {
  * @returns response data
  */
 async function editUser(id, data) {
-    const apiURL = `${root}/api/users/${id}`;
-    const response = await PUT(apiURL, data);
-    if (response.status === "400") return "400";
+  const apiURL = `${root}/api/users/${id}`;
+  const response = await PUT(apiURL, data);
+  if (response.status === "400") return "400";
 
-    return response;
+  return response;
 }
-
 
 /**
  * Removes a user specified by URL.
@@ -214,13 +224,12 @@ async function editUser(id, data) {
  * @returns response data
  */
 async function deleteUser(id) {
-    const apiURL = `${root}/users/${id}`;
-    const response = await DELETE(apiURL);
-    if (response === "400") return "400";
+  const apiURL = `${root}/users/${id}`;
+  const response = await DELETE(apiURL);
+  if (response === "400") return "400";
 
-    return response;
+  return response;
 }
-
 
 /**
  * Update Profile Picture for a user's id.
@@ -229,15 +238,15 @@ async function deleteUser(id) {
  * @return status, 200 if successful, 400 if not, and data. data=array[object] with the profile_image, string, name of the file
  */
 function updateProfilePicture(id, _image) {
-    const apiURL = `${root}/users/${id}/profile-picture`;
-    const data = { image: _image };
-    const response = PUT(apiURL, data);
-    if (response.status === "400") {
-        console.log("error updating profile picture.");
-        return "400";
-    }
-    console.log("Updated Profile Picture for user.")
-    return response.status;
+  const apiURL = `${root}/users/${id}/profile-picture`;
+  const data = { image: _image };
+  const response = PUT(apiURL, data);
+  if (response.status === "400") {
+      console.log("error updating profile picture.");
+      return "400";
+  }
+  console.log("Updated Profile Picture for user.")
+  return response.status;
 }
 
 /**
@@ -266,6 +275,7 @@ function updateEmail(id, _email, _confirm_email, _password) {
         return response.status;
     }
     console.log("Updated primary email for user.")
+
     return response.status;
 }
 
@@ -297,7 +307,6 @@ function updateUsername(id, _username, _confirm_user, _password) {
     return response.status;
 }
 
-
 /**
  * Request for the forget password page, send the user an email for resetting their password.
  * @param email - email to send password reset to.
@@ -319,6 +328,7 @@ async function requestPasswordReset(email) {
     } else {
         url = `http://localhost:8081/resetPassword/${token}`;
     }
+    console.log('Token put into database.');
 
     try {
         // Add token to online
@@ -349,29 +359,28 @@ async function requestPasswordReset(email) {
             <p>Kind regards,<br>
             LFG Team</p>
             `;
-        const message = {
-            from: envConfig.mailerEmail,
-            to: email,
-            subject: 'Reset Your LFG Password',
-            html: emailMessage,
-        };
+    const message = {
+      from: envConfig.mailerEmail,
+      to: email,
+      subject: 'Reset Your LFG Password',
+      html: emailMessage,
+    };
 
-        // send account activation email
-        await transporter.sendMail(message);
+    // send account activation email
+    await transporter.sendMail(message);
 
-        console.log("Email sent successfully.");
-        return "201";
-    } catch (err) {
-        console.log(err);
-        console.log("An error occured during password reset request");
-        return response.status;
-    }
+    console.log('Email sent successfully.');
+    return '201';
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured during password reset request');
+    return response.status;
+  }
 }
-
 
 /**
  * Update Password for user specified with user_id
- * @param id = int, user id for the user wishing to change 
+ * @param id = int, user id for the user wishing to change
  * @param newPassword = string, new password
  * @param password_confirm - string, confirm password to be the same as the new password
  * @param password - string, user's current password
@@ -386,6 +395,7 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
         console.log("Password and confirmation are not the same.");
         return "400";
     }
+    console.log('Token accepted, email verified.');
 
     //hash password
     const hashPass = await bcrypt.hash(_newPassword, 10);
@@ -420,9 +430,8 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
     }
 }
 
-
 /**
- * Updates user visibility, between 0 (private) and 1 (public). just a switch. 
+ * Updates user visibility, between 0 (private) and 1 (public). just a switch.
  * @param id - user_id for the user
  * @returns "400" if error, "200" if valid
  */
@@ -451,7 +460,6 @@ function updateUserVisibility(id) {
     return "200";
 }
 
-
 /**
  * Get User by Username
  * @param username - Username of user to be recieved
@@ -475,7 +483,6 @@ async function getUserByUsername(username) {
     console.log("Data recieved.");
     return response;
 }
-
 
 /**
  * Get User by email
@@ -501,7 +508,6 @@ async function getUserByEmail(email) {
     return response;
 }
 
-
 /**
  * Get people that a user is following.
  * @param id - id of the user that we are searching.
@@ -517,7 +523,6 @@ function getUserFollowing(id) {
     console.log("Data recieved.");
     return response;
 }
-
 
 /**
  * Get all projects the user is a member of and has set to be public for the profile page
@@ -558,7 +563,6 @@ function updateProjectVisibility(userID, projectID, _visibility) {
     return "201";
 }
 
-
 /**
  * Get projects the user is following.
  * @param id - ID of the user.
@@ -574,7 +578,6 @@ function getProjectFollowing(id) {
     console.log("Data recieved.");
     return response;
 }
-
 
 /**
  * Follow a project for a user.
@@ -596,10 +599,9 @@ function addProjectFollowing(id, projectID) {
     return "200";
 }
 
-
 /**
  * Unfollow a project for a user.
- * @param id - user id 
+ * @param id - user id
  * @param projId - project Id to be unfollowed.
  * @returns 201 if successful, 400 if not.
  */
@@ -613,7 +615,6 @@ function deleteProjectFollowing(id, projID) {
     console.log("Deleted project following.");
     return "200";
 }
-
 
 /**
  * Follow a person for a user.
@@ -635,7 +636,6 @@ function addUserFollowing(id, followID) {
     return "201";
 }
 
-
 /**
  * Unfollow person for a user.
  * @param id - user id of the user.
@@ -645,29 +645,27 @@ function addUserFollowing(id, followID) {
 
 // }
 
-
 export default {
-    createNewUser,
-    getUsers,
-    getUsersById,
-    editUser,
-    deleteUser,
-    userInDatabase,
-    updateProfilePicture,
-    getAccountInformation,
-    updateEmail,
-    updateUsername,
-    updatePassword,
-    updateUserVisibility,
-    requestPasswordReset,
-    getUserByUsername,
-    getUserByEmail,
-    getUserFollowing,
-    getVisibleProjects,
-    updateProjectVisibility,
-    getProjectFollowing,
-    addProjectFollowing,
-    deleteProjectFollowing,
-    addUserFollowing,
-
+  createNewUser,
+  getUsers,
+  getUsersById,
+  editUser,
+  deleteUser,
+  userInDatabase,
+  updateProfilePicture,
+  getAccountInformation,
+  updateEmail,
+  updateUsername,
+  updatePassword,
+  updateUserVisibility,
+  requestPasswordReset,
+  getUserByUsername,
+  getUserByEmail,
+  getUserFollowing,
+  getVisibleProjects,
+  updateProjectVisibility,
+  getProjectFollowing,
+  addProjectFollowing,
+  deleteProjectFollowing,
+  addUserFollowing,
 };

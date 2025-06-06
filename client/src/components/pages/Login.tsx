@@ -18,9 +18,9 @@ const Login: React.FC = () => {
   // State variables
   const [loginInput, setLoginInput] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string>(''); // Error message for missing or incorrect information
 
-  // Function to handle the login button click
   // Function to handle the login button click
 const handleLogin = async () => {
   // Check if the loginInput and password are not empty
@@ -29,11 +29,39 @@ const handleLogin = async () => {
     return;
   }
 
-  // Check if the login credentials are associated with an account
-  // search input as email
-  if (loginInput.includes('@') && loginInput.includes('.')) {
+    // Check if the login credentials are associated with an account
+    // search input as email
+    if (loginInput.includes('@') && loginInput.includes('.')) {
+      try {
+        const response = await fetch(`/api/users/search-email/${loginInput}`);
+        const data = await response.json();
+        if (data) {
+          // try login
+          try {
+            sendPost('/api/login', { loginInput, password }, (response: LoginResponse) => {
+              if (response.error) {
+                setError(response.error);
+                return;
+              }
+              // Success message
+              setError('Logging in');
+            });
+            return; // Prevent executing additional code after login attempt
+          } catch (err) {
+            setError('An error occurred during login');
+            console.log(err);
+            return;
+          }
+        }
+      } catch (err) {
+        setError('An error occurred during login');
+        console.log(err);
+        return false;
+      }
+    }
+    // search input as username
     try {
-      const response = await fetch(`/api/users/search-email/${loginInput}`);
+      const response = await fetch(`/api/users/search-username/${loginInput}`);
       const data = await response.json();
       if (data) {
         // try login
@@ -58,59 +86,31 @@ const handleLogin = async () => {
       console.log(err);
       return false;
     }
-  }
-  // search input as username
-  try {
-    const response = await fetch(`/api/users/search-username/${loginInput}`);
-    const data = await response.json();
-    if (data) {
-      // try login
-      try {
-        sendPost('/api/login', { loginInput, password }, (response: LoginResponse) => {
-          if (response.error) {
-            setError(response.error);
-            return;
-          }
+
+    // no errors, send login request
+    try {
+      // Success message
+      setError('Trying to log in');
+      sendPost('/api/login', { loginInput, password }, (response: LoginResponse) => {
+        if (response.error) {
+          setError(response.error);
+        } else {
           // Success message
           setError('Logging in');
-        });
-        return; // Prevent executing additional code after login attempt
-      } catch (err) {
-        setError('An error occurred during login');
-        console.log(err);
-        return;
-      }
+        }
+      });
+    } catch (err) {
+      setError('An error occurred during login');
+      console.log(err);
+      return false;
     }
-  } catch (err) {
-    setError('An error occurred during login');
-    console.log(err);
-    return false;
-  }
 
-  // no errors, send login request
-  try {
-    // Success message
-    setError('Trying to log in');
-    sendPost('/api/login', { loginInput, password }, (response: LoginResponse) => {
-      if (response.error) {
-        setError(response.error);
-      } else {
-        // Success message
-        setError('Logging in');
-      }
-    });
-  } catch (err) {
-    setError('An error occurred during login');
-    console.log(err);
-    return false;
-  }
-
-  // // Sends the user to the create project popup if they successfully logged in
-  // if(error == 'Logging in')
-  // {
-  //   navigate(paths.routes.CREATEPROJECT);
-  // }
-};
+    // // Sends the user to the create project popup if they successfully logged in
+    // if(error == 'Logging in')
+    // {
+    //   navigate(paths.routes.CREATEPROJECT);
+    // }
+  };
 
   // Function to handle the forgot pass button click
   const handleForgotPass = () => {
@@ -139,20 +139,20 @@ const handleLogin = async () => {
 
                 *************************************************************/}
         <div className="login-form column">
-            <ThemeIcon //Back button to return to the previous page
-              light={'assets/back_light.png'}
-              dark={'assets/back_dark.png'}
-              alt="Back Button"
-              id="backPage-arrow"
-              onClick={() => {
-    // If the previous page is not forgot password, go back to it; otherwise, go home
-    if (from && from !== paths.routes.FORGOTPASSWORD && from !== paths.routes.RESETPASSWORD) {
-      navigate(from);
-    } else {
-      navigate(paths.routes.HOME); // or your default page
-    }
-  }}
-            />
+          <ThemeIcon //Back button to return to the previous page
+            light={'assets/back_light.png'}
+            dark={'assets/back_dark.png'}
+            alt="Back Button"
+            id="backPage-arrow"
+            onClick={() => {
+              // If the previous page is not forgot password, go back to it; otherwise, go home
+              if (from && from !== paths.routes.FORGOTPASSWORD && from !== paths.routes.RESETPASSWORD) {
+                navigate(from);
+              } else {
+                navigate(paths.routes.HOME); // or your default page
+              }
+            }}
+          />
           <h2>Log In</h2>
           <div className="error">{error}</div>
           <div className="login-form-inputs">
@@ -163,13 +163,31 @@ const handleLogin = async () => {
               value={loginInput}
               onChange={(e) => setLoginInput(e.target.value)}
             />
-            <input
-              className="login-input"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div id='password-wrapper'>
+              <input
+                className="login-input"
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button id="show-password" onClick={() => setShowPassword((prevState) =>
+                !prevState)}>
+                {showPassword ? (
+                  <ThemeIcon
+                    id='eye-icon'
+                    light={'assets/black/password_shown.png'}
+                    dark={'assets/white/password_shown.png'}
+                  />) :
+                  (
+                    <ThemeIcon
+                      id='eye-icon'
+                      light={'assets/black/password_hidden.png'}
+                      dark={'assets/white/password_hidden.png'}
+                    />
+                  )}
+              </button>
+            </div>
             <button id="forgot-password" onClick={handleForgotPass}>
               Forgot Password
             </button>

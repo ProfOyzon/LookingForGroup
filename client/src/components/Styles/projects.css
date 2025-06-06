@@ -883,6 +883,8 @@ Project Creator and Editor style rules
 .project-editor-project-member-name {
   color: var(--primary-color);
   font-weight: 700;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .project-editor-project-member-info {

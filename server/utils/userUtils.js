@@ -164,7 +164,7 @@ async function getUsers() {
  * Get account information of a user through ID
  * @param user_id - int, id of the user
  * @returns data - JSONified data from account information. 400 if not valid.
- * @returns user_id, primary_email, rit_email, username, visibility
+ * user_id, primary_email, rit_email, username, visibility
  */
 async function getAccountInformation(id) {
     const apiURL = `${root}/users/${id}/account`;
@@ -183,25 +183,12 @@ async function getAccountInformation(id) {
  * @returns result - JSONified data of specified user.
  */
 async function getUsersById(id) {
-<<<<<<< HEAD
-    if ( envConfig.env === 'development' || envConfig.env === 'test') {
-
-    } else {
-        const apiURL = `${root}/users/${id}`;
-        const response = await GET(apiURL);
-        if (response.status === "400") return "400"; //error
-
-        return response;
-    }
-    
-=======
 
    const apiURL = `${root}/users/${id}`;
     const response = await GET(apiURL);
     if (response.status === "400") return "400"; //error
 
   return response;
->>>>>>> 6c870be2e1214f126b45f907a4d387feb1643353
 }
 
 /**

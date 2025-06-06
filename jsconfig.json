@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "checkJs": true,
+    "allowJs": true,
+    "strict": true,
+    "typeRoots": ["node_modules/@types", "./server/types/**/*"]
+  },
+  "include": ["./server/**/*"]
+}

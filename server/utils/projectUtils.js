@@ -1,4 +1,10 @@
-import { GET, PUT, POST, DELETE } from './fetchUtils';
+import envConfig from '../config/env.js';
+import { GET, PUT, POST, DELETE } from './fetchUtils.js';
+
+const root =
+  envConfig.env === 'development' || envConfig.env === 'test'
+    ? `http://localhost:8081/api`
+    : `https://lfg.gccis.rit.edu/api`;
 
 /**
  * Creates a new project and adds it to the database. All params default to null.
@@ -14,9 +20,9 @@ import { GET, PUT, POST, DELETE } from './fetchUtils';
  * @param jobs - array[object] | List of roles being recruited for
  * @param members  - array[object] | List of project members
  * @param socials - array[object] | List of relevant social media pages
- * @returns 200 if valid, 400 if not
+ * @returns "200" if valid, "400" if not
  */
-const createNewProject = (
+const createNewProject = async (
   _userId,
   _title,
   _hook,
@@ -30,7 +36,7 @@ const createNewProject = (
   _members,
   _socials
 ) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects`;
+  const apiURL = `${root}/projects`;
 
   const data = {
     userId: _userId,
@@ -40,15 +46,15 @@ const createNewProject = (
     purpose: _purpose,
     status: _status,
     audience: _audience,
-    projectTypes: _pTypes,
+    project_types: _pTypes,
     tags: _pTags,
     jobs: _jobs,
     members: _members,
     socials: _socials,
   };
 
-  let response = POST(apiURL, data);
-  if (response.status === '400') {
+  let response = await POST(apiURL, data);
+  if (response === '400') {
     console.log('Error creating new project.');
     return '400';
   }
@@ -58,14 +64,14 @@ const createNewProject = (
 
 /**
  * Gets all projects in the database
- * @returns Array of all projects if valid, 400 if not
+ * @returns Array of all projects if valid, "400" if not
  */
 const getProjects = async () => {
-  const apiURL = `https://lfg.gccis.rit.edu/api/projects`;
+  const apiURL = `${root}/projects`;
 
   let response = await GET(apiURL);
 
-  if (response.status === '400') {
+  if (response === '400') {
     return '400';
   }
   return response.data;
@@ -74,12 +80,12 @@ const getProjects = async () => {
 /**
  * Retrieves data of a project by its ID
  * @param ID -  ID of project to retrieve
- * @returns - A project object if valid, 400 if not
+ * @returns - A project object if valid, "400" if not
  */
-const getByID = (ID) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}`;
-  let response = GET(apiURL);
-  if (response.status === '400') {
+const getByID = async (ID) => {
+  const apiURL = `https://lfg.gccis.rit.edu/api/projects/${ID}`;
+  let response = await GET(apiURL);
+  if (response === '400') {
     return '400';
   }
   return response.data;
@@ -91,10 +97,13 @@ const getByID = (ID) => {
  * @param data - Mapped data for update
  * @returns Response status
  */
-const updateProject = (ID, data) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}`;
-  let response = PUT(apiURL, data);
-  return response.status;
+const updateProject = async (ID, data) => {
+  const apiURL = `${root}/projects/${ID}`;
+  let response = await PUT(apiURL, data);
+  if (response === '400') {
+    return '400';
+  }
+  return '200';
 };
 
 /**
@@ -102,23 +111,26 @@ const updateProject = (ID, data) => {
  * @param ID - ID of the project to delete
  * @returns Response status
  */
-const deleteProject = (ID) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}`;
-  let response = DELETE(apiURL);
-  return response.status;
+const deleteProject = async (ID) => {
+  const apiURL = `${root}/projects/${ID}`;
+  let response = await DELETE(apiURL);
+  if (response === '400') {
+    return '400';
+  }
+  return '200';
 };
 
 /**
  * Updates the thumbnail image for a project
  * @param ID - ID of the project to update
  * @param image - Image file of new thumbnail
- * @returns The filename of the thumbnail image if valid, 400 if not
+ * @returns The filename of the thumbnail image if valid, "400" if not
  */
-const updateThumbnail = (ID, _image) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/thumbnail`;
+const updateThumbnail = async (ID, _image) => {
+  const apiURL = `${root}/projects/${ID}/thumbnail`;
   const data = { image: _image };
-  let response = PUT(apiURL, data);
-  if (response.status === '400') {
+  let response = await PUT(apiURL, data);
+  if (response === '400') {
     return '400';
   }
   return response.data;
@@ -127,12 +139,12 @@ const updateThumbnail = (ID, _image) => {
 /**
  * Gets the pictures used in a project's carousel
  * @param ID - ID of the target project
- * @returns Array of image objects if valid, 400 if not
+ * @returns Array of image objects if valid, "400" if not
  */
-const getPics = (ID) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/pictures`;
-  let response = GET(apiURL);
-  if (response.status === '400') {
+const getPics = async (ID) => {
+  const apiURL = `${root}/projects/${ID}/pictures`;
+  let response = await GET(apiURL);
+  if (response === '400') {
     return '400';
   }
   return response.data;
@@ -145,14 +157,17 @@ const getPics = (ID) => {
  * @param position - Position of the image in the carousel
  * @returns Response status
  */
-const addPic = (ID, _image, _position) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/pictures`;
+const addPic = async (ID, _image, _position) => {
+  const apiURL = `${root}/projects/${ID}/pictures`;
   const data = {
     image: _image,
     position: _position,
   };
-  let response = POST(apiURL, data);
-  return response.status;
+  let response = await POST(apiURL, data);
+  if (response === '400') {
+    return '400';
+  }
+  return '200';
 };
 
 /**
@@ -161,10 +176,13 @@ const addPic = (ID, _image, _position) => {
  * @param images - Array of objects, which contain the image "id" and new "position"
  * @returns Response status
  */
-const updatePicPositions = (ID, images) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/pictures`;
-  let response = PUT(apiURL, images);
-  return response.status;
+const updatePicPositions = async (ID, images) => {
+  const apiURL = `${root}/projects/${ID}/pictures`;
+  let response = await PUT(apiURL, images);
+  if (response === '400') {
+    return '400';
+  }
+  return '200';
 };
 
 /**
@@ -173,10 +191,13 @@ const updatePicPositions = (ID, images) => {
  * @param image - Filename of the image to delete
  * @returns Response status
  */
-const deletePic = (ID, image) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/pictures`;
-  let response = DELETE(apiURL, image);
-  return response.status;
+const deletePic = async (ID, image) => {
+  const apiURL = `${root}/projects/${ID}/pictures`;
+  let response = await DELETE(apiURL, image);
+  if (response === '400') {
+    return '400';
+  }
+  return '200';
 };
 
 /**
@@ -187,15 +208,18 @@ const deletePic = (ID, image) => {
  * @param permission - The user's access level
  * @returns Response status
  */
-const addMember = (ID, _userId, _titleId, _permission) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/members`;
+const addMember = async (ID, _userId, _titleId, _permission) => {
+  const apiURL = `${root}/projects/${ID}/members`;
   const data = {
     userId: _userId,
     titleId: _titleId,
     permission: _permission,
   };
-  let response = POST(apiURL, data);
-  return response.status;
+  let response = await POST(apiURL, data);
+  if (response === '400') {
+    return '400';
+  }
+  return '200';
 };
 
 /**
@@ -206,15 +230,18 @@ const addMember = (ID, _userId, _titleId, _permission) => {
  * @param permission - The user's access level
  * @returns Response status
  */
-const updateMember = (ID, _userId, _titleId, _permission) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/members`;
+const updateMember = async (ID, _userId, _titleId, _permission) => {
+  const apiURL = `${root}/projects/${ID}/members`;
   const data = {
     userId: _userId,
     titleId: _titleId,
     permission: _permission,
   };
-  let response = PUT(apiURL, data);
-  return response.status;
+  let response = await PUT(apiURL, data);
+  if (response === '400') {
+    return '400';
+  }
+  return '200';
 };
 
 /**
@@ -223,10 +250,13 @@ const updateMember = (ID, _userId, _titleId, _permission) => {
  * @param userId - ID of the target user
  * @returns Response status
  */
-const deleteMember = (ID, userId) => {
-  const apiURL = `lfg.gccis.rit.edu/api/projects/${ID}/members/${userId}`;
-  let response = DELETE(apiURL);
-  return response.status;
+const deleteMember = async (ID, userId) => {
+  const apiURL = `${root}/projects/${ID}/members/${userId}`;
+  let response = await DELETE(apiURL);
+  if (response === '400') {
+    return '400';
+  }
+  return '200';
 };
 
 export default {

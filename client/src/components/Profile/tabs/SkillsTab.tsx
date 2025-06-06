@@ -117,12 +117,6 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
 
     // if tag is unselected
     if (e.target.className.includes('unselected')) {
-      // change tag class
-      e.target.className = e.target.className.replace('unselected', 'selected');
-
-      // change icon class
-      e.target.querySelector('i').className = 'fa fa-close';
-
       // get tag id and type according to type of tag
       let id: number = -1;
       let type: string = '';
@@ -170,12 +164,6 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
         project_types: (modifiedProfile.project_types ?? []).filter((t) => t.project_type !== tag),
         tags: (modifiedProfile.tags ?? []).filter((t) => t.tag !== tag)
       });
-
-      // deselect tag
-      e.target.className = e.target.className.replace('selected', 'unselected');
-
-      // change icon class
-      e.target.querySelector('i').className = 'fa fa-plus';
     }
   }, [allSkills, modifiedProfile]);
 

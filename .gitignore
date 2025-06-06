@@ -87,3 +87,7 @@ server/images/
 
 # Ignore .idea for Jetbrains developing tools
 .idea
+
+# Ignore vs & vscode config files
+.vs
+.vscode

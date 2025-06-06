@@ -86,8 +86,14 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
       return false;
     }
 
-    // check if email is valid
+    // check if username is valid
+    if (!(username.match(/^[a-zA-Z0-9_]+$/) != null)) {
+      setMessage('Username can not include white space or special characters!');
+      return false;
+    }
+
     if (!email.includes('rit.edu')) {
+      // check if email is valid
       setMessage('Not an RIT email');
       return false;
     }
@@ -140,7 +146,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     }
   };
 
-  // Function to handle password validation 
+  // Function to handle password validation
   const validatePassword = (pass) => {
     // Don't check password if there's nothing there
     if (pass === '') {
@@ -194,12 +200,20 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
   return (
     <div className="background-cover">
       <div className="login-signup-container" onKeyDown={handleKeyPress}>
+        <ThemeIcon //Back button to return to the previous page
+          light={'assets/back_light.png'}
+          dark={'assets/back_dark.png'}
+          alt="Back Button"
+          id="backPage-arrow"
+          onClick={() => navigate(-1)}
+          />
         {/*************************************************************
 
                     Signup Form inputs
 
                 *************************************************************/}
         <div className="signup-form column">
+          
           <h2>Sign Up</h2>
 
           <div className="error">{message}</div>

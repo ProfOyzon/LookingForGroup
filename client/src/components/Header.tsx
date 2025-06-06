@@ -19,6 +19,7 @@ import * as paths from '../constants/routes';
 import { sendPost } from '../functions/fetch';
 import { ThemeIcon } from './ThemeIcon';
 import { ThemeContext } from '../contexts/ThemeContext';
+import { useLocation } from 'react-router-dom'; // Hook to access the current location
 
 //Header component to be used in pages
 
@@ -32,10 +33,11 @@ let loggedIn;
 //Add functions to buttons (profile/settings = navigate to those pages; light mode: toggle light/dark mode)
 //(logout = logout the user and send them to home page or equivalent)
 
-export const Header = ({ dataSets, onSearch }) => {
+export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState(null);
   const [profileImg, setProfileImg] = useState<string>('');
+  const location = useLocation(); // Hook to access the current location
 
   // Pull the theme and setTheme function from useState() via a context
   const theme = useContext(ThemeContext)['theme'];
@@ -82,6 +84,11 @@ export const Header = ({ dataSets, onSearch }) => {
     const response = await fetch('/api/auth');
     const { data } = await response.json();
     navigate(`${paths.routes.PROFILE}?userID=${data}`);
+
+    // Collapse the dropwdown if coming from another user's page
+    if (window.location.href.includes("profile")) {
+      window.location.reload();
+    }
   };
 
   const switchTheme = () => {
@@ -91,9 +98,12 @@ export const Header = ({ dataSets, onSearch }) => {
 
   return (
     <div id="header">
+      {/* Conditional rendering for search bar */}
+      {(!hideSearchBar) && (
       <div id="header-searchbar">
         <SearchBar dataSets={dataSets} onSearch={onSearch} />
       </div>
+      )}
       <div id="header-buttons">
         {/* Notififcations not being used rn */}
         {/* <Dropdown>
@@ -164,7 +174,7 @@ export const Header = ({ dataSets, onSearch }) => {
                 </button>{' '}
 
                 {/* LOG IN Button */}
-                <button onClick={() => handlePageChange(paths.routes.LOGIN)}>
+                <button onClick={() => navigate(paths.routes.LOGIN, { state: { from: location.pathname } })}>
                   <ThemeIcon
                     light={'assets/black/logout.png'}
                     dark={'assets/white/logout.png'}

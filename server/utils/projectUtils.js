@@ -34,7 +34,7 @@ const createNewProject = async (
   _pTags,
   _jobs,
   _members,
-  _socials
+  _socials,
 ) => {
   const apiURL = `${root}/projects`;
 

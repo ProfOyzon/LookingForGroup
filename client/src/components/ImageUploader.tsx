@@ -8,11 +8,21 @@ let imageView: HTMLElement;
 let imageUploader: HTMLInputElement;
 
 const uploadImageFile = (keepImage: boolean) => {
-  if (!imageUploader.files || imageUploader.files.length === 0) return;
-
+  console.log(imageUploader.files[0]);
+  if (!imageUploader.files || imageUploader.files.length === 0 || imageUploader.files[0] == undefined) {
+    return;
+  }
   const imgLink = URL.createObjectURL(imageUploader.files[0]);
   if (keepImage) {
-    uploadImage(imgLink);
+
+    // Response for whether file was of the right type
+    if (imageUploader.files[0].type == "image/png" || imageUploader.files[0].type == "image/jpeg") {
+      uploadImage(imgLink);
+    }
+    else {
+      // This can be replaced with prettier error handling if wanted
+      alert("File type not supported: Please use .PNG or .JPG");
+    }
   }
 };
 
@@ -44,7 +54,7 @@ const init = (keepImage: boolean) => {
 
 export const ImageUploader = ({
   keepImage = true,
-  callback = () => {},
+  callback = () => { },
 }) => {
   useEffect(() => {
     init(keepImage);
@@ -56,7 +66,7 @@ export const ImageUploader = ({
         type="file"
         name="image"
         id="image-uploader"
-        accept="image/png, image/jpg"
+        multiple accept=".png, .jpg"
         onChange={callback}
         hidden
       />

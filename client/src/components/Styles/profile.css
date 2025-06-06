@@ -52,6 +52,8 @@ Profile Panel component style rules
     font-weight: 700;
     color: var(--primary-color);
     line-height: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   /* Major */
@@ -73,6 +75,8 @@ Profile Panel component style rules
     line-height: 18px;
     letter-spacing: -0.132px;
     align-self: stretch;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 }
 
@@ -999,6 +1003,21 @@ New Profile page style rules
   color: var(--main-text);
 }
 
+/* Profile view responsiveness */
+@media only screen and (max-width: 1200px) {
+  #profile-information-grid {
+    grid-template: 
+      'image' auto
+      'name' auto
+      'buttons' auto
+      'extra' auto
+      'desc' auto
+      'fact' auto
+      'bio' auto
+      'skills' auto / 1fr;
+  }
+}
+
 #profile-page-content h2 {
   color: var(--primary-color);
 }
@@ -1007,7 +1026,7 @@ New Profile page style rules
   width: 280px;
   height: 280px;
   grid-area: image;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 10px;
   border: 2px solid white;
 }
@@ -1017,6 +1036,8 @@ New Profile page style rules
   font-style: italic;
   color: var(--main-text);
   width: 280px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 #profile-info-name {
@@ -1028,6 +1049,8 @@ New Profile page style rules
   color: var(--darkGray);
   gap: 10px;
   text-align: left;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 #profile-fullname {
@@ -1041,6 +1064,8 @@ New Profile page style rules
 #profile-info-buttons {
   grid-area: buttons;
   align-items: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 #profile-info-extras {
@@ -1050,6 +1075,8 @@ New Profile page style rules
   align-items: center;
   justify-content: start;
   gap: 20px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .profile-extra {
@@ -1067,6 +1094,9 @@ New Profile page style rules
 #profile-info-description {
   grid-area: desc;
   text-align: left;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 #profile-info-funfact {
@@ -1074,6 +1104,8 @@ New Profile page style rules
   text-align: left;
   margin-top: auto;
   font-style: italic;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 #fun-fact-start {

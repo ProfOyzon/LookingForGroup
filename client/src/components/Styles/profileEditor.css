@@ -54,6 +54,17 @@ textarea {
   border-radius: 30px;
   padding: 10px 20px;
   margin: auto;
+  cursor: pointer;
+}
+
+.error-message {
+  display: none;
+}
+
+.error-message p {
+  padding-left: 32%;
+  font-size: 20px;
+  color: red;
 }
 
 .profile-edit-button {

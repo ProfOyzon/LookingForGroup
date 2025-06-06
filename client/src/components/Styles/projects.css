@@ -11,6 +11,8 @@ Project Panel component style rules
   justify-content: space-between;
   gap: 20px;
   width: 100%;
+  /* keep panels below searchbar */ 
+  z-index: 0;
   /* margin: 0 50px 50px 50px; */
 }
 
@@ -759,7 +761,16 @@ Project Creator and Editor style rules
 
 #project-editor-selected-tags-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+#project-editor-type-tags-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: 8px;
 }
@@ -872,6 +883,8 @@ Project Creator and Editor style rules
 .project-editor-project-member-name {
   color: var(--primary-color);
   font-weight: 700;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .project-editor-project-member-info {
@@ -2565,6 +2578,7 @@ Project Carousel style rules
   background-color: var(--primary-color) !important;
   color: var(--invert-text);
   padding: 5px 20px;
+  width: 100px;
   font-weight: 700;
 }
 

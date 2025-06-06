@@ -70,18 +70,18 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
                 socials: _socials
             };
 
-        const response = await POST(apiURL, data);
-        if (response.status === "400") {
-            console.log("Error creating a new user.");
-            return "400";
+            const response = await POST(apiURL, data);
+            if (response.status === "400") {
+                console.log("Error creating a new user.");
+                return "400";
+            }
+            console.log(`User ${email, _firstName, _lastName} created.`);
+            console.log(data);
+            return data;
         }
-        console.log(`User ${email, _firstName, _lastName} created.`);
-        console.log(data);
-        return data;
+
     }
-
 }
-
 
 /**
  * Checks if a User is already within database through RIT email
@@ -104,16 +104,17 @@ async function userInDatabase(email) {
         const apiURL = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
         const response = GET(apiURL);
 
-    if (response.status === "400") {
-        console.log("Error fetching email.");
-        return false;
-    } else {
-        if (!response.data || response.data.length === 0) {
-            console.log(response.data);
+        if (response.status === "400") {
+            console.log("Error fetching email.");
             return false;
+        } else {
+            if (!response.data || response.data.length === 0) {
+                console.log(response.data);
+                return false;
+            }
+            console.log("User found with email", email);
+            return true;
         }
-        console.log("User found with email", email);
-        return true;
     }
 }
 
@@ -122,11 +123,38 @@ async function userInDatabase(email) {
  * @returns result - JSONified data of all users, else if error, '400'.
  */
 async function getUsers() {
-    const apiURL = `${root}/users`;
-    const response = await GET(apiURL);
-    if (response.status === "400") return "400";
-
-    return response;
+    try{
+        if(envConfig.env === 'development' || envConfig.env === 'test') {
+            const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
+                FROM users u
+                LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+                    FROM job_titles jt) jt
+                ON u.job_title_id = jt.title_id
+                LEFT JOIN (SELECT m.major_id, m.label AS major
+                    FROM majors m) m
+                ON u.major_id = m.major_id
+                LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+                    "position", us.position)) AS skills
+                    FROM user_skills us 
+                    JOIN skills s 
+                        ON us.skill_id = s.skill_id
+                    GROUP BY us.user_id) s
+                ON u.user_id = s.user_id
+                WHERE u.visibility = '1'`;
+            const [users] = await pool.query(sql);
+            return RESPONSE(200, users, '');
+        } else {
+            const apiURL = `${root}/users`;
+            const response = await GET(apiURL);
+            if (response.status === "400") return "400";
+            return response;
+        }
+    } catch (err) {
+        console.log(err);
+        return RESPONSE(400,'','An error occurred while getting all users');
+    }
+    
 }
 
 /**

@@ -1,4 +1,4 @@
-import util from '../utils/projectUtils';
+import util from '../utils/projectUtils.js';
 
 /* - - - POSTs - - - */
 

@@ -1,6 +1,6 @@
-import envConfig from '../config/env';
+import envConfig from '../config/env.js';
 //import { createUser } from '../controllers/users';
-import { GET, POST, PUT, DELETE } from './fetchUtils';
+import { GET, POST, PUT, DELETE } from './fetchUtils.js';
 
 const root =
   envConfig.env === 'development' || envConfig.env === 'test'
@@ -222,6 +222,7 @@ function updateEmail(id, _email, _confirm_email, _password) {
     return response.status;
   }
   console.log('Updated primary email for user.');
+
   return response.status;
 }
 
@@ -274,6 +275,7 @@ async function requestPasswordReset(email) {
   } else {
     url = `http://localhost:8081/resetPassword/${token}`;
   }
+  console.log('Token put into database.');
 
   try {
     // Add token to online
@@ -340,6 +342,7 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
     console.log('Password and confirmation are not the same.');
     return '400';
   }
+  console.log('Token accepted, email verified.');
 
   //hash password
   const hashPass = await bcrypt.hash(_newPassword, 10);

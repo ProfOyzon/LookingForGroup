@@ -1,10 +1,10 @@
-import utils from '../utils/loginUtils';
+import utils from '../utils/loginUtils.js';
 
 /* - - - POSTs - - -*/
 //Login as the user.
 
 //create a new user (prompt email). in dev environment, returns token.
-test('Add user information to database, set up for account activtion', async () => {
+test('Add user information to database, set up for account activation', async () => {
   const r = await utils.sendSignup(
     'testaccount',
     'password123',

@@ -20,6 +20,7 @@ try {
   // Release connection if no error is raised
   testConnection.release();
 } catch (err) {
+  // @ts-ignore
   switch (err.code) {
     // DB host error
     case 'ENOTFOUND':

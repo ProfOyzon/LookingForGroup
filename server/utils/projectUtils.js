@@ -1,5 +1,5 @@
-import envConfig from '../config/env';
-import { GET, PUT, POST, DELETE } from './fetchUtils';
+import envConfig from '../config/env.js';
+import { GET, PUT, POST, DELETE } from './fetchUtils.js';
 
 const root =
   envConfig.env === 'development' || envConfig.env === 'test'

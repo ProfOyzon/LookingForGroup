@@ -1,4 +1,4 @@
-import util from '../utils/userUtils';
+import util from '../utils/userUtils.js';
 
 /* - - - GETs - - - */
 

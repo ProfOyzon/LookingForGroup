@@ -23,7 +23,8 @@ app.use(express.json());
 // Setup sessions
 app.use(
   session({
-    secret: envConfig.sessionSecret,
+    // We might want to add some check earlier on to ensure the env variables are loaded, so we don't need this
+    secret: envConfig.sessionSecret ?? '',
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, maxAge: 60 * 60 * 6 * 1000 },
@@ -35,6 +36,7 @@ app.use(usersRouter);
 app.use(projectsRouter);
 app.use(datasetsRouter);
 
+// @ts-ignore
 app.get('/api', (req, res) => {
   return res.json({ message: 'You Reached The Looking For Group API' });
 });

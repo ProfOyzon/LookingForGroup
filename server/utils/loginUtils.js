@@ -1,6 +1,6 @@
 ///import {login} from '../controllers/users';
-import envConfig from '../config/env';
-import { POST } from './fetchUtils';
+import envConfig from '../config/env.js';
+import { POST } from './fetchUtils.js';
 import bcrypt from 'bcrypt';
 
 const root =

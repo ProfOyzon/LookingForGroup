@@ -1,4 +1,4 @@
-const { GET, POST, PUT, DELETE } = require('../utils/fetchUtils');
+import { GET, POST, PUT, DELETE } from '../utils/fetchUtils.js';
 
 //MOCK TESTING does not use real API calls
 describe('fetchUtils tests', () => {
@@ -13,6 +13,7 @@ describe('fetchUtils tests', () => {
   //GET
   test('GET: mocks GET request and checks response', async () => {
     const mockJson = { message: 'Success', user_id: 123 };
+
     const mockResponse = {
       json: jest.fn().mockResolvedValue(mockJson),
       status: 200,

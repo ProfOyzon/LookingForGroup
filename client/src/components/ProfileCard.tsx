@@ -33,16 +33,29 @@ This component is not necessarily the final version and doesn't match the visual
 
 */
 
-export const ProfileCard = ({ profile }) => {
+interface Skill {
+  skill: string;
+}
+
+interface ProfileData {
+  _id: string;
+  name: string;
+  pronouns: string[];
+  bio: string;
+  profile_image?: string;
+  skills: Skill[];
+}
+
+export const ProfileCard = ({ profile }: { profile: ProfileData }) => {
   // Updates the url to point toward the profile being clicked
   const navigate = useNavigate();
   const pathQuery = `?profID=${profile._id}`;
   return (
     <div className="discover-card">
       <img
-  src={profileData.profile_image ? `images/profiles/${profileData.profile_image}` : profilePicture}
-  alt={'profile image'}
-/>
+        src={profile.profile_image ? `images/profiles/${profile.profile_image}` : profilePicture}
+        alt={'profile image'}
+      />
       <div id="discover-card-body">
         <span>
           {/* When the title is clicked it navigates to the profile page */}

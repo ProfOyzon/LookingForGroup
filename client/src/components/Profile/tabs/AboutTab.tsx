@@ -90,6 +90,50 @@ export const AboutTab = (props: { profile: ProfileData }) => {
         <div id="profile-editor-add-image" className="edit-profile-image">
           <ImageUploader />
         </div>
+                <div className="about-row row-1">
+                    <div className="editor-input-item">
+                        <label>First Name*</label>
+                        {/* <br /> */}
+                        <input id="profile-editor-firstName" maxLength={50} type="text"></input>
+                    </div>
+                    <div className="editor-input-item">
+                        <label>Last Name*</label>
+                        {/* <br /> */}
+                        <input id="profile-editor-lastName" maxLength={50} type="text"></input>
+                    </div>
+                    <div className="editor-input-item">
+                        <label>Pronouns</label>
+                        {/* <br /> */}
+                        <input id="profile-editor-pronouns" maxLength={25} type="text"></input>
+                    </div>
+                </div>
+                <div className="about-row row-2">
+                    {<RoleSelector />}
+                    {<MajorSelector />}
+                    <div className="editor-input-item">
+                        <label>Year*</label>
+                        <select id="profile-editor-academicYear">
+                            <option>1st</option>
+                            <option>2nd</option>
+                            <option>3rd</option>
+                            <option>4th</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="about-row row-3">
+                    <div className="editor-input-item">
+                        <label>Location</label>
+                        <input id="profile-editor-location" maxLength={150} type="text"></input>
+                    </div>
+                </div>
+            </div>
+            <div className="edit-profile-section-2">
+                <TextArea
+                    title={'Personal Quote'}
+                    description={'Write a fun and catchy phrase that captures your unique personality!'}
+                    count={props.profile.headline ? props.profile.headline.length : 0}
+                    maxLength={100}
+                    id={'headline'} />
 
         <div className="about-row row-1">
           <div className="editor-input-item">

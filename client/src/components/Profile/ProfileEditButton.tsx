@@ -1186,12 +1186,12 @@ const EditButton = ({ userData }) => {
     return tempList;
   };
 
-  const saveData = () => {
+  const saveData = async () => {
     // User
-    saveUserData();
+    await saveUserData();
 
     // Projects
-    saveProjectsPage();
+    await saveProjectsPage();
 
     openClosePopup(showPopup, setShowPopup);
 

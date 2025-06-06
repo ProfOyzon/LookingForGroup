@@ -3,7 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { ThemeIcon } from './ThemeIcon';
 import * as paths from '../constants/routes';
 
-export const ProfilePanel = ({ profileData }) => {
+interface ProfileData {
+  user_id: string;
+  profile_image?: string;
+  first_name: string;
+  last_name: string;
+  major: string;
+  headline: string;
+  job_title: string;
+  location: string;
+  pronouns: string;
+  fun_fact: string;
+}
+
+interface ProfilePanelProps {
+  profileData: ProfileData;
+}
+
+export const ProfilePanel = ({ profileData }: ProfilePanelProps) => {
   const navigate = useNavigate();
   const profileURL = `${paths.routes.NEWPROFILE}?userID=${profileData.user_id}`;
 

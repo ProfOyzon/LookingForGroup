@@ -6,16 +6,16 @@ import { ThemeIcon } from "./ThemeIcon";
 // --------------------
 type SelectContextProps = {
     open: boolean;
-    value: ReactElement;
-    setOpen: Function;
-    setValue: Function;
+    value: ReactElement | null;
+    setOpen: (open: boolean) => void;
+    setValue: (value: ReactElement) => void;
 }
 
 type SelectButtonProps = {
     placeholder: string;
     initialVal: string;
     buttonId?: string;
-    callback?: Function;
+    callback?: (e: React.MouseEvent<HTMLButtonElement>) => void;
     className?: string;
 }
 
@@ -29,7 +29,7 @@ type SelectOptionsProps = {
     options: Array<SelectOptions>;
     className?: string;
     rightAlign?: boolean;
-    callback?: Function;
+    callback?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 type SelectProps = {
@@ -41,7 +41,7 @@ type SelectProps = {
 // --------------------
 export const SelectContext = createContext<SelectContextProps>({
     open: false,
-    value: <></>,
+    value: null,
     setOpen: () => {},
     setValue: () => {},
 });
@@ -55,7 +55,7 @@ export const SelectButton: React.FC<SelectButtonProps> = ({
     initialVal = '',
     buttonId = '',
     className = '',
-    callback = (e) => {}
+callback = () => {}
 }) => {
     const { open, value, setOpen } = useContext(SelectContext);
 
@@ -67,7 +67,7 @@ export const SelectButton: React.FC<SelectButtonProps> = ({
         <button
             id={buttonId}
             className={`${className} select-button`}
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 callback(e);
                 toggleOpen();
             }}
@@ -111,7 +111,7 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
                             select-option 
                             ${(index === 0) ? 'top' : (index === (options.length - 1)) ? 'bottom' : ''}`
                         }
-                        onClick={(e) => {
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                             setValue(option.markup);
                             callback(e);
                             setOpen(false);
@@ -127,9 +127,8 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
 
 export const Select: React.FC<SelectProps> = ({ children }) => {
     const [open, setOpen] = useState<boolean>(false);
-    const [value, setValue] = useState<ReactElement>(null);
+    const [value, setValue] = useState<ReactElement | null>(null);
     const selectRef = useRef<HTMLDivElement>(null);
-
 
     useEffect(() => {
         const close = (e: MouseEvent) => {

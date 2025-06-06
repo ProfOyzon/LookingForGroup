@@ -67,7 +67,11 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
 
   // Update parent state when data is changed
   useEffect(() => {
-    setProjectData(modifiedProject);
+    // delay with setTimeout() used to fix input glitch bug
+    const timeout = setTimeout(() => {
+      setProjectData(modifiedProject)
+    }, 300);
+    return () => clearTimeout(timeout);
   }, [modifiedProject, setProjectData]);
 
   // --- Complete component ---

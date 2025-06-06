@@ -84,6 +84,11 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
     const response = await fetch('/api/auth');
     const { data } = await response.json();
     navigate(`${paths.routes.PROFILE}?userID=${data}`);
+
+    // Collapse the dropwdown if coming from another user's page
+    if (window.location.href.includes("profile")) {
+      window.location.reload();
+    }
   };
 
   const switchTheme = () => {

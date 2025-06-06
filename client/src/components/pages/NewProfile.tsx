@@ -242,7 +242,7 @@ const NewProfile = () => {
         <div id="about-me-buttons">
           <button
             onClick={() => {
-              window.location.href = 'https://www.linkedin.com/';
+               window.open('https://www.linkedin.com/', '_blank');
             }}
           >
             <ThemeIcon
@@ -253,7 +253,7 @@ const NewProfile = () => {
           </button>
           <button
             onClick={() => {
-              window.location.href = 'https://www.instagram.com/';
+              window.open('https://www.instagram.com/', '_blank');
             }}
           >
             <ThemeIcon

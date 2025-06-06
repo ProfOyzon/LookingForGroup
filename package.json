@@ -15,7 +15,7 @@
     "b": "npm run build && npm run server",
     "format": "prettier --write server",
     "lint": "eslint --fix server",
-    "lint:types": "tsc --noEmit -p jsconfig.json",
+    "lint:types": "tsc -p jsconfig.json",
     "prepare": "husky"
   },
   "dependencies": {

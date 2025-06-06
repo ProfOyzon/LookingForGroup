@@ -34,6 +34,8 @@ textarea {
   flex-direction: column;
   flex-grow: 1;
   margin: 35px 48px 40px;
+  overflow: hidden;
+  flex: 1;
 }
 
 #profile-editor-save {

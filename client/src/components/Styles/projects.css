@@ -115,7 +115,7 @@ Project Panel component style rules
       }
 
       .follow-amt.following {
-        color: #F14F76;
+        color: #f14f76;
       }
 
       .follow-icon {
@@ -132,7 +132,7 @@ Project Panel component style rules
         color: #F14F76;
 
         .fa-heart {
-          color: #F14F76 !important;
+          color: #f14f76 !important;
         }
       }
 
@@ -354,6 +354,7 @@ Project Creator and Editor style rules
   font-size: 2ch;
   width: max-content;
   margin: auto;
+  margin-bottom: 15px;
   font-weight: 700;
 }
 
@@ -704,10 +705,10 @@ Project Creator and Editor style rules
   height: 22px;
 }
 
-#selected-thumbnail>img,
-.star>img,
-.star-filled>img,
-.delete-image>img {
+#selected-thumbnail > img,
+.star > img,
+.star-filled > img,
+.delete-image > img {
   width: 22px;
   height: 22px;
 }
@@ -997,9 +998,9 @@ Project Creator and Editor style rules
 #project-team-add-member-info {
   display: grid;
   grid-template-areas:
-    "name-label name-search"
-    "role-label role-select"
-    "permissions permissions";
+    'name-label name-search'
+    'role-label role-select'
+    'permissions permissions';
 
   grid-template-columns: 1fr 4fr;
   grid-template-rows: 1fr 1fr 1fr;
@@ -2514,7 +2515,7 @@ Project Carousel style rules
   }
 
   .follow-amt.following {
-    color: #F14F76;
+    color: #f14f76;
   }
 
   .follow-icon {
@@ -2528,10 +2529,10 @@ Project Carousel style rules
   }
 
   .follow-icon.following {
-    color: #F14F76;
+    color: #f14f76;
 
     .fa-heart {
-      color: #F14F76 !important;
+      color: #f14f76 !important;
     }
   }
 

@@ -7,10 +7,11 @@ type ThemeIconProps = {
   alt?: string;
   id?: string;
   addClass?: string;
+  onClick?: React.MouseEventHandler<HTMLImageElement>;
 };
 
 export const ThemeIcon: React.FC<ThemeIconProps> = memo(
-  ({ light, dark, alt = '', id = '', addClass = '' }) => {
+  ({ light, dark, alt = '', id = '', addClass = '', onClick }) => {
     const theme = useContext(ThemeContext)['theme'];
 
     return (
@@ -21,6 +22,7 @@ export const ThemeIcon: React.FC<ThemeIconProps> = memo(
         alt={alt}
         id={id}
         className={`theme-icon ${addClass}`}
+        onClick={onClick}
       />
     );
   }

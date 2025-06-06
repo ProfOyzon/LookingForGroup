@@ -166,10 +166,30 @@ Profile page style rules
 /*could probably be reused for other pages?*/
 .profile-name-button {
   display: flex;
-  flex-direction: row;
+  /*flex-direction: row;*/
   align-items: center;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
+  
 }
+
+.profile-name-button h4{
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.profile-name-button .icon-button {
+  padding: 0;
+  margin-left: 5px;
+  background: none;
+  border: none;
+}
+
+#edit-interests-icon{
+  width: 25px;
+  height: 25px;
+  margin: 0;
+}
+
 
 /*header rules--------------------------------- */
 #profile-header-wrapper {
@@ -990,11 +1010,11 @@ New Profile page style rules
 #profile-information-grid {
   display: grid;
   grid-template:
-    'image name buttons' 40px
-    'image extra extra' 40px
-    'image desc desc' auto
-    'image fact fact' auto
-    'bio skills skills' auto /
+    'image name buttons buttons' 40px
+    'image extra extra extra' 40px
+    'image desc desc desc' auto
+    'image fact fact fact' auto
+    'bio skills skills follow' auto /
     300px auto 200px;
   background-color: var(--header-color);
   border-radius: 10px;
@@ -1051,6 +1071,24 @@ New Profile page style rules
   text-align: left;
   overflow-wrap: break-word;
   word-break: break-word;
+}
+
+#profile-follow-button {
+  justify-self: right;
+  grid-area: follow;
+  box-sizing: border-box;
+  background-color: var(--primary-color);
+  border: 0px;
+  border-radius: 55px;
+  width: fit-content;
+  color: var(--invert-text);
+  padding: 12px 17px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 28px;
+  letter-spacing: 0%;
+  width: 120px;
 }
 
 #profile-fullname {
@@ -1114,6 +1152,13 @@ New Profile page style rules
   margin-right: 5px;
 }
 
+#profile-info-interests {
+  grid-area: interests;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 #profile-info-skills {
   grid-area: skills;
   display: flex;
@@ -1125,6 +1170,87 @@ New Profile page style rules
   height: 26px;
   object-fit: contain;
   margin-right: 10px;
+}
+
+.interests-selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.interest-tag {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background-color: var(--bg-secondary);
+  color: var(--text-color);
+  border: 3px solid var(--border-color);
+  cursor: pointer;
+}
+
+.interest-tag:hover {
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+}
+
+.interest-tag.selected {
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+}
+
+.selected-interest-tag{
+  
+  border: 3px solid var(--primary-color); 
+}
+
+.interest-tag:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  
+}
+
+.save-btn{
+   width: 110px;
+  height: 40px;
+  /* margin: 20px auto 0px auto; */
+  padding: 5px 16px;
+  font-size: 20px;
+  border: none;
+  border-radius: 40px;
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+  font-weight: 700;
+}
+
+.cancel-btn{
+   width: 110px;
+  height: 40px;
+  /* margin: 20px auto 0px auto; */
+  padding: 5px 16px;
+  font-size: 20px;
+  border: none;
+  border-radius: 40px;
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+  font-weight: 700;
+}
+
+.save-btn:hover,
+.cancel-btn:hover { 
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
+.interest-count {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
 /* #profile-discover-column {

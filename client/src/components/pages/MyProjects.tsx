@@ -48,6 +48,8 @@ const MyProjects = () => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [loggedIn, setLoggedIn] = useState(0);
 
+  const [createError, setCreateError] = useState(false);
+
   // --------------------
   // Helper functions
   // --------------------
@@ -67,6 +69,9 @@ const MyProjects = () => {
         setProjectsList(data.data);
       }
     }
+
+    if (authResponse.status != 401) setCreateError(false);
+    else setCreateError(true);
 
     setDataLoaded(true);
   }
@@ -265,8 +270,8 @@ const MyProjects = () => {
     return <></>;
   };
 
-  // let projectListSection = <></>;
-  // if (displayMode === 'grid') {
+  // `let projectListSection = <></>;
+  // if (displayMode === 'grid') {`
   //   const tempList = sortProjects();
   //   projectListSection = (
   //     <>
@@ -470,15 +475,25 @@ const MyProjects = () => {
         this is because that component always creates a SPECIFIC button, and cannot be hooked up to ANY button.
         Right now, teams have been told to avoid touching that file.*/}
 
-        {/*Currently, the button is set to always appear, non-functional. */}
-        <>
+        {/*Create New Project button - Implementation 0 - Currently, the button is set to always appear, non-functional. */}
+        {/*<>
           <button className="my-projects-new-project-button">
             + New Project
           </button>
-        </>
+        </>*/}
 
-        {/*Create Project Button - Only works if user is logged in. No error message is displayed for logged out users.*/}
-        {/* {!loggedIn ? (
+        {/*/*Create New Project button - Implementation 1 - Redirects user when not logged in.*/}
+         {!loggedIn ? (
+          <>
+            <button className="my-projects-new-project-button" onClick={() => navigate('/login')}>
+              + New Project
+            </button>
+          </>
+        ) : <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
+        } 
+
+        {/*Create Project Button - Implementation 2 - Only works if user is logged in. No error message is displayed for logged out users.*/}
+        {/*!loggedIn ? (
           <>
             <button className="my-projects-new-project-button" onClick={() => {
               console.log("read me if you're not logged in");
@@ -487,9 +502,9 @@ const MyProjects = () => {
             </button>
           </>
         ) : <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
-        } */}
+        */} 
 
-        {/*Create Project Button - Only APPEARS if user is logged in.*/}
+        {/*Create Project Button - Implementation 3 - Only APPEARS if user is logged in.*/}
         {/*loggedIn ? (
           <>
             <button className="my-projects-new-project-button" onClick={() => {
@@ -500,16 +515,6 @@ const MyProjects = () => {
           </>
         ) : <> </>/* Do nothing */
         }
-
-        {/*Create Project Button - Redirects user when not logged in.*/}
-        {/* {!loggedIn ? (
-          <>
-            <button className="my-projects-new-project-button" onClick={() => navigate('/login')}>
-              + New Project
-            </button>
-          </>
-        ) : <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
-        } */}
 
 
         {/* <button className="delete" onClick={() => setIsDeletePopupOpen(true)}>
@@ -543,7 +548,7 @@ const MyProjects = () => {
       <CreditsFooter />
       <ToTopButton />
     </div>
-  );
-};
+    );
+  }
 
 export default MyProjects;

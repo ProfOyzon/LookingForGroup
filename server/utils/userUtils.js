@@ -86,19 +86,16 @@ async function createNewUser(
         socials: _socials,
       };
 
-      const response = await POST(apiURL, data);
-      if (response.status === '400') {
-        console.log('Error creating a new user.');
-        return '400';
-      }
-      console.log(`User ${(email, _firstName, _lastName)} created.`);
-      console.log(data);
-      return data;
+            const response = await POST(apiURL, data);
+            if (response.status === "400") {
+                console.log("Error creating a new user.");
+                return "400";
+            }
+            console.log(`User ${email, _firstName, _lastName} created.`);
+            console.log(data);
+            return data;
+        }
     }
-
-    console.log(`User ${(email, _firstName, _lastName)} created.`);
-    return { status: '201', user_id: response.user_id };
-  }
 }
 
 /**

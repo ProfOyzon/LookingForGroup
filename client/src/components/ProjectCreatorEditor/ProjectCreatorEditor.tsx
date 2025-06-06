@@ -14,6 +14,7 @@ import { LinksTab } from './tabs/LinksTab';
 import { TeamTab } from './tabs/TeamTab';
 import { TagsTab } from './tabs/TagsTab';
 import { ThemeIcon } from '../ThemeIcon';
+import { showPopup } from '../Sidebar';
 
 interface Image {
   id: number;
@@ -413,72 +414,78 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
           <PopupButton callback={buttonCallback} buttonId="project-info-edit">Edit Project</PopupButton>
         )
       }
-      <PopupContent>
-        <div id="project-creator-editor">
-          <div id="project-editor-tabs">
-            <button id="general-tab"
-              onClick={() => {
-                if (currentTab === 4) updateLinks();
-                setCurrentTab(0);
-              }}
-              className={`project-editor-tab ${currentTab === 0 ? 'project-editor-tab-active' : ''}`}
-            >
-              General
-            </button>
-            <button id="media-tab"
-              onClick={() => {
-                if (currentTab === 4) updateLinks();
-                setCurrentTab(1);
-              }}
-              className={`project-editor-tab ${currentTab === 1 ? 'project-editor-tab-active' : ''}`}
-            >
-              Media
-            </button>
-            <button id="tags-tab"
-              onClick={() => {
-                if (currentTab === 4) updateLinks();
-                setCurrentTab(2);
-              }}
-              className={`project-editor-tab ${currentTab === 2 ? 'project-editor-tab-active' : ''}`}
-            >
-              Tags
-            </button>
-            <button id='team-tab'
-              onClick={() => {
-                if (currentTab === 4) updateLinks();
-                setCurrentTab(3);
-              }}
-              className={`project-editor-tab ${currentTab === 3 ? 'project-editor-tab-active' : ''}`}
-            >
-              Team
-            </button>
-            <button id='links-tab'
-              onClick={() => {
-                if (currentTab === 4) updateLinks();
-                setCurrentTab(4);
-              }}
-              className={`project-editor-tab ${currentTab === 4 ? 'project-editor-tab-active' : ''}`}
-            >
-              Links
-            </button>
+      {
+        showPopup ? (
+        <PopupContent>
+          <div id="project-creator-editor">
+            <div id="project-editor-tabs">
+              <button id="general-tab"
+                onClick={() => {
+                  if (currentTab === 4) updateLinks();
+                  setCurrentTab(0);
+                }}
+                className={`project-editor-tab ${currentTab === 0 ? 'project-editor-tab-active' : ''}`}
+              >
+                General
+              </button>
+              <button id="media-tab"
+                onClick={() => {
+                  if (currentTab === 4) updateLinks();
+                  setCurrentTab(1);
+                }}
+                className={`project-editor-tab ${currentTab === 1 ? 'project-editor-tab-active' : ''}`}
+              >
+                Media
+              </button>
+              <button id="tags-tab"
+                onClick={() => {
+                  if (currentTab === 4) updateLinks();
+                  setCurrentTab(2);
+                }}
+                className={`project-editor-tab ${currentTab === 2 ? 'project-editor-tab-active' : ''}`}
+              >
+                Tags
+              </button>
+              <button id='team-tab'
+                onClick={() => {
+                  if (currentTab === 4) updateLinks();
+                  setCurrentTab(3);
+                }}
+                className={`project-editor-tab ${currentTab === 3 ? 'project-editor-tab-active' : ''}`}
+              >
+                Team
+              </button>
+              <button id='links-tab'
+                onClick={() => {
+                  if (currentTab === 4) updateLinks();
+                  setCurrentTab(4);
+                }}
+                className={`project-editor-tab ${currentTab === 4 ? 'project-editor-tab-active' : ''}`}
+              >
+                Links
+              </button>
+            </div>
+  
+            <div id="project-editor-content">
+              {
+                currentTab === 0 ? <GeneralTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
+                currentTab === 1 ? <MediaTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
+                currentTab === 2 ? <TagsTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
+                currentTab === 3 ? <TeamTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorMember={setErrorAddMember} setErrorPosition={setErrorAddPosition} permissions={permissions} /> :
+                currentTab === 4 ? <LinksTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorLinks={setErrorLinks} /> :
+                <></>
+              }
+            </div>
+  
+            <PopupButton buttonId="project-editor-save" callback={saveProject} doNotClose={() => !failCheck}>
+              Save Changes
+            </PopupButton>
           </div>
-
-          <div id="project-editor-content">
-            {
-              currentTab === 0 ? <GeneralTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
-              currentTab === 1 ? <MediaTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
-              currentTab === 2 ? <TagsTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
-              currentTab === 3 ? <TeamTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorMember={setErrorAddMember} setErrorPosition={setErrorAddPosition} permissions={permissions} /> :
-              currentTab === 4 ? <LinksTab isNewProject={newProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorLinks={setErrorLinks} /> :
-              <></>
-            }
-          </div>
-
-          <PopupButton buttonId="project-editor-save" callback={saveProject} doNotClose={() => !failCheck}>
-            Save Changes
-          </PopupButton>
-        </div>
-      </PopupContent>
+        </PopupContent>
+        ) : (
+          console.log("No popup allowed! Log in first!")
+        )
+      }
     </Popup>
   );
 };

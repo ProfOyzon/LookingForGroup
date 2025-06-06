@@ -415,7 +415,7 @@ const NewProfile = () => {
           <PanelBox category={'projects'} itemList={displayedProjects} itemAddInterval={25} userId={userID} />
         </div>
         <div>
-            {/*ProfileContactTab(displayedProfile)*/}
+            {ProfileContactTab(displayedProfile)}
         </div>
       </div>
     </div>

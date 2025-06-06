@@ -102,7 +102,7 @@ export const LinksTab = (props) => {
             }} />
         <div className='link-input-wrapper'>
           <div className='editor-input-item'>
-            <input type="text" name="url" id="link-url-input" value={text}
+            <input type="text" name="url" id="link-url-input" placeholder="www.examplewebsite.com" value={text}
               onChange={
                 (e) => {
                   setText(e.target.value);
@@ -150,7 +150,7 @@ export const LinksTab = (props) => {
     <div id="profile-editor-links" className="hidden">
       <label>Social Links</label>
       <div className="project-editor-extra-info">
-        Provide the links to pages you wish to include on your page.
+        Provide links to pages you wish to include on your page.
       </div>
       <div id="project-editor-link-list">
         <LinkContainer />

@@ -38,7 +38,7 @@ export interface ProfileData {
   headline: string;
   bio: string;
   profile_image: string;
-  skills: [];
+  skills: { id: number; skill: string, type: string, tag: string }[];
   socials: { id: number; url: string }[];
 }
 
@@ -52,12 +52,27 @@ const onSaveClicked = async (e : Event) => {
   // Receive all inputted values
   const getInputValue = (input : string) => {
     const element = document.getElementById(`profile-editor-${input}`) as HTMLInputElement;
-    return element ? element.value : ''; // null
+    return element?.value?.trim() || ''; // null
   };
+
+  // required fields: ensure not just empty/spaces
+  const firstName = getInputValue('firstName');
+  const lastName = getInputValue('lastName');
+  const bio = getInputValue('bio');
+
+  // pop up error text if fields invalid
+  if (!firstName || !lastName || !bio) {
+    let errorText = document.getElementById('invalid-input-error');
+    if (errorText) {
+    errorText.style.display = 'block';
+    }
+    return;
+  }
+
   // Prepare these values for a POST/PUT request
   const dataToStore = {
-    firstName: getInputValue('firstName'),
-    lastName: getInputValue('lastName'),
+    firstName,
+    lastName,
     headline: getInputValue('headline'),
     pronouns: getInputValue('pronouns'),
     jobTitleId: parseInt(getInputValue('jobTitle')),
@@ -65,7 +80,7 @@ const onSaveClicked = async (e : Event) => {
     academicYear: getInputValue('academicYear'),
     location: getInputValue('location'),
     funFact: getInputValue('funFact'),
-    bio: getInputValue('bio'),
+    bio,
     skills: getInputValue('skills'),
     socials: getSocials(),
   };
@@ -179,7 +194,7 @@ export const ProfileEditPopup = () => {
 
   return (
     <Popup>
-      <PopupButton buttonId="project-info-edit">Edit Profile</PopupButton>
+      <PopupButton buttonId="project-info-edit">Edit</PopupButton>
       <PopupContent callback={()=>{switchTab(0);}}>
         <form id="profile-creator-editor" encType="multipart/form-data">
           <div id="profile-editor-tabs">{editorTabs}</div>
@@ -190,6 +205,9 @@ export const ProfileEditPopup = () => {
             onClick={onSaveClicked}
             value={'Save Changes'}
           />
+         <div id="invalid-input-error" className="error-message">
+            <p>*Fill out all required fields before saving!*</p>
+          </div>
         </form>
       </PopupContent>
     </Popup>

@@ -34,6 +34,8 @@ textarea {
   flex-direction: column;
   flex-grow: 1;
   margin: 35px 48px 40px;
+  overflow: hidden;
+  flex: 1;
 }
 
 #profile-editor-save {
@@ -52,6 +54,17 @@ textarea {
   border-radius: 30px;
   padding: 10px 20px;
   margin: auto;
+  cursor: pointer;
+}
+
+.error-message {
+  display: none;
+}
+
+.error-message p {
+  padding-left: 32%;
+  font-size: 20px;
+  color: red;
 }
 
 .profile-edit-button {

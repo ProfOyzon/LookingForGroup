@@ -13,3 +13,7 @@
     aspect-ratio: 1 / 1;
     border: solid 2px white;
 }
+
+#profile-editor-projects {
+    overflow-y: auto;
+}

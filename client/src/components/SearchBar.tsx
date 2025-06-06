@@ -1,13 +1,20 @@
 import { memo, FC, ChangeEvent, useState, useLayoutEffect } from 'react';
 // import { ProjectCard } from './ProjectCard';
 
-interface DataSet {
-  data: (string | Record<string, any>)[];
+interface Person {
+  name: string;
+  age: number;
+  email?: string;
 }
+
+interface DataSet {
+  data: (string | Person)[];
+}
+
 
 interface SearchBarProps {
   dataSets: DataSet[];
-  onSearch: (results: (string | Record<string, any>)[][]) => void;
+  onSearch: (results: (string | Person)[][]) => void;
 }
 
 // Search bar component for filtering data in Discover and Meet pages
@@ -24,18 +31,20 @@ export const SearchBar: FC<SearchBarProps> = memo(({ dataSets, onSearch }) => {
     handleSearch(newQuery);
   };
 
-  const handleSearch = (searchQuery) => {
-    // Filter the data based on the query
-    const filteredResults = dataSets.map((dataSet) =>
-      dataSet.data.filter((item) =>
-        typeof item === 'object'
-          ? Object.values(item).some((value) => String(value).toLowerCase().includes(searchQuery))
-          : String(item).toLowerCase().includes(searchQuery)
-      )
-    );
+const handleSearch = (searchQuery: string) => {
+  const filteredResults = dataSets.map((dataSet) =>
+    dataSet.data.filter((item) =>
+      typeof item === 'object'
+        ? Object.values(item).some((value) =>
+            String(value).toLowerCase().includes(searchQuery)
+          )
+        : String(item).toLowerCase().includes(searchQuery)
+    )
+  );
 
-    onSearch(filteredResults);
-  };
+  onSearch(filteredResults);
+};
+
 
   useLayoutEffect(() => {
     if (query !== '') {

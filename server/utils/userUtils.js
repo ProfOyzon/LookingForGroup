@@ -80,9 +80,6 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
             console.log(data);
             return data;
         }
-      
-        console.log(`User ${email, _firstName, _lastName} created.`);
-        return { status: '201', user_id: response.user_id };
     }
 }
 

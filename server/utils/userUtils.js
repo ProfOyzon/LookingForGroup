@@ -1,27 +1,30 @@
 import envConfig from '../config/env.js';
 //import { createUser } from '../controllers/users';
 
-import { GET, POST, PUT, DELETE, RESPONSE } from './fetchUtils';
+import { GET, POST, PUT, DELETE, RESPONSE } from './fetchUtils.js';
+import pool from '../config/database.js'
+import { transporter } from '../config/mailer.js';
 
 const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'http://localhost:8081/api' : 'https://lfg.gccis.rit.edu/api';
 
 /**
  * Creates a new user, and adds them to the signups table. All data params default to null.
- * @param token - from url, security token
- * @param email - get signup email if the token is valid. Checks if a user with that email already exists.
- * @param firstName - string, first name of user
- * @param lastName - string, last name of user
- * @param headline - string, headline on a user profile
- * @param pronouns - string, pronouns of the user
- * @param jobTitleId - int, the job/role the user has proficiency in
- * @param majorId - int, Major the user is in
- * @param academicYear - String or int, academic year the user is in up to 10th. accepts 1st, 2nd... or 1,2,...
- * @param location - string, Location of the user.
- * @param funFact - string, fun fact about the user
- * @param bio - string, summary of the user
- * @param skills - array[objects], list of skills. Skill = {int id, int position}
- * @param socials - array[objects] List of socials. Socials = {int id, string url}
+ * @param {any} token - from url, security token
+ * @param {any} email - get signup email if the token is valid. Checks if a user with that email already exists.
+ 
  * @returns status - 200 if valid, 400 if not
+ * @param {string} _firstName
+ * @param {string} _lastName
+ * @param {string} _headline
+ * @param {string} _pronouns
+ * @param {number} _jobTitleId
+ * @param {number} _majorId
+ * @param {number} _academicYear
+ * @param {string} _location
+ * @param {string} _funFact
+ * @param {string} _bio
+ * @param {Array<object>} _skills
+ * @param {Array<object>} _socials
  */
 async function createNewUser(token, email, _firstName, _lastName, _headline, _pronouns, _jobTitleId, _majorId, _academicYear, _location, _funFact, _bio, _skills, _socials) {
 
@@ -76,19 +79,16 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
                 console.log("Error creating a new user.");
                 return "400";
             }
-            console.log(`User ${email, _firstName, _lastName} created.`);
+            console.log(`User ${email} created.`);
             console.log(data);
             return data;
         }
-      
-        console.log(`User ${email, _firstName, _lastName} created.`);
-        return { status: '201', user_id: response.user_id };
     }
 }
 
 /**
  * Checks if a User is already within database through RIT email
- * @param email - RIT email, string
+ * @param {string} email - RIT email, string
  * @returns result - boolean, true if they exist within database, false if not.
  */
 async function userInDatabase(email) {
@@ -97,7 +97,7 @@ async function userInDatabase(email) {
             email,
         ]);
 
-        if(user.length > 0) {
+        if(!user) {
             console.log( RESPONSE(400,'','Your account has already been activated.') );
             return false;
         } else {
@@ -107,6 +107,7 @@ async function userInDatabase(email) {
         const apiURL = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
         const response = GET(apiURL);
 
+        // @ts-ignore
         if (response.status === "400") {
             console.log("Error fetching email.");
             return false;
@@ -162,12 +163,11 @@ async function getUsers() {
 
 /**
  * Get account information of a user through ID
- * @param user_id - int, id of the user
+ * @param {number} user_id - int, id of the user
  * @returns data - JSONified data from account information. 400 if not valid.
- * user_id, primary_email, rit_email, username, visibility
  */
-async function getAccountInformation(id) {
-    const apiURL = `${root}/users/${id}/account`;
+async function getAccountInformation(user_id) {
+    const apiURL = `${root}/users/${user_id}/account`;
     const response = await GET(apiURL);
     if (response.status === "400") {
         return "400";
@@ -179,7 +179,7 @@ async function getAccountInformation(id) {
 
 /**
  * Gets all data on one specific user, specified by URL.
- * @param id - user_id for user
+ * @param {number} id - user_id for user
  * @returns result - JSONified data of specified user.
  */
 async function getUsersById(id) {
@@ -187,14 +187,22 @@ async function getUsersById(id) {
    const apiURL = `${root}/users/${id}`;
     const response = await GET(apiURL);
     if (response.status === "400") return "400"; //error
+    if ( envConfig.env === 'development' || envConfig.env === 'test') {
 
-  return response;
+    } else {
+        const apiURL = `${root}/users/${id}`;
+        const response = await GET(apiURL);
+        if (response.status === "400") return "400"; //error
+
+        return response;
+    }
+    
 }
 
 /**
  * Edit information for one user, specified by URL.
- * @param id- user_id for user
- * @param data - mapped(eg {data1:'value1', data2:'value2'}) data to change for user
+ * @param {number} id - user_id for user
+ * @param {Array<object>} data - mapped(eg {data1:'value1', data2:'value2'}) data to change for user
  * @returns response data
  */
 async function editUser(id, data) {
@@ -207,7 +215,7 @@ async function editUser(id, data) {
 
 /**
  * Removes a user specified by URL.
- * @param id - user_id to be deleted
+ * @param {number} id - user_id to be deleted
  * @returns response data
  */
 async function deleteUser(id) {
@@ -220,8 +228,8 @@ async function deleteUser(id) {
 
 /**
  * Update Profile Picture for a user's id.
- * @param id - int, the user_id to change
- * @param image - file, the picture to put into the user's profile
+ * @param {number} id - int, the user_id to change
+ * @param {string} _image - file, the picture to put into the user's profile
  * @return status, 200 if successful, 400 if not, and data. data=array[object] with the profile_image, string, name of the file
  */
 function updateProfilePicture(id, _image) {
@@ -238,10 +246,10 @@ function updateProfilePicture(id, _image) {
 
 /**
  * Update email for a user
- * @param id = user_id for the profile wishing to change email.
- * @param email - email to change to
- * @param confirm_email - secondary entering of email to confirm
- * @param password - the user's current password.
+ * @param {number} id = user_id for the profile wishing to change email.
+ * @param {string} _email - email to change to
+ * @param {string} _confirm_email - secondary entering of email to confirm
+ * @param {string} _password - the user's current password.
  * @returns response, 200 if valid, 400 if not, 401 if emails do not match.
  */
 function updateEmail(id, _email, _confirm_email, _password) {
@@ -268,9 +276,10 @@ function updateEmail(id, _email, _confirm_email, _password) {
 
 /**
  * Update username through id.
- * @param username - username to change to
- * @param confirm_user - secondary entering of username to confirm
- * @param password - the user's current password.
+ * @param {number} id
+ * @param {string} _username - username to change to
+ * @param {string} _confirm_user - secondary entering of username to confirm
+ * @param {string} _password - the user's current password.
  * @returns response, 200 if valid, 400 if not, 401 if users do not match.
  */
 function updateUsername(id, _username, _confirm_user, _password) {
@@ -296,7 +305,7 @@ function updateUsername(id, _username, _confirm_user, _password) {
 
 /**
  * Request for the forget password page, send the user an email for resetting their password.
- * @param email - email to send password reset to.
+ * @param {string} email - email to send password reset to.
  * @returns 201 if email sent, 400 if error.
  */
 async function requestPasswordReset(email) {
@@ -311,9 +320,9 @@ async function requestPasswordReset(email) {
 
     let url = ``;
     if (envConfig.env === 'production') {
-        url = `https://lookingforgrp.com/resetPassword/${token}`;
+        url = `https://lookingforgrp.com/resetPassword/${_token}`;
     } else {
-        url = `http://localhost:8081/resetPassword/${token}`;
+        url = `http://localhost:8081/resetPassword/${_token}`;
     }
     console.log('Token put into database.');
 
@@ -367,10 +376,10 @@ async function requestPasswordReset(email) {
 
 /**
  * Update Password for user specified with user_id
- * @param id = int, user id for the user wishing to change
- * @param newPassword = string, new password
- * @param password_confirm - string, confirm password to be the same as the new password
- * @param password - string, user's current password
+ * @param {number} id = int, user id for the user wishing to change
+ * @param {string} _newPassword = string, new password
+ * @param {string} _password_confirm - string, confirm password to be the same as the new password
+ * @param {string} _password - string, user's current password
  */
 async function updatePassword(id, _newPassword, _password_confirm, _password, _token) {
     let apiURL = `${root}/users/${id}/password`;
@@ -389,7 +398,7 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
 
     try {
         //get email if token is valid
-        url = `https://lfg.gccis.rit.edu/api/resets/password/${_token}`;
+        let url = `https://lfg.gccis.rit.edu/api/resets/password/${_token}`;
         let response = GET(url);
         if (!response.data.email) {
             console.log("Your token has expired.");
@@ -419,13 +428,13 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
 
 /**
  * Updates user visibility, between 0 (private) and 1 (public). just a switch.
- * @param id - user_id for the user
+ * @param {number} id - user_id for the user
  * @returns "400" if error, "200" if valid
  */
-function updateUserVisibility(id) {
+async function updateUserVisibility(id) {
     let url = `${root}/users/${id}`;
-    const data = GET(url);
-    const parsedata = JSON.parse(data);
+    let data = GET(url);
+    const parsedata = JSON.parse(await data);
     const vis = parsedata.visibility;
 
 
@@ -433,7 +442,7 @@ function updateUserVisibility(id) {
         data = {
             visibility: 0
         };
-        result = editUser(id, data);
+        let result = editUser(id, data);
     } else if (vis == 0) {
         data = {
             visibility: 1
@@ -449,7 +458,7 @@ function updateUserVisibility(id) {
 
 /**
  * Get User by Username
- * @param username - Username of user to be recieved
+ * @param {string} username - Username of user to be recieved
  * @return data, list of 1 user, or 400 if not successful
  */
 async function getUserByUsername(username) {
@@ -473,7 +482,7 @@ async function getUserByUsername(username) {
 
 /**
  * Get User by email
- * @param username - Username of user to be recieved
+ * @param {string} email - email of user to be recieved
  * @return data, list of 1 user, or 400 if not successful
  */
 async function getUserByEmail(email) {
@@ -497,7 +506,7 @@ async function getUserByEmail(email) {
 
 /**
  * Get people that a user is following.
- * @param id - id of the user that we are searching.
+ * @param {number} id - id of the user that we are searching.
  * @returns array of users following, or 400 if unsuccessful.
  */
 function getUserFollowing(id) {
@@ -513,13 +522,13 @@ function getUserFollowing(id) {
 
 /**
  * Get all projects the user is a member of and has set to be public for the profile page
- * @param id - user to search
+ * @param {number} id - user to search
  * @return - array of projects, or 400 if unsuccessful.
  */
 function getVisibleProjects(id) {
     let url = `${root}/users/${id}/projects/profile`;
     const response = GET(url);
-    if (response.staus === "400") {
+    if (response.status === "400") {
         console.log("Error getting projects.");
         return "400";
     }
@@ -529,9 +538,9 @@ function getVisibleProjects(id) {
 
 /**
  * Update the project visibility for a project a user is a member of.
- * @param userID - user's ID
- * @param projectID - Id of the project
- * @param visibility - either "public" or "private", set visibility
+ * @param {number} userID - user's ID
+ * @param {number} projectID - Id of the project
+ * @param {string} _visibility - either "public" or "private", set visibility
  * @return 201 if successful, 400 if not
  */
 function updateProjectVisibility(userID, projectID, _visibility) {
@@ -552,7 +561,7 @@ function updateProjectVisibility(userID, projectID, _visibility) {
 
 /**
  * Get projects the user is following.
- * @param id - ID of the user.
+ * @param {number} id - ID of the user.
  * @returns array of projects, or 400 if error.
  */
 function getProjectFollowing(id) {
@@ -568,8 +577,8 @@ function getProjectFollowing(id) {
 
 /**
  * Follow a project for a user.
- * @param id - user ID trying to follow a project.
- * @param projectID - ID of the project trying to follow.
+ * @param {number} id - user ID trying to follow a project.
+ * @param {number} projectID - ID of the project trying to follow.
  * @returns 201 if successful, 400 if not.
  */
 function addProjectFollowing(id, projectID) {
@@ -588,8 +597,8 @@ function addProjectFollowing(id, projectID) {
 
 /**
  * Unfollow a project for a user.
- * @param id - user id
- * @param projId - project Id to be unfollowed.
+ * @param {number} id - user id
+ * @param {number} projID - project Id to be unfollowed.
  * @returns 201 if successful, 400 if not.
  */
 function deleteProjectFollowing(id, projID) {
@@ -605,8 +614,8 @@ function deleteProjectFollowing(id, projID) {
 
 /**
  * Follow a person for a user.
- * @param id - user's id
- * @param followID - user to be followed.
+ * @param {number} id - user's id
+ * @param {number} followID - user to be followed.
  * @returns 201 if successful, 400 if not
  */
 function addUserFollowing(id, followID) {

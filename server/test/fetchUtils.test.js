@@ -20,6 +20,7 @@ describe('fetchUtils tests', () => {
       ok: true,
     };
 
+    //@ts-ignore
     global.fetch.mockResolvedValue(mockResponse);
 
     const json = await GET('http://lfg.gccis.rit.edu/api-test/users');
@@ -33,6 +34,7 @@ describe('fetchUtils tests', () => {
     const mockUser = { first_name: 'Tracy', last_name: 'Test' };
     const mockResponse = { user_id: 123, ...mockUser };
 
+    //@ts-ignore
     global.fetch.mockResolvedValue({
       ok: true,
       status: 201,
@@ -55,6 +57,7 @@ describe('fetchUtils tests', () => {
     const mockUpdate = { first_name: 'Ursala', last_name: 'Update' };
     const mockResponse = { user_id: 123, ...mockUpdate };
 
+    //@ts-ignore
     global.fetch.mockResolvedValue({
       ok: true,
       status: 200,
@@ -76,6 +79,7 @@ describe('fetchUtils tests', () => {
   test('DELETE: removes user and returns response', async () => {
     const mockResponse = { success: true, user_id: 123 };
 
+    //@ts-ignore
     global.fetch.mockResolvedValue({
       ok: true,
       status: 200,

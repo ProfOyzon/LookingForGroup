@@ -145,7 +145,7 @@ async function getUsers() {
             const [users] = await pool.query(sql);
             return RESPONSE(200, users, '');
         } else {
-            const apiURL = `${root}/users`;
+            const apiURL = `https://lfg.gccis.rit.edu/api/users`;
             const response = await GET(apiURL);
             if (response.status === "400") return "400";
             return response;
@@ -181,11 +181,16 @@ async function getAccountInformation(id) {
  * @returns result - JSONified data of specified user.
  */
 async function getUsersById(id) {
-    const apiURL = `${root}/users/${id}`;
-    const response = await GET(apiURL);
-    if (response.status === "400") return "400"; //error
+    if ( envConfig.env === 'development' || envConfig.env === 'test') {
 
-    return response;
+    } else {
+        const apiURL = `${root}/users/${id}`;
+        const response = await GET(apiURL);
+        if (response.status === "400") return "400"; //error
+
+        return response;
+    }
+    
 }
 
 /**

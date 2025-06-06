@@ -146,7 +146,7 @@ const createProject = async (req, res) => {
     await pool.query(sql, values);
     const [projectId] = await pool.query(
       'SELECT project_id FROM projects WHERE title = ? AND user_id = ?',
-      [title, userId]
+      [title, userId],
     );
 
     // Add project's types to database
@@ -178,7 +178,7 @@ const createProject = async (req, res) => {
           job.location,
           job.compensation,
           job.description,
-        ]
+        ],
       );
     }
 
@@ -196,7 +196,7 @@ const createProject = async (req, res) => {
     for (let social of socials) {
       await pool.query(
         'INSERT INTO project_socials (project_id, website_id, url) VALUES (?, ?, ?)',
-        [projectId[0].project_id, social.id, social.url]
+        [projectId[0].project_id, social.id, social.url],
       );
     }
 
@@ -549,7 +549,7 @@ const deleteProject = async (req, res) => {
     // Get creator/owner ID of project to verify it matches userId
     const [ownerData] = await pool.query(
       'SELECT p.user_id FROM projects p WHERE p.project_id = ?',
-      [projId]
+      [projId],
     );
     const ownerId = ownerData[0].user_id;
 
@@ -847,7 +847,7 @@ const addMember = async (req, res) => {
     // Make sure user making request is part of the project
     const [memberData] = await pool.query(
       'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
-      [projId]
+      [projId],
     );
     let requester = null;
 
@@ -936,7 +936,7 @@ const updateMember = async (req, res) => {
     // Make sure user is part of the project
     const [memberData] = await pool.query(
       'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
-      [id]
+      [id],
     );
     let requester = null;
     let recipient = null;
@@ -1009,7 +1009,7 @@ const deleteMember = async (req, res) => {
     // Check if user making request is part of project
     const [memberData] = await pool.query(
       'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
-      [id]
+      [id],
     );
     let requester = null;
     let recipient = null;

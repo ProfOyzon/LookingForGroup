@@ -272,22 +272,22 @@ const NewProfile = () => {
         <div id="about-me-buttons" className="about-me-buttons-minimal">
           <button>
             <ThemeIcon
-              light={'assets/linkedIn_logo_light.png'}
-              dark={'assets/linkedIn_logo_dark.png'}
+              light={'assets/linkedIn_logo_light.svg'}
+              dark={'assets/linkedIn_logo_dark.svg'}
               alt={'LinkedIn'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/instagram_logo_light.png'}
-              dark={'assets/instagram_logo_dark.png'}
+              light={'assets/instagram_logo_light.svg'}
+              dark={'assets/instagram_logo_dark.svg'}
               alt={'Instagram'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/follow_user_light.png'}
-              dark={'assets/follow_user_dark.png'}
+              light={'assets/follow_user_light.svg'}
+              dark={'assets/follow_user_dark.svg'}
               alt={'Like/Follow'}
             />
           </button>
@@ -295,8 +295,8 @@ const NewProfile = () => {
           <Dropdown>
             <DropdownButton>
               <ThemeIcon
-                light={'assets/menu_light.png'}
-                dark={'assets/menu_dark.png'}
+                light={'assets/menu_light.svg'}
+                dark={'assets/menu_dark.svg'}
                 alt={'More options'}
                 addClass={'dropdown-menu'}
               />

@@ -87,17 +87,17 @@ export const AboutTab = (props: { profile: ProfileData }) => {
                     <div className="editor-input-item">
                         <label>First Name*</label>
                         {/* <br /> */}
-                        <input id="profile-editor-firstName" type="text"></input>
+                        <input id="profile-editor-firstName" type="text" maxLength={50}></input>
                     </div>
                     <div className="editor-input-item">
                         <label>Last Name*</label>
                         {/* <br /> */}
-                        <input id="profile-editor-lastName" type="text"></input>
+                        <input id="profile-editor-lastName" type="text" maxLength={50}></input>
                     </div>
                     <div className="editor-input-item">
                         <label>Pronouns</label>
                         {/* <br /> */}
-                        <input id="profile-editor-pronouns" type="text"></input>
+                        <input id="profile-editor-pronouns" type="text" maxLength={25}></input>
                     </div>
                 </div>
                 <div className="about-row row-2">
@@ -116,7 +116,7 @@ export const AboutTab = (props: { profile: ProfileData }) => {
                 <div className="about-row row-3">
                     <div className="editor-input-item">
                         <label>Location</label>
-                        <input id="profile-editor-location" type="text"></input>
+                        <input id="profile-editor-location" type="text" maxLength={150}></input>
                     </div>
                 </div>
             </div>
@@ -140,7 +140,7 @@ export const AboutTab = (props: { profile: ProfileData }) => {
                     title={'About You*'}
                     description={'Share a brief overview of who you are, your interests, and what drives you!'}
                     count={props.profile.bio ? props.profile.bio.length : 0}
-                    maxLength={2000}
+                    maxLength={600}
                     id={'bio'} />
             </div>
         </div>

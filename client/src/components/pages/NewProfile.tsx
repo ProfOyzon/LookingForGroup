@@ -251,22 +251,22 @@ const NewProfile = () => {
         <div id="about-me-buttons" className="about-me-buttons-minimal">
           <button>
             <ThemeIcon
-              light={'assets/black/linkedIn_black.png'}
-              dark={'assets/white/linkedIn_white.png'}
+              light={'assets/linkedIn_logo_light.png'}
+              dark={'assets/linkedIn_logo_dark.png'}
               alt={'LinkedIn'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/black/instagram_black.png'}
-              dark={'assets/white/instagram_white.png'}
+              light={'assets/instagram_logo_light.png'}
+              dark={'assets/instagram_logo_dark.png'}
               alt={'Instagram'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/bell_light.png'}
-              dark={'assets/bell_dark.png'}
+              light={'assets/follow_user_light.png'}
+              dark={'assets/follow_user_dark.png'}
               alt={'Like/Follow'}
             />
           </button>
@@ -308,7 +308,7 @@ const NewProfile = () => {
   return (
     <div className="page">
       {/* Should probably use the search bar for projects I guess? */}
-      <Header dataSets={{ data: fullProjectList }} onSearch={searchProjects} />
+      <Header dataSets={{ data: fullProjectList }} onSearch={searchProjects} hideSearchBar={true}  />
 
       {/* Checks if we have profile data to use, then determines what to render */}
       <div id="profile-page-content">

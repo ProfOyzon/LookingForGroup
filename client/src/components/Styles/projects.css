@@ -113,11 +113,11 @@ Project Panel component style rules
         height: fit-content;
         transition: 0.2s;
       }
-    
+
       .follow-amt.following {
         color: #F14F76;
       }
-    
+
       .follow-icon {
         border: none;
         background: none;
@@ -127,15 +127,15 @@ Project Panel component style rules
         font-size: 25px;
         padding: 0;
       }
-    
+
       .follow-icon.following {
         color: #F14F76;
-    
+
         .fa-heart {
           color: #F14F76 !important;
         }
       }
-    
+
       .follow-icon:hover {
         transform: scale(1.2);
       }
@@ -189,12 +189,12 @@ Project Panel component style rules
 @media only screen and (any-pointer: coarse) {
   .project-panel {
     height: 400px;
-  
+
     .project-panel-hover {
       z-index: 1;
       opacity: 1;
       box-shadow: 0;
-  
+
       /* Position directly on top of standard project-panel element */
       position: absolute;
       top: 0;
@@ -426,6 +426,7 @@ Project Creator and Editor style rules
   font-size: 1.6ch;
   outline: none;
 }
+
 #project-editor-content select {
   appearance: none;
   position: relative;
@@ -472,7 +473,7 @@ Project Creator and Editor style rules
   color: var(--neutral-gray);
 }
 
-.project-editor-extra-info > input[type='file'] {
+.project-editor-extra-info>input[type='file'] {
   display: none;
   color: var(--orange);
 }
@@ -512,28 +513,28 @@ Project Creator and Editor style rules
   }
 }
 
-.project-editor-input-item > .project-editor-extra-info,
-#project-editor-media > .project-editor-extra-info,
-#project-editor-selected-tags > .project-editor-extra-info {
+.project-editor-input-item>.project-editor-extra-info,
+#project-editor-media>.project-editor-extra-info,
+#project-editor-selected-tags>.project-editor-extra-info {
   margin-top: 2px;
 }
 
-.project-editor-input-item > select * {
+.project-editor-input-item>select * {
   margin: 10px 0;
   padding: 15px;
 }
 
-.project-editor-input-item > select > option:first-child {
+.project-editor-input-item>select>option:first-child {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
 
-.project-editor-input-item > select > option:last-child {
+.project-editor-input-item>select>option:last-child {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
 
-.project-editor-input-item > select > option:hover {
+.project-editor-input-item>select>option:hover {
   background-color: var(--orange);
   color: var(--bg-color);
 }
@@ -580,10 +581,10 @@ Project Creator and Editor style rules
   overflow-y: auto;
 }
 
-  #project-editor-description-input textarea {
-  min-height: 150px;      
-  max-height: 250px;       
-  resize: vertical;           
+#project-editor-description-input textarea {
+  min-height: 150px;
+  max-height: 250px;
+  resize: vertical;
   width: 100%;
   box-sizing: border-box;
 }
@@ -631,11 +632,12 @@ Project Creator and Editor style rules
   /* color: var(--neutral-gray, #1A1921); */
   width: 100%;
 }
+
 #selected-tag-divider {
   margin: 15px 0;
 }
 
-.search-wrapper > .search-bar > .search-input {
+.search-wrapper>.search-bar>.search-input {
   background-color: none;
   border: none;
   margin: 0;
@@ -690,7 +692,10 @@ Project Creator and Editor style rules
   bottom: 0;
 }
 
-#selected-thumbnail, .star, .star-filled, .delete-image {
+#selected-thumbnail,
+.star,
+.star-filled,
+.delete-image {
   position: absolute;
   border: none;
   background: transparent;
@@ -698,7 +703,11 @@ Project Creator and Editor style rules
   width: 22px;
   height: 22px;
 }
-#selected-thumbnail > img, .star > img, .star-filled > img, .delete-image > img {
+
+#selected-thumbnail>img,
+.star>img,
+.star-filled>img,
+.delete-image>img {
   width: 22px;
   height: 22px;
 }
@@ -717,7 +726,8 @@ Project Creator and Editor style rules
   filter: var(--image-filter);
 }
 
-.star, .star-filled {
+.star,
+.star-filled {
   top: 9px;
 }
 
@@ -776,8 +786,8 @@ Project Creator and Editor style rules
   border-radius: 8px;
 }
 
-#project-editor-selected-tags > .error,
-#project-editor-type-tags > .error {
+#project-editor-selected-tags>.error,
+#project-editor-type-tags>.error {
   margin-top: 15px;
 }
 
@@ -882,7 +892,7 @@ Project Creator and Editor style rules
   flex: 1;
 }
 
-.project-editor-project-member-info > * {
+.project-editor-project-member-info>* {
   align-self: stretch;
 }
 
@@ -905,7 +915,7 @@ Project Creator and Editor style rules
   justify-items: center;
 }
 
-.project-editor-project-member > .edit-project-member-button {
+.project-editor-project-member>.edit-project-member-button {
   top: 6px;
   right: 6px;
   display: flex;
@@ -950,6 +960,7 @@ Project Creator and Editor style rules
   flex-direction: column;
   width: 100%;
 }
+
 #user-search-dropdown-button {
   background: none;
   border: none;
@@ -958,10 +969,13 @@ Project Creator and Editor style rules
   margin: 0;
   width: 100%;
 }
+
 #user-search-container .dropdown {
   width: 100%;
 }
-#user-search-container .search-bar { /* Override for default SearchBar component */
+
+#user-search-container .search-bar {
+  /* Override for default SearchBar component */
   display: flex;
   align-items: center;
   background-color: var(--header-color);
@@ -972,7 +986,9 @@ Project Creator and Editor style rules
   height: fit-content;
   /* border: 1px solid var(--border-color); */
 }
-#user-search-container .search-input { /* Override for default SearchBar component */
+
+#user-search-container .search-input {
+  /* Override for default SearchBar component */
   border: none;
   background-color: transparent;
 }
@@ -990,18 +1006,23 @@ Project Creator and Editor style rules
   column-gap: 8px;
   row-gap: 15px;
 }
+
 #project-team-add-member-name {
   grid-area: name-label;
 }
+
 #user-search-container {
   grid-area: name-search;
 }
+
 #project-team-add-member-role {
   grid-area: role-label;
 }
-#project-team-add-member-info > .select-container {
+
+#project-team-add-member-info>.select-container {
   grid-area: role-select;
 }
+
 #project-team-add-member-permissions {
   grid-area: permissions;
 }
@@ -1026,42 +1047,49 @@ Project Creator and Editor style rules
   margin-top: 5px;
   box-shadow: 0 0 10px 0 var(--shadow-color);
 }
+
 .user-search-item {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 15px; /* or 13 15? */
+  padding: 15px;
+  /* or 13 15? */
   width: 100%;
   min-height: 45px;
   background-color: var(--dropdown-color);
   border: none;
 }
+
 .user-search-item.top {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
+
 .user-search-item.bottom {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+
 .user-search-item:hover {
   background-color: var(--primary-color);
   color: var(--invert-text);
 }
+
 .user-search-name {
   color: var(--main--text);
   margin: 0;
 }
+
 .user-search-username {
   color: var(--neutral-gray);
   font-style: italic;
   margin: 0;
 }
 
-#project-editor-project-members > .popup-container > .popup,
-.project-editor-project-member > .popup-container > .popup,
-.project-editor-button-pair > .popup-container > .popup,
-.positions-popup-info > .popup-container > .popup {
+#project-editor-project-members>.popup-container>.popup,
+.project-editor-project-member>.popup-container>.popup,
+.project-editor-button-pair>.popup-container>.popup,
+.positions-popup-info>.popup-container>.popup {
   display: flex;
   flex-direction: column;
   width: 439px;
@@ -1154,6 +1182,7 @@ Project Creator and Editor style rules
   justify-content: center;
   align-items: center;
 }
+
 .delete-position-button {
   position: absolute;
   bottom: 20px;
@@ -1249,24 +1278,31 @@ Project Creator and Editor style rules
   gap: 8px;
   align-items: center;
 }
+
 label.edit-position-availability {
   grid-area: availability-label;
 }
+
 select.edit-position-availability {
   grid-area: availability-input;
 }
+
 .edit-position-details-left .select-container {
   grid-area: availability-input;
 }
+
 label.edit-position-location {
   grid-area: location-label;
 }
+
 select.edit-position-location {
   grid-area: location-input;
 }
+
 label.edit-position-contact {
   grid-area: contact-label;
 }
+
 button.edit-position-contact {
   grid-area: contact-input;
   display: flex;
@@ -1293,15 +1329,19 @@ button.edit-position-contact {
   gap: 8px;
   align-items: center;
 }
+
 label.edit-position-duration {
   grid-area: duration-label;
 }
+
 select.edit-position-duration {
   grid-area: duration-input;
 }
+
 label.edit-position-compensation {
   grid-area: compensation-label;
 }
+
 select.edit-position-compensation {
   grid-area: compensation-input;
 }
@@ -1332,7 +1372,7 @@ select.edit-position-compensation {
 }
 
 /* Project Editor/Creator Links Tab */
-#project-editor-links > .project-editor-extra-info {
+#project-editor-links>.project-editor-extra-info {
   margin-bottom: 15px;
 }
 
@@ -1365,7 +1405,7 @@ select.edit-position-compensation {
   border-radius: 50%;
 }
 
-.remove-link-button > .fa-minus {
+.remove-link-button>.fa-minus {
   color: var(--invert-text);
 }
 
@@ -1870,7 +1910,8 @@ used to help wrap the lines around the word 'Members'*/
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
-  line-height: 28px; /* 140% */
+  line-height: 28px;
+  /* 140% */
 }
 
 .project-delete-cancel {
@@ -2342,12 +2383,12 @@ New Project Page style rules
 
 @media screen and (max-width: 1199px) {
   #project-page-content {
-    grid-template: 
-    'info' auto
-    'carousel' auto
-    'overview' auto
-    'people' auto
-    'positions' auto;
+    grid-template:
+      'info' auto
+      'carousel' auto
+      'overview' auto
+      'people' auto
+      'positions' auto;
   }
 }
 
@@ -2391,7 +2432,7 @@ Project Carousel style rules
 
   .project-carousel-btn:hover {
     transition-duration: 0.2s;
-    
+
     /* Transition TBD */
   }
 
@@ -2449,7 +2490,8 @@ Project Carousel style rules
   height: 28px;
   margin-left: auto;
   align-items: center;
-  margin-bottom: 10px; /* For alignment with Project Title */
+  margin-bottom: 10px;
+  /* For alignment with Project Title */
   gap: 7px;
 
   button {
@@ -2640,7 +2682,7 @@ Project Carousel style rules
   box-shadow: none;
 }
 
-#project-team-open-positions-popup > .positions-popup-list {
+#project-team-open-positions-popup>.positions-popup-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -2668,7 +2710,7 @@ Project Carousel style rules
   height: 28px;
 }
 
-.add-item-button > button {
+.add-item-button>button {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -2699,7 +2741,7 @@ Project Carousel style rules
   font-weight: 400;
 }
 
-#team-positions-popup-list-header > .positions-popup-list-item {
+#team-positions-popup-list-header>.positions-popup-list-item {
   display: flex;
   gap: 8px;
 }
@@ -2897,7 +2939,8 @@ Project Carousel style rules
   border-radius: 50%;
   border: 2px solid white;
   object-fit: cover;
-  margin-right: 10px; /* Should prevent things from looking cramped */
+  margin-right: 10px;
+  /* Should prevent things from looking cramped */
 }
 
 .project-contributor-info {
@@ -2976,15 +3019,6 @@ My projects page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-/* #create-proj-btn {
-  padding: 10px 50px;
-  font-weight: bold;
-  font-size: larger;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-} */
-
 @media only screen and (max-width: 800px) {
   /* responsiveness goes here*/
 }
@@ -3003,29 +3037,6 @@ My projects page style rules
   grid-template-columns: auto max-content;
   gap: 10px;
 }
-
-/* .my-projects-search {
-  box-sizing: border-box;
-  background-color: #ececf7;
-  border: 0px;
-  border-radius: 40px;
-  padding: 11px 16px;
-  text-align: left;
-  color: var(--primary-color);
-  font-size: 13px;
-} */
-
-/* .my-projects-searchbar {
-  box-sizing: border-box;
-  background-color: #ececf7;
-  border: 0px;
-  border-radius: 0px;
-  width: 97%;
-  padding-left: 13px;
-  color: #271d66;
-  font-size: 14px;
-  line-height: normal;
-} */
 
 .my-projects-banner {
   box-sizing: border-box;
@@ -3186,7 +3197,7 @@ My projects page style rules
   background-color: var(--header-color);
   border: 0px;
   border-radius: 100px;
-  padding: 0px;
+  padding: 4px;
   cursor: pointer;
 
   display: flex;
@@ -3205,6 +3216,11 @@ My projects page style rules
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.my-projects-display-switch .display-switch-option:hover {
+  transition-duration: 0.25s;
+  background-color: var(--invert-text);
 }
 
 .my-projects-display-switch .display-switch-option#selected {
@@ -3230,6 +3246,12 @@ My projects page style rules
   font-weight: bold;
   line-height: 28px;
   letter-spacing: 0%;
+}
+
+.my-projects-all-projects-button:hover,
+.my-projects-new-project-button:hover {
+  transform: scale(1.1);
+  transition: 0.2s;
 }
 
 .page#my-projects hr {

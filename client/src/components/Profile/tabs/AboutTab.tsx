@@ -56,7 +56,7 @@ const TextArea = (props: { title: string, description: string, count: number, ma
             <div className="project-editor-extra-info">
                 {props.description}
             </div>
-            <span className="character-count">{charCount}/{props.maxLength}</span>
+            <span className="character-count" style={{bottom: "-20px"}}>{charCount}/{props.maxLength}</span>
             <textarea id={`profile-editor-${props.id}`} maxLength={props.maxLength} onChange={
                 e => {
                     setCharCount(e.target.value.length);
@@ -87,17 +87,17 @@ export const AboutTab = (props: { profile: ProfileData }) => {
                     <div className="editor-input-item">
                         <label>First Name*</label>
                         {/* <br /> */}
-                        <input id="profile-editor-firstName" type="text"></input>
+                        <input id="profile-editor-firstName" maxLength={50} type="text"></input>
                     </div>
                     <div className="editor-input-item">
                         <label>Last Name*</label>
                         {/* <br /> */}
-                        <input id="profile-editor-lastName" type="text"></input>
+                        <input id="profile-editor-lastName" maxLength={50} type="text"></input>
                     </div>
                     <div className="editor-input-item">
                         <label>Pronouns</label>
                         {/* <br /> */}
-                        <input id="profile-editor-pronouns" type="text"></input>
+                        <input id="profile-editor-pronouns" maxLength={25} type="text"></input>
                     </div>
                 </div>
                 <div className="about-row row-2">
@@ -117,7 +117,7 @@ export const AboutTab = (props: { profile: ProfileData }) => {
                 <div className="about-row row-3">
                     <div className="editor-input-item">
                         <label>Location</label>
-                        <input id="profile-editor-location" type="text"></input>
+                        <input id="profile-editor-location" maxLength={150} type="text"></input>
                     </div>
                 </div>
             </div>

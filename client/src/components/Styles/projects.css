@@ -2564,7 +2564,7 @@ Project Carousel style rules
   border-radius: 30px;
   background-color: var(--primary-color) !important;
   color: var(--invert-text);
-  padding: 5px 20px;
+  padding: 5px 40px;
   font-weight: 700;
 }
 

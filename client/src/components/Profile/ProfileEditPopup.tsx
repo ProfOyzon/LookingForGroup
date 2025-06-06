@@ -194,7 +194,7 @@ export const ProfileEditPopup = () => {
 
   return (
     <Popup>
-      <PopupButton buttonId="project-info-edit">Edit Profile</PopupButton>
+      <PopupButton buttonId="project-info-edit">Edit</PopupButton>
       <PopupContent callback={()=>{switchTab(0);}}>
         <form id="profile-creator-editor" encType="multipart/form-data">
           <div id="profile-editor-tabs">{editorTabs}</div>

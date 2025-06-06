@@ -207,7 +207,7 @@ used for the more options dropdown menu and notifications
   padding: 10px 20px;
   font-size: 2ch;
   font-weight: 700;
-  
+
   width: max-content;
   margin: auto;
 }
@@ -1402,7 +1402,10 @@ Select style rules
   background-color: var(--primary-color);
   color: var(--invert-text);
 
-  .fa, .fa-solid, .fa-regular, .fa-brands {
+  .fa,
+  .fa-solid,
+  .fa-regular,
+  .fa-brands {
     color: var(--invert-text) !important;
   }
 }
@@ -1546,6 +1549,12 @@ Image Carousel style rules
   position: absolute;
   bottom: 1rem;
   right: 1rem;
+}
+
+.top-left {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
 }
 
 /*

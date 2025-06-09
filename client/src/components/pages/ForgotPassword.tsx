@@ -1,12 +1,14 @@
 import '../Styles/pages.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import * as paths from '../../constants/routes';
 import { ThemeIcon } from '../ThemeIcon';
 import { sendPost } from '../../functions/fetch.js';
 
 const ForgotPassword: React.FC = () => {
   const navigate = useNavigate(); // Hook for navigation
+  const location = useLocation();
+  const from = location.state?.from;
 
   // State variables
   const [emailInput, setEmailInput] = useState('');
@@ -58,7 +60,7 @@ if (response && response.error) {
   // Function to handle the forgot pass button click
   const handleBackToLogin = () => {
     // Navigate to the Forgot Password Page
-    navigate(paths.routes.LOGIN);
+    navigate(paths.routes.LOGIN, { state: { from } });
   };
 
   // render the login page

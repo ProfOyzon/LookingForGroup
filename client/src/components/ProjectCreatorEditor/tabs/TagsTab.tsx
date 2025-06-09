@@ -204,6 +204,12 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
     }
   }, [currentTagsTab, allProjectTypes, allTags, allSkills]);
 
+  // Reset tag list on tab change to default list
+  useEffect(() => {
+  const defaultTags = currentDataSet[0]?.data ?? [];
+  setSearchedTags(defaultTags);
+  }, [currentTagsTab, currentDataSet])
+
   // Find if a tag is present on the project
   const isTagSelected = useCallback((id: number, label: string, tab: number = -1) => {
     // if no tab, iterate through all categories
@@ -257,15 +263,10 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
     
     // if tag is unselected
     if (e.target.className.includes('unselected')) {
-      // change tag class
-      e.target.className = e.target.className.replace('unselected', 'selected');
-      
-      // change icon class
-      e.target.querySelector('i').className = 'fa fa-close';
-
       // get tag id and type according to type of tag
       let id: number = -1;
       let type: string = '';
+
       if (e.target.className.includes('blue')) { // project type
         id = allProjectTypes.find((t) => t.label === tag)?.type_id ?? -1;
         type = 'Project Type';
@@ -311,12 +312,6 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         project_types: modifiedProject.project_types.filter((t) => t.project_type !== tag),
         tags: modifiedProject.tags.filter((t) => t.tag !== tag)
       });
-      
-      // deselect tag
-      e.target.className = e.target.className.replace('selected', 'unselected');
-
-      // change icon class
-      e.target.querySelector('i').className = 'fa fa-plus';
     }
   }, [allProjectTypes, allSkills, allTags, modifiedProject]);
 
@@ -366,6 +361,9 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
           );
         })
       )
+    }
+    else if (searchedTags && searchedTags.length === 0) {
+     return <div className="no-results-message">No results found!</div>;
     }
     // project type
     if (currentTagsTab === 0) {
@@ -459,17 +457,16 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
   }, [searchedTags, currentTagsTab, allSkills, isTagSelected, handleTagSelect, allProjectTypes, allTags]);
 
   // Update shown tags according to search results
-  // FIXME: results do not update when switching tabs with no query
   const handleSearch = useCallback((results: (Tag | ProjectType)[][]) => {
     // setSearchResults(results);
     if (results.length === 0 && currentDataSet.length !== 0) {
       // no results or current data set
-      setSearchedTags(currentDataSet[0].data);
+      setSearchedTags([]);
     }
     else {
       setSearchedTags(results[0]);
     }
-  }, [currentDataSet]);
+  }, []);
 
   // --- Complete component ---
   return (
@@ -502,7 +499,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
       </div>
 
       <div id="project-editor-tag-search">
-        <SearchBar dataSets={currentDataSet} onSearch={(results) => handleSearch(results)} />
+        <SearchBar key={currentTagsTab} dataSets={currentDataSet} onSearch={(results) => handleSearch(results)} />
         <div id="project-editor-tag-wrapper">
           <div id="project-editor-tag-search-tabs">
             <button

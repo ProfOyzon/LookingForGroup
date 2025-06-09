@@ -1,23 +1,43 @@
+import express from 'express';
 import multer from 'multer';
 import multerConfig from '../config/multerConfig.js';
 
+/**
+ * Middleware to validate that the request is logged in
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {void}
+ */
 const checkLogin = (req, res, next) => {
   //bypass for testing
   if (process.env.NODE_ENV === 'test') {
-    return next();
+    next();
+    return;
   }
 
   // Prevent access to route if user isn't logged in
+  // -------------- Remove ts-ignore once session object is correctly typed --------------
+  // @ts-ignore
   if (!req.session.userId) {
-    return res.status(401).json({
+    res.status(401).json({
       status: 401,
       error: 'Unauthorized',
     });
+    return;
   }
 
-  return next();
+  next();
+  return;
 };
 
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {void}
+ */
 const checkImageFile = (req, res, next) => {
   const upload = multer(multerConfig).single('image');
 
@@ -37,14 +57,18 @@ const checkImageFile = (req, res, next) => {
             throw new Error('There was an error receiving the file');
         }
       } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-          status: 400,
-          error: err.message,
-        });
+        if (err instanceof Error) {
+          console.log(err);
+          res.status(400).json({
+            status: 400,
+            error: err.message,
+          });
+          return;
+        }
       }
     } else {
-      return next();
+      next();
+      return;
     }
   });
 };

@@ -65,7 +65,7 @@ test ('Add picture to project - invalid', async () => {
 
 // addMember (valid)
 test('Add member to project - valid', async () => {
-  const r = await util.addMember(/* TODO */);
+  const r = await util.addMember(5, 18, 3, 1);
 
   console.log("Add member valid: " + r);
 
@@ -84,7 +84,7 @@ test('Add member to project - invalid', async () => {
 
 // updateProject (valid)
 test('Update project - valid', async () => {
-  const r = await util.updateProject( /* TODO */);
+  const r = await util.updateProject(5, {hook: "Howdy, I'm MISTAH BONES!"});
 
   console.log("Update project valid: " + r);
 
@@ -135,7 +135,7 @@ test('Update picture positions - invalid', async () => {
 
 // updateMember (valid)
 test('Update member - valid', async () => {
-  const r = await util.updateMember(/* TODO */);
+  const r = await util.updateMember(5, 18, 2, 1);
 
   console.log("Update member valid: " + r);
 
@@ -163,7 +163,7 @@ test('Get all projects', async () => {
 
 // getByID (valid)
 test('Get project by ID - valid', async () => {
-  const r = await util.getByID(3);
+  const r = await util.getByID(5);
 
   console.log("Project by ID valid: " + r);
 
@@ -180,7 +180,7 @@ test('Get project by ID - invalid', async () => {
 
 // getPics (valid)
 test('Get project pics - valid', async () => {
-  const r = await util.getPics(3);
+  const r = await util.getPics(5);
 
   console.log("Picture valid: " + r);
 
@@ -199,7 +199,7 @@ test('Get project pics - invalid', async () => {
 
 // deletePic (valid)
 test('Delete picture - valid', async () => {
-  const r = await util.deletePic(/* TODO */);
+  const r = await util.deletePic(5, /* TODO */);
 
   console.log("Delete picture valid: " + r);
 
@@ -216,7 +216,7 @@ test('Delete picture - invalid', async () => {
 
 // deleteMember (valid)
 test('Delete member - valid', async () => {
-  const r = await util.deleteMember(/* TODO */);
+  const r = await util.deleteMember(5, 18);
 
   console.log("Delete member valid: " + r);
 
@@ -233,7 +233,7 @@ test('Delete member - invalid', async () => {
 
 // deleteProject (valid)
 test('Delete project - valid', async () => {
-  const r = await util.deleteProject(/* TODO */);
+  const r = await util.deleteProject(6);
 
   console.log("Delete project valid: " + r);
 

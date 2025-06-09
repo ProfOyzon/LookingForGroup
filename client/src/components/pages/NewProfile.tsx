@@ -12,12 +12,12 @@ import '../Styles/settings.css';
 import '../Styles/pages.css';
 
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Header } from '../Header';
+import { useNavigate } from 'react-router-dom';
+import * as paths from '../../constants/routes';
+import { Header, loggedIn } from '../Header';
 import { PanelBox } from '../PanelBox';
 import { ProfileEditPopup } from '../Profile/ProfileEditPopup';
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
-import EditButton from '../Profile/ProfileEditButton';
 import { ThemeIcon } from '../ThemeIcon';
 import { fetchUserID } from '../../functions/fetch';
 import { ProfileInterests } from '../Profile/ProfileInterests';
@@ -101,6 +101,8 @@ const NewProfile = () => {
     skills: [],
   };
 
+  const navigate = useNavigate(); // Hook for navigation
+
   // Get URL parameters to tell what user we're looking for and store it
   let urlParams = new URLSearchParams(window.location.search);
   let profileID = urlParams.get('userID');
@@ -124,21 +126,28 @@ const NewProfile = () => {
   // Helper functions
   // --------------------
 
+  // 'Follow' button
   const followUser = () => {
     const followButton = document.getElementById('profile-follow-button') as HTMLButtonElement;
     toggleFollow = !toggleFollow;
 
-    if (toggleFollow) {
-      followButton.innerText = 'Following';
-      followButton.style.backgroundColor = 'Orange';
-      followButton.style.width = '160px';
-    } else {
-      followButton.innerText = 'Follow';
-      followButton.style.backgroundColor = 'var(--primary-color)';
-      followButton.style.width = '120px';
+    if (!loggedIn) {
+      navigate(paths.routes.LOGIN, { state: { from: location.pathname } }); // Redirect if logged out
     }
+    else {
 
-    // Insert Backend Follow Button Stuff
+      // (Follow behavior would be implemented here)
+
+      if (toggleFollow) {
+        followButton.innerText = 'Following';
+        followButton.style.backgroundColor = 'Orange';
+        followButton.style.width = '160px';
+      } else {
+        followButton.innerText = 'Follow';
+        followButton.style.backgroundColor = 'var(--primary-color)';
+        followButton.style.width = '120px';
+      }
+    }
   };
 
   // Search bar doesn't really have a use, so might as well use it for projects
@@ -242,7 +251,7 @@ const NewProfile = () => {
         <div id="about-me-buttons">
           <button
             onClick={() => {
-               window.open('https://www.linkedin.com/', '_blank');
+              window.open('https://www.linkedin.com/', '_blank');
             }}
           >
             <ThemeIcon
@@ -396,9 +405,14 @@ const NewProfile = () => {
           </div>
 
           <div id="profile-info-description">{displayedProfile.bio}</div>
-          <button id="profile-follow-button" onClick={followUser}>
-            Follow
-          </button>
+          {/*Only loads follow button if not on own page*/}
+          {isUsersProfile ? (
+            <></>
+          ) : (
+            <button id="profile-follow-button" onClick={followUser}>
+              Follow
+            </button>
+          )}
 
           <div id="profile-info-funfact">
             <span id="fun-fact-start">
@@ -407,10 +421,10 @@ const NewProfile = () => {
             {displayedProfile.fun_fact}
           </div>
           <div id="profile-info-interest">
-              <ProfileInterests user={{interests: displayedProfile.interests || []}} 
+            <ProfileInterests user={{ interests: displayedProfile.interests || [] }}
               isUsersProfile={true} />
           </div>
-          
+
           <div id="profile-info-skills">
             {displayedProfile.skills !== null ? (
               /* Will take in a list of tags the user has selected, then */

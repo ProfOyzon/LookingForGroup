@@ -14,7 +14,7 @@ import './Styles/pages.css';
 import { SearchBar } from './SearchBar';
 import { Dropdown, DropdownButton, DropdownContent } from './Dropdown';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import * as paths from '../constants/routes';
 import { sendPost } from '../functions/fetch';
 import { ThemeIcon } from './ThemeIcon';
@@ -23,7 +23,7 @@ import { useLocation } from 'react-router-dom'; // Hook to access the current lo
 
 //Header component to be used in pages
 
-let loggedIn;
+export let loggedIn;
 
 //dataSets - list of data for the searchbar to use
 //onSearch - function for the searchbar to run when searching
@@ -46,7 +46,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
   //Text for light mode toggle button should be opposite of current theme
   const [modeToggle, setModeToggle] = useState(theme === 'dark' ? 'Light Mode' : 'Dark Mode');
 
-  const navigate = useNavigate(); //Hook for navigation
+  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
     const fetchUsername = async () => {

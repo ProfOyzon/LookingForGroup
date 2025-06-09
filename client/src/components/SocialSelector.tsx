@@ -13,16 +13,27 @@ import './Styles/pages.css';
 import '../../public/FontAwesome/css/brands.css';
 
 import { useState, useEffect } from 'react';
+import { JSX } from 'react';
 
-const getSocials = async () => {
+interface Social {
+  id: string | number;
+  label: string;
+}
+
+interface SocialSelectorProps {
+  value: string | number;
+  onChange: React.ChangeEventHandler<HTMLSelectElement>;
+}
+
+const getSocials = async (): Promise<Social[]> => {
   // TODO: create error handling, try catch block
   const response = await fetch('/api/datasets/socials');
   const { data } = await response.json();
   return data;
 };
 
-export const SocialSelector = (props) => {
-  const [options, setOptions] = useState(null);
+export const SocialSelector: React.FC<SocialSelectorProps> = (props) => {
+const [options, setOptions] = useState<JSX.Element[] | null>(null);
 
   useEffect(() => {
     const setUpSocialSelector = async () => {

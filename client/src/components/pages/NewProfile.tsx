@@ -20,6 +20,7 @@ import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
 import EditButton from '../Profile/ProfileEditButton';
 import { ThemeIcon } from '../ThemeIcon';
 import { fetchUserID } from '../../functions/fetch';
+import { ProfileInterests } from '../Profile/ProfileInterests';
 import profilePicture from '../../images/blue_frog.png';
 
 // --------------------
@@ -49,12 +50,16 @@ interface Profile {
   fun_fact: string;
   bio: string;
   skills: Tag[];
+  interests?: string[];
 }
 
 // Stores if profile is loaded from server and if it's user's respectively
 // const [profileLoaded, setProfileLoaded] = useState(false);
 let userID: number;
 let isUsersProfile: boolean = false;
+
+// Change this when follow backend is added, this is just for testing purposes
+let toggleFollow = false;
 
 const NewProfile = () => {
   // --------------------
@@ -111,14 +116,31 @@ const NewProfile = () => {
   [fullProjectList, setFullProjectList] = useState([]);
   [displayedProjects, setDisplayedProjects] = useState([]);
 
-  const projectSearchData = fullProjectList.map(
-    (project: { title: string, hook: string }) => {
-      return { name: project.title, description: project.hook };
-    });
+  const projectSearchData = fullProjectList.map((project: { title: string; hook: string }) => {
+    return { name: project.title, description: project.hook };
+  });
 
   // --------------------
   // Helper functions
   // --------------------
+
+  const followUser = () => {
+    const followButton = document.getElementById('profile-follow-button') as HTMLButtonElement;
+    toggleFollow = !toggleFollow;
+
+    if (toggleFollow) {
+      followButton.innerText = 'Following';
+      followButton.style.backgroundColor = 'Orange';
+      followButton.style.width = '160px';
+    } else {
+      followButton.innerText = 'Follow';
+      followButton.style.backgroundColor = 'var(--primary-color)';
+      followButton.style.width = '120px';
+    }
+
+    // Insert Backend Follow Button Stuff
+  };
+
   // Search bar doesn't really have a use, so might as well use it for projects
   const searchProjects = (searchResults) => {
     const tempProjList: Project[] = [];
@@ -199,7 +221,6 @@ const NewProfile = () => {
             await getProfileProjectData();
           }
         }
-
       } catch (error) {
         if (error instanceof Error) {
           console.error(error.message);
@@ -221,7 +242,7 @@ const NewProfile = () => {
         <div id="about-me-buttons">
           <button
             onClick={() => {
-              window.location.href = 'https://www.linkedin.com/';
+               window.open('https://www.linkedin.com/', '_blank');
             }}
           >
             <ThemeIcon
@@ -232,7 +253,7 @@ const NewProfile = () => {
           </button>
           <button
             onClick={() => {
-              window.location.href = 'https://www.instagram.com/';
+              window.open('https://www.instagram.com/', '_blank');
             }}
           >
             <ThemeIcon
@@ -251,26 +272,26 @@ const NewProfile = () => {
         <div id="about-me-buttons" className="about-me-buttons-minimal">
           <button>
             <ThemeIcon
-              light={'assets/black/linkedIn_black.png'}
-              dark={'assets/white/linkedIn_white.png'}
+              light={'assets/linkedIn_logo_light.png'}
+              dark={'assets/linkedIn_logo_dark.png'}
               alt={'LinkedIn'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/black/instagram_black.png'}
-              dark={'assets/white/instagram_white.png'}
+              light={'assets/instagram_logo_light.png'}
+              dark={'assets/instagram_logo_dark.png'}
               alt={'Instagram'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/bell_light.png'}
-              dark={'assets/bell_dark.png'}
+              light={'assets/follow_user_light.png'}
+              dark={'assets/follow_user_dark.png'}
               alt={'Like/Follow'}
             />
           </button>
-          { /* TO-DO: Implement Share, Block, and Report functionality */ }
+          {/* TO-DO: Implement Share, Block, and Report functionality */}
           <Dropdown>
             <DropdownButton>
               <ThemeIcon
@@ -308,16 +329,17 @@ const NewProfile = () => {
   return (
     <div className="page">
       {/* Should probably use the search bar for projects I guess? */}
-      <Header dataSets={{ data: fullProjectList }} onSearch={searchProjects} />
+      <Header dataSets={{ data: fullProjectList }} onSearch={searchProjects} hideSearchBar={true} />
 
       {/* Checks if we have profile data to use, then determines what to render */}
       <div id="profile-page-content">
         {/* New profile display using css grid, will contain all info except for projects */}
         <div id="profile-information-grid">
           <img
-            src={(displayedProfile.profile_image) 
-              ? `/images/profiles/${displayedProfile.profile_image}` 
-              : profilePicture
+            src={
+              displayedProfile.profile_image
+                ? `/images/profiles/${displayedProfile.profile_image}`
+                : profilePicture
             }
             id="profile-image"
             alt="profile image"
@@ -374,12 +396,21 @@ const NewProfile = () => {
           </div>
 
           <div id="profile-info-description">{displayedProfile.bio}</div>
+          <button id="profile-follow-button" onClick={followUser}>
+            Follow
+          </button>
 
           <div id="profile-info-funfact">
-            <span id="fun-fact-start">{displayedProfile.fun_fact ? 'Fun Fact!' : 'No Fun Fact (Yet)!'}</span>
+            <span id="fun-fact-start">
+              {displayedProfile.fun_fact ? 'Fun Fact!' : 'No Fun Fact (Yet)!'}
+            </span>
             {displayedProfile.fun_fact}
           </div>
-
+          <div id="profile-info-interest">
+              <ProfileInterests user={{interests: displayedProfile.interests || []}} 
+              isUsersProfile={true} />
+          </div>
+          
           <div id="profile-info-skills">
             {displayedProfile.skills !== null ? (
               /* Will take in a list of tags the user has selected, then */
@@ -411,7 +442,12 @@ const NewProfile = () => {
         <div id="profile-projects">
           <h2>Projects</h2>
           {/* Probably fine to use 25 for itemAddInterval */}
-          <PanelBox category={'projects'} itemList={displayedProjects} itemAddInterval={25} userId={userID} />
+          <PanelBox
+            category={'projects'}
+            itemList={displayedProjects}
+            itemAddInterval={25}
+            userId={userID}
+          />
         </div>
       </div>
     </div>

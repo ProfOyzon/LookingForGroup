@@ -1,70 +1,143 @@
-//import util from '../utils/userUtils';
-const request = require('supertest');
+import util from '../utils/userUtils.js';
 
-describe("GET users", () => {
-    it('Should return the whole list of users.', async () => {
-        const response = await request('https://lfg.gccis.rit.edu/api').get('/users')
-        expect(response.statusCode).toBe(200);
-        console.log(response.body);
-    });
-    it('Should return a single user at id=1.', async () => {
-        const response = await request('https://lfg.gccis.rit.edu/api').get('/users/1');
-        expect(response.statusCode).toBe(200);
-    });
-    it('Should return single user data by username', async () => {
-        const username = 'userLily';
-        const response = await request('https://lfg.gccis.rit.edu/api').get(`/users/search-username/${username}`);
-        expect(response.statusCode).toBe(200);
-    });
-     it('Should return single user data by email', async () => {
-        const email = 'jmh4687@g.rit.edu'; //returns empty because no account is attatched to it
-        const response = await request('https://lfg.gccis.rit.edu/api').get(`/users/search-email/${email}`);
-        expect(response.statusCode).toBe(200);
-        //console.log(response.body.data);
-    });
+/* - - - GETs - - - */
+
+test('GET: Get all users', async () => {
+  const r = await util.getUsers();
+
+  console.log(r);
+
+  expect(r.status).toBe(200);
+  expect(r).toBeDefined();
 });
 
-describe("Check if user exists in database through email.", () => {
-    it('Should return false since email jmh4687@g.rit.edu doesnt exist.', async () => {
-        const email = 'jmh4687@g.rit.edu';
-        const response = await request('https://lfg.gccis.rit.edu/api').get(`/users/search-email/${email}`);
-        expect(response.statusCode).toBe(200);
-    })
+test('GET: Get user id 1', async () => {
+  const r = await util.getUsersById(1);
+
+  console.log(r);
+
+  expect(r.status).toBe(200);
+  expect(r).toBeDefined();
 });
 
-describe("Get user account information through a user id.", () => {
-    it('Returns status 200 and undefined data, not authorized.', async () => {
-        const id = 1;
-        const response = await request('https://lfg.gccis.rit.edu/api').get(`users/${id}/account`);
-        expect(response.statusCode).toBe(200);
-    })
+test('GET: Get user by email: Mistah Bones: jjp8541@rit.edu', async () => {
+  const r = await util.getUserByEmail('jjp8541@rit.edu');
+
+  console.log(r);
+
+  expect(r.status).toBe(200);
+  expect(r.data).toBeDefined();
 });
 
+test('GET: Get user by username: Mistah Bones.', async () => {
+  const r = await util.getUserByUsername('Mr.Bones');
 
-describe("Create a new user (John Testing)", () => {
-    it('Should create a user, need token, email, first name, last name', async () => {
-        //const _token =
-        const data = {
-            firstName: "John",
-            lastName: "Testing",
-            email: "literallyaflower@gmail.com",
-        };
-        const response = await request('https://lfg.gccis.rit.edu/api').post(`signup/`);
-        expect(response.statusCode).toBe(200);
-    });
-    it('Should recieve user information from John Testing.', async () => {
-        const response = await request('https://lfg.gccis.rit.edu/api').get(`users/search-email/literallyaflower@gmail.com`);
-        expect(response.statusCode).toBe(200);
-    })
+  expect(r.status).toBe(200);
+  expect(r.data).toBeDefined();
 });
 
-//doesn't work because user isn't created yet 
-// describe("Edit user account information through data.", () => {
-//     it("Returns status 200 and response data.", async () => {
-//         const data = {
-//             firstName: "Johann"
-//         };
-//         const response = await request('https://lfg.gccis.rit.edu/api').put('/users/24');
-//         expect(response.statusCode).toBe(200);
-//     })
-//})
+test('GET: Check if Mistah Bones is in database.', async () => {
+  const r = await util.userInDatabase('jjp8541@rit.edu');
+  console.log(r);
+
+  expect(r).toBe(true);
+});
+
+test('GET: Get account information for id 19 (Mistah Bones), invalid.', async () => {
+  const r = await util.getAccountInformation(19);
+
+  console.log(r);
+
+  expect(r).toBe('400'); // because no authorization
+  expect(r).toBeDefined();
+});
+
+test('GET: Get people user 1 is following.', async () => {
+  const r = await util.getUserFollowing(1);
+
+  console.log(r);
+
+  expect(r.status).toBe(200);
+  expect(r).toBeDefined();
+});
+
+test('GET: Get projects the user is a member of', async () => {
+  const r = await util.getVisibleProjects(1);
+
+  console.log(r);
+
+  expect(r.status).toBe(200);
+  expect(r).toBeDefined();
+});
+
+test('GET: all projects user is following', async () => {
+  const r = await util.getProjectFollowing(1);
+
+  console.log(r);
+
+  expect(r.status).toBe(200);
+  expect(r).toBeDefined();
+});
+
+/* - - - POSTs - - - */
+
+//test user id
+// let testId = null;
+
+// test('POST: Test creating new user.', async () => {
+//     const email = `newEmail@rit.edu`;
+
+//     const r = await util.createNewUser(
+//         'DEV BYPASS',
+//         email,
+//         'Toby',
+//         'Test',
+//         'Created test user',
+//         'they/them',
+//         1,
+//         2,
+//         '',
+//         '',
+//         'please work',
+//         [],
+//         []
+//     );
+
+//     console.log(r);
+
+//     expect(r.status).toBe(201);
+//     expect(r.user_id).toBeDefined();
+
+//     //get the user ID
+//     testId = r.user_id;
+// });
+
+/* - - - PUTs - - - */
+
+// test('PUT: Edit data for a user', async () => {
+//     //use test ID
+//     expect(testId).toBeDefined();
+
+//     const r = await util.editUser(testId, {
+//         funFact: 'The edited worked!'
+//     });
+
+//     console.log(r);
+
+//     expect(r.status).toBe(201);
+// });
+
+/* - - - DELETEs - - - */
+
+// test('DELETE: deletes a user by id', async () => {
+//     //use test ID
+//     expect(testId).toBeDefined();
+
+//     const r = await util.deleteUser(testId);
+
+//     console.log(r);
+//     expect(r.status).toBe(200);
+
+// });
+
+// npm test userUtils.test.js

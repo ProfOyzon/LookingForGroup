@@ -1,3 +1,4 @@
+import express from 'express';
 import { join } from 'path';
 import { unlink } from 'fs/promises';
 import sharp from 'sharp';
@@ -6,17 +7,11 @@ import { genPlaceholders } from '../utils/sqlUtil.js';
 
 const dirname = import.meta.dirname;
 
-
-// --------------------
-// Request Handlers
-// --------------------
-//
-
 /**
  * Get all project through request
- * @param req - request  (uses req.session.userId to check status)
- * @param res - response 
- * @returns res.status - {status:200, data:[projects]} if success, else {status:400, error:...}
+ * @param {express.Request} req - request  (uses req.session.userId to check status)
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:200, data:[projects]} if success, else {status:400, error:...}
  */
 const getProjects = async (req, res) => {
   try {
@@ -42,7 +37,7 @@ const getProjects = async (req, res) => {
                 GROUP BY pf.project_id) f
 			      ON p.project_id = f.project_id;
         `;
-    const [projects] = await pool.query(sql);
+    const projects = await pool.query(sql);
 
     // Format the follower section so it doesn't provide IDs
     projects.forEach((project) => {
@@ -50,28 +45,30 @@ const getProjects = async (req, res) => {
 
       project.followers = {
         count: followers.length,
-        isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+        isFollowing: followers.find((follower) => req.session.userId === follower.id) !== undefined,
       };
     });
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: projects,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while getting all projects',
     });
+    return;
   }
 };
 
 /**
  * Creates a new project with all necassary data types, tags, jobs, members, and socials
- * @param req - req.body - containing all project data
- * @param res - response
- * @returns res.status - {status;201, data:projectId} if success, else {status:400, error:...}
+ * @param {express.Request} req - req.body - containing all project data
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status;201, data:projectId} if success, else {status:400, error:...}
  */
 const createProject = async (req, res) => {
   // Get input data
@@ -92,45 +89,53 @@ const createProject = async (req, res) => {
 
   // Checks
   if (!userId || userId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing user id',
     });
+    return;
   } else if (!title) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing a title',
     });
+    return;
   } else if (!hook) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing a hook',
     });
+    return;
   } else if (!description) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing a description',
     });
+    return;
   } else if (!status) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing a project status',
     });
+    return;
   } else if (project_types.length < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing at least 1 project type',
     });
+    return;
   } else if (tags.length < 1 || tags.length > 20) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing at least 1 tag or more than 20 tags added',
     });
+    return;
   } else if (members.length < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing at least 1 member',
     });
+    return;
   }
 
   try {
@@ -141,7 +146,7 @@ const createProject = async (req, res) => {
     await pool.query(sql, values);
     const [projectId] = await pool.query(
       'SELECT project_id FROM projects WHERE title = ? AND user_id = ?',
-      [title, userId]
+      [title, userId],
     );
 
     // Add project's types to database
@@ -173,7 +178,7 @@ const createProject = async (req, res) => {
           job.location,
           job.compensation,
           job.description,
-        ]
+        ],
       );
     }
 
@@ -191,28 +196,30 @@ const createProject = async (req, res) => {
     for (let social of socials) {
       await pool.query(
         'INSERT INTO project_socials (project_id, website_id, url) VALUES (?, ?, ?)',
-        [projectId[0].project_id, social.id, social.url]
+        [projectId[0].project_id, social.id, social.url],
       );
     }
 
-    return res.status(201).json({
+    res.status(201).json({
       status: 201,
       data: projectId,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while creating the project',
     });
+    return;
   }
 };
 
 /**
  * Gets project data by the projects ID
- * @param req - req.params - the project ID
- * @param res - response
- * @returns res.status - {status:200, data:[project]} if success, else {status:400, error:...}
+ * @param {express.Request} req - req.params - the project ID
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:200, data:[project]} if success, else {status:400, error:...}
  */
 const getProjectById = async (req, res) => {
   // Get id from url
@@ -276,28 +283,29 @@ const getProjectById = async (req, res) => {
 
     project[0].followers = {
       count: followers.length,
-      isFollowing: (followers.find((follower) => req.session.userId === follower.id) !== undefined),
+      isFollowing: followers.find((follower) => req.session.userId === follower.id) !== undefined,
     };
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: project,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while getting the project',
     });
+    return;
   }
 };
 
-
 /**
  * Update existing project and its data types, tags, member, socials
- * @param req - req.params-project ID, req.body-updated project data
- * @param res - response
- * @returns res.status - {status:200} if successful, else {status:400, error:...}
+ * @param {express.Request} req - req.params-project ID, req.body-updated project data
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:200} if successful, else {status:400, error:...}
  */
 const updateProject = async (req, res) => {
   // Get input data
@@ -318,40 +326,47 @@ const updateProject = async (req, res) => {
 
   // Checks
   if (!title) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing a title',
     });
+    return;
   } else if (!hook) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing a hook',
     });
+    return;
   } else if (!description) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing a description',
     });
+    return;
   } else if (!status) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing a project status',
     });
+    return;
   } else if (project_types.length < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing at least 1 project type',
     });
+    return;
   } else if (tags.length < 1 || tags.length > 20) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing at least 1 tag or more than 20 tags added',
     });
+    return;
   } else if (members.length < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing at least 1 member',
     });
+    return;
   }
 
   try {
@@ -474,9 +489,10 @@ const updateProject = async (req, res) => {
     // ----- UPDATE PROJECT'S SOCIALS -----
     // Check if there are socials to add
     if (!socials || socials === undefined) {
-      return res.status(200).json({
+      res.status(200).json({
         status: 200,
       });
+      return;
     }
     // Create array from socials
     const newSocials = socials.map((social) => social.id);
@@ -504,24 +520,25 @@ const updateProject = async (req, res) => {
       await pool.query(sql, [id, social.id, social.url]);
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while updating the project',
     });
+    return;
   }
 };
 
-
 /**
  * Deletes project that user owns by ID
- * @param req - req.params.id-the project ID, req.session.userId-the current logged in users ID
- * @param res - response
- * @returns res.status - {status:200} if succes, else {status:400 or 500, error:...}
+ * @param {express.Request} req - req.params.id-the project ID, req.session.userId-the current logged in users ID
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:200} if succes, else {status:400 or 500, error:...}
  */
 const deleteProject = async (req, res) => {
   // Get data
@@ -530,40 +547,44 @@ const deleteProject = async (req, res) => {
 
   try {
     // Get creator/owner ID of project to verify it matches userId
-    const [ownerData] = await pool.query('SELECT p.user_id FROM projects p WHERE p.project_id = ?', [projId]);
+    const [ownerData] = await pool.query(
+      'SELECT p.user_id FROM projects p WHERE p.project_id = ?',
+      [projId],
+    );
     const ownerId = ownerData[0].user_id;
 
     // TO-DO: Feed back bad request if userId != ownerId
     // Otherwise, delete the project
     if (userId !== ownerId) {
-      return res.status(400).json({
+      res.status(400).json({
         status: 400,
         error: 'You must be the project owner in order to delete a project',
       });
+      return;
     }
 
     // Delete the project from the server
     await pool.query('DELETE FROM projects WHERE project_id = ?', [projId]);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 500,
       error: 'An error occurred while deleting project',
     });
+    return;
   }
 };
 
-
-
 /**
  * Updates the thumbnail image for a project
- * @param req - req.params.id-project ID, req.file-file for the uploaded image
- * @param res - response
- * @returns res.status - {status:201, data:[{thumbnail}]} if success, else (status:400, error:...) 
+ * @param {express.Request} req - req.params.id-project ID, req.file-file for the uploaded image
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:201, data:[{thumbnail}]} if success, else (status:400, error:...)
  */
 const updateThumbnail = async (req, res) => {
   // Get id from url
@@ -571,10 +592,11 @@ const updateThumbnail = async (req, res) => {
 
   // Checks
   if (!req.file) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing image file',
     });
+    return;
   }
 
   try {
@@ -596,25 +618,26 @@ const updateThumbnail = async (req, res) => {
     const values = [fileName, id];
     await pool.query(sql, values);
 
-    return res.status(201).json({
+    res.status(201).json({
       status: 201,
       data: [{ thumbnail: fileName }],
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while saving the project's thumbnail",
     });
+    return;
   }
 };
 
-
 /**
  * Get all pictures for project by project ID
- * @param req - req.params.id- project ID
- * @param res - response
- * @returns res.status - {status:200, data:[{image_id, image, position}]} if success. else {status:400, error:...}
+ * @param {express.Request} req - req.params.id- project ID
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:200, data:[{image_id, image, position}]} if success. else {status:400, error:...}
  */
 const getPictures = async (req, res) => {
   // Get id from url
@@ -629,24 +652,26 @@ const getPictures = async (req, res) => {
     const values = [id];
     const [pictures] = await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: pictures,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while getting the project's pictures",
     });
+    return;
   }
 };
 
 /**
  * Add new picture to a project
- * @param req - req.params.id- project ID, req.file-file of uploaded image, req.body.position-number for image order
- * @param res - response
- * @returns res.status - {status:201} if success, else {status:400, error:...}
+ * @param {express.Request} req - req.params.id- project ID, req.file-file of uploaded image, req.body.position-number for image order
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:201} if success, else {status:400, error:...}
  */
 const addPicture = async (req, res) => {
   // Get data
@@ -655,15 +680,17 @@ const addPicture = async (req, res) => {
 
   // Checks
   if (!req.file) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing image file',
     });
+    return;
   } else if (!position || Number(position) < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing a position for the picture',
     });
+    return;
   }
 
   try {
@@ -679,23 +706,25 @@ const addPicture = async (req, res) => {
     const values = [fileName, Number(position), id];
     await pool.query(sql, values);
 
-    return res.status(201).json({
+    res.status(201).json({
       status: 201,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while saving the project's picture",
     });
+    return;
   }
 };
 
 /**
  * Update the order of images in a project
- * @param req - req.params.id- project ID, req.body.images- the array of images {id, position}
- * @param res - response
- * @returns res.status - {status:200} if success. else {status:400, error:...}
+ * @param {express.Request} req - req.params.id- project ID, req.body.images- the array of images {id, position}
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:200} if success. else {status:400, error:...}
  */
 const updatePicturePositions = async (req, res) => {
   // Get input data
@@ -704,10 +733,11 @@ const updatePicturePositions = async (req, res) => {
 
   // Checks
   if (images.length < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing at least 1 picture',
     });
+    return;
   }
 
   try {
@@ -718,24 +748,25 @@ const updatePicturePositions = async (req, res) => {
       await pool.query(sql, values);
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while updating the picture order for a project',
     });
+    return;
   }
 };
 
-
 /**
  * Delete picture from a project
- * @param req - req.params.id- project ID, req.body.image-image file name 
- * @param res - response
- * @returns res.status - {status:200} if success. else {status:400, error:...}
+ * @param {express.Request} req - req.params.id- project ID, req.body.image-image file name
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:200} if success. else {status:400, error:...}
  */
 const deletePicture = async (req, res) => {
   // Get input data
@@ -744,10 +775,11 @@ const deletePicture = async (req, res) => {
 
   // Checks
   if (!image) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing picture name',
     });
+    return;
   }
 
   try {
@@ -757,25 +789,25 @@ const deletePicture = async (req, res) => {
 
     await pool.query('DELETE FROM project_images WHERE image = ? AND project_id = ?', [image, id]);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while removing a project's picture",
     });
+    return;
   }
 };
 
-
-
 /**
  * Add a member to a project. Needs all member feilds
- * @param req - req.params.id- project ID, req.body.(userId|titleId|permission)- info about user being added
- * @param res - response
- * @returns res.status - {status:201} if success, else {status:400|403, error:...}
+ * @param {express.Request} req - req.params.id- project ID, req.body.(userId|titleId|permission)- info about user being added
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:201} if success, else {status:400|403, error:...}
  */
 const addMember = async (req, res) => {
   // Get data
@@ -786,30 +818,37 @@ const addMember = async (req, res) => {
 
   // Checks
   if (!projId || projId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing or invalid project id',
     });
+    return;
   } else if (!userId || userId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing or invalid user id',
     });
+    return;
   } else if (!titleId || titleId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing or invalid job title id',
     });
+    return;
   } else if (!permission || permission < 0) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing or invalid member permissions',
     });
+    return;
   }
 
   try {
     // Make sure user making request is part of the project
-    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [projId]);
+    const [memberData] = await pool.query(
+      'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
+      [projId],
+    );
     let requester = null;
 
     for (let i = 0; i < memberData.length; i++) {
@@ -820,15 +859,17 @@ const addMember = async (req, res) => {
     }
 
     if (!requester) {
-      return res.status(403).json({
+      res.status(403).json({
         status: 403,
         error: 'You must be a member of this project to add another member.',
       });
+      return;
     } else if (requester.permissions <= 0) {
-      return res.status(403).json({
+      res.status(403).json({
         status: 403,
         error: 'You do not have permission to add another member to this project.',
       });
+      return;
     }
 
     // Add member to project
@@ -836,25 +877,26 @@ const addMember = async (req, res) => {
     const values = [projId, userId, titleId, permission];
     await pool.query(sql, values);
 
-    return res.status(201).json({
+    res.status(201).json({
       status: 201,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'An error occurred while adding a member to this project',
     });
+    return;
   }
 };
-
 
 /**
  * Update a project members title and permission for the project
  * Checks the permissions of current user to allow updates
- * @param req - req.params.id- project ID, req.body.(userId|titleId|permission)- info about user being updated
- * @param res - response
- * @returns res.status - {status:200} if success, else {status:400|403, error:...}
+ * @param {express.Request} req - req.params.id- project ID, req.body.(userId|titleId|permission)- info about user being updated
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:200} if success, else {status:400|403, error:...}
  */
 const updateMember = async (req, res) => {
   // Get data
@@ -865,30 +907,37 @@ const updateMember = async (req, res) => {
 
   // Checks
   if (!projId || projId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing or invalid project id',
     });
+    return;
   } else if (!userId || userId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing or invalid user id',
     });
+    return;
   } else if (!titleId || titleId < 1) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing or invalid job title id',
     });
+    return;
   } else if (!permission || permission < 0) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Missing or invalid member permissions',
     });
+    return;
   }
 
   try {
     // Make sure user is part of the project
-    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [id]);
+    const [memberData] = await pool.query(
+      'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
+      [id],
+    );
     let requester = null;
     let recipient = null;
 
@@ -903,20 +952,26 @@ const updateMember = async (req, res) => {
     }
 
     if (!requester) {
-      return res.status(403).json({
+      res.status(403).json({
         status: 403,
         error: 'You must be a member of this project to update another member.',
       });
+      return;
     } else if (!recipient) {
-      return res.status(400).json({
+      res.status(400).json({
         status: 400,
         error: 'User is not currently a member of this project.',
       });
-    } else if ((parseInt(userId) !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
-      return res.status(403).json({
+      return;
+    } else if (
+      parseInt(userId) !== req.session.userId &&
+      requester.permissions <= recipient.permissions
+    ) {
+      res.status(403).json({
         status: 403,
-        error: `You don't have the required permissions to update this user.`
-      })
+        error: `You don't have the required permissions to update this user.`,
+      });
+      return;
     }
 
     // Update contents of project
@@ -925,24 +980,25 @@ const updateMember = async (req, res) => {
     const values = [titleId, permission, visibility, projId, userId];
     await pool.query(sql, values);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: 'Something went wrong while updating user membership',
     });
+    return;
   }
 };
-
 
 /**
  * Delete a member from a project
  * Checks current users permissions to allow for deletes
- * @param req - req.params.id- project ID, req.body.userId- ID of user to remove
- * @param res - response
- * @returns res.status - {status:200} if success, else {status:400|403, error:...}
+ * @param {express.Request} req - req.params.id- project ID, req.body.userId- ID of user to remove
+ * @param {express.Response} res - response
+ * @returns {Promise<void>} res.status - {status:200} if success, else {status:400|403, error:...}
  */
 const deleteMember = async (req, res) => {
   // Get data
@@ -951,11 +1007,14 @@ const deleteMember = async (req, res) => {
 
   try {
     // Check if user making request is part of project
-    const [memberData] = await pool.query('SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?', [id]);
+    const [memberData] = await pool.query(
+      'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
+      [id],
+    );
     let requester = null;
     let recipient = null;
 
-    console.log()
+    console.log();
 
     for (let i = 0; i < memberData.length; i++) {
       if (parseInt(memberData[i].user_id) === parseInt(userId)) {
@@ -969,36 +1028,44 @@ const deleteMember = async (req, res) => {
 
     if (!requester) {
       // Make sure user in current session is a member of project, and have lower permissions
-      return res.status(403).json({
+      res.status(403).json({
         status: 403,
         error: 'You must be a member of the project to remove another member.',
       });
+      return;
     } else if (!recipient) {
-      return res.status(400).json({
+      res.status(400).json({
         status: 400,
         error: 'User is not currently a member of this project.',
       });
-    } else if ((parseInt(userId) !== req.session.userId) && (requester.permissions <= recipient.permissions)) {
+      return;
+    } else if (
+      parseInt(userId) !== req.session.userId &&
+      requester.permissions <= recipient.permissions
+    ) {
       console.log(`userId: ${userId} vs. sessionId: ${req.session.userId}`);
 
-      return res.status(403).json({
+      res.status(403).json({
         status: 403,
-        error: `You don't have the required permissions to remove this user from the project.`
+        error: `You don't have the required permissions to remove this user from the project.`,
       });
+      return;
     }
 
     // Remove member from a project
     await pool.query('DELETE FROM members WHERE project_id = ? AND user_id = ?', [id, userId]);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: "An error occurred while attempting to removing a project's member",
     });
+    return;
   }
 };
 

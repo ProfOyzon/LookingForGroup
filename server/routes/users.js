@@ -72,7 +72,6 @@ router.get('/api/users', userCtrl.getUsers);
  * Gets users v2
  * @param attributes attributes that filter out users
  * @returns users match attributes
- * @returns HTTP response
  */
 router.get('/api/2/users', async (req, res) => {
   try {
@@ -84,16 +83,18 @@ router.get('/api/2/users', async (req, res) => {
 
     const [users] = await pool.query(sql);
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: users,
     });
+    return;
   } catch (err) {
     console.log(err);
-    return res.status(400).json({
+    res.status(400).json({
       status: 400,
       error: err,
     });
+    return;
   }
 });
 
@@ -141,7 +142,7 @@ router.put(
   '/api/users/:id/profile-picture',
   mid.checkLogin,
   mid.checkImageFile,
-  userCtrl.updateProfilePicture
+  userCtrl.updateProfilePicture,
 );
 
 /**
@@ -222,7 +223,7 @@ router.post('/api/users/:id/followings/projects', mid.checkLogin, userCtrl.addPr
 router.delete(
   '/api/users/:id/followings/projects/:projId',
   mid.checkLogin,
-  userCtrl.deleteProjectFollowing
+  userCtrl.deleteProjectFollowing,
 );
 
 /**

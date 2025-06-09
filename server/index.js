@@ -23,11 +23,12 @@ app.use(express.json());
 // Setup sessions
 app.use(
   session({
-    secret: envConfig.sessionSecret,
+    // We might want to add some check earlier on to ensure the env variables are loaded, so we don't need this
+    secret: envConfig.sessionSecret ?? '',
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, maxAge: 60 * 60 * 6 * 1000 },
-  })
+  }),
 );
 
 // Routes
@@ -35,6 +36,7 @@ app.use(usersRouter);
 app.use(projectsRouter);
 app.use(datasetsRouter);
 
+// @ts-ignore
 app.get('/api', (req, res) => {
   return res.json({ message: 'You Reached The Looking For Group API' });
 });
@@ -48,11 +50,11 @@ setInterval(
   async () => {
     await pool.query('DELETE FROM signups WHERE created_at <= DATE_SUB(NOW(), INTERVAL 1 DAY)');
     await pool.query(
-      'DELETE FROM password_resets WHERE created_at <= DATE_SUB(NOW(), INTERVAL 20 MINUTE)'
+      'DELETE FROM password_resets WHERE created_at <= DATE_SUB(NOW(), INTERVAL 20 MINUTE)',
     );
     console.log('Tokens clean up');
   },
-  24 * 60 * 60 * 1000
+  24 * 60 * 60 * 1000,
 );
 
 app.listen(port, (err) => {

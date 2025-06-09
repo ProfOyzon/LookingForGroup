@@ -1,3 +1,4 @@
+import pool from '../config/database.js';
 import envConfig from '../config/env.js';
 //import { createUser } from '../controllers/users';
 

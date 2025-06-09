@@ -152,7 +152,7 @@ export const AboutTab = (props: { profile: ProfileData }) => {
       
       <div className="edit-profile-section-3">
         <TextArea
-          title={'About You*'}
+          title={'About Me*'}
           description={
             'Share a brief overview of who you are, your interests, and what drives you!'
           }

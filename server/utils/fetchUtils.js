@@ -47,7 +47,7 @@ Base apiURL is:
 
 /**
  * Basic GET function for utilities
- * @param {*} apiURL - API to be called, if you are using parameters customize the url
+ * @param {string} apiURL - API to be called, if you are using parameters customize the url
  * @returns response - JSONified data or error code.
  */
 const GET = (apiURL) => {
@@ -73,8 +73,8 @@ const GET = (apiURL) => {
 
 /**
  * Basic POST function for utilities
- * @param {*} apiURL - API to be called
- * @param {*} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
+ * @param {string} apiURL - API to be called
+ * @param {Object} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
  * @returns response - JSONified data or error code.
  */
 
@@ -107,8 +107,8 @@ const POST = (apiURL, newData) => {
 
 /**
  * Basic PUT function for utilities
- * @param {*} apiURL - API to be called
- * @param {*} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
+ * @param {string} apiURL - API to be called
+ * @param {Object} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
  * @returns response - JSONified data or error code.
  */
 const PUT = (apiURL, newData) => {
@@ -140,7 +140,7 @@ const PUT = (apiURL, newData) => {
 
 /**
  * Basic DELETE function for utilities
- * @param {*} apiURL - API to be called
+ * @param {string} apiURL - API to be called
  * @returns response - JSONified data or error code.
  */
 const DELETE = (apiURL) => {
@@ -167,11 +167,35 @@ const DELETE = (apiURL) => {
       console.error('There was a problem with the fetch operation:', error);
       return '400';
     });
-};
+}
 
+/**
+ * Takes data and puts it into a standardized JSON reponse
+ * @param {any} data - Data to return
+ * @param {number} status - HTTP status code
+ * @param {string|null} error - Error message
+ * @param {string} mimetype - type of the response
+ * @returns - object of JSON response
+ */
+function jsonify(data, status, error, mimetype = 'application/json'){
+  return{
+    status,
+    mimetype,
+    data,
+    error,
+  };
+}
+
+/**
+ * Standardized JSON response for functions
+ * @param {number} _status - HTTP status code
+ * @param {any} data  - Data to return
+ * @param {string|null} _error - Error message (if needed)
+ * @returns - JSONified status code, data, and error message
+ */
 const RESPONSE = (_status, data, _error) => {
-  res = [{ data: data }];
-  return jsonify(res, (status = _status), (error = _error), (mimetype = 'application/json'));
-};
+  const res = [{ 'data': data }];
+  return jsonify(res, _status, _error, 'application/json');
+}
 
 export { GET, POST, PUT, DELETE, RESPONSE };

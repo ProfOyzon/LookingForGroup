@@ -3,7 +3,6 @@ import envConfig from '../config/env.js';
 //import { createUser } from '../controllers/users';
 
 import { GET, POST, PUT, DELETE, RESPONSE } from './fetchUtils.js';
-import pool from '../config/database.js'
 import { transporter } from '../config/mailer.js';
 
 const root =

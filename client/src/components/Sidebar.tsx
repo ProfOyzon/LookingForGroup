@@ -14,6 +14,11 @@ export interface User {
   userId: number
 }
 
+// Tells ProjectCreatorEditor buttons to either show the popup or not
+// Used to prevent the user from using the popup when they aren't logged in
+export let showPopup: boolean 
+
+
 //Style changes to do:
 //Remove blue background image, replace with single color (or gradient?)
 //Change shape of active buttons to be more rounded
@@ -57,7 +62,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
   const [showNotifications, setShowNotifications] = useState(false); // State to manage the notifications modal
 
   // Error to handle if Create button opens project creator
-  const [createError, setCreateError] = useState(false);
+  const [createError, setCreateError] = useState(true);
 
   // Store user data, if authenticated
   const [userData, setUserData] = useState<User>();
@@ -92,12 +97,20 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
         getUserData();
 
       } else {
-        // Not authenticated
+        // If there is any issue authenticating the user's account, 
+        // immediatly send the user to the login screen
+        navigate(paths.routes.LOGIN);
         setCreateError(true);
       }
+      
     } catch (err) {
       console.error(err);
     }
+    
+    // Sets the global variable whenever the local one is changed
+    // Prevents the popup from showing up whenever you back out of the log in screen
+    showPopup = !createError;
+    //console.log(createError, showPopup);
   };
 
   // Function to handle the button clicks and update the h1 text
@@ -201,18 +214,12 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
         </div>
 
         {/* "Create" button in bottom left, made by ProjectCreatorManager */}
-        {/*Creates red error text above the button if not signed in*/}
+        {/* Sends the user to the log in page if they aren't logged in, otherwise allows them to create and edit a project */}
+        
         <div className="Create">
-          {createError ? (
-            <>
-              <p className="error">Log in first!</p>
-              <button>
-                <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} alt={'create'}/> Create
-              </button>
-            </>
-          ) : <ProjectCreatorEditor newProject={true} buttonCallback={getAuth} user={userData} />
-          }
+          <ProjectCreatorEditor newProject={createError} buttonCallback={getAuth} user={userData} />
         </div>
+
       </div>
 
       <Notifications

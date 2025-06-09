@@ -1,75 +1,77 @@
 ///import {login} from '../controllers/users';
-import envConfig from '../config/env';
-import { POST } from './fetchUtils';
+import envConfig from '../config/env.js';
+import { POST } from './fetchUtils.js';
 import bcrypt from 'bcrypt';
 
-const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'https://localhost:8081/api' : 'https://lfg.gccis.rit.edu/api';
+const root =
+  envConfig.env === 'development' || envConfig.env === 'test'
+    ? 'https://localhost:8081/api'
+    : 'https://lfg.gccis.rit.edu/api';
 
 // Add Shibboleth login here. Functions are set out in controllers/users.js to login, these are not utilized.
 
-
 /**
  * Takes sign up data to send confirmation email. The email is then stored in database temporarily
- * 
+ *
  * @param {*} _username - username to sign up
- * @param {*} _password 
- * @param {*} _confirmPassword 
- * @param {*} _email 
- * @param {*} _firstName 
- * @param {*} _lastName 
+ * @param {*} _password
+ * @param {*} _confirmPassword
+ * @param {*} _email
+ * @param {*} _firstName
+ * @param {*} _lastName
  * @returns res.status - 201 if success, else status:400, error. Returns token if in dev mode.
  */
 async function sendSignup(_username, _password, _confirmPassword, _email, _firstName, _lastName) {
-    //set up input data
-    let res = {
-        status:0,
-        body:'',
-        error:''
-    };
-    if(!_username || !_password || !_confirmPassword ||! _email || !_firstName || !_lastName) {
-        return res({
-            status: 400,
-            error: 'Missing sign up information',
+  //set up input data
+  let res = {
+    status: 0,
+    body: '',
+    error: '',
+  };
+  if (!_username || !_password || !_confirmPassword || !_email || !_firstName || !_lastName) {
+    return res({
+      status: 400,
+      error: 'Missing sign up information',
+    });
+  } else if (_password !== _confirmPassword) {
+    return res({
+      status: 400,
+      error: 'Passwords do not match',
+    });
+  }
+
+  const hashPass = await bcrypt.hash(_password, 10);
+  const _token = crypto.randomUUID();
+  let url = ``;
+
+  //add user info to database, set up for account activation
+
+  url = `https://lookingforgrp.com/activation/${_token}`;
+  console.log(url);
+  console.log(_token);
+
+  const data = {
+    token: _token,
+    username: _username,
+    email: _email,
+    password: hashPass,
+    firstName: _firstName,
+    lastName: _lastName,
+  };
+
+  //insert into database
+  if (envConfig.env === 'production') {
+    try {
+      const response = await POST(url, data);
+      if (response.ok) {
+        console.log('Information put into database.');
+      } else {
+        return (res = {
+          status: 400,
+          error: 'Error posting into database.',
         });
-    } else if (_password !== _confirmPassword) {
-        return res({
-            status: 400,
-            error: 'Passwords do not match',
-        });
-    }
-
-    const hashPass = await bcrypt.hash(_password, 10);
-    const _token = crypto.randomUUID();
-    let url = ``;
-
-    //add user info to database, set up for account activation
-    
-    url = `https://lookingforgrp.com/activation/${_token}`;
-    console.log(url);
-    console.log(_token);
-    
-    const data = {
-        token: _token,
-        username: _username,
-        email: _email,
-        password: hashPass,
-        firstName: _firstName,
-        lastName: _lastName,
-    };
-
-    //insert into database
-    if(envConfig.env === 'production'){
-        try {
-        const response = await POST(url,data);
-        if(response.ok) {
-            console.log("Information put into database.");
-        } else {
-            return res = ({
-                status: 400,
-                error: "Error posting into database.",
-            });
-        }
-        const emailhtml = `
+      }
+      const emailhtml = `
         <p>Hi ${firstName},<br>
         Thank you for signing up to LFG. You have 1 day to activate your account. Click the button below.
         </p>
@@ -86,35 +88,34 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
         LFG Team</p>
         `;
 
-        const message = {
-            from: envConfig.mailerEmail,
-            to: _email,
-            subject: 'Activate Your LFG Account',
-            html: emailhtml,
-        };
+      const message = {
+        from: envConfig.mailerEmail,
+        to: _email,
+        subject: 'Activate Your LFG Account',
+        html: emailhtml,
+      };
 
-        //send activation email
-        await transporter.sendMail(message);
+      //send activation email
+      await transporter.sendMail(message);
 
-        if(envConfig.env === 'development') {
-            console.log("development");
-            return res = ({
-                status: 201,
-                data: _token,
-            });
-        }
-        return res = ({
-            status: 201,
+      if (envConfig.env === 'development') {
+        console.log('development');
+        return (res = {
+          status: 201,
+          data: _token,
         });
+      }
+      return (res = {
+        status: 201,
+      });
     } catch (err) {
-        console.log(err);
-        return res = ({
-            status:400,
-            error: 'An error occured during sign up',
-        });
+      console.log(err);
+      return (res = {
+        status: 400,
+        error: 'An error occured during sign up',
+      });
     }
-    }
-    
+  }
 }
 
 /**
@@ -124,66 +125,64 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
  * @returns status
  */
 async function login(_loginInput, _password) {
-    if(!_loginInput||!_password) {
+  if (!_loginInput || !_password) {
+  }
+  data = {
+    loginInput: _login,
+    password: _password,
+  };
+  const url = `${root}/login`;
 
+  try {
+    const r = await POST(url, data);
+    if (r.ok) {
+      console.log('Logged in.');
+      return (res = {
+        status: 201,
+        data: r.data,
+      });
     }
-    data = {
-        loginInput: _login,
-        password: _password
-    };
-    const url = `${root}/login`;
-
-    try{
-        const r = await POST(url,data);
-        if(r.ok) {
-            console.log('Logged in.');
-            return res = ({
-                status: 201,
-                data: r.data,
-            });
-        }
-    } catch(err) {
-        console.log(err);
-        return res = ({
-            status: 400,
-            error: err,
-        });
-    }
+  } catch (err) {
+    console.log(err);
+    return (res = {
+      status: 400,
+      error: err,
+    });
+  }
 }
 
 /**
- * Checks if user is logged in. 
+ * Checks if user is logged in.
  * @param session - current session to destroy
  * @returns status, redirect:'/' if success
  */
 async function logout(session) {
-    if(session) {
-        session.destroy();
-    }
-    return res = ({
-        redirect: '/',
-    });
+  if (session) {
+    session.destroy();
+  }
+  return (res = {
+    redirect: '/',
+  });
 }
-
 
 /**
  * Checks if user is authenticated
  * @param userID - int, user id checking logged in.
  * @returns status
  */
-async function getAuth (id) {
-    if(!id) {
-        console.log("no id.");
-        return res = ({
-            status: 401,
-            error: "Unauthorized, no id."
-        });
-    } else {
-        return res = ({
-            status:200,
-            data:id,
-        });
-    }
+async function getAuth(id) {
+  if (!id) {
+    console.log('no id.');
+    return (res = {
+      status: 401,
+      error: 'Unauthorized, no id.',
+    });
+  } else {
+    return (res = {
+      status: 200,
+      data: id,
+    });
+  }
 }
 
 /**
@@ -194,13 +193,13 @@ async function getAuth (id) {
 // async function createUser(token) {
 //     try {
 //         //get signup email if valid
-//         const email = await 
+//         const email = await
 //     }
 // }
 
 export default {
-    sendSignup,
-    login,
-    getAuth,
-    logout, 
-}
+  sendSignup,
+  login,
+  getAuth,
+  logout,
+};

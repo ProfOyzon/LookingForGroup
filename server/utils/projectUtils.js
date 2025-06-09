@@ -1,7 +1,10 @@
-import envConfig from '../config/env';
-import { GET, PUT, POST, DELETE } from './fetchUtils';
+import envConfig from '../config/env.js';
+import { GET, PUT, POST, DELETE } from './fetchUtils.js';
 
-const root = envConfig.env === 'development' || envConfig.env === 'test' ? `http://localhost:8081/api` : `https://lfg.gccis.rit.edu/api`;
+const root =
+  envConfig.env === 'development' || envConfig.env === 'test'
+    ? `http://localhost:8081/api`
+    : `https://lfg.gccis.rit.edu/api`;
 
 /**
  * Creates a new project and adds it to the database. All params default to null.
@@ -51,12 +54,12 @@ const createNewProject = async (
   };
 
   let response = await POST(apiURL, data);
-  if (response === "400") {
+  if (response === '400') {
     console.log('Error creating new project.');
-    return "400";
+    return '400';
   }
   console.log(`Created project named "${_title}"`);
-  return "200";
+  return '200';
 };
 
 /**
@@ -68,8 +71,8 @@ const getProjects = async () => {
 
   let response = await GET(apiURL);
 
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
   return response.data;
 };
@@ -82,8 +85,8 @@ const getProjects = async () => {
 const getByID = async (ID) => {
   const apiURL = `${root}/projects/${ID}`;
   let response = await GET(apiURL);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
   return response.data;
 };
@@ -97,10 +100,10 @@ const getByID = async (ID) => {
 const updateProject = async (ID, data) => {
   const apiURL = `${root}/projects/${ID}`;
   let response = await PUT(apiURL, data);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
-  return "200";
+  return '200';
 };
 
 /**
@@ -111,10 +114,10 @@ const updateProject = async (ID, data) => {
 const deleteProject = async (ID) => {
   const apiURL = `${root}/projects/${ID}`;
   let response = await DELETE(apiURL);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
-  return "200";
+  return '200';
 };
 
 /**
@@ -127,8 +130,8 @@ const updateThumbnail = async (ID, _image) => {
   const apiURL = `${root}/projects/${ID}/thumbnail`;
   const data = { image: _image };
   let response = await PUT(apiURL, data);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
   return response.data;
 };
@@ -141,8 +144,8 @@ const updateThumbnail = async (ID, _image) => {
 const getPics = async (ID) => {
   const apiURL = `${root}/projects/${ID}/pictures`;
   let response = await GET(apiURL);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
   return response.data;
 };
@@ -161,10 +164,10 @@ const addPic = async (ID, _image, _position) => {
     position: _position,
   };
   let response = await POST(apiURL, data);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
-  return "200";
+  return '200';
 };
 
 /**
@@ -176,10 +179,10 @@ const addPic = async (ID, _image, _position) => {
 const updatePicPositions = async (ID, images) => {
   const apiURL = `${root}/projects/${ID}/pictures`;
   let response = await PUT(apiURL, images);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
-  return "200";
+  return '200';
 };
 
 /**
@@ -191,10 +194,10 @@ const updatePicPositions = async (ID, images) => {
 const deletePic = async (ID, image) => {
   const apiURL = `${root}/projects/${ID}/pictures`;
   let response = await DELETE(apiURL, image);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
-  return "200";
+  return '200';
 };
 
 /**
@@ -213,10 +216,10 @@ const addMember = async (ID, _userId, _titleId, _permission) => {
     permission: _permission,
   };
   let response = await POST(apiURL, data);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
-  return "200";
+  return '200';
 };
 
 /**
@@ -235,10 +238,10 @@ const updateMember = async (ID, _userId, _titleId, _permission) => {
     permission: _permission,
   };
   let response = await PUT(apiURL, data);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
-  return "200";
+  return '200';
 };
 
 /**
@@ -250,10 +253,10 @@ const updateMember = async (ID, _userId, _titleId, _permission) => {
 const deleteMember = async (ID, userId) => {
   const apiURL = `${root}/projects/${ID}/members/${userId}`;
   let response = await DELETE(apiURL);
-  if (response === "400") {
-    return "400";
+  if (response === '400') {
+    return '400';
   }
-  return "200";
+  return '200';
 };
 
 export default {

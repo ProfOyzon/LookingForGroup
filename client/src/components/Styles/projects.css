@@ -3237,24 +3237,6 @@ My projects page style rules
   color: var(--invert-text);
 }
 
-.my-projects-create-btn>button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    width: 50px;
-    margin-right: 10px;
-    filter: invert(1) saturate(0) brightness(2);
-  }
-}
-
-/* .my-projects-all-projects-button,
-.my-projects-new-project-button {
-  box-sizing: border-box;
-  width: fit-content;
-} */
-
 .my-projects-all-projects-button,
 .my-projects-new-project-button,
 .my-projects-create-btn>button {
@@ -3263,14 +3245,27 @@ My projects page style rules
   background-color: var(--primary-color);
   border: 0px;
   border-radius: 55px;
-  color: var(--invert-text);
   padding: 6px 17px;
+  color: var(--invert-text);
   text-align: center;
   font-size: 18px;
   font-family: Inter;
   font-weight: bold;
   line-height: 28px;
   letter-spacing: 0%;
+}
+
+.my-projects-create-btn>button {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 30px;
+    margin-right: 10px;
+    filter: invert(1) saturate(0) brightness(2);
+  }
 }
 
 .my-projects-all-projects-button:hover,

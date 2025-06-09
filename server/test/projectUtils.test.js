@@ -30,7 +30,7 @@ test('Create a new project - valid', async () => {
         titleId: 7,
       },
     ],
-    []
+    [],
   );
 
   console.log('Create project valid: ' + r);

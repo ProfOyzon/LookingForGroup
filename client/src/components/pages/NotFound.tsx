@@ -1,7 +1,6 @@
 import '../Styles/pages.css';
 import '../Styles/general.css';
 import '../Styles/Notfound.css';
-import '../../images/sad_frog_dark_mode.png';
 import * as paths from "../../constants/routes";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';

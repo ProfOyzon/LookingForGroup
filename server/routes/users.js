@@ -142,7 +142,7 @@ router.put(
   '/api/users/:id/profile-picture',
   mid.checkLogin,
   mid.checkImageFile,
-  userCtrl.updateProfilePicture
+  userCtrl.updateProfilePicture,
 );
 
 /**
@@ -223,7 +223,7 @@ router.post('/api/users/:id/followings/projects', mid.checkLogin, userCtrl.addPr
 router.delete(
   '/api/users/:id/followings/projects/:projId',
   mid.checkLogin,
-  userCtrl.deleteProjectFollowing
+  userCtrl.deleteProjectFollowing,
 );
 
 /**

@@ -69,7 +69,7 @@ const GET = (apiURL) => {
       console.error('there was a problem with the fetch operation:', error);
       return '400';
     });
-}
+};
 
 /**
  * Basic POST function for utilities
@@ -103,7 +103,7 @@ const POST = (apiURL, newData) => {
       console.error('There was a problem with the fetch operation:', error);
       return '400';
     });
-}
+};
 
 /**
  * Basic PUT function for utilities
@@ -136,7 +136,7 @@ const PUT = (apiURL, newData) => {
       console.error('There was a problem with the fetch operation:', error);
       return '400';
     });
-}
+};
 
 /**
  * Basic DELETE function for utilities
@@ -167,11 +167,11 @@ const DELETE = (apiURL) => {
       console.error('There was a problem with the fetch operation:', error);
       return '400';
     });
-}
+};
 
 const RESPONSE = (_status, data, _error) => {
-  res = [{'data':data}];
-  return jsonify(res, status=_status, error=_error,mimetype='application/json');
-}
+  res = [{ data: data }];
+  return jsonify(res, (status = _status), (error = _error), (mimetype = 'application/json'));
+};
 
 export { GET, POST, PUT, DELETE, RESPONSE };

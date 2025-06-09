@@ -1,3 +1,4 @@
+import pool from '../config/database.js';
 import envConfig from '../config/env.js';
 //import { createUser } from '../controllers/users';
 
@@ -5,7 +6,10 @@ import { GET, POST, PUT, DELETE, RESPONSE } from './fetchUtils.js';
 import pool from '../config/database.js'
 import { transporter } from '../config/mailer.js';
 
-const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'http://localhost:8081/api' : 'https://lfg.gccis.rit.edu/api';
+const root =
+  envConfig.env === 'development' || envConfig.env === 'test'
+    ? 'http://localhost:8081/api'
+    : 'https://lfg.gccis.rit.edu/api';
 
 /**
  * Creates a new user, and adds them to the signups table. All data params default to null.
@@ -26,53 +30,66 @@ const root = envConfig.env === 'development' || envConfig.env === 'test' ? 'http
  * @param {Array<object>} _skills
  * @param {Array<object>} _socials
  */
-async function createNewUser(token, email, _firstName, _lastName, _headline, _pronouns, _jobTitleId, _majorId, _academicYear, _location, _funFact, _bio, _skills, _socials) {
+async function createNewUser(
+  token,
+  email,
+  _firstName,
+  _lastName,
+  _headline,
+  _pronouns,
+  _jobTitleId,
+  _majorId,
+  _academicYear,
+  _location,
+  _funFact,
+  _bio,
+  _skills,
+  _socials,
+) {
+  //check if token is valid
+  const apiURL = `https://lfg.gccis.rit.edu/api/signup/${token}`;
 
-    //check if token is valid
-    const apiURL = `https://lfg.gccis.rit.edu/api/signup/${token}`
-
-    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
-        //bypass for dev environment
-        console.log('DEV MODE: Skip token check');
-
-    } else {
-        //token validation
-        const response = await GET(apiURL);
-        if (response.status === "400") {
-            console.log("Token does not exist.");
-            return "400";
-        }
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+    //bypass for dev environment
+    console.log('DEV MODE: Skip token check');
+  } else {
+    //token validation
+    const response = await GET(apiURL);
+    if (response.status === '400') {
+      console.log('Token does not exist.');
+      return '400';
     }
+  }
 
-    //else, token valid and check if a user with that email already exists.
-    if (await userInDatabase(email)) {
-        console.log("User is already in database, create fails");
-        return "400"
+  //else, token valid and check if a user with that email already exists.
+  if (await userInDatabase(email)) {
+    console.log('User is already in database, create fails');
+    return '400';
+  } else {
+    //user is not in database, add them.
+    //local
+    if (envConfig.env === 'development' || envConfig.env === 'test') {
+      const sql =
+        'INSERT INTO users (username, primary_email, rit_email, password, first_name, last_name SELECT username, primary_email, rit_email, password, first_name, last_name FROM signups WHERE rit_email=?';
+      const values = [email];
+      await pool.query(sql, values);
+      console.log('Added into database.');
+      return RESPONSE(200, '', '');
     } else {
-        //user is not in database, add them. 
-        //local 
-        if(envConfig.env === 'development' || envConfig.env === 'test') {
-            const sql = 'INSERT INTO users (username, primary_email, rit_email, password, first_name, last_name SELECT username, primary_email, rit_email, password, first_name, last_name FROM signups WHERE rit_email=?';
-            const values = [email];
-            await pool.query(sql,values);
-            console.log('Added into database.');
-            return RESPONSE(200,'','');
-            
-        } else {
-            const data = {
-                firstName: _firstName,
-                lastName: _lastName,
-                headline: _headline,
-                pronouns: _pronouns,
-                jobTitleId: _jobTitleId,
-                majorId: _majorId,
-                academicYear: _academicYear,
-                location: _location,
-                funFact: _funFact,
-                bio: _bio,
-                skills: _skills,
-                socials: _socials
-            };
+      const data = {
+        firstName: _firstName,
+        lastName: _lastName,
+        headline: _headline,
+        pronouns: _pronouns,
+        jobTitleId: _jobTitleId,
+        majorId: _majorId,
+        academicYear: _academicYear,
+        location: _location,
+        funFact: _funFact,
+        bio: _bio,
+        skills: _skills,
+        socials: _socials,
+      };
 
             const response = await POST(apiURL, data);
             if (response.status === "400") {
@@ -92,10 +109,8 @@ async function createNewUser(token, email, _firstName, _lastName, _headline, _pr
  * @returns result - boolean, true if they exist within database, false if not.
  */
 async function userInDatabase(email) {
-    if(envConfig.env === 'development' || envConfig.env === 'test') {
-        const [user] = await pool.query('SELECT rit_email FROM users WHERE rit_email = ?', [
-            email,
-        ]);
+  if (envConfig.env === 'development' || envConfig.env === 'test') {
+    const [user] = await pool.query('SELECT rit_email FROM users WHERE rit_email = ?', [email]);
 
         if(!user) {
             console.log( RESPONSE(400,'','Your account has already been activated.') );
@@ -107,18 +122,18 @@ async function userInDatabase(email) {
         const apiURL = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
         const response = await GET(apiURL);
 
-        if (response.status === "400") {
-            console.log("Error fetching email.");
-            return false;
-        } else {
-            if (!response.data || response.data.length === 0) {
-                console.log(response.data);
-                return false;
-            }
-            console.log("User found with email", email);
-            return true;
-        }
+    if (response.status === '400') {
+      console.log('Error fetching email.');
+      return false;
+    } else {
+      if (!response.data || response.data.length === 0) {
+        console.log(response.data);
+        return false;
+      }
+      console.log('User found with email', email);
+      return true;
     }
+  }
 }
 
 /**
@@ -126,9 +141,9 @@ async function userInDatabase(email) {
  * @returns result - JSONified data of all users, else if error, '400'.
  */
 async function getUsers() {
-    try{
-        if(envConfig.env === 'development' || envConfig.env === 'test') {
-            const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+  try {
+    if (envConfig.env === 'development' || envConfig.env === 'test') {
+      const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
             jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
                 FROM users u
                 LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
@@ -145,19 +160,18 @@ async function getUsers() {
                     GROUP BY us.user_id) s
                 ON u.user_id = s.user_id
                 WHERE u.visibility = '1'`;
-            const [users] = await pool.query(sql);
-            return RESPONSE(200, users, '');
-        } else {
-            const apiURL = `https://lfg.gccis.rit.edu/api/users`;
-            const response = await GET(apiURL);
-            if (response.status === "400") return "400";
-            return response;
-        }
-    } catch (err) {
-        console.log(err);
-        return RESPONSE(400,'','An error occurred while getting all users');
+      const [users] = await pool.query(sql);
+      return RESPONSE(200, users, '');
+    } else {
+      const apiURL = `https://lfg.gccis.rit.edu/api/users`;
+      const response = await GET(apiURL);
+      if (response.status === '400') return '400';
+      return response;
     }
-    
+  } catch (err) {
+    console.log(err);
+    return RESPONSE(400, '', 'An error occurred while getting all users');
+  }
 }
 
 /**
@@ -191,16 +205,14 @@ async function getAccountInformation(user_id) {
  * @returns result - JSONified data of specified user.
  */
 async function getUsersById(id) {
-
-   const apiURL = `${root}/users/${id}`;
+  const apiURL = `${root}/users/${id}`;
+  const response = await GET(apiURL);
+  if (response.status === '400') return '400'; //error
+  if (envConfig.env === 'development' || envConfig.env === 'test') {
+  } else {
+    const apiURL = `${root}/users/${id}`;
     const response = await GET(apiURL);
-    if (response.status === "400") return "400"; //error
-    if ( envConfig.env === 'development' || envConfig.env === 'test') {
-
-    } else {
-        const apiURL = `${root}/users/${id}`;
-        const response = await GET(apiURL);
-        if (response.status === "400") return "400"; //error
+    if (response.status === '400') return '400'; //error
 
         return response;
     }
@@ -216,7 +228,7 @@ async function getUsersById(id) {
 async function editUser(id, data) {
   const apiURL = `${root}/api/users/${id}`;
   const response = await PUT(apiURL, data);
-  if (response.status === "400") return "400";
+  if (response.status === '400') return '400';
 
   return response;
 }
@@ -229,7 +241,7 @@ async function editUser(id, data) {
 async function deleteUser(id) {
   const apiURL = `${root}/users/${id}`;
   const response = await DELETE(apiURL);
-  if (response === "400") return "400";
+  if (response === '400') return '400';
 
   return response;
 }
@@ -248,7 +260,7 @@ async function updateProfilePicture(id, _image) {
       console.log("error updating profile picture.");
       return "400";
   }
-  console.log("Updated Profile Picture for user.")
+  console.log('Updated Profile Picture for user.');
   return response.status;
 }
 
@@ -279,7 +291,7 @@ async function updateEmail(id, _email, _confirm_email, _password) {
     }
     console.log("Updated primary email for user.")
 
-    return response.status;
+  return response.status;
 }
 
 /**
@@ -317,14 +329,14 @@ async function updateUsername(id, _username, _confirm_user, _password) {
  * @returns 201 if email sent, 400 if error.
  */
 async function requestPasswordReset(email) {
-    //check if email exists
-    if (!email) {
-        console.log("Error: Missing email.");
-        return "400";
-    }
+  //check if email exists
+  if (!email) {
+    console.log('Error: Missing email.');
+    return '400';
+  }
 
-    // Generate a token for password reset
-    const _token = crypto.randomUUID();
+  // Generate a token for password reset
+  const _token = crypto.randomUUID();
 
     let url = ``;
     if (envConfig.env === 'production') {
@@ -341,13 +353,13 @@ async function requestPasswordReset(email) {
         };
         const response = await POST(`https://lookingforgrp/resetPassword`, data);
 
-        if (response.status === "400") {
-            console.error("Error posting token for password reset.");
-            return response.status;
-        }
-        console.log("Token put into database.");
+    if (response.status === '400') {
+      console.error('Error posting token for password reset.');
+      return response.status;
+    }
+    console.log('Token put into database.');
 
-        const emailMessage = `
+    const emailMessage = `
             <p>Hi, <br>
             Forgot your password? You have 15 minutes to reset it. Click the button below.
             </p>
@@ -392,19 +404,19 @@ async function requestPasswordReset(email) {
  * @param {string} _token
  */
 async function updatePassword(id, _newPassword, _password_confirm, _password, _token) {
-    let apiURL = `${root}/users/${id}/password`;
-    if (!_newPassword || !_password_confirm) {
-        console.log("Missing passwords.")
-        return "400";
-    }
-    if (_newPassword != _password_confirm) {
-        console.log("Password and confirmation are not the same.");
-        return "400";
-    }
-    console.log('Token accepted, email verified.');
+  let apiURL = `${root}/users/${id}/password`;
+  if (!_newPassword || !_password_confirm) {
+    console.log('Missing passwords.');
+    return '400';
+  }
+  if (_newPassword != _password_confirm) {
+    console.log('Password and confirmation are not the same.');
+    return '400';
+  }
+  console.log('Token accepted, email verified.');
 
-    //hash password
-    const hashPass = await bcrypt.hash(_newPassword, 10);
+  //hash password
+  const hashPass = await bcrypt.hash(_newPassword, 10);
 
     try {
         //get email if token is valid
@@ -416,24 +428,24 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
         }
         console.log("Token accepted, email verified.");
 
-        //update user password
-        url = `https://lfg.gccis.rit.edu/api/users/${id}/password`;
-        const data = {
-            password: hashPass,
-        };
-        response = PUT(url, data);
-        if (response.status === "400") {
-            console.log("Error putting new password.")
-            return response.status;
-        }
-
-        console.log("User password updated successfully.");
-        return "201";
-    } catch (err) {
-        console.log(err);
-        console.log("An error occurred while updating user's password");
-        return "400";
+    //update user password
+    url = `https://lfg.gccis.rit.edu/api/users/${id}/password`;
+    const data = {
+      password: hashPass,
+    };
+    response = PUT(url, data);
+    if (response.status === '400') {
+      console.log('Error putting new password.');
+      return response.status;
     }
+
+    console.log('User password updated successfully.');
+    return '201';
+  } catch (err) {
+    console.log(err);
+    console.log("An error occurred while updating user's password");
+    return '400';
+  }
 }
 
 /**
@@ -448,22 +460,22 @@ async function updateUserVisibility(id) {
     const vis = parsedata.visibility;
     let result;
 
-    if (vis == 1) {
-        data = {
-            visibility: 0
-        };
-        result = editUser(id, data);
-    } else if (vis == 0) {
-        data = {
-            visibility: 1
-        };
-        result = editUser(id, data);
-    }
-    if (result = "400") {
-        console.log("Error editing user.");
-        return "400";
-    }
-    return "200";
+  if (vis == 1) {
+    data = {
+      visibility: 0,
+    };
+    result = editUser(id, data);
+  } else if (vis == 0) {
+    data = {
+      visibility: 1,
+    };
+    result = editUser(id, data);
+  }
+  if ((result = '400')) {
+    console.log('Error editing user.');
+    return '400';
+  }
+  return '200';
 }
 
 /**
@@ -472,22 +484,22 @@ async function updateUserVisibility(id) {
  * @return data, list of 1 user, or 400 if not successful
  */
 async function getUserByUsername(username) {
-    let url = `${root}/users/search-username/${username}`;
-    const response = await GET(url);
+  let url = `${root}/users/search-username/${username}`;
+  const response = await GET(url);
 
-    if (response.status === "400") {
-        console.log("Error getting user.");
-        return "400";
-    }
+  if (response.status === '400') {
+    console.log('Error getting user.');
+    return '400';
+  }
 
-    //check if array is not empty
-    if (!response.data || response.data.length === 0) {
-        console.log('No user found')
-        return "404";
-    }
+  //check if array is not empty
+  if (!response.data || response.data.length === 0) {
+    console.log('No user found');
+    return '404';
+  }
 
-    console.log("Data recieved.");
-    return response;
+  console.log('Data recieved.');
+  return response;
 }
 
 /**
@@ -496,22 +508,22 @@ async function getUserByUsername(username) {
  * @return data, list of 1 user, or 400 if not successful
  */
 async function getUserByEmail(email) {
-    let url = `${root}/users/search-email/${email}`;
-    const response = await GET(url);
+  let url = `${root}/users/search-email/${email}`;
+  const response = await GET(url);
 
-    if (response.status === "400") {
-        console.log("Error getting user.");
-        return "400";
-    }
+  if (response.status === '400') {
+    console.log('Error getting user.');
+    return '400';
+  }
 
-    //check if array is not empty
-    if (!response.data || response.data.length === 0) {
-        console.log('No user found')
-        return "404"
-    }
+  //check if array is not empty
+  if (!response.data || response.data.length === 0) {
+    console.log('No user found');
+    return '404';
+  }
 
-    console.log("Data recieved.");
-    return response;
+  console.log('Data recieved.');
+  return response;
 }
 
 /**

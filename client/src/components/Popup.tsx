@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, ReactNode } from 'react';
+import { useState, createContext, useContext, ReactNode, useRef, useEffect } from 'react';
 import close from '../icons/cancel.png';
 //This is a reusable component that can be used to make popup windows on pages
 

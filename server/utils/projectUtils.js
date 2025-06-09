@@ -8,6 +8,7 @@ const root =
 
 /**
  * Creates a new project and adds it to the database. All params default to null.
+<<<<<<< HEAD
  * @param {number} _userId - ID of the user creating the project
  * @param {string} _title - Name of the project
  * @param {string} _hook - The short description of the project
@@ -20,6 +21,20 @@ const root =
  * @param {Array<object>} _jobs - List of roles being recruited for
  * @param {Array<object>} _members  - List of project members
  * @param {Array<object>} _socials - List of relevant social media pages
+=======
+ * @param {Number} userId - ID of the user creating the project
+ * @param {String} title - Name of the project
+ * @param {String} hook - The short description of the project
+ * @param {String} desc - The long description of the project
+ * @param {String} purpose - The purpose selected for this project
+ * @param {String} status - The status of the project
+ * @param {String} audience - The project's intended audience
+ * @param {Array[Object]} pTypes - List of project types
+ * @param {Array[Object]} pTags - List of project tags
+ * @param {Array[Object]} jobs - List of roles being recruited for
+ * @param {Array[Object]} members - List of project members
+ * @param {Array[Object]} socials - List of relevant social media pages
+>>>>>>> backend-dev
  * @returns "200" if valid, "400" if not
  */
 const createNewProject = async (
@@ -34,7 +49,7 @@ const createNewProject = async (
   _pTags,
   _jobs,
   _members,
-  _socials
+  _socials,
 ) => {
   const apiURL = `${root}/projects`;
 
@@ -79,11 +94,15 @@ const getProjects = async () => {
 
 /**
  * Retrieves data of a project by its ID
+<<<<<<< HEAD
  * @param {number} ID -  ID of project to retrieve
+=======
+ * @param {Number} ID -  ID of project to retrieve
+>>>>>>> backend-dev
  * @returns - A project object if valid, "400" if not
  */
 const getByID = async (ID) => {
-  const apiURL = `https://lfg.gccis.rit.edu/api/projects/${ID}`;
+  const apiURL = `${root}/projects/${ID}`;
   let response = await GET(apiURL);
   if (response === '400') {
     return '400';
@@ -93,7 +112,11 @@ const getByID = async (ID) => {
 
 /**
  * Updates data of an existing project
+<<<<<<< HEAD
  * @param {number} ID - ID of the project to update
+=======
+ * @param {Number} ID - ID of the project to update
+>>>>>>> backend-dev
  * @param {Object} data - Mapped data for update
  * @returns Response status
  */
@@ -108,7 +131,11 @@ const updateProject = async (ID, data) => {
 
 /**
  * Deletes an existing project
+<<<<<<< HEAD
  * @param {number} ID - ID of the project to delete
+=======
+ * @param {Number} ID - ID of the project to delete
+>>>>>>> backend-dev
  * @returns Response status
  */
 const deleteProject = async (ID) => {
@@ -122,8 +149,13 @@ const deleteProject = async (ID) => {
 
 /**
  * Updates the thumbnail image for a project
+<<<<<<< HEAD
  * @param {number} ID - ID of the project to update
  * @param {File|string} _image - Image file of new thumbnail
+=======
+ * @param {Number} ID - ID of the project to update
+ * @param {File} image - Image file of new thumbnail
+>>>>>>> backend-dev
  * @returns The filename of the thumbnail image if valid, "400" if not
  */
 const updateThumbnail = async (ID, _image) => {
@@ -138,7 +170,11 @@ const updateThumbnail = async (ID, _image) => {
 
 /**
  * Gets the pictures used in a project's carousel
+<<<<<<< HEAD
  * @param {number} ID - ID of the target project
+=======
+ * @param {Number} ID - ID of the target project
+>>>>>>> backend-dev
  * @returns Array of image objects if valid, "400" if not
  */
 const getPics = async (ID) => {
@@ -152,9 +188,15 @@ const getPics = async (ID) => {
 
 /**
  * Adds a picture to a project's carousel
+<<<<<<< HEAD
  * @param {number} ID - ID of the target project
  * @param {File|string} _image - Image file to be added
  * @param {number} _position - Position of the image in the carousel
+=======
+ * @param {Number} ID - ID of the target project
+ * @param {String} image - Image file to be added
+ * @param {Number} position - Position of the image in the carousel
+>>>>>>> backend-dev
  * @returns Response status
  */
 const addPic = async (ID, _image, _position) => {
@@ -172,8 +214,13 @@ const addPic = async (ID, _image, _position) => {
 
 /**
  * Updates position order of a project's carousel pictures
+<<<<<<< HEAD
  * @param {number} ID - ID of the target project
  * @param {Array<Object>} images - Array of objects, which contain the image "id" and new "position"
+=======
+ * @param {Number} ID - ID of the target project
+ * @param {Object} images - Array of objects, which contain the image "id" and new "position"
+>>>>>>> backend-dev
  * @returns Response status
  */
 const updatePicPositions = async (ID, images) => {
@@ -187,8 +234,13 @@ const updatePicPositions = async (ID, images) => {
 
 /**
  * Deletes a picture in a project
+<<<<<<< HEAD
  * @param {number} ID - ID of the target project
  * @param {string} image - Filename of the image to delete
+=======
+ * @param {Number} ID - ID of the target project
+ * @param {String} image - Filename of the image to delete
+>>>>>>> backend-dev
  * @returns Response status
  */
 const deletePic = async (ID, image) => {
@@ -204,10 +256,17 @@ const deletePic = async (ID, image) => {
 
 /**
  * Adds a member to a project
+<<<<<<< HEAD
  * @param {number} ID - ID of the target project
  * @param {number} _userId - ID of the user to add
  * @param {number} _titleId - ID of the user's role
  * @param {number} _permission - The user's access level
+=======
+ * @param {Number} ID - ID of the target project
+ * @param {Number} userId - ID of the user to add
+ * @param {Number} titleId - ID of the user's role
+ * @param {Number} permission - The user's access level
+>>>>>>> backend-dev
  * @returns Response status
  */
 const addMember = async (ID, _userId, _titleId, _permission) => {
@@ -226,10 +285,17 @@ const addMember = async (ID, _userId, _titleId, _permission) => {
 
 /**
  * Updates an existing member in a project
+<<<<<<< HEAD
  * @param {number} ID - ID of the target project
  * @param {number} _userId - ID of the user to update
  * @param {number} _titleId - ID of the user's role
  * @param {number} _permission - The user's access level
+=======
+ * @param {Number} ID - ID of the target project
+ * @param {Number} userId - ID of the user to update
+ * @param {Number} titleId - ID of the user's role
+ * @param {Number} permission - The user's access level
+>>>>>>> backend-dev
  * @returns Response status
  */
 const updateMember = async (ID, _userId, _titleId, _permission) => {
@@ -248,8 +314,13 @@ const updateMember = async (ID, _userId, _titleId, _permission) => {
 
 /**
  * Removes a member from a project
+<<<<<<< HEAD
  * @param {number} ID - ID of the target project
  * @param {number} userId - ID of the target user
+=======
+ * @param {Number} ID - ID of the target project
+ * @param {Number} userId - ID of the target user
+>>>>>>> backend-dev
  * @returns Response status
  */
 const deleteMember = async (ID, userId) => {

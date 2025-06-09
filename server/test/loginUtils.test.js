@@ -11,7 +11,7 @@ test('Add user information to database, set up for account activation', async ()
     'password123',
     'jjp8541@rit.edu',
     'John',
-    'Testing'
+    'Testing',
   );
 
   console.log('Return code: ', r.status);

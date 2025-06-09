@@ -105,9 +105,8 @@ async function userInDatabase(email) {
         }
     } else {
         const apiURL = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
-        const response = GET(apiURL);
+        const response = await GET(apiURL);
 
-        // @ts-ignore
         if (response.status === "400") {
             console.log("Error fetching email.");
             return false;
@@ -167,14 +166,23 @@ async function getUsers() {
  * @returns data - JSONified data from account information. 400 if not valid.
  */
 async function getAccountInformation(user_id) {
-    const apiURL = `${root}/users/${user_id}/account`;
-    const response = await GET(apiURL);
-    if (response.status === "400") {
-        return "400";
-    }
+    if(envConfig.env === 'development' || envConfig.env === 'test') {
+        const sql= `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
+                FROM users u
+                LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+                    FROM)`
+    } else {
+        const apiURL = `${root}/users/${user_id}/account`;
+        const response = await GET(apiURL);
+        if (response.status === "400") {
+            return "400";
+        }
 
-    console.log("User account information recieved")
-    return response;
+        console.log("User account information recieved")
+        return response;
+    }
+    
 }
 
 /**
@@ -232,10 +240,10 @@ async function deleteUser(id) {
  * @param {string} _image - file, the picture to put into the user's profile
  * @return status, 200 if successful, 400 if not, and data. data=array[object] with the profile_image, string, name of the file
  */
-function updateProfilePicture(id, _image) {
+async function updateProfilePicture(id, _image) {
   const apiURL = `${root}/users/${id}/profile-picture`;
   const data = { image: _image };
-  const response = PUT(apiURL, data);
+  const response = await PUT(apiURL, data);
   if (response.status === "400") {
       console.log("error updating profile picture.");
       return "400";
@@ -252,7 +260,7 @@ function updateProfilePicture(id, _image) {
  * @param {string} _password - the user's current password.
  * @returns response, 200 if valid, 400 if not, 401 if emails do not match.
  */
-function updateEmail(id, _email, _confirm_email, _password) {
+async function updateEmail(id, _email, _confirm_email, _password) {
     const apiURL = `${root}/users/${id}/email`;
     if (_email != _confirm_email) {
         console.log("Not the same email, try again.");
@@ -264,7 +272,7 @@ function updateEmail(id, _email, _confirm_email, _password) {
         password: _password
     };
 
-    const response = PUT(apiURL, data);
+    const response = await PUT(apiURL, data);
     if (response.status === "400") {
         console.log("error updating email.");
         return response.status;
@@ -282,7 +290,7 @@ function updateEmail(id, _email, _confirm_email, _password) {
  * @param {string} _password - the user's current password.
  * @returns response, 200 if valid, 400 if not, 401 if users do not match.
  */
-function updateUsername(id, _username, _confirm_user, _password) {
+async function updateUsername(id, _username, _confirm_user, _password) {
     const apiURL = `${root}/users/${id}/username`;
     if (_username != _confirm_user) {
         console.log("Usernames are not the same.");
@@ -294,7 +302,7 @@ function updateUsername(id, _username, _confirm_user, _password) {
         password: _password
     };
 
-    const response = PUT(apiURL, data);
+    const response = await PUT(apiURL, data);
     if (response.status === "400") {
         console.log("error updating username.");
         return response.status;
@@ -331,7 +339,7 @@ async function requestPasswordReset(email) {
         const data = {
             token: _token,
         };
-        const response = POST(`https://lookingforgrp/resetPassword`, data);
+        const response = await POST(`https://lookingforgrp/resetPassword`, data);
 
         if (response.status === "400") {
             console.error("Error posting token for password reset.");
@@ -370,7 +378,8 @@ async function requestPasswordReset(email) {
   } catch (err) {
     console.log(err);
     console.log('An error occured during password reset request');
-    return response.status;
+
+    return err;
   }
 }
 
@@ -380,6 +389,7 @@ async function requestPasswordReset(email) {
  * @param {string} _newPassword = string, new password
  * @param {string} _password_confirm - string, confirm password to be the same as the new password
  * @param {string} _password - string, user's current password
+ * @param {string} _token
  */
 async function updatePassword(id, _newPassword, _password_confirm, _password, _token) {
     let apiURL = `${root}/users/${id}/password`;
@@ -399,7 +409,7 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
     try {
         //get email if token is valid
         let url = `https://lfg.gccis.rit.edu/api/resets/password/${_token}`;
-        let response = GET(url);
+        let response = await GET(url);
         if (!response.data.email) {
             console.log("Your token has expired.");
             return response.status;
@@ -433,16 +443,16 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
  */
 async function updateUserVisibility(id) {
     let url = `${root}/users/${id}`;
-    let data = GET(url);
+    let data = await GET(url);
     const parsedata = JSON.parse(await data);
     const vis = parsedata.visibility;
-
+    let result;
 
     if (vis == 1) {
         data = {
             visibility: 0
         };
-        let result = editUser(id, data);
+        result = editUser(id, data);
     } else if (vis == 0) {
         data = {
             visibility: 1
@@ -509,9 +519,9 @@ async function getUserByEmail(email) {
  * @param {number} id - id of the user that we are searching.
  * @returns array of users following, or 400 if unsuccessful.
  */
-function getUserFollowing(id) {
+async function getUserFollowing(id) {
     let url = `${root}/users/${id}/followings/people`;
-    const response = GET(url);
+    const response = await GET(url);
     if (response.status === "400") {
         console.log("Error getting users.");
         return "400";
@@ -525,9 +535,9 @@ function getUserFollowing(id) {
  * @param {number} id - user to search
  * @return - array of projects, or 400 if unsuccessful.
  */
-function getVisibleProjects(id) {
+async function getVisibleProjects(id) {
     let url = `${root}/users/${id}/projects/profile`;
-    const response = GET(url);
+    const response = await GET(url);
     if (response.status === "400") {
         console.log("Error getting projects.");
         return "400";
@@ -543,14 +553,14 @@ function getVisibleProjects(id) {
  * @param {string} _visibility - either "public" or "private", set visibility
  * @return 201 if successful, 400 if not
  */
-function updateProjectVisibility(userID, projectID, _visibility) {
+async function updateProjectVisibility(userID, projectID, _visibility) {
     let url = `${root}/users/${userID}/projects/visibility`;
     const data = {
         projectId: projectID,
         visibility: _visibility,
     };
 
-    let response = PUT(url, data);
+    let response = await PUT(url, data);
     if (response.status === "400") {
         console.log("Error editing projects.");
         return "400";
@@ -564,9 +574,9 @@ function updateProjectVisibility(userID, projectID, _visibility) {
  * @param {number} id - ID of the user.
  * @returns array of projects, or 400 if error.
  */
-function getProjectFollowing(id) {
+async function getProjectFollowing(id) {
     let url = `${root}/users/${id}/followings/projects`;
-    const response = GET(url);
+    const response = await GET(url);
     if (response.status === "400") {
         console.log("Error getting projects.");
         return "400";
@@ -581,12 +591,12 @@ function getProjectFollowing(id) {
  * @param {number} projectID - ID of the project trying to follow.
  * @returns 201 if successful, 400 if not.
  */
-function addProjectFollowing(id, projectID) {
+async function addProjectFollowing(id, projectID) {
     let url = `${root}/users/${id}/followings/projects`;
     const data = {
         projectId: projectID,
     };
-    const response = POST(url, data);
+    const response = await POST(url, data);
     if (response.status === "400") {
         console.log("Error creating project following.");
         return "400";
@@ -601,9 +611,9 @@ function addProjectFollowing(id, projectID) {
  * @param {number} projID - project Id to be unfollowed.
  * @returns 201 if successful, 400 if not.
  */
-function deleteProjectFollowing(id, projID) {
+async function deleteProjectFollowing(id, projID) {
     let url = `${root}/users/${id}/followings/projects/${projID}`;
-    const response = DELETE(url);
+    const response = await DELETE(url);
     if (response.status === "400") {
         console.log("Error deleting project following.");
         return "400";
@@ -618,12 +628,12 @@ function deleteProjectFollowing(id, projID) {
  * @param {number} followID - user to be followed.
  * @returns 201 if successful, 400 if not
  */
-function addUserFollowing(id, followID) {
+async function addUserFollowing(id, followID) {
     let url = `${root}/users/${id}/followings/people`;
     const data = {
         userId: followID,
     };
-    const response = POST(url, data);
+    const response = await POST(url, data);
     if (response.status === "400") {
         console.log("Error creating user following.");
         return "400";

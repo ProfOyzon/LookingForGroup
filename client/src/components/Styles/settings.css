@@ -302,7 +302,7 @@ input:checked+.slider:before {
   @media (max-width: 1100px) {
     .settings-row {
       flex-direction: column;
-      margin: 0px auto 0px min(3.17vw,48px);
+      margin: 0px auto 0px min(3.17vw, 48px);
     }
   }
 
@@ -331,6 +331,10 @@ input:checked+.slider:before {
     font-style: italic;
   }
 
+  .interact-option:hover {
+    text-decoration: underline;
+  }
+
   input {
     border: none;
     background-color: var(--header-color);
@@ -346,6 +350,16 @@ input:checked+.slider:before {
     outline: none;
     box-shadow: none;
     padding: 0px 0px;
+  }
+
+  #options-theme-btn .input-container:hover,
+  #options-visibility-btn .input-container:hover {
+    background-color: var(--invert-text);
+    box-shadow: 0 0 5px 0 var(--primary-color);
+
+    input {
+      background-color: var(--invert-text);
+    }
   }
 
   #options-theme-dropdown,

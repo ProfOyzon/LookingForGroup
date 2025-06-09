@@ -1,5 +1,6 @@
 import '../Styles/pages.css';
 import '../Styles/projects.css';
+import '../Styles/general.css'
 
 // import { MyProjectsDisplay } from "../MyProjectsDisplay";
 // import { profiles } from "../../constants/fakeData";
@@ -483,14 +484,16 @@ const MyProjects = () => {
         </>*/}
 
         {/*/*Create New Project button - Implementation 1 - Redirects user when not logged in.*/}
-         {!loggedIn ? (
+        {!loggedIn ? (
           <>
             <button className="my-projects-new-project-button" onClick={() => navigate('/login')}>
               + New Project
             </button>
           </>
-        ) : <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
-        } 
+        ) : (<div className="my-projects-create-btn">
+          <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
+        </div>)
+        }
 
         {/*Create Project Button - Implementation 2 - Only works if user is logged in. No error message is displayed for logged out users.*/}
         {/*!loggedIn ? (
@@ -502,7 +505,7 @@ const MyProjects = () => {
             </button>
           </>
         ) : <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
-        */} 
+        */}
 
         {/*Create Project Button - Implementation 3 - Only APPEARS if user is logged in.*/}
         {/*loggedIn ? (
@@ -548,7 +551,7 @@ const MyProjects = () => {
       <CreditsFooter />
       <ToTopButton />
     </div>
-    );
-  }
+  );
+}
 
 export default MyProjects;

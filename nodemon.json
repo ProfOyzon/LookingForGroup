@@ -1,4 +1,5 @@
 {
   "watch": ["server", "client/build"],
-  "ignore": ["server/test"]
+  "ignore": ["server/test"],
+  "delay": 2000
 }

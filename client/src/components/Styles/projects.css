@@ -3122,21 +3122,6 @@ My projects page style rules
   }
 }
 
-.my-projects-all-projects-button {
-  box-sizing: border-box;
-  background-color: var(--primary-color);
-  border: 0px;
-  border-radius: 55px;
-  width: fit-content;
-  color: var(--invert-text);
-  padding: 6px 17px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 28px;
-  letter-spacing: 0%;
-}
-
 .my-projects-sort-list {
   box-sizing: border-box;
   background-color: var(--header-color);
@@ -3252,13 +3237,32 @@ My projects page style rules
   color: var(--invert-text);
 }
 
-.my-projects-new-project-button,
-.my-projects-create-btn>button{
+.my-projects-create-btn>button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 50px;
+    margin-right: 10px;
+    filter: invert(1) saturate(0) brightness(2);
+  }
+}
+
+/* .my-projects-all-projects-button,
+.my-projects-new-project-button {
   box-sizing: border-box;
+  width: fit-content;
+} */
+
+.my-projects-all-projects-button,
+.my-projects-new-project-button,
+.my-projects-create-btn>button {
+  box-sizing: border-box;
+  width: fit-content;
   background-color: var(--primary-color);
   border: 0px;
   border-radius: 55px;
-  width: fit-content;
   color: var(--invert-text);
   padding: 6px 17px;
   text-align: center;
@@ -3267,18 +3271,6 @@ My projects page style rules
   font-weight: bold;
   line-height: 28px;
   letter-spacing: 0%;
-}
-
-.my-projects-create-btn>button{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    width: 30px;
-    margin-right: 10px;
-    filter: invert(1) saturate(0) brightness(2);
-  }
 }
 
 .my-projects-all-projects-button:hover,

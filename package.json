@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "license": "CC0-1.0",
+  "workspaces": [
+    "client"
+  ],
   "scripts": {
     "test": "cross-env NODE_ENV=test jest",
     "start": "pm2 start ./server/index.js",

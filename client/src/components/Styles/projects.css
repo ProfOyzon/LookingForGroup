@@ -3262,7 +3262,7 @@ My projects page style rules
   justify-content: center;
 
   img {
-    width: 30px;
+    width: 25px;
     margin-right: 10px;
     filter: invert(1) saturate(0) brightness(2);
   }

@@ -825,6 +825,7 @@ Project Creator and Editor style rules
   padding: 0;
   color: var(--neutral-gray);
   font-size: 1.6ch;
+  font-weight: 600;
 }
 
 #profile-editor-skills {
@@ -844,7 +845,6 @@ Project Creator and Editor style rules
 .team-tab-active {
   color: var(--primary-color);
   font-weight: 600;
-  transition: none;
 }
 
 #project-editor-team {

@@ -75,32 +75,31 @@ async function createNewUser(
     //   console.log('Added into database.');
     //   return RESPONSE(200, '', '');
     // } else {
-      const data = {
-        firstName: _firstName,
-        lastName: _lastName,
-        headline: _headline,
-        pronouns: _pronouns,
-        jobTitleId: _jobTitleId,
-        majorId: _majorId,
-        academicYear: _academicYear,
-        location: _location,
-        funFact: _funFact,
-        bio: _bio,
-        skills: _skills,
-        socials: _socials,
-      };
+    const data = {
+      firstName: _firstName,
+      lastName: _lastName,
+      headline: _headline,
+      pronouns: _pronouns,
+      jobTitleId: _jobTitleId,
+      majorId: _majorId,
+      academicYear: _academicYear,
+      location: _location,
+      funFact: _funFact,
+      bio: _bio,
+      skills: _skills,
+      socials: _socials,
+    };
 
-        const response = await POST(apiURL, data);
-        if (response.status === "400") {
-            console.log("Error creating a new user.");
-            return "400";
-        }
-        console.log(`User ${email} created.`);
-        console.log(data);
-        return data;
+    const response = await POST(apiURL, data);
+    if (response.status === '400') {
+      console.log('Error creating a new user.');
+      return '400';
     }
+    console.log(`User ${email} created.`);
+    console.log(data);
+    return data;
+  }
 }
-
 
 /**
  * Checks if a User is already within database through RIT email
@@ -108,32 +107,31 @@ async function createNewUser(
  * @returns result - boolean, true if they exist within database, false if not.
  */
 async function userInDatabase(email) {
-//   if (envConfig.env === 'development' || envConfig.env === 'test') {
-//     const [user] = await pool.query('SELECT rit_email FROM users WHERE rit_email = ?', [email]);
+  //   if (envConfig.env === 'development' || envConfig.env === 'test') {
+  //     const [user] = await pool.query('SELECT rit_email FROM users WHERE rit_email = ?', [email]);
 
-//         if(!user) {
-//             console.log( RESPONSE(400,'','Your account has already been activated.') );
-//             return false;
-//         } else {
-//             return true;
-//         }
-//     } else {
-    const apiURL = `${root}/users/search-email/${email}`;
-    const response = await GET(apiURL);
+  //         if(!user) {
+  //             console.log( RESPONSE(400,'','Your account has already been activated.') );
+  //             return false;
+  //         } else {
+  //             return true;
+  //         }
+  //     } else {
+  const apiURL = `${root}/users/search-email/${email}`;
+  const response = await GET(apiURL);
 
-    if (response.status === '400') {
-      console.log('Error fetching email.');
+  if (response.status === '400') {
+    console.log('Error fetching email.');
+    return false;
+  } else {
+    if (!response.data || response.data.length === 0) {
+      console.log(response.data);
       return false;
-    } else {
-      if (!response.data || response.data.length === 0) {
-        console.log(response.data);
-        return false;
-      }
-      console.log('User found with email', email);
-      return true;
     }
+    console.log('User found with email', email);
+    return true;
+  }
 }
-
 
 /**
  * Gets all data on all public users. Does not return private ones
@@ -142,7 +140,7 @@ async function userInDatabase(email) {
 async function getUsers() {
   try {
     // if (envConfig.env === 'development' || envConfig.env === 'test') {
-    //   const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+    //   const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns,
     //         jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
     //             FROM users u
     //             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
@@ -153,8 +151,8 @@ async function getUsers() {
     //             ON u.major_id = m.major_id
     //             LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
     //                 "position", us.position)) AS skills
-    //                 FROM user_skills us 
-    //                 JOIN skills s 
+    //                 FROM user_skills us
+    //                 JOIN skills s
     //                     ON us.skill_id = s.skill_id
     //                 GROUP BY us.user_id) s
     //             ON u.user_id = s.user_id
@@ -162,14 +160,14 @@ async function getUsers() {
     //   const [users] = await pool.query(sql);
     //   return RESPONSE(200, users, '');
     // } else {
-      const apiURL = `${root}/users`;
-      const response = await GET(apiURL);
-      if (response.status === '400') return '400';
-      return response;
-    } catch (err) {
-        console.log(err);
-        return RESPONSE(400, '', 'An error occurred while getting all users');
-    }
+    const apiURL = `${root}/users`;
+    const response = await GET(apiURL);
+    if (response.status === '400') return '400';
+    return response;
+  } catch (err) {
+    console.log(err);
+    return RESPONSE(400, '', 'An error occurred while getting all users');
+  }
 }
 
 /**
@@ -178,24 +176,24 @@ async function getUsers() {
  * @returns data - JSONified data from account information. 400 if not valid.
  */
 async function getAccountInformation(user_id) {
-    // if(envConfig.env === 'development' || envConfig.env === 'test') {
-    //     const sql= `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
-    //         jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
-    //             FROM users u
-    //             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
-    //                 FROM)`
-    // } else {
-    const apiURL = `${root}/users/${user_id}/account`;
-    const response = await GET(apiURL);
-    if (response.status === "400") {
-        return "400";
-    }
+  // if(envConfig.env === 'development' || envConfig.env === 'test') {
+  //     const sql= `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns,
+  //         jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
+  //             FROM users u
+  //             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+  //                 FROM)`
+  // } else {
+  const apiURL = `${root}/users/${user_id}/account`;
+  const response = await GET(apiURL);
+  console.log(response);
+  if (response.status === 401) {
+    console.log(response.error);
+    return '401';
+  }
 
-    console.log("User account information recieved")
-    return response;
+  console.log('User account information recieved');
+  return response;
 }
-    
-
 
 /**
  * Gets all data on one specific user, specified by URL.
@@ -206,15 +204,8 @@ async function getUsersById(id) {
   const apiURL = `${root}/users/${id}`;
   const response = await GET(apiURL);
   if (response.status === '400') return '400'; //error
-  if (envConfig.env === 'development' || envConfig.env === 'test') {
-  } else {
-    const apiURL = `${root}/users/${id}`;
-    const response = await GET(apiURL);
-    if (response.status === '400') return '400'; //error
 
-        return response;
-    }
-    
+  return response;
 }
 
 /**
@@ -254,9 +245,9 @@ async function updateProfilePicture(id, _image) {
   const apiURL = `${root}/users/${id}/profile-picture`;
   const data = { image: _image };
   const response = await PUT(apiURL, data);
-  if (response.status === "400") {
-      console.log("error updating profile picture.");
-      return "400";
+  if (response.status === '400') {
+    console.log('error updating profile picture.');
+    return '400';
   }
   console.log('Updated Profile Picture for user.');
   return response.status;
@@ -271,23 +262,23 @@ async function updateProfilePicture(id, _image) {
  * @returns response, 200 if valid, 400 if not, 401 if emails do not match.
  */
 async function updateEmail(id, _email, _confirm_email, _password) {
-    const apiURL = `${root}/users/${id}/email`;
-    if (_email != _confirm_email) {
-        console.log("Not the same email, try again.");
-        return "401";
-    }
-    const data = {
-        email: _email,
-        confirm: _confirm_email,
-        password: _password
-    };
+  const apiURL = `${root}/users/${id}/email`;
+  if (_email != _confirm_email) {
+    console.log('Not the same email, try again.');
+    return '401';
+  }
+  const data = {
+    email: _email,
+    confirm: _confirm_email,
+    password: _password,
+  };
 
-    const response = await PUT(apiURL, data);
-    if (response.status === "400") {
-        console.log("error updating email.");
-        return response.status;
-    }
-    console.log("Updated primary email for user.")
+  const response = await PUT(apiURL, data);
+  if (response.status === '400') {
+    console.log('error updating email.');
+    return response.status;
+  }
+  console.log('Updated primary email for user.');
 
   return response.status;
 }
@@ -301,24 +292,24 @@ async function updateEmail(id, _email, _confirm_email, _password) {
  * @returns response, 200 if valid, 400 if not, 401 if users do not match.
  */
 async function updateUsername(id, _username, _confirm_user, _password) {
-    const apiURL = `${root}/users/${id}/username`;
-    if (_username != _confirm_user) {
-        console.log("Usernames are not the same.");
-        return "401";
-    }
-    const data = {
-        username: _username,
-        confirm_user: _confirm_user,
-        password: _password
-    };
+  const apiURL = `${root}/users/${id}/username`;
+  if (_username != _confirm_user) {
+    console.log('Usernames are not the same.');
+    return '401';
+  }
+  const data = {
+    username: _username,
+    confirm_user: _confirm_user,
+    password: _password,
+  };
 
-    const response = await PUT(apiURL, data);
-    if (response.status === "400") {
-        console.log("error updating username.");
-        return response.status;
-    }
-    console.log("Updated primary username for user.")
+  const response = await PUT(apiURL, data);
+  if (response.status === '400') {
+    console.log('error updating username.');
     return response.status;
+  }
+  console.log('Updated primary username for user.');
+  return response.status;
 }
 
 /**
@@ -336,20 +327,20 @@ async function requestPasswordReset(email) {
   // Generate a token for password reset
   const _token = crypto.randomUUID();
 
-    let url = ``;
-    if (envConfig.env === 'production') {
-        url = `https://lookingforgrp.com/resetPassword/${_token}`;
-    } else {
-        url = `http://localhost:8081/resetPassword/${_token}`;
-    }
-    console.log('Token put into database.');
+  let url = ``;
+  if (envConfig.env === 'production') {
+    url = `https://lookingforgrp.com/resetPassword/${_token}`;
+  } else {
+    url = `http://localhost:8081/resetPassword/${_token}`;
+  }
+  console.log('Token put into database.');
 
-    try {
-        // Add token to online
-        const data = {
-            token: _token,
-        };
-        const response = await POST(`https://lookingforgrp/resetPassword`, data);
+  try {
+    // Add token to online
+    const data = {
+      token: _token,
+    };
+    const response = await POST(`https://lookingforgrp/resetPassword`, data);
 
     if (response.status === '400') {
       console.error('Error posting token for password reset.');
@@ -416,15 +407,15 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
   //hash password
   const hashPass = await bcrypt.hash(_newPassword, 10);
 
-    try {
-        //get email if token is valid
-        let url = `https://lfg.gccis.rit.edu/api/resets/password/${_token}`;
-        let response = await GET(url);
-        if (!response.data.email) {
-            console.log("Your token has expired.");
-            return response.status;
-        }
-        console.log("Token accepted, email verified.");
+  try {
+    //get email if token is valid
+    let url = `https://lfg.gccis.rit.edu/api/resets/password/${_token}`;
+    let response = await GET(url);
+    if (!response.data.email) {
+      console.log('Your token has expired.');
+      return response.status;
+    }
+    console.log('Token accepted, email verified.');
 
     //update user password
     url = `https://lfg.gccis.rit.edu/api/users/${id}/password`;
@@ -452,11 +443,11 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
  * @returns "400" if error, "200" if valid
  */
 async function updateUserVisibility(id) {
-    let url = `${root}/users/${id}`;
-    let data = await GET(url);
-    const parsedata = JSON.parse(await data);
-    const vis = parsedata.visibility;
-    let result;
+  let url = `${root}/users/${id}`;
+  let data = await GET(url);
+  const parsedata = JSON.parse(await data);
+  const vis = parsedata.visibility;
+  let result;
 
   if (vis == 1) {
     data = {
@@ -530,14 +521,14 @@ async function getUserByEmail(email) {
  * @returns array of users following, or 400 if unsuccessful.
  */
 async function getUserFollowing(id) {
-    let url = `${root}/users/${id}/followings/people`;
-    const response = await GET(url);
-    if (response.status === "400") {
-        console.log("Error getting users.");
-        return "400";
-    }
-    console.log("Data recieved.");
-    return response;
+  let url = `${root}/users/${id}/followings/people`;
+  const response = await GET(url);
+  if (response.status === '400') {
+    console.log('Error getting users.');
+    return '400';
+  }
+  console.log('Data recieved.');
+  return response;
 }
 
 /**
@@ -546,14 +537,14 @@ async function getUserFollowing(id) {
  * @return - array of projects, or 400 if unsuccessful.
  */
 async function getVisibleProjects(id) {
-    let url = `${root}/users/${id}/projects/profile`;
-    const response = await GET(url);
-    if (response.status === "400") {
-        console.log("Error getting projects.");
-        return "400";
-    }
-    console.log("Data recieved.");
-    return response;
+  let url = `${root}/users/${id}/projects/profile`;
+  const response = await GET(url);
+  if (response.status === '400') {
+    console.log('Error getting projects.');
+    return '400';
+  }
+  console.log('Data recieved.');
+  return response;
 }
 
 /**
@@ -564,19 +555,19 @@ async function getVisibleProjects(id) {
  * @return 201 if successful, 400 if not
  */
 async function updateProjectVisibility(userID, projectID, _visibility) {
-    let url = `${root}/users/${userID}/projects/visibility`;
-    const data = {
-        projectId: projectID,
-        visibility: _visibility,
-    };
+  let url = `${root}/users/${userID}/projects/visibility`;
+  const data = {
+    projectId: projectID,
+    visibility: _visibility,
+  };
 
-    let response = await PUT(url, data);
-    if (response.status === "400") {
-        console.log("Error editing projects.");
-        return "400";
-    }
-    console.log("Data edited.");
-    return "201";
+  let response = await PUT(url, data);
+  if (response.status === '400') {
+    console.log('Error editing projects.');
+    return '400';
+  }
+  console.log('Data edited.');
+  return '201';
 }
 
 /**
@@ -585,14 +576,14 @@ async function updateProjectVisibility(userID, projectID, _visibility) {
  * @returns array of projects, or 400 if error.
  */
 async function getProjectFollowing(id) {
-    let url = `${root}/users/${id}/followings/projects`;
-    const response = await GET(url);
-    if (response.status === "400") {
-        console.log("Error getting projects.");
-        return "400";
-    }
-    console.log("Data recieved.");
-    return response;
+  let url = `${root}/users/${id}/followings/projects`;
+  const response = await GET(url);
+  if (response.status === '400') {
+    console.log('Error getting projects.');
+    return '400';
+  }
+  console.log('Data recieved.');
+  return response;
 }
 
 /**
@@ -602,17 +593,17 @@ async function getProjectFollowing(id) {
  * @returns 201 if successful, 400 if not.
  */
 async function addProjectFollowing(id, projectID) {
-    let url = `${root}/users/${id}/followings/projects`;
-    const data = {
-        projectId: projectID,
-    };
-    const response = await POST(url, data);
-    if (response.status === "400") {
-        console.log("Error creating project following.");
-        return "400";
-    }
-    console.log("Created project following.");
-    return "200";
+  let url = `${root}/users/${id}/followings/projects`;
+  const data = {
+    projectId: projectID,
+  };
+  const response = await POST(url, data);
+  if (response.status === '400') {
+    console.log('Error creating project following.');
+    return '400';
+  }
+  console.log('Created project following.');
+  return '200';
 }
 
 /**
@@ -622,14 +613,14 @@ async function addProjectFollowing(id, projectID) {
  * @returns 201 if successful, 400 if not.
  */
 async function deleteProjectFollowing(id, projID) {
-    let url = `${root}/users/${id}/followings/projects/${projID}`;
-    const response = await DELETE(url);
-    if (response.status === "400") {
-        console.log("Error deleting project following.");
-        return "400";
-    }
-    console.log("Deleted project following.");
-    return "200";
+  let url = `${root}/users/${id}/followings/projects/${projID}`;
+  const response = await DELETE(url);
+  if (response.status === '400') {
+    console.log('Error deleting project following.');
+    return '400';
+  }
+  console.log('Deleted project following.');
+  return '200';
 }
 
 /**
@@ -639,17 +630,17 @@ async function deleteProjectFollowing(id, projID) {
  * @returns 201 if successful, 400 if not
  */
 async function addUserFollowing(id, followID) {
-    let url = `${root}/users/${id}/followings/people`;
-    const data = {
-        userId: followID,
-    };
-    const response = await POST(url, data);
-    if (response.status === "400") {
-        console.log("Error creating user following.");
-        return "400";
-    }
-    console.log("Created user following.");
-    return "201";
+  let url = `${root}/users/${id}/followings/people`;
+  const data = {
+    userId: followID,
+  };
+  const response = await POST(url, data);
+  if (response.status === '400') {
+    console.log('Error creating user following.');
+    return '400';
+  }
+  console.log('Created user following.');
+  return '201';
 }
 
 /**

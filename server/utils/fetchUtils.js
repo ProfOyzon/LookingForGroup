@@ -58,7 +58,8 @@ const GET = (apiURL) => {
         return obj;
       } else {
         console.log(obj.error);
-        throw new Error('Network response was not ok');
+        return { status: response.status, error: obj.error || 'Network response was not ok' };
+        //throw new Error('Network response was not ok');
       }
     })
     .then((data) => {
@@ -67,7 +68,7 @@ const GET = (apiURL) => {
     })
     .catch((error) => {
       console.error('there was a problem with the fetch operation:', error);
-      return '400';
+      return { status: 400, error: error.message || 'Unknown error' };
     });
 };
 
@@ -92,7 +93,7 @@ const POST = (apiURL, newData) => {
         return obj;
       } else {
         console.log(obj.error);
-        throw new Error('Network response was not ok');
+        return { status: response.status, error: obj.error || 'Network response was not ok' };
       }
     })
     .then((data) => {
@@ -125,7 +126,7 @@ const PUT = (apiURL, newData) => {
         return obj;
       } else {
         console.log(obj.error);
-        throw new Error('Network response was not ok');
+        return { status: response.status, error: obj.error || 'Network response was not ok' };
       }
     })
     .then((data) => {
@@ -137,6 +138,20 @@ const PUT = (apiURL, newData) => {
       return '400';
     });
 };
+
+async function PUT2(apiURL, newData) {
+  try {
+    const response = await fetch(apiURL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newData),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Caught inside PUT:', error);
+    throw error; // Let the caller deal with it
+  }
+}
 
 /**
  * Basic DELETE function for utilities
@@ -156,7 +171,7 @@ const DELETE = (apiURL) => {
         return obj;
       } else {
         console.log(obj.error);
-        throw new Error('Network response was not ok');
+        return { status: response.status, error: obj.error || 'Network response was not ok' };
       }
     })
     .then((data) => {
@@ -167,7 +182,7 @@ const DELETE = (apiURL) => {
       console.error('There was a problem with the fetch operation:', error);
       return '400';
     });
-}
+};
 
 /**
  * Takes data and puts it into a standardized JSON reponse
@@ -177,8 +192,8 @@ const DELETE = (apiURL) => {
  * @param {string} mimetype - type of the response
  * @returns - object of JSON response
  */
-function jsonify(data, status, error, mimetype = 'application/json'){
-  return{
+function jsonify(data, status, error, mimetype = 'application/json') {
+  return {
     status,
     mimetype,
     data,
@@ -194,8 +209,8 @@ function jsonify(data, status, error, mimetype = 'application/json'){
  * @returns - JSONified status code, data, and error message
  */
 const RESPONSE = (_status, data, _error) => {
-  const res = [{ 'data': data }];
+  const res = [{ data: data }];
   return jsonify(res, _status, _error, 'application/json');
-}
+};
 
 export { GET, POST, PUT, DELETE, RESPONSE };

@@ -97,6 +97,18 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
       return RESPONSE(400, '', 'An error occurred during sign up.');
     }
   }
+
+  if (envConfig.env === 'development') {
+    console.log('development');
+    return {
+      status: 201,
+      data: _token,
+    };
+  }
+
+  return {
+    status: 201,
+  };
 }
 
 /**
@@ -105,30 +117,27 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
  * @param {*} _password - string, password
  * @returns status
  */
-async function login(_loginInput, _password) {
-  if (!_loginInput || !_password) {
-  }
-  data = {
-    loginInput: _login,
-    password: _password,
-  };
-  const url = `${root}/login`;
-
+async function login(loginInput, password) {
   try {
-    const r = await POST(url, data);
+    const r = await POST(`${root}/login`, {
+      loginInput: loginInput,
+      password: password,
+    });
+
     if (r.ok) {
       console.log('Logged in.');
-      return (res = {
+      return {
         status: 201,
         data: r.data,
-      });
+      };
     }
   } catch (err) {
     console.log(err);
-    return (res = {
+
+    return {
       status: 400,
       error: err,
-    });
+    };
   }
 }
 

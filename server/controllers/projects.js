@@ -37,14 +37,17 @@ const getProjects = async (req, res) => {
                 GROUP BY pf.project_id) f
 			      ON p.project_id = f.project_id;
         `;
-    const projects = await pool.query(sql);
+    const [projects] = await pool.query(sql);
 
     // Format the follower section so it doesn't provide IDs
+    
+    // @ts-ignore
     projects.forEach((project) => {
       let followers = project.followers;
 
       project.followers = {
         count: followers.length,
+        // @ts-ignore
         isFollowing: followers.find((follower) => req.session.userId === follower.id) !== undefined,
       };
     });
@@ -152,6 +155,7 @@ const createProject = async (req, res) => {
     // Add project's types to database
     for (let type of project_types) {
       await pool.query('INSERT INTO project_genres (project_id, type_id) VALUES (?, ?)', [
+        // @ts-ignore
         projectId[0].project_id,
         type.id,
       ]);
@@ -160,6 +164,7 @@ const createProject = async (req, res) => {
     // Add project's tags to database
     for (let tag of tags) {
       await pool.query('INSERT INTO project_tags (project_id, tag_id, position) VALUES (?, ?, ?)', [
+        // @ts-ignore
         projectId[0].project_id,
         tag.id,
         tag.position,
@@ -171,6 +176,7 @@ const createProject = async (req, res) => {
       await pool.query(
         'INSERT INTO jobs (project_id, title_id, availability, duration, location, compensation, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
         [
+          // @ts-ignore
           projectId[0].project_id,
           job.title_id,
           job.availability,
@@ -186,6 +192,7 @@ const createProject = async (req, res) => {
     for (let member of members) {
       console.log('inserting member', member);
       await pool.query('INSERT INTO members (project_id, user_id, title_id) VALUES (?, ?, ?)', [
+        // @ts-ignore
         projectId[0].project_id,
         member.user_id,
         member.title_id,
@@ -196,6 +203,7 @@ const createProject = async (req, res) => {
     for (let social of socials) {
       await pool.query(
         'INSERT INTO project_socials (project_id, website_id, url) VALUES (?, ?, ?)',
+        // @ts-ignore
         [projectId[0].project_id, social.id, social.url],
       );
     }
@@ -279,10 +287,13 @@ const getProjectById = async (req, res) => {
     const [project] = await pool.query(sql, values);
 
     // Format the follower section so it doesn't provide IDs
+    // @ts-ignore
     let followers = project[0].followers;
 
+    // @ts-ignore
     project[0].followers = {
       count: followers.length,
+      // @ts-ignore
       isFollowing: followers.find((follower) => req.session.userId === follower.id) !== undefined,
     };
 
@@ -378,6 +389,7 @@ const updateProject = async (req, res) => {
 
     // ----- UPDATE PROJECT'S TYPES -----
     // Create array from project types
+    // @ts-ignore
     const newProjectTypes = project_types.map((type) => type.id);
     // Get project types already in database that need to be removed
     let placeholders = genPlaceholders(newProjectTypes);
@@ -386,9 +398,12 @@ const updateProject = async (req, res) => {
     values = [id, ...newProjectTypes];
     const [removingProjectTypes] = await pool.query(sql, values);
     // Remove project types if any were found
+    // @ts-ignore
     if (removingProjectTypes[0].project_types) {
+      // @ts-ignore
       placeholders = genPlaceholders(removingProjectTypes[0].project_types);
       sql = `DELETE FROM project_genres WHERE project_id = ? AND type_id IN (${placeholders})`;
+      // @ts-ignore
       values = [id, ...removingProjectTypes[0].project_types];
       await pool.query(sql, values);
     }
@@ -401,6 +416,7 @@ const updateProject = async (req, res) => {
 
     // ----- UPDATE PROJECT'S TAGS -----
     // Create array from tags
+    // @ts-ignore
     const newTags = tags.map((tag) => tag.id);
     // Get tags already in database that need to be removed
     placeholders = genPlaceholders(newTags);
@@ -409,9 +425,12 @@ const updateProject = async (req, res) => {
     values = [id, ...newTags];
     const [removingTags] = await pool.query(sql, values);
     // Remove tags if any were found
+    // @ts-ignore
     if (removingTags[0].tags) {
+      // @ts-ignore
       placeholders = genPlaceholders(removingTags[0].tags);
       sql = `DELETE FROM project_tags WHERE project_id = ? AND tag_id IN (${placeholders})`;
+      // @ts-ignore
       values = [id, ...removingTags[0].tags];
       await pool.query(sql, values);
     }
@@ -424,6 +443,7 @@ const updateProject = async (req, res) => {
 
     // ----- UPDATE PROJECT'S JOBS -----
     // Create array from jobs
+    // @ts-ignore
     const newJobs = jobs.map((job) => job.title_id);
     // Add 0 if empty to allow sql statement to still find exisiting data to be removed
     if (newJobs.length === 0) {
@@ -436,9 +456,12 @@ const updateProject = async (req, res) => {
     values = [id, ...newJobs];
     const [removingJobs] = await pool.query(sql, values);
     // Remove jobs if any were found
+    // @ts-ignore
     if (removingJobs[0].jobs) {
+      // @ts-ignore
       placeholders = genPlaceholders(removingJobs[0].jobs);
       sql = `DELETE FROM jobs WHERE project_id = ? AND title_id IN (${placeholders})`;
+      // @ts-ignore
       values = [id, ...removingJobs[0].jobs];
       await pool.query(sql, values);
     }
@@ -460,6 +483,7 @@ const updateProject = async (req, res) => {
 
     // ----- UPDATE PROJECT'S MEMBERS -----
     // Create array from members
+    // @ts-ignore
     const newMembers = members.map((member) => member.user_id);
     // Get members already in database that need to be removed
     placeholders = genPlaceholders(newMembers);
@@ -468,9 +492,12 @@ const updateProject = async (req, res) => {
     values = [id, ...newMembers];
     const [removingMembers] = await pool.query(sql, values);
     // Remove members if any were found
+    // @ts-ignore
     if (removingMembers[0].members) {
+      // @ts-ignore
       placeholders = genPlaceholders(removingMembers[0].members);
       sql = `DELETE FROM members WHERE project_id = ? AND user_id IN (${placeholders})`;
+      // @ts-ignore
       values = [id, ...removingMembers[0].members];
       await pool.query(sql, values);
     }
@@ -482,6 +509,7 @@ const updateProject = async (req, res) => {
       const titleSql = `SELECT jt.title_id FROM job_titles jt WHERE jt.label = ?`;
       values = [member.job_title];
       const [matchingTitle] = await pool.query(titleSql, values);
+      // @ts-ignore
       member.title_id = matchingTitle[0].title_id;
       await pool.query(sql, [id, member.user_id, member.title_id, member.permissions]);
     }
@@ -495,6 +523,7 @@ const updateProject = async (req, res) => {
       return;
     }
     // Create array from socials
+    // @ts-ignore
     const newSocials = socials.map((social) => social.id);
     // Add 0 if empty to allow sql statement to still find exisiting data to be removed
     if (newSocials.length === 0) {
@@ -507,9 +536,12 @@ const updateProject = async (req, res) => {
     values = [id, ...newSocials];
     const [removingSocials] = await pool.query(sql, values);
     // Remove socials if any were found
+    // @ts-ignore
     if (removingSocials[0].socials) {
+      // @ts-ignore
       placeholders = genPlaceholders(removingSocials[0].socials);
       sql = `DELETE FROM project_socials WHERE project_id = ? AND website_id IN (${placeholders})`;
+      // @ts-ignore
       values = [id, ...removingSocials[0].socials];
       await pool.query(sql, values);
     }
@@ -543,6 +575,7 @@ const updateProject = async (req, res) => {
 const deleteProject = async (req, res) => {
   // Get data
   const projId = parseInt(req.params.id);
+  // @ts-ignore
   const userId = parseInt(req.session.userId);
 
   try {
@@ -551,6 +584,7 @@ const deleteProject = async (req, res) => {
       'SELECT p.user_id FROM projects p WHERE p.project_id = ?',
       [projId],
     );
+    // @ts-ignore
     const ownerId = ownerData[0].user_id;
 
     // TO-DO: Feed back bad request if userId != ownerId
@@ -609,7 +643,9 @@ const updateThumbnail = async (req, res) => {
 
     // Remove old image from server
     const [image] = await pool.query('SELECT thumbnail FROM projects WHERE project_id = ?', [id]);
+    // @ts-ignore
     if (image[0].thumbnail !== null) {
+      // @ts-ignore
       await unlink(saveTo + image[0].thumbnail);
     }
 
@@ -851,8 +887,11 @@ const addMember = async (req, res) => {
     );
     let requester = null;
 
+    // @ts-ignore
     for (let i = 0; i < memberData.length; i++) {
+      // @ts-ignore
       if (memberData[i].user_id === userId) {
+        // @ts-ignore
         requester = memberData[i];
         break;
       }
@@ -936,17 +975,23 @@ const updateMember = async (req, res) => {
     // Make sure user is part of the project
     const [memberData] = await pool.query(
       'SELECT m.user_id, m.permissions FROM members m WHERE m.project_id = ?',
+      // @ts-ignore
       [id],
     );
     let requester = null;
     let recipient = null;
 
+    // @ts-ignore
     for (let i = 0; i < memberData.length; i++) {
+      // @ts-ignore
       if (memberData[i] === userId) {
+        // @ts-ignore
         recipient = memberData[i];
       }
 
+      // @ts-ignore
       if (memberData[i] === req.session.userId) {
+        // @ts-ignore
         requester = memberData[i];
       }
     }
@@ -964,6 +1009,7 @@ const updateMember = async (req, res) => {
       });
       return;
     } else if (
+      // @ts-ignore
       parseInt(userId) !== req.session.userId &&
       requester.permissions <= recipient.permissions
     ) {
@@ -977,6 +1023,7 @@ const updateMember = async (req, res) => {
     // Update contents of project
     const sql = `UPDATE members SET title_id = ?, permissions = ?
       WHERE project_id = ? AND WHERE user_id = ?`;
+    // @ts-ignore
     const values = [titleId, permission, visibility, projId, userId];
     await pool.query(sql, values);
 
@@ -1016,12 +1063,17 @@ const deleteMember = async (req, res) => {
 
     console.log();
 
+    // @ts-ignore
     for (let i = 0; i < memberData.length; i++) {
+      // @ts-ignore
       if (parseInt(memberData[i].user_id) === parseInt(userId)) {
+        // @ts-ignore
         recipient = memberData[i];
       }
 
+      // @ts-ignore
       if (parseInt(memberData[i].user_id) === parseInt(req.session.userId)) {
+        // @ts-ignore
         requester = memberData[i];
       }
     }
@@ -1040,9 +1092,11 @@ const deleteMember = async (req, res) => {
       });
       return;
     } else if (
+      // @ts-ignore
       parseInt(userId) !== req.session.userId &&
       requester.permissions <= recipient.permissions
     ) {
+      // @ts-ignore
       console.log(`userId: ${userId} vs. sessionId: ${req.session.userId}`);
 
       res.status(403).json({

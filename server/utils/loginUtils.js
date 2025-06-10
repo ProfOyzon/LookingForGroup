@@ -97,7 +97,6 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
 
       //send activation email
       await transporter.sendMail(message);
-
     } catch (err) {
       console.log(err);
       return (res = {
@@ -126,30 +125,27 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
  * @param {*} password - string, password
  * @returns status
  */
-async function login(_loginInput, _password) {
-  if (!_loginInput || !_password) {
-  }
-  data = {
-    loginInput: _login,
-    password: _password,
-  };
-  const url = `${root}/login`;
-
+async function login(loginInput, password) {
   try {
-    const r = await POST(url, data);
+    const r = await POST(`${root}/login`, {
+      loginInput: loginInput,
+      password: password,
+    });
+
     if (r.ok) {
       console.log('Logged in.');
-      return (res = {
+      return {
         status: 201,
         data: r.data,
-      });
+      };
     }
   } catch (err) {
     console.log(err);
-    return (res = {
+
+    return {
       status: 400,
       error: err,
-    });
+    };
   }
 }
 

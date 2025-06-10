@@ -1,3 +1,4 @@
+import { rawListeners } from 'process';
 import util from '../utils/userUtils.js';
 
 /* - - - GETs - - - */
@@ -25,7 +26,7 @@ test('GET: Get account information for id 19 (Mistah Bones), invalid (unauthoriz
 
   console.log(r.data);
 
-  expect(r.status).toBe('401'); // because no authorization
+  expect(r.status).toBe(401); // because no authorization
   expect(r).toBeDefined();
 });
 
@@ -107,63 +108,34 @@ test('POST: Create new user.', async () => {
   expect(r).toBeDefined();
 });
 
-//test user id
-// let testId = null;
-
-// test('POST: Test creating new user.', async () => {
-//     const email = `newEmail@rit.edu`;
-
-//     const r = await util.createNewUser(
-//         'DEV BYPASS',
-//         email,
-//         'Toby',
-//         'Test',
-//         'Created test user',
-//         'they/them',
-//         1,
-//         2,
-//         '',
-//         '',
-//         'please work',
-//         [],
-//         []
-//     );
-
-//     console.log(r);
-
-//     expect(r.status).toBe(201);
-//     expect(r.user_id).toBeDefined();
-
-//     //get the user ID
-//     testId = r.user_id;
-// });
-
 /* - - - PUTs - - - */
 
-// test('PUT: Edit data for a user', async () => {
-//     //use test ID
-//     expect(testId).toBeDefined();
+test('PUT: change user (mistah bones), first name to mr.', async () => {
+  let user_id = 19;
+  let data = [
+    {
+      firstName: 'mr.',
+    },
+  ];
+  const r = await util.editUser(user_id, data);
 
-//     const r = await util.editUser(testId, {
-//         funFact: 'The edited worked!'
-//     });
+  console.log(r);
 
-//     console.log(r);
-
-//     expect(r.status).toBe(201);
-// });
+  const change = await util.getUsersById(19);
+  const first = change.data.firstName;
+  expect(first).toBe('mr.');
+});
 
 /* - - - DELETEs - - - */
 
-// test('DELETE: deletes a user by id', async () => {
-//     //use test ID
-//     expect(testId).toBeDefined();
+test('DELETE: deletes a user by id', async () => {
+  //use test ID
+  expect(20).toBeDefined();
 
-//     const r = await util.deleteUser(testId);
+  const r = await util.deleteUser(20);
 
-//     console.log(r);
-//     expect(r.status).toBe(200);
-
-// });
+  console.log(r);
+  expect(r.status).toBe(401);
+});
 
 // npm test userUtils.test.js

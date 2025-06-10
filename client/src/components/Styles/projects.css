@@ -58,6 +58,21 @@ Project Panel component style rules
   }
 }
 
+/* IPAD/TABLET Hover support for touch-screen devices that specifically are not computers */
+@media only screen and (any-hover: none) {
+  .project-panel {
+    height: 400px;
+
+    .project-panel-hover {
+      visibility: visible;
+      opacity: 1;
+      box-shadow: none;
+      position: absolute;
+      top: 0;
+    }
+  }
+}
+
 .project-panel-hover {
   border-radius: 10px;
   background-color: var(--bg-color);
@@ -184,22 +199,6 @@ Project Panel component style rules
 
 .project-contributor:hover {
   cursor: pointer;
-}
-
-@media only screen and (any-pointer: coarse) {
-  .project-panel {
-    height: 400px;
-
-    .project-panel-hover {
-      z-index: 1;
-      opacity: 1;
-      box-shadow: 0;
-
-      /* Position directly on top of standard project-panel element */
-      position: absolute;
-      top: 0;
-    }
-  }
 }
 
 /*

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 
 interface LinkData {
@@ -20,6 +19,7 @@ const ProfileContactTab = ({userID}) => {
     // copied over from Profile.tsx to get social links
     useEffect(() => {
     const loadSocials = async () => {
+        try{
       // Pick which socials to use based on type
       let url = `api/users/${userID}`;
 
@@ -29,28 +29,32 @@ const ProfileContactTab = ({userID}) => {
       socials = data[0].socials;
       setEmail(data[0].email);
       setPhone(data[0].phone);
+
       // Setup links
       if (socials) {
-        links = socials.map(s => {
+        links = socials.map((s: any) => {
           return {
             id: s.id,
             url: s.url
           };
         });
       }
+      
+      if (links){
+        linksTSX = links.map((link) =>{  
+            if (link.url.includes("linkedin.com")) return ( <p key = {link.id} className = "linkedin-social-link"><a href = {link.url.toString()}>{link.url}</a></p> );
+                else if (link.url.includes("instagram.com")) return (<p key = {link.id} className = "instagram-social-link"><a href = {link.url.toString()}>{link.url}</a></p>);
+                else return (<p className = "other-social-link">  <a key = {link.id} href = {link.url.toString()}>{link.url}</a></p>);
+            }
+        )};
+    }catch (err){console.log('failed to load socials');}
+
     }
     loadSocials();
 
   }, []);
 
 
-      if (links){
-        linksTSX = links.map((link) =>{return   
-            if (link.url.includes("linkedin.com")) ( <p key = {link.id} className = "linkedin-social-link"><a href = {link.url.toString()}>{link.url}</a></p> );
-            else if (link.url.includes("instagram.com")) (<p key = {link.id} className = "instagram-social-link"><a href = {link.url.toString()}>{link.url}</a></p>);
-            else (<p className = "other-social-link"><a key = {link.id} href = {link.url.toString()}>{link.url}</a></p>);
-      }
-    )}; 
     
     //console.log("Profile Displayed");
  
@@ -58,12 +62,20 @@ const ProfileContactTab = ({userID}) => {
         <div className="profile-contact-tab">
             <h1>Contact Info</h1>
             <div className="contact-info-list">
-                <div className="email-links">
-                    user.email ? <p>Email: {email}</p>
-                </div>
-                <div className="phone-link">
-                    <p>Phone: <a href = {phone}>{phone}</a></p>
-                </div>
+                {email && (
+                    <div className="email-links"> 
+                        <p>Email: {email}</p>
+                    </div>                    
+                )}
+                
+                { phone && (
+                    <div className="phone-link"> 
+                        <p>Phone: <a href = {phone}>{phone}</a></p>
+                    </div>
+                )}
+                { links && (
+                    <div className="links">{linksTSX}</div>
+                )}  
             </div>
         </div>
     );

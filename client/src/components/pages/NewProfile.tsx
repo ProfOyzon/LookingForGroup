@@ -22,6 +22,7 @@ import { ThemeIcon } from '../ThemeIcon';
 import { fetchUserID } from '../../functions/fetch';
 import { ProfileInterests } from '../Profile/ProfileInterests';
 import profilePicture from '../../images/blue_frog.png';
+import ProfileContactTab from '../Profile/ProfileContactTab';
 
 // --------------------
 // Interfaces
@@ -463,6 +464,7 @@ const NewProfile = () => {
             userId={userID}
           />
         </div>
+        <div>{ProfileContactTab(userID)}</div>
       </div>
     </div>
   );

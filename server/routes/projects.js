@@ -24,7 +24,7 @@ router.put(
   '/api/projects/:id/thumbnail',
   mid.checkLogin,
   mid.checkImageFile,
-  projCtrl.updateThumbnail
+  projCtrl.updateThumbnail,
 );
 
 //Receives picture from project through id

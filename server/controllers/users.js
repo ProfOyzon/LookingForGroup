@@ -208,7 +208,7 @@ const createUser = async (req, res) => {
     // Get signup email if token is valid
     const [email] = await pool.query(
       'SELECT rit_email FROM signups WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY)',
-      [token]
+      [token],
     );
     if (email.length < 1) {
       res.status(400).json({
@@ -332,7 +332,8 @@ const requestPasswordReset = async (req, res) => {
 
 /**
  * Replaces password of an existing user
- * @param {express.Request} req - req.params - {token} from password reset link - req.body - {password, confirm} inputs for new password
+ * @param {express.Request} req - req.params - {token} from password reset link
+ * @param {express.Request} req - req.body - {password, confirm} inputs for new password
  * @param {express.Response} res - response
  * @returns {Promise<void>} res.status - {status:201} if successful send, else {status:400, error:...}
  */
@@ -363,7 +364,7 @@ const resetPassword = async (req, res) => {
     // Add 5 minute leeway to the 15 minutes stated in email, to account for time taken for email to arrive
     const [email] = await pool.query(
       'SELECT primary_email FROM password_resets WHERE token = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 20 MINUTE)',
-      [token]
+      [token],
     );
     if (email.length < 1) {
       res.status(400).json({
@@ -560,7 +561,7 @@ const getUsernameBySession = async (req, res) => {
   try {
     const [user] = await pool.query(
       `SELECT first_name, last_name, username, primary_email, profile_image FROM users WHERE user_id = ?`,
-      [req.session.userId]
+      [req.session.userId],
     );
     res.status(200).json({
       status: 200,

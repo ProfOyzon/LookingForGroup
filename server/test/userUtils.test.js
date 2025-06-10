@@ -4,80 +4,81 @@ import util from '../utils/userUtils.js';
 
 test('GET: Get all users', async () => {
   const r = await util.getUsers();
-  
+
   console.log(r);
 
-    expect(r.status).toBe(200);
-    expect(r).toBeDefined();
+  expect(r.status).toBe(200);
+  expect(r).toBeDefined();
 });
 
-test('GET: Get user id 1', async () => {
-  const r = await util.getUsersById(1);
+test('GET: Get user id 19 (mistah bones)', async () => {
+  const r = await util.getUsersById(19);
 
-  console.log(r);
+  console.log(r.data);
 
-    expect(r.status).toBe(200);
-    expect(r).toBeDefined();
+  expect(r.status).toBe(200);
+  expect(r).toBeDefined();
+});
+
+test('GET: Get account information for id 19 (Mistah Bones), invalid (unauthorized).', async () => {
+  const r = await util.getAccountInformation(19);
+
+  console.log(r.data);
+
+  expect(r.status).toBe('401'); // because no authorization
+  expect(r).toBeDefined();
 });
 
 test('GET: Get user by email: Mistah Bones: jjp8541@rit.edu', async () => {
-    const r = await util.getUserByEmail('jjp8541@rit.edu');
+  const r = await util.getUserByEmail('jjp8541@rit.edu');
 
-  console.log(r);
+  console.log(r.data);
 
-    expect(r.status).toBe(200);
-    expect(r.data).toBeDefined();
+  expect(r.status).toBe(200);
+  expect(r.data).toBeDefined();
 });
 
 test('GET: Get user by username: Mistah Bones.', async () => {
-    const r = await util.getUserByUsername("Mr.Bones");
+  const r = await util.getUserByUsername('Mr.Bones');
 
+  console.log(r.data);
 
-    expect(r.status).toBe(200);
-    expect(r.data).toBeDefined();
+  expect(r.status).toBe(200);
+  expect(r.data).toBeDefined();
 });
 
 test('GET: Check if Mistah Bones is in database.', async () => {
-    const r = await util.userInDatabase('jjp8541@rit.edu');
-    console.log(r);
+  const r = await util.userInDatabase('jjp8541@rit.edu');
+  console.log('In database: ', r);
 
   expect(r).toBe(true);
 });
 
-test('GET: Get account information for id 19 (Mistah Bones), invalid.', async () => {
-    const r = await util.getAccountInformation(19);
+test('GET: Get people user 19 is following.', async () => {
+  const r = await util.getUserFollowing(19);
 
-  console.log(r);
+  console.log(r.data);
 
-  expect(r).toBe('400'); // because no authorization
+  expect(r.status).toBe(200);
   expect(r).toBeDefined();
 });
 
-test('GET: Get people user 1 is following.', async () => {
-  const r = await util.getUserFollowing(1);
-
-  console.log(r);
-
-    expect(r.status).toBe(200);
-    expect(r).toBeDefined();
-});
-
 test('GET: Get projects the user is a member of', async () => {
-  const r = await util.getVisibleProjects(1);
+  const r = await util.getVisibleProjects(19);
 
-  console.log(r);
+  console.log(r.data);
 
-    expect(r.status).toBe(200);
-    expect(r).toBeDefined();
+  expect(r.status).toBe(200);
+  expect(r).toBeDefined();
 });
 
 test('GET: all projects user is following', async () => {
-    const r = await util.getProjectFollowing(1);
+  const r = await util.getProjectFollowing(19);
 
-    console.log(r);
+  console.log(r.data);
 
-    expect(r.status).toBe(200);
-    expect(r).toBeDefined();
+  expect(r.status).toBe(200);
+  expect(r).toBeDefined();
 });
 
 /* - - - POSTs - - - */
@@ -113,7 +114,6 @@ test('GET: all projects user is following', async () => {
 //     testId = r.user_id;
 // });
 
-
 /* - - - PUTs - - - */
 
 // test('PUT: Edit data for a user', async () => {
@@ -129,7 +129,6 @@ test('GET: all projects user is following', async () => {
 //     expect(r.status).toBe(201);
 // });
 
-
 /* - - - DELETEs - - - */
 
 // test('DELETE: deletes a user by id', async () => {
@@ -142,6 +141,5 @@ test('GET: all projects user is following', async () => {
 //     expect(r.status).toBe(200);
 
 // });
-
 
 // npm test userUtils.test.js

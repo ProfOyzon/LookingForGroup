@@ -69,7 +69,7 @@ const GET = (apiURL) => {
       console.error('there was a problem with the fetch operation:', error);
       return '400';
     });
-}
+};
 
 /**
  * Basic POST function for utilities
@@ -103,7 +103,7 @@ const POST = (apiURL, newData) => {
       console.error('There was a problem with the fetch operation:', error);
       return '400';
     });
-}
+};
 
 /**
  * Basic PUT function for utilities
@@ -136,7 +136,7 @@ const PUT = (apiURL, newData) => {
       console.error('There was a problem with the fetch operation:', error);
       return '400';
     });
-}
+};
 
 async function PUT2(apiURL, newData) {
   try {

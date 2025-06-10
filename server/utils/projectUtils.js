@@ -34,7 +34,7 @@ const createNewProject = async (
   _pTags,
   _jobs,
   _members,
-  _socials
+  _socials,
 ) => {
   const apiURL = `${root}/projects`;
 
@@ -79,11 +79,11 @@ const getProjects = async () => {
 
 /**
  * Retrieves data of a project by its ID
- * @param {number} ID -  ID of project to retrieve
+ * @param {Number} ID -  ID of project to retrieve
  * @returns - A project object if valid, "400" if not
  */
 const getByID = async (ID) => {
-  const apiURL = `https://lfg.gccis.rit.edu/api/projects/${ID}`;
+  const apiURL = `${root}/projects/${ID}`;
   let response = await GET(apiURL);
   if (response === '400') {
     return '400';
@@ -93,7 +93,7 @@ const getByID = async (ID) => {
 
 /**
  * Updates data of an existing project
- * @param {number} ID - ID of the project to update
+ * @param {Number} ID - ID of the project to update
  * @param {Object} data - Mapped data for update
  * @returns Response status
  */
@@ -108,7 +108,7 @@ const updateProject = async (ID, data) => {
 
 /**
  * Deletes an existing project
- * @param {number} ID - ID of the project to delete
+ * @param {Number} ID - ID of the project to delete
  * @returns Response status
  */
 const deleteProject = async (ID) => {
@@ -138,7 +138,7 @@ const updateThumbnail = async (ID, _image) => {
 
 /**
  * Gets the pictures used in a project's carousel
- * @param {number} ID - ID of the target project
+ * @param {Number} ID - ID of the target project
  * @returns Array of image objects if valid, "400" if not
  */
 const getPics = async (ID) => {
@@ -172,8 +172,8 @@ const addPic = async (ID, _image, _position) => {
 
 /**
  * Updates position order of a project's carousel pictures
- * @param {number} ID - ID of the target project
- * @param {Array<Object>} images - Array of objects, which contain the image "id" and new "position"
+ * @param {Number} ID - ID of the target project
+ * @param {Object} images - Array of objects, which contain the image "id" and new "position"
  * @returns Response status
  */
 const updatePicPositions = async (ID, images) => {
@@ -187,8 +187,8 @@ const updatePicPositions = async (ID, images) => {
 
 /**
  * Deletes a picture in a project
- * @param {number} ID - ID of the target project
- * @param {string} image - Filename of the image to delete
+ * @param {Number} ID - ID of the target project
+ * @param {String} image - Filename of the image to delete
  * @returns Response status
  */
 const deletePic = async (ID, image) => {
@@ -248,8 +248,8 @@ const updateMember = async (ID, _userId, _titleId, _permission) => {
 
 /**
  * Removes a member from a project
- * @param {number} ID - ID of the target project
- * @param {number} userId - ID of the target user
+ * @param {Number} ID - ID of the target project
+ * @param {Number} userId - ID of the target user
  * @returns Response status
  */
 const deleteMember = async (ID, userId) => {

@@ -12,10 +12,12 @@
     "start": "pm2 start ./server/index.js",
     "stop": "pm2 stop ./server/index.js",
     "dev": "concurrently \"npm run build:watch --workspace=client\" \"nodemon server/index.js\"",
+    "build:client": "npm run build --workspace=client",
     "test": "cross-env NODE_ENV=test jest",
-    "format": "prettier --write server",
-    "lint": "eslint --fix server",
-    "lint:types": "tsc -p jsconfig.json"
+    "lint:server": "eslint --fix server",
+    "lint:server:types": "tsc -p jsconfig.json",
+    "lint:client": "npm run lint --workspace=client",
+    "format:server": "prettier --write server"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

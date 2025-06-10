@@ -98,16 +98,6 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
       //send activation email
       await transporter.sendMail(message);
 
-      if (envConfig.env === 'development') {
-        console.log('development');
-        return (res = {
-          status: 201,
-          data: _token,
-        });
-      }
-      return (res = {
-        status: 201,
-      });
     } catch (err) {
       console.log(err);
       return (res = {
@@ -117,9 +107,17 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
     }
   }
 
+  if (envConfig.env === 'development') {
+    console.log('development');
+    return {
+      status: 201,
+      data: _token,
+    };
+  }
+
   return {
     status: 201,
-  }
+  };
 }
 
 /**

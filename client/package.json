@@ -8,8 +8,7 @@
     "build": "vite build",
     "build:watch": "vite build --watch",
     "serve": "vite preview",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint": "eslint --fix ."
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",

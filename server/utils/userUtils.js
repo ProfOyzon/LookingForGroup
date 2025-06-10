@@ -188,7 +188,7 @@ async function getAccountInformation(user_id) {
   console.log(response);
   if (response.status === 401) {
     console.log(response.error);
-    return '401';
+    return response;
   }
 
   console.log('User account information recieved');

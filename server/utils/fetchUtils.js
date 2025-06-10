@@ -58,7 +58,8 @@ const GET = (apiURL) => {
         return obj;
       } else {
         console.log(obj.error);
-        throw new Error('Network response was not ok');
+        return { status: response.status, error: obj.error || 'Network response was not ok' };
+        //throw new Error('Network response was not ok');
       }
     })
     .then((data) => {
@@ -67,7 +68,7 @@ const GET = (apiURL) => {
     })
     .catch((error) => {
       console.error('there was a problem with the fetch operation:', error);
-      return '400';
+      return { status: 400, error: error.message || 'Unknown error' };
     });
 };
 
@@ -92,7 +93,7 @@ const POST = (apiURL, newData) => {
         return obj;
       } else {
         console.log(obj.error);
-        throw new Error('Network response was not ok');
+        return { status: response.status, error: obj.error || 'Network response was not ok' };
       }
     })
     .then((data) => {
@@ -125,7 +126,7 @@ const PUT = (apiURL, newData) => {
         return obj;
       } else {
         console.log(obj.error);
-        throw new Error('Network response was not ok');
+        return { status: response.status, error: obj.error || 'Network response was not ok' };
       }
     })
     .then((data) => {
@@ -170,7 +171,7 @@ const DELETE = (apiURL) => {
         return obj;
       } else {
         console.log(obj.error);
-        throw new Error('Network response was not ok');
+       return {status:response.status, error: obj.error || 'Network response was not ok'};
       }
     })
     .then((data) => {
@@ -191,8 +192,8 @@ const DELETE = (apiURL) => {
  * @param {string} mimetype - type of the response
  * @returns - object of JSON response
  */
-function jsonify(data, status, error, mimetype = 'application/json'){
-  return{
+function jsonify(data, status, error, mimetype = 'application/json') {
+  return {
     status,
     mimetype,
     data,

@@ -1,6 +1,7 @@
 ///import {login} from '../controllers/users';
 import envConfig from '../config/env.js';
-import { POST } from './fetchUtils.js';
+import { transporter } from '../config/mailer.js';
+import { POST, RESPONSE } from './fetchUtils.js';
 import bcrypt from 'bcrypt';
 
 const root =
@@ -23,21 +24,11 @@ const root =
  */
 async function sendSignup(_username, _password, _confirmPassword, _email, _firstName, _lastName) {
   //set up input data
-  let res = {
-    status: 0,
-    body: '',
-    error: '',
-  };
+
   if (!_username || !_password || !_confirmPassword || !_email || !_firstName || !_lastName) {
-    return res({
-      status: 400,
-      error: 'Missing sign up information',
-    });
+    return RESPONSE(400, '', 'Missing sign up information');
   } else if (_password !== _confirmPassword) {
-    return res({
-      status: 400,
-      error: 'Passwords do not match',
-    });
+    return RESPONSE(400, '', 'Passwords do not match.');
   }
 
   const hashPass = await bcrypt.hash(_password, 10);
@@ -46,7 +37,7 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
 
   //add user info to database, set up for account activation
 
-  url = `https://lookingforgrp.com/activation/${_token}`;
+  url = `${root}/activation/${_token}`;
   console.log(url);
   console.log(_token);
 
@@ -66,13 +57,10 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
       if (response.ok) {
         console.log('Information put into database.');
       } else {
-        return (res = {
-          status: 400,
-          error: 'Error posting into database.',
-        });
+        return RESPONSE(400, '', 'Error posting into database.');
       }
       const emailhtml = `
-        <p>Hi ${firstName},<br>
+        <p>Hi ${_firstName},<br>
         Thank you for signing up to LFG. You have 1 day to activate your account. Click the button below.
         </p>
         
@@ -98,30 +86,23 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
       //send activation email
       await transporter.sendMail(message);
 
+      // @ts-ignore
       if (envConfig.env === 'development') {
         console.log('development');
-        return (res = {
-          status: 201,
-          data: _token,
-        });
+        return RESPONSE(201, _token, '');
       }
-      return (res = {
-        status: 201,
-      });
+      return RESPONSE(201, '', '');
     } catch (err) {
       console.log(err);
-      return (res = {
-        status: 400,
-        error: 'An error occured during sign up',
-      });
+      return RESPONSE(400, '', 'An error occurred during sign up.');
     }
   }
 }
 
 /**
  * Login as the user.
- * @param {*} loginInput - string, Username or email of the user
- * @param {*} password - string, password
+ * @param {*} _loginInput - string, Username or email of the user
+ * @param {*} _password - string, password
  * @returns status
  */
 async function login(_loginInput, _password) {

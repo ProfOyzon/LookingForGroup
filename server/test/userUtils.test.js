@@ -83,6 +83,30 @@ test('GET: all projects user is following', async () => {
 
 /* - - - POSTs - - - */
 
+test('POST: Create new user.', async () => {
+  const r = await util.createNewUser(
+    '',
+    'jjp8541@g.rit.edu',
+    'John',
+    'Testing',
+    'Test Account',
+    'It/Its',
+    1,
+    2,
+    1,
+    '',
+    '',
+    'hoping and praying',
+    [],
+    [],
+  );
+
+  console.log(r, '__________________________');
+
+  expect(r.status).toBe(200);
+  expect(r).toBeDefined();
+});
+
 //test user id
 // let testId = null;
 

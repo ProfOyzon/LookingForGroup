@@ -96,8 +96,8 @@ async function createNewUser(
       return '400';
     }
     console.log(`User ${email} created.`);
-    console.log(data);
-    return data;
+    console.log(response);
+    return response;
   }
 }
 

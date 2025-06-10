@@ -11,7 +11,7 @@ Project Panel component style rules
   justify-content: space-between;
   gap: 20px;
   width: 100%;
-  /* keep panels below searchbar */ 
+  /* keep panels below searchbar */
   z-index: 0;
   /* margin: 0 50px 50px 50px; */
 }
@@ -707,10 +707,10 @@ Project Creator and Editor style rules
   height: 22px;
 }
 
-#selected-thumbnail > img,
-.star > img,
-.star-filled > img,
-.delete-image > img {
+#selected-thumbnail>img,
+.star>img,
+.star-filled>img,
+.delete-image>img {
   width: 22px;
   height: 22px;
 }
@@ -3122,21 +3122,6 @@ My projects page style rules
   }
 }
 
-.my-projects-all-projects-button {
-  box-sizing: border-box;
-  background-color: var(--primary-color);
-  border: 0px;
-  border-radius: 55px;
-  width: fit-content;
-  color: var(--invert-text);
-  padding: 6px 17px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 28px;
-  letter-spacing: 0%;
-}
-
 .my-projects-sort-list {
   box-sizing: border-box;
   background-color: var(--header-color);
@@ -3207,6 +3192,11 @@ My projects page style rules
   }
 }
 
+#my-projects-sort-btn:hover {
+  background-color: var(--invert-text);
+  box-shadow: 0 0 5px 0 var(--primary-color);
+}
+
 .my-projects-display-switch {
   box-sizing: border-box;
   background-color: var(--header-color);
@@ -3247,14 +3237,16 @@ My projects page style rules
   color: var(--invert-text);
 }
 
-.my-projects-new-project-button {
+.my-projects-all-projects-button,
+.my-projects-new-project-button,
+.my-projects-create-btn>button {
   box-sizing: border-box;
+  width: fit-content;
   background-color: var(--primary-color);
   border: 0px;
   border-radius: 55px;
-  width: fit-content;
-  color: var(--invert-text);
   padding: 6px 17px;
+  color: var(--invert-text);
   text-align: center;
   font-size: 18px;
   font-family: Inter;
@@ -3263,8 +3255,22 @@ My projects page style rules
   letter-spacing: 0%;
 }
 
+.my-projects-create-btn>button {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 25px;
+    margin-right: 10px;
+    filter: invert(1) saturate(0) brightness(2);
+  }
+}
+
 .my-projects-all-projects-button:hover,
-.my-projects-new-project-button:hover {
+.my-projects-new-project-button:hover,
+.my-projects-create-btn>button:hover {
   transform: scale(1.1);
   transition: 0.2s;
 }

@@ -22,12 +22,12 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string>(''); // Error message for missing or incorrect information
 
   // Function to handle the login button click
-const handleLogin = async () => {
-  // Check if the loginInput and password are not empty
-  if (loginInput === '' || password === '') {
-    setError('Please fill in all information');
-    return;
-  }
+  const handleLogin = async () => {
+    // Check if the loginInput and password are not empty
+    if (loginInput === '' || password === '') {
+      setError('Please fill in all information');
+      return;
+    }
 
     // Check if the login credentials are associated with an account
     // search input as email
@@ -146,11 +146,15 @@ const handleLogin = async () => {
             id="backPage-arrow"
             onClick={() => {
               // If the previous page is not forgot password, go back to it; otherwise, go home
-              if (from && from !== paths.routes.FORGOTPASSWORD && from !== paths.routes.RESETPASSWORD) {
-                navigate(from);
-              } else {
-                navigate(paths.routes.HOME); // or your default page
-              }
+              // if (from && from !== paths.routes.FORGOTPASSWORD && from !== paths.routes.RESETPASSWORD) {
+              //   console.log(from);
+              //   navigate(from);
+              // } else {
+              //   console.log("defaulting to HOME")
+              //   navigate(paths.routes.HOME); // or your default page
+              // }
+
+              window.history.back();
             }}
           />
           <h2>Log In</h2>

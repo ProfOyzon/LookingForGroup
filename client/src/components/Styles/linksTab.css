@@ -27,7 +27,7 @@
 .link-input-wrapper {
     position: relative;
     max-width: 100%;
-    width: 400px;
+    width: 100%;
 }
 
 .close-btn {
@@ -42,7 +42,6 @@
     transform: translateX(-10%) translateY(50%);
 }
 
-.close-btn .fa {
-    color: rgb(253, 89, 89) !important;
-    font-size: 20px;
+.close-btn>.fa-minus {
+  color: var(--invert-text);
 }

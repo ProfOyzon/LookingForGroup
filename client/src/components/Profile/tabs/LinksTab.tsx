@@ -102,7 +102,7 @@ export const LinksTab = (props) => {
             }} />
         <div className='link-input-wrapper'>
           <div className='editor-input-item'>
-            <input type="text" name="url" id="link-url-input" placeholder="www.examplewebsite.com" value={text}
+            <input type="text" name="url" id="link-url-input" placeholder="URL" value={text}
               onChange={
                 (e) => {
                   setText(e.target.value);
@@ -113,7 +113,7 @@ export const LinksTab = (props) => {
           <button className='close-btn' onClick={
             (e) => {
               onRemoveLinkClicked(e, props.index);
-            }}><i className="fa fa-close"></i></button>
+            }}><i className="fa-solid fa-minus"></i></button>
         </div>
       </div>
     );

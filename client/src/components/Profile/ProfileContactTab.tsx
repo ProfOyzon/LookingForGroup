@@ -6,7 +6,7 @@ interface LinkData {
   url: String;
 }
 
-const ProfileContactTab = ({userID}) => {
+const ProfileContactTab = (userID: number) => {
     let links = [] as LinkData[];
     let socials = [];
 

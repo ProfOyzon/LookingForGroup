@@ -173,7 +173,7 @@ const addPic = async (ID, _image, _position) => {
 /**
  * Updates position order of a project's carousel pictures
  * @param {number} ID - ID of the target project
- * @param {Array<Object>} images - Array of objects, which contain the image "id" and new "position"
+ * @param {Object} images - Array of objects, which contain the image "id" and new "position"
  * @returns Response status
  */
 const updatePicPositions = async (ID, images) => {

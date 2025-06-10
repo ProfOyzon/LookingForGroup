@@ -1,9 +1,8 @@
-import pool from '../config/database.js';
+//import pool from '../config/database.js';
 import envConfig from '../config/env.js';
 //import { createUser } from '../controllers/users';
 
 import { GET, POST, PUT, DELETE, RESPONSE } from './fetchUtils.js';
-import pool from '../config/database.js'
 import { transporter } from '../config/mailer.js';
 
 const root =
@@ -47,7 +46,7 @@ async function createNewUser(
   _socials,
 ) {
   //check if token is valid
-  const apiURL = `https://lfg.gccis.rit.edu/api/signup/${token}`;
+  const apiURL = `${root}/signup/${token}`;
 
   if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     //bypass for dev environment
@@ -68,14 +67,14 @@ async function createNewUser(
   } else {
     //user is not in database, add them.
     //local
-    if (envConfig.env === 'development' || envConfig.env === 'test') {
-      const sql =
-        'INSERT INTO users (username, primary_email, rit_email, password, first_name, last_name SELECT username, primary_email, rit_email, password, first_name, last_name FROM signups WHERE rit_email=?';
-      const values = [email];
-      await pool.query(sql, values);
-      console.log('Added into database.');
-      return RESPONSE(200, '', '');
-    } else {
+    // if (envConfig.env === 'development' || envConfig.env === 'test') {
+    //   const sql =
+    //     'INSERT INTO users (username, primary_email, rit_email, password, first_name, last_name SELECT username, primary_email, rit_email, password, first_name, last_name FROM signups WHERE rit_email=?';
+    //   const values = [email];
+    //   await pool.query(sql, values);
+    //   console.log('Added into database.');
+    //   return RESPONSE(200, '', '');
+    // } else {
       const data = {
         firstName: _firstName,
         lastName: _lastName,
@@ -91,17 +90,17 @@ async function createNewUser(
         socials: _socials,
       };
 
-            const response = await POST(apiURL, data);
-            if (response.status === "400") {
-                console.log("Error creating a new user.");
-                return "400";
-            }
-            console.log(`User ${email} created.`);
-            console.log(data);
-            return data;
+        const response = await POST(apiURL, data);
+        if (response.status === "400") {
+            console.log("Error creating a new user.");
+            return "400";
         }
+        console.log(`User ${email} created.`);
+        console.log(data);
+        return data;
     }
 }
+
 
 /**
  * Checks if a User is already within database through RIT email
@@ -109,18 +108,18 @@ async function createNewUser(
  * @returns result - boolean, true if they exist within database, false if not.
  */
 async function userInDatabase(email) {
-  if (envConfig.env === 'development' || envConfig.env === 'test') {
-    const [user] = await pool.query('SELECT rit_email FROM users WHERE rit_email = ?', [email]);
+//   if (envConfig.env === 'development' || envConfig.env === 'test') {
+//     const [user] = await pool.query('SELECT rit_email FROM users WHERE rit_email = ?', [email]);
 
-        if(!user) {
-            console.log( RESPONSE(400,'','Your account has already been activated.') );
-            return false;
-        } else {
-            return true;
-        }
-    } else {
-        const apiURL = `https://lfg.gccis.rit.edu/api/users/search-email/${email}`;
-        const response = await GET(apiURL);
+//         if(!user) {
+//             console.log( RESPONSE(400,'','Your account has already been activated.') );
+//             return false;
+//         } else {
+//             return true;
+//         }
+//     } else {
+    const apiURL = `${root}/users/search-email/${email}`;
+    const response = await GET(apiURL);
 
     if (response.status === '400') {
       console.log('Error fetching email.');
@@ -133,8 +132,8 @@ async function userInDatabase(email) {
       console.log('User found with email', email);
       return true;
     }
-  }
 }
+
 
 /**
  * Gets all data on all public users. Does not return private ones
@@ -142,36 +141,35 @@ async function userInDatabase(email) {
  */
 async function getUsers() {
   try {
-    if (envConfig.env === 'development' || envConfig.env === 'test') {
-      const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
-            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
-                FROM users u
-                LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
-                    FROM job_titles jt) jt
-                ON u.job_title_id = jt.title_id
-                LEFT JOIN (SELECT m.major_id, m.label AS major
-                    FROM majors m) m
-                ON u.major_id = m.major_id
-                LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
-                    "position", us.position)) AS skills
-                    FROM user_skills us 
-                    JOIN skills s 
-                        ON us.skill_id = s.skill_id
-                    GROUP BY us.user_id) s
-                ON u.user_id = s.user_id
-                WHERE u.visibility = '1'`;
-      const [users] = await pool.query(sql);
-      return RESPONSE(200, users, '');
-    } else {
-      const apiURL = `https://lfg.gccis.rit.edu/api/users`;
+    // if (envConfig.env === 'development' || envConfig.env === 'test') {
+    //   const sql = `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+    //         jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
+    //             FROM users u
+    //             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+    //                 FROM job_titles jt) jt
+    //             ON u.job_title_id = jt.title_id
+    //             LEFT JOIN (SELECT m.major_id, m.label AS major
+    //                 FROM majors m) m
+    //             ON u.major_id = m.major_id
+    //             LEFT JOIN (SELECT us.user_id, JSON_ARRAYAGG(JSON_OBJECT("id", s.skill_id, "skill", s.label, "type", s.type,
+    //                 "position", us.position)) AS skills
+    //                 FROM user_skills us 
+    //                 JOIN skills s 
+    //                     ON us.skill_id = s.skill_id
+    //                 GROUP BY us.user_id) s
+    //             ON u.user_id = s.user_id
+    //             WHERE u.visibility = '1'`;
+    //   const [users] = await pool.query(sql);
+    //   return RESPONSE(200, users, '');
+    // } else {
+      const apiURL = `${root}/users`;
       const response = await GET(apiURL);
       if (response.status === '400') return '400';
       return response;
+    } catch (err) {
+        console.log(err);
+        return RESPONSE(400, '', 'An error occurred while getting all users');
     }
-  } catch (err) {
-    console.log(err);
-    return RESPONSE(400, '', 'An error occurred while getting all users');
-  }
 }
 
 /**
@@ -180,24 +178,24 @@ async function getUsers() {
  * @returns data - JSONified data from account information. 400 if not valid.
  */
 async function getAccountInformation(user_id) {
-    if(envConfig.env === 'development' || envConfig.env === 'test') {
-        const sql= `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
-            jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
-                FROM users u
-                LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
-                    FROM)`
-    } else {
-        const apiURL = `${root}/users/${user_id}/account`;
-        const response = await GET(apiURL);
-        if (response.status === "400") {
-            return "400";
-        }
-
-        console.log("User account information recieved")
-        return response;
+    // if(envConfig.env === 'development' || envConfig.env === 'test') {
+    //     const sql= `SELECT u.user_id, u.first_name, u.last_name, u.profile_image, u.headline, u.pronouns, 
+    //         jt.job_title, m.major, u.academic_year, u.location, u.fun_fact, u.created_at, s.skills
+    //             FROM users u
+    //             LEFT JOIN (SELECT jt.title_id, jt.label AS job_title
+    //                 FROM)`
+    // } else {
+    const apiURL = `${root}/users/${user_id}/account`;
+    const response = await GET(apiURL);
+    if (response.status === "400") {
+        return "400";
     }
-    
+
+    console.log("User account information recieved")
+    return response;
 }
+    
+
 
 /**
  * Gets all data on one specific user, specified by URL.

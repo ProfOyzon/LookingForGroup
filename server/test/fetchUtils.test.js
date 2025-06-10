@@ -18,6 +18,9 @@ describe('fetchUtils tests', () => {
       json: jest.fn().mockResolvedValue(mockJson),
       status: 200,
       ok: true,
+      headers: {
+        get: jest.fn().mockReturnValue('application/json'),
+      }
     };
 
     //@ts-ignore
@@ -38,6 +41,9 @@ describe('fetchUtils tests', () => {
     global.fetch.mockResolvedValue({
       ok: true,
       status: 201,
+      headers: {
+        get: jest.fn().mockReturnValue('application/json'),
+      },
       json: jest.fn().mockResolvedValue(mockResponse),
     });
 
@@ -61,6 +67,9 @@ describe('fetchUtils tests', () => {
     global.fetch.mockResolvedValue({
       ok: true,
       status: 200,
+      headers: {
+        get: jest.fn().mockReturnValue('application/json'),
+      },
       json: jest.fn().mockResolvedValue(mockResponse),
     });
 
@@ -83,6 +92,9 @@ describe('fetchUtils tests', () => {
     global.fetch.mockResolvedValue({
       ok: true,
       status: 200,
+      headers: {
+        get: jest.fn().mockReturnValue('application/json'),
+      },
       json: jest.fn().mockResolvedValue(mockResponse),
     });
 

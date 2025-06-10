@@ -53,13 +53,29 @@ Base apiURL is:
 const GET = (apiURL) => {
   return fetch(apiURL)
     .then(async (response) => {
-      let obj = await response.json();
-      if (response.ok) {
-        return obj;
+      const contentType = response.headers.get('content-type') || '';
+
+      //check if response is JSON
+      if (contentType.includes('application/json')) {
+        try {
+          //return if json
+          let obj = await response.json();
+          if (response.ok) {
+            return obj;
+          } else {
+            console.log(obj.error);
+            return { status: response.status, error: obj.error || 'Network response was not ok' };
+            //throw new Error('Network response was not ok');
+          }
+        } catch (error) {
+          console.error('Problem parsing JSON', error);
+          return { status: 400, error: 'Invalid JSON repsponse' };
+        }
       } else {
-        console.log(obj.error);
-        return { status: response.status, error: obj.error || 'Network response was not ok' };
-        //throw new Error('Network response was not ok');
+        //handle HTML error pages
+        const e = await response.text();
+        console.error('Expected json but got:', e);
+        return { status: 400, error: 'Received HTML reponse instead of JSON (Likely broken endpoint)' };
       }
     })
     .then((data) => {
@@ -76,24 +92,48 @@ const GET = (apiURL) => {
  * Basic POST function for utilities
  * @param {string} apiURL - API to be called
  * @param {Object} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
+ * @param {string|null} token - token for authorization, optional
  * @returns response - JSONified data or error code.
  */
+const POST = (apiURL, newData, token = null) => {
+  //request headers
+  const headers = {
+    'Content-Type': 'application/json',
+  };
 
-const POST = (apiURL, newData) => {
+  //authorization header if token exists
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   return fetch(apiURL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: JSON.stringify(newData),
   })
     .then(async (response) => {
-      let obj = await response.json();
-      if (response.ok) {
-        return obj;
+      const contentType = response.headers.get('content-type') || '';
+
+      //check if response is JSON
+      if (contentType.includes('application/json')) {
+        try {
+          //return if json
+          let obj = await response.json();
+          if (response.ok) {
+            return obj;
+          } else {
+            console.log(obj.error);
+            return { status: response.status, error: obj.error || 'Network response was not ok' };
+          }
+        } catch (error) {
+          console.error('Problem parsing JSON', error);
+          return { status: 400, error: 'Invalid JSON repsponse' };
+        }
       } else {
-        console.log(obj.error);
-        return { status: response.status, error: obj.error || 'Network response was not ok' };
+        //handle HTML error pages
+        const e = await response.text();
+        console.error('Expected json but got:', e);
+        return { status: 400, error: 'Received HTML reponse instead of JSON (Likely broken endpoint)' };
       }
     })
     .then((data) => {
@@ -102,7 +142,7 @@ const POST = (apiURL, newData) => {
     })
     .catch((error) => {
       console.error('There was a problem with the fetch operation:', error);
-      return '400';
+      return { status: 400, error: error.message || 'Unknown error' };
     });
 };
 
@@ -110,23 +150,48 @@ const POST = (apiURL, newData) => {
  * Basic PUT function for utilities
  * @param {string} apiURL - API to be called
  * @param {Object} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
+ * @param {string|null} token - token for authorization, optional
  * @returns response - JSONified data or error code.
  */
-const PUT = (apiURL, newData) => {
+const PUT = (apiURL, newData, token = null) => {
+  //request headers
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  //authorization header if token exists
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   return fetch(apiURL, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: JSON.stringify(newData),
   })
     .then(async (response) => {
-      let obj = await response.json();
-      if (response.ok) {
-        return obj;
+      const contentType = response.headers.get('content-type') || '';
+
+      //check if response is JSON
+      if (contentType.includes('application/json')) {
+        try {
+          let obj = await response.json();
+          //return if json
+          if (response.ok) {
+            return obj;
+          } else {
+            console.log(obj.error);
+            return { status: response.status, error: obj.error || 'Network response was not ok' };
+          }
+        } catch (error) {
+          console.error('Problem parsing JSON', error);
+          return { status: 400, error: 'Invalid JSON repsponse' };
+        }
       } else {
-        console.log(obj.error);
-        return { status: response.status, error: obj.error || 'Network response was not ok' };
+        //handle HTML error pages
+        const e = await response.text();
+        console.error('Expected json but got:', e);
+        return { status: 400, error: 'Received HTML reponse instead of JSON (Likely broken endpoint)' };
       }
     })
     .then((data) => {
@@ -135,43 +200,68 @@ const PUT = (apiURL, newData) => {
     })
     .catch((error) => {
       console.error('There was a problem with the fetch operation:', error);
-      return '400';
+      return { status: 400, error: error.message || 'Unknown error' };
     });
 };
 
-async function PUT2(apiURL, newData) {
-  try {
-    const response = await fetch(apiURL, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newData),
-    });
-    return await response.json();
-  } catch (error) {
-    console.error('Caught inside PUT:', error);
-    throw error; // Let the caller deal with it
-  }
-}
+// async function PUT2(apiURL, newData) {
+//   try {
+//     const response = await fetch(apiURL, {
+//       method: 'PUT',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify(newData),
+//     });
+//     return await response.json();
+//   } catch (error) {
+//     console.error('Caught inside PUT:', error);
+//     throw error; // Let the caller deal with it
+//   }
+// }
 
 /**
  * Basic DELETE function for utilities
  * @param {string} apiURL - API to be called
+ * @param {string|null} token - token for authorization, optional
  * @returns response - JSONified data or error code.
  */
-const DELETE = (apiURL) => {
+const DELETE = (apiURL, token = null) => {
+  //request headers
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  //authorization header if token exists
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   return fetch(apiURL, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
   })
     .then(async (response) => {
-      let obj = await response.json();
-      if (response.ok) {
-        return obj;
+      const contentType = response.headers.get('content-type') || '';
+
+      //check if response is JSON
+      if (contentType.includes('application/json')) {
+        try {
+          //return if json
+          let obj = await response.json();
+          if (response.ok) {
+            return obj;
+          } else {
+            console.log(obj.error);
+            return { status: response.status, error: obj.error || 'Network response was not ok' };
+          }
+        } catch (error) {
+          console.error('Problem parsing JSON', error);
+          return { status: 400, error: 'Invalid JSON repsponse' };
+        }
       } else {
-        console.log(obj.error);
-        return { status: response.status, error: obj.error || 'Network response was not ok' };
+        //handle HTML error pages
+        const e = await response.text();
+        console.error('Expected json but got:', e);
+        return { status: 400, error: 'Received HTML reponse instead of JSON (Likely broken endpoint)' };
       }
     })
     .then((data) => {
@@ -180,7 +270,7 @@ const DELETE = (apiURL) => {
     })
     .catch((error) => {
       console.error('There was a problem with the fetch operation:', error);
-      return '400';
+      return { status: 400, error: error.message || 'Unknown error' };
     });
 };
 

@@ -233,6 +233,8 @@ const getProjectById = async (req, res) => {
   // Get id from url
   const { id } = req.params;
 
+  // CHANGED TO GET RID OF MEMBER PERMISSIONS TO FIX BUG!
+  // "permissions", m.permissions,
   try {
     // Get data of a project
     const sql = `SELECT p.project_id, p.user_id, p.title, p.hook, p.description, p.thumbnail, p.purpose, p.status, p.audience, g.project_types, 
@@ -259,7 +261,7 @@ const getProjectById = async (req, res) => {
                 WHERE j.project_id = ?) j
             ON p.project_id = j.project_id
             LEFT JOIN (SELECT m.project_id, JSON_ARRAYAGG(JSON_OBJECT("user_id", m.user_id, "first_name", u.first_name, "last_name", u.last_name,
-            "profile_image", u.profile_image, "job_title", jt.label, "permissions", m.permissions, "profile_visibility", m.profile_visibility)) AS members
+            "profile_image", u.profile_image, "job_title", jt.label, "profile_visibility", m.profile_visibility)) AS members
                 FROM members m
                 JOIN users u 
                     ON m.user_id = u.user_id

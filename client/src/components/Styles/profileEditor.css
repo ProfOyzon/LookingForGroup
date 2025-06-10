@@ -23,6 +23,12 @@ textarea {
   position: relative;
 }
 
+@media (min-width: 1172px) {
+  #profile-creator-editor {
+    width: 1120px;
+  }
+}
+
 #profile-editor-tabs {
   display: flex;
   justify-content: space-around;
@@ -88,6 +94,7 @@ textarea {
   margin: 10px 0;
   outline: none;
   padding: 0.5rem;
+  height: 35px;
 }
 
 .edit-profile-body input,

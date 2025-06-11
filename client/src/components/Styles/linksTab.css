@@ -33,13 +33,13 @@
 .close-btn {
     background-color: var(--primary-color);
     border-radius: 50%;
-    height: 50%;
+    width: 25px;
+    height: 27px;
     aspect-ratio: 1;
-
     position: absolute;
-    right: 0;
+    right: 12px;
     top: 0;
-    transform: translateX(-10%) translateY(50%);
+    transform: translateX(-10%) translateY(90%);
 }
 
 .close-btn>.fa-minus {

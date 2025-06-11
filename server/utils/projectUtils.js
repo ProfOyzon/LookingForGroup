@@ -1,10 +1,31 @@
 import envConfig from '../config/env.js';
 import { GET, PUT, POST, DELETE } from './fetchUtils.js';
+import pool from '../config/database.js';
 
 const root =
   envConfig.env === 'development' || envConfig.env === 'test'
     ? `http://localhost:8081/api`
     : `https://lfg.gccis.rit.edu/api`;
+
+// If this function is unused, that's fine,
+// it's for a temporary work-around
+/**
+ * Executes SQL code if env is development or test
+ * @param {String} sqlCommand 
+ * @param {Array<any>} values 
+ * @returns True if code is executed, otherwise false
+ */
+const devSql = async (sqlCommand, values) => {
+  if (envConfig.env !== 'development' && envConfig.env !== 'test') {
+    return false;
+  }
+  try {
+    await pool.query(sqlCommand, values);
+  } catch (err) {
+    console.error(err);
+  }
+  return true;
+}
 
 /**
  * Creates a new project and adds it to the database. All params default to null.

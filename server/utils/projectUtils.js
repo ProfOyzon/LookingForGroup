@@ -144,7 +144,7 @@ const deleteProject = async (ID) => {
 /**
  * Updates the thumbnail image for a project
  * @param {number} ID - ID of the project to update
- * @param {File|string} _image - Image file of new thumbnail
+ * @param {File} _image - Image file of new thumbnail
  * @returns The filename of the thumbnail image if valid, "400" if not
  */
 const updateThumbnail = async (ID, _image) => {
@@ -174,7 +174,7 @@ const getPics = async (ID) => {
 /**
  * Adds a picture to a project's carousel
  * @param {number} ID - ID of the target project
- * @param {File|string} _image - Image file to be added
+ * @param {File} _image - Image file to be added
  * @param {number} _position - Position of the image in the carousel
  * @returns Response status
  */

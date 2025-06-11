@@ -409,7 +409,7 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
 
   try {
     //get email if token is valid
-    let url = `https://lfg.gccis.rit.edu/api/resets/password/${_token}`;
+    let url = `${root}/resets/password/${_token}`;
     let response = await GET(url);
     if (!response.data.email) {
       console.log('Your token has expired.');
@@ -418,7 +418,7 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
     console.log('Token accepted, email verified.');
 
     //update user password
-    url = `https://lfg.gccis.rit.edu/api/users/${id}/password`;
+    url = `${root}/users/${id}/password`;
     const data = {
       password: hashPass,
     };
@@ -598,12 +598,12 @@ async function addProjectFollowing(id, projectID) {
     projectId: projectID,
   };
   const response = await POST(url, data);
-  if (response.status === '400') {
-    console.log('Error creating project following.');
-    return '400';
+  if (response.status === 401) {
+    console.log('Error creating project following, unauthorized.');
+    return RESPONSE(401, '', 'Unauthorized.');
   }
   console.log('Created project following.');
-  return '200';
+  return RESPONSE(200, id, '');
 }
 
 /**

@@ -23,7 +23,7 @@ import { useLocation } from 'react-router-dom'; // Hook to access the current lo
 
 //Header component to be used in pages
 
-export let loggedIn;
+export let loggedIn = false;
 
 //dataSets - list of data for the searchbar to use
 //onSearch - function for the searchbar to run when searching

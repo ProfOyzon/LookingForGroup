@@ -201,8 +201,8 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     <div className="background-cover">
       <div className="login-signup-container" onKeyDown={handleKeyPress}>
         <ThemeIcon //Back button to return to the previous page
-          light={'assets/back_light.png'}
-          dark={'assets/back_dark.png'}
+          light={'assets/back_light.svg'}
+          dark={'assets/back_dark.svg'}
           alt="Back Button"
           id="backPage-arrow"
           onClick={() => navigate(-1)}

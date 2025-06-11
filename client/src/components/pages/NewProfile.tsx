@@ -246,8 +246,8 @@ const NewProfile = () => {
             }}
           >
             <ThemeIcon
-              light={'assets/black/linkedIn_black.png'}
-              dark={'assets/white/linkedIn_white.png'}
+              light={'assets/black/linkedIn_black.svg'}
+              dark={'assets/white/linkedIn_white.svg'}
               alt={'LinkedIn'}
             />
           </button>
@@ -257,8 +257,8 @@ const NewProfile = () => {
             }}
           >
             <ThemeIcon
-              light={'assets/black/instagram_black.png'}
-              dark={'assets/white/instagram_white.png'}
+              light={'assets/black/instagram_black.svg'}
+              dark={'assets/white/instagram_white.svg'}
               alt={'Instagram'}
             />
           </button>
@@ -363,32 +363,32 @@ const NewProfile = () => {
           <div id="profile-info-extras">
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/role.png'}
-                dark={'assets/white/role.png'}
+                light={'assets/black/role.svg'}
+                dark={'assets/white/role.svg'}
                 alt={'Profession'}
               />
               {displayedProfile.job_title}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/major.png'}
-                dark={'assets/white/major.png'}
+                light={'assets/black/major.svg'}
+                dark={'assets/white/major.svg'}
                 alt={'Major'}
               />
               {displayedProfile.major} {displayedProfile.academic_year}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/location.png'}
-                dark={'assets/white/location.png'}
+                light={'assets/black/location.svg'}
+                dark={'assets/white/location.svg'}
                 alt={'Location'}
               />
               {displayedProfile.location}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/pronouns.png'}
-                dark={'assets/white/pronouns.png'}
+                light={'assets/black/pronouns.svg'}
+                dark={'assets/white/pronouns.svg'}
                 alt={'Pronouns'}
               />
               {displayedProfile.pronouns}

@@ -64,8 +64,8 @@ export const ProfileInterests = ({ user, isUsersProfile }) => {
         {isUsersProfile && (
           <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup)}>
             <ThemeIcon
-              light={"assets/black/edit.png"}
-              dark={"assets/white/edit.png"}
+              light={"assets/black/edit.svg"}
+              dark={"assets/white/edit.svg"}
               alt="Edit interests"
               id="edit-interests-icon"
             />

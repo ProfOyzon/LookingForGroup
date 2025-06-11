@@ -353,7 +353,6 @@ Project Creator and Editor style rules
   font-size: 2ch;
   width: max-content;
   margin: auto;
-  margin-bottom: 15px;
   font-weight: 700;
 }
 
@@ -1016,6 +1015,13 @@ Project Creator and Editor style rules
   grid-template-rows: 1fr 1fr 1fr;
   column-gap: 8px;
   row-gap: 15px;
+}
+
+.success {
+  color: green;
+  font-weight: 500;
+  font-size: 14px;
+  font-style: italic;
 }
 
 #project-team-add-member-name {

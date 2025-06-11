@@ -2,7 +2,8 @@
 
 This is an docker based alternative to downloading the software directly onto your PC! All you need to do is create the image/container, then run it whenever you are working.
 
-[!Warning] Do not share the image with anyone else as it is a mock of the live database and might contain information that should not be shared.
+> [!Warning]
+> Do not share the image with anyone else, as it is a mock of the live database and may contain information that should not be shared.
 
 ## Requirements
 

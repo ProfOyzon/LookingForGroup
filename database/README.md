@@ -7,7 +7,7 @@ This is an docker based alternative to downloading the software directly onto yo
 
 ## Requirements
 
-The only requirements use this over the MySQL installer is Docker itself, however, if you aren't familiar with the Docker CLI tool, Docker Desktop is recommended. Your editor might have Docker extensions that you can use too, so it might be beneficial to check for those.
+The only requirements to use this over the MySQL installer is Docker itself, however, if you aren't familiar with the Docker CLI tool, [Docker Desktop](https://www.docker.com/) is recommended. Your editor might have Docker extensions that you can use too, so it might be beneficial to check for those.
 
 ## Setup
 

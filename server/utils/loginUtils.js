@@ -117,11 +117,11 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
  * @param {*} _password - string, password
  * @returns status
  */
-async function login(loginInput, password) {
+async function login(_loginInput, _password) {
   try {
     const r = await POST(`${root}/login`, {
-      loginInput: loginInput,
-      password: password,
+      loginInput: _loginInput,
+      password: _password,
     });
 
     if (r.ok) {
@@ -143,13 +143,14 @@ async function login(loginInput, password) {
 
 /**
  * Checks if user is logged in.
- * @param session - current session to destroy
+ * @param {Object} session - current session to destroy
  * @returns status, redirect:'/' if success
  */
 async function logout(session) {
   if (session) {
     session.destroy();
   }
+
   return (res = {
     redirect: '/',
   });
@@ -157,35 +158,19 @@ async function logout(session) {
 
 /**
  * Checks if user is authenticated
- * @param userID - int, user id checking logged in.
+ * @param {number} id - int, user id checking logged in.
  * @returns status
  */
 async function getAuth(id) {
   if (!id) {
     console.log('no id.');
-    return (res = {
-      status: 401,
-      error: 'Unauthorized, no id.',
-    });
+    return RESPONSE(401, '', 'Unauthorized, no id.');
   } else {
-    return (res = {
-      status: 200,
-      data: id,
-    });
+    //check if logged in
+
+    return RESPONSE(200, id, '');
   }
 }
-
-/**
- * create a user using the token from signup.
- * @param {*} token - token from signup, to verify user
- * @returns status
- */
-// async function createUser(token) {
-//     try {
-//         //get signup email if valid
-//         const email = await
-//     }
-// }
 
 export default {
   sendSignup,

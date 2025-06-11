@@ -4,6 +4,7 @@ import envConfig from '../config/env.js';
 
 import { GET, POST, PUT, DELETE, RESPONSE } from './fetchUtils.js';
 import { transporter } from '../config/mailer.js';
+import { hash } from 'bcrypt';
 
 const root =
   envConfig.env === 'development' || envConfig.env === 'test'
@@ -405,7 +406,7 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
   console.log('Token accepted, email verified.');
 
   //hash password
-  const hashPass = await bcrypt.hash(_newPassword, 10);
+  const hashPass = await hash(_newPassword, 10);
 
   try {
     //get email if token is valid

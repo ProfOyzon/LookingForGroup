@@ -51,7 +51,10 @@ Base apiURL is:
  * @returns response - JSONified data or error code.
  */
 const GET = (apiURL) => {
-  return fetch(apiURL)
+  return fetch(apiURL, {
+    method: 'GET',
+    credentials: 'include',
+  })
     .then(async (response) => {
       const contentType = response.headers.get('content-type') || '';
 
@@ -92,23 +95,13 @@ const GET = (apiURL) => {
  * Basic POST function for utilities
  * @param {string} apiURL - API to be called
  * @param {Object} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
- * @param {string|null} token - token for authorization, optional
  * @returns response - JSONified data or error code.
  */
-const POST = (apiURL, newData, token = null) => {
-  //request headers
-  const headers = {
-    'Content-Type': 'application/json',
-  };
-
-  //authorization header if token exists
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
+const POST = (apiURL, newData) => {
   return fetch(apiURL, {
     method: 'POST',
-    headers,
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify(newData),
   })
     .then(async (response) => {
@@ -150,23 +143,13 @@ const POST = (apiURL, newData, token = null) => {
  * Basic PUT function for utilities
  * @param {string} apiURL - API to be called
  * @param {Object} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
- * @param {string|null} token - token for authorization, optional
  * @returns response - JSONified data or error code.
  */
-const PUT = (apiURL, newData, token = null) => {
-  //request headers
-  const headers = {
-    'Content-Type': 'application/json',
-  };
-
-  //authorization header if token exists
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
+const PUT = (apiURL, newData) => {
   return fetch(apiURL, {
     method: 'PUT',
-    headers,
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify(newData),
   })
     .then(async (response) => {
@@ -221,23 +204,13 @@ const PUT = (apiURL, newData, token = null) => {
 /**
  * Basic DELETE function for utilities
  * @param {string} apiURL - API to be called
- * @param {string|null} token - token for authorization, optional
  * @returns response - JSONified data or error code.
  */
-const DELETE = (apiURL, token = null) => {
-  //request headers
-  const headers = {
-    'Content-Type': 'application/json',
-  };
-
-  //authorization header if token exists
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
+const DELETE = (apiURL) => {
   return fetch(apiURL, {
     method: 'DELETE',
-    headers,
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
   })
     .then(async (response) => {
       const contentType = response.headers.get('content-type') || '';

@@ -78,7 +78,10 @@ const GET = (apiURL) => {
         //handle HTML error pages
         const e = await response.text();
         console.error('Expected json but got:', e);
-        return { status: 400, error: 'Received HTML reponse instead of JSON (Likely broken endpoint)' };
+        return {
+          status: 400,
+          error: 'Received HTML reponse instead of JSON (Likely broken endpoint)',
+        };
       }
     })
     .then((data) => {
@@ -126,7 +129,10 @@ const POST = (apiURL, newData) => {
         //handle HTML error pages
         const e = await response.text();
         console.error('Expected json but got:', e);
-        return { status: 400, error: 'Received HTML reponse instead of JSON (Likely broken endpoint)' };
+        return {
+          status: 400,
+          error: 'Received HTML reponse instead of JSON (Likely broken endpoint)',
+        };
       }
     })
     .then((data) => {
@@ -174,7 +180,10 @@ const PUT = (apiURL, newData) => {
         //handle HTML error pages
         const e = await response.text();
         console.error('Expected json but got:', e);
-        return { status: 400, error: 'Received HTML reponse instead of JSON (Likely broken endpoint)' };
+        return {
+          status: 400,
+          error: 'Received HTML reponse instead of JSON (Likely broken endpoint)',
+        };
       }
     })
     .then((data) => {
@@ -234,7 +243,10 @@ const DELETE = (apiURL) => {
         //handle HTML error pages
         const e = await response.text();
         console.error('Expected json but got:', e);
-        return { status: 400, error: 'Received HTML reponse instead of JSON (Likely broken endpoint)' };
+        return {
+          status: 400,
+          error: 'Received HTML reponse instead of JSON (Likely broken endpoint)',
+        };
       }
     })
     .then((data) => {
@@ -268,10 +280,10 @@ function jsonify(data, status, error, mimetype = 'application/json') {
  * Standardized JSON response for functions
  * @param {number} _status - HTTP status code
  * @param {any} data  - Data to return
- * @param {string|null} _error - Error message (if needed)
+ * @param {any} _error - Error message (if needed)
  * @returns - JSONified status code, data, and error message
  */
-const RESPONSE = (_status, data, _error) => {
+const RESPONSE = (_status, data = null, _error = 'none') => {
   const res = [{ data: data }];
   return jsonify(res, _status, _error, 'application/json');
 };

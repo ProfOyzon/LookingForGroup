@@ -6,25 +6,23 @@ import bcrypt from 'bcrypt';
 
 const root =
   envConfig.env === 'development' || envConfig.env === 'test'
-    ? 'https://localhost:8081/api'
+    ? 'http://localhost:8081/api'
     : 'https://lfg.gccis.rit.edu/api';
 
 // Add Shibboleth login here. Functions are set out in controllers/users.js to login, these are not utilized.
 
 /**
  * Takes sign up data to send confirmation email. The email is then stored in database temporarily
- *
- * @param {*} _username - username to sign up
- * @param {*} _password
- * @param {*} _confirmPassword
- * @param {*} _email
- * @param {*} _firstName
- * @param {*} _lastName
+ * @param {string} _username - username to sign up
+ * @param {string} _password - password used by user
+ * @param {string} _confirmPassword - same password to confirm match
+ * @param {string} _email - rit email adress to send activation link to
+ * @param {string} _firstName - User first name
+ * @param {string} _lastName - ueser last name
  * @returns res.status - 201 if success, else status:400, error. Returns token if in dev mode.
  */
 async function sendSignup(_username, _password, _confirmPassword, _email, _firstName, _lastName) {
   //set up input data
-
   if (!_username || !_password || !_confirmPassword || !_email || !_firstName || !_lastName) {
     return RESPONSE(400, '', 'Missing sign up information');
   } else if (_password !== _confirmPassword) {
@@ -36,7 +34,6 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
   let url = ``;
 
   //add user info to database, set up for account activation
-
   url = `${root}/activation/${_token}`;
   console.log(url);
   console.log(_token);
@@ -50,9 +47,14 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
     lastName: _lastName,
   };
 
-  //insert into database
-  if (envConfig.env === 'production') {
-    try {
+  try {
+    if (envConfig.env === 'development' || envConfig.env === 'test') {
+      console.log('development');
+      return RESPONSE(201, _token, '');
+    }
+
+    //insert into database
+    if (envConfig.env === 'production') {
       const response = await POST(url, data);
       if (response.ok) {
         console.log('Information put into database.');
@@ -85,36 +87,18 @@ async function sendSignup(_username, _password, _confirmPassword, _email, _first
 
       //send activation email
       await transporter.sendMail(message);
-
-      // @ts-ignore
-      if (envConfig.env === 'development') {
-        console.log('development');
-        return RESPONSE(201, _token, '');
-      }
       return RESPONSE(201, '', '');
-    } catch (err) {
-      console.log(err);
-      return RESPONSE(400, '', 'An error occurred during sign up.');
     }
+  } catch (error) {
+    console.log(error);
+    return RESPONSE(400, '', 'An error occurred during sign up.');
   }
-
-  if (envConfig.env === 'development') {
-    console.log('development');
-    return {
-      status: 201,
-      data: _token,
-    };
-  }
-
-  return {
-    status: 201,
-  };
 }
 
 /**
  * Login as the user.
- * @param {*} _loginInput - string, Username or email of the user
- * @param {*} _password - string, password
+ * @param {string} _loginInput - Username or email of the user
+ * @param {string} _password - users password
  * @returns status
  */
 async function login(_loginInput, _password) {
@@ -126,34 +110,29 @@ async function login(_loginInput, _password) {
 
     if (r.ok) {
       console.log('Logged in.');
-      return {
-        status: 201,
-        data: r.data,
-      };
+      return RESPONSE(201, r.data);
+    } else {
+      return RESPONSE(r.status, '', r.error);
     }
   } catch (err) {
     console.log(err);
-
-    return {
-      status: 400,
-      error: err,
-    };
+    return RESPONSE(400, '', err);
   }
 }
 
 /**
  * Checks if user is logged in.
  * @param {Object} session - current session to destroy
- * @returns status, redirect:'/' if success
+ * @returns status - redirect:'/' if success
  */
 async function logout(session) {
   if (session) {
     session.destroy();
   }
 
-  return (res = {
+  return {
     redirect: '/',
-  });
+  };
 }
 
 /**

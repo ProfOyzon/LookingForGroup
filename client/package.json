@@ -6,10 +6,9 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "build:watch": "vite build --watch",
     "serve": "vite preview",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "format": "prettier --write ."
+    "lint": "eslint --fix ."
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",

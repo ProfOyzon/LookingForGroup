@@ -1024,8 +1024,9 @@ New Profile page style rules
 }
 
 /* Profile view responsiveness */
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1250px) {
   #profile-information-grid {
+    display: grid;
     grid-template: 
       'image' auto
       'name' auto
@@ -1034,7 +1035,9 @@ New Profile page style rules
       'desc' auto
       'fact' auto
       'bio' auto
-      'skills' auto / 1fr;
+      'skills' auto
+      'follow' auto / 1fr;
+    justify-items: center;
   }
 }
 
@@ -1087,6 +1090,12 @@ New Profile page style rules
   line-height: 28px;
   letter-spacing: 0%;
   width: 120px;
+}
+
+@media only screen and (max-width: 1250px) {
+  #profile-follow-button {
+    justify-self: center;
+  }
 }
 
 #profile-fullname {
@@ -1166,6 +1175,7 @@ New Profile page style rules
 #profile-info-skills {
   grid-area: skills;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 

@@ -319,8 +319,6 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
         <div className="project-editor-extra-info">
           Drag and drop to reorder
         </div>
-        {/* Error tag */}
-        {modifiedProfile.skills?.length === 0 ? <div className="error">*At least 1 tag is required</div> : <></>}
         <div id="project-editor-selected-tags-container">
           <hr id="selected-tag-divider" />
           {/* TODO: Separate top 2 tags from others with hr element */}

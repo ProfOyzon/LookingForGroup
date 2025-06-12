@@ -28,6 +28,12 @@ try {
         `There was an error connecting to the db host '${envConfig.dbHost}' - ${JSON.stringify(err)}`,
       );
 
+    // DB address reached but no database was found
+    case 'ECONNREFUSED':
+      throw new Error(
+        `A connection to a database at '${envConfig.dbHost}:3306' could not be made - ${JSON.stringify(err)}`,
+      );
+
     // DB name not found in the database server
     case 'ER_BAD_DB_ERROR':
       throw new Error(

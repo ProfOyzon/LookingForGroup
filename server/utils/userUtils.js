@@ -599,12 +599,12 @@ async function addProjectFollowing(id, projectID) {
     projectId: projectID,
   };
   const response = await POST(url, data);
-  if (response.status === 401) {
+  if (response.status === 400) {
     console.log('Error creating project following, unauthorized.');
-    return RESPONSE(401, '', 'Unauthorized.');
+    return { status: 400, error: response.error };
   }
   console.log('Created project following.');
-  return RESPONSE(200, id, '');
+  return { status: 200, data: id };
 }
 
 /**
@@ -616,12 +616,12 @@ async function addProjectFollowing(id, projectID) {
 async function deleteProjectFollowing(id, projID) {
   let url = `${root}/users/${id}/followings/projects/${projID}`;
   const response = await DELETE(url);
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('Error deleting project following.');
-    return '400';
+    return { status: 400, error: response.error };
   }
   console.log('Deleted project following.');
-  return '200';
+  return { status: 201, data: response.data };
 }
 
 /**
@@ -636,22 +636,33 @@ async function addUserFollowing(id, followID) {
     userId: followID,
   };
   const response = await POST(url, data);
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('Error creating user following.');
-    return '400';
+    return { status: 400, error: response.error };
   }
   console.log('Created user following.');
-  return '201';
+  return { status: 201, data: response.data };
 }
 
 /**
  * Unfollow person for a user.
- * @param id - user id of the user.
- * @param unfollowID - user id to be unfollowed.
+ * @param {number} id - user id of the user.
+ * @param {number} unfollowID - user id to be unfollowed.
  */
-// function deleteUserFollowing ( id, unfollowID ) {
+async function deleteUserFollowing(id, unfollowID) {
+  let url = `${root}/users/${id}/followings/people`;
+  const data = {
+    userId: unfollowID,
+  };
+  const response = await DELETE(url);
 
-// }
+  if (response.status === 400) {
+    console.log('Error deleting user following.');
+    return { status: 400, error: response.error };
+  }
+  console.log('Deleted user following.');
+  return { status: 201, data: response.data };
+}
 
 export default {
   createNewUser,
@@ -676,4 +687,5 @@ export default {
   addProjectFollowing,
   deleteProjectFollowing,
   addUserFollowing,
+  deleteUserFollowing,
 };

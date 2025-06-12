@@ -21,7 +21,7 @@ const deleteAccountPressed = async () => {
   });
 };
 
-const Settings = ({}) => {
+const Settings = ({ }) => {
   // --------------------
   // Global variables
   // --------------------
@@ -78,6 +78,11 @@ const Settings = ({}) => {
         <h3>Edit {type}</h3>
         <p className="confirm-msg">
           Are you sure you want to change your {type.toLowerCase()}
+          {type.toLowerCase() === 'phone' ? (
+            <span> number</span>
+          ) : (
+            <></>
+          )}
           {prev !== '' ? (
             <span>
               &#32;from{' '}
@@ -412,7 +417,7 @@ const Settings = ({}) => {
               <div className="settings-column">
                 <h2 className="settings-header">Contact</h2>
                 <div className="subsection">
-                  <label htmlFor="option-primary-phone">Phone</label>
+                  <label htmlFor="option-primary-phone">Phone Number</label>
                   <div className="input-container">
                     <input
                       id="option-primary-phone"

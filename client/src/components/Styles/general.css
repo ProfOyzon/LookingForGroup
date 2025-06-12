@@ -697,15 +697,15 @@ Sidebar Nav style rules
   }
 }
 
- .Create > button:hover {
-    background-color: var(--create-text);
-    color:var(--create-bg);
-    filter:drop-shadow(0px 5px 3px var(--shadow-color));
-    transition: 0.25s;
+.Create>button:hover {
+  background-color: var(--create-text);
+  color: var(--create-bg);
+  filter: drop-shadow(0px 5px 3px var(--shadow-color));
+  transition: 0.25s;
 
-    img {
-        filter: invert(1) saturate(0) brightness(2);
-    }
+  img {
+    filter: invert(1) saturate(0) brightness(2);
+  }
 }
 
 /*responsive stuff for sidebar*/
@@ -928,6 +928,11 @@ Page popup style rules
     margin-bottom: min(2.65vh, 26px);
   }
 
+  #primary-btn:hover {
+    transform: scale(1.1);
+    transition: 0.2s;
+  }
+
   h2 {
     font-size: 24px;
     margin-top: min(3.46vh, 34px);
@@ -989,6 +994,12 @@ Page popup style rules
     cursor: pointer;
     transition: 0.2s;
     /* margin: 14px 38px; */
+  }
+
+  .filter-tab:hover {
+    color: var(--primary-color);
+    font-weight: 600;
+    transition: none;
   }
 
   .filter-tab.selected {

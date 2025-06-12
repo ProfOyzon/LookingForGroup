@@ -55,16 +55,16 @@ async function createNewUser(
   } else {
     //token validation
     const response = await GET(apiURL);
-    if (response.status === '400') {
+    if (response.status === 400) {
       console.log('Token does not exist.');
-      return '400';
+      return { status: 400, error: 'Token does not exist.' };
     }
   }
 
   //else, token valid and check if a user with that email already exists.
   if (await userInDatabase(email)) {
     console.log('User is already in database, create fails');
-    return '400';
+    return { status: 400, error: 'User is already in database.' };
   } else {
     //user is not in database, add them.
     //local
@@ -92,9 +92,9 @@ async function createNewUser(
     };
 
     const response = await POST(apiURL, data);
-    if (response.status === '400') {
+    if (response.status === 400) {
       console.log('Error creating a new user.');
-      return '400';
+      return { status: 400, error: 'Error creating a new user.' };
     }
     console.log(`User ${email} created.`);
     console.log(response);
@@ -121,7 +121,7 @@ async function userInDatabase(email) {
   const apiURL = `${root}/users/search-email/${email}`;
   const response = await GET(apiURL);
 
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('Error fetching email.');
     return false;
   } else {
@@ -163,11 +163,11 @@ async function getUsers() {
     // } else {
     const apiURL = `${root}/users`;
     const response = await GET(apiURL);
-    if (response.status === '400') return '400';
+    if (response.status === 400) return response;
     return response;
   } catch (err) {
     console.log(err);
-    return RESPONSE(400, '', 'An error occurred while getting all users');
+    return { status: 400, error: err };
   }
 }
 
@@ -204,7 +204,7 @@ async function getAccountInformation(user_id) {
 async function getUsersById(id) {
   const apiURL = `${root}/users/${id}`;
   const response = await GET(apiURL);
-  if (response.status === '400') return '400'; //error
+  if (response.status === 400) return response; //error
 
   return response;
 }
@@ -218,7 +218,7 @@ async function getUsersById(id) {
 async function editUser(id, data) {
   const apiURL = `${root}/api/users/${id}`;
   const response = await PUT(apiURL, data);
-  if (response.status === '400') return '400';
+  if (response.status === 400) return response;
 
   return response;
 }
@@ -231,7 +231,7 @@ async function editUser(id, data) {
 async function deleteUser(id) {
   const apiURL = `${root}/users/${id}`;
   const response = await DELETE(apiURL);
-  if (response === '400') return '400';
+  if (response.status === 400) return response;
 
   return response;
 }
@@ -246,12 +246,12 @@ async function updateProfilePicture(id, _image) {
   const apiURL = `${root}/users/${id}/profile-picture`;
   const data = { image: _image };
   const response = await PUT(apiURL, data);
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('error updating profile picture.');
-    return '400';
+    return { status: 400, error: 'Error updating profile picture.' };
   }
   console.log('Updated Profile Picture for user.');
-  return response.status;
+  return response;
 }
 
 /**
@@ -266,7 +266,7 @@ async function updateEmail(id, _email, _confirm_email, _password) {
   const apiURL = `${root}/users/${id}/email`;
   if (_email != _confirm_email) {
     console.log('Not the same email, try again.');
-    return '401';
+    return { status: 401, error: 'Not the same email.' };
   }
   const data = {
     email: _email,
@@ -275,13 +275,13 @@ async function updateEmail(id, _email, _confirm_email, _password) {
   };
 
   const response = await PUT(apiURL, data);
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('error updating email.');
-    return response.status;
+    return { status: 400, error: 'Error updating email.' };
   }
   console.log('Updated primary email for user.');
 
-  return response.status;
+  return response;
 }
 
 /**
@@ -296,7 +296,7 @@ async function updateUsername(id, _username, _confirm_user, _password) {
   const apiURL = `${root}/users/${id}/username`;
   if (_username != _confirm_user) {
     console.log('Usernames are not the same.');
-    return '401';
+    return { status: 401, error: 'Usernames are not the same.' };
   }
   const data = {
     username: _username,
@@ -305,12 +305,12 @@ async function updateUsername(id, _username, _confirm_user, _password) {
   };
 
   const response = await PUT(apiURL, data);
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('error updating username.');
-    return response.status;
+    return { status: 400, error: 'Error updating username.' };
   }
   console.log('Updated primary username for user.');
-  return response.status;
+  return { status: 400, data: response.data };
 }
 
 /**
@@ -322,7 +322,7 @@ async function requestPasswordReset(email) {
   //check if email exists
   if (!email) {
     console.log('Error: Missing email.');
-    return '400';
+    return { status: 400, error: 'Missing email.' };
   }
 
   // Generate a token for password reset
@@ -343,9 +343,9 @@ async function requestPasswordReset(email) {
     };
     const response = await POST(`https://lookingforgrp/resetPassword`, data);
 
-    if (response.status === '400') {
+    if (response.status === 400) {
       console.error('Error posting token for password reset.');
-      return response.status;
+      return { status: 400, error: 'Error posting token for password reset.' };
     }
     console.log('Token put into database.');
 
@@ -376,12 +376,11 @@ async function requestPasswordReset(email) {
     await transporter.sendMail(message);
 
     console.log('Email sent successfully.');
-    return '201';
+    return { status: 201, data: 'Email sent successfully.' };
   } catch (err) {
     console.log(err);
     console.log('An error occured during password reset request');
-
-    return err;
+    return { status: 400, error: err };
   }
 }
 
@@ -397,11 +396,11 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
   let apiURL = `${root}/users/${id}/password`;
   if (!_newPassword || !_password_confirm) {
     console.log('Missing passwords.');
-    return '400';
+    return { status: 400, error: 'Missing passwords.' };
   }
   if (_newPassword != _password_confirm) {
     console.log('Password and confirmation are not the same.');
-    return '400';
+    return { status: 400, error: 'Password and confirmation are not the same.' };
   }
   console.log('Token accepted, email verified.');
 
@@ -414,7 +413,7 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
     let response = await GET(url);
     if (!response.data.email) {
       console.log('Your token has expired.');
-      return response.status;
+      return response;
     }
     console.log('Token accepted, email verified.');
 
@@ -424,48 +423,46 @@ async function updatePassword(id, _newPassword, _password_confirm, _password, _t
       password: hashPass,
     };
     response = PUT(url, data);
-    if (response.status === '400') {
+    if (response.status === 400) {
       console.log('Error putting new password.');
-      return response.status;
+      return { status: 400, error: response.error };
     }
 
     console.log('User password updated successfully.');
-    return '201';
+    return { status: 201, data: response.data };
   } catch (err) {
     console.log(err);
     console.log("An error occurred while updating user's password");
-    return '400';
+    return { status: 400, error: err };
   }
 }
 
 /**
  * Updates user visibility, between 0 (private) and 1 (public). just a switch.
  * @param {number} id - user_id for the user
- * @returns "400" if error, "200" if valid
+ * @returns 400 if error, 200 if valid
  */
 async function updateUserVisibility(id) {
   let url = `${root}/users/${id}`;
   let data = await GET(url);
   const parsedata = JSON.parse(await data);
   const vis = parsedata.visibility;
-  let result;
 
   if (vis == 1) {
     data = {
       visibility: 0,
     };
-    result = editUser(id, data);
   } else if (vis == 0) {
     data = {
       visibility: 1,
     };
-    result = editUser(id, data);
   }
-  if ((result = '400')) {
+  const result = await editUser(id, data);
+  if (result.status === 400) {
     console.log('Error editing user.');
-    return '400';
+    return { status: 400, error: 'Error editing user.' };
   }
-  return '200';
+  return { status: 200, response: result.data };
 }
 
 /**
@@ -477,15 +474,15 @@ async function getUserByUsername(username) {
   let url = `${root}/users/search-username/${username}`;
   const response = await GET(url);
 
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('Error getting user.');
-    return '400';
+    return { status: 400, error: response.error };
   }
 
   //check if array is not empty
   if (!response.data || response.data.length === 0) {
     console.log('No user found');
-    return '404';
+    return { status: 404, error: response.error };
   }
 
   console.log('Data recieved.');
@@ -501,15 +498,15 @@ async function getUserByEmail(email) {
   let url = `${root}/users/search-email/${email}`;
   const response = await GET(url);
 
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('Error getting user.');
-    return '400';
+    return { status: 400, error: response.error };
   }
 
   //check if array is not empty
   if (!response.data || response.data.length === 0) {
     console.log('No user found');
-    return '404';
+    return { status: 404, error: 'No user found.' };
   }
 
   console.log('Data recieved.');
@@ -524,9 +521,9 @@ async function getUserByEmail(email) {
 async function getUserFollowing(id) {
   let url = `${root}/users/${id}/followings/people`;
   const response = await GET(url);
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('Error getting users.');
-    return '400';
+    return { status: 400, error: response.error };
   }
   console.log('Data recieved.');
   return response;
@@ -540,9 +537,9 @@ async function getUserFollowing(id) {
 async function getVisibleProjects(id) {
   let url = `${root}/users/${id}/projects/profile`;
   const response = await GET(url);
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('Error getting projects.');
-    return '400';
+    return { status: 400, error: response.error };
   }
   console.log('Data recieved.');
   return response;
@@ -563,12 +560,12 @@ async function updateProjectVisibility(userID, projectID, _visibility) {
   };
 
   let response = await PUT(url, data);
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('Error editing projects.');
-    return '400';
+    return { status: 400, error: response.error };
   }
   console.log('Data edited.');
-  return '201';
+  return { status: 201, data: response.data };
 }
 
 /**
@@ -579,9 +576,9 @@ async function updateProjectVisibility(userID, projectID, _visibility) {
 async function getProjectFollowing(id) {
   let url = `${root}/users/${id}/followings/projects`;
   const response = await GET(url);
-  if (response.status === '400') {
+  if (response.status === 400) {
     console.log('Error getting projects.');
-    return '400';
+    return { status: 400, error: response.error };
   }
   console.log('Data recieved.');
   return response;

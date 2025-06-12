@@ -50,7 +50,7 @@ npm run lint:server
 The client is written with typescript, so there is no dedicated typechecking command, but ESLint can be used to fix any fixable errors, and display the rest with the following command in [root](.):
 
 ```bash
-npm run lint:server
+npm run lint:client
 ```
 
 ## Formatting

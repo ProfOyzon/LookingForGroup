@@ -36,7 +36,7 @@ const getNumEnvVariable = (key) => {
   return numValue;
 };
 
-const envConfig = {
+const envConfig = Object.freeze({
   env: getEnvVariable('NODE_ENV'),
   dbHost: getEnvVariable('DB_HOST'),
   dbUser: getEnvVariable('DB_USER'),
@@ -47,6 +47,6 @@ const envConfig = {
   mailerPass: getEnvVariable('MAILER_PASS'),
   sessionSecret: getEnvVariable('SESSION_SECRET'),
   port: getNumEnvVariable('PORT'),
-};
+});
 
 export default envConfig;

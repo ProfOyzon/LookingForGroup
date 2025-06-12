@@ -36,17 +36,17 @@ const getNumEnvVariable = (key) => {
   return numValue;
 };
 
-//object for environment varibles
 const envConfig = {
-  env: process.env.NODE_ENV,
-  dbHost: process.env.DB_HOST,
-  dbUser: process.env.DB_USER,
-  dbPass: process.env.DB_PASS,
-  dbName: process.env.DB_NAME,
-  mailerEmail: process.env.MAILER_EMAIL,
-  mailerPass: process.env.MAILER_PASS,
-  sessionSecret: process.env.SESSION_SECRET,
-  port: process.env.PORT,
+  env: getEnvVariable('NODE_ENV'),
+  dbHost: getEnvVariable('DB_HOST'),
+  dbUser: getEnvVariable('DB_USER'),
+  dbPass: getEnvVariable('DB_PASS'),
+  dbName: getEnvVariable('DB_NAME'),
+  dbPort: getNumEnvVariable('DB_PORT'),
+  mailerEmail: getEnvVariable('MAILER_EMAIL'),
+  mailerPass: getEnvVariable('MAILER_PASS'),
+  sessionSecret: getEnvVariable('SESSION_SECRET'),
+  port: getNumEnvVariable('PORT'),
 };
 
 export default envConfig;

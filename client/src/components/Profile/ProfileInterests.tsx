@@ -30,13 +30,15 @@ export const ProfileInterests = ({ user, isUsersProfile }) => {
   const Search = (results) => {
     // If no search results, show all interests
     if (!results || results.length === 0) {
-      setFilteredInterests(interests);
+      // setTimeout to avoid crashing error
+      setTimeout(() => setFilteredInterests(interests), 0);
       return;
     }
     
     // Filter interests based on search results
-    const matchedInterests = results[0].map(result => result.name);
-    setFilteredInterests(matchedInterests);
+    const matchedInterests = results[0];
+    // setTimeout to avoid crashing error
+    setTimeout(() => setFilteredInterests(matchedInterests), 0);
   };
 
   // Save selected interests
@@ -93,7 +95,7 @@ export const ProfileInterests = ({ user, isUsersProfile }) => {
         <div id="profile-edit-interests" className="profile-edit">
           <h1>Edit Interests</h1>
           <h3>Select 3 or 4 interests to be highlighted on your page</h3>
-          <SearchBar dataSets={[{ data: interests.map(interest => ({ name: interest })) }]} onSearch={Search}></SearchBar>
+          <SearchBar dataSets={[{ data: interests }]} onSearch={Search} />
 
           <h3>Available Interests:</h3>
           <div id="profile-available-interests" className="interests-selection">

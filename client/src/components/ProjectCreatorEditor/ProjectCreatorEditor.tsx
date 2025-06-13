@@ -15,7 +15,7 @@ import { TeamTab } from './tabs/TeamTab';
 import { TagsTab } from './tabs/TagsTab';
 import { ThemeIcon } from '../ThemeIcon';
 import { showPopup } from '../Sidebar';
-
+import { loggedIn } from '../Header';
 interface Image {
   id: number;
   image: string;
@@ -415,7 +415,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
         )
       }
       {
-        showPopup ? (
+        loggedIn ? (
         <PopupContent>
           <div id="project-creator-editor">
             <div id="project-editor-tabs">
@@ -483,7 +483,10 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
           </div>
         </PopupContent>
         ) : (
-          console.log("No popup allowed! Log in first!")
+          // Placeholder to prevent mass error
+          <div>
+            
+          </div>
         )
       }
     </Popup>

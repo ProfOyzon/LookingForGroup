@@ -1024,8 +1024,9 @@ New Profile page style rules
 }
 
 /* Profile view responsiveness */
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1250px) {
   #profile-information-grid {
+    display: grid;
     grid-template: 
       'image' auto
       'name' auto
@@ -1034,7 +1035,9 @@ New Profile page style rules
       'desc' auto
       'fact' auto
       'bio' auto
-      'skills' auto / 1fr;
+      'skills' auto
+      'follow' auto / 1fr;
+    justify-items: center;
   }
 }
 
@@ -1069,8 +1072,6 @@ New Profile page style rules
   color: var(--darkGray);
   gap: 10px;
   text-align: left;
-  overflow-wrap: break-word;
-  word-break: break-word;
 }
 
 #profile-follow-button {
@@ -1089,6 +1090,12 @@ New Profile page style rules
   line-height: 28px;
   letter-spacing: 0%;
   width: 120px;
+}
+
+@media only screen and (max-width: 1250px) {
+  #profile-follow-button {
+    justify-self: center;
+  }
 }
 
 #profile-fullname {
@@ -1115,6 +1122,12 @@ New Profile page style rules
   gap: 20px;
   overflow-wrap: break-word;
   word-break: break-word;
+}
+
+@media only screen and (max-width: 1200px) {
+    #profile-info-extras {
+    flex-wrap: wrap;
+  }
 }
 
 .profile-extra {
@@ -1162,6 +1175,7 @@ New Profile page style rules
 #profile-info-skills {
   grid-area: skills;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -1358,6 +1372,12 @@ New Profile page style rules
   justify-content: flex-end;
 }
 
+@media only screen and (max-width: 1200px) {
+  .about-me-buttons-minimal {
+  justify-content: flex-start;
+}
+}
+
 #about-me-buttons > button {
   border: none;
   border-radius: 30px;
@@ -1426,6 +1446,7 @@ New Profile page style rules
   box-shadow: 0px 0px 10px 0px var(--shadow-color);
   border: none;
   padding: 10px;
+  white-space: nowrap;
 }
 
 .profile-menu-dropdown-button {

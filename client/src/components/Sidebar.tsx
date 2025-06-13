@@ -14,10 +14,6 @@ export interface User {
   userId: number
 }
 
-// Tells ProjectCreatorEditor buttons to either show the popup or not
-// Used to prevent the user from using the popup when they aren't logged in
-export let showPopup: boolean 
-
 
 //Style changes to do:
 //Remove blue background image, replace with single color (or gradient?)
@@ -106,11 +102,6 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
     } catch (err) {
       console.error(err);
     }
-    
-    // Sets the global variable whenever the local one is changed
-    // Prevents the popup from showing up whenever you back out of the log in screen
-    showPopup = !createError;
-    //console.log(createError, showPopup);
   };
 
   // Function to handle the button clicks and update the h1 text

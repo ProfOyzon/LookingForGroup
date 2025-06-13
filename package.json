@@ -4,19 +4,20 @@
   "version": "1.0.0",
   "type": "module",
   "license": "CC0-1.0",
+  "workspaces": [
+    "client"
+  ],
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest",
+    "prepare": "husky",
     "start": "pm2 start ./server/index.js",
     "stop": "pm2 stop ./server/index.js",
-    "server": "start http://localhost:8081 & nodemon server/index.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm run build --prefix client",
-    "b": "npm run build && npm run server",
-    "format": "prettier --write server",
-    "lint": "eslint --fix server",
-    "lint:types": "tsc -p jsconfig.json",
-    "prepare": "husky"
+    "dev": "concurrently \"npm run build:watch --workspace=client\" \"nodemon server/index.js\"",
+    "build:client": "npm run build --workspace=client",
+    "test": "cross-env NODE_ENV=test jest",
+    "lint:server": "eslint --fix server",
+    "lint:server:types": "tsc -p jsconfig.json",
+    "lint:client": "npm run lint --workspace=client",
+    "format:server": "prettier --write server"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

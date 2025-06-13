@@ -24,6 +24,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
   const [confirm, setConfirm] = useState(''); // second password input to check if they match
   const [message, setMessage] = useState(''); // State variable for messages
   const [passwordMessage, setPasswordMessage] = useState(''); // State variable for password requirements
+  const [showPassword, setShowPassword] = useState(false);
 
   // State variables for modals
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -206,14 +207,14 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
           alt="Back Button"
           id="backPage-arrow"
           onClick={() => navigate(-1)}
-          />
+        />
         {/*************************************************************
 
                     Signup Form inputs
 
                 *************************************************************/}
         <div className="signup-form column">
-          
+
           <h2>Sign Up</h2>
 
           <div className="error">{message}</div>
@@ -255,20 +256,38 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            <input
-              className="signup-input"
-              autoComplete="off"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                const passMsg = validatePassword(e.target.value);
-                setMessage(passMsg);
-                setPasswordMessage(passMsg);
-              }}
+            <div id='password-wrapper'>
+              <input
+                className="signup-input"
+                autoComplete="off"
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  const passMsg = validatePassword(e.target.value);
+                  setMessage(passMsg);
+                  setPasswordMessage(passMsg);
+                }}
               // onBlur={(e) => setPasswordMessage(validatePassword(e.target.value))}
-            />
+              />
+              <button id="show-password" onClick={() => setShowPassword((prevState) =>
+                !prevState)}>
+                {showPassword ? (
+                  <ThemeIcon
+                    id='eye-icon'
+                    light={'assets/black/password_shown.png'}
+                    dark={'assets/white/password_shown.png'}
+                  />) :
+                  (
+                    <ThemeIcon
+                      id='eye-icon'
+                      light={'assets/black/password_hidden.png'}
+                      dark={'assets/white/password_hidden.png'}
+                    />
+                  )}
+              </button>
+            </div>
             {/* {(passwordMessage !== '') ? (
                             <div className="error">{passwordMessage}</div>
                         ) : (

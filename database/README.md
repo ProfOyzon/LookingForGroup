@@ -46,6 +46,9 @@ Docker is the only piece of required software to follow this guide. The easiest 
 
 Congrats, you now have the database running in a container! The database will be accessible as long as the container is running, and all data added will persist in the container.
 
+> [!IMPORTANT]  
+> If a new db dump is made, the image must be rebuilt. The old image and container can be deleted at this time.
+
 ### Starting the container
 
 When you need to connect to the database, you can run the container with the start button from VSCode or Docker Desktop.
@@ -53,7 +56,3 @@ When you need to connect to the database, you can run the container with the sta
 ### Stopping the container
 
 Once you are done using the database, the container can be stopped from VSCode or Docker Desktop. You can also stop Docker from running when you don't need the container for a while, as it will use ram.
-
-### When to rebuild the image
-
-If a new db dump is made, the image must be rebuilt. The old image and container can be deleted at this time.

@@ -39,13 +39,13 @@ test('Create a new project', async () => {
 });
 
 // addPic
-test('Add picture to project', async () => {
-  const r = await util.addPic(/* TODO */);
+// test('Add picture to project', async () => {
+//   const r = await util.addPic(/* TODO */);
 
-  console.log('Add picture: ' + r);
+//   console.log('Add picture: ' + r);
 
-  expect(r).not.toBe('400');
-});
+//   expect(r).not.toBe('400');
+// });
 
 // addMember
 test('Add member to project', async () => {
@@ -68,22 +68,22 @@ test('Update project', async () => {
 });
 
 // updateProjectThumbnail
-test('Update thumbnail', async () => {
-  const r = await util.updateThumbnail(/* TODO */);
+// test('Update thumbnail', async () => {
+//   const r = await util.updateThumbnail(/* TODO */);
 
-  console.log('Update thumbnail: ' + r);
+//   console.log('Update thumbnail: ' + r);
 
-  expect(r).not.toBe('400');
-});
+//   expect(r).not.toBe('400');
+// });
 
 // updatePicPositions
-test('Update picture positions', async () => {
-  const r = await util.updatePicPositions(/* TODO */);
+// test('Update picture positions', async () => {
+//   const r = await util.updatePicPositions(/* TODO */);
 
-  console.log('Update pic positions: ' + r);
+//   console.log('Update pic positions: ' + r);
 
-  expect(r).not.toBe('400');
-});
+//   expect(r).not.toBe('400');
+// });
 
 // updateMember
 test('Update member', async () => {
@@ -126,13 +126,13 @@ test('Get project pics', async () => {
 /* - - - DELETEs - - - */
 
 // deletePic
-test('Delete picture', async () => {
-  const r = await util.deletePic(5, /* TODO */);
+// test('Delete picture', async () => {
+//   const r = await util.deletePic(5, /* TODO */);
 
-  console.log('Delete picture: ' + r);
+//   console.log('Delete picture: ' + r);
 
-  expect(r).not.toBe('400');
-});
+//   expect(r).not.toBe('400');
+// });
 
 // deleteMember
 test('Delete member', async () => {

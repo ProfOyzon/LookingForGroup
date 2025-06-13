@@ -1,3 +1,5 @@
 # The next line can be uncommented to re enable type checking support on commit
-# npm run lint:types
+
+# npm run lint:server:types
+
 npx lint-staged

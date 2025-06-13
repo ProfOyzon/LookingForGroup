@@ -135,9 +135,15 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   // store search results
   const [searchResults, setSearchResults] = useState<{ data: User[] }>({ data: [] });
 
-  // errors
+  // errors/successful messages
   const [errorAddMember, setErrorAddMember] = useState('');
   const [errorAddPosition, setErrorAddPosition] = useState('');
+  const [successAddMember, setSuccessAddMember] = useState(false);
+
+  // tracking search input & dropdown selections
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchBarKey, setSearchBarKey] = useState(0);
+  const [selectKey, setSelectKey] = useState(0);
 
   // Initial load
   // useEffect(() => {
@@ -264,24 +270,33 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   // --- Member handlers ---
   // Error checks for adding a new member
   const handleNewMember = useCallback(() => {
-    //do not close as default
     setClosePopup(false);
 
     const member = newMember;
 
+    // reset searchbar and dropdowns
+    const resetFields = () => {
+    setSearchQuery('');
+    setSelectKey(prev => prev + 1);
+  };
+    
+    // notify user of error, reset fields
+    const errorWarning = (message: string) => {
+    setSuccessAddMember(false);
+    setErrorAddMember(message);
+    resetFields();
+    return false;
+  };
+
     // check if member is already in project
     const isMember = modifiedProject.members.find((m) => m.user_id === member.user_id);
     if (isMember) {
-      setErrorAddMember('User is already on the team');
-      setClosePopup(false);
-      return;
+      return errorWarning(`${member.first_name} ${member.last_name} is already on the team`);
     }
 
     // get name
     if (!newMember.first_name || !newMember.last_name) {
-      setErrorAddMember('Can\'t find user');
-      setClosePopup(false);
-      return;
+      return errorWarning("Can\'t find user");
     }
 
     // get job title
@@ -292,9 +307,10 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         newMember.job_title = role.value;
       }
       else {
-        setErrorAddMember('Select a role');
-        setClosePopup(false);
-        return;
+      setSuccessAddMember(false);
+      setErrorAddMember('Select a role');
+      setSelectKey(prev => prev + 1);
+      return false;
       }
     }
 
@@ -304,18 +320,26 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
     // check if member has name
     if (!member.first_name || !member.last_name) {
+      setSuccessAddMember(false);
       setErrorAddMember('Member needs a first and last name');
-      setClosePopup(false);
-      return;
+      return false;
     } else {
-      // clear error
-      setErrorAddMember('');
+      // prompt user of successfully added member
+      setSuccessAddMember(true);
+      setErrorAddMember(`${member.first_name} ${member.last_name} added to team!`);
+
+      // reset prompt to clear
+      setTimeout(() => {
+        setErrorAddMember('');
+        setSuccessAddMember(false);
+      }, 2000)
+
       // close popup
       setClosePopup(true);
-      // reset member
-      setNewMember(emptyMember);
       // add member
       modifiedProject.members.push(member);
+      resetFields();
+      return true;
     }
   }, [allUsers, modifiedProject.members, newMember]);
 
@@ -339,10 +363,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
     setErrorAddMember('');
 
     // set text input
-    const input = document.querySelector<HTMLInputElement>('#user-search-container .search-input');
-    if (input) {
-      input.value = `${user.first_name} ${user.last_name} (${user.username})`;
-    }
+    setSearchQuery(`${user.first_name} ${user.last_name} (${user.username})`);
 
     // get user id of this user to compare
     let userId = -1;
@@ -379,7 +400,13 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
     setSearchResults({ data: [] });
   }, [allUsers]);
 
-
+  // Resets Add Member name field, role/permission dropdowns
+  const handlePopupReset = () => {
+    setSearchQuery('');
+    setSearchBarKey(prev => prev + 1);
+    setSelectKey(prev => prev + 1);
+    setClosePopup(false);
+  }
 
   // --- Position handlers ---
   // update position edit window for creating a new position
@@ -848,6 +875,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
               className="project-member-image"
               src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
               alt="profile image"
+              // default profile picture if user image doesn't load
+              onError={(e) => {
+                const profileImg = e.target as HTMLImageElement;
+                profileImg.src = profileImage;
+              }}
             />
             <div className="project-editor-project-member-info">
               <div className="project-editor-project-member-name">
@@ -1001,7 +1033,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         </PopupButton>
         <PopupContent useClose={closePopup}>
           <div id="project-team-add-member-title">Add Member</div>
-          <div className="error" id="error-add-member">
+          <div className={successAddMember ? "success" : "error"} id="error-add-member">
             {errorAddMember}
           </div>
           <div id="project-team-add-member-info">
@@ -1009,7 +1041,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             <div id='user-search-container'>
               <Dropdown>
                 <DropdownButton buttonId='user-search-dropdown-button'>
-                  <SearchBar dataSets={[searchableUsers]} onSearch={(results) => handleSearch(results)}></SearchBar>
+                  <SearchBar key={searchBarKey} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} dataSets={[searchableUsers]} onSearch={(results) => handleSearch(results)}></SearchBar>
                 </DropdownButton>
                 <DropdownContent>
                   <div id='user-search-results'>
@@ -1033,7 +1065,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
               </Dropdown>
             </div>
             <label id="project-team-add-member-role">Role</label>
-            <Select>
+            <Select key={selectKey}>
               <SelectButton
                 placeholder='Select'
                 initialVal=''
@@ -1054,7 +1086,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             </Select>
             <div id="project-team-add-member-permissions">
               <label>Permissions</label>
-              <Select>
+              <Select key={selectKey}>
                 <SelectButton
                   placeholder='Select'
                   initialVal=''
@@ -1080,13 +1112,20 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             <PopupButton
               buttonId="team-add-member-add-button"
               callback={() => {
-                handleNewMember();
+                const memberAdded = handleNewMember();
+                return memberAdded;
               }}
-              doNotClose={() => closePopup}
+             doNotClose={(prev) => !prev}
             >
               Add
             </PopupButton>
-            <PopupButton buttonId="team-add-member-cancel-button" className="button-reset">
+            <PopupButton buttonId="team-add-member-cancel-button"
+             callback={() => {
+              setNewMember(emptyMember);
+              setErrorAddMember('');
+              handlePopupReset();
+            }} 
+            className="button-reset">
               Cancel
             </PopupButton>
           </div>

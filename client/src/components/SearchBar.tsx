@@ -66,7 +66,7 @@ const handleSearch = (searchQuery: string) => {
     <div className="search-wrapper">
       {/* Prevent form submission from refreshing the page */}
       <form className="search-bar" onSubmit={(e) => e.preventDefault()}>
-        <button type="submit" className="search-button" aria-label="Search">
+        <button type="submit" className="search-button" aria-label="Search" onClick={(e) => e.preventDefault()}>
           <i className="fa fa-search" aria-hidden="true"></i>
         </button>
         {/* Input field for search query */}

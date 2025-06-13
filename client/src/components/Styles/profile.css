@@ -1015,12 +1015,15 @@ New Profile page style rules
     'image desc desc desc' auto
     'image fact fact fact' auto
     'bio skills skills follow' auto /
-    300px auto 200px;
+    300px 1fr 200px;
   background-color: var(--header-color);
   border-radius: 10px;
   padding: 30px;
   gap: 10px;
   color: var(--main-text);
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* Profile view responsiveness */
@@ -1038,6 +1041,7 @@ New Profile page style rules
       'skills' auto
       'follow' auto / 1fr;
     justify-items: center;
+    width: 100%;
   }
 }
 
@@ -1072,6 +1076,7 @@ New Profile page style rules
   color: var(--darkGray);
   gap: 10px;
   text-align: left;
+  min-width: 0;
 }
 
 #profile-follow-button {
@@ -1108,9 +1113,19 @@ New Profile page style rules
 
 #profile-info-buttons {
   grid-area: buttons;
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
   overflow-wrap: break-word;
   word-break: break-word;
+  width: fit-content;
+  justify-self: end;
+}
+
+@media only screen and (max-width: 1250px) {
+  #profile-info-buttons {
+    justify-self: center;
+  }
 }
 
 #profile-info-extras {
@@ -1361,7 +1376,7 @@ New Profile page style rules
 #about-me-buttons {
   grid-area: buttons;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   /*height:calc(100% - 40px);*/
   height: 100%;
   /* padding:20px 0; */

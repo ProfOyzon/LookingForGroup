@@ -303,7 +303,7 @@ Project Creator and Editor style rules
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1120px;
+  max-width: 90vw;
   height: calc(90vh - 100px);
   border: none;
   border-radius: 10px;
@@ -321,6 +321,12 @@ Project Creator and Editor style rules
   display: flex;
   justify-content: space-around;
   margin-top: 38px;
+}
+
+@media (max-width: 600px) {
+  #project-editor-tabs {
+    overflow-x: auto;
+  }
 }
 
 .project-editor-tab {

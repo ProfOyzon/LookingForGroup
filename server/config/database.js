@@ -7,7 +7,6 @@ import envConfig from './env.js';
 const pool = mysql.createPool({
   host: envConfig.dbHost,
   user: envConfig.dbUser,
-  port: envConfig.dbPort,
   password: envConfig.dbPass,
   database: envConfig.dbName,
   connectionLimit: 10,

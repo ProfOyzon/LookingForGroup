@@ -91,3 +91,6 @@ server/images/
 # Ignore vs & vscode config files
 .vs
 .vscode
+
+# SQL files
+*.sql

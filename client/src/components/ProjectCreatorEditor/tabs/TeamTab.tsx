@@ -562,6 +562,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                           className='project-member-image'
                           src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
                           alt="profile"
+                          // default profile picture if user image doesn't load
+                        onError={(e) => {
+                          const profileImg = e.target as HTMLImageElement;
+                          profileImg.src = profileImage;
+                        }}
                         />
                         {m.first_name} {m.last_name}
                       </span>
@@ -608,6 +613,12 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       </Popup>
     </>
   );
+
+  // Find selected members 
+  const selectedMember = modifiedProject.members.find(
+  (m) => m.user_id === modifiedProject.user_id
+);
+
   // Edit open position or creating new position
   const positionEditWindow = (
     <>
@@ -719,7 +730,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <Select>
             <SelectButton 
               placeholder='Select'
-              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)!.availability : ''}
+              
+              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.availability : ''}
             />
             <SelectOptions 
               callback={(e) => setCurrentJob({ ...currentJob, availability: e.target.value })}
@@ -751,7 +763,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <Select>
             <SelectButton 
               placeholder='Select'
-              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)!.location : ''}
+              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.location : ''}
             />
             <SelectOptions 
               callback={(e) => setCurrentJob({ ...currentJob, location: e.target.value })}
@@ -766,15 +778,29 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           </Select>
           <label className="edit-position-contact">Main Contact</label>
           {/* <select className="edit-position-contact"></select> */}
-          <button className='edit-position-contact' disabled>
-            {modifiedProject.members.map((m) => {
-              if (m.user_id === modifiedProject.user_id) {
-                return (
+          <Select>
+            <SelectButton 
+              className="edit-position-contact"
+              placeholder="Select"
+              initialVal={selectedMember ? `${selectedMember.first_name} ${selectedMember.last_name}` : ''}
+            />
+            <SelectOptions
+              className="edit-position-contact"
+              callback={(e) => {
+                const selectedId = parseInt(e.target.value);
+                setModifiedProject(prev => ({ ...prev, user_id: selectedId }));
+              }}       
+              options={modifiedProject.members.map((m) => ({
+                markup: (
                   <>
-                    <img 
-                      className='project-member-image'
-                      src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
+                    <img className='project-member-image' 
+                      src={m.profile_image ? `/images/profiles/${m.profile_image}` : profileImage}
                       alt="profile"
+                      // default profile picture if user image doesn't load
+                      onError={(e) => {
+                        const profileImg = e.target as HTMLImageElement;
+                        profileImg.src = profileImage;
+                      }}
                     />
                     <div className="project-editor-project-member-info">
                       <div className="project-editor-project-member-name">
@@ -782,12 +808,12 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                       </div>
                     </div>
                   </>
-                );
-              }
-
-              return <></>;
-            })}
-          </button>
+                ),
+                value: m.user_id.toString(),
+                disabled: false,
+              }))}
+            />
+          </Select>
         </div>
         <div id="edit-position-details-right">
           <label className="edit-position-duration">Duration</label>
@@ -809,7 +835,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <Select>
             <SelectButton 
               placeholder='Select'
-              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)!.duration : ''}
+              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.duration : ''}
             />
             <SelectOptions 
               callback={(e) => setCurrentJob({ ...currentJob, duration: e.target.value })}
@@ -841,7 +867,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <Select>
             <SelectButton 
               placeholder='Select'
-              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)!.compensation : ''}
+              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.compensation : ''}
             />
             <SelectOptions 
               callback={(e) => setCurrentJob({ ...currentJob, compensation: e.target.value })}
@@ -915,6 +941,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                       className="project-member-image"
                       src={`/images/profiles/${m.profile_image}`}
                       alt="profile image"
+                      // default profile picture if user image doesn't load
+                      onError={(e) => {
+                        const profileImg = e.target as HTMLImageElement;
+                        profileImg.src = profileImage;
+                      }}
                     />
                     <div className="project-editor-project-member-name">
                       {m.first_name} {m.last_name}

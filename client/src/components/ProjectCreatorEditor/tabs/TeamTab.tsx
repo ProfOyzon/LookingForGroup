@@ -730,7 +730,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <Select>
             <SelectButton 
               placeholder='Select'
-              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)!.availability : ''}
+              
+              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.availability : ''}
             />
             <SelectOptions 
               callback={(e) => setCurrentJob({ ...currentJob, availability: e.target.value })}
@@ -762,7 +763,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <Select>
             <SelectButton 
               placeholder='Select'
-              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)!.location : ''}
+              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.location : ''}
             />
             <SelectOptions 
               callback={(e) => setCurrentJob({ ...currentJob, location: e.target.value })}
@@ -834,7 +835,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <Select>
             <SelectButton 
               placeholder='Select'
-              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)!.duration : ''}
+              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.duration : ''}
             />
             <SelectOptions 
               callback={(e) => setCurrentJob({ ...currentJob, duration: e.target.value })}
@@ -866,7 +867,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <Select>
             <SelectButton 
               placeholder='Select'
-              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)!.compensation : ''}
+              initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.compensation : ''}
             />
             <SelectOptions 
               callback={(e) => setCurrentJob({ ...currentJob, compensation: e.target.value })}

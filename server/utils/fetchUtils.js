@@ -51,14 +51,37 @@ Base apiURL is:
  * @returns response - JSONified data or error code.
  */
 const GET = (apiURL) => {
-  return fetch(apiURL)
+  return fetch(apiURL, {
+    method: 'GET',
+    credentials: 'include',
+  })
     .then(async (response) => {
-      let obj = await response.json();
-      if (response.ok) {
-        return obj;
+      const contentType = response.headers.get('content-type') || '';
+
+      //check if response is JSON
+      if (contentType.includes('application/json')) {
+        try {
+          //return if json
+          let obj = await response.json();
+          if (response.ok) {
+            return obj;
+          } else {
+            console.log(obj.error);
+            return { status: response.status, error: obj.error || 'Network response was not ok' };
+            //throw new Error('Network response was not ok');
+          }
+        } catch (error) {
+          console.error('Problem parsing JSON', error);
+          return { status: 400, error: 'Invalid JSON repsponse' };
+        }
       } else {
-        console.log(obj.error);
-        throw new Error('Network response was not ok');
+        //handle HTML error pages
+        const e = await response.text();
+        console.error('Expected json but got:', e);
+        return {
+          status: 400,
+          error: 'Received HTML reponse instead of JSON (Likely broken endpoint)',
+        };
       }
     })
     .then((data) => {
@@ -67,7 +90,7 @@ const GET = (apiURL) => {
     })
     .catch((error) => {
       console.error('there was a problem with the fetch operation:', error);
-      return '400';
+      return { status: 400, error: error.message || 'Unknown error' };
     });
 };
 
@@ -77,22 +100,39 @@ const GET = (apiURL) => {
  * @param {Object} newData - Data, mapped: eg {key1: 'value1', key2: 'value2'}
  * @returns response - JSONified data or error code.
  */
-
 const POST = (apiURL, newData) => {
   return fetch(apiURL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify(newData),
   })
     .then(async (response) => {
-      let obj = await response.json();
-      if (response.ok) {
-        return obj;
+      const contentType = response.headers.get('content-type') || '';
+
+      //check if response is JSON
+      if (contentType.includes('application/json')) {
+        try {
+          //return if json
+          let obj = await response.json();
+          if (response.ok) {
+            return obj;
+          } else {
+            console.log(obj.error);
+            return { status: response.status, error: obj.error || 'Network response was not ok' };
+          }
+        } catch (error) {
+          console.error('Problem parsing JSON', error);
+          return { status: 400, error: 'Invalid JSON repsponse' };
+        }
       } else {
-        console.log(obj.error);
-        throw new Error('Network response was not ok');
+        //handle HTML error pages
+        const e = await response.text();
+        console.error('Expected json but got:', e);
+        return {
+          status: 400,
+          error: 'Received HTML reponse instead of JSON (Likely broken endpoint)',
+        };
       }
     })
     .then((data) => {
@@ -101,7 +141,7 @@ const POST = (apiURL, newData) => {
     })
     .catch((error) => {
       console.error('There was a problem with the fetch operation:', error);
-      return '400';
+      return { status: 400, error: error.message || 'Unknown error' };
     });
 };
 
@@ -114,18 +154,36 @@ const POST = (apiURL, newData) => {
 const PUT = (apiURL, newData) => {
   return fetch(apiURL, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify(newData),
   })
     .then(async (response) => {
-      let obj = await response.json();
-      if (response.ok) {
-        return obj;
+      const contentType = response.headers.get('content-type') || '';
+
+      //check if response is JSON
+      if (contentType.includes('application/json')) {
+        try {
+          let obj = await response.json();
+          //return if json
+          if (response.ok) {
+            return obj;
+          } else {
+            console.log(obj.error);
+            return { status: response.status, error: obj.error || 'Network response was not ok' };
+          }
+        } catch (error) {
+          console.error('Problem parsing JSON', error);
+          return { status: 400, error: 'Invalid JSON repsponse' };
+        }
       } else {
-        console.log(obj.error);
-        throw new Error('Network response was not ok');
+        //handle HTML error pages
+        const e = await response.text();
+        console.error('Expected json but got:', e);
+        return {
+          status: 400,
+          error: 'Received HTML reponse instead of JSON (Likely broken endpoint)',
+        };
       }
     })
     .then((data) => {
@@ -134,9 +192,23 @@ const PUT = (apiURL, newData) => {
     })
     .catch((error) => {
       console.error('There was a problem with the fetch operation:', error);
-      return '400';
+      return { status: 400, error: error.message || 'Unknown error' };
     });
 };
+
+// async function PUT2(apiURL, newData) {
+//   try {
+//     const response = await fetch(apiURL, {
+//       method: 'PUT',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify(newData),
+//     });
+//     return await response.json();
+//   } catch (error) {
+//     console.error('Caught inside PUT:', error);
+//     throw error; // Let the caller deal with it
+//   }
+// }
 
 /**
  * Basic DELETE function for utilities
@@ -146,17 +218,35 @@ const PUT = (apiURL, newData) => {
 const DELETE = (apiURL) => {
   return fetch(apiURL, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
   })
     .then(async (response) => {
-      let obj = await response.json();
-      if (response.ok) {
-        return obj;
+      const contentType = response.headers.get('content-type') || '';
+
+      //check if response is JSON
+      if (contentType.includes('application/json')) {
+        try {
+          //return if json
+          let obj = await response.json();
+          if (response.ok) {
+            return obj;
+          } else {
+            console.log(obj.error);
+            return { status: response.status, error: obj.error || 'Network response was not ok' };
+          }
+        } catch (error) {
+          console.error('Problem parsing JSON', error);
+          return { status: 400, error: 'Invalid JSON repsponse' };
+        }
       } else {
-        console.log(obj.error);
-        throw new Error('Network response was not ok');
+        //handle HTML error pages
+        const e = await response.text();
+        console.error('Expected json but got:', e);
+        return {
+          status: 400,
+          error: 'Received HTML reponse instead of JSON (Likely broken endpoint)',
+        };
       }
     })
     .then((data) => {
@@ -165,9 +255,9 @@ const DELETE = (apiURL) => {
     })
     .catch((error) => {
       console.error('There was a problem with the fetch operation:', error);
-      return '400';
+      return { status: 400, error: error.message || 'Unknown error' };
     });
-}
+};
 
 /**
  * Takes data and puts it into a standardized JSON reponse
@@ -177,8 +267,8 @@ const DELETE = (apiURL) => {
  * @param {string} mimetype - type of the response
  * @returns - object of JSON response
  */
-function jsonify(data, status, error, mimetype = 'application/json'){
-  return{
+function jsonify(data, status, error, mimetype = 'application/json') {
+  return {
     status,
     mimetype,
     data,
@@ -190,12 +280,12 @@ function jsonify(data, status, error, mimetype = 'application/json'){
  * Standardized JSON response for functions
  * @param {number} _status - HTTP status code
  * @param {any} data  - Data to return
- * @param {string|null} _error - Error message (if needed)
+ * @param {any} _error - Error message (if needed)
  * @returns - JSONified status code, data, and error message
  */
-const RESPONSE = (_status, data, _error) => {
-  const res = [{ 'data': data }];
+const RESPONSE = (_status, data = null, _error = 'none') => {
+  const res = [{ data: data }];
   return jsonify(res, _status, _error, 'application/json');
-}
+};
 
 export { GET, POST, PUT, DELETE, RESPONSE };

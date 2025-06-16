@@ -95,8 +95,8 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
           <DropdownButton buttonId="status-btn">
             {modifiedProject.status || 'Select'}
             <ThemeIcon
-              light={'assets/dropdown_light.png'}
-              dark={'assets/dropdown_dark.png'}
+              light={'assets/dropdown_light.svg'}
+              dark={'assets/dropdown_dark.svg'}
               id="dropdown-arrow"
             />
           </DropdownButton>

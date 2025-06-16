@@ -140,8 +140,8 @@ const Login: React.FC = () => {
                 *************************************************************/}
         <div className="login-form column">
           <ThemeIcon //Back button to return to the previous page
-            light={'assets/back_light.png'}
-            dark={'assets/back_dark.png'}
+            light={'assets/back_light.svg'}
+            dark={'assets/back_dark.svg'}
             alt="Back Button"
             id="backPage-arrow"
             onClick={() => {
@@ -180,14 +180,14 @@ const Login: React.FC = () => {
                 {showPassword ? (
                   <ThemeIcon
                     id='eye-icon'
-                    light={'assets/black/password_shown.png'}
-                    dark={'assets/white/password_shown.png'}
+                    light={'assets/black/password_shown.svg'}
+                    dark={'assets/white/password_shown.svg'}
                   />) :
                   (
                     <ThemeIcon
                       id='eye-icon'
-                      light={'assets/black/password_hidden.png'}
-                      dark={'assets/white/password_hidden.png'}
+                      light={'assets/black/password_hidden.svg'}
+                      dark={'assets/white/password_hidden.svg'}
                     />
                   )}
               </button>

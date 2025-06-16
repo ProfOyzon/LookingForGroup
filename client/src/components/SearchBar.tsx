@@ -15,19 +15,29 @@ interface DataSet {
 interface SearchBarProps {
   dataSets: DataSet[];
   onSearch: (results: (string | Person)[][]) => void;
+  // Optional value & onChange for different searchbar behaviors (adding team member names)
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 // Search bar component for filtering data in Discover and Meet pages
 // Component is memoized to prevent unnecessary re-renders
 //FIXME: create way to update results if a new dataset is provided: discover page filter and project editor tag filters do not save search state
-export const SearchBar: FC<SearchBarProps> = memo(({ dataSets, onSearch }) => {
-  const [query, setQuery] = useState('');
+export const SearchBar: FC<SearchBarProps> = memo(({ dataSets, onSearch, value, onChange }) => {
+  const [internalQuery, setInternalQuery] = useState('');
+  const query = value ?? internalQuery;
 
   // Filter the data based on the query
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Convert the query to lowercase
     const newQuery = event.target.value.toLowerCase();
-    setQuery(newQuery);
+
+    // If onChange is passed in, call it
+     if (onChange) {
+      onChange(event); 
+    } else {
+      setInternalQuery(newQuery);
+    }
     handleSearch(newQuery);
   };
 
@@ -56,7 +66,7 @@ const handleSearch = (searchQuery: string) => {
     <div className="search-wrapper">
       {/* Prevent form submission from refreshing the page */}
       <form className="search-bar" onSubmit={(e) => e.preventDefault()}>
-        <button type="submit" className="search-button" aria-label="Search">
+        <button type="submit" className="search-button" aria-label="Search" onClick={(e) => e.preventDefault()}>
           <i className="fa fa-search" aria-hidden="true"></i>
         </button>
         {/* Input field for search query */}

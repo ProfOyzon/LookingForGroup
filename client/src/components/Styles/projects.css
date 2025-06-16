@@ -303,7 +303,7 @@ Project Creator and Editor style rules
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1120px;
+  max-width: 90vw;
   height: calc(90vh - 100px);
   border: none;
   border-radius: 10px;
@@ -321,6 +321,12 @@ Project Creator and Editor style rules
   display: flex;
   justify-content: space-around;
   margin-top: 38px;
+}
+
+@media (max-width: 600px) {
+  #project-editor-tabs {
+    overflow-x: auto;
+  }
 }
 
 .project-editor-tab {
@@ -353,7 +359,6 @@ Project Creator and Editor style rules
   font-size: 2ch;
   width: max-content;
   margin: auto;
-  margin-bottom: 15px;
   font-weight: 700;
 }
 
@@ -1018,6 +1023,13 @@ Project Creator and Editor style rules
   row-gap: 15px;
 }
 
+.success {
+  color: green;
+  font-weight: 500;
+  font-size: 14px;
+  font-style: italic;
+}
+
 #project-team-add-member-name {
   grid-area: name-label;
 }
@@ -1322,12 +1334,12 @@ button.edit-position-contact {
   border-radius: 10px;
   padding: 3px;
   cursor: default;
+}
 
-  img {
+button.edit-position-contact .project-member-image {
     width: 48px;
     height: 48px;
     border: 1px solid var(--border-color);
-  }
 }
 
 #edit-position-details-right {

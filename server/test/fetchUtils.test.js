@@ -18,6 +18,10 @@ describe('fetchUtils tests', () => {
       json: jest.fn().mockResolvedValue(mockJson),
       status: 200,
       ok: true,
+      headers: {
+        get: jest.fn().mockReturnValue('application/json'),
+      },
+      credentials: 'include',
     };
 
     //@ts-ignore
@@ -25,7 +29,10 @@ describe('fetchUtils tests', () => {
 
     const json = await GET('http://lfg.gccis.rit.edu/api-test/users');
 
-    expect(fetch).toHaveBeenCalledWith('http://lfg.gccis.rit.edu/api-test/users');
+    expect(fetch).toHaveBeenCalledWith('http://lfg.gccis.rit.edu/api-test/users', {
+      method: 'GET',
+      credentials: 'include',
+    });
     expect(json).toEqual(mockJson);
   });
 
@@ -38,7 +45,11 @@ describe('fetchUtils tests', () => {
     global.fetch.mockResolvedValue({
       ok: true,
       status: 201,
+      headers: {
+        get: jest.fn().mockReturnValue('application/json'),
+      },
       json: jest.fn().mockResolvedValue(mockResponse),
+      credentials: 'include',
     });
 
     const data = await POST('http://lfg.gccis.rit.edu/api-test/users', mockUser);
@@ -47,6 +58,7 @@ describe('fetchUtils tests', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(mockUser),
+      credentials: 'include',
     });
 
     expect(data).toEqual(mockResponse);
@@ -61,7 +73,11 @@ describe('fetchUtils tests', () => {
     global.fetch.mockResolvedValue({
       ok: true,
       status: 200,
+      headers: {
+        get: jest.fn().mockReturnValue('application/json'),
+      },
       json: jest.fn().mockResolvedValue(mockResponse),
+      credentials: 'include',
     });
 
     const data = await PUT('http://lfg.gccis.rit.edu/api-test/users/123', mockUpdate);
@@ -70,6 +86,7 @@ describe('fetchUtils tests', () => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(mockUpdate),
+      credentials: 'include',
     });
 
     expect(data).toEqual(mockResponse);
@@ -83,7 +100,11 @@ describe('fetchUtils tests', () => {
     global.fetch.mockResolvedValue({
       ok: true,
       status: 200,
+      headers: {
+        get: jest.fn().mockReturnValue('application/json'),
+      },
       json: jest.fn().mockResolvedValue(mockResponse),
+      credentials: 'include',
     });
 
     const data = await DELETE('http://lfg.gccis.rit.edu/api-test/users/123');
@@ -91,6 +112,7 @@ describe('fetchUtils tests', () => {
     expect(fetch).toHaveBeenCalledWith('http://lfg.gccis.rit.edu/api-test/users/123', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
     });
 
     expect(data).toEqual(mockResponse);

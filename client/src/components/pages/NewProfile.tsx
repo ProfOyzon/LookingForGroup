@@ -422,7 +422,7 @@ const NewProfile = () => {
           </div>
           <div id="profile-info-interest">
             <ProfileInterests user={{ interests: displayedProfile.interests || [] }}
-              isUsersProfile={true} />
+              isUsersProfile={isUsersProfile} />
           </div>
 
           <div id="profile-info-skills">

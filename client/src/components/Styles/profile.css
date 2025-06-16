@@ -1181,6 +1181,11 @@ New Profile page style rules
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 20px;
+  padding: 10px;
+  background-color: var(--bg-secondary);
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .interest-tag {
@@ -1255,6 +1260,30 @@ New Profile page style rules
 .interest-count {
   font-size: 0.9rem;
   color: var(--text-secondary);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.tab-content {
+  width: 100%;
+}
+
+/* Fix overlap issues */
+#profile-editor-content {
+  position: relative;
+}
+
+#profile-editor-content > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+#profile-editor-content > div:not(.hidden) {
+  position: relative;
 }
 
 /* #profile-discover-column {

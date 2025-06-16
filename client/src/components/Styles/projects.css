@@ -829,6 +829,9 @@ Project Creator and Editor style rules
   overflow-y: auto;
 }
 
+#profile-editor-interests{
+  overflow-y: auto;
+}
 /* Project Editor/Creator Team Tab */
 .project-editor-team-tab {
   padding: 0;
@@ -3661,6 +3664,8 @@ My projects page style rules
     font-style: italic;
   }
 }
+
+
 
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\

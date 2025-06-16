@@ -23,6 +23,8 @@ import { AboutTab } from './tabs/AboutTab';
 import { LinksTab, getSocials } from './tabs/LinksTab';
 import { ProjectsTab } from './tabs/ProjectsTab';
 import { SkillsTab } from './tabs/SkillsTab';
+import { InterestTab } from './tabs/InterestTab';
+import { interests } from '../../constants/interests';
 
 // exportable interface for TypeScript errors
 export interface ProfileData {
@@ -39,12 +41,13 @@ export interface ProfileData {
   bio: string;
   profile_image: string;
   skills: { id: number; skill: string, type: string, tag: string }[];
+  interests: { id: number; interest: string, type: string, tag: string }[];
   socials: { id: number; url: string }[];
 }
 
 // The profile to view is independent upon the site's state changes
 let profile: ProfileData;
-const pageTabs = ['About', 'Projects', 'Skills', 'Links'];
+const pageTabs = ['About', 'Projects', 'Skills', 'Interests', 'Links'];
 
 // Functions
 const onSaveClicked = async (e : Event) => {
@@ -82,6 +85,7 @@ const onSaveClicked = async (e : Event) => {
     funFact: getInputValue('funFact'),
     bio,
     skills: getInputValue('skills'),
+    interests: getInputValue('interests'),
     socials: getSocials(),
   };
   // console.log('Saving data...');
@@ -104,6 +108,67 @@ export const ProfileEditPopup = () => {
   // Keeps track of what tab we are in
   let currentTab = 0;
 
+  // In your ProfileEditPopup.tsx file
+
+// useEffect to initialize the tabs
+useEffect(() => {
+
+  setTimeout(() => {
+  // Initialize all tabs to be hidden except the first one
+  pageTabs.forEach((tab, idx) => {
+    const tabElement = document.querySelector(`#profile-editor-${tab.toLowerCase()}`);
+    if (tabElement) {
+      if (idx === 0) {
+        tabElement.classList.remove('hidden');
+      } else {
+        tabElement.classList.add('hidden');
+      }
+    }
+  },);
+
+  
+},[]);
+
+  // Highlight the first tab button
+  const firstTab = document.querySelector(`#profile-tab-${pageTabs[0]}`);
+  if (firstTab) {
+    firstTab.classList.add('project-editor-tab-active');
+  }
+}, []);
+
+// Fix the switchTab function
+const switchTab = (tabIndex: number) => {
+   if (currentTab === tabIndex) return;
+  
+  // Hide all tabs and deactivate all buttons
+  pageTabs.forEach((tab, idx) => {
+    const tabId = tab.toLowerCase();
+    const tabElement = document.getElementById(`profile-editor-${tabId}`);
+    const tabButton = document.getElementById(`profile-tab-${tab}`);
+    
+    if (tabElement) tabElement.classList.add('hidden');
+    if (tabButton) tabButton.classList.remove('project-editor-tab-active');
+  });
+
+  // Update Current Tab
+  currentTab = tabIndex;
+
+  // Show the new tab
+  const currentTabId = pageTabs[currentTab].toLowerCase();
+  const currElement = document.querySelector(`#profile-editor-${currentTabId}`);
+  const currTab = document.querySelector(`#profile-tab-${pageTabs[currentTab]}`);
+  
+  if (currElement) {
+    currElement.classList.remove('hidden');
+  }
+  
+  if (currTab) {
+    currTab.classList.add('project-editor-tab-active');
+  }
+  
+  console.log(`Switched to tab ${pageTabs[currentTab]}`); // Debug
+};
+
   // Profile should be set up on intialization
   useEffect(() => {
     const setUpProfileData = async () => {
@@ -125,13 +190,14 @@ export const ProfileEditPopup = () => {
         <AboutTab profile={profile}/>
         <ProjectsTab profile={profile} />
         <SkillsTab profile={profile} />
+        <InterestTab profile={profile} />
         <LinksTab profile={profile} type={'profile'}/>
       </div>
     );
   };
 
   // Method to switch between tabs
-  const switchTab = (tabIndex: number) => {
+  /*const switchTab = (tabIndex: number) => {
     // This method toggles the visibility for the previous tab and then the selected tab
     // First toggle visibility for the previous tab
     const previousTabIndex = pageTabs[currentTab].toLowerCase();
@@ -160,6 +226,9 @@ export const ProfileEditPopup = () => {
       case 'Skills':
         currentElement = document.querySelector(`#profile-editor-skills`);
         break;
+      case 'Interests':
+        currentElement = document.querySelector(`#profile-editor-interests`);
+        break;
       case 'Links':
         currentElement = document.querySelector(`#profile-editor-links`);
         break;
@@ -174,7 +243,9 @@ export const ProfileEditPopup = () => {
     if (currTab) {
       currTab.classList.toggle('project-editor-tab-active');
     }
-  };
+  };*/
+
+  
 
   // Maps the pageTabs into interactable page tabs, to switch between the Tab Content
   let editorTabs = pageTabs.map((tag, i) => {
@@ -195,7 +266,25 @@ export const ProfileEditPopup = () => {
   return (
     <Popup>
       <PopupButton buttonId="project-info-edit">Edit</PopupButton>
-      <PopupContent callback={()=>{switchTab(0);}}>
+      <PopupContent 
+  callback={() => {
+    // Reset to the first tab and ensure proper hiding
+    currentTab = 0;
+    setTimeout(() => {
+      pageTabs.forEach((tab, idx) => {
+        const tabId = tab.toLowerCase();
+        const tabElement = document.getElementById(`profile-editor-${tabId}`);
+        if (tabElement) {
+          if (idx === 0) {
+            tabElement.classList.remove('hidden');
+          } else {
+            tabElement.classList.add('hidden');
+          }
+        }
+      });
+    }, 0);
+  }}
+>
         <form id="profile-creator-editor" encType="multipart/form-data">
           <div id="profile-editor-tabs">{editorTabs}</div>
           <TabContent />

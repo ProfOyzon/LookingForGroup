@@ -42,6 +42,7 @@ const envConfig = Object.freeze({
   dbUser: getEnvVariable('DB_USER'),
   dbPass: getEnvVariable('DB_PASS'),
   dbName: getEnvVariable('DB_NAME'),
+  dbPort: getNumEnvVariable('DB_PORT'),
   mailerEmail: getEnvVariable('MAILER_EMAIL'),
   mailerPass: getEnvVariable('MAILER_PASS'),
   sessionSecret: getEnvVariable('SESSION_SECRET'),

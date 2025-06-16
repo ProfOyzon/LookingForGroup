@@ -5,6 +5,7 @@
 textarea {
   resize: none;
 }
+
 /* ---------- Layout ---------- */
 #profile-creator-editor {
   display: flex;
@@ -13,7 +14,7 @@ textarea {
   width: 90vw;
   max-width: 1120px;
   height: calc(90vh - 200px);
-   /* Comment height for the pop-up to stretch to any size,
+  /* Comment height for the pop-up to stretch to any size,
    Dynamic sizing  */
   padding: 50px;
   border: none;
@@ -94,7 +95,6 @@ textarea {
   margin: 10px 0;
   outline: none;
   padding: 0.5rem;
-  height: 35px;
 }
 
 .edit-profile-body input,

@@ -362,6 +362,18 @@ Project Creator and Editor style rules
   font-weight: 700;
 }
 
+
+.save-error-msg {
+  display:none;
+  margin: auto;
+}
+
+.save-error-msg p {
+  margin: 0 0 1.5% 0;
+  font-size: 18px;
+  color: red;
+}
+
 #project-editor-content {
   flex-grow: 1;
   margin: 35px 56px 40px 55px;

@@ -82,8 +82,8 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
 
   // Reset tag list on tab change to default list
   useEffect(() => {
-  const defaultTags = currentDataSet[0]?.data ?? [];
-  setSearchedTags(defaultTags);
+    const defaultTags = currentDataSet[0]?.data ?? [];
+    setSearchedTags(defaultTags);
   }, [currentTagsTab, currentDataSet])
 
   // Find if a tag is present on the project
@@ -217,7 +217,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
       )
     }
     else if (searchedTags && searchedTags.length === 0) {
-     return <div className="no-results-message">No results found!</div>;
+      return <div className="no-results-message">No results found!</div>;
     }
     // Developer Skill
     if (currentTagsTab === 0) {
@@ -297,9 +297,9 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
     let tabs = tagTabs.map((tag, i) => {
       return (
         <button
-        type="button"
-        onClick={() => setCurrentTagsTab(i)}
-        className={`button-reset project-editor-tag-search-tab ${currentTagsTab === i ? 'tag-search-tab-active' : ''}`}
+          type="button"
+          onClick={() => setCurrentTagsTab(i)}
+          className={`button-reset project-editor-tag-search-tab ${currentTagsTab === i ? 'tag-search-tab-active' : ''}`}
         >
           {tag}
         </button>
@@ -322,8 +322,8 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
         {/* Error tag */}
         {modifiedProfile.skills?.length === 0 ? <div className="error">*At least 1 tag is required</div> : <></>}
         <div id="project-editor-selected-tags-container">
-          <hr id="selected-tag-divider" />
           {/* TODO: Separate top 2 tags from others with hr element */}
+          <hr id="selected-tag-divider" />
           {loadProfileTags}
         </div>
       </div>

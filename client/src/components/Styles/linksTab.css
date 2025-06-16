@@ -16,30 +16,34 @@
 }
 
 #profile-editor-add-link {
-    background-color: #0000;
-    border: none;
-    border-radius: 30px;
-    font-size: 1.8ch;
-    font-weight: 700;
-    height: 2ch;
+  background-color: #0000;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.8ch;
+  font-weight: 700;
+  height: 2ch;
+}
+
+#profile-editor-add-link:hover {
+  background-color: var(--bg-color);
 }
 
 .link-input-wrapper {
-    position: relative;
-    max-width: 100%;
-    width: 100%;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
 }
 
 .close-btn {
-    background-color: var(--primary-color);
-    border-radius: 50%;
-    width: 25px;
-    height: 27px;
-    aspect-ratio: 1;
-    position: absolute;
-    right: 12px;
-    top: 0;
-    transform: translateX(-10%) translateY(90%);
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  width: 25px;
+  height: 27px;
+  aspect-ratio: 1;
+  position: absolute;
+  right: 12px;
+  top: 0;
+  transform: translateX(-10%) translateY(90%);
 }
 
 .close-btn>.fa-minus {

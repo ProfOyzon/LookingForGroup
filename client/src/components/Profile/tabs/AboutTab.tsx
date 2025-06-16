@@ -60,7 +60,7 @@ const TextArea = (props: {
     <div className="editor-input-item editor-input-textarea">
       <label>{props.title}</label>
       <div className="project-editor-extra-info">{props.description}</div>
-      <span className="character-count">
+      <span style={{bottom: '-20px'}} className="character-count">
         {charCount}/{props.maxLength}
       </span>
       <textarea

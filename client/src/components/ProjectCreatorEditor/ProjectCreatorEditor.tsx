@@ -181,10 +181,32 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
     // save if on link tab
     if (currentTab === 4) updateLinks();
 
+    //Error Handling
     if (errorAddMember !== '' ||
       errorAddPosition !== '' ||
       errorLinks !== '') {
       setFailCheck(true);
+      return;
+    }
+    //pops up error text if required fields in general haven't been filled out
+    if (!modifiedProject.title || !modifiedProject.description || !modifiedProject.status || !modifiedProject.hook) {
+      let errorText = document.getElementById('invalid-input-error');
+      setMessage('*Fill out all required info under General before saving!*');
+
+      if (errorText) {
+        errorText.style.display = 'block'
+      }
+      return;
+    }
+
+    //pops up error text if no tags have been chosen
+    if (modifiedProject.tags.length == 0 || modifiedProject.project_types.length == 0) {
+      let errorText = document.getElementById('invalid-input-error');
+      setMessage('*Choose a project type and tag under Tags before saving!*');
+
+      if (errorText) {
+        errorText.style.display = 'block'
+      }
       return;
     }
 
@@ -192,29 +214,6 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
     if (newProject) {
       try {
         // Record information from inputs
-
-        //Error Handling
-        //pops up error text if required fields in general haven't been filled out
-        if (!modifiedProject.title || !modifiedProject.description || !modifiedProject.status || !modifiedProject.hook) {
-          let errorText = document.getElementById('invalid-input-error');
-          setMessage('*Fill out all required info under General before saving!*');
-
-          if (errorText) {
-            errorText.style.display = 'block'
-          }
-          return;
-        }
-
-        //pops up error text if no tags have been chosen
-        if (modifiedProject.tags.length == 0 || modifiedProject.project_types.length == 0) {
-          let errorText = document.getElementById('invalid-input-error');
-          setMessage('*Choose a project type and tag under Tags before saving!*');
-
-          if (errorText) {
-            errorText.style.display = 'block'
-          }
-          return;
-        }
       }
       catch (error) {
         console.error(error);

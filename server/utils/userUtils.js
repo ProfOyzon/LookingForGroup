@@ -186,7 +186,7 @@ async function getAccountInformation(user_id) {
   // } else {
   const apiURL = `${root}/users/${user_id}/account`;
   const response = await GET(apiURL);
-  console.log(response);
+  //console.log(response);
   if (response.status === 401) {
     console.log(response.error);
     return response;
@@ -205,7 +205,7 @@ async function getUsersById(id) {
   const apiURL = `${root}/users/${id}`;
   const response = await GET(apiURL);
   if (response.status === 400) return response; //error
-
+  //console.log('User data recieved: ',response.data);
   return response;
 }
 

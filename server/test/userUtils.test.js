@@ -24,7 +24,7 @@ test('GET: Get user id 19 (mistah bones)', async () => {
 test('GET: Get account information for id 19 (Mistah Bones), invalid (unauthorized).', async () => {
   const r = await util.getAccountInformation(19);
 
-  //console.log(r.data);
+  console.log('invalid(unauthorized):', r.data);
 
   expect(r.status).toBe(401); // because no authorization
   expect(r).toBeDefined();

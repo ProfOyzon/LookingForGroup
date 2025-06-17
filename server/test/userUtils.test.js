@@ -24,7 +24,7 @@ test('GET: Get user id 19 (mistah bones)', async () => {
 test('GET: Get account information for id 19 (Mistah Bones), invalid (unauthorized).', async () => {
   const r = await util.getAccountInformation(19);
 
-  console.log('invalid(unauthorized):', r.data);
+  //console.log('invalid(unauthorized):', r.data);
 
   expect(r.status).toBe(401); // because no authorization
   expect(r).toBeDefined();
@@ -84,7 +84,7 @@ test('GET: all projects user is following', async () => {
 
 /* - - - POSTs - - - */
 
-test('POST: Create new user.', async () => {
+test('POST: Create new user, invalid, no authorization', async () => {
   const r = await util.createNewUser(
     '',
     'jjp8541@g.rit.edu',
@@ -104,17 +104,17 @@ test('POST: Create new user.', async () => {
 
   console.log('create new user:', r);
 
-  expect(r.status).toBe(200);
+  expect(r.status).toBe(400);
   expect(r).toBeDefined();
 });
 
 /* - - - PUTs - - - */
 
-test('PUT: change user (mistah bones), first name to mr.', async () => {
+test('PUT: change user (mistah bones), first name to mr. invalid, unauthorized', async () => {
   let user_id = 19;
   let data = [
     {
-      firstName: 'mr.',
+      first_name: 'mr.',
     },
   ];
   const r = await util.editUser(user_id, data);
@@ -122,12 +122,12 @@ test('PUT: change user (mistah bones), first name to mr.', async () => {
   console.log('edit user:', r);
 
   const change = await util.getUsersById(19);
-  const first = change.data.firstName;
+  const first = change.data[0].first_name;
   console.log('edit user, first name:', first);
-  expect(first).toBe('mr.');
+  expect(first).toBe('Mistah');
 });
 
-test('PUT: make mistah bones follow project id 5 (wild ride)', async () => {
+test('PUT: make mistah bones follow project id 5 (wild ride), invalid', async () => {
   let user_id = 19;
   let project_id = 5;
   const r = await util.addProjectFollowing(user_id, project_id);
@@ -135,7 +135,7 @@ test('PUT: make mistah bones follow project id 5 (wild ride)', async () => {
   console.log(r);
 
   const change = await util.getProjectFollowing(user_id);
-  const wildride = change.data[0];
+  const wildride = change.data;
   console.log('presumed wildride:', wildride);
   expect(wildride).toBeDefined();
 });

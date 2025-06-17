@@ -93,11 +93,11 @@ async function createNewUser(
 
     const response = await POST(apiURL, data);
     if (response.status === 400) {
-      console.log('Error creating a new user.');
+      //console.log('Error creating a new user.');
       return { status: 400, error: 'Error creating a new user.' };
     }
     console.log(`User ${email} created.`);
-    console.log(response);
+    //console.log(response);
     return response;
   }
 }
@@ -596,9 +596,9 @@ async function addProjectFollowing(id, projectID) {
     projectId: projectID,
   };
   const response = await POST(url, data);
-  if (response.status === 400) {
+  if (response.status === 400 || response.status === 401) {
     console.log('Error creating project following, unauthorized.');
-    return { status: 400, error: response.error };
+    return { status: response.status, error: response.error };
   }
   console.log('Created project following.');
   return { status: 200, data: id };

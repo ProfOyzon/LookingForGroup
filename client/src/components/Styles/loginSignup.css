@@ -156,6 +156,12 @@ Login and Signup page style rules
   font-weight: 700;
 }
 
+#main-loginsignup-btn:hover,
+.directory button:hover {
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
 .login-form-inputs {
   /* border: 1px solid black; */
   /* height: 300px; */
@@ -204,7 +210,7 @@ Login and Signup page style rules
 
 /* gets rid of microsoft edge's built-in password reveal control */
 ::-ms-reveal {
-    display: none;
+  display: none;
 }
 
 #forgot-password {

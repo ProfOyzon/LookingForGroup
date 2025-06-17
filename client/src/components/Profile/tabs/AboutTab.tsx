@@ -60,7 +60,7 @@ const TextArea = (props: {
     <div className="editor-input-item editor-input-textarea">
       <label>{props.title}</label>
       <div className="project-editor-extra-info">{props.description}</div>
-      <span className="character-count">
+      <span style={{bottom: '-20px'}} className="character-count">
         {charCount}/{props.maxLength}
       </span>
       <textarea
@@ -152,7 +152,7 @@ export const AboutTab = (props: { profile: ProfileData }) => {
       
       <div className="edit-profile-section-3">
         <TextArea
-          title={'About You*'}
+          title={'About Me*'}
           description={
             'Share a brief overview of who you are, your interests, and what drives you!'
           }

@@ -11,7 +11,7 @@ Project Panel component style rules
   justify-content: space-between;
   gap: 20px;
   width: 100%;
-  /* keep panels below searchbar */ 
+  /* keep panels below searchbar */
   z-index: 0;
   /* margin: 0 50px 50px 50px; */
 }
@@ -42,8 +42,9 @@ Project Panel component style rules
   }
 
   .project-panel-hover {
-    z-index: -1;
-    /* transition: 0.2s; */
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.2s;
   }
 }
 
@@ -51,27 +52,39 @@ Project Panel component style rules
   transition: 0.2s;
 
   .project-panel-hover {
+    visibility: visible;
     opacity: 1;
-    z-index: 1;
     cursor: pointer;
-    /* transition: 0.2s; */
+  }
+}
+
+/* IPAD/TABLET Hover support for touch-screen devices that specifically are not computers */
+@media only screen and (any-hover: none) {
+  .project-panel {
+    height: 400px;
+
+    .project-panel-hover {
+      visibility: visible;
+      opacity: 1;
+      box-shadow: none;
+      position: absolute;
+      top: 0;
+    }
   }
 }
 
 .project-panel-hover {
-  transition: 0.2s;
   border-radius: 10px;
   background-color: var(--bg-color);
-  box-shadow: 0px 0px 10px 0px var(--shadow-color);
-  z-index: 1;
+  box-shadow: 2px 2px 10px 2px var(--shadow-color);
   color: var(--main-text);
-  opacity: 0;
   position: absolute;
   height: 400px;
   /* min-width: 420px; */
   width: 100%;
-  transition: opacity 0.2s;
   top: -100px;
+  visibility: visible;
+  transition: visibility 0.2s;
 
   /* bottom: 0; */
   /* left: 0; */
@@ -188,22 +201,6 @@ Project Panel component style rules
   cursor: pointer;
 }
 
-@media only screen and (any-pointer: coarse) {
-  .project-panel {
-    height: 400px;
-
-    .project-panel-hover {
-      z-index: 1;
-      opacity: 1;
-      box-shadow: 0;
-
-      /* Position directly on top of standard project-panel element */
-      position: absolute;
-      top: 0;
-    }
-  }
-}
-
 /*
 ------------------------------------------------------------------------------------------------
 Project image carousel style rules
@@ -306,7 +303,7 @@ Project Creator and Editor style rules
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1120px;
+  max-width: 90vw;
   height: calc(90vh - 100px);
   border: none;
   border-radius: 10px;
@@ -324,6 +321,12 @@ Project Creator and Editor style rules
   display: flex;
   justify-content: space-around;
   margin-top: 38px;
+}
+
+@media (max-width: 600px) {
+  #project-editor-tabs {
+    overflow-x: auto;
+  }
 }
 
 .project-editor-tab {
@@ -356,8 +359,19 @@ Project Creator and Editor style rules
   font-size: 2ch;
   width: max-content;
   margin: auto;
-  margin-bottom: 15px;
   font-weight: 700;
+}
+
+
+.save-error-msg {
+  display:none;
+  margin: auto;
+}
+
+.save-error-msg p {
+  margin: 0 0 1.5% 0;
+  font-size: 18px;
+  color: red;
 }
 
 #project-editor-content {
@@ -395,6 +409,7 @@ Project Creator and Editor style rules
 .project-link-select-wrapper .project-link-select {
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
+  padding: .5rem !important;
 }
 
 .project-link-input-wrapper {
@@ -407,7 +422,7 @@ Project Creator and Editor style rules
 .project-link-input-wrapper input {
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  padding: 15px;
+  padding: .5rem;
   flex-grow: 1;
   background-color: var(--bg-color);
   color: var(--main-text);
@@ -626,14 +641,13 @@ Project Creator and Editor style rules
   flex-direction: column;
 }
 
-/* FIXME: line to be proper color */
 #tag-search-divider,
 #selected-tag-divider {
-  /* color: var(--header-color); */
-  height: 1px;
-  background-color: var(--header-color);
-  /* color: var(--neutral-gray, #1A1921); */
+  height: 4px;
   width: 100%;
+  border: none;
+  border-radius: 3px;
+  background-color: var(--header-color);
 }
 
 #selected-tag-divider {
@@ -707,10 +721,10 @@ Project Creator and Editor style rules
   height: 22px;
 }
 
-#selected-thumbnail > img,
-.star > img,
-.star-filled > img,
-.delete-image > img {
+#selected-thumbnail>img,
+.star>img,
+.star-filled>img,
+.delete-image>img {
   width: 22px;
   height: 22px;
 }
@@ -806,7 +820,7 @@ Project Creator and Editor style rules
 .project-editor-section-header {
   color: var(--primary-color);
   font-size: 2ch;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 #project-editor-tag-search-tabs,
@@ -825,6 +839,7 @@ Project Creator and Editor style rules
   padding: 0;
   color: var(--neutral-gray);
   font-size: 1.6ch;
+  font-weight: 600;
 }
 
 #profile-editor-skills {
@@ -844,7 +859,6 @@ Project Creator and Editor style rules
 .team-tab-active {
   color: var(--primary-color);
   font-weight: 600;
-  transition: none;
 }
 
 #project-editor-team {
@@ -1019,6 +1033,13 @@ Project Creator and Editor style rules
   grid-template-rows: 1fr 1fr 1fr;
   column-gap: 8px;
   row-gap: 15px;
+}
+
+.success {
+  color: green;
+  font-weight: 500;
+  font-size: 14px;
+  font-style: italic;
 }
 
 #project-team-add-member-name {
@@ -1325,12 +1346,12 @@ button.edit-position-contact {
   border-radius: 10px;
   padding: 3px;
   cursor: default;
+}
 
-  img {
+button.edit-position-contact .project-member-image {
     width: 48px;
     height: 48px;
     border: 1px solid var(--border-color);
-  }
 }
 
 #edit-position-details-right {
@@ -1400,7 +1421,7 @@ select.edit-position-compensation {
   display: flex;
   gap: 8px;
   justify-items: center;
-  align-items: flex-start;
+  /* align-items: flex-start; */
   align-self: stretch;
 }
 
@@ -1417,10 +1438,16 @@ select.edit-position-compensation {
   background-color: var(--primary-color);
   border: none;
   border-radius: 50%;
+  transition: .15s;
+  align-self: anchor-center;
 }
 
 .remove-link-button>.fa-minus {
   color: var(--invert-text);
+}
+
+.remove-link-button:hover {
+  background-color: var(--error-delete-color) !important;
 }
 
 /*
@@ -2728,7 +2755,7 @@ Project Carousel style rules
 .add-item-button>button {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: end;
   gap: 10px;
   padding: 0 10px;
   background: transparent;
@@ -3122,21 +3149,6 @@ My projects page style rules
   }
 }
 
-.my-projects-all-projects-button {
-  box-sizing: border-box;
-  background-color: var(--primary-color);
-  border: 0px;
-  border-radius: 55px;
-  width: fit-content;
-  color: var(--invert-text);
-  padding: 6px 17px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 28px;
-  letter-spacing: 0%;
-}
-
 .my-projects-sort-list {
   box-sizing: border-box;
   background-color: var(--header-color);
@@ -3207,6 +3219,11 @@ My projects page style rules
   }
 }
 
+#my-projects-sort-btn:hover {
+  background-color: var(--invert-text);
+  box-shadow: 0 0 5px 0 var(--primary-color);
+}
+
 .my-projects-display-switch {
   box-sizing: border-box;
   background-color: var(--header-color);
@@ -3247,14 +3264,16 @@ My projects page style rules
   color: var(--invert-text);
 }
 
-.my-projects-new-project-button {
+.my-projects-all-projects-button,
+.my-projects-new-project-button,
+.my-projects-create-btn>button {
   box-sizing: border-box;
+  width: fit-content;
   background-color: var(--primary-color);
   border: 0px;
   border-radius: 55px;
-  width: fit-content;
-  color: var(--invert-text);
   padding: 6px 17px;
+  color: var(--invert-text);
   text-align: center;
   font-size: 18px;
   font-family: Inter;
@@ -3263,8 +3282,22 @@ My projects page style rules
   letter-spacing: 0%;
 }
 
+.my-projects-create-btn>button {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 25px;
+    margin-right: 10px;
+    filter: invert(1) saturate(0) brightness(2);
+  }
+}
+
 .my-projects-all-projects-button:hover,
-.my-projects-new-project-button:hover {
+.my-projects-new-project-button:hover,
+.my-projects-create-btn>button:hover {
   transform: scale(1.1);
   transition: 0.2s;
 }

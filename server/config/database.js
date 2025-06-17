@@ -7,6 +7,7 @@ import envConfig from './env.js';
 const pool = mysql.createPool({
   host: envConfig.dbHost,
   user: envConfig.dbUser,
+  port: envConfig.dbPort,
   password: envConfig.dbPass,
   database: envConfig.dbName,
   connectionLimit: 10,
@@ -22,29 +23,33 @@ try {
 } catch (err) {
   // @ts-ignore
   switch (err.code) {
-    // DB host error
+    // DB address could not be reached
     case 'ENOTFOUND':
-      console.error(`There was an error connecting to the db host ${envConfig.dbHost} - ${err}`);
-      break;
+      throw new Error(
+        `There was an error connecting to the db host '${envConfig.dbHost}' - ${JSON.stringify(err)}`,
+      );
 
-    // DB name not found
+    // DB address reached but no database was found
+    case 'ECONNREFUSED':
+      throw new Error(
+        `A connection to a database at '${envConfig.dbHost}:3306' could not be made - ${JSON.stringify(err)}`,
+      );
+
+    // DB name not found in the database server
     case 'ER_BAD_DB_ERROR':
-      console.error(`There was an error connecting to the database ${envConfig.dbName} - ${err}`);
-      break;
+      throw new Error(
+        `The database '${envConfig.dbName}' could not be found on the database server - ${JSON.stringify(err)}`,
+      );
 
     // Wrong username or password
     case 'ER_ACCESS_DENIED_ERROR':
-      console.error(
-        `There was an error connecting to the database with the entered credentials - ${err}`,
+      throw new Error(
+        `There was an error connecting to the database with the entered credentials - ${JSON.stringify(err)}`,
       );
-      break;
 
     default:
-      console.error(`Connection failed - ${err}`);
-      break;
+      throw new Error(`Connection failed - ${JSON.stringify(err)}`);
   }
-
-  process.exit(1);
 }
 //#endregion
 

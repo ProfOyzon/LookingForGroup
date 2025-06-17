@@ -1,10 +1,31 @@
 import envConfig from '../config/env.js';
 import { GET, PUT, POST, DELETE } from './fetchUtils.js';
+import pool from '../config/database.js';
 
 const root =
   envConfig.env === 'development' || envConfig.env === 'test'
     ? `http://localhost:8081/api`
     : `https://lfg.gccis.rit.edu/api`;
+
+// If this function is unused, that's fine,
+// it's for a temporary work-around
+/**
+ * Executes SQL code if env is development or test
+ * @param {String} sqlCommand 
+ * @param {Array<any>} values 
+ * @returns True if code is executed, otherwise false
+ */
+const devSql = async (sqlCommand, values) => {
+  if (envConfig.env !== 'development' && envConfig.env !== 'test') {
+    return false;
+  }
+  try {
+    await pool.query(sqlCommand, values);
+  } catch (err) {
+    console.error(err);
+  }
+  return true;
+}
 
 /**
  * Creates a new project and adds it to the database. All params default to null.
@@ -79,7 +100,7 @@ const getProjects = async () => {
 
 /**
  * Retrieves data of a project by its ID
- * @param {Number} ID -  ID of project to retrieve
+ * @param {number} ID -  ID of project to retrieve
  * @returns - A project object if valid, "400" if not
  */
 const getByID = async (ID) => {
@@ -93,7 +114,7 @@ const getByID = async (ID) => {
 
 /**
  * Updates data of an existing project
- * @param {Number} ID - ID of the project to update
+ * @param {number} ID - ID of the project to update
  * @param {Object} data - Mapped data for update
  * @returns Response status
  */
@@ -108,7 +129,7 @@ const updateProject = async (ID, data) => {
 
 /**
  * Deletes an existing project
- * @param {Number} ID - ID of the project to delete
+ * @param {number} ID - ID of the project to delete
  * @returns Response status
  */
 const deleteProject = async (ID) => {
@@ -123,7 +144,7 @@ const deleteProject = async (ID) => {
 /**
  * Updates the thumbnail image for a project
  * @param {number} ID - ID of the project to update
- * @param {File|string} _image - Image file of new thumbnail
+ * @param {File} _image - Image file of new thumbnail
  * @returns The filename of the thumbnail image if valid, "400" if not
  */
 const updateThumbnail = async (ID, _image) => {
@@ -138,7 +159,7 @@ const updateThumbnail = async (ID, _image) => {
 
 /**
  * Gets the pictures used in a project's carousel
- * @param {Number} ID - ID of the target project
+ * @param {number} ID - ID of the target project
  * @returns Array of image objects if valid, "400" if not
  */
 const getPics = async (ID) => {
@@ -153,7 +174,7 @@ const getPics = async (ID) => {
 /**
  * Adds a picture to a project's carousel
  * @param {number} ID - ID of the target project
- * @param {File|string} _image - Image file to be added
+ * @param {File} _image - Image file to be added
  * @param {number} _position - Position of the image in the carousel
  * @returns Response status
  */
@@ -172,7 +193,7 @@ const addPic = async (ID, _image, _position) => {
 
 /**
  * Updates position order of a project's carousel pictures
- * @param {Number} ID - ID of the target project
+ * @param {number} ID - ID of the target project
  * @param {Object} images - Array of objects, which contain the image "id" and new "position"
  * @returns Response status
  */
@@ -187,8 +208,8 @@ const updatePicPositions = async (ID, images) => {
 
 /**
  * Deletes a picture in a project
- * @param {Number} ID - ID of the target project
- * @param {String} image - Filename of the image to delete
+ * @param {number} ID - ID of the target project
+ * @param {string} image - Filename of the image to delete
  * @returns Response status
  */
 const deletePic = async (ID, image) => {
@@ -248,8 +269,8 @@ const updateMember = async (ID, _userId, _titleId, _permission) => {
 
 /**
  * Removes a member from a project
- * @param {Number} ID - ID of the target project
- * @param {Number} userId - ID of the target user
+ * @param {number} ID - ID of the target project
+ * @param {number} userId - ID of the target user
  * @returns Response status
  */
 const deleteMember = async (ID, userId) => {

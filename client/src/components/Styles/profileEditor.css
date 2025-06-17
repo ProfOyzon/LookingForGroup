@@ -5,6 +5,7 @@
 textarea {
   resize: none;
 }
+
 /* ---------- Layout ---------- */
 #profile-creator-editor {
   display: flex;
@@ -13,7 +14,7 @@ textarea {
   width: 90vw;
   max-width: 1120px;
   height: calc(90vh - 200px);
-   /* Comment height for the pop-up to stretch to any size,
+  /* Comment height for the pop-up to stretch to any size,
    Dynamic sizing  */
   padding: 50px;
   border: none;
@@ -21,6 +22,12 @@ textarea {
   color: var(--main-text);
 
   position: relative;
+}
+
+@media (min-width: 1172px) {
+  #profile-creator-editor {
+    width: 1120px;
+  }
 }
 
 #profile-editor-tabs {
@@ -107,7 +114,6 @@ textarea {
 }
 
 /* ----- About Page ----- */
-
 
 
 /* .photo .edit-profile-image {

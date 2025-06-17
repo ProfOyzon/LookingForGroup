@@ -13,7 +13,7 @@ type SelectContextProps = {
 
 type SelectButtonProps = {
     placeholder: string;
-    initialVal: string;
+    initialVal: any;
     buttonId?: string;
     callback?: (e: React.MouseEvent<HTMLButtonElement>) => void;
     className?: string;
@@ -42,8 +42,8 @@ type SelectProps = {
 export const SelectContext = createContext<SelectContextProps>({
     open: false,
     value: null,
-    setOpen: () => {},
-    setValue: () => {},
+    setOpen: () => { },
+    setValue: () => { },
 });
 
 // --------------------
@@ -55,7 +55,7 @@ export const SelectButton: React.FC<SelectButtonProps> = ({
     initialVal = '',
     buttonId = '',
     className = '',
-callback = () => {}
+    callback = () => { }
 }) => {
     const { open, value, setOpen } = useContext(SelectContext);
 
@@ -77,7 +77,7 @@ callback = () => {}
             ) : (
                 <span className='placeholder'>{placeholder}</span>
             )}
-            <ThemeIcon 
+            <ThemeIcon
                 light={'assets/dropdown_light.png'}
                 dark={'assets/dropdown_dark.png'}
                 addClass={`select-button-arrow ${(open) ? 'opened' : ''}`}
@@ -86,22 +86,22 @@ callback = () => {}
     );
 };
 
-export const SelectOptions: React.FC<SelectOptionsProps> = ({ 
-    options, 
+export const SelectOptions: React.FC<SelectOptionsProps> = ({
+    options,
     className = '',
     rightAlign = false,
-    callback = () => {} 
+    callback = () => { }
 }) => {
     const { open, setOpen, setValue } = useContext(SelectContext);
-    
+
     if (open) {
         return (
-            <div 
+            <div
                 className='select'
                 style={rightAlign ? { right: 0 } : {}}
             >
                 {/* Using index as key is usually bad, but order is not changing here */}
-                {options.map((option, index) => 
+                {options.map((option, index) =>
                     <button
                         key={`${index}-${option.value}`}
                         value={option.value}

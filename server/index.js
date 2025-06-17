@@ -1,6 +1,5 @@
 import express from 'express';
 import session from 'express-session';
-import { join } from 'path';
 import morgan from 'morgan';
 import envConfig from './config/env.js';
 import pool from './config/database.js';
@@ -8,7 +7,6 @@ import usersRouter from './routes/users.js';
 import projectsRouter from './routes/projects.js';
 import datasetsRouter from './routes/datasets.js';
 
-const dirname = import.meta.dirname;
 const app = express();
 const port = envConfig.port;
 

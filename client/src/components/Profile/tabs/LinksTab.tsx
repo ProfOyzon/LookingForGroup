@@ -109,11 +109,11 @@ export const LinksTab = (props) => {
                   updateURL(props.index, e.target.value);
                 }
               } />
+            <button className='remove-link-button' onClick={
+              (e) => {
+                onRemoveLinkClicked(e, props.index);
+              }}><i className="fa-solid fa-minus"></i></button>
           </div>
-          <button className='close-btn' onClick={
-            (e) => {
-              onRemoveLinkClicked(e, props.index);
-            }}><i className="fa-solid fa-minus"></i></button>
         </div>
       </div>
     );
@@ -148,9 +148,9 @@ export const LinksTab = (props) => {
 
   return (
     <div id="profile-editor-links" className="hidden">
-      <label>Social Links</label>
+      <div className="project-editor-section-header">Social Links</div>
       <div className="project-editor-extra-info">
-        Provide links to pages you wish to include on your page.
+        Provide any links you wish to include on your page.
       </div>
       <div id="project-editor-link-list">
         <LinkContainer />

@@ -909,13 +909,20 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             />
             <div className="project-editor-project-member-info">
               <div className="project-editor-project-member-name">
-                {m.first_name} {m.last_name}
+                {/* {m.first_name} {m.last_name} */}
+                {m.first_name && m.last_name 
+                ? `${m.first_name} ${m.last_name}` 
+                : m.user_id === 0  
+                ? 'You'
+                : ''
+                }
               </div>
               <div className="project-editor-project-member-role project-editor-extra-info">
                 {m.job_title}
               </div>
             </div>
-            {((m.permissions < permissions) || (modifiedProject.user_id === m.user_id)) ? (
+            {/* ALWAYS SHOW EDIT BUTTON */}
+            { /*((m.permissions < permissions) || (modifiedProject.user_id === m.user_id)) ? (*/
               <Popup>
                 <PopupButton className="edit-project-member-button">
                   {/* <img
@@ -948,7 +955,12 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                       }}
                     />
                     <div className="project-editor-project-member-name">
-                      {m.first_name} {m.last_name}
+                      {m.first_name && m.last_name 
+                      ? `${m.first_name} ${m.last_name}` 
+                      : m.user_id === 0  
+                      ? 'You'
+                      : ''
+                }
                     </div>
                   </div>
                   <div id="project-team-add-member-role">
@@ -1044,9 +1056,9 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                   </PopupButton>
                 </PopupContent>
               </Popup>
-            ) : (
+           /* ) : (
               <></>
-            )}
+            )*/}
           </div>
         );
       })}

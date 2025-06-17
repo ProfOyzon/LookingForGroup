@@ -12,10 +12,6 @@ const dirname = import.meta.dirname;
 const app = express();
 const port = envConfig.port;
 
-// Serve frontend files and images
-app.use(express.static(join(dirname, '../client/build')));
-app.use('/images', express.static(join(dirname, './images')));
-
 app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -39,10 +35,6 @@ app.use(datasetsRouter);
 // @ts-ignore
 app.get('/api', (req, res) => {
   return res.json({ message: 'You Reached The Looking For Group API' });
-});
-
-app.get('/*', (req, res) => {
-  res.sendFile('index.html', { root: join(dirname, '../client/build/') });
 });
 
 // Clean up tokens once a day

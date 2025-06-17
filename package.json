@@ -11,7 +11,7 @@
     "prepare": "husky",
     "start": "pm2 start ./server/index.js",
     "stop": "pm2 stop ./server/index.js",
-    "dev": "concurrently \"npm run build:watch --workspace=client\" \"nodemon server/index.js\"",
+    "dev": "concurrently \"npm run start --workspace=client\" \"nodemon server/index.js\"",
     "build:client": "npm run build --workspace=client",
     "test": "cross-env NODE_ENV=test jest",
     "lint:server": "eslint --fix server",

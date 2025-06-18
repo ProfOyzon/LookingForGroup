@@ -4,13 +4,11 @@ import { SearchBar } from '../SearchBar';
 import { useState } from 'react';
 import { interests } from '../../constants/interests';
 import { ThemeIcon } from '../ThemeIcon';
+import { Tag } from '../Tags';
 // import ChooseInterests from "../SignupProcess/ChooseInterests";
 
 export const ProfileInterests = ({ user, isUsersProfile }) => {
-  // Initialize state with empty array if user interests don't exist
-  const [selectedInterests, setSelectedInterests] = useState(user?.interests || []);
-  const [showPopup, setShowPopup] = useState(false);
-  const [filteredInterests, setFilteredInterests] = useState(interests);
+
 
   // Safely generate interests list with null check
   const interestsList = user?.interests?.map((interest) => (
@@ -18,7 +16,7 @@ export const ProfileInterests = ({ user, isUsersProfile }) => {
   )) || [];
 
   // Toggle interest selection
-  const toggleInterest = (interest) => {
+ /* const toggleInterest = (interest) => {
     if (selectedInterests.includes(interest)) {
       setSelectedInterests(selectedInterests.filter(i => i !== interest));
     } else if (selectedInterests.length < 4) {
@@ -55,7 +53,7 @@ export const ProfileInterests = ({ user, isUsersProfile }) => {
     } catch (error) {
       console.error("Failed to save interests:", error);
     }
-  };
+  }; */
 
   return (
     <div id="profile-interests">
@@ -63,16 +61,6 @@ export const ProfileInterests = ({ user, isUsersProfile }) => {
       <div className="profile-name-button">
         {/*edit interests button - only show for current user's profile*/}
         <h4>Interests</h4>
-        {isUsersProfile && (
-          <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup)}>
-            <ThemeIcon
-              light={"assets/black/edit.png"}
-              dark={"assets/white/edit.png"}
-              alt="Edit interests"
-              id="edit-interests-icon"
-            />
-          </button>
-        )}
       </div>
       <div id="profile-interests-list" className="profile-list">
         {interestsList.length > 0 ? interestsList : <p 
@@ -84,7 +72,7 @@ export const ProfileInterests = ({ user, isUsersProfile }) => {
           }}>Sorry, no interests here</p>}
       </div>
 
-      <PagePopup
+      {/* <PagePopup
         width={'80vw'}
         height={'80vh'}
         popupId={0}
@@ -126,7 +114,7 @@ export const ProfileInterests = ({ user, isUsersProfile }) => {
             <button className="cancel-btn" onClick={() => setShowPopup(false)}>Cancel</button>
           </div>
         </div>
-      </PagePopup>
+      </PagePopup> */}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import util from '../utils/userUtils.js';
 test('GET: Get all users', async () => {
   const r = await util.getUsers();
 
-  //console.log(r);
+  console.log(r);
 
   expect(r.status).toBe(200);
   expect(r).toBeDefined();
@@ -102,7 +102,7 @@ test('POST: Create new user, invalid, no authorization', async () => {
     [],
   );
 
-  console.log('create new user:', r);
+  //console.log('create new user:', r);
 
   expect(r.status).toBe(400);
   expect(r).toBeDefined();
@@ -119,7 +119,7 @@ test('PUT: change user (mistah bones), first name to mr. invalid, unauthorized',
   ];
   const r = await util.editUser(user_id, data);
 
-  console.log('edit user:', r);
+  //console.log('edit user:', r);
 
   const change = await util.getUsersById(19);
   const first = change.data[0].first_name;
@@ -132,11 +132,11 @@ test('PUT: make mistah bones follow project id 5 (wild ride), invalid', async ()
   let project_id = 5;
   const r = await util.addProjectFollowing(user_id, project_id);
 
-  console.log(r);
+  //console.log(r);
 
   const change = await util.getProjectFollowing(user_id);
   const wildride = change.data;
-  console.log('presumed wildride:', wildride);
+  //console.log('presumed wildride:', wildride);
   expect(wildride).toBeDefined();
 });
 
@@ -148,7 +148,7 @@ test('DELETE: deletes a user by id, invalid', async () => {
 
   const r = await util.deleteUser(20);
 
-  console.log('delete by id: ', r);
+  //console.log('delete by id: ', r);
   expect(r.status).toBe(401);
 });
 

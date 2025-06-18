@@ -40,7 +40,7 @@ const getProjects = async (req, res) => {
     const [projects] = await pool.query(sql);
 
     // Format the follower section so it doesn't provide IDs
-    
+
     // @ts-ignore
     projects.forEach((project) => {
       let followers = project.followers;

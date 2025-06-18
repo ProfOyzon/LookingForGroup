@@ -33,9 +33,6 @@
     "sharp": "^0.33.5"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.27.1",
-    "@babel/preset-env": "^7.27.2",
-    "@babel/preset-react": "^7.27.1",
     "@eslint/js": "^9.28.0",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.2",
@@ -46,7 +43,6 @@
     "@types/node": "^22.15.29",
     "@types/nodemailer": "^6.4.17",
     "@types/supertest": "^6.0.3",
-    "babel-jest": "^30.0.0-beta.3",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "eslint": "^9.28.0",

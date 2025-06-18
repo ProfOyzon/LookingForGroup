@@ -6,13 +6,13 @@ import jestPlugin from 'eslint-plugin-jest';
 
 export default defineConfig([
   {
-    files: ['server/test/*.test.js'],
+    files: ['tests'],
     plugins: { jest: jestPlugin },
     languageOptions: { globals: jestPlugin.environments.globals.globals },
     ...jestPlugin.configs['flat/recommended'],
   },
   {
-    files: ['server/**/*.js'],
+    files: ['src'],
     plugins: { js },
     extends: ['js/recommended'],
     languageOptions: { globals: globals.node },

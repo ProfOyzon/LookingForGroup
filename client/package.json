@@ -4,10 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "build": "vite build",
-    "build:watch": "vite build --watch",
-    "serve": "vite preview",
     "lint": "eslint --fix ."
   },
   "dependencies": {

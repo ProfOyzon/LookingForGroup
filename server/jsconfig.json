@@ -6,7 +6,7 @@
     "allowJs": true,
     "strict": true,
     "noEmit": true,
-    "typeRoots": ["node_modules/@types", "./server/types/**/*"]
+    "typeRoots": ["../node_modules/@types"]
   },
-  "include": ["./server/**/*"]
+  "include": ["src", "tests"]
 }

@@ -73,4 +73,23 @@ const checkImageFile = (req, res, next) => {
   });
 };
 
-export default { checkLogin, checkImageFile };
+/**
+ * mocks the authentiction for testing and dev environments
+ * shibboleth handles this in production
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {void}
+ */
+const authMocking = (req, res, next) => {
+  // @ts-ignore this is a mock user used only for dev
+  req.user = {
+    uid: 'MrBones',
+    givenName: 'Mistah',
+    sn: 'Bones',
+    mail: 'mrb1234@rit.edu',
+  };
+  next();
+};
+
+export default { checkLogin, checkImageFile, authMocking };

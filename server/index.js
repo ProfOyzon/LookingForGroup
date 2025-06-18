@@ -7,10 +7,17 @@ import pool from './config/database.js';
 import usersRouter from './routes/users.js';
 import projectsRouter from './routes/projects.js';
 import datasetsRouter from './routes/datasets.js';
+import mockAuth from './middleware/index.js';
 
 const dirname = import.meta.dirname;
 const app = express();
 const port = envConfig.port;
+
+//use mock authentication
+if (envConfig.env === 'development' || envConfig.env === 'test') {
+  console.log('MOCK AUTHENTICATION');
+  app.use(mockAuth.authMocking);
+}
 
 // Serve frontend files and images
 app.use(express.static(join(dirname, '../client/build')));

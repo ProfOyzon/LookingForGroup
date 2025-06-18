@@ -1,6 +1,6 @@
 import request from 'supertest';
 
-const api = 'https://lfg.gccis.rit.edu/api';
+const api = 'http://localhost:8081/api';
 
 // test('get skills', async () => {
 //

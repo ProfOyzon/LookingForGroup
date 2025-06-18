@@ -58,16 +58,16 @@ export const InterestTab = (props: { profile: ProfileData}) => {
   )) || [];*/
 
   // Toggle interest selection
-  const toggleInterest = (interest) => {
+  const toggleInterest = (interest: string) => {
     if (selectedInterests.includes(interest)) {
       setSelectedInterests(selectedInterests.filter(i => i !== interest));
-    } else if (selectedInterests.length < 4) {
+    } else {
       setSelectedInterests([...selectedInterests, interest]);
     }
   };
 
   // Search function for the "edit interests" popup
-  const Search = (results) => {
+  const Search = (results: string) => {
     if (!results || results.length === 0) {
       //setTimeout to avoid crashing error
       // If no search results, show all interests  
@@ -79,6 +79,20 @@ export const InterestTab = (props: { profile: ProfileData}) => {
     // setTimeout to avoid crashing error
     setTimeout(() => setFilteredInterests(matchedInterests), 0);
   };
+
+  // Render selected interests with useMemo for performance
+  const renderSelectedInterests = useMemo(() => {
+    return selectedInterests.map(interest => (
+        <button
+            key={interest}
+            className="tag-button interest-tag-button-blue-selected"
+            onClick={() => toggleInterest(interest)}
+        >
+            <i className="fa fa-close"></i>
+            &nbsp;{interest}
+        </button>
+    ));
+  }, [selectedInterests]);
 
     // Save selected interests
     const saveInterests = async () => {
@@ -123,44 +137,41 @@ export const InterestTab = (props: { profile: ProfileData}) => {
 
   
   return (
-  <div id="profile-editor-interests" className="profile-edit hidden">
-    <input type="hidden" id="profile-edit-interests" name="interests" value={selectedInterests.join(', ')} />
-          <div id="project-editor-selected-tags">
+  <div id="profile-editor-interests" className="hidden">
+        
+        <div id="project-editor-selected-tags">
         <div className="project-editor-section-header">Selected Tags</div>
         <div className="project-editor-extra-info">
           Drag and drop to reorder
         </div>    
+        <div id="project-editor-selected-tags-container">
+          <hr id="selected-tag-divider" />
+          {renderSelectedInterests}
+
+        </div>
       </div>
+
       <div id="project-editor-tag-search">
-          <SearchBar dataSets={[{ data: interests.map(interest => ({name: interest})) }]} onSearch={Search} />
+          <SearchBar dataSets={[{ data: interests.map(interest => ({name: interest})) }]} 
+          onSearch={Search} 
+          />
 
           <h3>Available Interests:</h3>
           <div id="profile-available-interests" className="interests-selection">
             {filteredInterests.map((interest) => (
               <button
                 key={interest}
+                type="button"
                 className={`interest-tag ${selectedInterests.includes(interest) ? 'selected' : ''}`}
-                onClick={() => toggleInterest(interest)}
-                disabled={!selectedInterests.includes(interest) && selectedInterests.length >= 4}
+                onClick={(e) => { 
+                    e.preventDefault(); // Prevent any default behavior
+                    toggleInterest(interest)
+                }}
               >
-                {interest}
+                <i className={selectedInterests.includes(interest) ? 'fa fa-remove' : 'fa fa-plus'}></i>
+                &nbsp;{interest}
               </button>
             ))}
-          </div>
-
-          <h3>My Selected Interests: <span className="interest-count">({selectedInterests.length}/4)</span></h3>
-          <div id="profile-edit-interests-list" className="profile-list">
-            {selectedInterests.length > 0 ? 
-              selectedInterests.map(interest => (
-                <Tags key={interest} onClick={() => toggleInterest(interest)} className="selected-interest-tag">{interest}</Tags>
-              ))
-              : <p>No interests selected</p>
-            }
-          </div>
-
-          <div className="button-row">
-            <button className="save-btn" onClick={saveInterests}>Save</button>
-            <button className="cancel-btn" onClick={() => setShowPopup(false)}>Cancel</button>
           </div>
           </div>
         </div>

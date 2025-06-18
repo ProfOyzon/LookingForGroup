@@ -1189,17 +1189,18 @@ New Profile page style rules
 }
 
 .interest-tag {
-  padding: 6px 12px;
+  font-size: medium;
+  padding: 6px 15px;
   border-radius: 20px;
-  background-color: var(--bg-secondary);
-  color: var(--text-color);
+  background-color: var(--primary-color);
+  color: var(--invert-text);
   border: 3px solid var(--border-color);
   cursor: pointer;
 }
 
 .interest-tag:hover {
   background-color: var(--primary-color);
-  color: var(--invert-text);
+  color: var(--text-color);
 }
 
 .interest-tag.selected {

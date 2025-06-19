@@ -1,21 +1,36 @@
-import js from '@eslint/js';
-import globals from 'globals';
-import { defineConfig } from 'eslint/config';
+// @ts-check
+
+import eslint from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import jestPlugin from 'eslint-plugin-jest';
+import tseslint from 'typescript-eslint';
 
-export default defineConfig([
+export default tseslint.config(
+  eslint.configs.recommended,
   {
-    files: ['tests'],
-    plugins: { jest: jestPlugin },
-    languageOptions: { globals: jestPlugin.environments.globals.globals },
-    ...jestPlugin.configs['flat/recommended'],
+    plugins: {
+      '@typescript-eslint': tseslint.plugin,
+      jest: jestPlugin,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        projectService: true,
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-floating-promises': 'error',
+    },
   },
   {
-    files: ['src'],
-    plugins: { js },
-    extends: ['js/recommended'],
-    languageOptions: { globals: globals.node },
-    ...eslintConfigPrettier,
+    // disable type-aware linting on JS files
+    files: ['**/*.js'],
+    extends: [tseslint.configs.disableTypeChecked],
   },
-]);
+  {
+    // enable jest rules on test files
+    files: ['test/**'],
+    extends: [jestPlugin.configs['flat/recommended']],
+  },
+  eslintConfigPrettier,
+);

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon",
-    "test": "cross-env NODE_ENV=test vitest",
+    "test": "cross-env NODE_ENV=test vitest run",
     "lint": "eslint --fix .",
     "lint:types": "tsc -p jsconfig.json",
     "format": "prettier --write ."

@@ -1,7 +1,6 @@
-import express from 'express';
+import express, { type Request, type Response } from 'express';
 import morgan from 'morgan';
-import swaggerUi from 'swagger-ui-express';
-import envConfig from './config/env.js';
+import envConfig from './config/env.ts';
 
 const app = express();
 const port = envConfig.port;
@@ -10,9 +9,8 @@ app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// @ts-ignore
-app.get('/api', (req, res) => {
-  return res.json({ message: 'You Reached The Looking For Group API' });
+app.get('/api', (_req: Request, res: Response) => {
+  res.json({ message: 'You Reached The Looking For Group API' });
 });
 
 app.listen(port, (err) => {

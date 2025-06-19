@@ -14,7 +14,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
  * @throws {Error} If the environment variable is not defined
  * @returns {string} Value of the environment variable
  */
-const getEnvVariable = (key) => {
+const getEnvVariable = (key: string): string => {
   const value = process.env[key];
 
   if (!value) {
@@ -30,7 +30,7 @@ const getEnvVariable = (key) => {
  * @throws {Error} If the environment variable is not defined or is not a valid number
  * @returns {number} Value of the environment variable as a number
  */
-const getNumEnvVariable = (key) => {
+const getNumEnvVariable = (key: string): number => {
   const value = getEnvVariable(key);
   const numValue = Number.parseInt(value, 10);
 

@@ -5,7 +5,8 @@
   "type": "module",
   "license": "CC0-1.0",
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "dev": "pnpm -r dev"
   },
   "devDependencies": {
     "husky": "^9.1.7",

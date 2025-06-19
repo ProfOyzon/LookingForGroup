@@ -11,7 +11,7 @@ app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Swagger Options
+// Swagger JSDoc options
 const options = {
   definition: {
     openapi: '3.1.1',

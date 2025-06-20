@@ -46,7 +46,7 @@ export const InterestTab = (props: { profile: ProfileData}) => {
   }, []);
 
   useEffect(() => {
-    const interestInput = document.getElementById('profile-edit-interests-list') as HTMLInputElement;
+    const interestInput = document.getElementById('profile-edit-interests') as HTMLInputElement;
     if (interestInput) {
       interestInput.value = selectedInterests.join(', ');
     }

@@ -177,6 +177,11 @@ const switchTab = (tabIndex: number) => {
       const userID = await fetchUserID();
       const response = await fetch(`api/users/${userID}`);
       const { data } = await response.json(); // use data[0]
+
+      console.log('ProfileEditPopup - Raw API response:', data);
+      console.log('ProfileEditPopup - User profile data:', data[0]);
+      console.log('ProfileEditPopup - User interests from API:', data[0]?.interests);
+    
       
       profile = await data[0];
     };

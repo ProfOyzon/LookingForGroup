@@ -1,20 +1,63 @@
+import { retry } from '@reduxjs/toolkit/query';
 import { Tags } from '../Tags';
-import { PagePopup, openClosePopup } from '../PagePopup';
-import { SearchBar } from '../SearchBar';
-import { useState } from 'react';
-import { interests } from '../../constants/interests';
-import { ThemeIcon } from '../ThemeIcon';
-import { Tag } from '../Tags';
+//import { PagePopup, openClosePopup } from '../PagePopup';
+//import { SearchBar } from '../SearchBar';
+//import { useState } from 'react';
+//import { interests } from '../../constants/interests';
+//import { ThemeIcon } from '../ThemeIcon';
+//import { Tag } from '../Tags';
 // import ChooseInterests from "../SignupProcess/ChooseInterests";
 
 export const ProfileInterests = ({ user, isUsersProfile }) => {
 
+  const testInterests = [
+    { interest: 'Web Development' },
+    { interest: 'Game Development' },
+    { interest: 'AI and Machine Learning' },
+  ]
+
+  const testUser = {
+    interests: testInterests
+  };
+  
+  console.log("ProfileInterests component rendered with user:", user);
+  console.log("Test user: ", testUser);
+  console.log("ProfileInterests isUsersProfile:", isUsersProfile);
+  console.log("ProfileInterests user interests:", user?.interests);
+
+  const processInterests = () => {
+
+    const interestsToProcess = user?.interests || testUser.interests;
+
+    if (interestsToProcess || !Array.isArray(user.interests)) {
+      console.log("User interests are not found or not an array.");
+      return [];
+    }
+
+  // Process interests and log each one  
+  const processedInterests = user.interests.map((interest, index) => {
+    const interestValue = typeof interest === 'string' ? interest : interest.interest;
+    console.log(`Processing interest at index ${index}:`, interestValue);
+    return interestValue;
+  }).filter(interest => interest && interest.trim() !== ''); // Filter out empty or undefined interests
+  console.log("Processed interests:", processedInterests);
+  return processedInterests;
+};
+
+  const interestValues = processInterests();
+  console.log("Interest values:", interestValues);
 
   // Safely generate interests list with null check
-  const interestsList = user?.interests?.map((interest) => (
-    <Tags key={interest}>{interest}</Tags>
-  )) || [];
+  const interestsList = interestValues.map((interest, index) => {
+    console.log(`ProfileInterests - Rendering interest tag ${index}:`, interest);
+    return (
+      <Tags key={`interest-${index}-${interest}`} className="profile-interest-tag">
+        {interest}
+      </Tags>
+    );
+  });
 
+  console.log("Interests list length: ", interestsList.length);
   // Toggle interest selection
  /* const toggleInterest = (interest) => {
     if (selectedInterests.includes(interest)) {
@@ -59,17 +102,23 @@ export const ProfileInterests = ({ user, isUsersProfile }) => {
     <div id="profile-interests">
       
       <div className="profile-name-button">
-        {/*edit interests button - only show for current user's profile*/}
         <h4>Interests</h4>
+        {/* Debug info for development */}
+        {process.env.NODE_ENV === 'development' && (
+          <small style={{ color: 'gray', fontSize: '0.8rem' }}>
+            Debug: {interestValues.length} interests found
+          </small>
+        )}
       </div>
+
       <div id="profile-interests-list" className="profile-list">
-        {interestsList.length > 0 ? interestsList : <p 
+        {interestsList.length > 0 ? ( interestsList ) : ( <p 
         style={{ 
             margin: '0', 
             padding: '0', 
             fontSize: '1rem',
             textAlign: 'left'
-          }}>Sorry, no interests here</p>}
+          }}>Sorry, no interests here</p>)}
       </div>
 
       {/* <PagePopup

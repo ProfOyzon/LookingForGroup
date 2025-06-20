@@ -99,6 +99,7 @@ const NewProfile = () => {
     fun_fact: ``,
     bio: '',
     skills: [],
+    interests: [],
   };
 
   const navigate = useNavigate(); // Hook for navigation

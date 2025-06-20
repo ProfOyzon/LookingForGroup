@@ -1074,7 +1074,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           />
           <div id="project-team-add-member-text">Add Member</div>
         </PopupButton>
-        <PopupContent useClose={closePopup}>
+        <PopupContent useClose={true}>
           <div id="project-team-add-member-title">Add Member</div>
           <div className={successAddMember ? "success" : "error"} id="error-add-member">
             {errorAddMember}

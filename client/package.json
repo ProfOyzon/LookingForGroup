@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "lint:types": "tsc --project tsconfig.app.json"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",

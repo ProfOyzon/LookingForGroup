@@ -4,11 +4,16 @@
   "version": "1.0.0",
   "type": "module",
   "license": "CC0-1.0",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
     "prepare": "husky",
-    "dev": "pnpm -r dev"
+    "dev": "concurrently \"npm --workspace=client dev\" \"npm --workspace=server dev\""
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.0"
   }

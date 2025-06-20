@@ -11,6 +11,7 @@
   "scripts": {
     "prepare": "husky",
     "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\"",
+    "test": "npm run test --workspace=server",
     "lint:server:types": "npm run lint:types --workspace=server",
     "lint:server": "npm run lint --workspace=server",
     "lint:client:types": "npm run lint:types --workspace=client",

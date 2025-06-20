@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "start": "node src/index.ts",
     "dev": "nodemon",
     "test": "cross-env NODE_ENV=test vitest run",
     "lint": "eslint --fix .",

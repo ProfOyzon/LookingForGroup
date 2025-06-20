@@ -13,6 +13,7 @@
     "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\"",
     "lint:server:types": "npm run lint:types --workspace=server",
     "lint:server": "npm run lint --workspace=server",
+    "lint:client:types": "npm run lint:types --workspace=client",
     "lint:client": "npm run lint --workspace=client",
     "format:server": "npm run format --workspace=server"
   },

@@ -1,7 +1,5 @@
 import express, { type Request, type Response } from 'express';
 import morgan from 'morgan';
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
 import envConfig from './config/env.ts';
 
 const app = express();
@@ -12,6 +10,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 if (envConfig.env === 'development') {
+  const swaggerJSDoc = (await import('swagger-jsdoc')).default;
+  const swaggerUi = await import('swagger-ui-express');
+
   const swaggerDefinition = {
     openapi: '3.1.1',
     info: {

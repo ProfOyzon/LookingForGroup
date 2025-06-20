@@ -47,7 +47,13 @@ npm run lint:server
 
 ### Client
 
-The client is written with typescript, so there is no dedicated typechecking command, but ESLint can be used to fix any fixable errors, and display the rest with the following command in [root](.):
+The client uses full typescript that must be transpiled and bundled for browsers. Vite will not perform typechecking, but your code editor should be able to highlight any type errors for you. If you want to run a manual typecheck, the following command can be run in [root](.):
+
+```bash
+npm run lint:client:types
+```
+
+The client also has ESLint based linting. To fix any fixable errors, and display the rest, the following command can be run in [root](.):
 
 ```bash
 npm run lint:client

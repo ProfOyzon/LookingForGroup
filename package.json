@@ -14,6 +14,7 @@
     "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\"",
     "test": "npm run test --workspace=server",
     "build:database": "npm run build:image --workspace=database",
+    "build:client": "npm run build --workspace=client",
     "lint:server:types": "npm run lint:types --workspace=server",
     "lint:server": "npm run lint --workspace=server",
     "lint:client:types": "npm run lint:types --workspace=client",

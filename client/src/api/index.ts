@@ -1,11 +1,4 @@
-//response we should get
-export type ApiResponse<_data = any> = {
-    status: number;
-    error?: string | null;
-    data?: _data | null;
-    memetype?: string;
-};
-
+import {ApiResponse} from './types';
 
 //Basic GET function for utilities
 export const GET = async (apiURL: string): Promise<ApiResponse<any>> => {

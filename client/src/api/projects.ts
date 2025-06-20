@@ -1,4 +1,5 @@
-import { GET, POST, PUT, DELETE, RESPONSE, ApiResponse } from './index'
+import { GET, POST, PUT, DELETE, RESPONSE } from './index'
+import { ApiResponse, ProjectType, Tag, JobTitles, Member, Social } from './types';
 
 const root = import.meta.env.MODE === 'development'
     ? 'http://localhost:8081/api'
@@ -8,22 +9,22 @@ const root = import.meta.env.MODE === 'development'
 // const root = import.meta.env.API_URL;
 
 
-/* PROJECT MANAGMENT */
+/* PROJECT CRUD */
 
 /**
  * Creates a new project and adds it to the database. All params default to null.
- * @param {number} _userId - ID of the user creating the project
- * @param {string} _title - Name of the project
- * @param {string} _hook - The short description of the project
- * @param {string} _desc - The long description of the project
- * @param {string} _purpose - The purpose selected for this project
- * @param {string} _status - The status of the project
- * @param {string} _audience - The project's intended audience
- * @param {Array<object>} _pTypes - List of project types
- * @param {Array<object>} _pTags - List of project tags
- * @param {Array<object>} _jobs - List of roles being recruited for
- * @param {Array<object>} _members  - List of project members
- * @param {Array<object>} _socials - List of relevant social media pages
+ * @param _userId - ID of the user creating the project
+ * @param _title - Name of the project
+ * @param _hook - The short description of the project
+ * @param _desc - The long description of the project
+ * @param _purpose - The purpose selected for this project
+ * @param _status - The status of the project
+ * @param _audience - The project's intended audience
+ * @param _pTypes - List of project types
+ * @param _pTags - List of project tags
+ * @param _jobs - List of roles being recruited for
+ * @param _members  - List of project members
+ * @param _socials - List of relevant social media pages
  * @returns 200 if valid, 400 if not
  *///might need to change Array<object>
 export const createNewProject = async (
@@ -34,11 +35,11 @@ export const createNewProject = async (
     _purpose: string,
     _status: string,
     _audience: string,
-    _pTypes: Array<object>,
-    _pTags: Array<object>,
-    _jobs: Array<object>,
-    _members: Array<object>,
-    _socials: Array<object>,
+    _pTypes: ProjectType[],
+    _pTags: Tag[],
+    _jobs: JobTitles[],
+    _members: Member[],
+    _socials: Social[],
 ): Promise<ApiResponse<any[]>> => {
     const apiURL = `${root}/projects`;
 
@@ -83,7 +84,7 @@ export const getProjects = async (): Promise<ApiResponse<any[]>> => {
 
 /**
  * Retrieves data of a project by its ID
- * @param {number} ID -  ID of project to retrieve
+ * @param ID -  ID of project to retrieve
  * @returns - A project object if valid, 400 if not
  */
 export const getByID = async (ID: number): Promise<ApiResponse<any[]>> => {
@@ -97,8 +98,8 @@ export const getByID = async (ID: number): Promise<ApiResponse<any[]>> => {
 
 /**
  * Updates data of an existing project
- * @param {number} ID - ID of the project to update
- * @param {Object} data - Mapped data for update
+ * @param ID - ID of the project to update
+ * @param data - Mapped data for update
  * @returns Response status
  */
 export const updateProject = async (ID: number, data: object): Promise<ApiResponse<any[]>> => {
@@ -113,7 +114,7 @@ export const updateProject = async (ID: number, data: object): Promise<ApiRespon
 
 /**
  * Deletes an existing project
- * @param {number} ID - ID of the project to delete
+ * @param ID - ID of the project to delete
  * @returns Response status
  */
 export const deleteProject = async (ID: number): Promise<ApiResponse<any[]>> => {
@@ -130,8 +131,8 @@ export const deleteProject = async (ID: number): Promise<ApiResponse<any[]>> => 
 
 /**
  * Updates the thumbnail image for a project
- * @param {number} ID - ID of the project to update
- * @param {File} _image - Image file of new thumbnail
+ * @param ID - ID of the project to update
+ * @param _image - Image file of new thumbnail
  * @returns The filename of the thumbnail image if valid, "400" if not
  */
 export const updateThumbnail = async (ID: number, _image: File): Promise<ApiResponse<any[]>> => {
@@ -146,7 +147,7 @@ export const updateThumbnail = async (ID: number, _image: File): Promise<ApiResp
 
 /**
  * Gets the pictures used in a project's carousel
- * @param {number} ID - ID of the target project
+ * @param ID - ID of the target project
  * @returns Array of image objects if valid, "400" if not
  */
 export const getPics = async (ID: number): Promise<ApiResponse<any[]>> => {
@@ -160,9 +161,9 @@ export const getPics = async (ID: number): Promise<ApiResponse<any[]>> => {
 
 /**
  * Adds a picture to a project's carousel
- * @param {number} ID - ID of the target project
- * @param {File} _image - Image file to be added
- * @param {number} _position - Position of the image in the carousel
+ * @param ID - ID of the target project
+ * @param _image - Image file to be added
+ * @param _position - Position of the image in the carousel
  * @returns Response status
  */
 export const addPic = async (ID: number, _image: File, _position: number): Promise<ApiResponse<any[]>> => {
@@ -180,8 +181,8 @@ export const addPic = async (ID: number, _image: File, _position: number): Promi
 
 /**
  * Updates position order of a project's carousel pictures
- * @param {number} ID - ID of the target project
- * @param {Object} images - Array of objects, which contain the image "id" and new "position"
+ * @param ID - ID of the target project
+ * @param images - Array of objects, which contain the image "id" and new "position"
  * @returns Response status
  */
 export const updatePicPositions = async (ID: number, images: Array<{ id: number; position: number }>): Promise<ApiResponse<any[]>> => {
@@ -195,8 +196,8 @@ export const updatePicPositions = async (ID: number, images: Array<{ id: number;
 
 /**
  * Deletes a picture in a project
- * @param {number} ID - ID of the target project
- * @param {string} image - Filename of the image to delete
+ * @param ID - ID of the target project
+ * @param image - Filename of the image to delete
  * @returns Response status
  */
 export const deletePic = async (ID: number, image: string): Promise<ApiResponse<any[]>> => {
@@ -216,10 +217,10 @@ export const deletePic = async (ID: number, image: string): Promise<ApiResponse<
 
 /**
  * Adds a member to a project
- * @param {number} ID - ID of the target project
- * @param {number} _userId - ID of the user to add
- * @param {number} _titleId - ID of the user's role
- * @param {number} _permission - The user's access level
+ * @param ID - ID of the target project
+ * @param _userId - ID of the user to add
+ * @param _titleId - ID of the user's role
+ * @param _permission - The user's access level
  * @returns Response status
  */
 export const addMember = async (ID: number, _userId: number, _titleId: number, _permission: number): Promise<ApiResponse<any[]>> => {
@@ -238,10 +239,10 @@ export const addMember = async (ID: number, _userId: number, _titleId: number, _
 
 /**
  * Updates an existing member in a project
- * @param {number} ID - ID of the target project
- * @param {number} _userId - ID of the user to update
- * @param {number} _titleId - ID of the user's role
- * @param {number} _permission - The user's access level
+ * @param ID - ID of the target project
+ * @param _userId - ID of the user to update
+ * @param _titleId - ID of the user's role
+ * @param _permission - The user's access level
  * @returns Response status
  */
 export const updateMember = async (ID: number, _userId: number, _titleId: number, _permission: number): Promise<ApiResponse<any[]>> => {
@@ -260,8 +261,8 @@ export const updateMember = async (ID: number, _userId: number, _titleId: number
 
 /**
  * Removes a member from a project
- * @param {number} ID - ID of the target project
- * @param {number} userId - ID of the target user
+ * @param ID - ID of the target project
+ * @param userId - ID of the target user
  * @returns Response status
  */
 export const deleteMember = async (ID: number, userId: number): Promise<ApiResponse<any[]>> => {

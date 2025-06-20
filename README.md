@@ -25,7 +25,7 @@ To run in dev mode, all you need to do is run the following command in the [root
 npm run dev
 ```
 
-This will concurrently start a build watch on the client project, and run nodemon on the server. That means whenever a change is saved in the client, the HTML/CSS/JS will be rebuilt, and the server will then refresh to use these new files. That same thing happens to the server, where when a change is saved, it is refreshed to feature those changes.
+This will concurrently start the client project dev server, and run nodemon on the server. This means when the client is changed, it will hot reload. The same happens with the server. The client dev server also creates a proxy to the express server, so you can go to `localhost:{port the client is running on}/api` and reach the server.
 
 ## Linting
 
@@ -33,7 +33,7 @@ Both our client and server are set up with ESLint based linting. In addition, bo
 
 ### Server
 
-For the server, as the code is vanilla JS, the code doesn't require compilation, but can be typechecked with the typescript compiler. Editors like VSCode should automatically highlight these errors for you, but the following command can be ran in [root](.) to manually typecheck:
+For the server, the code is a lightweight version of typescript that runs on node. This means it doesn't require compilation, but can be typechecked with the typescript compiler. Editors like VSCode should automatically highlight these errors for you, but the following command can be ran in [root](.) to manually typecheck:
 
 ```bash
 npm run lint:server:types

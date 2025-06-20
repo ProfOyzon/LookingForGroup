@@ -10,7 +10,11 @@
   ],
   "scripts": {
     "prepare": "husky",
-    "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\""
+    "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\"",
+    "lint:server:types": "npm run lint:types --workspace=server",
+    "lint:server": "npm run lint --workspace=server",
+    "lint:client": "npm run lint --workspace=client",
+    "format:server": "npm run format --workspace=server"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",

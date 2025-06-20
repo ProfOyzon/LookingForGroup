@@ -264,12 +264,12 @@ export const updatePassword = async (id: number, _newPassword: string, _password
 export const updateUserVisibility = async (id: number): Promise<ApiResponse> => {
     let url = `${root}/users/${id}`;
     let userResponse = await GET(url);
-    if(userResponse.status !== 200){
+    if (userResponse.status !== 200) {
         return RESPONSE(400, 'Unable to fetch user data')
     }
 
     const vis = userResponse.data.visibility;
-    let data: {visibility: number};
+    let data: { visibility: number };
 
     if (vis == 1) {
         data = {
@@ -279,7 +279,7 @@ export const updateUserVisibility = async (id: number): Promise<ApiResponse> => 
         data = {
             visibility: 1,
         };
-    } else{
+    } else {
         return RESPONSE(400, "Invalid visibility error")
     }
     const result = await editUser(id, data);
@@ -287,15 +287,8 @@ export const updateUserVisibility = async (id: number): Promise<ApiResponse> => 
         console.log('Error editing user.');
         return { status: 400, error: 'Error editing user.' };
     }
-    return { status: 200, response: result.data };
+    return RESPONSE(200, null, result.data)
 }
-
-
-//updateProfilePicture
-//updateEmail
-//updateUsername
-//updatePassword
-//updateUserVisibility
 
 
 /* ACCOUNT INFO/ PASSWORD RESET*/
@@ -334,12 +327,12 @@ export default {
     editUser,
     deleteUser,
     userInDatabase,
-    // updateProfilePicture,
-    // getAccountInformation,
-    // updateEmail,
-    // updateUsername,
-    // updatePassword,
-    // updateUserVisibility,
+    updateProfilePicture,
+    //getAccountInformation,
+    updateEmail,
+    updateUsername,
+    updatePassword,
+    updateUserVisibility,
     // requestPasswordReset,
     // getUserByUsername,
     // getUserByEmail,

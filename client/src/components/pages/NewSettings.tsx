@@ -11,6 +11,7 @@ import { Header } from '../Header';
 import CreditsFooter from '../CreditsFooter';
 import PasswordValidator from 'password-validator';
 import ToTopButton from '../ToTopButton';
+import * as paths from '../../constants/routes';
 
 // Take the user ID and delete it
 const deleteAccountPressed = async () => {
@@ -65,6 +66,11 @@ const Settings = ({ }) => {
   // Uses stateful variable to only run once at initial render
   if (!dataLoaded) {
     getUserData();
+  }
+
+  // If user is not logged in, redirect to login page
+  if (userInfo === undefined) {
+     navigate(paths.routes.LOGIN, { state: { from: location.pathname } })
   }
 
   // --------------------
@@ -228,7 +234,7 @@ const Settings = ({ }) => {
             {/* autoComplete to prevent browser autofill */}
             <form autoComplete="off">
               <input
-                placeholder={`Enter new ${type.toLowerCase()}`}
+                placeholder={`Enter new ${type.toLowerCase()}${type.toLowerCase() === 'phone' ? ' number' : ''}`}
                 type={type !== 'Password' ? 'text' : 'password'}
                 onChange={(e) => setFirstParam(e.target.value)}
                 onBlur={async () => {
@@ -251,7 +257,7 @@ const Settings = ({ }) => {
             {/* autoComplete to prevent browser autofill */}
             <form autoComplete="off">
               <input
-                placeholder={`Confirm new ${type.toLowerCase()}`}
+                placeholder={`Confirm new ${type.toLowerCase()}${type.toLowerCase() === 'phone' ? ' number' : ''}`}
                 type={type !== 'Password' ? 'text' : 'password'}
                 onChange={(e) => {
                   setConfirm(e.target.value);

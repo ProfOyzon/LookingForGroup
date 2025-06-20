@@ -141,11 +141,11 @@ const NewProfile = () => {
       if (toggleFollow) {
         followButton.innerText = 'Following';
         followButton.style.backgroundColor = 'Orange';
-        followButton.style.width = '160px';
+        followButton.style.width = '185px';
       } else {
         followButton.innerText = 'Follow';
         followButton.style.backgroundColor = 'var(--primary-color)';
-        followButton.style.width = '120px';
+        followButton.style.width = '145px';
       }
     }
   };

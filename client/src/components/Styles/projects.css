@@ -45,6 +45,7 @@ Project Panel component style rules
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.2s;
+    z-index: 1;
   }
 }
 
@@ -1349,9 +1350,9 @@ button.edit-position-contact {
 }
 
 button.edit-position-contact .project-member-image {
-    width: 48px;
-    height: 48px;
-    border: 1px solid var(--border-color);
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border-color);
 }
 
 #edit-position-details-right {
@@ -3639,6 +3640,9 @@ My projects page style rules
   .confirm-deny-btns {
     display: flex;
     flex-direction: row;
+    button {
+      margin: 5px;
+    }
   }
 
   .confirm-btn {

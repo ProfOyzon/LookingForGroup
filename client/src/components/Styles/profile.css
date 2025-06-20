@@ -1015,7 +1015,7 @@ New Profile page style rules
     'image desc desc desc' auto
     'image fact fact fact' auto
     'bio skills skills follow' auto /
-    300px 1fr 200px;
+    300px 1fr 50px;
   background-color: var(--header-color);
   border-radius: 10px;
   padding: 30px;
@@ -1042,7 +1042,8 @@ New Profile page style rules
       'follow' auto / 1fr;
     justify-items: center;
     width: 100%;
-  }
+    max-width: 90%;
+    }
 }
 
 #profile-page-content h2 {
@@ -1094,7 +1095,7 @@ New Profile page style rules
   font-weight: bold;
   line-height: 28px;
   letter-spacing: 0%;
-  width: 120px;
+  width: 145px;
 }
 
 @media only screen and (max-width: 1250px) {

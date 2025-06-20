@@ -43,12 +43,21 @@ export const SearchBar: FC<SearchBarProps> = memo(({ dataSets, onSearch, value, 
 
 const handleSearch = (searchQuery: string) => {
   const filteredResults = dataSets.map((dataSet) =>
-    dataSet.data.filter((item) =>
-      typeof item === 'object'
-        ? Object.values(item).some((value) =>
-            String(value).toLowerCase().includes(searchQuery)
-          )
-        : String(item).toLowerCase().includes(searchQuery)
+    dataSet.data.filter((item) => {
+     if (typeof item === 'object') {
+      // ONLY return fields we want to match, this avoids unintended searchbar behavior
+       return (
+        (item.name && item.name.toLowerCase().includes(searchQuery)) ||
+        (item.role && item.role.toLowerCase().includes(searchQuery)) ||
+        (item.label && item.label.toLowerCase().includes(searchQuery)) || 
+        (item.first_name && item.first_name.toLowerCase().includes(searchQuery)) ||
+        (item.last_name && item.last_name.toLowerCase().includes(searchQuery))
+       )
+     }
+     else {
+        String(item).toLowerCase().includes(searchQuery)
+     }
+    }
     )
   );
 

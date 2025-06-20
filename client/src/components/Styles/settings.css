@@ -459,6 +459,9 @@ input:checked+.slider:before {
     .confirm-deny-btns {
       display: flex;
       flex-direction: row;
+      button {
+        margin: 5px;
+      }
     }
 
     .confirm-btn {

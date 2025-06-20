@@ -145,16 +145,18 @@ const Login: React.FC = () => {
             alt="Back Button"
             id="backPage-arrow"
             onClick={() => {
-              // If the previous page is not forgot password, go back to it; otherwise, go home
-              // if (from && from !== paths.routes.FORGOTPASSWORD && from !== paths.routes.RESETPASSWORD) {
-              //   console.log(from);
-              //   navigate(from);
-              // } else {
-              //   console.log("defaulting to HOME")
-              //   navigate(paths.routes.HOME); // or your default page
-              // }
-
-              window.history.back();
+              console.log(from)
+              // Return to previous page (unless it is the forgot password page, or the settings page)
+              // Settings page is included for logged out users to be properly brought to the home page instead of stuck on the login page
+              // (Settings redirects logged out users to login)
+              if (from != paths.routes.FORGOTPASSWORD && from != paths.routes.RESETPASSWORD && from != paths.routes.SETTINGS) {
+                console.log("window.history.back() called")
+                window.history.back(); // This line is a temp implementation, because navigate(from) does not always work
+                // navigate(from);
+              } else { // Go to home (Discover) otherwise
+                console.log("defaulting to home")
+                navigate(paths.routes.HOME);
+              }
             }}
           />
           <h2>Log In</h2>

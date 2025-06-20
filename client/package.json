@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint --fix .",
-    "lint:types": "tsc --project tsconfig.app.json"
+    "lint:types": "tsc --project tsconfig.app.json --noEmit"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",

@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "test": "cross-env NODE_ENV=test vitest run",
     "lint": "eslint --fix .",
-    "lint:types": "tsc",
+    "lint:types": "tsc --project tsconfig.json --noEmit",
     "format": "prettier --write ."
   },
   "dependencies": {

@@ -11,8 +11,8 @@ const root =
 // it's for a temporary work-around
 /**
  * Executes SQL code if env is development or test
- * @param {String} sqlCommand 
- * @param {Array<any>} values 
+ * @param {String} sqlCommand
+ * @param {Array<any>} values
  * @returns True if code is executed, otherwise false
  */
 const devSql = async (sqlCommand, values) => {
@@ -25,7 +25,7 @@ const devSql = async (sqlCommand, values) => {
     console.error(err);
   }
   return true;
-}
+};
 
 /**
  * Creates a new project and adds it to the database. All params default to null.

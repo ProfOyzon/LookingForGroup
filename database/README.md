@@ -23,7 +23,7 @@ Docker is the only piece of required software to follow this guide. The easiest 
 3. Rename the file to `dump.sql` and place it in the [database directory](.)
 4. Build the provided [Dockerfile](Dockerfile) into an image
    - This can be done by right clicking it, then selecting `build image` if you have the VSCode extension
-   - You can also run this command in the [database directory](.): `docker build . -t lookingforgroup`
+   - You can also run this command in the [root directory](../): `npm run build:database`
 
 > [!CAUTION]
 > The image you built should not be shared/published, as it may contain sensitive data that should not be made public.

@@ -1,7 +1,12 @@
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-//load .env file varibles
-dotenv.config({ path: './.env' });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+//load .env file variables
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 /**
  * Gets the value of an environment variable.
@@ -9,7 +14,7 @@ dotenv.config({ path: './.env' });
  * @throws {Error} If the environment variable is not defined
  * @returns {string} Value of the environment variable
  */
-const getEnvVariable = (key) => {
+const getEnvVariable = (key: string): string => {
   const value = process.env[key];
 
   if (!value) {
@@ -25,7 +30,7 @@ const getEnvVariable = (key) => {
  * @throws {Error} If the environment variable is not defined or is not a valid number
  * @returns {number} Value of the environment variable as a number
  */
-const getNumEnvVariable = (key) => {
+const getNumEnvVariable = (key: string): number => {
   const value = getEnvVariable(key);
   const numValue = Number.parseInt(value, 10);
 

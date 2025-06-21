@@ -6,8 +6,8 @@
     "rewriteRelativeImportExtensions": true,
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true
+    "strict": true,
+    "allowUnreachableCode": false
   },
   "include": ["src", "tests"]
 }

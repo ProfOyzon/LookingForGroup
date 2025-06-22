@@ -6,10 +6,10 @@ import prettierConfig from 'eslint-config-prettier';
 import vitest from '@vitest/eslint-plugin';
 
 export default tseslint.config(
+  { ignores: ['eslint.config.js'] },
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   {
-    ignores: ['eslint.config.js'],
     languageOptions: {
       parserOptions: {
         projectService: true,

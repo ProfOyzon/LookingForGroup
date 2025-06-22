@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import request from 'supertest';
 import app from '../src/index.ts';
 
-test('Test /API', async () => {
+test('/api', async () => {
   const res = await request(app).get('/api');
 
   expect(res.statusCode).toBe(200);

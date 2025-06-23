@@ -4,11 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "build": "vite build",
-    "build:watch": "vite build --watch",
-    "serve": "vite preview",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "lint:types": "tsc --project tsconfig.app.json --noEmit"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",

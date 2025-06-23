@@ -1,7 +1,7 @@
 import {ApiResponse} from './types';
 
 //Basic GET function for utilities
-export const GET = async (apiURL: string): Promise<ApiResponse<any>> => {
+export const GET = async (apiURL: string): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'GET',
@@ -40,7 +40,7 @@ export const GET = async (apiURL: string): Promise<ApiResponse<any>> => {
 
 
 //Basic POST function
-export const POST = async (apiURL: string, newData: Object): Promise<ApiResponse<any>> => {
+export const POST = async (apiURL: string, newData: object): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'POST',
@@ -79,7 +79,7 @@ export const POST = async (apiURL: string, newData: Object): Promise<ApiResponse
 
 
 //Basic PUT function
-export const PUT = async (apiURL: string, newData: Object): Promise<ApiResponse<any>> => {
+export const PUT = async (apiURL: string, newData: object): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'PUT',
@@ -119,7 +119,7 @@ export const PUT = async (apiURL: string, newData: Object): Promise<ApiResponse<
 
 
 //Basic DELETE function
-export const DELETE = async (apiURL: string): Promise<ApiResponse<any>> => {
+export const DELETE = async (apiURL: string): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'DELETE',
@@ -157,7 +157,7 @@ export const DELETE = async (apiURL: string): Promise<ApiResponse<any>> => {
 
 
 //jsonify the data
-export function jsonify<_data = any>(
+export function jsonify<_data = unknown>(
     data: _data,
     status: number,
     error: string | null = null,
@@ -170,13 +170,3 @@ export function jsonify<_data = any>(
         error,
     };
 };
-
-
-//RESPONSE function
-export const RESPONSE = <_data = any>(
-    status: number,
-    error: string | null = null,
-    data: _data | null = null,
-) => {
-    return jsonify(data, status, error)
-}

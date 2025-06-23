@@ -293,24 +293,233 @@ export const updateUserVisibility = async (id: number): Promise<ApiResponse> => 
 
 /* ACCOUNT INFO/ PASSWORD RESET*/
 
-//getAccountInformation
+/**
+ * Get account information of a user through ID
+ * @param user_id - int, id of the user
+ * @returns data - JSONified data from account information. 400 if not valid.
+ */
+export const getAccountInformation = async (user_id: number) => {
+    const apiURL = `${root}/users/${user_id}/account`;
+    const response = await GET(apiURL);
+    console.log(response);
+    if (response.status === 401) {
+        console.log(response.error);
+        return response;
+    }
+
+    console.log('User account information recieved');
+    return response;
+}
+
 //requestPasswordReset
+
 
 
 /* LOOKUP USER */
 
-//getUserByUsername
-//getUserByEmail
+/**
+ * Get User by Username
+ * @param username - Username of user to be recieved
+ * @return data, list of 1 user, or 400 if not successful
+ */
+export const getUserByUsername = async (username: string) => {
+    let url = `${root}/users/search-username/${username}`;
+    const response = await GET(url);
+
+    if (response.status === 400) {
+        console.log('Error getting user.');
+        return { status: 400, error: response.error };
+    }
+
+    //check if array is not empty
+    if (!response.data || response.data.length === 0) {
+        console.log('No user found');
+        return { status: 404, error: response.error };
+    }
+
+    console.log('Data recieved.');
+    return response;
+}
+
+/**
+ * Get User by email
+ * @param email - email of user to be recieved
+ * @return data, list of 1 user, or 400 if not successful
+ */
+export const getUserByEmail = async (email: string) => {
+    let url = `${root}/users/search-email/${email}`;
+    const response = await GET(url);
+
+    if (response.status === 400) {
+        console.log('Error getting user.');
+        return { status: 400, error: response.error };
+    }
+
+    //check if array is not empty
+    if (!response.data || response.data.length === 0) {
+        console.log('No user found');
+        return { status: 404, error: 'No user found.' };
+    }
+
+    console.log('Data recieved.');
+    return response;
+}
+
 
 
 /* USER FOLLOWINGS */
 
-//getUserFollowing
-//addUserFollowing
-//deleteUserFollowing
+/**
+ * Get people that a user is following.
+ * @param {number} id - id of the user that we are searching.
+ * @returns array of users following, or 400 if unsuccessful.
+ */
+export const getUserFollowing = async (id: number) => {
+    let url = `${root}/users/${id}/followings/people`;
+    const response = await GET(url);
+    if (response.status === 400) {
+        console.log('Error getting users.');
+        return { status: 400, error: response.error };
+    }
+    console.log('Data recieved.');
+    return response;
+}
+
+/**
+ * Follow a person for a user.
+ * @param {number} id - user's id
+ * @param {number} followID - user to be followed.
+ * @returns 201 if successful, 400 if not
+ */
+export const addUserFollowing = async (id: number, followID: number) => {
+    let url = `${root}/users/${id}/followings/people`;
+    const data = {
+        userId: followID,
+    };
+    const response = await POST(url, data);
+    if (response.status === 400) {
+        console.log('Error creating user following.');
+        return { status: 400, error: response.error };
+    }
+    console.log('Created user following.');
+    return { status: 201, data: response.data };
+}
+
+/**
+ * Unfollow person for a user.
+ * @param {number} id - user id of the user.
+ * @param {number} unfollowID - user id to be unfollowed.
+ */
+export const deleteUserFollowing = async (id: number, unfollowID: number) => {
+    let url = `${root}/users/${id}/followings/people`;
+    const data = {
+        userId: unfollowID,
+    };
+    const response = await DELETE(url);
+
+    if (response.status === 400) {
+        console.log('Error deleting user following.');
+        return { status: 400, error: response.error };
+    }
+    console.log('Deleted user following.');
+    return { status: 201, data: response.data };
+}
+
 
 
 /* PROJECT FOLLOWINGS/VISIBILITY */
+
+/**
+ * Get all projects the user is a member of and has set to be public for the profile page
+ * @param id - user to search
+ * @return - array of projects, or 400 if unsuccessful.
+ */
+export const getVisibleProjects = async (id: number) => {
+    let url = `${root}/users/${id}/projects/profile`;
+    const response = await GET(url);
+    if (response.status === 400) {
+        console.log('Error getting projects.');
+        return { status: 400, error: response.error };
+    }
+    console.log('Data recieved.');
+    return response;
+}
+
+/**
+ * Update the project visibility for a project a user is a member of.
+ * @param userID - user's ID
+ * @param projectID - Id of the project
+ * @param _visibility - either "public" or "private", set visibility
+ * @return 201 if successful, 400 if not
+ */
+export const updateProjectVisibility = async (userID: number, projectID: number, _visibility: string) => {
+    let url = `${root}/users/${userID}/projects/visibility`;
+    const data = {
+        projectId: projectID,
+        visibility: _visibility,
+    };
+
+    let response = await PUT(url, data);
+    if (response.status === 400) {
+        console.log('Error editing projects.');
+        return { status: 400, error: response.error };
+    }
+    console.log('Data edited.');
+    return { status: 201, data: response.data };
+}
+
+/**
+ * Get projects the user is following.
+ * @param id - ID of the user.
+ * @returns array of projects, or 400 if error.
+ */
+export const getProjectFollowing = async (id: number) => {
+    let url = `${root}/users/${id}/followings/projects`;
+    const response = await GET(url);
+    if (response.status === 400) {
+        console.log('Error getting projects.');
+        return { status: 400, error: response.error };
+    }
+    console.log('Data recieved.');
+    return response;
+}
+
+/**
+ * Follow a project for a user.
+ * @param id - user ID trying to follow a project.
+ * @param projectID - ID of the project trying to follow.
+ * @returns 201 if successful, 400 if not.
+ */
+export const addProjectFollowing = async (id: number, projectID: number) => {
+    let url = `${root}/users/${id}/followings/projects`;
+    const data = {
+        projectId: projectID,
+    };
+    const response = await POST(url, data);
+    if (response.status === 400) {
+        console.log('Error creating project following, unauthorized.');
+        return { status: 400, error: response.error };
+    }
+    console.log('Created project following.');
+    return { status: 200, data: id };
+}
+
+/**
+ * Unfollow a project for a user.
+ * @param id - user id
+ * @param projID - project Id to be unfollowed.
+ * @returns 201 if successful, 400 if not.
+ */
+export const deleteProjectFollowing = async (id: number, projID: number) => {
+    let url = `${root}/users/${id}/followings/projects/${projID}`;
+    const response = await DELETE(url);
+    if (response.status === 400) {
+        console.log('Error deleting project following.');
+        return { status: 400, error: response.error };
+    }
+    console.log('Deleted project following.');
+    return { status: 201, data: response.data };
+}
 
 //getVisibleProjects
 //updateProjectVisibility
@@ -328,22 +537,22 @@ export default {
     deleteUser,
     userInDatabase,
     updateProfilePicture,
-    //getAccountInformation,
+    getAccountInformation,
     updateEmail,
     updateUsername,
     updatePassword,
     updateUserVisibility,
     // requestPasswordReset,
-    // getUserByUsername,
-    // getUserByEmail,
-    // getUserFollowing,
-    // getVisibleProjects,
-    // updateProjectVisibility,
-    // getProjectFollowing,
-    // addProjectFollowing,
-    // deleteProjectFollowing,
-    // addUserFollowing,
-    // deleteUserFollowing,
+    getUserByUsername,
+    getUserByEmail,
+    getUserFollowing,
+    addUserFollowing,
+    deleteUserFollowing,
+    getVisibleProjects,
+    updateProjectVisibility,
+    getProjectFollowing,
+    addProjectFollowing,
+    deleteProjectFollowing,
 
 };
 

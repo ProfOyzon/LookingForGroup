@@ -85,6 +85,9 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
           { id: modifiedProject.images.length + 1, image: imgLink, position: modifiedProject.images.length + 1 },
         ],
       });
+
+      // reset, allowing same file to be selected multiple times in a row
+      imageUploader.value = '';
     }
   }, [modifiedProject]);
 

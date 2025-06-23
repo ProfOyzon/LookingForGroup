@@ -39,6 +39,12 @@
   transition-duration: 0.25s;
   background-color: var(--text-color);
 }
+
+.error-button-container {
+  display: flex;
+  justify-content: center;
+}
+
 .error-button-container button {
   background-color: var(--primary-color);
   transition: 0.25s;
@@ -48,8 +54,8 @@
   border: none;
   border-radius: 30px;
   padding: 10px 15px;
-  text-align: center;
-
+  display: flex;
+  gap: 10px;
 
   img {
     filter: invert(1);

@@ -1,6 +1,8 @@
 import express, { type Request, type Response } from 'express';
 import morgan from 'morgan';
 import envConfig from './config/env.ts';
+import { swaggerSpec } from './config/swagger.ts';
+import swaggerUi from 'swagger-ui-express';
 
 const app = express();
 const port = envConfig.port;
@@ -10,25 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 if (envConfig.env === 'development') {
-  const swaggerJSDoc = (await import('swagger-jsdoc')).default;
-  const swaggerUi = await import('swagger-ui-express');
-
-  const swaggerDefinition = {
-    openapi: '3.1.1',
-    info: {
-      title: 'Looking For Group API',
-      version: '1.0.0',
-      description:
-        'LFG API Documentation. This will showcase all the endpoints available and how to use them.',
-    },
-    basePath: '/api',
-  };
-
-  const swaggerSpec = swaggerJSDoc({
-    swaggerDefinition,
-    apis: ['../docs/**/*.yaml'],
-  });
-
   app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 

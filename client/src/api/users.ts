@@ -1,4 +1,4 @@
-import { GET, POST, PUT, DELETE, RESPONSE } from './index'
+import { GET, POST, PUT, DELETE } from './index'
 import { User, Skill, Social, ApiResponse } from './types';
 
 const root = import.meta.env.MODE === 'development'
@@ -26,6 +26,7 @@ export interface CreateUserData {
 //This probably with change with shibbolth???
 /**
  * Creates a new user, and adds them to the signups table. All data params default to null.
+ * NOT GOING TO NEED THIS WITH SHIBBOLETH
  * @param token - from url, security token
  * @param email - get signup email if the token is valid. Checks if a user with that email already exists.
  * @param userData - data for creating a user
@@ -48,7 +49,10 @@ export const createNewUser = async (
 
     const userExist = await userInDatabase(email);
     if (userExist) {
-        return RESPONSE(400, 'User is already in database')
+        return {
+            status: 400,
+            error: 'User is already in database.'
+        }
     }
 
     const response = await POST(apiURL, userData);
@@ -65,9 +69,10 @@ export const createNewUser = async (
  * Gets all data on all public users. Does not return private ones
  * @returns result - JSONified data of all users, else if error, '400'.
  */
-export const getUsers = async (): Promise<ApiResponse<User[]>> => {
+export const getUsers = async (): Promise<ApiResponse> => {
     const apiURL = `${root}/users`;
-    return await GET(apiURL);
+    const response = await GET(apiURL);
+    return response;
 }
 
 /**
@@ -88,7 +93,8 @@ export const getUsersById = async (id: number): Promise<ApiResponse> => {
  */
 export const editUser = async (id: number, data: Partial<User>): Promise<ApiResponse> => {
     const apiURL = `${root}/api/users/${id}`;
-    return await PUT(apiURL, data);
+    const response = await PUT(apiURL, data);
+    return response;
 }
 
 /**
@@ -118,7 +124,7 @@ export const userInDatabase = async (email: string): Promise<boolean> => {
         console.log('Error fetching email.');
         return false;
     } else {
-        if (!response.data || response.data.length === 0) {
+        if (!response.data) {
             console.log(response.data);
             return false;
         }
@@ -219,42 +225,42 @@ export const updateUsername = async (id: number, _username: string, _confirm_use
  * @param _password - string, user's current password
  * @param _token
  */
-export const updatePassword = async (id: number, _newPassword: string, _password_confirm: string, _password: string, _token: string): Promise<ApiResponse> => {
-    if (!_newPassword || !_password_confirm) {
-        console.log('Missing passwords.');
-        return { status: 400, error: 'Missing passwords.' };
-    }
-    if (_newPassword != _password_confirm) {
-        console.log('Password and confirmation are not the same.');
-        return { status: 400, error: 'Password and confirmation are not the same.' };
-    }
-    console.log('Token accepted, email verified.');
+// export const updatePassword = async (id: number, _newPassword: string, _password_confirm: string, _password: string, _token: string): Promise<ApiResponse> => {
+//     if (!_newPassword || !_password_confirm) {
+//         console.log('Missing passwords.');
+//         return { status: 400, error: 'Missing passwords.' };
+//     }
+//     if (_newPassword != _password_confirm) {
+//         console.log('Password and confirmation are not the same.');
+//         return { status: 400, error: 'Password and confirmation are not the same.' };
+//     }
+//     console.log('Token accepted, email verified.');
 
 
 
-    //get email if token is valid
-    let url = `${root}/resets/password/${_token}`;
-    let authCheck = await GET(url);
-    if (!authCheck.data.email) {
-        console.log('Your token has expired.');
-        return authCheck;
-    }
-    console.log('Token accepted, email verified.');
+//     //get email if token is valid
+//     let url = `${root}/resets/password/${_token}`;
+//     let authCheck = await GET(url);
+//     if (!authCheck.data.email) {
+//         console.log('Your token has expired.');
+//         return authCheck;
+//     }
+//     console.log('Token accepted, email verified.');
 
-    //update user password
-    url = `${root}/users/${id}/password`;
-    const data = {
-    };
-    const response = await PUT(url, data);
-    if (response.status === 400) {
-        console.log('Error putting new password.');
-        return { status: 400, error: response.error };
-    }
+//     //update user password
+//     url = `${root}/users/${id}/password`;
+//     const data = {
+//     };
+//     const response = await PUT(url, data);
+//     if (response.status === 400) {
+//         console.log('Error putting new password.');
+//         return { status: 400, error: response.error };
+//     }
 
-    console.log('User password updated successfully.');
-    return { status: 201, data: response.data };
+//     console.log('User password updated successfully.');
+//     return { status: 201, data: response.data };
 
-}
+// }
 
 /**
  * Updates user visibility, between 0 (private) and 1 (public). just a switch.
@@ -262,10 +268,13 @@ export const updatePassword = async (id: number, _newPassword: string, _password
  * @returns 400 if error, 200 if valid
  */
 export const updateUserVisibility = async (id: number): Promise<ApiResponse> => {
-    let url = `${root}/users/${id}`;
-    let userResponse = await GET(url);
+    const url = `${root}/users/${id}`;
+    const userResponse = await GET(url);
     if (userResponse.status !== 200) {
-        return RESPONSE(400, 'Unable to fetch user data')
+        return {
+            status: 400,
+            error: 'Unable to fetch user data'
+        };
     }
 
     const vis = userResponse.data.visibility;
@@ -280,21 +289,29 @@ export const updateUserVisibility = async (id: number): Promise<ApiResponse> => 
             visibility: 1,
         };
     } else {
-        return RESPONSE(400, "Invalid visibility error")
+        return {
+            status: 400,
+            error: 'Invalid visibility error.'
+        };
     }
     const result = await editUser(id, data);
     if (result.status === 400) {
         console.log('Error editing user.');
         return { status: 400, error: 'Error editing user.' };
     }
-    return RESPONSE(200, null, result.data)
+    return {
+        status: 200,
+        error: null,
+        data: result.data
+    };
 }
 
 
 /* ACCOUNT INFO/ PASSWORD RESET*/
 
 /**
- * Get account information of a user through ID
+ * Get account information of a user through ID.
+ * Invalid until we get shibboleth.
  * @param user_id - int, id of the user
  * @returns data - JSONified data from account information. 400 if not valid.
  */
@@ -323,7 +340,7 @@ export const getAccountInformation = async (user_id: number) => {
  * @return data, list of 1 user, or 400 if not successful
  */
 export const getUserByUsername = async (username: string) => {
-    let url = `${root}/users/search-username/${username}`;
+    const url = `${root}/users/search-username/${username}`;
     const response = await GET(url);
 
     if (response.status === 400) {
@@ -332,7 +349,7 @@ export const getUserByUsername = async (username: string) => {
     }
 
     //check if array is not empty
-    if (!response.data || response.data.length === 0) {
+    if (!response.data) {
         console.log('No user found');
         return { status: 404, error: response.error };
     }
@@ -347,7 +364,7 @@ export const getUserByUsername = async (username: string) => {
  * @return data, list of 1 user, or 400 if not successful
  */
 export const getUserByEmail = async (email: string) => {
-    let url = `${root}/users/search-email/${email}`;
+    const url = `${root}/users/search-email/${email}`;
     const response = await GET(url);
 
     if (response.status === 400) {
@@ -356,7 +373,7 @@ export const getUserByEmail = async (email: string) => {
     }
 
     //check if array is not empty
-    if (!response.data || response.data.length === 0) {
+    if (!response.data) {
         console.log('No user found');
         return { status: 404, error: 'No user found.' };
     }
@@ -375,7 +392,7 @@ export const getUserByEmail = async (email: string) => {
  * @returns array of users following, or 400 if unsuccessful.
  */
 export const getUserFollowing = async (id: number) => {
-    let url = `${root}/users/${id}/followings/people`;
+    const url = `${root}/users/${id}/followings/people`;
     const response = await GET(url);
     if (response.status === 400) {
         console.log('Error getting users.');
@@ -392,7 +409,7 @@ export const getUserFollowing = async (id: number) => {
  * @returns 201 if successful, 400 if not
  */
 export const addUserFollowing = async (id: number, followID: number) => {
-    let url = `${root}/users/${id}/followings/people`;
+    const url = `${root}/users/${id}/followings/people`;
     const data = {
         userId: followID,
     };
@@ -406,12 +423,12 @@ export const addUserFollowing = async (id: number, followID: number) => {
 }
 
 /**
- * Unfollow person for a user.
+ * Unfollow person for a user. Unauthorized until shibboleth.
  * @param {number} id - user id of the user.
  * @param {number} unfollowID - user id to be unfollowed.
  */
 export const deleteUserFollowing = async (id: number, unfollowID: number) => {
-    let url = `${root}/users/${id}/followings/people`;
+    const url = `${root}/users/${id}/followings/people`;
     const data = {
         userId: unfollowID,
     };
@@ -435,7 +452,7 @@ export const deleteUserFollowing = async (id: number, unfollowID: number) => {
  * @return - array of projects, or 400 if unsuccessful.
  */
 export const getVisibleProjects = async (id: number) => {
-    let url = `${root}/users/${id}/projects/profile`;
+    const url = `${root}/users/${id}/projects/profile`;
     const response = await GET(url);
     if (response.status === 400) {
         console.log('Error getting projects.');
@@ -446,20 +463,20 @@ export const getVisibleProjects = async (id: number) => {
 }
 
 /**
- * Update the project visibility for a project a user is a member of.
+ * Update the project visibility for a project a user is a member of. Invalid until shibboleth
  * @param userID - user's ID
  * @param projectID - Id of the project
  * @param _visibility - either "public" or "private", set visibility
  * @return 201 if successful, 400 if not
  */
 export const updateProjectVisibility = async (userID: number, projectID: number, _visibility: string) => {
-    let url = `${root}/users/${userID}/projects/visibility`;
+    const url = `${root}/users/${userID}/projects/visibility`;
     const data = {
         projectId: projectID,
         visibility: _visibility,
     };
 
-    let response = await PUT(url, data);
+    const response = await PUT(url, data);
     if (response.status === 400) {
         console.log('Error editing projects.');
         return { status: 400, error: response.error };
@@ -474,7 +491,7 @@ export const updateProjectVisibility = async (userID: number, projectID: number,
  * @returns array of projects, or 400 if error.
  */
 export const getProjectFollowing = async (id: number) => {
-    let url = `${root}/users/${id}/followings/projects`;
+    const url = `${root}/users/${id}/followings/projects`;
     const response = await GET(url);
     if (response.status === 400) {
         console.log('Error getting projects.');
@@ -491,7 +508,7 @@ export const getProjectFollowing = async (id: number) => {
  * @returns 201 if successful, 400 if not.
  */
 export const addProjectFollowing = async (id: number, projectID: number) => {
-    let url = `${root}/users/${id}/followings/projects`;
+    const url = `${root}/users/${id}/followings/projects`;
     const data = {
         projectId: projectID,
     };
@@ -511,7 +528,7 @@ export const addProjectFollowing = async (id: number, projectID: number) => {
  * @returns 201 if successful, 400 if not.
  */
 export const deleteProjectFollowing = async (id: number, projID: number) => {
-    let url = `${root}/users/${id}/followings/projects/${projID}`;
+    const url = `${root}/users/${id}/followings/projects/${projID}`;
     const response = await DELETE(url);
     if (response.status === 400) {
         console.log('Error deleting project following.');
@@ -540,7 +557,7 @@ export default {
     getAccountInformation,
     updateEmail,
     updateUsername,
-    updatePassword,
+    //updatePassword,
     updateUserVisibility,
     // requestPasswordReset,
     getUserByUsername,

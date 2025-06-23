@@ -277,7 +277,8 @@ export const updateUserVisibility = async (id: number): Promise<ApiResponse> => 
         };
     }
 
-    const vis = userResponse.data.visibility;
+    const user = userResponse.data as { visibility: number };
+    const vis =user.visibility;
     let data: { visibility: number };
 
     if (vis == 1) {

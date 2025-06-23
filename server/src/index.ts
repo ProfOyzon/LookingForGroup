@@ -1,8 +1,6 @@
 import express, { type Request, type Response } from 'express';
 import morgan from 'morgan';
 import envConfig from './config/env.ts';
-import { swaggerSpec } from './config/swagger.ts';
-import swaggerUi from 'swagger-ui-express';
 
 const app = express();
 const port = envConfig.port;
@@ -12,6 +10,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 if (envConfig.env === 'development') {
+  // Dynamic imports are used here because swagger packages are dev dependencies, which would cause crashes when imported in production.
+  const swaggerSpec = (await import('./config/swagger.ts')).swaggerSpec;
+  const swaggerUi = (await import('swagger-ui-express')).default;
+
   app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 

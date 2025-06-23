@@ -60,7 +60,7 @@ test('Add member to project', async () => {
 
 // updateProject
 test('Update project', async () => {
-  const r = await util.updateProject(5, {hook: "Howdy, I'm MISTAH BONES!"});
+  const r = await util.updateProject(5, { hook: "Howdy, I'm MISTAH BONES!" });
 
   console.log('Update project: ' + r);
 

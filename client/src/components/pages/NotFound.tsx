@@ -1,6 +1,6 @@
 import '../Styles/pages.css';
 import '../Styles/general.css';
-import '../Styles/Notfound.css';
+import '../Styles/NotFound.css';
 import * as paths from "../../constants/routes";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';

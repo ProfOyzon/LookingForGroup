@@ -1,7 +1,7 @@
 import {ApiResponse} from './types';
 
 //Basic GET function for utilities
-const GET = async (apiURL: string): Promise<ApiResponse<unknown>> => {
+export const GET = async (apiURL: string): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'GET',
@@ -40,7 +40,7 @@ const GET = async (apiURL: string): Promise<ApiResponse<unknown>> => {
 
 
 //Basic POST function
-const POST = async (apiURL: string, newData: object): Promise<ApiResponse<unknown>> => {
+export const POST = async (apiURL: string, newData: object): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'POST',
@@ -79,7 +79,7 @@ const POST = async (apiURL: string, newData: object): Promise<ApiResponse<unknow
 
 
 //Basic PUT function
-const PUT = async (apiURL: string, newData: object): Promise<ApiResponse<unknown>> => {
+export const PUT = async (apiURL: string, newData: object): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'PUT',
@@ -119,7 +119,7 @@ const PUT = async (apiURL: string, newData: object): Promise<ApiResponse<unknown
 
 
 //Basic DELETE function
-const DELETE = async (apiURL: string): Promise<ApiResponse<unknown>> => {
+export const DELETE = async (apiURL: string): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'DELETE',

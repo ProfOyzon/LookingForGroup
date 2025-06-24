@@ -13,7 +13,7 @@ Navigate to the [root](.) directory and install dependencies:
 npm install
 ```
 
-This installs all the dependencies for the client and server projects, along with installing husky for our pre-commit checks. You only need to run this command in the [root](.) directory on clone, but if a new package is added to [package.json](package.json), you will need to run it again.
+This installs all the dependencies for the client and server projects. It also installs husky for our pre-commit checks, and generates the Prisma client library for the back-end. You only need to run this command in the [root](.) directory on clone, but if a new package is added to any of the `package.json` files you will need to run it again.
 
 ## Running the Project
 

@@ -43,14 +43,6 @@ const getNumEnvVariable = (key: string): number => {
 
 const envConfig = Object.freeze({
   env: getEnvVariable('NODE_ENV'),
-  dbHost: getEnvVariable('DB_HOST'),
-  dbUser: getEnvVariable('DB_USER'),
-  dbPass: getEnvVariable('DB_PASS'),
-  dbName: getEnvVariable('DB_NAME'),
-  dbPort: getNumEnvVariable('DB_PORT'),
-  mailerEmail: getEnvVariable('MAILER_EMAIL'),
-  mailerPass: getEnvVariable('MAILER_PASS'),
-  sessionSecret: getEnvVariable('SESSION_SECRET'),
   port: getNumEnvVariable('PORT'),
 });
 

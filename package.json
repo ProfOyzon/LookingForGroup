@@ -13,7 +13,7 @@
     "stop": "pm2 stop ./server/index.js",
     "dev": "concurrently \"npm run start --workspace=client\" \"nodemon server/index.js\"",
     "build:client": "npm run build --workspace=client",
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest vitest",
     "lint:server": "eslint --fix server",
     "lint:server:types": "tsc -p jsconfig.json",
     "lint:client": "npm run lint --workspace=client",

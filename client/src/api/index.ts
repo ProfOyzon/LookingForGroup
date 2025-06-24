@@ -119,12 +119,13 @@ export const PUT = async (apiURL: string, newData: object): Promise<ApiResponse<
 
 
 //Basic DELETE function
-export const DELETE = async (apiURL: string): Promise<ApiResponse<unknown>> => {
+export const DELETE = async (apiURL: string, data: object = {}): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
+            body: JSON.stringify(data),
         });
 
         const contentType = response.headers.get('content-type') || '';
@@ -152,7 +153,7 @@ export const DELETE = async (apiURL: string): Promise<ApiResponse<unknown>> => {
     } catch (error: any) {
         console.error('POST error:', error);
         return { error: error.message || 'Unknown error', status: 400, };
-    };
+    }
 };
 
 

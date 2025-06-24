@@ -6,8 +6,11 @@
     "rewriteRelativeImportExtensions": true,
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
+    "allowJs": true,
+    "checkJs": true,
     "strict": true,
     "allowUnreachableCode": false
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests"],
+  "exclude": ["**/generated/**"]
 }

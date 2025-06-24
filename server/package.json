@@ -7,11 +7,14 @@
     "start": "node src/index.ts",
     "dev": "nodemon",
     "test": "cross-env NODE_ENV=test vitest run",
+    "prisma:pull": "npm run prisma db pull",
+    "prisma:generate": "npm run prisma generate",
     "lint": "eslint --fix .",
     "lint:types": "tsc --project tsconfig.json --noEmit",
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@prisma/client": "^6.10.1",
     "dotenv": "^16.4.7",
     "express": "5.1.0",
     "morgan": "^1.10.0",

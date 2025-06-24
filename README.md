@@ -7,13 +7,49 @@
 
 ## Getting Started
 
-Navigate to the [root](.) directory and install dependencies:
+To get started, you can clone the repo, then follow the next steps.
+
+### Install Node dependencies
+
+To do this, navigate to the [root](.) directory run the following command:
 
 ```bash
 npm install
 ```
 
-This installs all the dependencies for the client and server projects. It also installs husky for our pre-commit checks, and generates the Prisma client library for the back-end. You only need to run this command in the [root](.) directory on clone, but if a new package is added to any of the `package.json` files you will need to run it again.
+This installs all the dependencies for the client and server projects. It also installs husky for our pre-commit checks, and generates the Prisma client library for the back-end. You only need to run this command in the [root](.) directory on clone, but if a new package is added to any of the [package.json](package.json) files, or the [Prisma schema](./server/prisma/schema.prisma) is updated you will need to run it again.
+
+> [!CAUTION]
+> The `node_modules` directory should never be committed to git or any other version control system
+
+### Set environment variables
+
+Environment files allow for sensitive info to be given to the app without adding it to git. These environment variables are stored in `.env` files that must be places in the [server](./server/) and [client](./client/) directories.
+
+> [!CAUTION]
+> Environment files like `.env` should never be committed to git or any other version control system
+
+#### Server `.env` example:
+
+```sh
+NODE_ENV=development
+DATABASE_URL="mysql://<user>:<password>@localhost:<port>/lfg"
+PORT=3000
+```
+
+- NODE_ENV should be `development` when working locally
+- Replace `<user>` with the mysql username
+- Replace `<password>` with the mysql password
+- Replace `<port>` with the port the mysql server is running on
+- PORT can be set to any open port you want, `3000` is standard for development
+
+#### Client `.env` example
+
+```sh
+API_PORT=3000
+```
+
+- API_PORT is used by the vite proxy, and should match the `PORT` value used in the server `.env` file
 
 ## Running the Project
 

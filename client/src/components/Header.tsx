@@ -83,7 +83,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
     // navigate to Profile, attach userID
     const response = await fetch('/api/auth');
     const { data } = await response.json();
-    navigate(`${paths.routes.PROFILE}?userID=${data}`);
+    navigate(`${paths.routes.NEWPROFILE}?userID=${data}`);
 
     // Collapse the dropwdown if coming from another user's page
     if (window.location.href.includes("profile")) {

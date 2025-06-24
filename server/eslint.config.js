@@ -6,7 +6,7 @@ import prettierConfig from 'eslint-config-prettier';
 import vitest from '@vitest/eslint-plugin';
 
 export default tseslint.config(
-  { ignores: ['eslint.config.js'] },
+  { ignores: ['eslint.config.js', '**/generated/**'] },
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   {

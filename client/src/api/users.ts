@@ -438,7 +438,11 @@ export const deleteUserFollowing = async (id: number, unfollowID: number) => {
     const data = {
         userId: unfollowID,
     };
+<<<<<<< HEAD
     const response = await util.DELETE(url);
+=======
+    const response = await DELETE(url, data);
+>>>>>>> ea4069d2d1b5d8cbfd45a2a07c5a4c7d03660ab3
 
     if (response.status === 400) {
         console.log('Error deleting user following.');

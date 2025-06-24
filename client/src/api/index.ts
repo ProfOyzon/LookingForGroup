@@ -1,7 +1,11 @@
 import {ApiResponse} from './types';
 
 //Basic GET function for utilities
+<<<<<<< HEAD
 const GET = async (apiURL: string): Promise<ApiResponse> => {
+=======
+export const GET = async (apiURL: string): Promise<ApiResponse<unknown>> => {
+>>>>>>> ea4069d2d1b5d8cbfd45a2a07c5a4c7d03660ab3
     try {
         const response = await fetch(apiURL, {
             method: 'GET',
@@ -40,7 +44,7 @@ const GET = async (apiURL: string): Promise<ApiResponse> => {
 
 
 //Basic POST function
-const POST = async (apiURL: string, newData: object): Promise<ApiResponse<unknown>> => {
+export const POST = async (apiURL: string, newData: object): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'POST',
@@ -79,7 +83,7 @@ const POST = async (apiURL: string, newData: object): Promise<ApiResponse<unknow
 
 
 //Basic PUT function
-const PUT = async (apiURL: string, newData: object): Promise<ApiResponse<unknown>> => {
+export const PUT = async (apiURL: string, newData: object): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'PUT',
@@ -119,12 +123,13 @@ const PUT = async (apiURL: string, newData: object): Promise<ApiResponse<unknown
 
 
 //Basic DELETE function
-const DELETE = async (apiURL: string): Promise<ApiResponse<unknown>> => {
+export const DELETE = async (apiURL: string, data: object = {}): Promise<ApiResponse<unknown>> => {
     try {
         const response = await fetch(apiURL, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
+            body: JSON.stringify(data),
         });
 
         const contentType = response.headers.get('content-type') || '';
@@ -152,7 +157,7 @@ const DELETE = async (apiURL: string): Promise<ApiResponse<unknown>> => {
     } catch (error: any) {
         console.error('POST error:', error);
         return { error: error.message || 'Unknown error', status: 400, };
-    };
+    }
 };
 
 

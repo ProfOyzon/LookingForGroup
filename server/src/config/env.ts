@@ -1,12 +1,4 @@
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-//load .env file variables
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+import 'dotenv/config';
 
 /**
  * Gets the value of an environment variable.
@@ -43,6 +35,7 @@ const getNumEnvVariable = (key: string): number => {
 
 const envConfig = Object.freeze({
   env: getEnvVariable('NODE_ENV'),
+  databaseUrl: getEnvVariable('DATABASE_URL'),
   port: getNumEnvVariable('PORT'),
 });
 

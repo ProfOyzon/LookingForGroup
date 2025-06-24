@@ -7,8 +7,6 @@
     "start": "node src/index.ts",
     "dev": "nodemon",
     "test": "cross-env NODE_ENV=test vitest run",
-    "prisma:pull": "npm run prisma db pull",
-    "prisma:generate": "npm run prisma generate",
     "lint": "eslint --fix .",
     "lint:types": "tsc --project tsconfig.json --noEmit",
     "format": "prettier --write ."

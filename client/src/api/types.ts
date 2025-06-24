@@ -1,4 +1,4 @@
-export interface ApiResponse<_data = any> {
+export interface ApiResponse<_data = unknown> {
     status: number;
     error?: string | null;
     data?: _data | null;

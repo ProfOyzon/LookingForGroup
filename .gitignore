@@ -94,3 +94,6 @@ server/images/
 
 # SQL files
 *.sql
+
+# Prisma generated files
+server/src/generated/prisma

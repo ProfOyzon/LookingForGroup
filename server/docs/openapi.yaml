@@ -1,3 +1,9 @@
+openapi: 3.1.1
+info:
+  title: Looking For Group API
+  version: '1.0.0'
+  description: LFG API Documentation. This will showcase all the endpoints available and how to use them.
+
 paths:
   /api/datasets/skills:
     get:
@@ -7,6 +13,81 @@ paths:
       responses:
         '200':
           description: A list of skills
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /api/datasets/majors:
+    get:
+      summary: Receives list of all majors
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of majors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /api/datasets/project-types:
+    get:
+      summary: Receives list of all project types
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of project types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /api/datasets/tags:
+    get:
+      summary: Receives list of all tags
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /api/datasets/job-titles:
+    get:
+      summary: Receives list of all job titles
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of job titles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /api/datasets/socials:
+    get:
+      summary: Receives list of all socials
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of social platforms
           content:
             application/json:
               schema:

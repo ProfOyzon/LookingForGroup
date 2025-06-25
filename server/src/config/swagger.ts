@@ -16,12 +16,11 @@ const swaggerDefinition = {
   basePath: '/api',
 };
 
+const apiPath = path.join(__dirname, '../../docs/**/*.yaml');
+
 export const swaggerSpec = swaggerJSDoc({
   definition: swaggerDefinition,
-  // apis: ['../../docs/**/*.yaml'],
-  apis: [path.join(__dirname, '../docs/**/*.yaml')],
+  apis: [apiPath],
+  //apis: ['../../docs/**/*.yaml'],
+  //apis: [path.join(__dirname, '../docs/**/*.yaml')],
 });
-
-console.log('Swagger YAML path:', path.join(__dirname, '../../docs/**/*.yaml'));
-
-//http://localhost:8081/api/docs/

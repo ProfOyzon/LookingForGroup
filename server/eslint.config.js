@@ -38,7 +38,16 @@ export default tseslint.config(
     rules: {
       eqeqeq: 'error',
       '@typescript-eslint/restrict-template-expressions': 'warn',
-      'import/order': ['error'],
+      'import/order': [
+        'error',
+        {
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object'],
+          alphabetize: {
+            order: 'asc',
+          },
+          'newlines-between': 'never',
+        },
+      ],
     },
   },
   prettierConfig,

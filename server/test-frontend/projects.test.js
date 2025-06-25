@@ -38,3 +38,77 @@ test('Test getPics: 1: Test return status 200, 2: Test return status incorrect, 
   expect(incorrectResponse.status).toBe(401);
   expect(correctResponse.data[0].image).toBe('1picture1731360414990.webp');
 });
+
+/**
+ * Testing POSTs
+ */
+
+/**
+ * Testing createNewProject
+ * Create a new project in the lfg database
+ * Requires Shibboleth
+ */
+
+/**
+ * Testing addPic
+ * Adds a picture to a project's carousel (in the lfg database)
+ * Requires Shibboleth
+ */
+
+/**
+ * Testing addMember
+ * Adds a member to a project
+ * Requires Shibboleth
+ */
+
+/**
+ * Testing PUTs
+ */
+
+/**
+ * Testing updateProject
+ * Updates data of an existing project
+ * Requires Shibboleth
+ */
+
+/**
+ * Testing updateThumbnail
+ * Updates the thumbnail image for a project
+ * Requires Shibboleth
+ */
+
+/**
+ * Testing updatePicPositions
+ * Updates the position order of a project's carousel pictures
+ * Requires Shibboleth
+ */
+
+/**
+ * Testing updateMember
+ * Updates an existing member in a project
+ * Requires Shibboleth
+ */
+
+/**
+ * Testing DELETEs
+ */
+
+/**
+ * Testing deleteProject
+ * Deletes an existing project from lfg database.
+ * Also deletes user/member associations with that project.
+ * Requires Shibboleth
+ */
+
+/**
+ * Testing deletePic
+ * Deletes a picture in a project carousel
+ * Moves all other pictures up to fill carousel
+ * Requires Shibboleth
+ */
+
+/**
+ * Testing deleteMember
+ * Deletes a member from a project
+ * Requires Shibboleth
+ */

@@ -12,7 +12,7 @@
     "format": "prettier --write ."
   },
   "imports": {
-    "#app": "./src/app.ts",
+    "#app.ts": "./src/app.ts",
     "#prisma-generated/*": "./src/generated/prisma/*",
     "#config/*.ts": "./src/config/*.ts"
   },

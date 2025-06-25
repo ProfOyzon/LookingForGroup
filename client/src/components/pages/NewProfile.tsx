@@ -445,7 +445,7 @@ const NewProfile = () => {
                     category = 'grey';
                 }
 
-                return <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>;
+                return <div key={`${tag.skill}`} className={`skill-tag-label label-${category}`}>{tag.skill}</div>;
               })
             ) : (
               <></>

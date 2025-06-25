@@ -11,7 +11,7 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import CreditsFooter from '../CreditsFooter';
 import { DiscoverCarousel } from '../DiscoverCarousel';
 import { DiscoverFilters } from '../DiscoverFilters';
@@ -152,6 +152,11 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
       setUserId(data.data);
     }
   }
+
+  // Limits React state update warning
+  useEffect(() => {
+    getAuth();
+  }, []);
 
   /*
     Fetches data from the server to populate the discover page.

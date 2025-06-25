@@ -180,6 +180,7 @@ export const ProfileEditPopup = () => {
   let editorTabs = pageTabs.map((tag, i) => {
     return (
       <button
+        key={tag}
         onClick={(e) => {
           e.preventDefault();
           switchTab(i);

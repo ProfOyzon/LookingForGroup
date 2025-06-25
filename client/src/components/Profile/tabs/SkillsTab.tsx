@@ -173,7 +173,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
 
     return modifiedProfile.skills
       .map((s) => (
-        <button className={`tag-button tag-button-${getTagColor(s.type)}-selected`} onClick={(e) => handleTagSelect(e)}>
+        <button key={s.skill} className={`tag-button tag-button-${getTagColor(s.type)}-selected`} onClick={(e) => handleTagSelect(e)}>
           <i className="fa fa-close"></i>
           &nbsp;{s.skill}
         </button>
@@ -196,6 +196,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
 
           return (
             <button
+              key={id}
               className={`tag-button tag-button-${'type' in t ? getTagColor(t.type) : 'blue'}-${isTagSelected(
                 id,
                 t.label,
@@ -225,6 +226,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
         .filter((s) => s.type === 'Developer Skill')
         .map((s) => (
           <button
+            key={s.tag_id}
             className={`tag-button tag-button-yellow-${isTagSelected(s.tag_id, s.label, currentTagsTab)}`}
             onClick={(e) => handleTagSelect(e)}
           >
@@ -243,6 +245,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
         .filter((s) => s.type === 'Designer Skill')
         .map((s) => (
           <button
+            key={s.tag_id}
             className={`tag-button tag-button-red-${isTagSelected(s.tag_id, s.label, currentTagsTab)}`}
             onClick={(e) => handleTagSelect(e)}
           >
@@ -262,6 +265,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
         .filter((s) => s.type === 'Soft Skill')
         .map((s) => (
           <button
+            key={s.tag_id}
             className={`tag-button tag-button-purple-${isTagSelected(s.tag_id, s.label, currentTagsTab)}`}
             onClick={(e) => handleTagSelect(e)}
           >
@@ -297,6 +301,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
     let tabs = tagTabs.map((tag, i) => {
       return (
         <button
+          key={tag}
           type="button"
           onClick={() => setCurrentTagsTab(i)}
           className={`button-reset project-editor-tag-search-tab ${currentTagsTab === i ? 'tag-search-tab-active' : ''}`}

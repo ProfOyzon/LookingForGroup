@@ -556,8 +556,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             {modifiedProject.members.map((m) => {
                 if (m.user_id === modifiedProject.user_id) {
                   return (
-                    <>
-                      <span id="position-contact-link">
+                      <span key={m.user_id} id="position-contact-link">
                         <img 
                           className='project-member-image'
                           src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
@@ -570,11 +569,10 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                         />
                         {m.first_name} {m.last_name}
                       </span>
-                    </>
                   );
                 }
 
-                return <></>;
+                return null;
               })}
           </div>
         </div>
@@ -702,6 +700,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       <div id="edit-position-description">
         <label>Role Description*</label>
         <textarea
+          value={currentJob.description ?? ''}
           onChange={(e) => setCurrentJob({ ...currentJob, description: e.target.value })}
         >
           {newPosition ? '' : getProjectJob(currentRole)?.description}
@@ -896,7 +895,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         const activeMember = m;
 
         return (
-          <div className="project-editor-project-member">
+          <div key={m.user_id} className="project-editor-project-member">
             <img
               className="project-member-image"
               src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
@@ -1091,6 +1090,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                     {
                       searchResults.data.map((user, index) => (
                         <DropdownButton
+                          key={user.user_id ?? index}
                           className={
                             `user-search-item 
                             ${(index === 0) ? 'top' : ''}
@@ -1182,7 +1182,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         <div id="team-positions-popup-list-header">Open Positions</div>
         <div id="team-positions-popup-list-buttons">
           {modifiedProject.jobs?.map((job: { job_title: string; title_id: number }) => (
-            <div className="team-positions-button">
+            <div key={job.title_id} className="team-positions-button">
               <img src="/images/icons/drag.png" alt="positions" />
               <button
                 className="positions-popup-list-item"

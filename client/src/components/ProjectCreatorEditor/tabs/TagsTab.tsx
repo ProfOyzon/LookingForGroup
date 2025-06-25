@@ -319,7 +319,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
   const loadProjectTags = useMemo(() => {
     return modifiedProject.tags
       .map((t) => (
-          <button className={`tag-button tag-button-${getTagColor(t.type)}-selected`} onClick={(e) => handleTagSelect(e)}>
+          <button key={t.tag} className={`tag-button tag-button-${getTagColor(t.type)}-selected`} onClick={(e) => handleTagSelect(e)}>
             <i className="fa fa-close"></i>
             &nbsp;{t.tag}
           </button>
@@ -342,6 +342,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
 
           return (
             <button
+              key={id}
               className={`tag-button tag-button-${'type' in t ? getTagColor(t.type) : 'blue'}-${isTagSelected(
                 id,
                 t.label,
@@ -369,6 +370,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
     if (currentTagsTab === 0) {
       return allProjectTypes.map((t) => (
         <button
+          key={t.type_id}
           className={`tag-button tag-button-blue-${isTagSelected(t.type_id, t.label, currentTagsTab)}`}
           onClick={(e) => handleTagSelect(e)}
         >
@@ -387,6 +389,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         .filter((t) => t.type === 'Genre')
         .map((t) => (
           <button
+            key={t.tag_id}
             className={`tag-button tag-button-green-${isTagSelected(t.tag_id, t.label, currentTagsTab)}`}
             onClick={(e) => handleTagSelect(e)}
           >
@@ -405,6 +408,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         .filter((s) => s.type === 'Developer Skill')
         .map((s) => (
           <button
+            key={s.tag_id}
             className={`tag-button tag-button-yellow-${isTagSelected(s.tag_id, s.label, currentTagsTab)}`}
             onClick={(e) => handleTagSelect(e)}
           >
@@ -423,6 +427,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         .filter((s) => s.type === 'Designer Skill')
         .map((s) => (
           <button
+            key={s.tag_id}
             className={`tag-button tag-button-red-${isTagSelected(s.tag_id, s.label, currentTagsTab)}`}
             onClick={(e) => handleTagSelect(e)}
           >
@@ -441,6 +446,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
       .filter((s) => s.type === 'Soft Skill')
       .map((s) => (
         <button
+          key={s.tag_id}
           className={`tag-button tag-button-purple-${isTagSelected(s.tag_id, s.label, currentTagsTab)}`}
           onClick={(e) => handleTagSelect(e)}
         >
@@ -476,7 +482,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         {modifiedProject.project_types.length === 0 ? <div className="error">*At least 1 type is required</div> : <></> }
         <div id="project-editor-type-tags-container">
           {modifiedProject.project_types.map((t) => (
-            <button className={`tag-button tag-button-blue-selected`}>
+            <button key={t.project_type} className={`tag-button tag-button-blue-selected`}>
               <i className="fa fa-close"></i>
               &nbsp;{t.project_type}
             </button>

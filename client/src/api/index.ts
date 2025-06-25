@@ -1,11 +1,7 @@
 import {ApiResponse} from './types';
 
 //Basic GET function for utilities
-<<<<<<< HEAD
-const GET = async (apiURL: string): Promise<ApiResponse> => {
-=======
-export const GET = async (apiURL: string): Promise<ApiResponse<unknown>> => {
->>>>>>> ea4069d2d1b5d8cbfd45a2a07c5a4c7d03660ab3
+export const GET = async (apiURL: string): Promise<ApiResponse> => {
     try {
         const response = await fetch(apiURL, {
             method: 'GET',

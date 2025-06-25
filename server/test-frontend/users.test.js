@@ -13,7 +13,7 @@ test('Test getUsers: 1: Test return status 200, 2 and 3: Test recieve user infor
   const response = await util.getUsers();
   expect(response.status).toBe(200);
   expect(response.data).toBeDefined();
-  expect(response.data.data[3].first_name).toBe('Elouise');
+  expect(response.data[3].first_name).toBe('Elouise');
 });
 
 /**
@@ -24,7 +24,8 @@ test('Test getUsersById: 1: Test return status 200, 2 and 3: Test recieved user 
   const response = await util.getUsersById(28);
   expect(response.status).toBe(200);
   expect(response.data).toBeDefined();
-  expect(response.data.data[0].username).toBe('Mistah Bones');
+  console.log(response);
+  expect(response.data[0].username).toBe('Mistah Bones');
 });
 
 /**
@@ -46,7 +47,7 @@ test('Test getUserByUsername: 1: Test status 200, 2: test user information', asy
   const response = await util.getUserByUsername('Mistah Bones');
   expect(response.status).toBe(200);
   expect(response.data).toBeDefined();
-  expect(response.data.data[0].first_name).toBe('Mistah');
+  expect(response.data[0].first_name).toBe('Mistah');
 });
 
 /**
@@ -56,7 +57,7 @@ test('Test getUserByUsername: 1: Test status 200, 2: test user information', asy
 test('Test getUserByEmail: 1: Test status 200, 2: test user information', async () => {
   const response = await util.getUserByEmail('jjp8541@rit.edu');
   expect(response.status).toBe(200);
-  expect(response.data.data[0].username).toBe('MJParson');
+  expect(response.data[0].username).toBe('MJParson');
 });
 
 /**
@@ -66,7 +67,7 @@ test('Test getUserByEmail: 1: Test status 200, 2: test user information', async 
 test('Test getUserFollowing: 1: Test status 200, 2: test user returns', async () => {
   const response = await util.getUserFollowing(1);
   expect(response.status).toBe(200);
-  expect(response.data.data[0].location).toBe('New York');
+  expect(response.data[0].location).toBe('New York');
 });
 
 /**
@@ -76,7 +77,7 @@ test('Test getUserFollowing: 1: Test status 200, 2: test user returns', async ()
 test('test getVisibleProjects: 1: test status 200, 2: test data recieved', async () => {
   const response = await util.getVisibleProjects(1);
   expect(response.status).toBe(200);
-  expect(response.data.data[0].title).toBe('Cult of the Lamb');
+  expect(response.data[0].title).toBe('Cult of the Lamb');
 });
 
 /**
@@ -86,5 +87,5 @@ test('test getVisibleProjects: 1: test status 200, 2: test data recieved', async
 test('test getProjectFollowing: 1: test status 200, 2: test data recieved', async () => {
   const response = await util.getProjectFollowing(1);
   expect(response.status).toBe(200);
-  expect(response.data.data[0].title).toBe('Rock Eater 9000');
+  expect(response.data[0].title).toBe('Rock Eater 9000');
 });

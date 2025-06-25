@@ -75,7 +75,7 @@ export const getUsers = async (): Promise<ApiResponse<unknown>> => {
     //console.log(response);
     return {
         status: response.status,
-        data: response.data,
+        data: response.data.data,
         error: response.error
     };
 }
@@ -85,9 +85,9 @@ export const getUsers = async (): Promise<ApiResponse<unknown>> => {
  * @param id - user_id for user
  * @returns result - JSONified data of specified user.
  */
-export const getUsersById = async (id: number): Promise<ApiResponse> => {
+export const getUsersById = async (id: number): Promise<unknown> => {
     const apiURL = `${root}/users/${id}`;
-    return await util.GET(apiURL);
+    return (await util.GET(apiURL)).data;
 }
 
 /**
@@ -170,7 +170,7 @@ export const updateProfilePicture = async (id: number, image: File): Promise<Api
  * @param _password - the user's current password.
  * @returns response, 200 if valid, 400 if not, 401 if emails do not match.
  */
-export const updateEmail = async (id: number, _email: string, _confirm_email: string, _password: string): Promise<ApiResponse> => {
+export const updateEmail = async (id: number, _email: string, _confirm_email: string, _password: string): Promise<unknown> => {
 
     if (_email != _confirm_email) {
         console.log('Not the same email, try again.');
@@ -190,7 +190,7 @@ export const updateEmail = async (id: number, _email: string, _confirm_email: st
     }
     console.log('Updated primary email for user.');
 
-    return response;
+    return response.data;
 }
 
 /**
@@ -327,11 +327,11 @@ export const getAccountInformation = async (user_id: number) => {
     console.log(response);
     if (response.status === 401) {
         console.log(response.error);
-        return response;
+        return response.data;
     }
 
     console.log('User account information recieved');
-    return response;
+    return response.data;
 }
 
 //requestPasswordReset
@@ -361,7 +361,7 @@ export const getUserByUsername = async (username: string) => {
     }
 
     console.log('Data recieved.');
-    return response;
+    return response.data;
 }
 
 /**
@@ -385,7 +385,7 @@ export const getUserByEmail = async (email: string) => {
     }
 
     console.log('Data recieved.');
-    return response;
+    return response.data;
 }
 
 
@@ -405,7 +405,7 @@ export const getUserFollowing = async (id: number) => {
         return { status: 400, error: response.error };
     }
     console.log('Data recieved.');
-    return response;
+    return response.data;
 }
 
 /**
@@ -438,11 +438,7 @@ export const deleteUserFollowing = async (id: number, unfollowID: number) => {
     const data = {
         userId: unfollowID,
     };
-<<<<<<< HEAD
     const response = await util.DELETE(url);
-=======
-    const response = await DELETE(url, data);
->>>>>>> ea4069d2d1b5d8cbfd45a2a07c5a4c7d03660ab3
 
     if (response.status === 400) {
         console.log('Error deleting user following.');
@@ -469,7 +465,7 @@ export const getVisibleProjects = async (id: number) => {
         return { status: 400, error: response.error };
     }
     console.log('Data recieved.');
-    return response;
+    return response.data;
 }
 
 /**
@@ -508,7 +504,7 @@ export const getProjectFollowing = async (id: number) => {
         return { status: 400, error: response.error };
     }
     console.log('Data recieved.');
-    return response;
+    return response.data;
 }
 
 /**

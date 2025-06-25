@@ -11,6 +11,7 @@
     "strict": true,
     "allowUnreachableCode": false,
     "paths": {
+      "#prisma-generated/*": ["./src/generated/prisma/*"],
       "#config/*.ts": ["./src/config/*.ts"]
     }
   },

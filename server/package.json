@@ -12,6 +12,7 @@
     "format": "prettier --write ."
   },
   "imports": {
+    "#prisma-generated/*": "./src/generated/prisma/*",
     "#config/*.ts": "./src/config/*.ts"
   },
   "dependencies": {

@@ -9,7 +9,10 @@
     "allowJs": true,
     "checkJs": true,
     "strict": true,
-    "allowUnreachableCode": false
+    "allowUnreachableCode": false,
+    "paths": {
+      "#config/*.ts": ["./src/config/*.ts"]
+    }
   },
   "include": ["src", "tests"],
   "exclude": ["**/generated/**"]

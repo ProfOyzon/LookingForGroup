@@ -11,6 +11,9 @@
     "lint:types": "tsc --project tsconfig.json --noEmit",
     "format": "prettier --write ."
   },
+  "imports": {
+    "#config/*.ts": "./src/config/*.ts"
+  },
   "dependencies": {
     "@prisma/client": "^6.10.1",
     "dotenv": "^16.4.7",

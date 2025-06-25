@@ -1,6 +1,6 @@
 import express, { type Request, type Response } from 'express';
 import morgan from 'morgan';
-import envConfig from './config/env.ts';
+import envConfig from '#config/env.ts';
 
 const app = express();
 const port = envConfig.port;

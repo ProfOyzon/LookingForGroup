@@ -6,9 +6,20 @@ import pool from './config/database.js';
 import usersRouter from './routes/users.js';
 import projectsRouter from './routes/projects.js';
 import datasetsRouter from './routes/datasets.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+//path for front end images (WILL DELETE LATER)
+const __filename = fileURLToPath(import.meta.url);
+const _dirname = path.dirname(__filename);
+const { join } = path;
 
 const app = express();
 const port = envConfig.port;
+
+// Serve frontend files and images (WILL DELETE LATER)
+app.use(express.static(join(_dirname, '../client/build')));
+app.use('/images', express.static(join(_dirname, './images')));
 
 app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));

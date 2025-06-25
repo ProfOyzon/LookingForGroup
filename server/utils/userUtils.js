@@ -2,7 +2,7 @@
 import envConfig from '../config/env.js';
 //import { createUser } from '../controllers/users';
 
-import { GET, POST, PUT, DELETE, RESPONSE } from './fetchUtils.js';
+import { GET, POST, PUT, DELETE } from './fetchUtils.js';
 import { transporter } from '../config/mailer.js';
 import { hash } from 'bcrypt';
 

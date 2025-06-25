@@ -17,7 +17,7 @@ if (envConfig.env === 'development') {
   app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
-app.get('/api', (_req: Request, res: Response) => {
+app.get('', (_req: Request, res: Response) => {
   res.json({ message: 'You Reached The Looking For Group API' });
 });
 

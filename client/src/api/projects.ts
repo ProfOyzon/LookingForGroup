@@ -79,7 +79,7 @@ export const getProjects = async (): Promise<unknown> => {
     if (response.error) {
         return { status: response.status, error: response.error };
     }
-    return { status: 200, error: null, data: response.data };
+    return { status: 200, error: null, data: response.data.data };
 };
 
 /**
@@ -93,7 +93,7 @@ export const getByID = async (ID: number): Promise<unknown> => {
     if (response.error) {
         return { status: response.status, error: response.error };
     }
-    return { status: 200, error: null, data: response.data };
+    return { status: 200, error: null, data: response.data.data };
 };
 
 /**
@@ -155,8 +155,10 @@ export const getPics = async (ID: number): Promise<unknown> => {
     const response = await util.GET(apiURL);
     if (response.error) {
         return { status: response.status, error: response.error };
+    } else if ( response.data.data.length == 0 ) {
+        return { status: 401, error: 'No picture for that ID.'}
     }
-return { status: 200, error: null, data: response.data };
+return { status: 200, error: null, data: response.data.data };
 };
 
 /**

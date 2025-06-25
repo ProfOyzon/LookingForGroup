@@ -24,7 +24,6 @@ test('Test getUsersById: 1: Test return status 200, 2 and 3: Test recieved user 
   const response = await util.getUsersById(28);
   expect(response.status).toBe(200);
   expect(response.data).toBeDefined();
-  console.log(response);
   expect(response.data[0].username).toBe('Mistah Bones');
 });
 

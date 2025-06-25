@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { ThemeIcon } from './ThemeIcon';
 import * as paths from '../constants/routes';
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 interface ProfileData {
   user_id: string;
   profile_image?: string;
@@ -27,7 +30,7 @@ export const ProfilePanel = ({ profileData }: ProfilePanelProps) => {
   return (
     <div className={'profile-panel'}>
       <img
-        src={profileData.profile_image ? `images/profiles/${profileData.profile_image}` : profilePicture}
+        src={profileData.profile_image ? `${API_BASE}/images/profiles/${profileData.profile_image}` : profilePicture}
         alt='profile image'
         // default profile picture if profile image doesn't load
         onError={(e) => {

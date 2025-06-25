@@ -1,0 +1,15 @@
+paths:
+  /api/datasets/skills:
+    get:
+      summary: Receives list of all skills
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of skills
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string

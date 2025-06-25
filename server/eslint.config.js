@@ -1,14 +1,17 @@
 // @ts-check
 
-import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import prettierConfig from 'eslint-config-prettier';
+import eslint from '@eslint/js';
+import importPlugin from 'eslint-plugin-import';
 import vitest from '@vitest/eslint-plugin';
+import prettierConfig from 'eslint-config-prettier';
 
 export default tseslint.config(
   { ignores: ['eslint.config.js', '**/generated/**'] },
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
+  importPlugin.flatConfigs.recommended,
+  importPlugin.flatConfigs.typescript,
   {
     languageOptions: {
       parserOptions: {
@@ -16,16 +19,19 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    rules: {
-      eqeqeq: 'error',
-      '@typescript-eslint/restrict-template-expressions': 'warn',
-    },
   },
   {
     files: ['tests/**/*.test.ts'],
     plugins: { vitest },
     rules: {
       ...vitest.configs.recommended.rules,
+    },
+  },
+  {
+    rules: {
+      eqeqeq: 'error',
+      '@typescript-eslint/restrict-template-expressions': 'warn',
+      'import/order': ['error'],
     },
   },
   prettierConfig,

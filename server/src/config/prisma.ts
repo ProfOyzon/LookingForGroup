@@ -1,5 +1,5 @@
-import envConfig from '#config/env.ts';
 import { PrismaClient } from '#prisma-generated/index.js';
+import envConfig from './env.ts';
 
 const prisma = new PrismaClient({ datasourceUrl: envConfig.databaseUrl });
 

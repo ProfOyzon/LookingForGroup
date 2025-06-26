@@ -1,6 +1,9 @@
 // --- Imports ---
 import { useCallback, useEffect, useState } from "react";
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 // --- Interfaces ---
 interface Image {
   id: number;
@@ -138,7 +141,7 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
             }
             else {
               // image is uploaded, can find in directorys
-              src = `images/projects/${image.image}`;
+              src = `${API_BASE}/images/projects/${image.image}`;
             }
             return (
               <div className='project-editor-image-container'>

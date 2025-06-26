@@ -8,6 +8,9 @@ import { ThemeIcon } from "../../ThemeIcon";
 import { Select, SelectButton, SelectOptions } from "../../Select";
 import { current } from "@reduxjs/toolkit";
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 // --- Interfaces ---
 interface Image {
   id: number;
@@ -559,7 +562,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                       <span key={m.user_id} id="position-contact-link">
                         <img 
                           className='project-member-image'
-                          src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
+                          src={(m.profile_image) ? `${API_BASE}/images/profiles/${m.profile_image}` : profileImage}
                           alt="profile"
                           // default profile picture if user image doesn't load
                         onError={(e) => {
@@ -793,7 +796,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                 markup: (
                   <>
                     <img className='project-member-image' 
-                      src={m.profile_image ? `/images/profiles/${m.profile_image}` : profileImage}
+                      src={m.profile_image ? `${API_BASE}/images/profiles/${m.profile_image}` : profileImage}
                       alt="profile"
                       // default profile picture if user image doesn't load
                       onError={(e) => {
@@ -898,7 +901,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <div key={m.user_id} className="project-editor-project-member">
             <img
               className="project-member-image"
-              src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
+              src={(m.profile_image) ? `${API_BASE}/images/profiles/${m.profile_image}` : profileImage}
               alt="profile image"
               // default profile picture if user image doesn't load
               onError={(e) => {
@@ -945,7 +948,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                   >
                     <img
                       className="project-member-image"
-                      src={`/images/profiles/${m.profile_image}`}
+                      src={`${API_BASE}/images/profiles/${m.profile_image}`}
                       alt="profile image"
                       // default profile picture if user image doesn't load
                       onError={(e) => {

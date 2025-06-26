@@ -1,7 +1,10 @@
 import { Router } from 'express';
-//import dataCtrl from '../controllers/datasets.js';
+import getJobTitlesController from '#controllers/datasets/get-job-titles.ts';
 
 const router = Router();
+
+//Receives list of all job-titles
+router.get('/job-titles', getJobTitlesController);
 
 //Receives list of all skills
 
@@ -10,8 +13,6 @@ const router = Router();
 //Receives list of all possible project-types
 
 //Receives list of all tags
-
-//Receives list of all job-titles
 
 //Receives all socials from datasets
 

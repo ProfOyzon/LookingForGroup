@@ -10,6 +10,9 @@ import { sendDelete, sendPost } from '../functions/fetch';
 //Takes in a 'project' value which contains info on the project it will display
 //Also takes in width (the width of this panel), and rightAlign, which determines which side the hover panel aligns with
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 interface ProjectType {
   id: number;
   project_type: string;
@@ -66,7 +69,7 @@ const formatFollowCount = (followers: number): string => {
       <img
         src={
           project.thumbnail != null
-            ? `images/thumbnails/${project.thumbnail}`
+            ? `${API_BASE}/images/thumbnails/${project.thumbnail}`
             : placeholderThumbnail
         }
         alt={'project image'}
@@ -79,7 +82,7 @@ const formatFollowCount = (followers: number): string => {
         <img
           src={
             project.thumbnail != null
-              ? `images/thumbnails/${project.thumbnail}`
+              ? `${API_BASE}/images/thumbnails/${project.thumbnail}`
               : placeholderThumbnail
           }
           alt={'project image'}

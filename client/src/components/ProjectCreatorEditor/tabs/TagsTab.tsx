@@ -259,31 +259,33 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
   // Handle tag selection
   const handleTagSelect = useCallback((e) => {    
     // trim whitespace to get tag name
-    const tag: string = e.target.innerText.trim();
+    // take closest button to allow click on icon
+    const button = e.target.closest('button');
+    const tag: string = button.innerText.trim();
     
     // if tag is unselected
-    if (e.target.className.includes('unselected')) {
+    if (button.className.includes('unselected')) {
       // get tag id and type according to type of tag
       let id: number = -1;
       let type: string = '';
 
-      if (e.target.className.includes('blue')) { // project type
+      if (button.className.includes('blue')) { // project type
         id = allProjectTypes.find((t) => t.label === tag)?.type_id ?? -1;
         type = 'Project Type';
       }
-      else if (e.target.className.includes('green')) { // genre
+      else if (button.className.includes('green')) { // genre
         id = allTags.find((t) => t.label === tag)?.tag_id ?? -1;
         type = 'Genre';
       }
-      else if (e.target.className.includes('yellow')) { // developer skills
+      else if (button.className.includes('yellow')) { // developer skills
         id = allSkills.find((s) => s.type === 'Developer Skill' && s.label === tag)?.tag_id ?? -1;
         type = 'Developer Skill';
       }
-      else if (e.target.className.includes('red')) { // designer skills
+      else if (button.className.includes('red')) { // designer skills
         id = allSkills.find((s) => s.type === 'Designer Skill' && s.label === tag)?.tag_id ?? -1;
         type = 'Designer Skill';
       }
-      else if (e.target.className.includes('purple')) { // soft skills
+      else if (button.className.includes('purple')) { // soft skills
         id = allSkills.find((s) => s.type === 'Soft Skill' && s.label === tag)?.tag_id ?? -1;
         type = 'Soft Skill';
       }

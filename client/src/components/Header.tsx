@@ -21,6 +21,10 @@ import { ThemeIcon } from './ThemeIcon';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { useLocation } from 'react-router-dom'; // Hook to access the current location
 
+
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 //Header component to be used in pages
 
 export let loggedIn = false;
@@ -124,7 +128,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
           <DropdownButton buttonId="profile-btn">
             {(profileImg) ? (
               <img
-                src={`images/profiles/${profileImg}`}
+                src={`${API_BASE}/images/profiles/${profileImg}`}
                 id={'profile-img-icon'}
                 className={'rounded'}
               />
@@ -191,7 +195,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
                 <button onClick={() => handleProfileAccess()} id="header-profile-user">
                   {(profileImg) ? (
                     <img
-                      src={`images/profiles/${profileImg}`}
+                      src={`${API_BASE}/images/profiles/${profileImg}`}
                       className={'rounded'}
                       alt={'profile'}
                     />

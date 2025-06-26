@@ -23,6 +23,9 @@ import { fetchUserID } from '../../functions/fetch';
 import { ProfileInterests } from '../Profile/ProfileInterests';
 import profilePicture from '../../images/blue_frog.png';
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 // --------------------
 // Interfaces
 // --------------------
@@ -99,6 +102,7 @@ const NewProfile = () => {
     fun_fact: ``,
     bio: '',
     skills: [],
+    interests: [],
   };
 
   const navigate = useNavigate(); // Hook for navigation
@@ -347,7 +351,7 @@ const NewProfile = () => {
           <img
             src={
               displayedProfile.profile_image
-                ? `/images/profiles/${displayedProfile.profile_image}`
+                ? `${API_BASE}/images/profiles/${displayedProfile.profile_image}`
                 : profilePicture
             }
             id="profile-image"
@@ -422,7 +426,7 @@ const NewProfile = () => {
           </div>
           <div id="profile-info-interest">
             <ProfileInterests user={{ interests: displayedProfile.interests || [] }}
-              isUsersProfile={true} />
+              isUsersProfile={isUsersProfile} />
           </div>
 
           <div id="profile-info-skills">

@@ -15,6 +15,7 @@
     "#app.ts": "./src/app.ts",
     "#prisma-models/*": "./src/generated/prisma/*",
     "#config/*.ts": "./src/config/*.ts",
+    "#services/*.ts": "./src/services/*.ts",
     "#types/*.ts": "./src/types/*.ts"
   },
   "dependencies": {

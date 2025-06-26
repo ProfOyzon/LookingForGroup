@@ -9,7 +9,12 @@
     "allowJs": true,
     "checkJs": true,
     "strict": true,
-    "allowUnreachableCode": false
+    "allowUnreachableCode": false,
+    "paths": {
+      "#app.ts": ["./src/app.ts"],
+      "#prisma-generated/*": ["./src/generated/prisma/*"],
+      "#config/*.ts": ["./src/config/*.ts"]
+    }
   },
   "include": ["src", "tests"],
   "exclude": ["**/generated/**"]

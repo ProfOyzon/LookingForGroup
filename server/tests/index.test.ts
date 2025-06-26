@@ -1,6 +1,6 @@
-import { expect, test } from 'vitest';
 import request from 'supertest';
-import app from '../src/index.ts';
+import { expect, test } from 'vitest';
+import app from '#app.ts';
 
 test('/', async () => {
   const res = await request(app).get('');

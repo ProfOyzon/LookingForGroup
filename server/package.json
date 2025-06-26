@@ -11,6 +11,11 @@
     "lint:types": "tsc --project tsconfig.json --noEmit",
     "format": "prettier --write ."
   },
+  "imports": {
+    "#app.ts": "./src/app.ts",
+    "#prisma-generated/*": "./src/generated/prisma/*",
+    "#config/*.ts": "./src/config/*.ts"
+  },
   "dependencies": {
     "@prisma/client": "^6.10.1",
     "dotenv": "^16.4.7",
@@ -32,6 +37,8 @@
     "@vitest/eslint-plugin": "^1.2.7",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.0.1",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
     "prisma": "^6.10.1",

@@ -1,7 +1,9 @@
 import prisma from '#config/prisma.ts';
-import type { ServiceError } from '#types/service-error.ts';
+import type { ServiceErrorSubtype } from '#services/service-error.ts';
 
-const getJobTitlesService = async (): Promise<string[] | ServiceError> => {
+type GetJobTitlesServiceError = ServiceErrorSubtype<'INTERNAL_ERROR'>;
+
+const getJobTitlesService = async (): Promise<string[] | GetJobTitlesServiceError> => {
   try {
     const result = await prisma.job_titles.findMany({ select: { label: true } });
 

@@ -10,8 +10,8 @@ app.use(express.json());
 
 if (envConfig.env === 'development') {
   // Dynamic imports are used here because swagger packages are dev dependencies, which would cause crashes when imported in production.
-  const swaggerSpec = (await import('./config/swagger.ts')).swaggerSpec;
   const swaggerUi = (await import('swagger-ui-express')).default;
+  const swaggerSpec = (await import('#config/swagger.ts')).swaggerSpec;
 
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }

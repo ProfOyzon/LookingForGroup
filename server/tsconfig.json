@@ -13,7 +13,8 @@
     "paths": {
       "#app.ts": ["./src/app.ts"],
       "#prisma-models/*": ["./src/generated/prisma/*"],
-      "#config/*.ts": ["./src/config/*.ts"]
+      "#config/*.ts": ["./src/config/*.ts"],
+      "#types/*.ts": ["./src/types/*.ts"]
     }
   },
   "include": ["src", "tests"],

@@ -14,7 +14,8 @@
   "imports": {
     "#app.ts": "./src/app.ts",
     "#prisma-models/*": "./src/generated/prisma/*",
-    "#config/*.ts": "./src/config/*.ts"
+    "#config/*.ts": "./src/config/*.ts",
+    "#types/*.ts": "./src/types/*.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.10.1",

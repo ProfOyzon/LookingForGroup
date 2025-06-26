@@ -140,8 +140,8 @@ const Login: React.FC = () => {
                 *************************************************************/}
         <div className="login-form column">
           <ThemeIcon //Back button to return to the previous page
-            light={'assets/back_light.png'}
-            dark={'assets/back_dark.png'}
+            light={'/assets/back_light.png'}
+            dark={'/assets/back_dark.png'}
             alt="Back Button"
             id="backPage-arrow"
             onClick={() => {
@@ -182,14 +182,14 @@ const Login: React.FC = () => {
                 {showPassword ? (
                   <ThemeIcon
                     id='eye-icon'
-                    light={'assets/black/password_shown.png'}
-                    dark={'assets/white/password_shown.png'}
+                    light={'/assets/black/password_shown.png'}
+                    dark={'/assets/white/password_shown.png'}
                   />) :
                   (
                     <ThemeIcon
                       id='eye-icon'
-                      light={'assets/black/password_hidden.png'}
-                      dark={'assets/white/password_hidden.png'}
+                      light={'/assets/black/password_hidden.png'}
+                      dark={'/assets/white/password_hidden.png'}
                     />
                   )}
               </button>
@@ -218,8 +218,8 @@ const Login: React.FC = () => {
           {/* <h1>Welcome!</h1>
                     <p>Don't have an account?</p> */}
           <ThemeIcon
-            light={'assets/bannerImages/login_light.png'}
-            dark={'assets/bannerImages/login_dark.png'}
+            light={'/assets/bannerImages/login_light.png'}
+            dark={'/assets/bannerImages/login_dark.png'}
           />
           <button onClick={() => navigate(paths.routes.SIGNUP)}>Sign Up</button>
         </div>

@@ -454,8 +454,8 @@ const Settings = ({ }) => {
                       <div className="input-container">
                         <input id="option-theme" placeholder={themeOption} type="text" disabled />
                         <ThemeIcon
-                          light={'assets/dropdown_light.png'}
-                          dark={'assets/dropdown_dark.png'}
+                          light={'/assets/dropdown_light.png'}
+                          dark={'/assets/dropdown_dark.png'}
                           alt={'Current Theme'}
                           addClass={'options-dropdown-parent-btn'}
                         />
@@ -526,8 +526,8 @@ const Settings = ({ }) => {
                           disabled
                         />
                         <ThemeIcon
-                          light={'assets/dropdown_light.png'}
-                          dark={'assets/dropdown_dark.png'}
+                          light={'/assets/dropdown_light.png'}
+                          dark={'/assets/dropdown_dark.png'}
                           alt={'Visibility'}
                           addClass={'options-dropdown-parent-btn'}
                         />

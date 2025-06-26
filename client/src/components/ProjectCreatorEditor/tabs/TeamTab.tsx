@@ -522,8 +522,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         }}
       >
         <ThemeIcon
-          light={'assets/white/pencil.png'}
-          dark={'assets/black/pencil.png'}
+          light={'/assets/white/pencil.png'}
+          dark={'/assets/black/pencil.png'}
           alt={"edit"}
           addClass={"edit-project-member-icon"}
         />
@@ -930,8 +930,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                   alt=""
                 /> */}
                   <ThemeIcon
-                    light={'assets/white/pencil.png'}
-                    dark={'assets/black/pencil.png'}
+                    light={'/assets/white/pencil.png'}
+                    dark={'/assets/black/pencil.png'}
                     alt={"edit"}
                     addClass={"edit-project-member-icon"}
                   />

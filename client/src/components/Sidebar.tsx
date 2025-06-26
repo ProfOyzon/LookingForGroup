@@ -151,28 +151,28 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
                 className={activePage === 'Discover' ? 'active sidebar-btn' : 'sidebar-btn'}
                 onClick={() => handleTextChange('Discover', paths.routes.HOME)}
               >
-                <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} alt={'discover'} />
+                <ThemeIcon light={'/assets/black/compass.png'} dark={'/assets/white/compass.png'} alt={'discover'} />
               </button>
               <button
                 id={'meet-sidebar-btn'}
                 className={activePage === 'Meet' ? 'active sidebar-btn' : 'sidebar-btn'}
                 onClick={() => handleTextChange('Meet', paths.routes.MEET)}
               >
-                <ThemeIcon light={'assets/black/meet.png'} dark={'assets/white/meet.png'} alt={'meet users'} />
+                <ThemeIcon light={'/assets/black/meet.png'} dark={'/assets/white/meet.png'} alt={'meet users'} />
               </button>
               <button
                 id={'my-projects-sidebar-btn'}
                 className={activePage === 'My Projects' ? 'active sidebar-btn' : 'sidebar-btn'}
                 onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}
               >
-                <ThemeIcon light={'assets/black/folder.png'} dark={'assets/white/folder.png'} alt={'my projects'} />
+                <ThemeIcon light={'/assets/black/folder.png'} dark={'/assets/white/folder.png'} alt={'my projects'} />
               </button>
               <button
                 id={'my-profile-sidebar-btn'}
                 className={activePage === 'My Profile' ? 'active sidebar-btn' : 'sidebar-btn'}
                 onClick={() => handleTextChange('My Profile', paths.routes.NEWPROFILE)}
               >
-                <ThemeIcon light={'assets/black/profile.png'} dark={'assets/white/profile.png'} alt={'my profile'} />
+                <ThemeIcon light={'/assets/black/profile.png'} dark={'/assets/white/profile.png'} alt={'my profile'} />
               </button>
             </div>
           </div>
@@ -199,7 +199,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
             className={activePage === 'Discover' ? 'active sidebar-btn' : 'sidebar-btn'}
             onClick={() => handleTextChange('Discover', paths.routes.HOME)}
           >
-            <ThemeIcon light={'assets/black/compass.png'} dark={'assets/white/compass.png'} alt={'discover'} />
+            <ThemeIcon light={'/assets/black/compass.png'} dark={'/assets/white/compass.png'} alt={'discover'} />
             Discover
           </button>
           <button
@@ -207,14 +207,14 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
             className={activePage === 'Meet' ? 'active sidebar-btn' : 'sidebar-btn'}
             onClick={() => handleTextChange('Meet', paths.routes.MEET)}
           >
-            <ThemeIcon light={'assets/black/meet.png'} dark={'assets/white/meet.png'} alt={'meet users'} /> Meet
+            <ThemeIcon light={'/assets/black/meet.png'} dark={'/assets/white/meet.png'} alt={'meet users'} /> Meet
           </button>
           <button
             id={'my-projects-sidebar-btn'}
             className={activePage === 'My Projects' ? 'active sidebar-btn' : 'sidebar-btn'}
             onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}
           >
-            <ThemeIcon light={'assets/black/folder.png'} dark={'assets/white/folder.png'} alt={'my projects'} /> My
+            <ThemeIcon light={'/assets/black/folder.png'} dark={'/assets/white/folder.png'} alt={'my projects'} /> My
             Projects
           </button>
           {/* <button className={activePage === 'Following' ? 'active' : ''} onClick={() => handleTextChange('Following', paths.routes.SETTINGS)}>

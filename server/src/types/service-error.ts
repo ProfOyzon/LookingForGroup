@@ -1,3 +1,3 @@
-type ServiceError = 'UNKNOWN_ERROR' | '';
+type ServiceError = 'INTERNAL_ERROR';
 
 export { type ServiceError };

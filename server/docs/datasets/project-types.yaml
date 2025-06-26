@@ -1,0 +1,14 @@
+/api/datasets/project-types:
+  get:
+    summary: Receives list of all project types
+    tags:
+      - Datasets
+    responses:
+      '200':
+        description: A list of project types
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string

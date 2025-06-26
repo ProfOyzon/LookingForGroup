@@ -1,0 +1,14 @@
+/api/datasets/job-titles:
+  get:
+    summary: Receives list of all job titles
+    tags:
+      - Datasets
+    responses:
+      '200':
+        description: A list of job titles
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string

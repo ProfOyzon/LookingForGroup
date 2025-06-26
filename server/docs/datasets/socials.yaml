@@ -1,0 +1,14 @@
+/api/datasets/socials:
+  get:
+    summary: Receives list of all socials
+    tags:
+      - Datasets
+    responses:
+      '200':
+        description: A list of social platforms
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string

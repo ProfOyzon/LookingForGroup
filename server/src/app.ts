@@ -13,7 +13,7 @@ if (envConfig.env === 'development') {
   const swaggerSpec = (await import('./config/swagger.ts')).swaggerSpec;
   const swaggerUi = (await import('swagger-ui-express')).default;
 
-  app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
 app.get('', (_req: Request, res: Response) => {

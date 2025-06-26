@@ -1,0 +1,14 @@
+/api/datasets/majors:
+  get:
+    summary: Receives list of all majors
+    tags:
+      - Datasets
+    responses:
+      '200':
+        description: A list of majors
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string

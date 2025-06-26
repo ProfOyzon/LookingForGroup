@@ -11,7 +11,7 @@ import '../Styles/projects.css';
 import '../Styles/settings.css';
 import '../Styles/pages.css';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import CreditsFooter from '../CreditsFooter';
 import { DiscoverCarousel } from '../DiscoverCarousel';
 import { DiscoverFilters } from '../DiscoverFilters';
@@ -70,8 +70,8 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
           <div id="profile-hero">
             <div id="profile-hero-blurb-1" className="profile-hero-blurb">
               <ThemeIcon
-                light={'assets/bannerImages/people1_light.png'}
-                dark={'assets/bannerImages/people1_dark.png'}
+                light={'/assets/bannerImages/people1_light.png'}
+                dark={'/assets/bannerImages/people1_dark.png'}
                 id={'profile-hero-img-1'}
                 alt={'banner image'}
               />
@@ -83,8 +83,8 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
             <div id="profile-hero-blurb-2" className="profile-hero-blurb">
               <h2>Look for people to work with!</h2>
               <ThemeIcon
-                light={'assets/bannerImages/people2_light.png'}
-                dark={'assets/bannerImages/people2_dark.png'}
+                light={'/assets/bannerImages/people2_light.png'}
+                dark={'/assets/bannerImages/people2_dark.png'}
                 id={'profile-hero-img-2'}
                 alt={'banner image'}
               />
@@ -97,8 +97,8 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
 
             <div id="profile-hero-blurb-3" className="profile-hero-blurb">
               <ThemeIcon
-                light={'assets/bannerImages/people3_light.png'}
-                dark={'assets/bannerImages/people3_dark.png'}
+                light={'/assets/bannerImages/people3_light.png'}
+                dark={'/assets/bannerImages/people3_dark.png'}
                 id={'profile-hero-img-3'}
                 alt={'banner image'}
               />
@@ -152,6 +152,11 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
       setUserId(data.data);
     }
   }
+
+  // Limits React state update warning
+  useEffect(() => {
+    getAuth();
+  }, []);
 
   /*
     Fetches data from the server to populate the discover page.

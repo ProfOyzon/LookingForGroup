@@ -259,8 +259,8 @@ const NewProfile = () => {
             }}
           >
             <ThemeIcon
-              light={'assets/black/linkedIn_black.png'}
-              dark={'assets/white/linkedIn_white.png'}
+              light={'/assets/black/linkedIn_black.png'}
+              dark={'/assets/white/linkedIn_white.png'}
               alt={'LinkedIn'}
             />
           </button>
@@ -270,8 +270,8 @@ const NewProfile = () => {
             }}
           >
             <ThemeIcon
-              light={'assets/black/instagram_black.png'}
-              dark={'assets/white/instagram_white.png'}
+              light={'/assets/black/instagram_black.png'}
+              dark={'/assets/white/instagram_white.png'}
               alt={'Instagram'}
             />
           </button>
@@ -285,22 +285,22 @@ const NewProfile = () => {
         <div id="about-me-buttons" className="about-me-buttons-minimal">
           <button>
             <ThemeIcon
-              light={'assets/linkedIn_logo_light.png'}
-              dark={'assets/linkedIn_logo_dark.png'}
+              light={'/assets/linkedIn_logo_light.png'}
+              dark={'/assets/linkedIn_logo_dark.png'}
               alt={'LinkedIn'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/instagram_logo_light.png'}
-              dark={'assets/instagram_logo_dark.png'}
+              light={'/assets/instagram_logo_light.png'}
+              dark={'/assets/instagram_logo_dark.png'}
               alt={'Instagram'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/follow_user_light.png'}
-              dark={'assets/follow_user_dark.png'}
+              light={'/assets/follow_user_light.png'}
+              dark={'/assets/follow_user_dark.png'}
               alt={'Like/Follow'}
             />
           </button>
@@ -308,8 +308,8 @@ const NewProfile = () => {
           <Dropdown>
             <DropdownButton>
               <ThemeIcon
-                light={'assets/menu_light.png'}
-                dark={'assets/menu_dark.png'}
+                light={'/assets/menu_light.png'}
+                dark={'/assets/menu_dark.png'}
                 alt={'More options'}
                 addClass={'dropdown-menu'}
               />
@@ -376,32 +376,32 @@ const NewProfile = () => {
           <div id="profile-info-extras">
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/role.png'}
-                dark={'assets/white/role.png'}
+                light={'/assets/black/role.png'}
+                dark={'/assets/white/role.png'}
                 alt={'Profession'}
               />
               {displayedProfile.job_title}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/major.png'}
-                dark={'assets/white/major.png'}
+                light={'/assets/black/major.png'}
+                dark={'/assets/white/major.png'}
                 alt={'Major'}
               />
               {displayedProfile.major} {displayedProfile.academic_year}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/location.png'}
-                dark={'assets/white/location.png'}
+                light={'/assets/black/location.png'}
+                dark={'/assets/white/location.png'}
                 alt={'Location'}
               />
               {displayedProfile.location}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/pronouns.png'}
-                dark={'assets/white/pronouns.png'}
+                light={'/assets/black/pronouns.png'}
+                dark={'/assets/white/pronouns.png'}
                 alt={'Pronouns'}
               />
               {displayedProfile.pronouns}
@@ -449,7 +449,7 @@ const NewProfile = () => {
                     category = 'grey';
                 }
 
-                return <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>;
+                return <div key={`${tag.skill}`} className={`skill-tag-label label-${category}`}>{tag.skill}</div>;
               })
             ) : (
               <></>

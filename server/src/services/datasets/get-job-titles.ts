@@ -1,8 +1,8 @@
 import prisma from '#config/prisma.ts';
 import type { JobTitles } from '#prisma-models/index.js';
-import type { ServiceErrorSubtype } from '#services/service-error.ts';
+import type { ServiceErrorSubset } from '#services/service-error.ts';
 
-type GetJobTitlesServiceError = ServiceErrorSubtype<'INTERNAL_ERROR'>;
+type GetJobTitlesServiceError = ServiceErrorSubset<'INTERNAL_ERROR'>;
 
 const getJobTitlesService = async (): Promise<JobTitles[] | GetJobTitlesServiceError> => {
   try {

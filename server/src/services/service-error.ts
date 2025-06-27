@@ -3,6 +3,6 @@ type ServiceError = 'INTERNAL_ERROR' | 'NOT_FOUND';
 
 // This utility allows us to use ServiceError as a list of all possible output values
 // while making subtypes that only have some of the values which is then enforced by TypeScript
-type ServiceErrorSubtype<T extends ServiceError> = T;
+type ServiceErrorSubset<T extends ServiceError> = T;
 
-export { type ServiceErrorSubtype };
+export { type ServiceErrorSubset };

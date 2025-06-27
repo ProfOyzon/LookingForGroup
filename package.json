@@ -17,7 +17,7 @@
     "build:database": "npm run build:image --workspace=database",
     "build:client": "npm run build --workspace=client",
     "test": "npm run test:front",
-    "test:front": "vitest run --config server/config/vitest.js",
+    "test:front": "vitest run --config server/src/config/vitest.ts",
     "test:back": "cross-env NODE_ENV=test jest",
     "lint:server:types": "npm run lint:types --workspace=server",
     "lint:server": "npm run lint --workspace=server",

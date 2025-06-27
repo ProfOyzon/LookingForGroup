@@ -22,15 +22,6 @@
                         type: integer
                       label:
                         type: string
-      500:
-        description: An internal server error occurred
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
             examples:
               default:
                 summary: Example job titles list
@@ -43,3 +34,12 @@
                       label: Front-End Developer
                     - title_id: 3
                       label: Back-End Developer
+      500:
+        description: An internal server error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string

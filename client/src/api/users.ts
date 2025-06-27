@@ -184,7 +184,7 @@ export const updateEmail = async (id: number, _email: string, _confirm_email: st
     };
 
     const response = await util.PUT(apiURL, data);
-    if (response.status === 400) {
+    if (response.status == 400 || response.status == 401) {
         console.log('error updating email.');
         return { status: 400, error: 'Error updating email.' };
     }
@@ -214,7 +214,7 @@ export const updateUsername = async (id: number, _username: string, _confirm_use
     };
 
     const response = await util.PUT(apiURL, data);
-    if (response.status === 400) {
+    if (response.status === 400 || response.status === 401) {
         console.log('error updating username.');
         return { status: 400, error: 'Error updating username.' };
     }
@@ -324,10 +324,9 @@ export const updateUserVisibility = async (id: number): Promise<ApiResponse> => 
 export const getAccountInformation = async (user_id: number) => {
     const apiURL = `${root}/users/${user_id}/account`;
     const response = await util.GET(apiURL);
-    console.log(response);
-    if (response.status === 401) {
+    if (response.status === 401 || response.status === 400) {
         console.log(response.error);
-        return response.data;
+        return response;
     }
 
     console.log('User account information recieved');
@@ -420,7 +419,7 @@ export const addUserFollowing = async (id: number, followID: number) => {
         userId: followID,
     };
     const response = await util.POST(url, data);
-    if (response.status === 400) {
+    if (response.status != 201) {
         console.log('Error creating user following.');
         return { status: 400, error: response.error };
     }
@@ -440,7 +439,7 @@ export const deleteUserFollowing = async (id: number, unfollowID: number) => {
     };
     const response = await util.DELETE(url);
 
-    if (response.status === 400) {
+    if (response.status !=201) {
         console.log('Error deleting user following.');
         return { status: 400, error: response.error };
     }
@@ -483,7 +482,7 @@ export const updateProjectVisibility = async (userID: number, projectID: number,
     };
 
     const response = await util.PUT(url, data);
-    if (response.status === 400) {
+    if (response.status != 201) {
         console.log('Error editing projects.');
         return { status: 400, error: response.error };
     }
@@ -519,9 +518,10 @@ export const addProjectFollowing = async (id: number, projectID: number) => {
         projectId: projectID,
     };
     const response = await util.POST(url, data);
-    if (response.status === 400) {
+    console.log(response);
+    if (response.status != 200) {
         console.log('Error creating project following, unauthorized.');
-        return { status: 400, error: response.error };
+        return { status: response.status, error: response.error };
     }
     console.log('Created project following.');
     return { status: 200, data: id };
@@ -536,7 +536,7 @@ export const addProjectFollowing = async (id: number, projectID: number) => {
 export const deleteProjectFollowing = async (id: number, projID: number) => {
     const url = `${root}/users/${id}/followings/projects/${projID}`;
     const response = await util.DELETE(url);
-    if (response.status === 400) {
+    if (response.status != 201) {
         console.log('Error deleting project following.');
         return { status: 400, error: response.error };
     }

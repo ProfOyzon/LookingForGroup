@@ -491,7 +491,7 @@ const MyProjects = () => {
             </button>
           </>
         ) : (<div className="my-projects-create-btn">
-          <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
+          <ProjectCreatorEditor newProject={createError} buttonCallback={getUserProjects} user={userData} />
         </div>)
         }
 

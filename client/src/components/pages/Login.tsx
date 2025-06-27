@@ -183,13 +183,13 @@ const Login: React.FC = () => {
                   <ThemeIcon
                     id='eye-icon'
                     light={'/assets/black/password_shown.png'}
-                    dark={'/assets/white/password_shown.png'}
+                    dark={'/assets/open_dark.png'}
                   />) :
                   (
                     <ThemeIcon
                       id='eye-icon'
                       light={'/assets/black/password_hidden.png'}
-                      dark={'/assets/white/password_hidden.png'}
+                      dark={'/assets/hide.png'}
                     />
                   )}
               </button>

@@ -2,7 +2,7 @@ import util from '../../client/src/api/index.js';
 import { expect, test } from 'vitest';
 
 /**
- * Test basic gets
+ * Testing basic GETs
  */
 test('lfg: Test gets users', async () => {
   const apiURL = 'https://lfg.gccis.rit.edu/api/users';
@@ -27,3 +27,15 @@ test('local: Test gets projects', async () => {
   const result = await util.GET(apiURL);
   expect(result.status).toBe(200);
 });
+
+/**
+ * Testing basic POSTs
+ */
+
+/**
+ * Testing basic PUTs
+ */
+
+/**
+ * Testing basic DELETEs
+ */

@@ -9,9 +9,19 @@
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: string
+              type: object
+              properties:
+                status:
+                  type: integer
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title_id:
+                        type: integer
+                      label:
+                        type: string
       500:
         description: An internal server error occurred
         content:
@@ -21,3 +31,15 @@
               properties:
                 message:
                   type: string
+            examples:
+              default:
+                summary: Example job titles list
+                value:
+                  status: 200
+                  data:
+                    - title_id: 1
+                      label: Full-Stack Developer
+                    - title_id: 2
+                      label: Front-End Developer
+                    - title_id: 3
+                      label: Back-End Developer

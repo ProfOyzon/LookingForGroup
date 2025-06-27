@@ -9,6 +9,28 @@
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: string
+              type: object
+              properties:
+                status:
+                type: integer
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                    major_id:
+                      type: integer
+                    label:
+                      type: string
+            examples:
+              default:
+                summary: Examples majors list
+                value:
+                  status: 200
+                  data:
+                    - major_id: 1
+                      label: Animation
+                    - major_id: 2
+                      label: Computer Engineering
+                    - major_id: 3
+                      label: Computing Engineering Technology

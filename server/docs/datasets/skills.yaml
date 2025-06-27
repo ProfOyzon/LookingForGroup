@@ -9,6 +9,33 @@
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: string
+              type: object
+              properties:
+                status:
+                  type: integer
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      tag_id:
+                        type: integer
+                      label:
+                        type: string
+                      type:
+                        type: string
+            examples:
+              default:
+                summary: Example skill list
+                value:
+                  status: 200
+                  data:
+                    - tag_id: 105
+                      label: C++
+                      type: Developer Skill
+                    - tag_id: 106
+                      label: CSS
+                      type: Developer Skill
+                    - tag_id: 107
+                      label: C#
+                      type: Developer Skill

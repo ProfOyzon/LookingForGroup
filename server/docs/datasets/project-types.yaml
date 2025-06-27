@@ -9,6 +9,28 @@
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: string
+              type: object
+              properties:
+                status:
+                type: integer
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                    type_id:
+                      type: integer
+                    label:
+                      type: string
+            examples:
+              default:
+                summary: Example project types list
+                value:
+                  status: 200
+                  data:
+                    - type_id: 1
+                      label: Video Game
+                    - type_id: 2
+                      label: Analog Game
+                    - type_id: 3
+                      label: Mobile Application

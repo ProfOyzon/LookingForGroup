@@ -9,6 +9,28 @@
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: string
+              type: object
+              properties:
+                status:
+                type: integer
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                    website_id:
+                      type: integer
+                    label:
+                      type: string
+            examples:
+              default:
+                summary: Example socials list
+                value:
+                  status: 200
+                  data:
+                    - website_id: 1
+                      label: Instagram
+                    - website_id: 2
+                      label: Twitter
+                    - website_id: 3
+                      label: Facebook

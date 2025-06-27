@@ -1,0 +1,273 @@
+openapi: 3.0.3
+info:
+  title: Looking For Group API
+  version: 1.0.0
+  description: |
+    LFG API Documentation. This will showcase all the endpoints available and how to use them.
+    Note: When accessed directly from the express app, the endpoints will have an additional "/api" prefix.
+    Because of this, please use the vite proxy when reviewing the docs.
+
+paths:
+  /api/datasets/job-titles:
+    get:
+      summary: Returns a list of all job titles
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: List of all the job titles available
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobTitle'
+              examples:
+                default:
+                  summary: Example job titles list
+                  value:
+                    - titleId: 1
+                      label: Full-Stack Developer
+                    - titleId: 2
+                      label: Front-End Developer
+                    - titleId: 3
+                      label: Back-End Developer
+        '500':
+          description: An internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                - message: Internal Server Error
+
+  /api/datasets/socials:
+    get:
+      summary: Receives list of all socials
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of social platforms
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Social'
+              examples:
+                default:
+                  summary: Example socials list
+                  value:
+                    status: 200
+                    data:
+                      - website_id: 1
+                        label: Instagram
+                      - website_id: 2
+                        label: Twitter
+                      - website_id: 3
+                        label: Facebook
+
+  /api/datasets/skills:
+    get:
+      summary: Receives list of all skills
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of skills
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Skill'
+              examples:
+                default:
+                  summary: Example skill list
+                  value:
+                    status: 200
+                    data:
+                      - tag_id: 105
+                        label: C++
+                        type: Developer Skill
+                      - tag_id: 106
+                        label: CSS
+                        type: Developer Skill
+                      - tag_id: 107
+                        label: C#
+                        type: Developer Skill
+
+  /api/datasets/project-types:
+    get:
+      summary: Receives list of all project types
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of project types
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectType'
+              examples:
+                default:
+                  summary: Example project types list
+                  value:
+                    status: 200
+                    data:
+                      - type_id: 1
+                        label: Video Game
+                      - type_id: 2
+                        label: Analog Game
+                      - type_id: 3
+                        label: Mobile Application
+
+  /api/datasets/majors:
+    get:
+      summary: Receives list of all majors
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of majors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Major'
+              examples:
+                default:
+                  summary: Examples majors list
+                  value:
+                    status: 200
+                    data:
+                      - major_id: 1
+                        label: Animation
+                      - major_id: 2
+                        label: Computer Engineering
+                      - major_id: 3
+                        label: Computing Engineering Technology
+
+  /api/datasets/tags:
+    get:
+      summary: Receives list of all tags
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: A list of tags
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Tag'
+              examples:
+                default:
+                  summary: Example tags list
+                  value:
+                    status: 200
+                    data:
+                      - tag_id: 1
+                        label: Indie
+                        type: Creative
+                      - tag_id: 2
+                        label: Abstract
+                        type: Creative
+                      - tag_id: 3
+                        label: Horror
+                        type: Creative
+
+components:
+  schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Internal Server Error
+
+    JobTitle:
+      type: object
+      properties:
+        titleId:
+          type: integer
+        label:
+          type: string
+      example:
+        titleId: 1
+        label: Full-Stack Developer
+
+    Social:
+      type: object
+      properties:
+        website_id:
+          type: integer
+        label:
+          type: string
+
+    Skill:
+      type: object
+      properties:
+        tag_id:
+          type: integer
+        label:
+          type: string
+        type:
+          type: string
+
+    ProjectType:
+      type: object
+      properties:
+        type_id:
+          type: integer
+        label:
+          type: string
+
+    Major:
+      type: object
+      properties:
+        major_id:
+          type: integer
+        label:
+          type: string
+
+    Tag:
+      type: object
+      properties:
+        tag_id:
+          type: integer
+        label:
+          type: string
+        type:
+          type: string

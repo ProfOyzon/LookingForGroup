@@ -39,7 +39,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
               examples:
-                - message: Internal Server Error
+                default:
+                  summary: Example 500 message
+                  value:
+                    message: Internal Server Error
 
   /api/datasets/socials:
     get:

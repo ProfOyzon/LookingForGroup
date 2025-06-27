@@ -350,6 +350,7 @@ const NewProject = () => {
 
           return (
             <div
+              key={user.user_id}
               className="project-contributor"
               onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
             >

@@ -170,7 +170,7 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
           <label htmlFor="image-uploader" id="drop-area">
             <input type="file" name="image" id="image-uploader" accept="image/png, image/jpg" onChange={handleImageUpload} hidden />
             <div id="img-view">
-              <img src="assets/white/upload_image.png" />
+              <img src="/assets/white/upload_image.png" />
               <p className="project-editor-extra-info">Drop your image here, or browse</p>
               <span className="project-editor-extra-info">Supports: JPEG, PNG</span>
             </div>

@@ -5,7 +5,7 @@ import datasetsRouter from '#routes/datasets.ts';
 
 const app = express();
 
-app.use(morgan('tiny'));
+app.use(morgan(envConfig.env === 'development' ? 'dev' : 'tiny'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

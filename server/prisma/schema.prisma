@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "../src/models/generated/prisma"
 }
 
 datasource db {
@@ -8,273 +8,313 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model genres {
-  type_id        Int              @id @default(autoincrement())
+model Genres {
+  typeId        Int             @id @default(autoincrement()) @map("type_id")
+  label         String          @db.VarChar(50)
+  projectGenres ProjectGenres[]
+
+  @@map("genres")
+}
+
+model JobTitles {
+  titleId Int       @id @default(autoincrement()) @map("title_id")
+  label   String    @db.VarChar(50)
+  jobs    Jobs[]
+  members Members[]
+  users   Users[]
+
+  @@map("job_titles")
+}
+
+model Jobs {
+  projectId    Int              @map("project_id")
+  titleId      Int              @map("title_id")
+  availability JobsAvailability
+  duration     JobsDuration
+  location     JobsLocation
+  compensation JobsCompensation
+  description  String?          @db.VarChar(500)
+  createdAt    DateTime         @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt    DateTime         @default(now()) @map("updated_at") @db.Timestamp(0)
+  projects     Projects         @relation(fields: [projectId], references: [projectId], onDelete: Cascade, map: "FK2_project_id")
+  job_titles   JobTitles        @relation(fields: [titleId], references: [titleId], map: "FK_jobs_job_titles")
+
+  @@id([projectId, titleId])
+  @@index([projectId], map: "FK2_project_id")
+  @@index([titleId], map: "FK_jobs_job_titles")
+  @@map("jobs")
+}
+
+model Majors {
+  majorId Int     @id @default(autoincrement()) @map("major_id")
+  label   String  @db.VarChar(100)
+  users   Users[]
+
+  @@map("majors")
+}
+
+model Members {
+  projectId          Int                      @map("project_id")
+  userId             Int                      @map("user_id")
+  titleId            Int                      @map("title_id")
+  profile_visibility MembersProfileVisibility @default(public)
+  createdAt          DateTime                 @default(now()) @map("created_at") @db.Timestamp(0)
+  jobTitles          JobTitles                @relation(fields: [titleId], references: [titleId], map: "FK_members_job_titles")
+  projects           Projects                 @relation(fields: [projectId], references: [projectId], onDelete: Cascade, map: "FK_members_projects")
+  users              Users                    @relation(fields: [userId], references: [userId], onDelete: Cascade, map: "FK_members_users")
+
+  @@id([projectId, userId])
+  @@index([titleId], map: "FK_members_job_titles")
+  @@index([userId], map: "FK_members_users")
+  @@map("members")
+}
+
+model ProjectFollowings {
+  userId     Int      @map("user_id")
+  projectId  Int      @map("project_id")
+  followedAt DateTime @default(now()) @map("followed_at") @db.Timestamp(0)
+  projects   Projects @relation(fields: [projectId], references: [projectId], onDelete: Cascade, map: "FK_project_followings_projects")
+  users      Users    @relation(fields: [userId], references: [userId], onDelete: Cascade, map: "FK_project_followings_users")
+
+  @@id([userId, projectId])
+  @@index([projectId], map: "FK_project_followings_projects")
+  @@index([userId], map: "FK_project_followings_users")
+  @@map("project_followings")
+}
+
+model ProjectGenres {
+  projectId Int      @map("project_id")
+  typeId    Int      @map("type_id")
+  genres    Genres   @relation(fields: [typeId], references: [typeId], onDelete: NoAction, map: "FK_project_genres_genres")
+  projects  Projects @relation(fields: [projectId], references: [projectId], onDelete: Cascade, map: "FK_project_genres_projects")
+
+  @@id([projectId, typeId])
+  @@index([typeId], map: "FK_project_genres_genres")
+  @@index([projectId], map: "FK_project_genres_projects")
+  @@map("project_genres")
+}
+
+model ProjectImages {
+  imageId   Int      @id @default(autoincrement()) @map("image_id")
+  image     String   @db.VarChar(100)
+  position  Int
+  projectId Int      @map("project_id")
+  projects  Projects @relation(fields: [projectId], references: [projectId], onDelete: Cascade, map: "FK_project_images_projects")
+
+  @@index([projectId], map: "FK_project_images_projects")
+  @@map("project_images")
+}
+
+model ProjectSocials {
+  projectId Int      @map("project_id")
+  websiteId Int      @map("website_id")
+  url       String   @db.VarChar(2000)
+  projects  Projects @relation(fields: [projectId], references: [projectId], onDelete: Cascade, map: "FK_project_socials_projects")
+  socials   Socials  @relation(fields: [websiteId], references: [websiteId], map: "FK_project_socials_socials")
+
+  @@id([projectId, websiteId])
+  @@index([websiteId], map: "FK_project_socials_socials")
+  @@map("project_socials")
+}
+
+model ProjectTags {
+  projectId Int      @map("project_id")
+  tagId     Int      @map("tag_id")
+  position  Int
+  projects  Projects @relation(fields: [projectId], references: [projectId], onDelete: Cascade, map: "FK_project_tags_projects")
+  tags      Tags     @relation(fields: [tagId], references: [tagId], onDelete: NoAction, map: "FK_project_tags_tags")
+
+  @@id([projectId, tagId])
+  @@index([projectId], map: "FK_project_tags_projects")
+  @@index([tagId], map: "FK_project_tags_tags")
+  @@map("project_tags")
+}
+
+model Projects {
+  projectId         Int                 @id @default(autoincrement()) @map("project_id")
+  title             String              @db.VarChar(150)
+  hook              String              @db.VarChar(200)
+  description       String              @db.VarChar(2000)
+  thumbnail         String?             @db.VarChar(100)
+  purpose           ProjectsPurpose?
+  status            ProjectsStatus
+  audience          String?             @db.VarChar(300)
+  userId            Int?                @map("user_id")
+  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt         DateTime            @default(now()) @map("updated_at") @db.Timestamp(0)
+  jobs              Jobs[]
+  members           Members[]
+  projectFollowings ProjectFollowings[]
+  projectGenres     ProjectGenres[]
+  projectImages     ProjectImages[]
+  projectSocials    ProjectSocials[]
+  projectTags       ProjectTags[]
+  users             Users?              @relation(fields: [userId], references: [userId], map: "FK_user_id")
+
+  @@index([userId], map: "FK_user_id")
+  @@map("projects")
+}
+
+model Socials {
+  websiteId      Int              @id @default(autoincrement()) @map("website_id")
   label          String           @db.VarChar(50)
-  project_genres project_genres[]
+  projectSocials ProjectSocials[]
+  userSocials    UserSocials[]
+
+  @@map("socials")
 }
 
-model job_titles {
-  title_id Int       @id @default(autoincrement())
-  label    String    @db.VarChar(50)
-  jobs     jobs[]
-  members  members[]
-  users    users[]
+model Tags {
+  tagId       Int           @id @default(autoincrement()) @map("tag_id")
+  label       String        @db.VarChar(50)
+  type        String        @db.VarChar(50)
+  projectTags ProjectTags[]
+
+  @@map("tags")
 }
 
-model jobs {
-  project_id   Int
-  title_id     Int
-  availability jobs_availability
-  duration     jobs_duration
-  location     jobs_location
-  compensation jobs_compensation
-  description  String?           @db.VarChar(500)
-  created_at   DateTime          @default(now()) @db.Timestamp(0)
-  updated_at   DateTime          @default(now()) @db.Timestamp(0)
-  projects     projects          @relation(fields: [project_id], references: [project_id], onDelete: Cascade, map: "FK2_project_id")
-  job_titles   job_titles        @relation(fields: [title_id], references: [title_id], map: "FK_jobs_job_titles")
+model UserFollowings {
+  userId                                Int      @map("user_id")
+  followingId                           Int      @map("following_id")
+  followedAt                            DateTime @default(now()) @map("followed_at") @db.Timestamp(0)
+  usersUserFollowingsFollowingIdTousers Users    @relation("user_followings_following_idTousers", fields: [followingId], references: [userId], onDelete: Cascade, map: "FK_user_followings_following_user")
+  usersUserFollowingsUserIdTousers      Users    @relation("user_followings_user_idTousers", fields: [userId], references: [userId], onDelete: Cascade, map: "FK_user_followings_users")
 
-  @@id([project_id, title_id])
-  @@index([project_id], map: "FK2_project_id")
-  @@index([title_id], map: "FK_jobs_job_titles")
+  @@id([userId, followingId])
+  @@index([followingId], map: "FK_user_followings_following_user")
+  @@index([userId], map: "FK_user_followings_users")
+  @@map("user_followings")
 }
 
-model majors {
-  major_id Int     @id @default(autoincrement())
-  label    String  @db.VarChar(100)
-  users    users[]
+model UserSkills {
+  userId   Int    @map("user_id")
+  skillId  Int    @map("skill_id")
+  position Int
+  skills   skills @relation(fields: [skillId], references: [skill_id], onDelete: NoAction, map: "FK_user_skills_skills")
+  users    Users  @relation(fields: [userId], references: [userId], onDelete: Cascade, map: "FK_user_skills_users")
+
+  @@id([userId, skillId])
+  @@index([skillId], map: "FK_user_skills_skills")
+  @@index([userId], map: "FK_user_skills_users")
+  @@map("user_skills")
 }
 
-model members {
-  project_id         Int
-  user_id            Int
-  title_id           Int
-  profile_visibility members_profile_visibility @default(public)
-  created_at         DateTime                   @default(now()) @db.Timestamp(0)
-  job_titles         job_titles                 @relation(fields: [title_id], references: [title_id], map: "FK_members_job_titles")
-  projects           projects                   @relation(fields: [project_id], references: [project_id], onDelete: Cascade, map: "FK_members_projects")
-  users              users                      @relation(fields: [user_id], references: [user_id], onDelete: Cascade, map: "FK_members_users")
+model UserSocials {
+  userId    Int     @map("user_id")
+  websiteId Int     @map("website_id")
+  url       String  @db.VarChar(2000)
+  socials   Socials @relation(fields: [websiteId], references: [websiteId], map: "FK_user_socials_socials")
+  users     Users   @relation(fields: [userId], references: [userId], onDelete: Cascade, map: "FK_user_socials_users")
 
-  @@id([project_id, user_id])
-  @@index([title_id], map: "FK_members_job_titles")
-  @@index([user_id], map: "FK_members_users")
+  @@id([userId, websiteId])
+  @@index([websiteId], map: "FK_user_socials_socials")
+  @@map("user_socials")
 }
 
-model project_followings {
-  user_id     Int
-  project_id  Int
-  followed_at DateTime @default(now()) @db.Timestamp(0)
-  projects    projects @relation(fields: [project_id], references: [project_id], onDelete: Cascade, map: "FK_project_followings_projects")
-  users       users    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, map: "FK_project_followings_users")
+model Users {
+  userId                                         Int                 @id @default(autoincrement()) @map("user_id")
+  username                                       String              @db.Text
+  ritEmail                                       String              @map("rit_email") @db.VarChar(50)
+  firstName                                      String              @map("first_name") @db.Text
+  lastName                                       String              @map("last_name") @db.Text
+  profileImage                                   String?             @map("profile_image") @db.VarChar(100)
+  headline                                       String?             @db.VarChar(100)
+  pronouns                                       String?             @db.Text
+  jobTitleId                                     Int?                @map("job_title_id")
+  majorId                                        Int?                @map("major_id")
+  academic_year                                  UsersAcademicYear?
+  location                                       String?             @db.VarChar(150)
+  funFact                                        String?             @map("fun_fact") @db.VarChar(100)
+  bio                                            String?             @db.VarChar(600)
+  visibility                                     Int                 @default(1) @db.TinyInt
+  createdAt                                      DateTime            @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt                                      DateTime            @default(now()) @map("updated_at") @db.Timestamp(0)
+  phone_number                                   BigInt?             @map("phone_number")
+  universityId                                   String?             @map("university_id") @db.VarChar(9)
+  members                                        Members[]
+  projectFollowings                              ProjectFollowings[]
+  projects                                       Projects[]
+  userFollowingsUserFollowingsFollowingIdTousers UserFollowings[]    @relation("user_followings_following_idTousers")
+  userFollowingsUserFollowingsUserIdTousers      UserFollowings[]    @relation("user_followings_user_idTousers")
+  userSkills                                     UserSkills[]
+  userSocials                                    UserSocials[]
+  jobTitles                                      JobTitles?          @relation(fields: [jobTitleId], references: [titleId], onDelete: Restrict, map: "FK_users_job_titles")
+  majors                                         Majors?             @relation(fields: [majorId], references: [majorId], onDelete: Restrict, map: "FK_users_majors")
 
-  @@id([user_id, project_id])
-  @@index([project_id], map: "FK_project_followings_projects")
-  @@index([user_id], map: "FK_project_followings_users")
-}
-
-model project_genres {
-  project_id Int
-  type_id    Int
-  genres     genres   @relation(fields: [type_id], references: [type_id], onDelete: NoAction, map: "FK_project_genres_genres")
-  projects   projects @relation(fields: [project_id], references: [project_id], onDelete: Cascade, map: "FK_project_genres_projects")
-
-  @@id([project_id, type_id])
-  @@index([type_id], map: "FK_project_genres_genres")
-  @@index([project_id], map: "FK_project_genres_projects")
-}
-
-model project_images {
-  image_id   Int      @id @default(autoincrement())
-  image      String   @db.VarChar(100)
-  position   Int
-  project_id Int
-  projects   projects @relation(fields: [project_id], references: [project_id], onDelete: Cascade, map: "FK_project_images_projects")
-
-  @@index([project_id], map: "FK_project_images_projects")
-}
-
-model project_socials {
-  project_id Int
-  website_id Int
-  url        String   @db.VarChar(2000)
-  projects   projects @relation(fields: [project_id], references: [project_id], onDelete: Cascade, map: "FK_project_socials_projects")
-  socials    socials  @relation(fields: [website_id], references: [website_id], map: "FK_project_socials_socials")
-
-  @@id([project_id, website_id])
-  @@index([website_id], map: "FK_project_socials_socials")
-}
-
-model project_tags {
-  project_id Int
-  tag_id     Int
-  position   Int
-  projects   projects @relation(fields: [project_id], references: [project_id], onDelete: Cascade, map: "FK_project_tags_projects")
-  tags       tags     @relation(fields: [tag_id], references: [tag_id], onDelete: NoAction, map: "FK_project_tags_tags")
-
-  @@id([project_id, tag_id])
-  @@index([project_id], map: "FK_project_tags_projects")
-  @@index([tag_id], map: "FK_project_tags_tags")
-}
-
-model projects {
-  project_id         Int                  @id @default(autoincrement())
-  title              String               @db.VarChar(150)
-  hook               String               @db.VarChar(200)
-  description        String               @db.VarChar(2000)
-  thumbnail          String?              @db.VarChar(100)
-  purpose            projects_purpose?
-  status             projects_status
-  audience           String?              @db.VarChar(300)
-  user_id            Int?
-  created_at         DateTime             @default(now()) @db.Timestamp(0)
-  updated_at         DateTime             @default(now()) @db.Timestamp(0)
-  jobs               jobs[]
-  members            members[]
-  project_followings project_followings[]
-  project_genres     project_genres[]
-  project_images     project_images[]
-  project_socials    project_socials[]
-  project_tags       project_tags[]
-  users              users?               @relation(fields: [user_id], references: [user_id], map: "FK_user_id")
-
-  @@index([user_id], map: "FK_user_id")
+  @@index([jobTitleId], map: "FK_users_job_titles")
+  @@index([majorId], map: "FK_users_majors")
+  @@map("users")
 }
 
 model skills {
-  skill_id    Int           @id @default(autoincrement())
-  label       String        @db.VarChar(50)
-  type        String        @db.VarChar(50)
-  user_skills user_skills[]
+  skill_id   Int          @id @default(autoincrement())
+  label      String       @db.VarChar(50)
+  type       String       @db.VarChar(50)
+  userSkills UserSkills[]
 }
 
-model socials {
-  website_id      Int               @id @default(autoincrement())
-  label           String            @db.VarChar(50)
-  project_socials project_socials[]
-  user_socials    user_socials[]
-}
-
-model tags {
-  tag_id       Int            @id @default(autoincrement())
-  label        String         @db.VarChar(50)
-  type         String         @db.VarChar(50)
-  project_tags project_tags[]
-}
-
-model user_followings {
-  user_id                                   Int
-  following_id                              Int
-  followed_at                               DateTime @default(now()) @db.Timestamp(0)
-  users_user_followings_following_idTousers users    @relation("user_followings_following_idTousers", fields: [following_id], references: [user_id], onDelete: Cascade, map: "FK_user_followings_following_user")
-  users_user_followings_user_idTousers      users    @relation("user_followings_user_idTousers", fields: [user_id], references: [user_id], onDelete: Cascade, map: "FK_user_followings_users")
-
-  @@id([user_id, following_id])
-  @@index([following_id], map: "FK_user_followings_following_user")
-  @@index([user_id], map: "FK_user_followings_users")
-}
-
-model user_skills {
-  user_id  Int
-  skill_id Int
-  position Int
-  skills   skills @relation(fields: [skill_id], references: [skill_id], onDelete: NoAction, map: "FK_user_skills_skills")
-  users    users  @relation(fields: [user_id], references: [user_id], onDelete: Cascade, map: "FK_user_skills_users")
-
-  @@id([user_id, skill_id])
-  @@index([skill_id], map: "FK_user_skills_skills")
-  @@index([user_id], map: "FK_user_skills_users")
-}
-
-model user_socials {
-  user_id    Int
-  website_id Int
-  url        String  @db.VarChar(2000)
-  socials    socials @relation(fields: [website_id], references: [website_id], map: "FK_user_socials_socials")
-  users      users   @relation(fields: [user_id], references: [user_id], onDelete: Cascade, map: "FK_user_socials_users")
-
-  @@id([user_id, website_id])
-  @@index([website_id], map: "FK_user_socials_socials")
-}
-
-model users {
-  user_id                                             Int                  @id @default(autoincrement())
-  username                                            String               @db.Text
-  rit_email                                           String               @db.VarChar(50)
-  first_name                                          String               @db.Text
-  last_name                                           String               @db.Text
-  profile_image                                       String?              @db.VarChar(100)
-  headline                                            String?              @db.VarChar(100)
-  pronouns                                            String?              @db.Text
-  job_title_id                                        Int?
-  major_id                                            Int?
-  academic_year                                       users_academic_year?
-  location                                            String?              @db.VarChar(150)
-  fun_fact                                            String?              @db.VarChar(100)
-  bio                                                 String?              @db.VarChar(600)
-  visibility                                          Int                  @default(1) @db.TinyInt
-  created_at                                          DateTime             @default(now()) @db.Timestamp(0)
-  updated_at                                          DateTime             @default(now()) @db.Timestamp(0)
-  phone_number                                        BigInt?
-  univerity_id                                        String?              @db.VarChar(9)
-  members                                             members[]
-  project_followings                                  project_followings[]
-  projects                                            projects[]
-  user_followings_user_followings_following_idTousers user_followings[]    @relation("user_followings_following_idTousers")
-  user_followings_user_followings_user_idTousers      user_followings[]    @relation("user_followings_user_idTousers")
-  user_skills                                         user_skills[]
-  user_socials                                        user_socials[]
-  job_titles                                          job_titles?          @relation(fields: [job_title_id], references: [title_id], onDelete: Restrict, map: "FK_users_job_titles")
-  majors                                              majors?              @relation(fields: [major_id], references: [major_id], onDelete: Restrict, map: "FK_users_majors")
-
-  @@index([job_title_id], map: "FK_users_job_titles")
-  @@index([major_id], map: "FK_users_majors")
-}
-
-enum jobs_availability {
-  Full_time @map("Full-time")
-  Part_time @map("Part-time")
+enum JobsAvailability {
+  FullTime @map("Full-time")
+  PartTime @map("Part-time")
   Flexible
+
+  @@map("jobs_availability")
 }
 
-enum jobs_duration {
-  Short_term @map("Short-term")
-  Long_term  @map("Long-term")
+enum JobsDuration {
+  ShortTerm @map("Short-term")
+  LongTerm  @map("Long-term")
+
+  @@map("jobs_duration")
 }
 
-enum members_profile_visibility {
-  private
-  public
-}
-
-enum jobs_location {
-  On_site @map("On-site")
+enum JobsLocation {
+  OnSite @map("On-site")
   Remote
   Hybrid
+
+  @@map("jobs_location")
 }
 
-enum projects_purpose {
+enum ProjectsPurpose {
   Personal
-  Portfolio_Piece @map("Portfolio Piece")
+  PortfolioPiece @map("Portfolio Piece")
   Academic
-  Co_op           @map("Co-op")
+  CoOp           @map("Co-op")
+
+  @@map("projects_purpose")
 }
 
-enum jobs_compensation {
+enum JobsCompensation {
   Unpaid
   Paid
+
+  @@map("jobs_compensation")
 }
 
-enum projects_status {
+enum ProjectsStatus {
   Planning
   Development
-  Post_Production @map("Post-Production")
+  PostProduction @map("Post-Production")
   Complete
+
+  @@map("projects_status")
 }
 
-enum users_academic_year {
-  st @map("1st")
-  nd @map("2nd")
-  rd @map("3rd")
-  th @map("4th")
+enum MembersProfileVisibility {
+  private
+  public
+
+  @@map("members_profile_visibility")
+}
+
+enum UsersAcademicYear {
+  Freshman
+  Sophomore
+  Junior
+  Senior
+  Grad1
+  Grad2
+
+  @@map("users_academic_year")
 }

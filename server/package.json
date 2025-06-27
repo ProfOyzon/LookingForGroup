@@ -13,7 +13,7 @@
   },
   "imports": {
     "#app.ts": "./src/app.ts",
-    "#prisma-models/*": "./src/generated/prisma/*",
+    "#prisma-models/*": "./src/models/generated/prisma/*",
     "#config/*.ts": "./src/config/*.ts",
     "#services/*.ts": "./src/services/*.ts",
     "#controllers/*.ts": "./src/api/controllers/*.ts",

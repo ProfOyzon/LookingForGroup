@@ -1,0 +1,36 @@
+/api/datasets/project-types:
+  get:
+    summary: Receives list of all project types
+    tags:
+      - Datasets
+    responses:
+      '200':
+        description: A list of project types
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                type: integer
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                    type_id:
+                      type: integer
+                    label:
+                      type: string
+            examples:
+              default:
+                summary: Example project types list
+                value:
+                  status: 200
+                  data:
+                    - type_id: 1
+                      label: Video Game
+                    - type_id: 2
+                      label: Analog Game
+                    - type_id: 3
+                      label: Mobile Application

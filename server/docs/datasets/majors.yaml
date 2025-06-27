@@ -1,0 +1,36 @@
+/api/datasets/majors:
+  get:
+    summary: Receives list of all majors
+    tags:
+      - Datasets
+    responses:
+      '200':
+        description: A list of majors
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                type: integer
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                    major_id:
+                      type: integer
+                    label:
+                      type: string
+            examples:
+              default:
+                summary: Examples majors list
+                value:
+                  status: 200
+                  data:
+                    - major_id: 1
+                      label: Animation
+                    - major_id: 2
+                      label: Computer Engineering
+                    - major_id: 3
+                      label: Computing Engineering Technology

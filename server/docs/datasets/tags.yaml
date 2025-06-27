@@ -1,0 +1,41 @@
+/api/datasets/tags:
+  get:
+    summary: Receives list of all tags
+    tags:
+      - Datasets
+    responses:
+      '200':
+        description: A list of tags
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      tag_id:
+                        type: integer
+                      label:
+                        type: string
+                      type:
+                        type: string
+            examples:
+              default:
+                summary: Example tags list
+                value:
+                  status: 200
+                  data:
+                    - tag_id: 1
+                      label: Indie
+                      type: Creative
+                    - tag_id: 2
+                      label: Abstract
+                      type: Creative
+                    - tag_id: 3
+                      label: Horror
+                      type: Creative

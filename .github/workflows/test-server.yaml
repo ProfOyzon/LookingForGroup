@@ -24,8 +24,8 @@ jobs:
       - name: Install dependencies
         run: npm ci --workspace=server --ignore-scripts
 
-      - name: Generate Prisma
-        run: npm run prisma:generate
+      # - name: Generate Prisma
+      #   run: npm run prisma:generate
 
       - name: Typecheck project
         run: npm run lint:server:types
@@ -37,4 +37,4 @@ jobs:
       # a db running in the workflow
       # or just chsnge tests to not use the db
       # - name: Test Server
-        # run: npm run test
+      #   run: npm run test

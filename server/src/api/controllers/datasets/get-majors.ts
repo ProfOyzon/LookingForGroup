@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import getService from '#services/datasets/get-skills.ts';
+import getService from '#services/datasets/get-majors.ts';
 
-const getSkillsController = async (_request: Request, response: Response): Promise<void> => {
+const getMajorsController = async (_request: Request, response: Response): Promise<void> => {
   const result = await getService();
 
   if (result === 'INTERNAL_ERROR') {
@@ -12,4 +12,4 @@ const getSkillsController = async (_request: Request, response: Response): Promi
   response.status(200).json(result);
 };
 
-export default getSkillsController;
+export default getMajorsController;

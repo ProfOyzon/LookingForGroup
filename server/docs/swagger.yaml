@@ -56,11 +56,11 @@ paths:
                 default:
                   summary: Example socials list
                   value:
-                    - website_id: 1
+                    - websiteId: 1
                       label: Instagram
-                    - website_id: 2
+                    - websiteId: 2
                       label: Twitter
-                    - website_id: 3
+                    - websiteId: 3
                       label: Facebook
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -86,13 +86,13 @@ paths:
                 default:
                   summary: Example skill list
                   value:
-                    - tag_id: 105
+                    - skill_id: 1
                       label: C++
                       type: Developer
-                    - tag_id: 106
+                    - skill_id: 2
                       label: CSS
                       type: Developer
-                    - tag_id: 107
+                    - skill_id: 3
                       label: C#
                       type: Developer
         '500':
@@ -119,11 +119,11 @@ paths:
                 default:
                   summary: Example project types list
                   value:
-                    - type_id: 1
+                    - typeId: 1
                       label: Video Game
-                    - type_id: 2
+                    - typeId: 2
                       label: Analog Game
-                    - type_id: 3
+                    - typeId: 3
                       label: Mobile Application
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -149,11 +149,11 @@ paths:
                 default:
                   summary: Examples majors list
                   value:
-                    - major_id: 1
+                    - majorId: 1
                       label: Animation
-                    - major_id: 2
+                    - majorId: 2
                       label: Computer Engineering
-                    - major_id: 3
+                    - majorId: 3
                       label: Computing Engineering Technology
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -179,13 +179,13 @@ paths:
                 default:
                   summary: Example tags list
                   value:
-                    - tag_id: 1
+                    - tagId: 1
                       label: Indie
                       type: Creative
-                    - tag_id: 2
+                    - tagId: 2
                       label: Abstract
                       type: Creative
-                    - tag_id: 3
+                    - tagId: 3
                       label: Horror
                       type: Creative
         '500':
@@ -215,7 +215,7 @@ components:
     Social:
       type: object
       properties:
-        website_id:
+        websiteId:
           type: integer
         label:
           type: string
@@ -223,7 +223,7 @@ components:
     Skill:
       type: object
       properties:
-        tag_id:
+        skill_id:
           type: integer
         label:
           type: string
@@ -233,7 +233,7 @@ components:
     ProjectType:
       type: object
       properties:
-        type_id:
+        typeId:
           type: integer
         label:
           type: string
@@ -241,7 +241,7 @@ components:
     Major:
       type: object
       properties:
-        major_id:
+        majorId:
           type: integer
         label:
           type: string
@@ -249,7 +249,7 @@ components:
     Tag:
       type: object
       properties:
-        tag_id:
+        tagId:
           type: integer
         label:
           type: string

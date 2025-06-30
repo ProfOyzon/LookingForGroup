@@ -64,6 +64,7 @@ typings/
 /.pnp
 .pnp.js
 
+
 # testing
 /coverage
 
@@ -84,3 +85,13 @@ yarn-error.log*
 # profile picture and project images
 server/images/
 database/dump.sql
+
+# Ignore .idea for Jetbrains developing tools
+.idea
+
+# Ignore vs & vscode config files
+.vs
+.vscode
+
+# SQL files
+*.sql

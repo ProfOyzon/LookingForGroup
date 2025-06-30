@@ -28,6 +28,10 @@ import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
 import { sendPost, sendDelete } from '../../functions/fetch';
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
+
 //To-do
 //Have team member listings link to their respective profiles
 //Ensure 'ProjectCreatorEditor' component is complete and works on this page for project editing (import found above)
@@ -89,6 +93,7 @@ const defaultProject = runningServer
     ],
   };
 
+//Main component for the project page
 const NewProject = () => {
   //Navigation hook
   const navigate = useNavigate();
@@ -340,15 +345,16 @@ const NewProject = () => {
           }
 
           //FIXME: get profile image from API call
-          const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
+          const imgSrc = (user.profile_image) ? `${API_BASE}/images/profiles/${user.profile_image}` : profilePicture;
           //const imgSrc = profilePicture; // temporary
 
           return (
             <div
+              key={user.user_id}
               className="project-contributor"
               onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
             >
-              <img className="project-contributor-profile" src={imgSrc} alt="profile" />
+              <img className="project-contributor-profile" src={imgSrc} alt="contributor profile" />
               <div className="project-contributor-info">
                 <div className="team-member-name">
                   {user.first_name} {user.last_name}
@@ -370,14 +376,14 @@ const NewProject = () => {
       projectContributors.length > 0 ? (
         <>
           {projectContributors.map((user) => {
-            const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
+            const imgSrc = (user.profile_image) ? `${API_BASE}/images/profiles/${user.profile_image}` : profilePicture;
 
             return (
               <div
                 className="project-contributor"
                 onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
               >
-                <img className="project-contributor-profile" src={imgSrc} alt="profile" />
+                <img className="project-contributor-profile" src={imgSrc} alt="contributor profile" />
                 <div className="project-contributor-info">
                   <div>
                     {user.first_name} {user.last_name}
@@ -409,6 +415,7 @@ const NewProject = () => {
     if (button) button.click();
   };
 
+  //State variable used to track which position is currently being viewed in the popup
   const [viewedPosition, setViewedPosition] = useState(0);
 
   //Find first member with the job title of 'Project Lead'
@@ -548,6 +555,7 @@ const NewProject = () => {
             </div>
           </div>
 
+          {/* Project overview section */}
           <div id="project-overview">
             <div id="project-overview-title">About This Project</div>
             <div id="project-overview-text">{displayedProject.description}</div>

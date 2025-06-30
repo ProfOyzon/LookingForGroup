@@ -3,12 +3,46 @@ import { useNavigate } from 'react-router-dom';
 import * as paths from '../constants/routes';
 import placeholderThumbnail from '../images/project_temp.png';
 import { sendDelete, sendPost } from '../functions/fetch';
+
 //Component that will contain info about a project, used in the discovery page
 //Smaller and more concise than ProjectCard.tsx
 
 //Takes in a 'project' value which contains info on the project it will display
 //Also takes in width (the width of this panel), and rightAlign, which determines which side the hover panel aligns with
-export const ProjectPanel = ({ project, userId }) => {
+
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
+interface ProjectType {
+  id: number;
+  project_type: string;
+}
+
+interface ProjectTag {
+  id: number;
+  tag: string;
+  type: string;
+}
+
+interface ProjectData {
+  project_id: number;
+  title: string;
+  hook: string;
+  thumbnail: string | null;
+  followers: {
+    count: number;
+    isFollowing: boolean;
+  };
+  project_types: ProjectType[];
+  tags: ProjectTag[];
+}
+
+interface ProjectPanelProps {
+  project: ProjectData;
+  userId: number;
+}
+
+export const ProjectPanel = ({ project, userId }: ProjectPanelProps) => {
   const navigate = useNavigate();
   const projectURL = `${paths.routes.NEWPROJECT}?projectID=${project.project_id}`;
   
@@ -16,20 +50,18 @@ export const ProjectPanel = ({ project, userId }) => {
   const [isFollowing, setFollowing] = useState(project.followers.isFollowing);
 
   // Formats follow-count based on Figma design. Returns a string
-  const formatFollowCount = (followers) => {
-    let followerNum = followers;
+const formatFollowCount = (followers: number): string => {
+  const followerNum = followers;
 
-    // Start displaying in X.X+ format if >= 1000
-    if (followerNum >= 1000) {
-      const multOfHundred = (followerNum % 100) === 0;
+  if (followerNum >= 1000) {
+    const multOfHundred = (followerNum % 100) === 0;
+    const formattedNum = (followerNum / 1000).toFixed(1);
+    return `${formattedNum}K ${multOfHundred ? '+' : ''}`;
+  }
 
-      followerNum /= 1000.0;
-      followerNum = followerNum.toFixed(1);
-      followerNum = `${followerNum}K ${multOfHundred ? '+' : ''}`;
-    }
+  return `${followerNum}`;
+};
 
-    return `${followerNum}`;
-  };
 
   return (
     // <div className={'project-panel'} style={{ width: width }}>
@@ -37,7 +69,7 @@ export const ProjectPanel = ({ project, userId }) => {
       <img
         src={
           project.thumbnail != null
-            ? `images/thumbnails/${project.thumbnail}`
+            ? `${API_BASE}/images/thumbnails/${project.thumbnail}`
             : placeholderThumbnail
         }
         alt={'project image'}
@@ -50,7 +82,7 @@ export const ProjectPanel = ({ project, userId }) => {
         <img
           src={
             project.thumbnail != null
-              ? `images/thumbnails/${project.thumbnail}`
+              ? `${API_BASE}/images/thumbnails/${project.thumbnail}`
               : placeholderThumbnail
           }
           alt={'project image'}
@@ -94,12 +126,12 @@ export const ProjectPanel = ({ project, userId }) => {
           </div>
         </div>
         <div id="project-panel-tags">
-          {project.project_types.map((projectType) => (
+          {project.project_types.map((projectType: ProjectType) => (
             <div className='skill-tag-label label-blue' key={projectType.id}>
               {projectType.project_type}
             </div>
           ))}
-          {project.tags.map((tag, index) => {
+          {project.tags.map((tag: ProjectTag, index: number) => {
             let category: string;
             switch (tag.type) {
               case 'Design':

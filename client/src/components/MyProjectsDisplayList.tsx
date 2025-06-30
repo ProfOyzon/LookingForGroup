@@ -7,6 +7,9 @@ import { Popup, PopupButton, PopupContent } from './Popup';
 import { PagePopup } from './PagePopup';
 import { sendDelete } from '../functions/fetch';
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 const MyProjectsDisplayList = ({ projectData }) => {
   // Navigation hook
   const navigate = useNavigate();
@@ -85,7 +88,7 @@ const MyProjectsDisplayList = ({ projectData }) => {
         <img
           className="list-card-image"
           src={(projectData.thumbnail)
-            ? `/images/thumbnails/${projectData.thumbnail}`
+            ? `${API_BASE}/images/thumbnails/${projectData.thumbnail}`
             : `/assets/project_temp-DoyePTay.png`
           }
           alt={`${projectData.title} Thumbnail`}

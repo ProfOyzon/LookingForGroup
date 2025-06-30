@@ -1,9 +1,11 @@
 import '../Styles/pages.css';
 import '../Styles/projects.css';
+import '../Styles/general.css'
 
 // import { MyProjectsDisplay } from "../MyProjectsDisplay";
 // import { profiles } from "../../constants/fakeData";
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import { PagePopup, openClosePopup } from "../PagePopup";
 import ToTopButton from '../ToTopButton';
 import CreditsFooter from '../CreditsFooter';
@@ -14,7 +16,16 @@ import { ThemeIcon } from '../ThemeIcon';
 import { Select, SelectButton, SelectOptions } from '../Select';
 import { LeaveDeleteContext } from '../../contexts/LeaveDeleteContext';
 
+import { ProjectCreatorEditor } from '../ProjectCreatorEditor/ProjectCreatorEditor';
+import { User } from '../Sidebar'; // For use with project creation button
+
 const MyProjects = () => {
+
+  const navigate = useNavigate();
+
+  // Taken from Sidebar.tsx
+  const [userData, setUserData] = useState<User>();
+
   // const [UID, setUID] = useState(profiles[0]._id);
   // const [activePage, setActivePage] = useState(0);
 
@@ -38,6 +49,8 @@ const MyProjects = () => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [loggedIn, setLoggedIn] = useState(0);
 
+  const [createError, setCreateError] = useState(false);
+
   // --------------------
   // Helper functions
   // --------------------
@@ -57,6 +70,9 @@ const MyProjects = () => {
         setProjectsList(data.data);
       }
     }
+
+    if (authResponse.status != 401) setCreateError(false);
+    else setCreateError(true);
 
     setDataLoaded(true);
   }
@@ -97,6 +113,7 @@ const MyProjects = () => {
   //     }
   // }
 
+  // Compare words: check if the snippet is found in the title
   const checkIfAnyWordStartsWith = (title: string, snippit: string) => {
     const words = title.split(' ');
     for (let i = 0; i < words.length; i++) {
@@ -107,6 +124,7 @@ const MyProjects = () => {
     return false;
   };
 
+  // Sort projects: variety of methods
   const sortProjects = (projects) => {
     if (projects !== undefined) {
       const tempList = new Array(0);
@@ -162,6 +180,7 @@ const MyProjects = () => {
     }
   };
 
+  // Set the display mode: list or grid
   const toggleDisplayMode = () => {
     if (displayMode === 'grid') {
       setDisplayMode('list');
@@ -170,6 +189,7 @@ const MyProjects = () => {
     }
   };
 
+  // Projects in grid display
   const GridDisplay = ({ userProjects }) => {
     return (
       <>
@@ -198,6 +218,7 @@ const MyProjects = () => {
     );
   };
 
+  // Projects in list display
   const ListDisplay = ({ userProjects }) => {
     return (
       <>
@@ -234,6 +255,7 @@ const MyProjects = () => {
     );
   };
 
+  // Return sorted projects either in Grid or List mode
   const ProjectListSection = ({ userProjects }) => {
     // Sort projects based on the method selected
     const sortedProjects = sortProjects(userProjects);
@@ -249,8 +271,8 @@ const MyProjects = () => {
     return <></>;
   };
 
-  // let projectListSection = <></>;
-  // if (displayMode === 'grid') {
+  // `let projectListSection = <></>;
+  // if (displayMode === 'grid') {`
   //   const tempList = sortProjects();
   //   projectListSection = (
   //     <>
@@ -309,9 +331,9 @@ const MyProjects = () => {
 
       {/* Banner */}
       <ThemeIcon
-        light={'assets/projects_header_light.png'}
-        dark={'assets/projects_header_dark.png'}
-        alt={'My Projects Banner Light'}
+        light={'/assets/projects_header_light.png'}
+        dark={'/assets/projects_header_dark.png'}
+        alt={'My Projects Banner'}
         addClass={'my-projects-banner'}
       />
 
@@ -324,15 +346,15 @@ const MyProjects = () => {
 
         {/* Sort By Drop Down */}
         <Select>
-          <SelectButton 
+          <SelectButton
             placeholder='Sort by'
             initialVal=''
             buttonId='my-projects-sort-btn'
           />
-          <SelectOptions 
+          <SelectOptions
             callback={(e) => setSortMethod(e.target.value)}
             options={[
-              { 
+              {
                 markup: <><i className="fa-solid fa-arrow-down-short-wide"></i>Newest</>,
                 value: 'newest',
                 disabled: false,
@@ -449,10 +471,55 @@ const MyProjects = () => {
           </div>
         </div>
 
-        {/* New Project Button */}
-        <button className="my-projects-new-project-button" onClick={(e) => { }}>
-          + New Project
-        </button>
+        {/*Create Project Button*/}
+        {/* All of the following options end up replacing the button with the ProjectCreatorEditor button -
+        this is because that component always creates a SPECIFIC button, and cannot be hooked up to ANY button.
+        Right now, teams have been told to avoid touching that file.*/}
+
+        {/*Create New Project button - Implementation 0 - Currently, the button is set to always appear, non-functional. */}
+        {/*<>
+          <button className="my-projects-new-project-button">
+            + New Project
+          </button>
+        </>*/}
+
+        {/*/*Create New Project button - Implementation 1 - Redirects user when not logged in.*/}
+        {!loggedIn ? (
+          <>
+            <button className="my-projects-new-project-button" onClick={() => navigate('/login')}>
+              + New Project
+            </button>
+          </>
+        ) : (<div className="my-projects-create-btn">
+          <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
+        </div>)
+        }
+
+        {/*Create Project Button - Implementation 2 - Only works if user is logged in. No error message is displayed for logged out users.*/}
+        {/*!loggedIn ? (
+          <>
+            <button className="my-projects-new-project-button" onClick={() => {
+              console.log("read me if you're not logged in");
+            }}>
+              + New Project
+            </button>
+          </>
+        ) : <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
+        */}
+
+        {/*Create Project Button - Implementation 3 - Only APPEARS if user is logged in.*/}
+        {/*loggedIn ? (
+          <>
+            <button className="my-projects-new-project-button" onClick={() => {
+              <ProjectCreatorEditor newProject={true} buttonCallback={getUserProjects} user={userData} />
+            }}>
+              + New Project
+            </button>
+          </>
+        ) : <> </>/* Do nothing */
+        }
+
+
         {/* <button className="delete" onClick={() => setIsDeletePopupOpen(true)}>
           -Delete Project test
         </button>
@@ -485,6 +552,6 @@ const MyProjects = () => {
       <ToTopButton />
     </div>
   );
-};
+}
 
 export default MyProjects;

@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from 'react';
+import { useState, createContext, useContext, ReactNode, useRef, useEffect } from 'react';
 import close from '../icons/cancel.png';
 //This is a reusable component that can be used to make popup windows on pages
 
@@ -25,10 +25,16 @@ import close from '../icons/cancel.png';
 //Note that popups can only be closed one at a time currently without some sort of manipulation
 
 //Create context to be used throughout component on popup's visibility state
-const PopupContext = createContext({
+interface PopupContextType {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+}
+
+//Create context to be used throughout component on popup's visibility state
+const PopupContext = createContext<PopupContextType>({
   open: false,
-  setOpen: (open: boolean) => {},
-}); 
+  setOpen: () => {}, 
+});
 
 //Button component that will open/close the popup
 export const PopupButton = ({
@@ -37,6 +43,12 @@ export const PopupButton = ({
   className = '',
   callback = () => {},
   doNotClose = () => false,
+}: {
+  children: ReactNode;
+  buttonId?: string;
+  className?: string;
+  callback?: () => void;
+  doNotClose?: () => boolean;
 }) => {
   const { open, setOpen } = useContext(PopupContext);
 
@@ -61,22 +73,72 @@ export const PopupButton = ({
 };
 
 //Main content of the popup
-export const PopupContent = ({ children, useClose = true, callback = () => {} }) => {
+export const PopupContent = ({
+  children,
+  useClose = true,
+  callback = () => {},
+}: {
+  children: ReactNode;
+  useClose?: boolean;
+  callback?: () => void;
+}) => {
   const { open, setOpen } = useContext(PopupContext);
+  const popupRef = useRef(null);
 
   const closePopup = () => {
     callback();
     setOpen(false);
   };
 
+  // Close on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closePopup();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Close on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const refNode = popupRef.current as Node | null;
+      if (refNode && e.target instanceof Node && !refNode.contains(e.target)) {
+        closePopup();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close on browser button click
+  useEffect(() => {
+     if (open) {
+      // Push new browser history if no popup state yet
+      if (!history.state.popup) {
+       history.pushState({popup: true}, '', '');
+      }
+     };
+     const handlePopState = (event: PopStateEvent) => {
+      // Close popup 
+      if (open && !event.state.popup) {
+        setOpen(false);
+      }
+     };
+     window.addEventListener('popstate', handlePopState);
+     return () => window.removeEventListener('popstate', handlePopState);
+  }, [open]);
+
+  if (!open) return null;
+
   if (open && useClose) {
     return (
       <>
         <div className="popup-cover" />
         <div className="popup-container">
-          <div className="popup">
+          <div className="popup" ref={popupRef}>
             <button className="popup-close" onClick={closePopup}>
-              <img src={close} alt="X" />
+              <img src={close} alt="close" />
             </button>
             {children}
           </div>
@@ -88,7 +150,7 @@ export const PopupContent = ({ children, useClose = true, callback = () => {} })
       <>
         <div className="popup-cover" />
         <div className="popup-container">
-          <div className="popup">{children}</div>
+          <div className="popup" ref={popupRef}>{children}</div>
         </div>
       </>
     );
@@ -98,8 +160,12 @@ export const PopupContent = ({ children, useClose = true, callback = () => {} })
 };
 
 //Full popup component
-export const Popup = ({ children }) => {
+export const Popup = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
 
-  return <PopupContext.Provider value={{ open, setOpen }}>{children}</PopupContext.Provider>;
+  return (
+    <PopupContext.Provider value={{ open, setOpen }}>
+      {children}
+    </PopupContext.Provider>
+  );
 };

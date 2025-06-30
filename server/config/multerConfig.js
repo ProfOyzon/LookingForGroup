@@ -1,10 +1,17 @@
-import multer, { MulterError } from 'multer';
+import multer from 'multer';
 
 export default {
   //only png and jpeg files
+  /**
+   *
+   * @param {Express.Request} req
+   * @param {Express.Multer.File} file
+   * @param {import('multer').FileFilterCallback} cb
+   * @returns
+   */
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg') {
-      return cb(new MulterError('LIMIT_INVALID_TYPE'));
+      return cb(new Error('LIMIT_INVALID_TYPE'));
     }
 
     return cb(null, true);

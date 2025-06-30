@@ -1,5 +1,5 @@
 // --- Imports ---
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Dropdown, DropdownButton, DropdownContent } from "../../Dropdown";
 import { ThemeIcon } from "../../ThemeIcon";
 import { Select, SelectButton, SelectOptions } from "../../Select";
@@ -53,12 +53,26 @@ const defaultProject: ProjectData = {
 const purposeOptions = ['Personal', 'Portfolio Piece', 'Academic', 'Co-op'];
 const statusOptions = ['Planning', 'Development', 'Post-Production', 'Complete'];
 
+// Delay function until user stops typing to prevent rapid text input bugs
+const keyboardDebounce = (func: any, delay: any) => {
+  let timeout: any;
+  return (...args: any) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
+  };
+};
+
 // --- Component ---
 export const GeneralTab = ({ isNewProject = false, projectData = defaultProject, setProjectData }) => {
 
   // --- Hooks ---
   // tracking project modifications
   const [modifiedProject, setModifiedProject] = useState<ProjectData>(projectData);
+
+  // Textbox input callback: useRef to avoid unintended reset bugs
+  const debounce = useRef(keyboardDebounce((updatedProject) => {
+    setProjectData(updatedProject);
+  }, 300)).current;
 
   // Update data when data is changed
   useEffect(() => {
@@ -67,7 +81,8 @@ export const GeneralTab = ({ isNewProject = false, projectData = defaultProject,
 
   // Update parent state when data is changed
   useEffect(() => {
-    setProjectData(modifiedProject);
+    // delay with setTimeout() used to fix input glitch bug
+    debounce(modifiedProject)
   }, [modifiedProject, setProjectData]);
 
   // --- Complete component ---

@@ -52,6 +52,8 @@ Profile Panel component style rules
     font-weight: 700;
     color: var(--primary-color);
     line-height: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   /* Major */
@@ -73,6 +75,8 @@ Profile Panel component style rules
     line-height: 18px;
     letter-spacing: -0.132px;
     align-self: stretch;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 }
 
@@ -94,6 +98,7 @@ Profile Panel component style rules
   justify-content: start;
   text-align: left;
   padding: 20px;
+  overflow: auto;
 }
 
 .profile-panel-hover-item {
@@ -161,10 +166,30 @@ Profile page style rules
 /*could probably be reused for other pages?*/
 .profile-name-button {
   display: flex;
-  flex-direction: row;
+  /*flex-direction: row;*/
   align-items: center;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
+  
 }
+
+.profile-name-button h4{
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.profile-name-button .icon-button {
+  padding: 0;
+  margin-left: 5px;
+  background: none;
+  border: none;
+}
+
+#edit-interests-icon{
+  width: 25px;
+  height: 25px;
+  margin: 0;
+}
+
 
 /*header rules--------------------------------- */
 #profile-header-wrapper {
@@ -985,17 +1010,40 @@ New Profile page style rules
 #profile-information-grid {
   display: grid;
   grid-template:
-    'image name buttons' 40px
-    'image extra extra' 40px
-    'image desc desc' auto
-    'image fact fact' auto
-    'bio skills skills' auto /
-    300px auto 200px;
+    'image name buttons buttons' 40px
+    'image extra extra extra' 40px
+    'image desc desc desc' auto
+    'image fact fact fact' auto
+    'bio skills skills follow' auto /
+    300px 1fr 50px;
   background-color: var(--header-color);
   border-radius: 10px;
   padding: 30px;
   gap: 10px;
   color: var(--main-text);
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Profile view responsiveness */
+@media only screen and (max-width: 1250px) {
+  #profile-information-grid {
+    display: grid;
+    grid-template: 
+      'image' auto
+      'name' auto
+      'buttons' auto
+      'extra' auto
+      'desc' auto
+      'fact' auto
+      'bio' auto
+      'skills' auto
+      'follow' auto / 1fr;
+    justify-items: center;
+    width: 100%;
+    max-width: 90%;
+    }
 }
 
 #profile-page-content h2 {
@@ -1006,7 +1054,7 @@ New Profile page style rules
   width: 280px;
   height: 280px;
   grid-area: image;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 10px;
   border: 2px solid white;
 }
@@ -1016,6 +1064,8 @@ New Profile page style rules
   font-style: italic;
   color: var(--main-text);
   width: 280px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 #profile-info-name {
@@ -1027,6 +1077,31 @@ New Profile page style rules
   color: var(--darkGray);
   gap: 10px;
   text-align: left;
+  min-width: 0;
+}
+
+#profile-follow-button {
+  justify-self: right;
+  grid-area: follow;
+  box-sizing: border-box;
+  background-color: var(--primary-color);
+  border: 0px;
+  border-radius: 55px;
+  width: fit-content;
+  color: var(--invert-text);
+  padding: 12px 17px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 28px;
+  letter-spacing: 0%;
+  width: 145px;
+}
+
+@media only screen and (max-width: 1250px) {
+  #profile-follow-button {
+    justify-self: center;
+  }
 }
 
 #profile-fullname {
@@ -1039,7 +1114,19 @@ New Profile page style rules
 
 #profile-info-buttons {
   grid-area: buttons;
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  width: fit-content;
+  justify-self: end;
+}
+
+@media only screen and (max-width: 1250px) {
+  #profile-info-buttons {
+    justify-self: center;
+  }
 }
 
 #profile-info-extras {
@@ -1049,6 +1136,14 @@ New Profile page style rules
   align-items: center;
   justify-content: start;
   gap: 20px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+@media only screen and (max-width: 1200px) {
+    #profile-info-extras {
+    flex-wrap: wrap;
+  }
 }
 
 .profile-extra {
@@ -1066,6 +1161,9 @@ New Profile page style rules
 #profile-info-description {
   grid-area: desc;
   text-align: left;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 #profile-info-funfact {
@@ -1073,6 +1171,8 @@ New Profile page style rules
   text-align: left;
   margin-top: auto;
   font-style: italic;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 #fun-fact-start {
@@ -1081,9 +1181,17 @@ New Profile page style rules
   margin-right: 5px;
 }
 
+#profile-info-interests {
+  grid-area: interests;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 #profile-info-skills {
   grid-area: skills;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -1092,6 +1200,117 @@ New Profile page style rules
   height: 26px;
   object-fit: contain;
   margin-right: 10px;
+}
+
+.interests-selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: var(--bg-secondary);
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.interest-tag {
+  font-size: medium;
+  padding: 6px 15px;
+  border-radius: 20px;
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+  border: 3px solid var(--border-color);
+  cursor: pointer;
+}
+
+.interest-tag:hover {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+.interest-tag.selected {
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+}
+
+.selected-interest-tag{
+  
+  border: 3px solid var(--primary-color); 
+}
+
+.interest-tag:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  
+}
+
+.save-btn{
+   width: 110px;
+  height: 40px;
+  /* margin: 20px auto 0px auto; */
+  padding: 5px 16px;
+  font-size: 20px;
+  border: none;
+  border-radius: 40px;
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+  font-weight: 700;
+}
+
+.cancel-btn{
+   width: 110px;
+  height: 40px;
+  /* margin: 20px auto 0px auto; */
+  padding: 5px 16px;
+  font-size: 20px;
+  border: none;
+  border-radius: 40px;
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+  font-weight: 700;
+}
+
+.save-btn:hover,
+.cancel-btn:hover { 
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
+.interest-count {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.tab-content {
+  width: 100%;
+}
+
+/* Fix overlap issues */
+#profile-editor-content {
+  position: relative;
+}
+
+#profile-editor-content > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+#profile-editor-content > div:not(.hidden) {
+  position: relative;
 }
 
 /* #profile-discover-column {
@@ -1188,7 +1407,7 @@ New Profile page style rules
 #about-me-buttons {
   grid-area: buttons;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   /*height:calc(100% - 40px);*/
   height: 100%;
   /* padding:20px 0; */
@@ -1197,6 +1416,12 @@ New Profile page style rules
 
 .about-me-buttons-minimal {
   justify-content: flex-end;
+}
+
+@media only screen and (max-width: 1200px) {
+  .about-me-buttons-minimal {
+  justify-content: flex-start;
+}
 }
 
 #about-me-buttons > button {
@@ -1267,6 +1492,7 @@ New Profile page style rules
   box-shadow: 0px 0px 10px 0px var(--shadow-color);
   border: none;
   padding: 10px;
+  white-space: nowrap;
 }
 
 .profile-menu-dropdown-button {
@@ -1402,4 +1628,73 @@ New Profile page style rules
   justify-content: start;
   grid-gap: 20px;
   text-align: left;
+}
+
+#profile-editor-skills {
+  overflow-y: auto;
+}
+
+#profile-editor-interests{
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fix width alignment for selected tags and search containers */
+#profile-editor-interests #project-editor-selected-tags,
+#profile-editor-interests #project-editor-tag-search {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#profile-editor-interests .interest-tag.selected {
+  background-color: white;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+#profile-editor-interests .interest-tag.selected:hover {
+  background-color: var(--primary-color);
+  color: var(--invert-text);
+}
+
+#profile-editor-interests .interest-tag .fa-plus {
+  color: var(--invert-text);
+}
+
+#profile-editor-interests .interest-tag .fa-remove {
+  color: var(--primary-color);
+}
+
+#profile-editor-interests .interest-tag:hover .fa-plus {
+  color: var(--primary-color);
+}
+
+#profile-editor-interests .interest-tag.selected:hover .fa-remove {
+  color: var(--invert-text);
+}
+
+.interest-tag-button-blue-selected {
+  background-color: var(--tag-blue-selected);
+  color: black;
+  max-width: 100%;
+}
+
+[data-theme="dark"] .interest-tag-button-blue-selected .fa {
+  color: black !important;
+}
+
+.interest-tag-button-blue-selected:hover{
+  color: var(--main-text);
+}
+
+.interest-tag-button-blue-selected:hover .fa {
+   color: var(--main-text);
+}
+
+[data-theme="dark"] .interest-tag-button-blue-selected:hover .fa {
+  color: white !important;
 }

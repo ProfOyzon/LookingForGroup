@@ -24,6 +24,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
   const [confirm, setConfirm] = useState(''); // second password input to check if they match
   const [message, setMessage] = useState(''); // State variable for messages
   const [passwordMessage, setPasswordMessage] = useState(''); // State variable for password requirements
+  const [showPassword, setShowPassword] = useState(false);
 
   // State variables for modals
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -86,8 +87,14 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
       return false;
     }
 
-    // check if email is valid
+    // check if username is valid
+    if (!(username.match(/^[a-zA-Z0-9_]+$/) != null)) {
+      setMessage('Username can not include white space or special characters!');
+      return false;
+    }
+
     if (!email.includes('rit.edu')) {
+      // check if email is valid
       setMessage('Not an RIT email');
       return false;
     }
@@ -140,6 +147,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     }
   };
 
+  // Function to handle password validation
   const validatePassword = (pass) => {
     // Don't check password if there's nothing there
     if (pass === '') {
@@ -193,12 +201,20 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
   return (
     <div className="background-cover">
       <div className="login-signup-container" onKeyDown={handleKeyPress}>
+        <ThemeIcon //Back button to return to the previous page
+          light={'/assets/back_light.png'}
+          dark={'/assets/back_dark.png'}
+          alt="Back Button"
+          id="backPage-arrow"
+          onClick={() => navigate(-1)}
+        />
         {/*************************************************************
 
                     Signup Form inputs
 
                 *************************************************************/}
         <div className="signup-form column">
+
           <h2>Sign Up</h2>
 
           <div className="error">{message}</div>
@@ -240,20 +256,38 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            <input
-              className="signup-input"
-              autoComplete="off"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                const passMsg = validatePassword(e.target.value);
-                setMessage(passMsg);
-                setPasswordMessage(passMsg);
-              }}
+            <div id='password-wrapper'>
+              <input
+                className="signup-input"
+                autoComplete="off"
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  const passMsg = validatePassword(e.target.value);
+                  setMessage(passMsg);
+                  setPasswordMessage(passMsg);
+                }}
               // onBlur={(e) => setPasswordMessage(validatePassword(e.target.value))}
-            />
+              />
+              <button id="show-password" onClick={() => setShowPassword((prevState) =>
+                !prevState)}>
+                {showPassword ? (
+                  <ThemeIcon
+                    id='eye-icon'
+                    light={'/assets/black/password_shown.png'}
+                    dark={'/assets/white/password_shown.png'}
+                  />) :
+                  (
+                    <ThemeIcon
+                      id='eye-icon'
+                      light={'/assets/black/password_hidden.png'}
+                      dark={'/assets/white/password_hidden.png'}
+                    />
+                  )}
+              </button>
+            </div>
             {/* {(passwordMessage !== '') ? (
                             <div className="error">{passwordMessage}</div>
                         ) : (
@@ -390,8 +424,8 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
           {/* <h1>Welcome!</h1>
                     <p>Already have an account?</p> */}
           <ThemeIcon
-            light={'assets/bannerImages/signup_light.png'}
-            dark={'assets/bannerImages/signup_dark.png'}
+            light={'/assets/bannerImages/signup_light.png'}
+            dark={'/assets/bannerImages/signup_dark.png'}
           />
           <button onClick={() => navigate(paths.routes.LOGIN)}>Log In</button>
         </div>

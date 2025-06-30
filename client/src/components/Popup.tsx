@@ -33,7 +33,7 @@ interface PopupContextType {
 //Create context to be used throughout component on popup's visibility state
 const PopupContext = createContext<PopupContextType>({
   open: false,
-  setOpen: () => {}, 
+  setOpen: () => { },
 });
 
 //Button component that will open/close the popup
@@ -41,7 +41,7 @@ export const PopupButton = ({
   children,
   buttonId = '',
   className = '',
-  callback = () => {},
+  callback = () => { },
   doNotClose = () => false,
 }: {
   children: ReactNode;
@@ -76,7 +76,7 @@ export const PopupButton = ({
 export const PopupContent = ({
   children,
   useClose = true,
-  callback = () => {},
+  callback = () => { },
 }: {
   children: ReactNode;
   useClose?: boolean;
@@ -113,20 +113,20 @@ export const PopupContent = ({
 
   // Close on browser button click
   useEffect(() => {
-     if (open) {
+    if (open) {
       // Push new browser history if no popup state yet
       if (!history.state.popup) {
-       history.pushState({popup: true}, '', '');
+        history.pushState({ popup: true }, '', '');
       }
-     };
-     const handlePopState = (event: PopStateEvent) => {
+    };
+    const handlePopState = (event: PopStateEvent) => {
       // Close popup 
       if (open && !event.state.popup) {
         setOpen(false);
       }
-     };
-     window.addEventListener('popstate', handlePopState);
-     return () => window.removeEventListener('popstate', handlePopState);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, [open]);
 
   if (!open) return null;

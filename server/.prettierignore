@@ -1,0 +1,3 @@
+.prettierignore
+prisma/**
+**/generated/**

@@ -165,7 +165,7 @@ const Login: React.FC = () => {
             <input
               className="login-input"
               type="text"
-              placeholder="Username or e-mail"
+              placeholder="Username or email"
               value={loginInput}
               onChange={(e) => setLoginInput(e.target.value)}
             />

@@ -33,16 +33,7 @@ paths:
                     - titleId: 3
                       label: Back-End Developer
         '500':
-          description: An internal server error occurred
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                default:
-                  summary: Example 500 message
-                  value:
-                    message: Internal Server Error
+          $ref: '#/components/responses/InternalServerError'
 
   /api/datasets/socials:
     get:
@@ -57,9 +48,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: integer
-                  data:
+                  schema:
                     type: array
                     items:
                       $ref: '#/components/schemas/Social'
@@ -67,14 +56,14 @@ paths:
                 default:
                   summary: Example socials list
                   value:
-                    status: 200
-                    data:
-                      - website_id: 1
-                        label: Instagram
-                      - website_id: 2
-                        label: Twitter
-                      - website_id: 3
-                        label: Facebook
+                    - website_id: 1
+                      label: Instagram
+                    - website_id: 2
+                      label: Twitter
+                    - website_id: 3
+                      label: Facebook
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 
   /api/datasets/skills:
     get:
@@ -89,9 +78,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: integer
-                  data:
+                  schema:
                     type: array
                     items:
                       $ref: '#/components/schemas/Skill'
@@ -99,17 +86,17 @@ paths:
                 default:
                   summary: Example skill list
                   value:
-                    status: 200
-                    data:
-                      - tag_id: 105
-                        label: C++
-                        type: Developer Skill
-                      - tag_id: 106
-                        label: CSS
-                        type: Developer Skill
-                      - tag_id: 107
-                        label: C#
-                        type: Developer Skill
+                    - tag_id: 105
+                      label: C++
+                      type: Developer
+                    - tag_id: 106
+                      label: CSS
+                      type: Developer
+                    - tag_id: 107
+                      label: C#
+                      type: Developer
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 
   /api/datasets/project-types:
     get:
@@ -124,9 +111,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: integer
-                  data:
+                  schema:
                     type: array
                     items:
                       $ref: '#/components/schemas/ProjectType'
@@ -134,14 +119,14 @@ paths:
                 default:
                   summary: Example project types list
                   value:
-                    status: 200
-                    data:
-                      - type_id: 1
-                        label: Video Game
-                      - type_id: 2
-                        label: Analog Game
-                      - type_id: 3
-                        label: Mobile Application
+                    - type_id: 1
+                      label: Video Game
+                    - type_id: 2
+                      label: Analog Game
+                    - type_id: 3
+                      label: Mobile Application
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 
   /api/datasets/majors:
     get:
@@ -156,9 +141,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: integer
-                  data:
+                  schema:
                     type: array
                     items:
                       $ref: '#/components/schemas/Major'
@@ -166,14 +149,14 @@ paths:
                 default:
                   summary: Examples majors list
                   value:
-                    status: 200
-                    data:
-                      - major_id: 1
-                        label: Animation
-                      - major_id: 2
-                        label: Computer Engineering
-                      - major_id: 3
-                        label: Computing Engineering Technology
+                    - major_id: 1
+                      label: Animation
+                    - major_id: 2
+                      label: Computer Engineering
+                    - major_id: 3
+                      label: Computing Engineering Technology
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 
   /api/datasets/tags:
     get:
@@ -188,9 +171,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
-                    type: integer
-                  data:
+                  schema:
                     type: array
                     items:
                       $ref: '#/components/schemas/Tag'
@@ -198,17 +179,17 @@ paths:
                 default:
                   summary: Example tags list
                   value:
-                    status: 200
-                    data:
-                      - tag_id: 1
-                        label: Indie
-                        type: Creative
-                      - tag_id: 2
-                        label: Abstract
-                        type: Creative
-                      - tag_id: 3
-                        label: Horror
-                        type: Creative
+                    - tag_id: 1
+                      label: Indie
+                      type: Creative
+                    - tag_id: 2
+                      label: Abstract
+                      type: Creative
+                    - tag_id: 3
+                      label: Horror
+                      type: Creative
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 
 components:
   schemas:
@@ -274,3 +255,15 @@ components:
           type: string
         type:
           type: string
+
+  responses:
+    InternalServerError:
+      description: An internal server error occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            default:
+              value:
+                message: Internal Server Error

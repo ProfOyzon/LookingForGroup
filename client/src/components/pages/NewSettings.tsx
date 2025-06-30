@@ -243,8 +243,6 @@ const Settings = ({ }) => {
                   } else {
                     setError('');
                   }
-
-                  console.log(document.getElementsByClassName("pass-reqs")[0] == null)
                 }}
                 onBlur={async () => {
                   // TO-DO: Check if already in use if username

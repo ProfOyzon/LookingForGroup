@@ -1273,6 +1273,7 @@ Search style rules
   text-align: left;
   display: flex;
   flex-direction: row;
+  gap: 5px;
   /* float: right; */
   /* align-content: center; */
   /* margin: auto; */
@@ -1296,6 +1297,7 @@ Search style rules
   background: none;
   border: none;
   /* padding: 4px; */
+  padding-top: 2px;
   font: inherit;
   cursor: pointer;
   outline: inherit;

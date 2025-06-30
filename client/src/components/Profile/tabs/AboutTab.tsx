@@ -4,6 +4,9 @@ import { RoleSelector } from '../../RoleSelector';
 import { MajorSelector } from '../../MajorSelector';
 import { ImageUploader, uploadImage } from '../../ImageUploader';
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 // Methods
 const setUpInputs = async (profileData: ProfileData) => {
   console.log(profileData);
@@ -42,7 +45,7 @@ const setUpInputs = async (profileData: ProfileData) => {
   pairInputToData('funFact', profileData.fun_fact);
   pairInputToData('bio', profileData.bio);
   // Load in the profile picture
-  uploadImage(`/images/profiles/${profileData.profile_image}`);
+  uploadImage(`${API_BASE}/images/profiles/${profileData.profile_image}`);
 };
 
 // Components

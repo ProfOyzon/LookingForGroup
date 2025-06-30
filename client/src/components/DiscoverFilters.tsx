@@ -1,4 +1,4 @@
-import { act, useState } from 'react';
+import React, { act, useState, Fragment } from 'react';
 import { Popup, PopupButton, PopupContent } from './Popup';
 import { SearchBar } from './SearchBar';
 import { ThemeIcon } from './ThemeIcon';
@@ -317,7 +317,8 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                 ? 'Major' : 'Role';
 
             return (
-              <button className="discover-tag-filter"
+              <button key={tag}
+                className="discover-tag-filter"
                 data-type={type}
                 onClick={(e) => toggleTag(e, label, type)}>
                 {tag}
@@ -329,7 +330,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
             {/* Additional filters popup */}
             <Popup>
               <PopupButton buttonId={'discover-more-filters'} callback={setupFilters}>
-                <ThemeIcon light={'assets/filters_light.png'} dark={'assets/filters_dark.png'} />
+                <ThemeIcon light={'/assets/filters_light.png'} dark={'/assets/filters_dark.png'} />
               </PopupButton>
               {/* 
                             When page loads, get all necessary tag lists based on page category.
@@ -344,8 +345,8 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                 {/* Back button */}
                 <PopupButton className="popup-back">
                   <ThemeIcon
-                    light={'assets/back_light.png'}
-                    dark={'assets/back_dark.png'}
+                    light={'/assets/back_light.png'}
+                    dark={'/assets/back_dark.png'}
                     id="dropdown-arrow"
                   />
                 </PopupButton>
@@ -361,6 +362,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                     <div id="filter-tabs">
                       {filterPopupTabs.map((tab, index) => (
                         <a
+                          key={`${tab.categoryName}-${index}`}
                           className={`filter-tab ${index === 0 ? 'selected' : ''}`}
                           onClick={(e) => {
                             const element = e.target as HTMLElement;
@@ -387,6 +389,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                       ) : (
                         searchedTags.tags.map((tag) => (
                           <button
+                            // add key once duplicate tags are removed:  --->  key={`${tag.label}-${tag.type}`}
                             // className={`tag-button tag-button-${searchedTags.color}-unselected`}
                             className={`tag-button tag-button-${searchedTags.color}-${isTagEnabled(tag, searchedTags.color) !== -1 ? 'selected' : 'unselected'}`}
                             onClick={(e) => {
@@ -454,6 +457,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
                     <div id="selected-filters">
                       {enabledFilters.map((tag) => (
                         <button
+                          key={tag.tag.label}
                           className={`tag-button tag-button-${tag.color}-selected`}
                           onClick={(e) => {
                             // Remove tag from list of enabled filters, re-rendering component
@@ -532,11 +536,12 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
           <p>Applied Filters:</p>
           {appliedFiltersDisplay.map((filter, index) => {
             if (filter.tag.type === 'Project Type') {
-              return <></>;
+              return <Fragment key={`${filter.tag.type}`} />;
             }
 
             return (
               <button
+                key={filter.tag.label}
                 className={`tag-button tag-button-${filter.color}-selected`}
                 onClick={(e) => {
                   console.log('clicked!');

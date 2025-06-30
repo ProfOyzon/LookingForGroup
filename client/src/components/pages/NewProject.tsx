@@ -28,6 +28,10 @@ import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
 import { sendPost, sendDelete } from '../../functions/fetch';
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
+
 //To-do
 //Have team member listings link to their respective profiles
 //Ensure 'ProjectCreatorEditor' component is complete and works on this page for project editing (import found above)
@@ -341,11 +345,12 @@ const NewProject = () => {
           }
 
           //FIXME: get profile image from API call
-          const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
+          const imgSrc = (user.profile_image) ? `${API_BASE}/images/profiles/${user.profile_image}` : profilePicture;
           //const imgSrc = profilePicture; // temporary
 
           return (
             <div
+              key={user.user_id}
               className="project-contributor"
               onClick={() => navigate(`${paths.routes.NEWPROFILE}?userID=${user.user_id}`)}
             >
@@ -371,7 +376,7 @@ const NewProject = () => {
       projectContributors.length > 0 ? (
         <>
           {projectContributors.map((user) => {
-            const imgSrc = (user.profile_image) ? `images/profiles/${user.profile_image}` : profilePicture;
+            const imgSrc = (user.profile_image) ? `${API_BASE}/images/profiles/${user.profile_image}` : profilePicture;
 
             return (
               <div

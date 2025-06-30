@@ -16,6 +16,10 @@ import { TagsTab } from './tabs/TagsTab';
 import { ThemeIcon } from '../ThemeIcon';
 import { showPopup } from '../Sidebar';
 import { loggedIn } from '../Header';
+
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 interface Image {
   id: number;
   image: string;
@@ -290,7 +294,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
         // Compare thumbnail
         if (modifiedProject.thumbnail !== projectData.thumbnail) {
           // get thumbnail
-          const thumbnailResponse = await fetch(`/images/projects/${modifiedProject.thumbnail}`);
+          const thumbnailResponse = await fetch(`${API_BASE}/images/projects/${modifiedProject.thumbnail}`);
 
           // create file
           const thumbnailBlob = await thumbnailResponse.blob();
@@ -358,7 +362,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
         // Update thumbnail if a thumbnail is set
         if (modifiedProject.thumbnail !== '') {
           // get thumbnail
-          const thumbnailResponse = await fetch(`/images/projects/${modifiedProject.thumbnail}`);
+          const thumbnailResponse = await fetch(`${API_BASE}/images/projects/${modifiedProject.thumbnail}`);
 
           // create file
           const thumbnailBlob = await thumbnailResponse.blob();
@@ -433,7 +437,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
     <Popup>
       {
         newProject ? (
-          <PopupButton callback={buttonCallback} buttonId='project-info-create' > <ThemeIcon light={'assets/create_light.png'} dark={'assets/create_dark.png'} /> Create </PopupButton>
+          <PopupButton callback={buttonCallback} buttonId='project-info-create' > <ThemeIcon light={'/assets/create_light.png'} dark={'/assets/create_dark.png'} /> Create </PopupButton>
         ) : (
           <PopupButton callback={buttonCallback} buttonId="project-info-edit">Edit Project</PopupButton>
         )

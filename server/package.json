@@ -46,7 +46,6 @@
     "prisma": "^6.10.1",
     "supertest": "^7.1.1",
     "swagger-ui-express": "^5.0.1",
-    "vitest": "^3.2.4",
     "yamljs": "^0.3.0"
   }
 }

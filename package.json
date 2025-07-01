@@ -10,8 +10,8 @@
   ],
   "scripts": {
     "prepare": "husky && npm run prisma:generate",
-    "prisma:pull": "npx --workspace=server prisma db pull",
-    "prisma:generate": "npx --workspace=server prisma generate",
+    "prisma:pull": "npx prisma db pull --schema=server/prisma/schema.prisma",
+    "prisma:generate": "npx prisma generate --schema=server/prisma/schema.prisma",
     "build:client": "npm run build --workspace=client",
     "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\"",
     "test:server": "npm run test --workspace=server",

@@ -20,10 +20,10 @@ router.get('/:id', getUsernameByIdController);
 //Deletes users
 
 //Gets users by username
-//router.get('/api/users/search-username/:username', userCtrl.getUserByUsername);
+//router.get('/search-username/:username', userCtrl.getUserByUsername);
 
 // Gets users by email
-//router.get('/api/users/search-email/:email', userCtrl.getUserByEmail);
+//router.get('/search-email/:email', userCtrl.getUserByEmail);
 
 //Updates users profile images
 
@@ -41,10 +41,10 @@ router.get('/:id', getUsernameByIdController);
 //Gets user's projects
 //router.get('/api/users/:id/projects', mid.checkLogin, userCtrl.getMyProjects);
 
-//Gets user's visible projects
+//Gets a user's visible projects
 //router.get('/api/users/:id/projects/profile', userCtrl.getVisibleProjects);
 
-//Updates users project visibility
+//Updates user's project visibility
 
 //Gets user's following projects
 //router.get('/api/users/:id/followings/projects', userCtrl.getProjectFollowing);

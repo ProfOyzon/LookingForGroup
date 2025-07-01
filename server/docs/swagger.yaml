@@ -26,12 +26,12 @@ paths:
                       authenticated:
                         type: boolean
                         enum: [true]
-                      data:
+                      username:
                         type: string
                         description: Username of user
                     example:
                       authenticated: true
-                      data: Mistah Bones
+                      username: Mistah Bones
                   - type: object
                     properties:
                       authenticated:
@@ -40,9 +40,13 @@ paths:
                       error:
                         type: string
                         description: Reason for no authentication
+                      username:
+                        type: string
+                        description: Username of user
                     example:
                       authenticated: false
                       error: unauthorized
+                      username: guest
 
   # DATASETS
   /api/datasets/job-titles:

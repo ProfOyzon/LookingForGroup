@@ -6,7 +6,7 @@ type GetShibServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
 const getUserByhibService = async (universityId: string): Promise<Users | GetShibServiceError> => {
   try {
-    //findUniquw
+    //findUnique
     const user = await prisma.users.findFirst({
       where: { universityId },
     });

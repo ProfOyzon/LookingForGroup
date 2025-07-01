@@ -19,13 +19,10 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
-  },
-  {
-    files: ['src/**/*.ts'],
     settings: {
       'import/resolver': {
         typescript: {
-          project: './tsconfig.json',
+          project: 'tsconfig.json',
         },
       },
     },
@@ -33,19 +30,6 @@ export default tseslint.config(
   {
     files: ['tests/**/*.test.ts'],
     plugins: { vitest },
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-    settings: {
-      'import/resolver': {
-        typescript: {
-          project: './tsconfig.test.json',
-        },
-      },
-    },
     rules: {
       ...vitest.configs.recommended.rules,
     },

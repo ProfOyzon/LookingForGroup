@@ -7,6 +7,7 @@ info:
     Note: When accessed directly from the express app, the endpoints will have an additional "/api" prefix.
     Because of this, please use the vite proxy when reviewing the docs.
 
+# AUTHENTICATION
 paths:
   /api/auth:
     get:
@@ -43,6 +44,7 @@ paths:
                       authenticated: false
                       error: unauthorized
 
+  # DATASETS
   /api/datasets/job-titles:
     get:
       summary: Returns a list of all job titles
@@ -226,6 +228,57 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  # USERS
+  /api/users/get-username-shib:
+    get:
+      summary: Get username through Shibboleth headers
+      tags:
+        - Users
+      description: |
+        Retrieves the username of a user authenticated via Shibboleth. Needs the `x-university-id` header
+      parameters:
+        - in: header
+          name: x-university-id
+          required: true
+          schema:
+            type: string
+          description: University ID from the Shibboleth authentication headers
+      responses:
+        '200':
+          description: Username successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                example:
+                  username: mistahbones
+        '400':
+          description: Missing required Shibboleth header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                default:
+                  value:
+                    message: Missing university ID in headers
+        '404':
+          description: User not found in system
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                default:
+                  value:
+                    message: User not found
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+# COMPONANTS
 components:
   schemas:
     ErrorMessage:

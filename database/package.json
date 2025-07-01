@@ -1,5 +1,0 @@
-{
-  "scripts": {
-    "build:image": "docker build -t lookingforgroup ."
-  }
-}

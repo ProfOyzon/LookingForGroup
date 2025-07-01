@@ -43,12 +43,21 @@ export const SearchBar: FC<SearchBarProps> = memo(({ dataSets, onSearch, value, 
 
 const handleSearch = (searchQuery: string) => {
   const filteredResults = dataSets.map((dataSet) =>
-    dataSet.data.filter((item) =>
-      typeof item === 'object'
-        ? Object.values(item).some((value) =>
-            String(value).toLowerCase().includes(searchQuery)
-          )
-        : String(item).toLowerCase().includes(searchQuery)
+    dataSet.data.filter((item) => {
+     if (typeof item === 'object') {
+      // ONLY return fields we want to match, this avoids unintended searchbar behavior
+       return (
+        (item.name && item.name.toLowerCase().includes(searchQuery)) ||
+        (item.role && item.role.toLowerCase().includes(searchQuery)) ||
+        (item.label && item.label.toLowerCase().includes(searchQuery)) || 
+        (item.first_name && item.first_name.toLowerCase().includes(searchQuery)) ||
+        (item.last_name && item.last_name.toLowerCase().includes(searchQuery))
+       )
+     }
+     else {
+        String(item).toLowerCase().includes(searchQuery)
+     }
+    }
     )
   );
 
@@ -65,10 +74,10 @@ const handleSearch = (searchQuery: string) => {
   return (
     <div className="search-wrapper">
       {/* Prevent form submission from refreshing the page */}
-      <form className="search-bar" onSubmit={(e) => e.preventDefault()}>
-        <button type="submit" className="search-button" aria-label="Search" onClick={(e) => e.preventDefault()}>
+      <div className="search-bar">
+        <div role="button" className="search-button" aria-label="Search" tabIndex={1}>
           <i className="fa fa-search" aria-hidden="true"></i>
-        </button>
+        </div>
         {/* Input field for search query */}
         <input
           className="search-input"
@@ -76,8 +85,14 @@ const handleSearch = (searchQuery: string) => {
           placeholder="Search"
           value={query}
           onChange={handleChange}
+          onKeyDown={(e) => {
+            {/* Prevent odd popup behavior on enter click */}
+            if (e.key === 'Enter') {
+              e.preventDefault();
+            }
+          }}
         />
-      </form>
+      </div>
     </div>
   );
 });

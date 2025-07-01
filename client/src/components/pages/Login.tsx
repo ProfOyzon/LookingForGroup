@@ -140,21 +140,23 @@ const Login: React.FC = () => {
                 *************************************************************/}
         <div className="login-form column">
           <ThemeIcon //Back button to return to the previous page
-            light={'assets/back_light.png'}
-            dark={'assets/back_dark.png'}
+            light={'/assets/back_light.png'}
+            dark={'/assets/back_dark.png'}
             alt="Back Button"
             id="backPage-arrow"
             onClick={() => {
-              // If the previous page is not forgot password, go back to it; otherwise, go home
-              // if (from && from !== paths.routes.FORGOTPASSWORD && from !== paths.routes.RESETPASSWORD) {
-              //   console.log(from);
-              //   navigate(from);
-              // } else {
-              //   console.log("defaulting to HOME")
-              //   navigate(paths.routes.HOME); // or your default page
-              // }
-
-              window.history.back();
+              console.log(from)
+              // Return to previous page (unless it is the forgot password page, or the settings page)
+              // Settings page is included for logged out users to be properly brought to the home page instead of stuck on the login page
+              // (Settings redirects logged out users to login)
+              if (from != paths.routes.FORGOTPASSWORD && from != paths.routes.RESETPASSWORD && from != paths.routes.SETTINGS) {
+                console.log("window.history.back() called")
+                window.history.back(); // This line is a temp implementation, because navigate(from) does not always work
+                // navigate(from);
+              } else { // Go to home (Discover) otherwise
+                console.log("defaulting to home")
+                navigate(paths.routes.HOME);
+              }
             }}
           />
           <h2>Log In</h2>
@@ -180,14 +182,14 @@ const Login: React.FC = () => {
                 {showPassword ? (
                   <ThemeIcon
                     id='eye-icon'
-                    light={'assets/black/password_shown.png'}
-                    dark={'assets/white/password_shown.png'}
+                    light={'/assets/black/password_shown.png'}
+                    dark={'/assets/white/password_shown.png'}
                   />) :
                   (
                     <ThemeIcon
                       id='eye-icon'
-                      light={'assets/black/password_hidden.png'}
-                      dark={'assets/white/password_hidden.png'}
+                      light={'/assets/black/password_hidden.png'}
+                      dark={'/assets/white/password_hidden.png'}
                     />
                   )}
               </button>
@@ -216,8 +218,8 @@ const Login: React.FC = () => {
           {/* <h1>Welcome!</h1>
                     <p>Don't have an account?</p> */}
           <ThemeIcon
-            light={'assets/bannerImages/login_light.png'}
-            dark={'assets/bannerImages/login_dark.png'}
+            light={'/assets/bannerImages/login_light.png'}
+            dark={'/assets/bannerImages/login_dark.png'}
           />
           <button onClick={() => navigate(paths.routes.SIGNUP)}>Sign Up</button>
         </div>

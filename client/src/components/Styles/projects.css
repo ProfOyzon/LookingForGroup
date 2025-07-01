@@ -45,6 +45,7 @@ Project Panel component style rules
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.2s;
+    z-index: 1;
   }
 }
 
@@ -842,10 +843,6 @@ Project Creator and Editor style rules
   font-weight: 600;
 }
 
-#profile-editor-skills {
-  overflow-y: auto;
-}
-
 /* Project Editor/Creator Team Tab */
 .project-editor-team-tab {
   padding: 0;
@@ -861,9 +858,12 @@ Project Creator and Editor style rules
   font-weight: 600;
 }
 
+
+
 #project-editor-team {
   height: 100%;
 }
+
 
 #project-editor-team-content {
   display: flex;
@@ -1349,9 +1349,9 @@ button.edit-position-contact {
 }
 
 button.edit-position-contact .project-member-image {
-    width: 48px;
-    height: 48px;
-    border: 1px solid var(--border-color);
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border-color);
 }
 
 #edit-position-details-right {
@@ -1663,6 +1663,7 @@ includes 'enter virtual space' and 'make post' buttons*/
 
 #interested-button:hover {
   background-color: #d0d0d0;
+  color: black;
 }
 
 /*rules for the editing roles popup*/
@@ -3639,6 +3640,9 @@ My projects page style rules
   .confirm-deny-btns {
     display: flex;
     flex-direction: row;
+    button {
+      margin: 5px;
+    }
   }
 
   .confirm-btn {
@@ -3691,6 +3695,8 @@ My projects page style rules
     font-style: italic;
   }
 }
+
+
 
 /*
 /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\

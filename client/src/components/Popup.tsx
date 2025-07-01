@@ -111,6 +111,24 @@ export const PopupContent = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Close on browser button click
+  useEffect(() => {
+     if (open) {
+      // Push new browser history if no popup state yet
+      if (!history.state.popup) {
+       history.pushState({popup: true}, '', '');
+      }
+     };
+     const handlePopState = (event: PopStateEvent) => {
+      // Close popup 
+      if (open && !event.state.popup) {
+        setOpen(false);
+      }
+     };
+     window.addEventListener('popstate', handlePopState);
+     return () => window.removeEventListener('popstate', handlePopState);
+  }, [open]);
+
   if (!open) return null;
 
   if (open && useClose) {
@@ -118,7 +136,7 @@ export const PopupContent = ({
       <>
         <div className="popup-cover" />
         <div className="popup-container">
-          <div className="popup">
+          <div className="popup" ref={popupRef}>
             <button className="popup-close" onClick={closePopup}>
               <img src={close} alt="close" />
             </button>

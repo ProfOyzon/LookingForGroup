@@ -7,6 +7,9 @@ import { Popup, PopupButton, PopupContent } from './Popup';
 import { LeaveDeleteContext } from '../contexts/LeaveDeleteContext';
 import { PagePopup } from './PagePopup';
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 const MyProjectsDisplayGrid = ({ projectData }) => {
   //Navigation hook
   const navigate = useNavigate();
@@ -59,7 +62,7 @@ const MyProjectsDisplayGrid = ({ projectData }) => {
       <img
         className="grid-card-image"
         src={(projectData.thumbnail)
-          ? `/images/thumbnails/${projectData.thumbnail}`
+          ? `${API_BASE}/images/thumbnails/${projectData.thumbnail}`
           : `/assets/project_temp-DoyePTay.png`
         }
         alt={`${projectData.title} Thumbnail`}

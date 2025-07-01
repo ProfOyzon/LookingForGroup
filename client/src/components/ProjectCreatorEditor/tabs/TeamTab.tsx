@@ -8,6 +8,9 @@ import { ThemeIcon } from "../../ThemeIcon";
 import { Select, SelectButton, SelectOptions } from "../../Select";
 import { current } from "@reduxjs/toolkit";
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 // --- Interfaces ---
 interface Image {
   id: number;
@@ -522,8 +525,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         }}
       >
         <ThemeIcon
-          light={'assets/white/pencil.png'}
-          dark={'assets/black/pencil.png'}
+          light={'/assets/white/pencil.png'}
+          dark={'/assets/black/pencil.png'}
           alt={"edit"}
           addClass={"edit-project-member-icon"}
         />
@@ -556,11 +559,10 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             {modifiedProject.members.map((m) => {
                 if (m.user_id === modifiedProject.user_id) {
                   return (
-                    <>
-                      <span id="position-contact-link">
+                      <span key={m.user_id} id="position-contact-link">
                         <img 
                           className='project-member-image'
-                          src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
+                          src={(m.profile_image) ? `${API_BASE}/images/profiles/${m.profile_image}` : profileImage}
                           alt="profile"
                           // default profile picture if user image doesn't load
                         onError={(e) => {
@@ -570,11 +572,10 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                         />
                         {m.first_name} {m.last_name}
                       </span>
-                    </>
                   );
                 }
 
-                return <></>;
+                return null;
               })}
           </div>
         </div>
@@ -702,6 +703,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       <div id="edit-position-description">
         <label>Role Description*</label>
         <textarea
+          value={currentJob.description ?? ''}
           onChange={(e) => setCurrentJob({ ...currentJob, description: e.target.value })}
         >
           {newPosition ? '' : getProjectJob(currentRole)?.description}
@@ -794,7 +796,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                 markup: (
                   <>
                     <img className='project-member-image' 
-                      src={m.profile_image ? `/images/profiles/${m.profile_image}` : profileImage}
+                      src={m.profile_image ? `${API_BASE}/images/profiles/${m.profile_image}` : profileImage}
                       alt="profile"
                       // default profile picture if user image doesn't load
                       onError={(e) => {
@@ -896,10 +898,10 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         const activeMember = m;
 
         return (
-          <div className="project-editor-project-member">
+          <div key={m.user_id} className="project-editor-project-member">
             <img
               className="project-member-image"
-              src={(m.profile_image) ? `/images/profiles/${m.profile_image}` : profileImage}
+              src={(m.profile_image) ? `${API_BASE}/images/profiles/${m.profile_image}` : profileImage}
               alt="profile image"
               // default profile picture if user image doesn't load
               onError={(e) => {
@@ -909,13 +911,20 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             />
             <div className="project-editor-project-member-info">
               <div className="project-editor-project-member-name">
-                {m.first_name} {m.last_name}
+                {/* {m.first_name} {m.last_name} */}
+                {m.first_name && m.last_name 
+                ? `${m.first_name} ${m.last_name}` 
+                : m.user_id === 0  
+                ? 'You'
+                : ''
+                }
               </div>
               <div className="project-editor-project-member-role project-editor-extra-info">
                 {m.job_title}
               </div>
             </div>
-            {((m.permissions < permissions) || (modifiedProject.user_id === m.user_id)) ? (
+            {/* ALWAYS SHOW EDIT BUTTON */}
+            { /*((m.permissions < permissions) || (modifiedProject.user_id === m.user_id)) ? (*/
               <Popup>
                 <PopupButton className="edit-project-member-button">
                   {/* <img
@@ -924,8 +933,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                   alt=""
                 /> */}
                   <ThemeIcon
-                    light={'assets/white/pencil.png'}
-                    dark={'assets/black/pencil.png'}
+                    light={'/assets/white/pencil.png'}
+                    dark={'/assets/black/pencil.png'}
                     alt={"edit"}
                     addClass={"edit-project-member-icon"}
                   />
@@ -939,7 +948,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                   >
                     <img
                       className="project-member-image"
-                      src={`/images/profiles/${m.profile_image}`}
+                      src={`${API_BASE}/images/profiles/${m.profile_image}`}
                       alt="profile image"
                       // default profile picture if user image doesn't load
                       onError={(e) => {
@@ -948,7 +957,12 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                       }}
                     />
                     <div className="project-editor-project-member-name">
-                      {m.first_name} {m.last_name}
+                      {m.first_name && m.last_name 
+                      ? `${m.first_name} ${m.last_name}` 
+                      : m.user_id === 0  
+                      ? 'You'
+                      : ''
+                }
                     </div>
                   </div>
                   <div id="project-team-add-member-role">
@@ -1044,9 +1058,9 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                   </PopupButton>
                 </PopupContent>
               </Popup>
-            ) : (
+           /* ) : (
               <></>
-            )}
+            )*/}
           </div>
         );
       })}
@@ -1062,7 +1076,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           />
           <div id="project-team-add-member-text">Add Member</div>
         </PopupButton>
-        <PopupContent useClose={closePopup}>
+        <PopupContent useClose={true}>
           <div id="project-team-add-member-title">Add Member</div>
           <div className={successAddMember ? "success" : "error"} id="error-add-member">
             {errorAddMember}
@@ -1079,6 +1093,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                     {
                       searchResults.data.map((user, index) => (
                         <DropdownButton
+                          key={user.user_id ?? index}
                           className={
                             `user-search-item 
                             ${(index === 0) ? 'top' : ''}
@@ -1170,7 +1185,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         <div id="team-positions-popup-list-header">Open Positions</div>
         <div id="team-positions-popup-list-buttons">
           {modifiedProject.jobs?.map((job: { job_title: string; title_id: number }) => (
-            <div className="team-positions-button">
+            <div key={job.title_id} className="team-positions-button">
               <img src="/images/icons/drag.png" alt="positions" />
               <button
                 className="positions-popup-list-item"

@@ -131,7 +131,7 @@ export const LinksTab = (props) => {
     }
     else if (links.length > 0) {
       render = links.map((ld, i) => {
-        return <LinkInput data={ld} index={i} />;
+        return <LinkInput key={i} data={ld} index={i} />;
       });
     }
     else {

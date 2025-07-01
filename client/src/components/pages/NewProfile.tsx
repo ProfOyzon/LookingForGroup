@@ -24,6 +24,9 @@ import { ProfileInterests } from '../Profile/ProfileInterests';
 import profilePicture from '../../images/blue_frog.png';
 import ProfileContactTab from '../Profile/ProfileContactTab';
 
+//backend base url for getting images
+const API_BASE = `http://localhost:8081`;
+
 // --------------------
 // Interfaces
 // --------------------
@@ -100,6 +103,7 @@ const NewProfile = () => {
     fun_fact: ``,
     bio: '',
     skills: [],
+    interests: [],
   };
 
   const navigate = useNavigate(); // Hook for navigation
@@ -142,11 +146,11 @@ const NewProfile = () => {
       if (toggleFollow) {
         followButton.innerText = 'Following';
         followButton.style.backgroundColor = 'Orange';
-        followButton.style.width = '160px';
+        followButton.style.width = '185px';
       } else {
         followButton.innerText = 'Follow';
         followButton.style.backgroundColor = 'var(--primary-color)';
-        followButton.style.width = '120px';
+        followButton.style.width = '145px';
       }
     }
   };
@@ -256,8 +260,8 @@ const NewProfile = () => {
             }}
           >
             <ThemeIcon
-              light={'assets/black/linkedIn_black.png'}
-              dark={'assets/white/linkedIn_white.png'}
+              light={'/assets/black/linkedIn_black.png'}
+              dark={'/assets/white/linkedIn_white.png'}
               alt={'LinkedIn'}
             />
           </button>
@@ -267,8 +271,8 @@ const NewProfile = () => {
             }}
           >
             <ThemeIcon
-              light={'assets/black/instagram_black.png'}
-              dark={'assets/white/instagram_white.png'}
+              light={'/assets/black/instagram_black.png'}
+              dark={'/assets/white/instagram_white.png'}
               alt={'Instagram'}
             />
           </button>
@@ -282,22 +286,22 @@ const NewProfile = () => {
         <div id="about-me-buttons" className="about-me-buttons-minimal">
           <button>
             <ThemeIcon
-              light={'assets/linkedIn_logo_light.png'}
-              dark={'assets/linkedIn_logo_dark.png'}
+              light={'/assets/linkedIn_logo_light.png'}
+              dark={'/assets/linkedIn_logo_dark.png'}
               alt={'LinkedIn'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/instagram_logo_light.png'}
-              dark={'assets/instagram_logo_dark.png'}
+              light={'/assets/instagram_logo_light.png'}
+              dark={'/assets/instagram_logo_dark.png'}
               alt={'Instagram'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/follow_user_light.png'}
-              dark={'assets/follow_user_dark.png'}
+              light={'/assets/follow_user_light.png'}
+              dark={'/assets/follow_user_dark.png'}
               alt={'Like/Follow'}
             />
           </button>
@@ -305,8 +309,8 @@ const NewProfile = () => {
           <Dropdown>
             <DropdownButton>
               <ThemeIcon
-                light={'assets/menu_light.png'}
-                dark={'assets/menu_dark.png'}
+                light={'/assets/menu_light.png'}
+                dark={'/assets/menu_dark.png'}
                 alt={'More options'}
                 addClass={'dropdown-menu'}
               />
@@ -348,7 +352,7 @@ const NewProfile = () => {
           <img
             src={
               displayedProfile.profile_image
-                ? `/images/profiles/${displayedProfile.profile_image}`
+                ? `${API_BASE}/images/profiles/${displayedProfile.profile_image}`
                 : profilePicture
             }
             id="profile-image"
@@ -373,32 +377,32 @@ const NewProfile = () => {
           <div id="profile-info-extras">
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/role.png'}
-                dark={'assets/white/role.png'}
+                light={'/assets/black/role.png'}
+                dark={'/assets/white/role.png'}
                 alt={'Profession'}
               />
               {displayedProfile.job_title}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/major.png'}
-                dark={'assets/white/major.png'}
+                light={'/assets/black/major.png'}
+                dark={'/assets/white/major.png'}
                 alt={'Major'}
               />
               {displayedProfile.major} {displayedProfile.academic_year}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/location.png'}
-                dark={'assets/white/location.png'}
+                light={'/assets/black/location.png'}
+                dark={'/assets/white/location.png'}
                 alt={'Location'}
               />
               {displayedProfile.location}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/pronouns.png'}
-                dark={'assets/white/pronouns.png'}
+                light={'/assets/black/pronouns.png'}
+                dark={'/assets/white/pronouns.png'}
                 alt={'Pronouns'}
               />
               {displayedProfile.pronouns}
@@ -423,7 +427,7 @@ const NewProfile = () => {
           </div>
           <div id="profile-info-interest">
             <ProfileInterests user={{ interests: displayedProfile.interests || [] }}
-              isUsersProfile={true} />
+              isUsersProfile={isUsersProfile} />
           </div>
 
           <div id="profile-info-skills">
@@ -446,7 +450,7 @@ const NewProfile = () => {
                     category = 'grey';
                 }
 
-                return <div className={`skill-tag-label label-${category}`}>{tag.skill}</div>;
+                return <div key={`${tag.skill}`} className={`skill-tag-label label-${category}`}>{tag.skill}</div>;
               })
             ) : (
               <></>

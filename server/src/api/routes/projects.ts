@@ -9,7 +9,7 @@ router.get('/', getProjects);
 //Create a new project
 
 //Get a specific project
-//router.get('/api/projects/:id', getProjectById);
+//router.get('/:id', getProjectById);
 
 //Edits a project through a specific id
 
@@ -18,7 +18,7 @@ router.get('/', getProjects);
 //Edits a project thumbnail through a specific id
 
 //Receives picture from project through id
-//router.get('/api/projects/:id/pictures', getPictures);
+//router.get('/:id/pictures', getPictures);
 
 //Creates a new picture for a project
 

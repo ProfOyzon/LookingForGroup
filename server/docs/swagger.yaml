@@ -8,6 +8,41 @@ info:
     Because of this, please use the vite proxy when reviewing the docs.
 
 paths:
+  /api/auth:
+    get:
+      summary: Check if user is authenticated
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: Authentication status
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      authenticated:
+                        type: boolean
+                        enum: [true]
+                      data:
+                        type: string
+                        description: Username of user
+                    example:
+                      authenticated: true
+                      data: Mistah Bones
+                  - type: object
+                    properties:
+                      authenticated:
+                        type: boolean
+                        enum: [false]
+                      error:
+                        type: string
+                        description: Reason for no authentication
+                    example:
+                      authenticated: false
+                      error: unauthorized
+
   /api/datasets/job-titles:
     get:
       summary: Returns a list of all job titles

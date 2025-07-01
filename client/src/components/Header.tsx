@@ -21,6 +21,8 @@ import { ThemeIcon } from './ThemeIcon';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { useLocation } from 'react-router-dom'; // Hook to access the current location
 
+import { GET } from '../api/index';
+import { getUsersById, getAccountInformation } from '../api/users';
 
 //backend base url for getting images
 const API_BASE = `http://localhost:8081`;
@@ -55,17 +57,19 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
   useEffect(() => {
     const fetchUsername = async () => {
       try {
-        const response2 = await fetch('/api/auth');
+        const response2 = await GET('/api/auth');
 
         if (response2.status != 401) {
           loggedIn = true;
-          const response = await fetch('/api/users/get-username-session');
-          const { data } = await response.json();
-          const { username, primary_email, first_name, last_name, profile_image } = await data;
 
-          setUsername(await username);
-          setEmail(await primary_email);
-          setProfileImg(await profile_image);
+          //gets user information to display on header profile dropdown
+          const response = await getAccountInformation(response2.data.data);
+          const { data } = await response.data;
+          const profileImgResponse = await getUsersById(response2.data.data);
+
+          setUsername(data[0].username);
+          setEmail(data[0].primary_email);
+          setProfileImg(profileImgResponse.data.data[0].profile_image);
         } else {
           setUsername('Guest');
         }
@@ -85,8 +89,8 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
 
   const handleProfileAccess = async () => {
     // navigate to Profile, attach userID
-    const response = await fetch('/api/auth');
-    const { data } = await response.json();
+    const response = await GET('/api/auth');
+    const { data } = await response.data;
     navigate(`${paths.routes.NEWPROFILE}?userID=${data}`);
 
     // Collapse the dropwdown if coming from another user's page
@@ -104,9 +108,9 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
     <div id="header">
       {/* Conditional rendering for search bar */}
       {(!hideSearchBar) && (
-      <div id="header-searchbar">
-        <SearchBar dataSets={dataSets} onSearch={onSearch} />
-      </div>
+        <div id="header-searchbar">
+          <SearchBar dataSets={dataSets} onSearch={onSearch} />
+        </div>
       )}
       <div id="header-buttons">
         {/* Notififcations not being used rn */}
@@ -236,6 +240,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
                 </button>
 
                 {/* LOG OUT Button */}
+                {/* Send Post will be replaced once shibboleth is implemented */}
                 <button onClick={() => sendPost('/api/logout')}>
                   <ThemeIcon
                     light={'/assets/black/logout.png'}

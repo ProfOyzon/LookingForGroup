@@ -3,6 +3,7 @@ import { Popup, PopupButton, PopupContent } from './Popup';
 import { SearchBar } from './SearchBar';
 import { ThemeIcon } from './ThemeIcon';
 import { tags, peopleTags, projectTabs, peopleTabs } from '../constants/tags';
+import { GET } from '../api/index';
 
 // Has to be outside component to avoid getting reset on re-render
 let activeTagFilters: string[] = [];
@@ -66,29 +67,29 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
     const url = `/api/datasets/${category === 'projects' ? 'tags' : 'skills'}`;
 
     try {
-      let response = await fetch(url);
-      const result = await response.json();
+      let response = await GET(url);
+      const result = await response.data;
       let data = result.data;
 
       // Need to also pull from majors and job_titles tables
       if (category === 'profiles') {
         // Get job titles and append it to full data
-        response = await fetch(`/api/datasets/job-titles`);
-        let extraData = await response.json();
+        response = await GET(`/api/datasets/job-titles`);
+        let extraData = await response.data;
         if (extraData.data !== undefined) {
           extraData.data.forEach((jobTitle: Skill) => data.push({ label: jobTitle.label, type: 'Role' }));
         }
 
         // Get majors and append it to full data
-        response = await fetch(`/api/datasets/majors`);
-        extraData = await response.json();
+        response = await GET(`/api/datasets/majors`);
+        extraData = await response.data;
         if (extraData.data !== undefined) {
           extraData.data.forEach((major: Skill) => data.push({ label: major.label, type: 'Major' }));
         }
       } else if (category === 'projects') {
         // Pull Project Types and append it to full data
-        response = await fetch(`/api/datasets/project-types`);
-        let extraData = await response.json();
+        response = await GET(`/api/datasets/project-types`);
+        let extraData = await response.data;
         if (extraData.data !== undefined) {
           extraData.data.forEach((projectType: Skill) => data.push({ label: projectType.label, type: 'Project Type' }));
         }

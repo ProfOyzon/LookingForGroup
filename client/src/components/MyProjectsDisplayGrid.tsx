@@ -6,6 +6,7 @@ import { Dropdown, DropdownButton, DropdownContent } from './Dropdown';
 import { Popup, PopupButton, PopupContent } from './Popup';
 import { LeaveDeleteContext } from '../contexts/LeaveDeleteContext';
 import { PagePopup } from './PagePopup';
+import { getByID, deleteProject, deleteMember } from '../api/projects';
 
 //backend base url for getting images
 const API_BASE = `http://localhost:8081`;
@@ -25,15 +26,9 @@ const MyProjectsDisplayGrid = ({ projectData }) => {
   const [resultObj, setResultObj] = useState({ status: 400, error: 'Not initialized' });
 
   const getStatus = async () => {
-    const url = `/api/projects/${projectData.project_id}`;
-    try {
-      const response = await fetch(url);
-
-      const rawData = await response.json();
-      setStatus(rawData.data[0].status === undefined ? 'No data' : rawData.data[0].status);
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await getByID(projectData.project_id);
+    const { data } = await response.data;
+    setStatus(data[0].status === undefined ? 'No data' : data[0].status);
   };
 
   if (status === undefined) {
@@ -101,13 +96,14 @@ const MyProjectsDisplayGrid = ({ projectData }) => {
                         // Attempt to remove user from project.
                         // Display PagePopup.tsx on success or failure
                         // And display error message inside said popup
-                        const url = `/api/projects/${projId}/members/${userId}`;
+                        const response = deleteMember(projId, userId);
 
-                        sendDelete(url, (result) => {
-                          setRequestType('leave');
-                          setResultObj(result);
-                          setShowResult(true);
-                        })
+                        setRequestType('leave');
+                        setResultObj(response.status);
+                        setShowResult(true);
+
+                        console.log(response);
+                        console.log(response.status);
                       }}
                     >Confirm</PopupButton>
                     <PopupButton className='deny-btn'>Cancel</PopupButton>
@@ -134,16 +130,14 @@ const MyProjectsDisplayGrid = ({ projectData }) => {
                       <PopupButton
                         className='confirm-btn'
                         callback={async () => {
-                          // Attempt to remove user from project.
+                          // Attempt to remove project.
                           // Display PagePopup.tsx on success or failure
                           // And display error message inside said popup
-                          let url = `/api/projects/${projId}`;
+                          const response = deleteProject(projId);
 
-                          sendDelete(url, (result) => {
-                            setRequestType('delete');
-                            setResultObj(result);
-                            setShowResult(true);
-                          })
+                          setRequestType('delete');
+                          setResultObj(response.status);
+                          setShowResult(true);
                         }}
                       >Confirm</PopupButton>
                       <PopupButton className='deny-btn'>Cancel</PopupButton>

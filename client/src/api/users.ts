@@ -2,7 +2,7 @@ import { GET, POST, PUT, DELETE } from './index'
 import { User, Skill, Social, ApiResponse } from './types';
 
 const root = import.meta.env.MODE === 'development'
-    ? 'http://localhost:8081/api'
+    ? 'http://localhost:5173/api'
     : 'https://lfg.gccis.rit.edu/api';
 
 

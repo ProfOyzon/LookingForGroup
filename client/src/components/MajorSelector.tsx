@@ -12,6 +12,7 @@ import './Styles/settings.css';
 import './Styles/pages.css';
 
 import { useState, useEffect, ReactElement } from 'react';
+import {GET} from '../api/index';
 
 interface Major {
   major_id: string;
@@ -19,10 +20,8 @@ interface Major {
 }
 
 const getMajors = async (): Promise<Major[]> => {
-  // TODO: create error handling, try-catch block
-  const response = await fetch('/api/datasets/majors');
-  const { data } = await response.json();
-  // console.log(data);
+  const response = await GET('/api/datasets/majors');
+  const { data } = await response.data;
   return data;
 };
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as paths from '../constants/routes';
 import placeholderThumbnail from '../images/project_temp.png';
-import { sendDelete, sendPost } from '../functions/fetch';
+import { getProjectFollowing, addProjectFollowing, deleteProjectFollowing } from '../api/users'
 
 //Component that will contain info about a project, used in the discovery page
 //Smaller and more concise than ProjectCard.tsx
@@ -45,22 +45,22 @@ interface ProjectPanelProps {
 export const ProjectPanel = ({ project, userId }: ProjectPanelProps) => {
   const navigate = useNavigate();
   const projectURL = `${paths.routes.NEWPROJECT}?projectID=${project.project_id}`;
-  
+
   const [followCount, setFollowCount] = useState(project.followers.count);
   const [isFollowing, setFollowing] = useState(project.followers.isFollowing);
 
   // Formats follow-count based on Figma design. Returns a string
-const formatFollowCount = (followers: number): string => {
-  const followerNum = followers;
+  const formatFollowCount = (followers: number): string => {
+    const followerNum = followers;
 
-  if (followerNum >= 1000) {
-    const multOfHundred = (followerNum % 100) === 0;
-    const formattedNum = (followerNum / 1000).toFixed(1);
-    return `${formattedNum}K ${multOfHundred ? '+' : ''}`;
-  }
+    if (followerNum >= 1000) {
+      const multOfHundred = (followerNum % 100) === 0;
+      const formattedNum = (followerNum / 1000).toFixed(1);
+      return `${formattedNum}K ${multOfHundred ? '+' : ''}`;
+    }
 
-  return `${followerNum}`;
-};
+    return `${followerNum}`;
+  };
 
 
   return (
@@ -104,19 +104,16 @@ const formatFollowCount = (followers: number): string => {
                 if (!userId || userId === 0) {
                   navigate(`${paths.routes.LOGIN}`);
                 } else {
-                  let url = `/api/users/${userId}/followings/projects`;
+                  getProjectFollowing(userId);
 
                   if (!isFollowing) {
-                    sendPost(url, { projectId: project.project_id }, () => {
-                      setFollowing(true);
-                      setFollowCount(followCount + 1);
-                    });
+                    addProjectFollowing(userId, project.project_id);
+                    setFollowing(true);
+                    setFollowCount(followCount + 1);
                   } else {
-                    url += `/${project.project_id}`;
-                    sendDelete(url, () => {
-                      setFollowing(false);
-                      setFollowCount(followCount - 1);
-                    });
+                    deleteProjectFollowing(userId, project.project_id);
+                    setFollowing(false);
+                    setFollowCount(followCount - 1);
                   }
                 }
               }}

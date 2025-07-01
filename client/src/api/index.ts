@@ -48,7 +48,6 @@ export const POST = async (apiURL: string, newData: object): Promise<ApiResponse
             credentials: 'include',
             body: JSON.stringify(newData),
         });
-
         const contentType = response.headers.get('content-type') || '';
 
         //check if response is JSON

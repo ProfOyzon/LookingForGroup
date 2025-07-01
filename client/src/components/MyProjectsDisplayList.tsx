@@ -5,7 +5,7 @@ import { Dropdown, DropdownButton, DropdownContent } from './Dropdown';
 import { LeaveDeleteContext } from '../contexts/LeaveDeleteContext';
 import { Popup, PopupButton, PopupContent } from './Popup';
 import { PagePopup } from './PagePopup';
-import { sendDelete } from '../functions/fetch';
+import { getByID, deleteProject, deleteMember } from '../api/projects';
 
 //backend base url for getting images
 const API_BASE = `http://localhost:8081`;
@@ -25,39 +25,14 @@ const MyProjectsDisplayList = ({ projectData }) => {
   const [resultObj, setResultObj] = useState({ status: 400, error: 'Not initialized' });
 
   const getStatus = async () => {
-    const url = `/api/projects/${projectData.project_id}`;
-    try {
-      const response = await fetch(url);
-
-      const rawData = await response.json();
-      setStatus(rawData.data[0].status === undefined ? 'No data' : rawData.data[0].status);
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await getByID(projectData.project_id);
+    const { data } = await response.data;
+    setStatus(data[0].status === undefined ? 'No data' : data[0].status);
   };
 
   if (status === undefined) {
     getStatus();
   }
-
-  const deleteProject = async () => {
-    const url = `/api/projects/${projectData.project_id}`;
-    try {
-      // send a DELETE request to the API
-      const response = await fetch(url, {
-        method: 'DELETE',
-      });
-
-      // check if the delete request was successful
-      if (response.ok) {
-        console.log('Project deleted successfully');
-      } else {
-        console.log('Failed to delete project');
-      }
-    } catch (error) {
-      console.error('Error deleting project:', error);
-    }
-  };
 
   let optionsClass = 'list-card-options-list';
   if (optionsShown) {
@@ -141,13 +116,11 @@ const MyProjectsDisplayList = ({ projectData }) => {
                         // Attempt to remove user from project.
                         // Display PagePopup.tsx on success or failure
                         // And display error message inside said popup
-                        let url = `/api/projects/${projId}/members/${userId}`;
+                        const response = deleteMember(projId, userId);
 
-                        sendDelete(url, (result) => {
-                          setRequestType('leave');
-                          setResultObj(result);
-                          setShowResult(true);
-                        })
+                        setRequestType('leave');
+                        setResultObj(response.status);
+                        setShowResult(true);
                       }}
                     >Confirm</PopupButton>
                     <PopupButton className='deny-btn'>Cancel</PopupButton>
@@ -174,16 +147,14 @@ const MyProjectsDisplayList = ({ projectData }) => {
                       <PopupButton
                         className='confirm-btn'
                         callback={async () => {
-                          // Attempt to remove user from project.
+                          // Attempt to remove project.
                           // Display PagePopup.tsx on success or failure
                           // And display error message inside said popup
-                          const url = `/api/projects/${projId}`;
+                          const response = deleteProject(projectData.project_id);
 
-                          sendDelete(url, (result) => {
-                            setRequestType('delete');
-                            setResultObj(result);
-                            setShowResult(true);
-                          })
+                          setRequestType('delete');
+                          setResultObj(response.status);
+                          setShowResult(true);
                         }}
                       >Confirm</PopupButton>
                       <PopupButton className='deny-btn'>Cancel</PopupButton>

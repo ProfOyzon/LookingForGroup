@@ -6,6 +6,9 @@ import Notifications from './pages/Notifications';
 import { ThemeIcon } from './ThemeIcon';
 import { ProjectCreatorEditor } from './ProjectCreatorEditor/ProjectCreatorEditor';
 
+import { GET } from '../api/index';
+import { getUsersById } from '../api/users';
+
 export interface User {
   first_name: string,
   last_name: string,
@@ -91,20 +94,21 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
     // Is user authenticated?
     // Get auth
     try {
-      const response = await fetch('/api/auth');
+      const response = await GET('/api/auth');
 
       // Set error accordingly
       if (response.status !== 401) {
         // Authenticated
         setCreateError(false);
         // Save user id
-        const { data } = await response.json();
+        const { data } = await response.data;
         const id = data;
 
         // Get and save user data
         const getUserData = async () => {
-          const userResponse = await fetch('/api/users/get-username-session');
-          const { data } = await userResponse.json();
+          const userResponse = await getUsersById(id);
+          const { data } = await userResponse.data;
+
           const _userData = {
             first_name: data.first_name,
             last_name: data.last_name,

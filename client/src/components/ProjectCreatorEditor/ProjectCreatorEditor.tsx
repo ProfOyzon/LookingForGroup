@@ -16,6 +16,7 @@ import { TagsTab } from './tabs/TagsTab';
 import { ThemeIcon } from '../ThemeIcon';
 import { showPopup } from '../Sidebar';
 import { loggedIn } from '../Header';
+import { getByID } from '../../api/projects';
 
 //backend base url for getting images
 const API_BASE = `http://localhost:8081`;
@@ -114,11 +115,10 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
   useEffect(() => {
     if (!newProject) {
       const getProjectData = async () => {
-        const url = `/api/projects/${projectID}`;
         try {
-          const response = await fetch(url);
+          const response = await getByID(projectID);
 
-          const projectResponse = await response.json();
+          const projectResponse = await response.data;
           const projectData = projectResponse.data[0];
 
           if (projectData === undefined) {

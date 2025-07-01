@@ -15,7 +15,6 @@ import { Header } from '../Header';
 import { ThemeIcon } from '../ThemeIcon';
 import { Select, SelectButton, SelectOptions } from '../Select';
 import { LeaveDeleteContext } from '../../contexts/LeaveDeleteContext';
-
 import { ProjectCreatorEditor } from '../ProjectCreatorEditor/ProjectCreatorEditor';
 import { User } from '../Sidebar'; // For use with project creation button
 

@@ -15,6 +15,7 @@
     "prisma:generate": "npx --workspace=server prisma generate",
     "build:client": "npm run build --workspace=client",
     "test": "npm run test --workspace=server",
+    "test:server": "npm run test --workspace=server",
     "test:front": "vitest run --config server/src/config/vitest.js",
     "lint:server:types": "npm run lint:types --workspace=server",
     "lint:server": "npm run lint --workspace=server",

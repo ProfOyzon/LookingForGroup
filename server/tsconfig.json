@@ -19,6 +19,6 @@
       "#routes/*.ts": ["./src/api/routes/*.ts"]
     }
   },
-  "include": ["src", "tests"],
+  "include": ["src"],
   "exclude": ["**/generated/**"]
 }

@@ -2,9 +2,9 @@ import prisma from '#config/prisma.ts';
 import type { Genres } from '#prisma-models/index.js';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
 
-type GetGenresSrviceError = ServiceErrorSubset<'INTERNAL_ERROR'>;
+type GetGenresServiceError = ServiceErrorSubset<'INTERNAL_ERROR'>;
 
-const getGenreService = async (): Promise<Genres[] | GetGenresSrviceError> => {
+const getGenreService = async (): Promise<Genres[] | GetGenresServiceError> => {
   try {
     return await prisma.genres.findMany({
       select: {

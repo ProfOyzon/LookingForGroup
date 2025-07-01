@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import getUserByhibService from '#services/users/userService.ts';
+import getUserByhibService from '#services/users/getUserByShib.ts';
 
-const getUsernameByShib = async (req: Request, res: Response): Promise<void> => {
+const getUsernameByShibController = async (req: Request, res: Response): Promise<void> => {
   //add shib headers
   const universityId = req.headers['x-university-id'] as string | undefined;
 
@@ -25,4 +25,4 @@ const getUsernameByShib = async (req: Request, res: Response): Promise<void> => 
   res.status(200).json({ username: result.username });
 };
 
-export default getUsernameByShib;
+export default getUsernameByShibController;

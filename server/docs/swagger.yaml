@@ -278,6 +278,45 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /api/users:
+    get:
+      summary: Get all users
+      tags:
+        - Users
+      responses:
+        200:
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        500:
+          description: Internal Server Error
+
+  /api/users/{id}:
+    get:
+      summary: Get a user by ID
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The user ID
+      responses:
+        200:
+          description: A single user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        500:
+          description: Internal Server Error or User Not Found
+
 # COMPONANTS
 components:
   schemas:
@@ -343,6 +382,61 @@ components:
           type: string
         type:
           type: string
+
+    User:
+      type: object
+      properties:
+        userId:
+          type: integer
+        username:
+          type: string
+        ritEmail:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        profileImage:
+          type: string
+          nullable: true
+        headline:
+          type: string
+          nullable: true
+        pronouns:
+          type: string
+          nullable: true
+        jobTitleId:
+          type: integer
+          nullable: true
+        majorId:
+          type: integer
+          nullable: true
+        academic_year:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        funFact:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+        visibility:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        phoneNumber:
+          type: string
+          nullable: true
+        universityId:
+          type: string
+          nullable: true
 
   responses:
     InternalServerError:

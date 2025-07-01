@@ -1,17 +1,19 @@
 import { Router } from 'express';
-import getUsernameByShib from '#controllers/userController.ts';
+import getAllUsersController from '#controllers/users/getAllUsers.ts';
+import getUsernameByIdController from '#controllers/users/getUserById.ts';
+import getUsernameByShibController from '#controllers/users/getUsernameByShib.ts';
 
 const router = Router();
 
 //Gets username by shib ID
-router.get('/get-username-shib', getUsernameByShib);
+router.get('/get-username-shib', getUsernameByShibController);
 //formerly get-username-session
 
 //Gets users
-//router.get('/api/users', userCtrl.getUsers);
+router.get('/', getAllUsersController);
 
 //Gets users by id
-//router.get('/api/users/:id', userCtrl.getUserById);
+router.get('/:id', getUsernameByIdController);
 
 //Updates users information
 
@@ -25,7 +27,7 @@ router.get('/get-username-shib', getUsernameByShib);
 
 //Updates users profile images
 
-//Gets users account
+//Gets user's account
 //router.get('/api/users/:id/account', mid.checkLogin, userCtrl.getAccount);
 
 //Updates users email
@@ -33,26 +35,25 @@ router.get('/get-username-shib', getUsernameByShib);
 //Updates users username
 
 //Updates users password
-//router.put('/api/users/:id/password', mid.checkLogin, userCtrl.updatePassword);
 
 //Updates users visibility
 
-//Gets users projects
+//Gets user's projects
 //router.get('/api/users/:id/projects', mid.checkLogin, userCtrl.getMyProjects);
 
-//Gets users visible projects
+//Gets user's visible projects
 //router.get('/api/users/:id/projects/profile', userCtrl.getVisibleProjects);
 
 //Updates users project visibility
 
-//Gets users following projects
+//Gets user's following projects
 //router.get('/api/users/:id/followings/projects', userCtrl.getProjectFollowing);
 
 //Adds users following project
 
 //Delete users
 
-//Gets users following users
+//Gets user's following users
 //router.get('/api/users/:id/followings/people', userCtrl.getUserFollowing);
 
 //Adds users following users

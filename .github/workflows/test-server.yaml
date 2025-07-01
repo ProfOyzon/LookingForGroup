@@ -35,6 +35,6 @@ jobs:
 
       # Uncomment or change when we have db mocking
       # a db running in the workflow
-      # or just chsnge tests to not use the db
+      # or just change tests to not use the db
       # - name: Test Server
       #   run: npm run test:server

@@ -3,8 +3,8 @@ import morgan from 'morgan';
 import envConfig from '#config/env.ts';
 import authRouter from '#routes/auth.ts';
 import datasetsRouter from '#routes/datasets.ts';
-//import usersouter from '#routes/users.ts';
 import projectsRouter from '#routes/projects.ts';
+import usersouter from '#routes/users.ts';
 
 const app = express();
 
@@ -25,7 +25,7 @@ if (envConfig.env === 'development') {
 
 app.use('/datasets', datasetsRouter);
 app.use('/auth', authRouter);
-//app.use('/users', usersouter);
+app.use('/users', usersouter);
 app.use('/projects', projectsRouter);
 
 app.get('', (_req: Request, res: Response) => {

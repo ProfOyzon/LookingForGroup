@@ -37,4 +37,4 @@ jobs:
       # a db running in the workflow
       # or just chsnge tests to not use the db
       # - name: Test Server
-      #   run: npm run test
+      #   run: npm run test:server

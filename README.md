@@ -24,12 +24,7 @@ This installs all the dependencies for the client and server projects. It also i
 
 ### Set environment variables
 
-Environment files allow for sensitive info to be given to the app without adding it to git. These environment variables are stored in `.env` files that must be places in the [server](./server/) and [client](./client/) directories.
-
-> [!CAUTION]
-> Environment files like `.env` should never be committed to git or any other version control system
-
-#### Server `.env` example:
+Environment files allow for sensitive info to be given to the app without adding it to git. These environment variables are stored in a `.env` file, which should look something like this:
 
 ```sh
 NODE_ENV=development
@@ -43,13 +38,8 @@ PORT=3000
 - Replace `<port>` with the port the mysql server is running on
 - PORT can be set to any open port you want, `3000` is standard for development
 
-#### Client `.env` example
-
-```sh
-API_PORT=3000
-```
-
-- API_PORT is used by the vite proxy, and should match the `PORT` value used in the server `.env` file
+> [!CAUTION]
+> Environment files like `.env` should never be committed to git or any other version control system
 
 ## Development
 

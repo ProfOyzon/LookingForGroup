@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "@looking-for-group/server",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -18,6 +18,9 @@
     "#services/*.ts": "./src/services/*.ts",
     "#controllers/*.ts": "./src/api/controllers/*.ts",
     "#routes/*.ts": "./src/api/routes/*.ts"
+  },
+  "exports": {
+    "default": "./src/app.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.10.1",

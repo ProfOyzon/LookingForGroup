@@ -1,0 +1,41 @@
+import prisma from '#config/prisma.ts';
+import type { Users } from '#prisma-models/index.js';
+import type { ServiceErrorSubset } from '#services/service-error.ts';
+
+type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
+
+export const getUserAccountService = async (
+  userId: number,
+): Promise<Users | GetUserServiceError> => {
+  try {
+    const user = await prisma.users.findUnique({
+      where: { userId },
+      select: {
+        userId: true,
+        username: true,
+        ritEmail: true,
+        firstName: true,
+        lastName: true,
+        profileImage: true,
+        headline: true,
+        pronouns: true,
+        jobTitleId: true,
+        majorId: true,
+        academic_year: true,
+        location: true,
+        funFact: true,
+        bio: true,
+        visibility: true,
+        phoneNumber: true,
+        universityId: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    return user ?? 'NOT_FOUND';
+  } catch (e) {
+    console.error('Error in getUserByIdService:', e);
+    return 'INTERNAL_ERROR';
+  }
+};

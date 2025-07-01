@@ -10,6 +10,7 @@
     "checkJs": true,
     "strict": true,
     "allowUnreachableCode": false,
+    "baseUrl": "./",
     "paths": {
       "#app.ts": ["./src/app.ts"],
       "#prisma-models/*": ["./src/models/generated/prisma/*"],

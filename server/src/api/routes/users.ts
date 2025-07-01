@@ -1,34 +1,40 @@
 import { Router } from 'express';
-import getAllUsersController from '#controllers/users/getAllUsers.ts';
-import getUsernameByIdController from '#controllers/users/getUserById.ts';
-import getUsernameByShibController from '#controllers/users/getUsernameByShib.ts';
+import {
+  getUsernameByShib,
+  getAllUsers,
+  getUsernameById,
+  getUserByUsername,
+  getUserByEmail,
+} from '#controllers/users/userController.ts';
+//import {getAccount} from '#controllers/users/userAccController.ts';
 
 const router = Router();
 
 //Gets username by shib ID
-router.get('/get-username-shib', getUsernameByShibController);
+router.get('/get-username-shib', getUsernameByShib);
 //formerly get-username-session
+//should check login middleware
 
 //Gets users
-router.get('/', getAllUsersController);
+router.get('/', getAllUsers);
 
 //Gets users by id
-router.get('/:id', getUsernameByIdController);
+router.get('/:id', getUsernameById);
 
 //Updates users information
 
 //Deletes users
 
 //Gets users by username
-//router.get('/search-username/:username', userCtrl.getUserByUsername);
+router.get('/search-username/:username', getUserByUsername);
 
 // Gets users by email
-//router.get('/search-email/:email', userCtrl.getUserByEmail);
+router.get('/search-email/:email', getUserByEmail);
 
 //Updates users profile images
 
 //Gets user's account
-//router.get('/api/users/:id/account', mid.checkLogin, userCtrl.getAccount);
+//router.get('/:id/account', mid.checkLogin, getAccount);
 
 //Updates users email
 
@@ -41,7 +47,7 @@ router.get('/:id', getUsernameByIdController);
 //Gets user's projects
 //router.get('/api/users/:id/projects', mid.checkLogin, userCtrl.getMyProjects);
 
-//Gets a user's visible projects
+//Gets another user's visible projects
 //router.get('/api/users/:id/projects/profile', userCtrl.getVisibleProjects);
 
 //Updates user's project visibility

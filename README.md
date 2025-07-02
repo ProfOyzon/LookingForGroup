@@ -28,18 +28,28 @@ Environment files allow for sensitive info to be given to the app without adding
 
 ```sh
 NODE_ENV=development
-DATABASE_URL="mysql://<user>:<password>@localhost:<port>/lfg"
 PORT=3000
+DB_USER=root
+DB_PASS=<password>
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=lfg
 ```
 
 - NODE_ENV should be `development` when working locally
-- Replace `<user>` with the mysql username
-- Replace `<password>` with the mysql password
-- Replace `<port>` with the port the mysql server is running on
 - PORT can be set to any open port you want, `3000` is standard for development
+- DB_USER is `root` because that is the default mysql user for local development
+- DB_PASS should have the password value for the root user of your mysql db
+- DB_HOST is the ip that hosts the db, `localhost` for development
+- DB_PORT is the port value your mysql is running on, `3306` is the default
+- DB_NAME is the name of the database to access, `lfg` for us
 
 > [!CAUTION]
 > Environment files like `.env` should never be committed to git or any other version control system
+
+### Setting up the database
+
+To set up the database, you can follow the steps in the User Guide, or take a look at the [Docker setup](./docker/database/README.md).
 
 ## Development
 

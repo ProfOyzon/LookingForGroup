@@ -32,7 +32,7 @@ const getNumEnvVariable = (key: string): number => {
 };
 
 const envConfig = Object.freeze({
-  env: getEnvVariable('NODE_ENV'),
+  env: getEnvVariable('NODE_ENV') as 'production' | 'development' | 'test',
   databaseUrl: getEnvVariable('DATABASE_URL'),
   port: getNumEnvVariable('PORT'),
 });

@@ -1,9 +1,7 @@
 import { GET, POST, PUT, DELETE } from './index'
 import { ApiResponse, ProjectType, Tag, JobTitles, Member, Social } from './types';
 
-const root = import.meta.env.MODE === 'development'
-    ? 'http://localhost:8081/api'
-    : 'https://lfg.gccis.rit.edu/api'
+const root = '/api'
 
 //or alternatvly use and add API_URL to .env
 // const root = import.meta.env.API_URL;

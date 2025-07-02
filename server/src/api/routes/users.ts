@@ -1,19 +1,16 @@
 import { Router } from 'express';
-import {
-  getUsernameByShib,
-  getAllUsers,
-  getUsernameById,
-} from '#controllers/users/userCRUDController.ts';
-import {
-  getUserByUsername,
-  getUserByEmail,
-} from '#controllers/users/userVerificationController.ts';
-//import {getAccount} from '#controllers/users/userAccController.ts';
+import { getAccount } from '#controllers/users/get-acc.ts';
+import { getAllUsers } from '#controllers/users/get-all.ts';
+import { getUserByEmail } from '#controllers/users/get-by-email.ts';
+import { getUsernameById } from '#controllers/users/get-by-id.ts';
+import { getUserByUsername } from '#controllers/users/get-by-username.ts';
+import { getUsernameByShib } from '#controllers/users/get-username-shib.ts';
+import requiresLogin from '../middleware/requiresLogin.ts';
 
 const router = Router();
 
 //Gets username by shib ID
-router.get('/get-username-shib', getUsernameByShib);
+router.get('/get-username-shib', requiresLogin, getUsernameByShib);
 //formerly get-username-session
 //should check login middleware
 
@@ -38,7 +35,7 @@ router.get('/search-email/:email', getUserByEmail);
 //Updates users profile images
 
 //Gets user's account
-//router.get('/:id/account', mid.checkLogin, getAccount);
+router.get('/:id/account', requiresLogin, getAccount);
 
 //Updates users email
 

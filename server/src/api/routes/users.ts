@@ -3,9 +3,11 @@ import {
   getUsernameByShib,
   getAllUsers,
   getUsernameById,
+} from '#controllers/users/userCRUDController.ts';
+import {
   getUserByUsername,
   getUserByEmail,
-} from '#controllers/users/userController.ts';
+} from '#controllers/users/userVerificationController.ts';
 //import {getAccount} from '#controllers/users/userAccController.ts';
 
 const router = Router();
@@ -14,6 +16,8 @@ const router = Router();
 router.get('/get-username-shib', getUsernameByShib);
 //formerly get-username-session
 //should check login middleware
+
+//Create new user
 
 //Gets users
 router.get('/', getAllUsers);

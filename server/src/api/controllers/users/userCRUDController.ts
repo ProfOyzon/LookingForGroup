@@ -3,9 +3,7 @@ import {
   getUserByhibService,
   getAllUsersService,
   getUserByIdService,
-  getUserByUsernameService,
-  getUserByEmailService,
-} from '#services/users/userService.ts';
+} from '#services/users/userCRUDService.ts';
 
 //get username by shibbolth
 export const getUsernameByShib = async (req: Request, res: Response): Promise<void> => {
@@ -54,44 +52,6 @@ export const getUsernameById = async (req: Request, res: Response): Promise<void
   }
 
   const result = await getUserByIdService(id);
-
-  if (result === 'INTERNAL_ERROR') {
-    res.status(500).json({ message: 'Internal Server Error' });
-    return;
-  }
-
-  if (result === 'NOT_FOUND') {
-    res.status(500).json({ message: 'User not found' });
-    return;
-  }
-
-  res.status(200).json(result);
-};
-
-//get the user by the username
-export const getUserByUsername = async (req: Request, res: Response): Promise<void> => {
-  const { username } = req.params;
-
-  const result = await getUserByUsernameService(username);
-
-  if (result === 'INTERNAL_ERROR') {
-    res.status(500).json({ message: 'Internal Server Error' });
-    return;
-  }
-
-  if (result === 'NOT_FOUND') {
-    res.status(500).json({ message: 'User not found' });
-    return;
-  }
-
-  res.status(200).json(result);
-};
-
-//get the user by the email
-export const getUserByEmail = async (req: Request, res: Response): Promise<void> => {
-  const { email } = req.params;
-
-  const result = await getUserByEmailService(email);
 
   if (result === 'INTERNAL_ERROR') {
     res.status(500).json({ message: 'Internal Server Error' });

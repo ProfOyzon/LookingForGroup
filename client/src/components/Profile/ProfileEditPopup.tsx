@@ -49,7 +49,25 @@ export interface ProfileData {
 let profile: ProfileData;
 const pageTabs = ['About', 'Projects', 'Skills', 'Interests', 'Links'];
 
-// Functions
+export const ProfileEditPopup = () => {
+  // Keeps track of what tab we are in
+  let currentTab = 0;
+  // Holds new profile image if one is selected
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+
+  // Send selected image to server for save
+  const saveImage = async (userID) => {
+  if (!selectedImageFile) return;
+  // saves the profile pic if there has been a change
+  const formData = new FormData();
+  formData.append('image', selectedImageFile);
+
+  await fetch(`/api/users/${userID}/profile-picture`, {
+    method: 'PUT',
+    body: formData,
+  });
+};
+
 const onSaveClicked = async (e : Event) => {
   e.preventDefault(); // prevents any default calls
   // Receive all inputted values
@@ -97,16 +115,6 @@ const onSaveClicked = async (e : Event) => {
 
   window.location.reload(); // reload page
 };
-
-const saveImage = async (userID) => {
-  // saves the profile pic if there has been a change
-  const formElement = document.getElementById('profile-creator-editor') as HTMLFormElement;
-  await sendFile(`/api/users/${userID}/profile-picture`, formElement);
-};
-
-export const ProfileEditPopup = () => {
-  // Keeps track of what tab we are in
-  let currentTab = 0;
 
   // In your ProfileEditPopup.tsx file
 
@@ -192,7 +200,7 @@ const switchTab = (tabIndex: number) => {
   let TabContent = () => {
     return (
       <div id="profile-editor-content">
-        <AboutTab profile={profile}/>
+        <AboutTab profile={profile} selectedImageFile={selectedImageFile} setSelectedImageFile={setSelectedImageFile}/>
         <ProjectsTab profile={profile} />
         <SkillsTab profile={profile} />
         <InterestTab profile={profile} />

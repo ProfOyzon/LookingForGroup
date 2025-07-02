@@ -230,7 +230,7 @@ model Users {
   createdAt                                      DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt                                      DateTime             @default(now()) @map("updated_at") @db.Timestamp(0)
   phoneNumber                                    BigInt?              @map("phone_number")
-  universityId                                   String?              @map("university_id") @db.VarChar(9)
+  universityId                                   String?              @unique(map: "university_id_UNIQUE") @map("university_id") @db.VarChar(9)
   members                                        Members[]
   projectFollowings                              ProjectFollowings[]
   projects                                       Projects[]

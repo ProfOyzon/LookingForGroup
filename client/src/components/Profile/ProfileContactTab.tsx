@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getUsersById } from "../../api/users";
 
 
 interface LinkData {
@@ -8,27 +9,28 @@ interface LinkData {
 
 const ProfileContactTab = (userID: number) => {
     let links = [] as LinkData[];
-    let socials = [];
+    const [socials, setSocials] = useState([]);
 
     let linksTSX;
-    const [email, setEmail] = useState();
-    const [phone, setPhone] = useState();
+    const [email, setEmail] = useState("dummy@gmail.com");
+    const [phone, setPhone] = useState("1-431-dummy");
 
 
 
     // copied over from Profile.tsx to get social links
     useEffect(() => {
     const loadSocials = async () => {
-        try{
-      // Pick which socials to use based on type
-      let url = `api/users/${userID}`;
+        try {
+      const response = await getUsersById(userID) // Runs into 401 access error
+      const user = response.data;
+      if (response.status === 200) {
+        setSocials(user.socials)
+        setEmail(user.email);
+        setPhone(user.phone);
+        console.log("success!")
+      }
 
-
-      const response = await fetch(url);
-      const { data } = await response.json(); // use data[0]
-      socials = data[0].socials;
-      setEmail(data[0].email);
-      setPhone(data[0].phone);
+      console.log("response data:" + response)
 
       // Setup links
       if (socials) {
@@ -47,7 +49,7 @@ const ProfileContactTab = (userID: number) => {
                 else return (<p className = "other-social-link">  <a key = {link.id} href = {link.url.toString()}>{link.url}</a></p>);
             }
         )};
-    }catch (err){console.log('failed to load socials');}
+    } catch (err){console.log('failed to load socials', err);}
 
     }
     loadSocials();

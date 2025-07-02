@@ -33,7 +33,7 @@ const getNumEnvVariable = (key: string): number => {
 
 const envConfig = Object.freeze({
   env: getEnvVariable('NODE_ENV') as 'production' | 'development' | 'test',
-  databaseUrl: getEnvVariable('DATABASE_URL'),
+  databaseUrl: `mysql://${getEnvVariable('DB_USER')}:${getEnvVariable('DB_PASS')}@${getEnvVariable('DB_HOST')}:${getEnvVariable('DB_PORT')}/${getEnvVariable('DB_NAME')}`,
   port: getNumEnvVariable('PORT'),
 });
 

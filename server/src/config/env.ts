@@ -1,11 +1,3 @@
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-dotenv.config({ path: resolve(__dirname, '../../../.env') });
-
 /**
  * Gets the value of an environment variable.
  * @param {string} key Name of the environment variable to retrieve

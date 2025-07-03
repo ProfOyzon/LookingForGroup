@@ -5,14 +5,13 @@ import uidExistsService from '#services/users/uid-exists.ts';
 const requiresLogin = async (request: Request, response: Response, next: NextFunction) => {
   if (envConfig.env === 'development') {
     /// Add UID for development, missing correct header
-    request.headers['x-'] = '000000001';
+    request.headers['uid'] = '000000001';
 
     next();
     return;
   }
 
-  /// Add correct header when we have it
-  const uidHeader = request.headers[''] as string | undefined;
+  const uidHeader = request.headers['uid'] as string | undefined;
 
   if (uidHeader === undefined) {
     response.status(401).json({ message: 'You must log in to access this resource' });

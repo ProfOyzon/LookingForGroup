@@ -1,35 +1,28 @@
 import { Router } from 'express';
-import getProjects from '#controllers/projects/get-projects.ts';
+import PROJECT from '#controllers/projects/index.ts';
 
 const router = Router();
 
 //Receive all projects
-router.get('/', getProjects);
+router.get('/', PROJECT.getProjects);
 
 //Create a new project
 // router.post('/' /* createProject */);
-//router.post('/' /* createProject */);
 
-// //Get a specific project
-// router.get('/:id' /* getProjectById */);
 //Get a specific project
-//router.get('/:id' /* getProjectById */);
+router.get('/:id', PROJECT.getProjectByID);
 
 // //Edits a project through a specific id
 // router.put('/:id' /* updateProject */);
-//Edits a project through a specific id
-//router.put('/:id' /* updateProject */);
 
 // //Deletes project through a specific id
 // router.delete('/:id' /* deleteProject */);
-//Deletes project through a specific id
-//router.delete('/:id' /* deleteProject */);
 
 //Edits a project thumbnail through a specific id
 //router.put(':/id/thumbnail' /* updateThumbnail */);
 
 //Receives picture from project through id
-//router.get('/:id/pictures' /* getPictures */);
+router.get('/:id/pictures', PROJECT.getProjectPics);
 
 //Creates a new picture for a project
 //router.post('/:id/pictures' /* addPicture */);

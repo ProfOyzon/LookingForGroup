@@ -1,5 +1,4 @@
 import prisma from '#config/prisma.ts';
-import type { Users } from '#prisma-models/index.js';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
 
 type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
@@ -7,11 +6,12 @@ type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 //get username by shibboleth id
 export const getUserByhibService = async (
   universityId: string,
-): Promise<Users | GetUserServiceError> => {
+): Promise<{ username: string } | GetUserServiceError> => {
   try {
     //findUnique
     const user = await prisma.users.findFirst({
       where: { universityId },
+      select: { username: true },
     });
 
     if (!user) return 'NOT_FOUND';

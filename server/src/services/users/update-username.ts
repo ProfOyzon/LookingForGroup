@@ -3,20 +3,20 @@ import type { ServiceErrorSubset } from '#services/service-error.ts';
 
 type UpdateUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
-export const updateUserEmailService = async (
+export const updateUserUsernameService = async (
   userId: number,
-  newEmail: string,
-): Promise<{ email: string } | UpdateUserServiceError> => {
+  username: string,
+): Promise<{ username: string } | UpdateUserServiceError> => {
   try {
     const user = await prisma.users.update({
       where: { userId },
-      data: { ritEmail: newEmail },
-      select: { ritEmail: true },
+      data: { username },
+      select: { username: true },
     });
 
-    return { email: user.ritEmail };
+    return { username: user.username };
   } catch (e) {
-    console.error('Error in updateUserEmailService:', e);
+    console.error('Error in updateUserUsernameService:', e);
     return 'INTERNAL_ERROR';
   }
 };

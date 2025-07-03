@@ -12,9 +12,6 @@ const router = Router();
 //Gets username by shib ID
 router.get('/get-username-shib', requiresLogin, getUsernameByShib);
 //formerly get-username-session
-//should check login middleware
-
-//Create new user
 
 //Gets users
 router.get('/', getAllUsers);
@@ -37,11 +34,7 @@ router.get('/search-email/:email', getUserByEmail);
 //Gets user's account
 router.get('/:id/account', requiresLogin, getAccount);
 
-//Updates users email
-
 //Updates users username
-
-//Updates users password
 
 //Updates users visibility
 

@@ -238,6 +238,8 @@ paths:
       summary: Get username through Shibboleth headers
       tags:
         - Users
+      security:
+        - shibbolethAuth: []
       description: |
         Retrieves the username of a user authenticated via Shibboleth. Needs the `x-university-id` header
       parameters:
@@ -288,7 +290,7 @@ paths:
       tags:
         - Users
       responses:
-        200:
+        '200':
           description: A list of users
           content:
             application/json:
@@ -296,7 +298,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserResponse'
-        500:
+        '500':
           description: Internal Server Error
 
   /api/users/{id}:
@@ -312,13 +314,110 @@ paths:
           required: true
           description: The user ID
       responses:
-        200:
+        '200':
           description: A single user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetails'
-        500:
+        '500':
+          description: Internal Server Error or User Not Found
+    put:
+      summary: Updates user profile information
+      tags:
+        - Users
+      security:
+        - shibbolethAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The user ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                headline:
+                  type: string
+                pronouns:
+                  type: string
+                jobTitleId:
+                  type: integer
+                MajorId:
+                  type: integer
+                academic_year:
+                  type: string
+                  enum: [Freshman, Sophmore, Junior, Senior, Graduate]
+                location:
+                  type: string
+                funFact:
+                  type: string
+                bio:
+                  type: string
+              example:
+                firstName: Mistah
+                lastName: Bones
+                headline: Sigh..
+                pronouns: they/them
+                jobTitleId: 1
+                majorId: 2
+                academic_year: Senior
+                location: Grave Yard
+                funFact: Bones
+                bio: AHHHHHHHH
+
+      responses:
+        '200':
+          description: A single user
+          content:
+            application/json:
+              schema:
+                type: object
+                schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                headline:
+                  type: string
+                pronouns:
+                  type: string
+                jobTtitleId:
+                  type: integer
+                MajorId:
+                  type: integer
+                academic_year:
+                  type: string
+                location:
+                  type: string
+                funFact:
+                  type: string
+                bio:
+                  type: string
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
           description: Internal Server Error or User Not Found
 
   /api/users/search-username/{username}:
@@ -410,6 +509,130 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/users/{id}/username:
+    put:
+      summary: Update a user's username (requires authentication)
+      tags:
+        - Users
+      security:
+        - shibbolethAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+              properties:
+                username:
+                  type: string
+                  description: New username
+      responses:
+        '200':
+          description: Username successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: The updated username
+                example:
+                  username: newUsername
+        '409':
+          description: Username already taken
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                usernameTaken:
+                  value:
+                    message: Username already taken
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                notFound:
+                  value:
+                    message: User not found
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/users/{id}/visibility:
+    put:
+      summary: Update a user's visibility (requires authentication)
+      tags:
+        - Users
+      security:
+        - shibbolethAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - visibility
+              properties:
+                visibility:
+                  type: integer
+                  description: visibility (0=private & 1=public)
+      responses:
+        '200':
+          description: Username successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: The new visibility
+                example:
+                  visibility: 0
+        '409':
+          description: Username already taken
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                usernameTaken:
+                  value:
+                    message: Username already taken
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                notFound:
+                  value:
+                    message: User not found
         '500':
           $ref: '#/components/responses/InternalServerError'
 

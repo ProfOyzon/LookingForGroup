@@ -5,6 +5,9 @@ import { getUserByEmail } from '#controllers/users/get-by-email.ts';
 import { getUsernameById } from '#controllers/users/get-by-id.ts';
 import { getUserByUsername } from '#controllers/users/get-by-username.ts';
 import { getUsernameByShib } from '#controllers/users/get-username-shib.ts';
+import { updateUserInfo } from '#controllers/users/update-info.ts';
+import { updateUsername } from '#controllers/users/update-username.ts';
+import { updateVisibility } from '#controllers/users/update-vis.ts';
 import requiresLogin from '../middleware/requires-login.ts';
 
 const router = Router();
@@ -20,6 +23,7 @@ router.get('/', getAllUsers);
 router.get('/:id', getUsernameById);
 
 //Updates users information
+router.put('/:id', requiresLogin, updateUserInfo);
 
 //Deletes users
 
@@ -35,8 +39,10 @@ router.get('/search-email/:email', getUserByEmail);
 router.get('/:id/account', requiresLogin, getAccount);
 
 //Updates users username
+router.put('/:id/username', requiresLogin, updateUsername);
 
 //Updates users visibility
+router.put('/:id/visibility', requiresLogin, updateVisibility);
 
 //Gets user's projects
 //router.get('/api/users/:id/projects', mid.checkLogin, userCtrl.getMyProjects);

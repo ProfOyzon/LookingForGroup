@@ -7,11 +7,12 @@ type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 //get all users
 export const getAllUsersService = async (): Promise<Users[] | GetUserServiceError> => {
   try {
-    return await prisma.users.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
+    const users = await prisma.users.findMany({
+      where: { visibility: 1 },
+      orderBy: { createdAt: 'desc' },
     });
+
+    return users;
   } catch (error) {
     console.error('Error in getAllUsersService:', error);
     return 'INTERNAL_ERROR';

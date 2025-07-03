@@ -5,7 +5,7 @@ import { getUserByEmail } from '#controllers/users/get-by-email.ts';
 import { getUsernameById } from '#controllers/users/get-by-id.ts';
 import { getUserByUsername } from '#controllers/users/get-by-username.ts';
 import { getUsernameByShib } from '#controllers/users/get-username-shib.ts';
-import requiresLogin from '../middleware/requiresLogin.ts';
+import requiresLogin from '../middleware/requires-login.ts';
 
 const router = Router();
 

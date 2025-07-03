@@ -295,7 +295,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/UserPreview'
         500:
           description: Internal Server Error
 
@@ -317,7 +317,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserDetails'
         500:
           description: Internal Server Error or User Not Found
 
@@ -533,6 +533,105 @@ components:
         universityId:
           type: string
           nullable: true
+
+    UserPreview:
+      type: object
+      properties:
+        userId:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
+        profileImage:
+          type: string
+          nullable: true
+        headline:
+          type: string
+          nullable: true
+        pronouns:
+          type: string
+          nullable: true
+        job_title:
+          type: string
+          nullable: true
+        major:
+          type: string
+          nullable: true
+        academic_year:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        funFact:
+          type: string
+          nullable: true
+
+    UserDetails:
+      type: object
+      properties:
+        userId:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
+        profileImage:
+          type: string
+          nullable: true
+        headline:
+          type: string
+          nullable: true
+        pronouns:
+          type: string
+          nullable: true
+        job_title:
+          type: string
+          nullable: true
+        major:
+          type: string
+          nullable: true
+        academic_year:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        funFact:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+        skills:
+          type: array
+          nullable: true
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              skill:
+                type: string
+              type:
+                type: string
+              position:
+                type: integer
+        socials:
+          type: array
+          nullable: true
+          items:
+            type: object
+            properties:
+              websiteId:
+                type: integer
+              label:
+                type: string
 
   responses:
     InternalServerError:

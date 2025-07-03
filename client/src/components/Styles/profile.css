@@ -1077,7 +1077,7 @@ New Profile page style rules
   color: var(--darkGray);
   gap: 10px;
   text-align: left;
-  min-width: 0;
+  min-width: 275px;
 }
 
 @media only screen and (max-width: 1250px) {

@@ -1,7 +1,7 @@
 import '../Styles/pages.css';
 
 import { Dropdown, DropdownButton, DropdownContent } from '../Dropdown';
-import { sendPost, fetchUserID, sendDelete } from '../../functions/fetch';
+import { sendPost, fetchUserID, sendDelete, sendPut} from '../../functions/fetch';
 import { Popup, PopupButton, PopupContent } from '../Popup';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { ThemeIcon } from '../ThemeIcon';

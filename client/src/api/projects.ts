@@ -1,9 +1,7 @@
-import { GET, POST, PUT, DELETE } from './index'
+import util from './index'
 import { ApiResponse, ProjectType, Tag, JobTitles, Member, Social } from './types';
 
-const root = import.meta.env.MODE === 'development'
-    ? 'http://localhost:5173/api'
-    : 'https://lfg.gccis.rit.edu/api'
+const root = '/api'
 
 //or alternatvly use and add API_URL to .env
 // const root = import.meta.env.API_URL;
@@ -58,7 +56,7 @@ export const createNewProject = async (
         socials: _socials,
     };
 
-    const response = await POST(apiURL, data);
+    const response = await util.POST(apiURL, data);
     if (response.error) {
         console.log('Error creating new project:', response.error);
         return { status: response.status, error: response.error };
@@ -74,12 +72,12 @@ export const createNewProject = async (
 export const getProjects = async (): Promise<unknown> => {
     const apiURL = `${root}/projects`;
 
-    const response = await GET(apiURL);
+    const response = await util.GET(apiURL);
 
     if (response.error) {
         return { status: response.status, error: response.error };
     }
-    return { status: 200, error: null, data: response.data };
+    return { status: 200, error: null, data: response.data.data };
 };
 
 /**
@@ -89,11 +87,11 @@ export const getProjects = async (): Promise<unknown> => {
  */
 export const getByID = async (ID: number): Promise<unknown> => {
     const apiURL = `${root}/projects/${ID}`;
-    const response = await GET(apiURL);
+    const response = await util.GET(apiURL);
     if (response.error) {
         return { status: response.status, error: response.error };
     }
-    return { status: 200, error: null, data: response.data };
+    return { status: 200, error: null, data: response.data.data };
 };
 
 /**
@@ -104,7 +102,7 @@ export const getByID = async (ID: number): Promise<unknown> => {
  */
 export const updateProject = async (ID: number, data: object): Promise<unknown> => {
     const apiURL = `${root}/projects/${ID}`;
-    const response = await PUT(apiURL, data);
+    const response = await util.PUT(apiURL, data);
     if (response.error) {
         return { status: response.status, error: response.error };
     }
@@ -119,7 +117,7 @@ export const updateProject = async (ID: number, data: object): Promise<unknown> 
  */
 export const deleteProject = async (ID: number): Promise<ApiResponse<any[]>> => {
     const apiURL = `${root}/projects/${ID}`;
-    const response = await DELETE(apiURL);
+    const response = await util.DELETE(apiURL);
     if (response.error) {
         return { status: response.status, error: response.error };
     }
@@ -138,7 +136,7 @@ export const deleteProject = async (ID: number): Promise<ApiResponse<any[]>> => 
 export const updateThumbnail = async (ID: number, _image: File): Promise<unknown> => {
     const apiURL = `${root}/projects/${ID}/thumbnail`;
     const data = { image: _image };
-    const response = await PUT(apiURL, data);
+    const response = await util.PUT(apiURL, data);
     if (response.error) {
         return{ status: response.status, error: response.error };
     }
@@ -152,11 +150,13 @@ export const updateThumbnail = async (ID: number, _image: File): Promise<unknown
  */
 export const getPics = async (ID: number): Promise<unknown> => {
     const apiURL = `${root}/projects/${ID}/pictures`;
-    const response = await GET(apiURL);
+    const response = await util.GET(apiURL);
     if (response.error) {
         return { status: response.status, error: response.error };
+    } else if ( response.data.data.length == 0 ) {
+        return { status: 401, error: 'No picture for that ID.'}
     }
-return { status: 200, error: null, data: response.data };
+return { status: 200, error: null, data: response.data.data };
 };
 
 /**
@@ -172,7 +172,7 @@ export const addPic = async (ID: number, _image: File, _position: number): Promi
         image: _image,
         position: _position,
     };
-    const response = await POST(apiURL, data);
+    const response = await util.POST(apiURL, data);
     if (response.error) {
         return { status: response.status, error: response.error };
     }
@@ -187,7 +187,7 @@ export const addPic = async (ID: number, _image: File, _position: number): Promi
  */
 export const updatePicPositions = async (ID: number, images: Array<{ id: number; position: number }>): Promise<ApiResponse<any[]>> => {
     const apiURL = `${root}/projects/${ID}/pictures`;
-    const response = await PUT(apiURL, images);
+    const response = await util.PUT(apiURL, images);
     if (response.error) {
         return { status: response.status, error: response.error };
     }
@@ -205,7 +205,7 @@ export const deletePic = async (ID: number, image: string): Promise<ApiResponse<
     //NEEDS TO SPECIFY WHAT PICTURE IS BEING DELETED BY IMAGE NAME
     //uses encode to evoid special character issues
     const apiURL = `${root}/projects/${ID}/pictures?image=${encodeURIComponent(image)}`;
-    const response = await DELETE(apiURL);
+    const response = await util.DELETE(apiURL);
     if (response.error) {
         return { status: response.status, error: response.error };
     }
@@ -230,7 +230,7 @@ export const addMember = async (ID: number, _userId: number, _titleId: number, _
         titleId: _titleId,
         permission: _permission,
     };
-    const response = await POST(apiURL, data);
+    const response = await util.POST(apiURL, data);
     if (response.error) {
         return { status: response.status, error: response.error };
     }
@@ -252,7 +252,7 @@ export const updateMember = async (ID: number, _userId: number, _titleId: number
         titleId: _titleId,
         permission: _permission,
     };
-    const response = await PUT(apiURL, data);
+    const response = await util.PUT(apiURL, data);
     if (response.error) {
         return { status: response.status, error: response.error };
     }
@@ -267,7 +267,7 @@ export const updateMember = async (ID: number, _userId: number, _titleId: number
  */
 export const deleteMember = async (ID: number, userId: number): Promise<ApiResponse<any[]>> => {
     const apiURL = `${root}/projects/${ID}/members/${userId}`;
-    const response = await DELETE(apiURL);
+    const response = await util.DELETE(apiURL);
     if (response.error) {
         return { status: response.status, error: response.error };
     }

@@ -13,7 +13,7 @@ const requiresLogin = async (request: Request, response: Response, next: NextFun
 
   const uidHeader = request.headers['uid'] as string | undefined;
 
-  if (uidHeader === undefined) {
+  if (!uidHeader) {
     response.status(401).json({ message: 'You must log in to access this resource' });
     return;
   }

@@ -61,16 +61,7 @@ export const ProfileInterests = ({ user, isUsersProfile }) => {
       <div className="profile-name-button">
         {/*edit interests button - only show for current user's profile*/}
         <h4>Interests</h4>
-        {isUsersProfile && (
-          <button className="icon-button" onClick={() => openClosePopup(showPopup, setShowPopup)}>
-            <ThemeIcon
-              light={"assets/black/edit.svg"}
-              dark={"assets/white/edit.svg"}
-              alt="Edit interests"
-              id="edit-interests-icon"
-            />
-          </button>
-        )}
+       
       </div>
       <div id="profile-interests-list" className="profile-list">
         {interestsList.length > 0 ? interestsList : <p 

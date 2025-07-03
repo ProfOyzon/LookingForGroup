@@ -23,6 +23,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
+    "hex-to-css-filter": "^6.0.0",
     "looking-for-group": "file:",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",

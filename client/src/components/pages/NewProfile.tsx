@@ -246,8 +246,9 @@ const NewProfile = () => {
             }}
           >
             <ThemeIcon
-              light={'assets/black/linkedIn_black.svg'}
+              light={'assets/white/linkedIn_white.svg'}
               dark={'assets/white/linkedIn_white.svg'}
+              lightModeColor={'black'}
               alt={'LinkedIn'}
             />
           </button>
@@ -257,8 +258,9 @@ const NewProfile = () => {
             }}
           >
             <ThemeIcon
-              light={'assets/black/instagram_black.svg'}
+              light={'assets/white/instagram_white.svg'}
               dark={'assets/white/instagram_white.svg'}
+              lightModeColor={'black'}
               alt={'Instagram'}
             />
           </button>
@@ -363,32 +365,36 @@ const NewProfile = () => {
           <div id="profile-info-extras">
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/role.svg'}
+                light={'assets/white/role.svg'}
                 dark={'assets/white/role.svg'}
+                lightModeColor={'black'}
                 alt={'Profession'}
               />
               {displayedProfile.job_title}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/major.svg'}
+                light={'assets/white/major.svg'}
                 dark={'assets/white/major.svg'}
+                lightModeColor={'black'}
                 alt={'Major'}
               />
               {displayedProfile.major} {displayedProfile.academic_year}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/location.svg'}
+                light={'assets/white/location.svg'}
                 dark={'assets/white/location.svg'}
+                lightModeColor={'black'}
                 alt={'Location'}
               />
               {displayedProfile.location}
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/black/pronouns.svg'}
+                light={'assets/white/pronouns.svg'}
                 dark={'assets/white/pronouns.svg'}
+                lightModeColor={'black'}
                 alt={'Pronouns'}
               />
               {displayedProfile.pronouns}

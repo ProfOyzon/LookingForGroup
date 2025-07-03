@@ -176,14 +176,18 @@ const handleLogin = async () => {
                 {showPassword ? (
                   <ThemeIcon
                     id='eye-icon'
-                    light={'assets/black/password_shown.svg'}
+                    light={'assets/white/password_shown.svg'}
                     dark={'assets/white/password_shown.svg'}
+                    lightModeColor={'black'}
+                    alt={'show password'}
                   />) :
                   (
                     <ThemeIcon
                       id='eye-icon'
-                      light={'assets/black/password_hidden.svg'}
+                      light={'assets/white/password_hidden.svg'}
                       dark={'assets/white/password_hidden.svg'}
+                      lightModeColor={'black'}
+                      alt={'hide password'}
                     />
                   )}
               </button>

@@ -3,6 +3,7 @@ import type { ServiceErrorSubset } from '#services/service-error.ts';
 
 type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
+// for skills
 type Skill = {
   id: number;
   type: string;
@@ -10,11 +11,13 @@ type Skill = {
   position: number;
 };
 
+// for socials
 type Social = {
   websiteId: number;
   label: string;
 };
 
+//show only non-sensitive data
 type UserDetail = {
   userId: number;
   firstName: string;

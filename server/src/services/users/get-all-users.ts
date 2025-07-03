@@ -3,6 +3,7 @@ import type { ServiceErrorSubset } from '#services/service-error.ts';
 
 type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
+//show only non-sensitive data
 type UserResponse = {
   userId: number;
   firstName: string;

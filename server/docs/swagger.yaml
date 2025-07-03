@@ -295,7 +295,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserPreview'
+                  $ref: '#/components/schemas/UserResponse'
         500:
           description: Internal Server Error
 
@@ -339,7 +339,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserPreview'
         '404':
           description: User not found
           content:
@@ -367,7 +367,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserPreview'
         '404':
           description: User not found
           content:
@@ -534,7 +534,7 @@ components:
           type: string
           nullable: true
 
-    UserPreview:
+    UserResponse:
       type: object
       properties:
         userId:
@@ -632,6 +632,21 @@ components:
                 type: integer
               label:
                 type: string
+
+    UserPreview:
+      type: object
+      properties:
+        userId:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
+        profileImage:
+          type: string
+          nullable: true
 
   responses:
     InternalServerError:

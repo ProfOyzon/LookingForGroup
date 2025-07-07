@@ -1010,8 +1010,8 @@ New Profile page style rules
 #profile-information-grid {
   display: grid;
   grid-template:
-    'image name buttons buttons' 40px
-    'image extra extra extra' 40px
+    'image name buttons buttons' auto
+    'image extra extra extra' auto
     'image desc desc desc' auto
     'image fact fact fact' auto
     'bio skills skills follow' auto /
@@ -1070,14 +1070,20 @@ New Profile page style rules
 
 #profile-info-name {
   grid-area: name;
-  align-items: flex-end;
   display: flex;
+  flex-direction: column;
   font-style: italic;
   font-size: 2ch;
   color: var(--darkGray);
   gap: 10px;
   text-align: left;
-  min-width: 0;
+  min-width: 275px;
+}
+
+@media only screen and (max-width: 1250px) {
+  #profile-info-name {
+    align-items: center;
+  }
 }
 
 #profile-follow-button {
@@ -1121,6 +1127,11 @@ New Profile page style rules
   word-break: break-word;
   width: fit-content;
   justify-self: end;
+  align-self: start;
+
+  #project-info-edit {
+    padding: 0.4em 1em;
+  }
 }
 
 @media only screen and (max-width: 1250px) {
@@ -1133,17 +1144,12 @@ New Profile page style rules
   font-size: 16px;
   grid-area: extra;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: start;
   gap: 20px;
   overflow-wrap: break-word;
   word-break: break-word;
-}
-
-@media only screen and (max-width: 1200px) {
-    #profile-info-extras {
-    flex-wrap: wrap;
-  }
 }
 
 .profile-extra {

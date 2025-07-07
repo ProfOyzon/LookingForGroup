@@ -95,3 +95,4 @@ database/dump.sql
 
 # SQL files
 *.sql
+.husky/pre-commit

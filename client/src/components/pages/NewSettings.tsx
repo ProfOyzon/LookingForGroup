@@ -12,6 +12,7 @@ import CreditsFooter from '../CreditsFooter';
 import PasswordValidator from 'password-validator';
 import ToTopButton from '../ToTopButton';
 import * as paths from '../../constants/routes';
+import { getUserByEmail, getUserByUsername } from '../../api/users';
 
 // Take the user ID and delete it
 const deleteAccountPressed = async () => {
@@ -241,9 +242,12 @@ const Settings = ({ }) => {
                   // TO-DO: Check if already in use if username
                   // or primary email address. Excludes password
                   if (type !== 'Password') {
-                    const url = `/api/users/search-${type === 'Username' ? 'username' : 'email'}/${firstParam}`;
-                    const response = await fetch(url);
-                    const data = await response.json();
+                    //const url = `/api/users/search-${type === 'Username' ? 'username' : 'email'}/${firstParam}`;
+                    //const response = await fetch(url);
+                    //const data = await response.json();
+                    let data;
+                    if (type ==='Username')   data = await getUserByUsername(firstParam);
+                    else                      data = await getUserByEmail(firstParam);
 
                     if (data.data.length > 0) {
                       setError(`*${type} is already in use.`);

@@ -20,6 +20,7 @@ import { PanelBox } from '../PanelBox';
 import { ThemeIcon } from '../ThemeIcon';
 import ToTopButton from '../ToTopButton';
 import { devSkills, desSkills } from '../../constants/tags';
+import { getProjects } from '../../api/projects';
 
 type DiscoverAndMeetProps = {
   category: 'projects' | 'profiles';
@@ -171,8 +172,8 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
     const url = `/api/${category === 'projects' ? 'projects' : 'users'}`;
 
     try {
-      const response = await fetch(url);
-      const data = await response.json();
+      const response = await getProjects();
+      const data = await response.data;
 
       // Don't assign if there's no array returned
       if (data.data !== undefined) {

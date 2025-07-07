@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { deleteUser } from '#controllers/users/delete-user.ts';
 import { getAccount } from '#controllers/users/get-acc.ts';
 import { getAllUsers } from '#controllers/users/get-all.ts';
 import { getUserByEmail } from '#controllers/users/get-by-email.ts';
@@ -59,9 +60,10 @@ router.put('/:id/visibility', requiresLogin, updateVisibility);
 //Adds users following project
 
 //Delete users
+router.delete('/:id', deleteUser);
 
 //Gets user's following users
-router.get('/api/users/:id/followings/people', getUserFollowing);
+router.get('/:id/followings/people', getUserFollowing);
 
 //Adds users following users
 

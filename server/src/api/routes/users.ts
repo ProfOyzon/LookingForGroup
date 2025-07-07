@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { deleteFollowing } from '#controllers/users/delete-following.ts';
 import { deleteUser } from '#controllers/users/delete-user.ts';
 import { getAccount } from '#controllers/users/get-acc.ts';
 import { getAllUsers } from '#controllers/users/get-all.ts';
@@ -68,5 +69,6 @@ router.get('/:id/followings/people', getUserFollowing);
 //Adds users following users
 
 //Delete users following users
+router.delete('/:id/followings/:follower_id', deleteFollowing);
 
 export default router;

@@ -93,7 +93,7 @@ export const PopupContent = ({
   // Close on Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closePopup();
+      if (e.key === 'Escape') setOpen(false);
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
@@ -103,8 +103,8 @@ export const PopupContent = ({
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const refNode = popupRef.current as Node | null;
-      if (refNode && e.target instanceof Node && !refNode.contains(e.target)) {
-        closePopup();
+      if (refNode && e.target instanceof Node && !refNode.contains(e.target) && e.button !== 2) {
+        setOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);

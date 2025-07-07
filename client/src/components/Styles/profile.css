@@ -1449,9 +1449,10 @@ New Profile page style rules
   padding-bottom: 0;
 }
 
-#about-me-buttons button > img {
+/* ????? why was this here??? */
+/* #about-me-buttons button > img {
   margin-top: 3px;
-}
+} */
 
 #about-me-buttons button:hover {
   background-color: var(--bg-color);

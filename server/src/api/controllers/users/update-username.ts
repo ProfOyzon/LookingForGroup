@@ -18,7 +18,7 @@ export const updateUsername: RequestHandler<
   }
 
   //validate new username
-  if (!newUsername || typeof newUsername !== 'string' || newUsername.trim() === '') {
+  if (!newUsername || newUsername.trim() === '') {
     res.status(400).json({ message: 'New username not found' });
     return;
   }

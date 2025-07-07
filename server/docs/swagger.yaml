@@ -636,6 +636,70 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  # PROJECTS
+  /api/projects:
+    get:
+      summary: Get all projects
+      tags:
+        - Projects
+      description: |
+        Retrieves a list of all projects.
+      responses:
+        '200':
+          description: A list of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/projects/{id}:
+    get:
+      summary: Get project by ID
+      tags:
+        - Projects
+      description: |
+        Retrieves information about a single project by its project ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The ID of the project to retrieve
+      responses:
+        '200':
+          description: Project found and returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Invalid project ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                default:
+                  value:
+                    message: Invalid project ID
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                default:
+                  value:
+                    message: Project not found
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
 # COMPONANTS
 components:
   schemas:
@@ -870,6 +934,71 @@ components:
         profileImage:
           type: string
           nullable: true
+
+    Project:
+      type: object
+      properties:
+        projectId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        projectGenres:
+          type: array
+          items:
+            type: object
+            properties:
+              genreId:
+                type: integer
+              label:
+                type: string
+        projectTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        projectImages:
+          type: array
+          items:
+            type: object
+            properties:
+              imageId:
+                type: integer
+              url:
+                type: string
+              altText:
+                type: string
+        projectSocials:
+          type: array
+          items:
+            $ref: '#/components/schemas/Social'
+        jobs:
+          type: array
+          items:
+            type: object
+            properties:
+              jobId:
+                type: integer
+              title:
+                type: string
+              description:
+                type: string
+              requirements:
+                type: string
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserPreview'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponse'
 
   responses:
     InternalServerError:

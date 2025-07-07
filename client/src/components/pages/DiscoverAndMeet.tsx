@@ -292,6 +292,19 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
               break;
             }
           }
+          // Check for specific skills
+          else if (tag.type === 'Developer Skill' || tag.type === 'Designer Skill' || tag.type === 'Soft Skill') {
+            const userSkills = item.skills?.map((s) => s?.skill?.toLowerCase())
+            .filter((s) => typeof s === 'string');
+
+            const matched = userSkills?.includes(tag.label.toLowerCase());
+
+            if (!matched) {
+              // No match: exclude from results
+              tagFilterCheck = false;
+              break;
+            }
+          }
           // Check for tag label Designer
           else if (tag.label === 'Designer') {
             if (item.skills) {

@@ -1130,7 +1130,8 @@ New Profile page style rules
   align-self: start;
 
   #project-info-edit {
-    padding: 0.4em 1em;
+    padding: 10px;
+    font-size: 20px;
   }
 }
 

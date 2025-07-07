@@ -134,190 +134,258 @@ const Settings = ({ }) => {
     );
   };
 
-  // User form for changing username/password/email
-  const ChangeForm = ({ type }) => {
-    // Variables
-    const [errorMsg, setError] = useState('');
-    const [successMsg, setSuccess] = useState('');
+// User form for changing username/password/email
+const ChangeForm = ({ type }) => {
+  // Variables
+  const [errorMsg, setError] = useState('');
+  const [successMsg, setSuccess] = useState('');
 
-    // Name of first param changes based on type for API request.
-    // Latter two fields do not change in name
-    const [firstParam, setFirstParam] = useState('');
-    const [confirm, setConfirm] = useState('');
-    const [password, setPassword] = useState('');
+  // Name of first param changes based on type for API request.
+  // Latter two fields do not change in name
+  const [firstParam, setFirstParam] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [password, setPassword] = useState('');
 
-    // Check password qualtiy, if attempting to change password
-    const PasswordChecker = ({ pass }) => {
-      const [missingReqs, setMissingReqs] = useState([]);
+  // Check password qualtiy, if attempting to change password
+  const PasswordChecker = ({ pass }) => {
+    const [missingReqs, setMissingReqs] = useState([]);
 
-      const schema = new PasswordValidator();
-      schema
-        .is()
-        .min(8, '8 or more characters')
-        .is()
-        .max(20, 'Must be 20 characters or fewer')
-        .has()
-        .uppercase(1, 'An uppercase letter')
-        .has()
-        .lowercase(1, 'A lowercase letter')
-        .has()
-        .digits(1, 'A number')
-        .has()
-        .symbols(1, 'A symbol')
-        .has()
-        .not()
-        .spaces(1, 'May not contain any spaces')
-        .has()
-        .not('[^\x00-\x7F]+', 'May only use ASCII characters');
+    const schema = new PasswordValidator();
+    schema
+      .is()
+      .min(8, '8 or more characters')
+      .is()
+      .max(20, 'Must be 20 characters or fewer')
+      .has()
+      .uppercase(1, 'An uppercase letter')
+      .has()
+      .lowercase(1, 'A lowercase letter')
+      .has()
+      .digits(1, 'A number')
+      .has()
+      .symbols(1, 'A symbol')
+      .has()
+      .not()
+      .spaces(1, 'May not contain any spaces')
+      .has()
+      .not('[^\x00-\x7F]+', 'May only use ASCII characters');
 
-      useLayoutEffect(() => {
-        const output = schema.validate(pass, { details: true });
-        setMissingReqs(output);
-      }, [pass]);
+    useLayoutEffect(() => {
+      const output = schema.validate(pass, { details: true });
+      setMissingReqs(output);
+    }, [pass]);
 
-      if (missingReqs.length === 0) {
-        return <></>;
-      } else {
-        return (
-          <div className="pass-reqs">
-            <h4>Password Requirements</h4>
-            <ul>
-              {missingReqs.map((req) => {
-                return <li>{req.message}</li>;
-              })}
-            </ul>
-          </div>
-        );
-      }
-    };
-
-    // Set up params to be correctly passed into API
-    let apiParams = { confirm, password };
-    switch (type) {
-      case 'Username':
-        apiParams['username'] = firstParam;
-        break;
-      case 'Primary Email':
-        apiParams['email'] = firstParam;
-        break;
-      case 'Password':
-        apiParams['newPassword'] = firstParam;
-        break;
+    if (missingReqs.length === 0) {
+      return <></>;
+    } else {
+      return (
+        <div className="pass-reqs">
+          <h4>Password Requirements</h4>
+          <ul>
+            {missingReqs.map((req) => {
+              return <li>{req.message}</li>;
+            })}
+          </ul>
+        </div>
+      );
     }
+  };
 
-    return (
-      <div
-        className="small-popup"
-        onClick={() => {
-          if (successMsg !== '') {
-            setSuccess('');
+  // Set up params to be correctly passed into API
+  let apiParams = { confirm, password };
+  switch (type) {
+    case 'Username':
+      apiParams['username'] = firstParam;
+      break;
+    case 'Primary Email':
+      apiParams['email'] = firstParam;
+      break;
+    case 'Password':
+      apiParams['newPassword'] = firstParam;
+      break;
+  }
 
-            // Update userInfo properly
-            if (type !== 'Password') {
-              // Create deep copy of object, make changes, then call state update
-              const tempInfo = { ...userInfo };
-              tempInfo[type.replace(' ', '_').toLowerCase()] = firstParam;
+  return (
+    <div
+      className="small-popup"
+      onClick={() => {
+        if (successMsg !== '') {
+          setSuccess('');
 
-              setUserInfo(tempInfo);
-            }
+          // Update userInfo properly
+          if (type !== 'Password') {
+            // Create deep copy of object, make changes, then call state update
+            const tempInfo = { ...userInfo };
+            tempInfo[type.replace(' ', '_').toLowerCase()] = firstParam;
+
+            setUserInfo(tempInfo);
           }
-        }}
-      >
-        <h3>Edit {type}{type === 'Phone' ? ' Number' : ''}</h3>
-        {type === 'Password' ? <PasswordChecker pass={firstParam} /> : <></>}
-        <div className="error">{errorMsg}</div>
-        {errorMsg === '' && successMsg !== '' ? <div className="success">{successMsg}</div> : <></>}
-        <hr />
-        <div className="input-fields">
-          <div className="input-container">
-            {/* autoComplete to prevent browser autofill */}
-            <form autoComplete="off">
-              <input
-                placeholder={`Enter new ${type.toLowerCase()}${type === 'Phone' ? ' number' : ''}`}
-                type={type !== 'Password' ? 'text' : 'password'}
-                onChange={(e) => {
-                  setFirstParam(e.target.value)
-                  // Checks if input matches other box, returns error if not
-                  if (e.target.value !== confirm) {
-                    setError(`*${type}s must match.`);
-                  } else {
-                    setError('');
-                  }
-                }}
-                onBlur={async () => {
-                  // TO-DO: Check if already in use if username
-                  // or primary email address. Excludes password
-                  if (type !== 'Password') {
-                    const url = `/api/users/search-${type === 'Username' ? 'username' : 'email'}/${firstParam}`;
-                    const response = await fetch(url);
-                    const data = await response.json();
+        }
+      }}
+    >
+      <h3>Edit {type}{type === 'Phone' ? ' Number' : ''}</h3>
+      {type === 'Password' ? <PasswordChecker pass={firstParam} /> : <></>}
+      <div className="error">{errorMsg}</div>
+      {errorMsg === '' && successMsg !== '' ? <div className="success">{successMsg}</div> : <></>}
+      <hr />
+      <div className="input-fields">
+        <div className="input-container">
+          {/* autoComplete to prevent browser autofill */}
+          <form autoComplete="off">
+            <input
+              placeholder={`Enter new ${type.toLowerCase()}${type === 'Phone' ? ' number' : ''}`}
+              type={type !== 'Password' ? 'text' : 'password'}
+              onChange={(e) => {
+                const value = e.target.value;
+                setFirstParam(value);
 
-                    if (data.data.length > 0) {
-                      setError(`*${type} is already in use.`);
+                // Checks if input matches other box, returns error if not
+                if (value !== confirm) {
+                  setError(`*${type}s must match.`);
+                  return;
+                }
+
+                // Email format validation
+                if (type === 'Primary Email') {
+                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!emailRegex.test(value)) {
+                    setError('*Please enter a valid email address.');
+                    return;
+                  }
+                }
+
+                // Username format validation
+                if (type === 'Username') {
+                  const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+                  if (!usernameRegex.test(value)) {
+                    setError('*Username must be 3-20 characters, letters, numbers, or underscores only.');
+                    return;
+                  }
+                }
+
+                // Phone number format validation
+                if (type === 'Phone') {
+                  const phoneRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+                  if (!phoneRegex.test(value)) {
+                    setError('*Please enter a valid phone number.');
+                    return;
+                  }
+                }
+
+                setError('');
+              }}
+              onBlur={async () => {
+                // TO-DO: Check if already in use if username
+                // or primary email address. Excludes password
+                if (type !== 'Password') {
+                  if (type === 'Primary Email') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(firstParam)) {
+                      setError('*Please enter a valid email address.');
+                      return;
                     }
                   }
-                }}
-              />
-            </form>
-          </div>
-          <div className="input-container">
-            {/* autoComplete to prevent browser autofill */}
-            <form autoComplete="off">
-              <input
-                className="input-container-confirm"
-                placeholder={`Confirm new ${type.toLowerCase()}${type === 'Phone' ? ' number' : ''}`}
-                type={type !== 'Password' ? 'text' : 'password'}
-                onChange={(e) => {
-                  setConfirm(e.target.value);
-
-                  // Checks if input matches other box, returns error if not
-                  if (e.target.value !== firstParam) {
-                    setError(`*${type}s must match.`);
-                  } else {
-                    setError('');
+                  if (type === 'Username') {
+                    const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+                    if (!usernameRegex.test(firstParam)) {
+                      setError('*Username must be 3-20 characters, letters, numbers, or underscores only.');
+                      return;
+                    }
                   }
-                }}
-              />
-            </form>
-          </div>
-          <div className="input-container">
-            {/* autoComplete to prevent browser autofill */}
-            <form autoComplete="off">
-              <input
-                placeholder="Current password"
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </form>
-          </div>
-        </div>
-        <div className="confirm-deny-btns">
-          {/*Enabling the confirmation button:*/}
-          {/*No errors (fields match), no missing reqs for changing password, input exists */}
 
-          {/*Needs to confirm the password!*/}
-          {/*Needs validation for fields! Make sure emails are emails! Etc*/}
-          {/*Both of these will need valid feedback! "Please enter a valid email", "Incorrect password", etc! (Let bugfixing do this)*/}
-          {(errorMsg === '') && (document.getElementsByClassName("pass-reqs")[0] == null) && (firstParam !== '') ?
-            <Popup>
-              <PopupButton className="confirm-btn">Submit</PopupButton>
-              <PopupContent>
-                <ConfirmChange
-                  type={type}
-                  prev={type === 'Username' ? userInfo.username : ''}
-                  cur={type !== 'Password' ? firstParam : ''}
-                  apiParams={apiParams}
-                  setError={setError}
-                  setSuccess={setSuccess}
-                />
-              </PopupContent>
-            </Popup> :
-            <Popup><PopupButton doNotClose={() => true} className="confirm-btn confirm-btn-disabled">Submit</PopupButton></Popup>}
-          <PopupButton className="deny-btn">Cancel</PopupButton>
+                  const url = `/api/users/search-${type === 'Username' ? 'username' : 'email'}/${firstParam}`;
+                  const response = await fetch(url);
+                  const data = await response.json();
+
+                  if (data.data.length > 0) {
+                    setError(`*${type} is already in use.`);
+                  }
+                }
+              }}
+            />
+          </form>
+        </div>
+        <div className="input-container">
+          {/* autoComplete to prevent browser autofill */}
+          <form autoComplete="off">
+            <input
+              className="input-container-confirm"
+              placeholder={`Confirm new ${type.toLowerCase()}${type === 'Phone' ? ' number' : ''}`}
+              type={type !== 'Password' ? 'text' : 'password'}
+              onChange={(e) => {
+                setConfirm(e.target.value);
+
+                // Checks if input matches other box, returns error if not
+                if (e.target.value !== firstParam) {
+                  setError(`*${type}s must match.`);
+                } else {
+                  setError('');
+                }
+              }}
+            />
+          </form>
+        </div>
+        <div className="input-container">
+          {/* autoComplete to prevent browser autofill */}
+          <form autoComplete="off">
+            <input
+              placeholder="Current password"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </form>
         </div>
       </div>
-    );
-  };
+      <div className="confirm-deny-btns">
+        {/*Enabling the confirmation button:*/}
+        {/*No errors (fields match), no missing reqs for changing password, input exists */}
+
+        {/*Needs to confirm the password!*/}
+        {/*Needs validation for fields! Make sure emails are emails! Etc*/}
+        {/*Both of these will need valid feedback! "Please enter a valid email", "Incorrect password", etc! (Let bugfixing do this)*/}
+        {(() => {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+          const phoneRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+
+          if (errorMsg !== '') return false;
+          if (document.getElementsByClassName("pass-reqs")[0] != null) return false;
+          if (firstParam === '') return false;
+
+          if (type === 'Primary Email' && !emailRegex.test(firstParam)) {
+            return false;
+          }
+
+          if (type === 'Username' && !usernameRegex.test(firstParam)) {
+            return false;
+          }
+
+          if (type === 'Phone' && !phoneRegex.test(firstParam)) {
+            return false;
+          }
+
+          return true;
+        })() ?
+          <Popup>
+            <PopupButton className="confirm-btn">Submit</PopupButton>
+            <PopupContent>
+              <ConfirmChange
+                type={type}
+                prev={type === 'Username' ? userInfo.username : ''}
+                cur={type !== 'Password' ? firstParam : ''}
+                apiParams={apiParams}
+                setError={setError}
+                setSuccess={setSuccess}
+              />
+            </PopupContent>
+          </Popup> :
+          <Popup><PopupButton doNotClose={() => true} className="confirm-btn confirm-btn-disabled">Submit</PopupButton></Popup>}
+        <PopupButton className="deny-btn">Cancel</PopupButton>
+      </div>
+    </div>
+  );
+};
+
 
   // Makes request to API to update user's visibility
   // Visibility num corresponds to private vs public

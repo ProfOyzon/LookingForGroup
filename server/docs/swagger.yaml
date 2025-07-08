@@ -233,7 +233,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 
   # USERS
-  /api/users/get-username-shib:
+  /api/users/get-username:
     get:
       summary: Get username through Shibboleth headers
       tags:

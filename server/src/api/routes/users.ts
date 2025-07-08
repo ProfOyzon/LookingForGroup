@@ -16,7 +16,7 @@ import requiresLogin from '../middleware/requires-login.ts';
 const router = Router();
 
 //Gets username by shib ID
-router.get('/get-username-shib', requiresLogin, getUsernameByShib);
+router.get('/get-username', requiresLogin, getUsernameByShib);
 //formerly get-username-session
 
 //Gets users
@@ -47,7 +47,7 @@ router.put('/:id/username', requiresLogin, updateUsername);
 //Updates users visibility
 router.put('/:id/visibility', requiresLogin, updateVisibility);
 
-//Gets user's projects
+//Gets current user's projects
 //router.get('/api/users/:id/projects', mid.checkLogin, userCtrl.getMyProjects);
 
 //Gets another user's visible projects

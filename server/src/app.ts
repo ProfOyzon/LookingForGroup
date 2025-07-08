@@ -1,7 +1,6 @@
 import express, { type Request, type Response } from 'express';
 import morgan from 'morgan';
 import envConfig from '#config/env.ts';
-import authRouter from '#routes/auth.ts';
 import datasetsRouter from '#routes/datasets.ts';
 import projectsRouter from '#routes/projects.ts';
 import usersRouter from '#routes/users.ts';
@@ -24,7 +23,6 @@ if (envConfig.env === 'development') {
 }
 
 app.use('/datasets', datasetsRouter);
-app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/projects', projectsRouter);
 

@@ -82,9 +82,7 @@ export const getUsers = async (): Promise<ApiResponse> => {
  */
 export const getUsersById = async (id: number): Promise<ApiResponse> => {
     const apiURL = `${root}/users/${id}`;
-    const response = await GET(apiURL);
-    return response;
-    
+    return await GET(apiURL);
 }
 
 /**

@@ -12,9 +12,9 @@ type UserResponse = {
   profileImage: string | null;
   headline: string | null;
   pronouns: string | null;
-  job_title: string | null;
+  jobTitle: string | null;
   major: string | null;
-  academic_year: string | null;
+  academicYear: string | null;
   location: string | null;
   funFact: string | null;
 };
@@ -32,7 +32,7 @@ export const getAllUsersService = async (): Promise<UserResponse[] | GetUserServ
         profileImage: true,
         headline: true,
         pronouns: true,
-        academic_year: true,
+        academicYear: true,
         location: true,
         funFact: true,
         jobTitles: {
@@ -44,7 +44,7 @@ export const getAllUsersService = async (): Promise<UserResponse[] | GetUserServ
       },
     });
 
-    //transform the users to what needs to be outputed
+    //transform the users to what needs to be outputted
     const transformedUsers: UserResponse[] = users.map((user) => ({
       userId: user.userId,
       firstName: user.firstName,
@@ -53,10 +53,10 @@ export const getAllUsersService = async (): Promise<UserResponse[] | GetUserServ
       profileImage: user.profileImage,
       headline: user.headline,
       pronouns: user.pronouns,
-      academic_year: user.academic_year ?? null,
+      academicYear: user.academicYear,
       location: user.location,
       funFact: user.funFact,
-      job_title: user.jobTitles?.label ?? null,
+      jobTitle: user.jobTitles?.label ?? null,
       major: user.majors?.label ?? null,
     }));
 

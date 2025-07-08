@@ -22,7 +22,7 @@ import ToTopButton from '../ToTopButton';
 import { devSkills, desSkills } from '../../constants/tags';
 
 //import api utils
-import {getCurrentUsername} from '../../api/users.ts'
+import { getCurrentUsername } from '../../api/users.ts'
 
 type DiscoverAndMeetProps = {
   category: 'projects' | 'profiles';
@@ -156,13 +156,13 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
     }
   }
 
-  const getUsername = async () =>{
+  const getUsername = async () => {
     const res = await getCurrentUsername();
 
 
-    if(res.status === 200 && res.data?.username){
+    if (res.status === 200 && res.data?.username) {
       setUserId(res.data.username)
-    } else{
+    } else {
       setUserId('guest');
     }
   }
@@ -187,6 +187,8 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
     try {
       const response = await fetch(url);
       const data = await response.json();
+      console.log('Projects data:', data);
+
 
       // Don't assign if there's no array returned
       if (data.data !== undefined) {
@@ -219,9 +221,9 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
     setDataLoaded(true);
   };
 
-  if (!dataLoaded) {
+  useEffect(() => {
     getData();
-  }
+  }, []);
 
   // Updates filtered project list with new search info
   const searchItems = (searchResults) => {

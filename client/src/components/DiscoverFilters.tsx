@@ -68,28 +68,28 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
     try {
       let response = await fetch(url);
       const result = await response.json();
-      let data = result.data;
+      let data = Array.isArray(result.data) ? result.data: [];
 
       // Need to also pull from majors and job_titles tables
       if (category === 'profiles') {
         // Get job titles and append it to full data
         response = await fetch(`/api/datasets/job-titles`);
         let extraData = await response.json();
-        if (extraData.data !== undefined) {
+        if (Array.isArray(extraData.data)) {
           extraData.data.forEach((jobTitle: Skill) => data.push({ label: jobTitle.label, type: 'Role' }));
         }
 
         // Get majors and append it to full data
         response = await fetch(`/api/datasets/majors`);
         extraData = await response.json();
-        if (extraData.data !== undefined) {
+        if (Array.isArray(extraData.data)) {
           extraData.data.forEach((major: Skill) => data.push({ label: major.label, type: 'Major' }));
         }
       } else if (category === 'projects') {
         // Pull Project Types and append it to full data
         response = await fetch(`/api/datasets/project-types`);
         let extraData = await response.json();
-        if (extraData.data !== undefined) {
+        if (Array.isArray(extraData.data)) {
           extraData.data.forEach((projectType: Skill) => data.push({ label: projectType.label, type: 'Project Type' }));
         }
       }
@@ -117,12 +117,7 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
           type = 'Genre';
         }
 
-        if(tabs[type]){
-          tabs[type].categoryTags.push(filterTag);
-        } else{
-          console.log(`can find type ${type}`, filterTag);
-        }
-
+        tabs[type].categoryTags.push(filterTag);
       });
 
       setFilterPopupTabs(Object.values(tabs));

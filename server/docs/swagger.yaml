@@ -7,47 +7,7 @@ info:
     Note: When accessed directly from the express app, the endpoints will have an additional "/api" prefix.
     Because of this, please use the vite proxy when reviewing the docs.
 
-# AUTHENTICATION
 paths:
-  /api/auth:
-    get:
-      summary: Check if user is authenticated
-      tags:
-        - Authentication
-      responses:
-        '200':
-          description: Authentication status
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      authenticated:
-                        type: boolean
-                        enum: [true]
-                      username:
-                        type: string
-                        description: Username of user
-                    example:
-                      authenticated: true
-                      username: Mistah Bones
-                  - type: object
-                    properties:
-                      authenticated:
-                        type: boolean
-                        enum: [false]
-                      error:
-                        type: string
-                        description: Reason for no authentication
-                      username:
-                        type: string
-                        description: Username of user
-                    example:
-                      authenticated: false
-                      error: unauthorized
-                      username: guest
-
   # DATASETS
   /api/datasets/job-titles:
     get:
@@ -241,10 +201,10 @@ paths:
       security:
         - shibbolethAuth: []
       description: |
-        Retrieves the username of a user authenticated via Shibboleth. Needs the `x-university-id` header
+        Retrieves the username of a user authenticated via Shibboleth. Needs the uid header
       parameters:
         - in: header
-          name: x-university-id
+          name: uid
           required: true
           schema:
             type: string

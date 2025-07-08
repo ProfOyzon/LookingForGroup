@@ -21,18 +21,19 @@ const ProfileContactTab = (userID: number) => {
     useEffect(() => {
     const loadSocials = async () => {
         try {
-      const response = await getUsersById(userID) // Runs into 401 access error
+      const response = await getUsersById(1) // Runs into 401 access error
       const user = response.data;
       if (response.status === 200) {
-        setSocials(user.socials)
-        setEmail(user.email);
-        setPhone(user.phone);
+        //setSocials(user.socials)
+        setEmail(user[0].first_name);
+        setPhone(user[0].last_name);
         console.log("success!")
       }
 
       console.log("response data:" + response)
 
       // Setup links
+
       if (socials) {
         links = socials.map((s: any) => {
           return {
@@ -49,11 +50,11 @@ const ProfileContactTab = (userID: number) => {
                 else return (<p className = "other-social-link">  <a key = {link.id} href = {link.url.toString()}>{link.url}</a></p>);
             }
         )};
+
     } catch (err){console.log('failed to load socials', err);}
 
     }
     loadSocials();
-
   }, []);
 
 
@@ -66,13 +67,13 @@ const ProfileContactTab = (userID: number) => {
             <div className="contact-info-list">
                 {email && (
                     <div className="email-links"> 
-                        <p>Email: {email}</p>
+                        <p>First Name: {email}</p>
                     </div>                    
                 )}
                 
                 { phone && (
                     <div className="phone-link"> 
-                        <p>Phone: <a href = {phone}>{phone}</a></p>
+                        <p>Last Name: <a href = {phone}>{phone}</a></p>
                     </div>
                 )}
                 { links && (

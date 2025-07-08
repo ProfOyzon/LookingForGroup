@@ -28,7 +28,7 @@ type UserDetail = {
   pronouns: string | null;
   job_title: string | null;
   major: string | null;
-  academic_year: string | null;
+  academicYear: string | null;
   location: string | null;
   funFact: string | null;
   bio: string | null;
@@ -51,7 +51,7 @@ export const getUserByIdService = async (
         profileImage: true,
         headline: true,
         pronouns: true,
-        academic_year: true,
+        academicYear: true,
         location: true,
         funFact: true,
         bio: true,
@@ -66,7 +66,7 @@ export const getUserByIdService = async (
             position: true,
             skills: {
               select: {
-                skill_id: true,
+                skillId: true,
                 label: true,
                 type: true,
               },
@@ -98,7 +98,7 @@ export const getUserByIdService = async (
       profileImage: user.profileImage,
       headline: user.headline,
       pronouns: user.pronouns,
-      academic_year: user.academic_year ?? null,
+      academicYear: user.academicYear,
       location: user.location,
       funFact: user.funFact,
       bio: user.bio,
@@ -107,7 +107,7 @@ export const getUserByIdService = async (
       skills:
         user.userSkills.length > 0
           ? user.userSkills.map(({ position, skills }) => ({
-              id: skills.skill_id,
+              id: skills.skillId,
               skill: skills.label,
               type: skills.type,
               position,

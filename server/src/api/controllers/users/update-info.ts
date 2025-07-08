@@ -47,7 +47,7 @@ export const updateUserInfo: RequestHandler<{ id: string }, unknown, UpdateUserI
   const invalid = Object.keys(updates).filter((field) => !updateFields.includes(field));
 
   if (invalid.length > 0) {
-    res.status(400).json({ message: `Invalid fields: ${invalid}` });
+    res.status(400).json({ message: `Invalid fields: ${JSON.stringify(invalid)}` });
     return;
   }
 

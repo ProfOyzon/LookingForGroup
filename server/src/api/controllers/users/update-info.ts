@@ -1,5 +1,5 @@
 import type { RequestHandler } from 'express';
-import type { users_academic_year } from '#prisma-models/index.js';
+import type { UsersAcademicYear } from '#prisma-models/index.js';
 import { updateUserInfoService } from '#services/users/update-info.ts';
 
 interface UpdateUserInfo {
@@ -9,7 +9,7 @@ interface UpdateUserInfo {
   pronouns?: string;
   jobTitleId?: number;
   majorId?: number;
-  academic_year?: users_academic_year | null;
+  academic_year?: UsersAcademicYear | null;
   location?: string;
   funFact?: string;
   bio?: string;

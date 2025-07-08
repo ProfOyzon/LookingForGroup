@@ -191,18 +191,18 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
 
 
       // Don't assign if there's no array returned
-      if (data.data !== undefined) {
-        setFullItemList(data.data);
-        setFilteredItemList(data.data);
+      if (Array.isArray(data)) {
+        setFullItemList(data);
+        setFilteredItemList(data);
         setItemSearchData(
 
           // loop through JSON, get data based on category
-          data.data.map((item) => {
+          data.map((item) => {
             if (category === 'projects') {
               return { name: item.title, description: item.hook };
             } else {
               return {
-                name: `${item.first_name} ${item.last_name}`,
+                name: `${item.firstName} ${item.lastName}`,
                 username: item.username,
                 bio: item.bio,
               };

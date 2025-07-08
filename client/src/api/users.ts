@@ -64,6 +64,23 @@ export const createNewUser = async (
 }
 
 /**
+ * Checks if the user is logged in (shibboleth) and returns username if they are
+ * @returns ApiResponse with username is logged in, 404 if guest
+ */
+export const getCurrentUsername = async (): Promise<ApiResponse> =>{
+    const apiURL = `${root}/users/get-username`;
+
+    try{
+        //can maybe add custom headers here for dev mode
+        const response = await GET(apiURL);
+        return response;
+    } catch(e){
+         console.log('Error fetching username by Shibboleth:', e);
+        return {status: 500, error: "Internal error"}
+    }
+}
+
+/**
  * Gets all data on all public users. Does not return private ones
  * @returns result - JSONified data of all users, else if error, '400'.
  */
@@ -104,7 +121,6 @@ export const deleteUser = async (id: number): Promise<ApiResponse> => {
     const apiURL = `${root}/users/${id}`;
     return await DELETE(apiURL);
 }
-
 
 
 /* USER VERIFICATION */

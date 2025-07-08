@@ -246,8 +246,7 @@ const NewProfile = () => {
             }}
           >
             <ThemeIcon
-              light={'assets/white/linkedIn_white.svg'}
-              dark={'assets/white/linkedIn_white.svg'}
+              src={'assets/white/linkedIn_white.svg'}
               lightModeColor={'black'}
               alt={'LinkedIn'}
             />
@@ -258,8 +257,7 @@ const NewProfile = () => {
             }}
           >
             <ThemeIcon
-              light={'assets/white/instagram_white.svg'}
-              dark={'assets/white/instagram_white.svg'}
+              src={'assets/white/instagram_white.svg'}
               lightModeColor={'black'}
               alt={'Instagram'}
             />
@@ -274,22 +272,22 @@ const NewProfile = () => {
         <div id="about-me-buttons" className="about-me-buttons-minimal">
           <button>
             <ThemeIcon
-              light={'assets/linkedIn_logo_light.svg'}
-              dark={'assets/linkedIn_logo_dark.svg'}
+              src={'assets/linkedIn_logo_light.svg'}
+              darkSrc={'assets/linkedIn_logo_dark.svg'}
               alt={'LinkedIn'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/instagram_logo_light.svg'}
-              dark={'assets/instagram_logo_dark.svg'}
+              src={'assets/instagram_logo_light.svg'}
+              darkSrc={'assets/instagram_logo_dark.svg'}
               alt={'Instagram'}
             />
           </button>
           <button>
             <ThemeIcon
-              light={'assets/follow_user_light.svg'}
-              dark={'assets/follow_user_dark.svg'}
+              src={'assets/follow_user_light.svg'}
+              darkSrc={'assets/follow_user_dark.svg'}
               alt={'Like/Follow'}
             />
           </button>
@@ -297,8 +295,8 @@ const NewProfile = () => {
           <Dropdown>
             <DropdownButton>
               <ThemeIcon
-                light={'assets/menu_light.svg'}
-                dark={'assets/menu_dark.svg'}
+                src={'assets/menu_light.svg'}
+                darkSrc={'assets/menu_dark.svg'}
                 alt={'More options'}
                 addClass={'dropdown-menu'}
               />
@@ -365,8 +363,7 @@ const NewProfile = () => {
           <div id="profile-info-extras">
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/white/role.svg'}
-                dark={'assets/white/role.svg'}
+                src={'assets/white/role.svg'}
                 lightModeColor={'black'}
                 alt={'Profession'}
               />
@@ -374,8 +371,7 @@ const NewProfile = () => {
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/white/major.svg'}
-                dark={'assets/white/major.svg'}
+                src={'assets/white/major.svg'}
                 lightModeColor={'black'}
                 alt={'Major'}
               />
@@ -383,8 +379,7 @@ const NewProfile = () => {
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/white/location.svg'}
-                dark={'assets/white/location.svg'}
+                src={'assets/white/location.svg'}
                 lightModeColor={'black'}
                 alt={'Location'}
               />
@@ -392,8 +387,7 @@ const NewProfile = () => {
             </div>
             <div className="profile-extra">
               <ThemeIcon
-                light={'assets/white/pronouns.svg'}
-                dark={'assets/white/pronouns.svg'}
+                src={'assets/white/pronouns.svg'}
                 lightModeColor={'black'}
                 alt={'Pronouns'}
               />

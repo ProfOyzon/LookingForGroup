@@ -330,8 +330,8 @@ const MyProjects = () => {
 
       {/* Banner */}
       <ThemeIcon
-        light={'assets/projects_header_light.png'}
-        dark={'assets/projects_header_dark.png'}
+        src={'assets/projects_header_light.png'}
+        darkSrc={'assets/projects_header_dark.png'}
         alt={'My Projects Banner'}
         addClass={'my-projects-banner'}
       />

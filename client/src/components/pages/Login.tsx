@@ -140,8 +140,8 @@ const handleLogin = async () => {
                 *************************************************************/}
         <div className="login-form column">
           <ThemeIcon //Back button to return to the previous page
-            light={'assets/back_light.svg'}
-            dark={'assets/back_dark.svg'}
+            src={'assets/back_light.svg'}
+            darkSrc={'assets/back_dark.svg'}
             alt="Back Button"
             id="backPage-arrow"
             onClick={() => {
@@ -176,16 +176,14 @@ const handleLogin = async () => {
                 {showPassword ? (
                   <ThemeIcon
                     id='eye-icon'
-                    light={'assets/white/password_shown.svg'}
-                    dark={'assets/white/password_shown.svg'}
+                    src={'assets/white/password_shown.svg'}
                     lightModeColor={'black'}
                     alt={'show password'}
                   />) :
                   (
                     <ThemeIcon
                       id='eye-icon'
-                      light={'assets/white/password_hidden.svg'}
-                      dark={'assets/white/password_hidden.svg'}
+                      src={'assets/white/password_hidden.svg'}
                       lightModeColor={'black'}
                       alt={'hide password'}
                     />
@@ -216,8 +214,8 @@ const handleLogin = async () => {
           {/* <h1>Welcome!</h1>
                     <p>Don't have an account?</p> */}
           <ThemeIcon
-            light={'assets/bannerImages/login_light.png'}
-            dark={'assets/bannerImages/login_dark.png'}
+            src={'assets/bannerImages/login_light.png'}
+            darkSrc={'assets/bannerImages/login_dark.png'}
           />
           <button onClick={() => navigate(paths.routes.SIGNUP)}>Sign Up</button>
         </div>

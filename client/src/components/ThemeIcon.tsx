@@ -5,8 +5,8 @@ import { hexToCSSFilter } from 'hex-to-css-filter'; // library to convert hex co
 import { get } from 'http';
 
 type ThemeIconProps = {
-  light: string;
-  dark: string;
+  src: string;
+  darkSrc?: string; // Optional prop for dark mode images
   alt?: string;
   id?: string;
   addClass?: string;
@@ -16,12 +16,19 @@ type ThemeIconProps = {
 };
 
 export const ThemeIcon: React.FC<ThemeIconProps> = memo(
-  ({ light, dark, alt = '', id = '', addClass = '', onClick, lightModeColor, darkModeColor }) => {
+  ({ src, darkSrc, alt = '', id = '', addClass = '', onClick, lightModeColor, darkModeColor }) => {
     const theme = useContext(ThemeContext)['theme'];
 
     // If customColor is provided, white svg will be convert to different color
-    const iconSrc = (lightModeColor || darkModeColor) ? dark : (theme === 'dark' ? dark : light);
-
+   // const iconSrc = (lightModeColor || darkModeColor) ? dark : (theme === 'dark' ? dark : light);
+   
+   // Determine the image based on the theme and custom colors
+   const getImageSource = (): string => {
+    if (darkSrc && theme === 'dark') {
+      return darkSrc;
+    }
+    return src;
+  }
 
     // Function to parse RGB string to RGB object
     // Example input: "rgb(255, 0, 0)"
@@ -140,6 +147,11 @@ export const ThemeIcon: React.FC<ThemeIconProps> = memo(
 
     // Function to get the current color based on the theme
     const getCurrentColor = (): string => {
+      // Don't apply color if no custom colors are provided
+      if (darkSrc) {
+        return 'none';
+      }
+
       // Handle individual theme colors
       if (theme === 'light' && lightModeColor) {
         return lightModeColor;
@@ -153,8 +165,12 @@ export const ThemeIcon: React.FC<ThemeIconProps> = memo(
     const getClasses = () => {
       let classes = `theme-icon ${addClass}`;
 
-      if (lightModeColor || darkModeColor) {
+      if (lightModeColor || darkModeColor && !darkSrc) {
         classes += ' svg-color-icon';
+      }
+
+      if (darkSrc) {
+        classes += ' theme-image-dark';
       }
 
       return classes;
@@ -174,9 +190,7 @@ export const ThemeIcon: React.FC<ThemeIconProps> = memo(
 
     return (
       <img
-        src={iconSrc}
-        src-light={light}
-        src-dark={dark}
+        src={getImageSource()}
         alt={alt}
         id={id}
         className={getClasses()}

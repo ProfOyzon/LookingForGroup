@@ -130,14 +130,14 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
               />
             ) : (
               <ThemeIcon
-                light={'assets/profile_light.svg'}
-                dark={'assets/profile_dark.svg'}
+                src={'assets/profile_light.svg'}
+                darkSrc={'assets/profile_dark.svg'}
                 id={'profile-img-icon'}
               />
             )}
             <ThemeIcon
-              light={'assets/dropdown_light.svg'}
-              dark={'assets/dropdown_dark.svg'}
+              src={'assets/dropdown_light.svg'}
+              darkSrc={'assets/dropdown_dark.svg'}
               id="dropdown-arrow"
             />
           </DropdownButton>
@@ -150,8 +150,8 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
                 {/* (Blank) Profile Icon */}
                 <button id="header-profile-user">
                   <ThemeIcon
-                    light={'assets/profile_light.svg'}
-                    dark={'assets/profile_dark.svg'}
+                    src={'assets/profile_light.svg'}
+                    darkSrc={'assets/profile_dark.svg'}
                     alt={'profile'}
                   />
                   <div>
@@ -166,8 +166,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
                 {/* Dark/Light Theme Switcher */}
                 <button onClick={switchTheme}>
                   <ThemeIcon
-                    light={'assets/white/mode.svg'}
-                    dark={'assets/white/mode.svg'}
+                    src={'assets/white/mode.svg'}
                     lightModeColor={'black'}
                     alt={'current mode'}
                   />
@@ -177,8 +176,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
                 {/* LOG IN Button */}
                 <button onClick={() => navigate(paths.routes.LOGIN, { state: { from: location.pathname } })}>
                   <ThemeIcon
-                    light={'assets/white/logout.svg'}
-                    dark={'assets/white/logout.svg'}
+                    src={'assets/white/logout.svg'}
                     lightModeColor={'black'}
                     alt={'log in'}
                   />
@@ -199,8 +197,8 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
                     />
                   ) : (
                     <ThemeIcon
-                      light={'assets/profile_light.svg'}
-                      dark={'assets/profile_dark.svg'}
+                      src={'assets/profile_light.svg'}
+                      darkSrc={'assets/profile_dark.svg'}
                       alt={'profile'}
                     />
                   )}
@@ -216,8 +214,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
                 {/* Dark/Light Theme Switcher */}
                 <button onClick={switchTheme}>
                   <ThemeIcon
-                    light={'assets/white/mode.svg'}
-                    dark={'assets/white/mode.svg'}
+                    src={'assets/white/mode.svg'}
                     lightModeColor={'black'}
                     alt={'current mode'}
                   />
@@ -227,8 +224,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
                 {/* Settings Link */}
                 <button onClick={() => handlePageChange(paths.routes.SETTINGS)}>
                   <ThemeIcon
-                    light={'assets/white/settings.svg'}
-                    dark={'assets/white/settings.svg'}
+                    src={'assets/white/settings.svg'}
                     lightModeColor={'black'}
                     alt={'settings'}
                   />
@@ -238,8 +234,7 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
                 {/* LOG OUT Button */}
                 <button onClick={() => sendPost('/api/logout')}>
                   <ThemeIcon
-                    light={'assets/white/logout.svg'}
-                    dark={'assets/white/logout.svg'}
+                    src={'assets/white/logout.svg'}
                     lightModeColor={'black'}
                     alt={'log out'}
                   />

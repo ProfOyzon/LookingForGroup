@@ -78,8 +78,8 @@ callback = () => {}
                 <span className='placeholder'>{placeholder}</span>
             )}
             <ThemeIcon 
-                light={'assets/dropdown_light.svg'}
-                dark={'assets/dropdown_dark.svg'}
+                src={'assets/dropdown_light.svg'}
+                darkSrc={'assets/dropdown_dark.svg'}
                 addClass={`select-button-arrow ${(open) ? 'opened' : ''}`}
             />
         </button>

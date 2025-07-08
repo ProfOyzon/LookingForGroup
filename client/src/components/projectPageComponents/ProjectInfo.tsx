@@ -49,8 +49,8 @@ export const ProjectInfo = (props) => {
               onClick={projectPageHelper.toggleOptionDisplay}
             >
               <ThemeIcon
-                light={'assets/menu_light.svg'}
-                dark={'assets/menu_dark.svg'}
+                src={'assets/menu_light.svg'}
+                darkSrc={'assets/menu_dark.svg'}
                 alt={'...'}
               />
             </button>

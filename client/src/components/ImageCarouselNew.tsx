@@ -34,8 +34,8 @@ export const CarouselButton = ({
             onClick={() => handleIndexChange(currentIndex + directionNum)}
         >
             <ThemeIcon
-                light={'assets/arrow_light.svg'}
-                dark={'assets/arrow_dark.svg'}
+                src={'assets/arrow_light.svg'}
+                darkSrc={'assets/arrow_dark.svg'}
                 alt={direction === 'left' ? 'left' : 'right'}
             />
         </button>

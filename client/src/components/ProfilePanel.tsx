@@ -42,19 +42,19 @@ export const ProfilePanel = ({ profileData }: ProfilePanelProps) => {
       <div id="quote">"{profileData.headline}"</div>
       <div className={'profile-panel-hover'} onClick={() => navigate(profileURL)}>
         <div className={'profile-panel-hover-item'}>
-          <ThemeIcon light={'assets/white/role.svg'} dark={'assets/white/role.svg'} lightModeColor={'white'} darkModeColor={'black'} />
+          <ThemeIcon src={'assets/white/role.svg'}  lightModeColor={'white'} darkModeColor={'black'} />
           <p>{profileData.job_title}</p>
         </div>
         <div className={'profile-panel-hover-item'}>
-          <ThemeIcon light={'assets/white/location.svg'} dark={'assets/white/location.svg'} lightModeColor={'white'} darkModeColor={'black'} />
+          <ThemeIcon src={'assets/white/location.svg'} lightModeColor={'white'} darkModeColor={'black'} />
           <p>{profileData.location}</p>
         </div>
         <div className={'profile-panel-hover-item'}>
-          <ThemeIcon light={'assets/white/pronouns.svg'} dark={'assets/white/pronouns.svg'} lightModeColor={'white'} darkModeColor={'black'} />
+          <ThemeIcon src={'assets/white/pronouns.svg'} lightModeColor={'white'} darkModeColor={'black'} />
           <p>{profileData.pronouns}</p>
         </div>
         <div className={'profile-panel-hover-item'}>
-          <ThemeIcon light={'assets/white/funfact.svg'} dark={'assets/white/funfact.svg'} lightModeColor={'white'} darkModeColor={'black'} />
+          <ThemeIcon src={'assets/white/funfact.svg'} lightModeColor={'white'} darkModeColor={'black'} />
           <p>{profileData.fun_fact}</p>
         </div>
       </div>

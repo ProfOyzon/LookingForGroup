@@ -201,8 +201,8 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
     <div className="background-cover">
       <div className="login-signup-container" onKeyDown={handleKeyPress}>
         <ThemeIcon //Back button to return to the previous page
-          light={'assets/back_light.svg'}
-          dark={'assets/back_dark.svg'}
+          src={'assets/back_light.svg'}
+          darkSrc={'assets/back_dark.svg'}
           alt="Back Button"
           id="backPage-arrow"
           onClick={() => navigate(-1)}
@@ -405,8 +405,8 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
           {/* <h1>Welcome!</h1>
                     <p>Already have an account?</p> */}
           <ThemeIcon
-            light={'assets/bannerImages/signup_light.png'}
-            dark={'assets/bannerImages/signup_dark.png'}
+            src={'assets/bannerImages/signup_light.png'}
+            darkSrc={'assets/bannerImages/signup_dark.png'}
           />
           <button onClick={() => navigate(paths.routes.LOGIN)}>Log In</button>
         </div>

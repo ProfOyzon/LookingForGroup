@@ -135,25 +135,25 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
                 className={activePage === 'Discover' ? 'active' : ''}
                 onClick={() => handleTextChange('Discover', paths.routes.HOME)}
               >
-                <ThemeIcon light={'assets/white/compass.svg'} dark={'assets/white/compass.svg'} lightModeColor={'black'} alt={'discover'} />
+                <ThemeIcon src={'assets/white/compass.svg'}  lightModeColor={'black'} alt={'discover'} />
               </button>
               <button
                 className={activePage === 'Meet' ? 'active' : ''}
                 onClick={() => handleTextChange('Meet', paths.routes.MEET)}
               >
-                <ThemeIcon light={'assets/white/meet.svg'} dark={'assets/white/meet.svg'} lightModeColor={'black'} alt={'meet users'} />
+                <ThemeIcon src={'assets/white/meet.svg'} lightModeColor={'black'} alt={'meet users'} />
               </button>
               <button
                 className={activePage === 'My Projects' ? 'active' : ''}
                 onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}
               >
-                <ThemeIcon light={'assets/white/folder.svg'} dark={'assets/white/folder.svg'} lightModeColor={'black'} alt={'my projects'} />
+                <ThemeIcon src={'assets/white/folder.svg'} lightModeColor={'black'} alt={'my projects'} />
               </button>
               <button
                 className={activePage === 'My Profile' ? 'active' : ''}
                 onClick={() => handleTextChange('My Profile', paths.routes.NEWPROFILE)}
               >
-                <ThemeIcon light={'assets/white/profile.png'} dark={'assets/white/profile.png'} lightModeColor={'black'} alt={'my profile'} />
+                <ThemeIcon src={'assets/white/profile.png'} darkSrc={'assets/white/profile.png'} lightModeColor={'black'} alt={'my profile'} />
               </button>
             </div>
           </div>
@@ -179,20 +179,20 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
             className={activePage === 'Discover' ? 'active' : ''}
             onClick={() => handleTextChange('Discover', paths.routes.HOME)}
           >
-            <ThemeIcon light={'assets/white/compass.svg'} dark={'assets/white/compass.svg'} lightModeColor={'black'} alt={'discover'}/>
+            <ThemeIcon src={'assets/white/compass.svg'} lightModeColor={'black'} alt={'discover'}/>
             Discover
           </button>
           <button
             className={activePage === 'Meet' ? 'active' : ''}
             onClick={() => handleTextChange('Meet', paths.routes.MEET)}
           >
-            <ThemeIcon light={'assets/white/meet.svg'} dark={'assets/white/meet.svg'} lightModeColor={'black'} alt={'meet users'} /> Meet
+            <ThemeIcon src={'assets/white/meet.svg'}  lightModeColor={'black'} alt={'meet users'} /> Meet
           </button>
           <button
             className={activePage === 'My Projects' ? 'active' : ''}
             onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}
           >
-            <ThemeIcon light={'assets/white/folder.svg'} dark={'assets/white/folder.svg'} lightModeColor={'black'} alt={'my projects'} /> My
+            <ThemeIcon src={'assets/white/folder.svg'} lightModeColor={'black'} alt={'my projects'} /> My
             Projects
           </button>
           {/* <button className={activePage === 'Following' ? 'active' : ''} onClick={() => handleTextChange('Following', paths.routes.SETTINGS)}>

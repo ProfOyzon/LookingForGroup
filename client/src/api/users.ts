@@ -69,10 +69,14 @@ export const createNewUser = async (
  */
 export const getCurrentUsername = async (): Promise<ApiResponse> =>{
     const apiURL = `${root}/users/get-username`;
+    const uid = sessionStorage.getItem('uid') || '';
+
+    console.log('Sending UID header:', uid);
+
 
     try{
         //can maybe add custom headers here for dev mode
-        const response = await GET(apiURL);
+        const response = await GET(apiURL)
         return response;
     } catch(e){
          console.log('Error fetching username by Shibboleth:', e);

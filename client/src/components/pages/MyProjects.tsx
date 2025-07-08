@@ -19,6 +19,9 @@ import { LeaveDeleteContext } from '../../contexts/LeaveDeleteContext';
 import { ProjectCreatorEditor } from '../ProjectCreatorEditor/ProjectCreatorEditor';
 import { User } from '../Sidebar'; // For use with project creation button
 
+//import api utils
+import {getCurrentUsername} from '../../api/users.ts'
+
 const MyProjects = () => {
 
   const navigate = useNavigate();
@@ -56,23 +59,29 @@ const MyProjects = () => {
   // --------------------
   // Checks if user is logged in and pulls all relevant data
   const getUserProjects = async () => {
-    const authResponse = await fetch('/api/auth');
-    const authData = await authResponse.json();
+    try{
+      const res = await getCurrentUsername();
+    
 
     // User is logged in, pull their data
-    if (authData.status === 200) {
-      setLoggedIn(authData.data);
-      const projectsURL = `/api/users/${authData.data}/projects`;
+    if (res.status === 200 && res.data?.username && res.data.userId) {
+      setLoggedIn(res.data.userId);
+      const projectsURL = `/api/users/${res.data.userId}/projects`;
       const projectsRes = await fetch(projectsURL);
       const data = await projectsRes.json();
 
       if ((data.status === 200) && (data.data[0] !== undefined)) {
         setProjectsList(data.data);
       }
+    } else{
+      //guest
+       setLoggedIn(0);
     }
 
-    if (authResponse.status != 401) setCreateError(false);
-    else setCreateError(true);
+  } catch (e){
+    console.error('error getting projecrs', e);
+    setCreateError(true);
+  }
 
     setDataLoaded(true);
   }

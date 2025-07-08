@@ -117,7 +117,12 @@ export const DiscoverFilters = ({ category, updateItemList }: { category: String
           type = 'Genre';
         }
 
-        tabs[type].categoryTags.push(filterTag);
+        if(tabs[type]){
+          tabs[type].categoryTags.push(filterTag);
+        } else{
+          console.log(`can find type ${type}`, filterTag);
+        }
+
       });
 
       setFilterPopupTabs(Object.values(tabs));

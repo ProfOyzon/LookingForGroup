@@ -18,9 +18,10 @@ export const getUsernameByShib = async (req: Request, res: Response): Promise<vo
   }
 
   if (result === 'NOT_FOUND') {
-    res.status(404).json({ message: 'User not found' });
+    res.status(200).json({ message: 'User not found' });
+    // res.status(200).json({ username: null, loggedIn: false});
     return;
   }
 
-  res.status(200).json({ username: result.username });
+  res.status(200).json({ username: result.username, loggedIn: true });
 };

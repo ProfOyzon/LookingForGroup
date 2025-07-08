@@ -14,7 +14,7 @@ type UpdatebleUserFields = Partial<
     | 'pronouns'
     | 'jobTitleId'
     | 'majorId'
-    | 'academic_year'
+    | 'academicYear'
     | 'location'
     | 'funFact'
     | 'bio'
@@ -36,7 +36,7 @@ export const updateUserInfoService = async (
         pronouns: true,
         jobTitleId: true,
         majorId: true,
-        academic_year: true,
+        academicYear: true,
         location: true,
         funFact: true,
         bio: true,

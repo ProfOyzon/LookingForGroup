@@ -77,10 +77,12 @@ export const PopupContent = ({
   children,
   useClose = true,
   callback = () => { },
+  profilePopup = false,
 }: {
   children: ReactNode;
   useClose?: boolean;
   callback?: () => void;
+  profilePopup?: false | true;
 }) => {
   const { open, setOpen } = useContext(PopupContext);
   const popupRef = useRef(null);
@@ -137,7 +139,7 @@ export const PopupContent = ({
         <div className="popup-cover" />
         <div className="popup-container">
           <div className="popup" ref={popupRef}>
-            <button className="popup-close" onClick={closePopup}>
+            <button className={`popup-close ${profilePopup === true ? 'popup-close-edit' : ''}`} onClick={closePopup}>
               <img src={close} alt="close" />
             </button>
             {children}

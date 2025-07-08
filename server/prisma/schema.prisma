@@ -54,14 +54,14 @@ model Majors {
 }
 
 model Members {
-  projectId          Int                        @map("project_id")
-  userId             Int                        @map("user_id")
-  titleId            Int                        @map("title_id")
-  profile_visibility members_profile_visibility @default(public)
-  createdAt          DateTime                   @default(now()) @map("created_at") @db.Timestamp(0)
-  jobTitles          JobTitles                  @relation(fields: [titleId], references: [titleId], map: "FK_members_job_titles")
-  projects           Projects                   @relation(fields: [projectId], references: [projectId], onDelete: Cascade, map: "FK_members_projects")
-  users              Users                      @relation(fields: [userId], references: [userId], onDelete: Cascade, map: "FK_members_users")
+  projectId         Int                      @map("project_id")
+  userId            Int                      @map("user_id")
+  titleId           Int                      @map("title_id")
+  profileVisibility MembersProfileVisibility @default(public) @map("profile_visibility")
+  createdAt         DateTime                 @default(now()) @map("created_at") @db.Timestamp(0)
+  jobTitles         JobTitles                @relation(fields: [titleId], references: [titleId], map: "FK_members_job_titles")
+  projects          Projects                 @relation(fields: [projectId], references: [projectId], onDelete: Cascade, map: "FK_members_projects")
+  users             Users                    @relation(fields: [userId], references: [userId], onDelete: Cascade, map: "FK_members_users")
 
   @@id([projectId, userId])
   @@index([titleId], map: "FK_members_job_titles")
@@ -190,7 +190,7 @@ model UserSkills {
   userId   Int    @map("user_id")
   skillId  Int    @map("skill_id")
   position Int
-  skills   skills @relation(fields: [skillId], references: [skill_id], onDelete: NoAction, map: "FK_user_skills_skills")
+  skills   Skills @relation(fields: [skillId], references: [skillId], onDelete: NoAction, map: "FK_user_skills_skills")
   users    Users  @relation(fields: [userId], references: [userId], onDelete: Cascade, map: "FK_user_skills_users")
 
   @@id([userId, skillId])
@@ -212,45 +212,47 @@ model UserSocials {
 }
 
 model Users {
-  userId                                         Int                  @id @default(autoincrement()) @map("user_id")
-  username                                       String               @db.Text
-  ritEmail                                       String               @map("rit_email") @db.VarChar(50)
-  firstName                                      String               @map("first_name") @db.Text
-  lastName                                       String               @map("last_name") @db.Text
-  profileImage                                   String?              @map("profile_image") @db.VarChar(100)
-  headline                                       String?              @db.VarChar(100)
-  pronouns                                       String?              @db.Text
-  jobTitleId                                     Int?                 @map("job_title_id")
-  majorId                                        Int?                 @map("major_id")
-  academic_year                                  users_academic_year?
-  location                                       String?              @db.VarChar(150)
-  funFact                                        String?              @map("fun_fact") @db.VarChar(100)
-  bio                                            String?              @db.VarChar(600)
-  visibility                                     Int                  @default(1) @db.TinyInt
-  createdAt                                      DateTime             @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt                                      DateTime             @default(now()) @map("updated_at") @db.Timestamp(0)
-  phoneNumber                                    BigInt?              @map("phone_number")
-  universityId                                   String?              @unique(map: "university_id_UNIQUE") @map("university_id") @db.VarChar(9)
+  userId                                         Int                 @id @default(autoincrement()) @map("user_id")
+  username                                       String              @db.Text
+  ritEmail                                       String              @map("rit_email") @db.VarChar(50)
+  firstName                                      String              @map("first_name") @db.Text
+  lastName                                       String              @map("last_name") @db.Text
+  profileImage                                   String?             @map("profile_image") @db.VarChar(100)
+  headline                                       String?             @db.VarChar(100)
+  pronouns                                       String?             @db.Text
+  jobTitleId                                     Int?                @map("job_title_id")
+  majorId                                        Int?                @map("major_id")
+  academicYear                                   UsersAcademicYear?  @map("academic_year")
+  location                                       String?             @db.VarChar(150)
+  funFact                                        String?             @map("fun_fact") @db.VarChar(100)
+  bio                                            String?             @db.VarChar(600)
+  visibility                                     Int                 @default(1) @db.TinyInt
+  createdAt                                      DateTime            @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt                                      DateTime            @default(now()) @map("updated_at") @db.Timestamp(0)
+  phoneNumber                                    BigInt?             @map("phone_number")
+  universityId                                   String?             @unique(map: "university_id_UNIQUE") @map("university_id") @db.VarChar(9)
   members                                        Members[]
   projectFollowings                              ProjectFollowings[]
   projects                                       Projects[]
-  userFollowingsUserFollowingsFollowingIdTousers UserFollowings[]     @relation("user_followings_following_idTousers")
-  userFollowingsUserFollowingsUserIdTousers      UserFollowings[]     @relation("user_followings_user_idTousers")
+  userFollowingsUserFollowingsFollowingIdTousers UserFollowings[]    @relation("user_followings_following_idTousers")
+  userFollowingsUserFollowingsUserIdTousers      UserFollowings[]    @relation("user_followings_user_idTousers")
   userSkills                                     UserSkills[]
   userSocials                                    UserSocials[]
-  jobTitles                                      JobTitles?           @relation(fields: [jobTitleId], references: [titleId], onDelete: Restrict, map: "FK_users_job_titles")
-  majors                                         Majors?              @relation(fields: [majorId], references: [majorId], onDelete: Restrict, map: "FK_users_majors")
+  jobTitles                                      JobTitles?          @relation(fields: [jobTitleId], references: [titleId], onDelete: Restrict, map: "FK_users_job_titles")
+  majors                                         Majors?             @relation(fields: [majorId], references: [majorId], onDelete: Restrict, map: "FK_users_majors")
 
   @@index([jobTitleId], map: "FK_users_job_titles")
   @@index([majorId], map: "FK_users_majors")
   @@map("users")
 }
 
-model skills {
-  skill_id   Int          @id @default(autoincrement())
+model Skills {
+  skillId    Int          @id @default(autoincrement()) @map("skill_id")
   label      String       @db.VarChar(50)
   type       String       @db.VarChar(50)
   userSkills UserSkills[]
+
+  @@map("skills")
 }
 
 enum JobsAvailability {
@@ -301,16 +303,20 @@ enum ProjectsStatus {
   @@map("projects_status")
 }
 
-enum members_profile_visibility {
+enum MembersProfileVisibility {
   private
   public
+
+  @@map("members_profile_visibility")
 }
 
-enum users_academic_year {
+enum UsersAcademicYear {
   Freshman
   Sophomore
   Junior
   Senior
   Grad1
   Grad2
+
+  @@map("users_academic_year")
 }

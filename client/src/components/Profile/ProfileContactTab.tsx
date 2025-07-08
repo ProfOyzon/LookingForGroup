@@ -25,8 +25,8 @@ const ProfileContactTab = (userID: number) => {
       const user = response.data;
       if (response.status === 200) {
         //setSocials(user.socials)
-        setEmail(user[0].first_name);
-        setPhone(user[0].last_name);
+        setEmail(user.first_name);
+        setPhone(user.last_name);
         console.log("success!")
       }
 

@@ -6,12 +6,15 @@ type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 //get username by shibboleth id
 export const getUserByhibService = async (
   universityId: string,
-): Promise<{ username: string } | GetUserServiceError> => {
+): Promise<{ username: string; userId: number } | GetUserServiceError> => {
   try {
     //findUnique
     const user = await prisma.users.findFirst({
       where: { universityId },
-      select: { username: true },
+      select: {
+        username: true,
+        userId: true,
+      },
     });
 
     if (!user) return 'NOT_FOUND';

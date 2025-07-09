@@ -22,13 +22,36 @@ import { useEffect, useState } from 'react';
 import ToTopButton from '../ToTopButton';
 import EditButton from '../Profile/ProfileEditButton';
 
+//import api utils
+import {getCurrentUsername} from '../../api/users.ts'
+
+//USES OLD API ROUTE
+// Get user ID from API
+// const fetchUserID = async () => {
+//   const response = await fetch('/api/auth');
+//   const {
+//     data: { userID },
+//   } = await response.json();
+//   return userID;
+// };
+
 // Get user ID from API
 const fetchUserID = async () => {
-  const response = await fetch('/api/auth');
-  const {
-    data: { userID },
-  } = await response.json();
-  return userID;
+
+  try {
+    const response = await getCurrentUsername();
+
+    if (response.status === 200 && response.userId) {
+      return response.userId
+    } else{
+      console.log('User not logged in');
+      return null;
+    }
+
+  }catch (e) {
+    console.log('Unexpected error', e);
+      return null;
+  }
 };
 
 // Get list of users on site from API

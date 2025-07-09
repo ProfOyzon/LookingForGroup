@@ -227,7 +227,11 @@ const NewProfile = () => {
       const url = `/api/users/${profileID}`;
 
       try {
-        const data = await getUsersById(profileID);
+        const response = await fetch(`/api/users/${profileID}`);
+        const data = await response.json();
+        console.log("Menagerie");
+        console.log(data);
+        //const data = await getUsersById(profileID);
 
         // Only run this if profile data exists for user
         if (data[0] !== undefined) {

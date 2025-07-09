@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { sendPut, sendFile, fetchUserID } from '../../../functions/fetch';
 import { SocialSelector } from '../../SocialSelector';
+import { getByID } from '../../../api/projects';
+import { getUsersById } from '../../../api/users';
 
 interface LinkData {
   id: Number;
@@ -18,19 +20,30 @@ export const LinksTab = (props) => {
     const loadSocials = async () => {
       // Pick which socials to use based on type
       const userID = await fetchUserID();
-      let url;
-      switch (type) {
+      
+      var data;
+      switch(type){
         case 'project':
-          url = `api/users/${userID}`; // Replace with project url
+          data = getByID(userID).data;
           break;
         default:
-          url = `api/users/${userID}`;
+          data = getUsersById(userID).data;
           break;
-
       }
+
+      //let url;
+      //switch (type) {
+      //  case 'project':
+      //    url = `api/users/${userID}`; // Replace with project url
+      //    break;
+      //  default:
+      //    url = `api/users/${userID}`;
+      //    break;
+//
+      //}
       // fetch for profile on ID
-      const response = await fetch(url);
-      const { data } = await response.json(); // use data[0]
+      //const response = await fetch(url);
+      //const { data } = await response.json(); // use data[0]
       socials = data[0].socials;
       // Setup links
       if (socials) {

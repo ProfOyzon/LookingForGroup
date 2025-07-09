@@ -21,6 +21,7 @@ import { ThemeIcon } from '../ThemeIcon';
 import ToTopButton from '../ToTopButton';
 import { devSkills, desSkills } from '../../constants/tags';
 import { getProjects } from '../../api/projects';
+import { getUsers } from '../../api/users';
 
 type DiscoverAndMeetProps = {
   category: 'projects' | 'profiles';
@@ -169,13 +170,17 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
     // Get user profile
     await getAuth();
 
-    const url = `/api/${category === 'projects' ? 'projects' : 'users'}`;
-
     try {
-      const response = await getProjects();
-      const data = await response.data;
+      var response;
+      
+      if (category == 'projects'){response = await getProjects();}
+      else {response = await getUsers();}
+
+      const data = await response;
+      console.log(data.data);
 
       // Don't assign if there's no array returned
+      console.log(data.data == undefined);
       if (data.data !== undefined) {
         setFullItemList(data.data);
         setFilteredItemList(data.data);

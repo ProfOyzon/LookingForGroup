@@ -12,7 +12,7 @@ import CreditsFooter from '../CreditsFooter';
 import PasswordValidator from 'password-validator';
 import ToTopButton from '../ToTopButton';
 import * as paths from '../../constants/routes';
-import { getUserByEmail, getUserByUsername } from '../../api/users';
+import { getUserByEmail, getUserByUsername, getAccountInformation } from '../../api/users';
 
 // Take the user ID and delete it
 const deleteAccountPressed = async () => {
@@ -51,10 +51,7 @@ const Settings = ({ }) => {
 
     // User is logged in, pull their data
     if (authData.status === 200) {
-      const infoURL = `/api/users/${authData.data}/account`;
-      const infoResponse = await fetch(infoURL);
-      const data = await infoResponse.json();
-
+      const data = await getAccountInformation(authData.data);
       if (data.status === 200 && data.data[0] !== undefined) {
         setUserInfo(data.data[0]);
       }
@@ -242,9 +239,6 @@ const Settings = ({ }) => {
                   // TO-DO: Check if already in use if username
                   // or primary email address. Excludes password
                   if (type !== 'Password') {
-                    //const url = `/api/users/search-${type === 'Username' ? 'username' : 'email'}/${firstParam}`;
-                    //const response = await fetch(url);
-                    //const data = await response.json();
                     let data;
                     if (type ==='Username')   data = await getUserByUsername(firstParam);
                     else                      data = await getUserByEmail(firstParam);

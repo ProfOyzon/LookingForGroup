@@ -27,6 +27,8 @@ import * as paths from '../../constants/routes';
 import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
 import { sendPost, sendDelete } from '../../functions/fetch';
+import { getByID } from '../../api/projects';
+import { getAccountInformation } from '../../api/users';
 
 //backend base url for getting images
 const API_BASE = `http://localhost:8081`;
@@ -118,8 +120,7 @@ const NewProject = () => {
     const url = `/api/projects/${projectID}`;
 
     try {
-      const response = await fetch(url);
-      const projectData = await response.json();
+      const projectData = await getByID(projectID);
 
       if (projectData.data[0] === undefined) {
         setFailCheck(true);
@@ -131,8 +132,7 @@ const NewProject = () => {
       const authData = await authRes.json();
 
       if (authData.data) {
-        const userRes = await fetch(`/api/users/${authData.data}`);
-        const userData = await userRes.json();
+        const userData = await getAccountInformation(authData.data);
 
         console.log('user')
         console.log(userData.data);

@@ -23,6 +23,7 @@ import { fetchUserID } from '../../functions/fetch';
 import { ProfileInterests } from '../Profile/ProfileInterests';
 import profilePicture from '../../images/blue_frog.png';
 import { getByID } from '../../api/projects';
+import { getAccountInformation, getUsersById } from '../../api/users';
 
 //backend base url for getting images
 const API_BASE = `http://localhost:8081`;
@@ -186,9 +187,10 @@ const NewProfile = () => {
     }
 
     try {
-      //const response = await fetch(url);
-      //const { data } = await response.json();
-      const { data } = await getByID(profileID).data;
+      const { data } = await getByID(profileID); // INCORRECT IMPLEMENTATION NEEDS TO BE CHANGED
+      const data2 = await getAccountInformation(profileID);
+      
+      console.log(data);
 
       // Only update if there's data
       if (data !== undefined) {
@@ -225,8 +227,7 @@ const NewProfile = () => {
       const url = `/api/users/${profileID}`;
 
       try {
-        const response = await fetch(url);
-        const { data } = await response.json();
+        const data = await getUsersById(profileID);
 
         // Only run this if profile data exists for user
         if (data[0] !== undefined) {

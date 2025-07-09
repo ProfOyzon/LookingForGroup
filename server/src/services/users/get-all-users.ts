@@ -1,25 +1,10 @@
 import prisma from '#config/prisma.ts';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
+import type { UserDetail } from '../../../../shared/types.ts';
 
 type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
-//show only non-sensitive data
-type UserResponse = {
-  userId: number;
-  firstName: string;
-  lastName: string;
-  username: string;
-  profileImage: string | null;
-  headline: string | null;
-  pronouns: string | null;
-  jobTitle: string | null;
-  major: string | null;
-  academicYear: string | null;
-  location: string | null;
-  funFact: string | null;
-};
-
-export const getAllUsersService = async (): Promise<UserResponse[] | GetUserServiceError> => {
+export const getAllUsersService = async (): Promise<UserDetail[] | GetUserServiceError> => {
   try {
     const users = await prisma.users.findMany({
       where: { visibility: 1 },
@@ -45,7 +30,7 @@ export const getAllUsersService = async (): Promise<UserResponse[] | GetUserServ
     });
 
     //transform the users to what needs to be outputted
-    const transformedUsers: UserResponse[] = users.map((user) => ({
+    const transformedUsers: UserDetail[] = users.map((user) => ({
       userId: user.userId,
       firstName: user.firstName,
       lastName: user.lastName,

@@ -40,6 +40,7 @@ export interface Skill {
     skillId: number;
     label: string;
     type: SkillType;
+    position: number;
 }
 
 export interface ProjectType {
@@ -81,7 +82,7 @@ export type UserDetail = {
     profileImage: string | null;
     headline: string | null;
     pronouns: string | null;
-    job_title: string | null;
+    jobTitle: string | null;
     major: string | null;
     academicYear: string | null;
     location: string | null;
@@ -132,16 +133,16 @@ export interface CreateUserData {
 // Projects
 
 export interface Project {
-  projectId: number;
-  name: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-  projectGenres: Tag[];
-  projectTags: Tag[];
-  projectImages: ProjectImage[];
-  projectSocials: Social[];
-  jobs: JobTitle[]; 
-  members: UserPreview[];
-  users: UserPreview[]; 
+    projectId: number;
+    name: string;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
+    projectGenres: Tag[];
+    projectTags: Tag[];
+    projectImages: ProjectImage[];
+    projectSocials: Social[];
+    jobs: JobTitle[];
+    members: UserPreview[];
+    users: UserPreview[];
 }

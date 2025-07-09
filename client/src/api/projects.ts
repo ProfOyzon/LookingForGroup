@@ -1,5 +1,6 @@
 import { GET, POST, PUT, DELETE } from './index'
-import { ApiResponse, ProjectType, Tag, JobTitles, Member, Social } from './types';
+import type {ApiResponse, ProjectType, Tag, JobTitle, Member, Social } from '../../../shared/types.ts';
+
 
 const root = '/api'
 
@@ -35,7 +36,7 @@ export const createNewProject = async (
     _audience: string,
     _pTypes: ProjectType[],
     _pTags: Tag[],
-    _jobs: JobTitles[],
+    _jobs: JobTitle[],
     _members: Member[],
     _socials: Social[],
 ): Promise<unknown> => {

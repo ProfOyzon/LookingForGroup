@@ -1,25 +1,10 @@
 import { GET, POST, PUT, DELETE } from './index'
-import { User, Skill, Social, ApiResponse } from './types';
+import type { ApiResponse, User, CreateUserData } from '../../../shared/types.ts';
 
 const root = '/api'
 
 
 /* USER CRUD */
-
-
-export interface CreateUserData {
-    firstName: string;
-    lastName: string;
-    headline: string;
-    pronouns: string;
-    jobTitleId: number;
-    majorId: number;
-    academicYear: number;
-    location: string;
-    funFact: string;
-    skills: Skill[];
-    socials: Social[];
-}
 
 //This probably with change with shibbolth???
 /**

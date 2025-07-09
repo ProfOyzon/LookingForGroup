@@ -57,6 +57,7 @@ export interface ProjectImage {
 }
 
 export interface Member {
+    projectId: number;
     userId: number;
     titleId: number;
     permission: number;
@@ -134,15 +135,20 @@ export interface CreateUserData {
 
 export interface Project {
     projectId: number;
-    name: string;
+    title: string;
+    hook: string;
     description: string;
-    createdAt: string;
-    updatedAt: string;
-    projectGenres: Tag[];
+    thumbnail?: string;
+    purpose?: string;
+    status?: string;
+    audience?: string;
+    createdAt: Date;
+    updatedAt: Date;
+    projectType: ProjectType[];
     projectTags: Tag[];
     projectImages: ProjectImage[];
     projectSocials: Social[];
     jobs: JobTitle[];
-    members: UserPreview[];
-    users: UserPreview[];
+    members: Member[];
+    followers?: UserPreview[];
 }

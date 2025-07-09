@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { ProjectPanel } from './ProjectPanel';
 import { ProfilePanel } from './ProfilePanel';
+import type { Project, UserDetail } from '../../../../shared/types.ts';
+
 
 // Item list should use "useState" so that it'll re-render on the fly
 // And so that no search functionality needs to be included in this component
@@ -18,8 +20,13 @@ export const PanelBox = ({ category, itemList, itemAddInterval, userId = 0 }) =>
   // Adds new items to the display if user has scrolled to bottom of currently displayed list
   // Increases by intervals of "itemAddInterval" until all items have been added
   const addItems = () => {
+    console.log('addItems called:', category);
     const panelBoxName = `${category === 'projects' ? 'project' : 'profile'}-panel-box`;
-    const { scrollTop, scrollHeight, clientHeight } = document.querySelector(panelBoxName)!;
+    console.log("panel box name" + panelBoxName);
+    //const { scrollTop, scrollHeight, clientHeight } = document.querySelector(`.${panelBoxName}`)!;
+    const panelBox = document.querySelector(`.${panelBoxName}`);
+    if (!panelBox) return;
+    const { scrollTop, scrollHeight, clientHeight } = panelBox;
 
     // Check if the user has scrolled to the bottom of the panel box
     if (scrollTop + clientHeight >= scrollHeight) {
@@ -35,7 +42,7 @@ export const PanelBox = ({ category, itemList, itemAddInterval, userId = 0 }) =>
       <div className="project-panel-box" onScroll={addItems}>
         {displayedItems.length > 0 ? (
           displayedItems.map((project) => (
-            <ProjectPanel project={project} key={project.project_id} userId={userId} />
+            <ProjectPanel project={project as Project} key={(project as Project).projectId} userId={userId} />
           ))
         ) : (
           <>Sorry, no projects here</>
@@ -50,7 +57,7 @@ export const PanelBox = ({ category, itemList, itemAddInterval, userId = 0 }) =>
       <div className="profile-panel-box" onScroll={addItems}>
         {displayedItems.length > 0 ? (
           displayedItems.map((profile) => (
-            <ProfilePanel profileData={profile} key={profile.user_id} />
+            <ProfilePanel profileData={profile as UserDetail} key={(profile as UserDetail).userId} />
           ))
         ) : (
           <>Sorry, no people here</>

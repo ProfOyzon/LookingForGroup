@@ -4,6 +4,9 @@ import * as paths from '../constants/routes';
 import placeholderThumbnail from '../images/project_temp.png';
 import { sendDelete, sendPost } from '../functions/fetch';
 
+//shared interface 
+import type { Project, UserPreview } from '../../../shared/types.ts';
+
 //Component that will contain info about a project, used in the discovery page
 //Smaller and more concise than ProjectCard.tsx
 
@@ -13,54 +16,34 @@ import { sendDelete, sendPost } from '../functions/fetch';
 //backend base url for getting images
 const API_BASE = `http://localhost:8081`;
 
-interface ProjectType {
-  id: number;
-  project_type: string;
-}
-
-interface ProjectTag {
-  id: number;
-  tag: string;
-  type: string;
-}
-
-interface ProjectData {
-  project_id: number;
-  title: string;
-  hook: string;
-  thumbnail: string | null;
-  followers: {
-    count: number;
-    isFollowing: boolean;
-  };
-  project_types: ProjectType[];
-  tags: ProjectTag[];
-}
-
 interface ProjectPanelProps {
-  project: ProjectData;
+  project: Project;
   userId: number;
 }
 
 export const ProjectPanel = ({ project, userId }: ProjectPanelProps) => {
   const navigate = useNavigate();
-  const projectURL = `${paths.routes.NEWPROJECT}?projectID=${project.project_id}`;
-  
-  const [followCount, setFollowCount] = useState(project.followers.count);
-  const [isFollowing, setFollowing] = useState(project.followers.isFollowing);
+  const projectURL = `${paths.routes.NEWPROJECT}?projectID=${project.projectId}`;
+
+  //if user is already following
+  const startIsFollowing = project.followers?.some(
+    (follower: UserPreview) => follower.userId === userId
+  )
+  const [followCount, setFollowCount] = useState(project.followers?.length);
+  const [isFollowing, setFollowing] = useState(startIsFollowing);
 
   // Formats follow-count based on Figma design. Returns a string
-const formatFollowCount = (followers: number): string => {
-  const followerNum = followers;
+  const formatFollowCount = (followers: number): string => {
+    const followerNum = followers;
 
-  if (followerNum >= 1000) {
-    const multOfHundred = (followerNum % 100) === 0;
-    const formattedNum = (followerNum / 1000).toFixed(1);
-    return `${formattedNum}K ${multOfHundred ? '+' : ''}`;
-  }
+    if (followerNum >= 1000) {
+      const multOfHundred = (followerNum % 100) === 0;
+      const formattedNum = (followerNum / 1000).toFixed(1);
+      return `${formattedNum}K ${multOfHundred ? '+' : ''}`;
+    }
 
-  return `${followerNum}`;
-};
+    return `${followerNum}`;
+  };
 
 
   return (
@@ -107,12 +90,12 @@ const formatFollowCount = (followers: number): string => {
                   let url = `/api/users/${userId}/followings/projects`;
 
                   if (!isFollowing) {
-                    sendPost(url, { projectId: project.project_id }, () => {
+                    sendPost(url, { projectId: project.projectId }, () => {
                       setFollowing(true);
                       setFollowCount(followCount + 1);
                     });
                   } else {
-                    url += `/${project.project_id}`;
+                    url += `/${project.projectId}`;
                     sendDelete(url, () => {
                       setFollowing(false);
                       setFollowCount(followCount - 1);
@@ -126,12 +109,12 @@ const formatFollowCount = (followers: number): string => {
           </div>
         </div>
         <div id="project-panel-tags">
-          {project.project_types.map((projectType: ProjectType) => (
-            <div className='skill-tag-label label-blue' key={projectType.id}>
-              {projectType.project_type}
+          {project.projectType.map((projectType) => (
+            <div className='skill-tag-label label-blue' key={projectType.typeId}>
+              {projectType.label}
             </div>
           ))}
-          {project.tags.map((tag: ProjectTag, index: number) => {
+          {project.projectTags.map((tag) => {
             let category: string;
             switch (tag.type) {
               case 'Design':
@@ -150,13 +133,12 @@ const formatFollowCount = (followers: number): string => {
               default:
                 category = 'grey';
             }
-            if (index < 3) {
-              return (
-                <div className={`skill-tag-label label-${category}`} key={tag.id}>
-                  {tag.tag}
-                </div>
-              );
-            }
+            return (
+              <div className={`skill-tag-label label-${category}`} key={tag.tagId}>
+                {tag.label}
+              </div>
+            );
+
           })}
         </div>
         <div id="quote">{project.hook}</div>

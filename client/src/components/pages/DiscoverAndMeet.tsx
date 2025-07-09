@@ -21,6 +21,9 @@ import { ThemeIcon } from '../ThemeIcon';
 import ToTopButton from '../ToTopButton';
 import { devSkills, desSkills } from '../../constants/tags';
 
+//shared interfaces
+import type { UserDetail, Project, Tag, Skill } from '../../../../shared/types.ts';
+
 //import api utils
 import { getCurrentUsername } from '../../api/users.ts'
 
@@ -33,34 +36,34 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
   // --------------------
   // Interfaces
   // --------------------
-  interface Tag {
-    tag: string;
-    color: string;
-    id: number;
-  }
+  // interface Tag {
+  //   tag: string;
+  //   color: string;
+  //   id: number;
+  // }
 
-  interface Skill {
-    id: number;
-    name: string;
-  }
+  // interface Skill {
+  //   id: number;
+  //   name: string;
+  // }
 
-  interface ProjectType {
-    project_type: string;
-  }
+  // interface ProjectType {
+  //   project_type: string;
+  // }
 
-  interface Item {
-    tags?: Tag[];
-    title?: string;
-    hook?: string;
-    project_types?: ProjectType[];
-    job_title?: string;
-    major?: string;
-    skills?: Skill[];
-    first_name?: string;
-    last_name?: string;
-    username?: string;
-    bio?: string;
-  }
+  // interface Item {
+  //   tags?: Tag[];
+  //   title?: string;
+  //   hook?: string;
+  //   project_types?: ProjectType[];
+  //   job_title?: string;
+  //   major?: string;
+  //   skills?: Skill[];
+  //   first_name?: string;
+  //   last_name?: string;
+  //   username?: string;
+  //   bio?: string;
+  // }
 
   // --------------------
   // Components
@@ -123,17 +126,17 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   // Full data and displayed data based on filter/search query
-  const [fullItemList, setFullItemList] = useState<Item[]>([]);
-  const [filteredItemList, setFilteredItemList] = useState<Item[]>([]);
+  const [fullItemList, setFullItemList] = useState<(Project | UserDetail)[]>([]);
+  const [filteredItemList, setFilteredItemList] = useState<(Project | UserDetail)[]>([]);
 
   // Need this for searching
-  let tempItemList: Item[] = fullItemList;
+  let tempItemList: (Project | UserDetail)[] = fullItemList;
 
   // List that holds trimmed data for searching. Empty before fullItemList is initialized
-  const [itemSearchData, setItemSearchData] = useState([]);
+  const [itemSearchData, setItemSearchData] = useState<any[]>([]);
 
   // Stores userId for ability to follow users/projects
-  const [userId, setUserId] = useState<string>('guest');
+  const [userId, setUserId] = useState<number | 'guest'>(0);
 
   // Format data for use with SearchBar, which requires it to be: [{ data: }]
   const dataSet = useMemo(() => {
@@ -147,16 +150,8 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
   // --------------------
   // Helper functions
   // --------------------
+
   const getAuth = async () => {
-    const res = await fetch(`/api/auth`);
-    const data = await res.json();
-
-    if (data.data) {
-      setUserId(data.data);
-    }
-  }
-
-  const getUsername = async () => {
     const res = await getCurrentUsername();
 
 
@@ -169,7 +164,7 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
 
   // Limits React state update warning
   useEffect(() => {
-    getUsername();
+    getAuth();
   }, []);
 
   /*
@@ -180,34 +175,38 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
   */
   const getData = async () => {
     // Get user profile
-    await getUsername();
+    await getAuth();
 
     const url = `/api/${category === 'projects' ? 'projects' : 'users'}`;
 
     try {
       const response = await fetch(url);
       const data = await response.json();
-      console.log('Projects data:', data);
 
+      if (!data) return;
 
-      // Don't assign if there's no array returned
-      if (Array.isArray(data)) {
-        setFullItemList(data);
-        setFilteredItemList(data);
+      if (category === 'projects') {
+        const projects = data as Project[];
+        setFullItemList(projects);
+        setFilteredItemList(projects);
+        // loop through JSON for projects
         setItemSearchData(
-
-          // loop through JSON, get data based on category
-          data.map((item) => {
-            if (category === 'projects') {
-              return { name: item.title, description: item.hook };
-            } else {
-              return {
-                name: `${item.firstName} ${item.lastName}`,
-                username: item.username,
-                bio: item.bio,
-              };
-            }
-          })
+          projects.map((item) => ({
+            name: item.title,
+            description: item.hook,
+          }))
+        );
+      } else {
+        const users = data as UserDetail[];
+        setFullItemList(users);
+        setFilteredItemList(users);
+        // loop through JSON for users
+        setItemSearchData(
+          users.map((item) => ({
+            name: `${item.firstName} ${item.lastName}`,
+            username: item.username,
+            bio: item.bio ?? 'No bio...',
+          }))
         );
       }
     } catch (error) {
@@ -221,9 +220,9 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
     setDataLoaded(true);
   };
 
-  useEffect(() => {
+  if (!dataLoaded) {
     getData();
-  }, []);
+  }
 
   // Updates filtered project list with new search info
   const searchItems = (searchResults) => {
@@ -256,10 +255,11 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
 
       for (const tag of activeTagFilters) {
         if (category === 'projects') {
+          const project = item as Project;
           // Check project type by name since IDs are not unique relative to tags
           if (tag.type === 'Project Type') {
-            if (item.project_types) {
-              const projectTypes = item.project_types.map((tag) => tag.project_type.toLowerCase());
+            if (project.projectType) {
+              const projectTypes = project.projectType?.map((tag) => tag.label.toLowerCase()) ?? [];
 
               if (!projectTypes.includes(tag.label.toLowerCase())) {
                 tagFilterCheck = false;
@@ -272,67 +272,45 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
           }
 
           // Tag check can be done by ID
-          if (tag.tag_id) {
-            if (item.tags) {
-              const tagIDs = item.tags.map((tag) => tag.id);
+          if (tag.typeId) {
+            const tagIDs = project.projectTags?.map((tag) => tag.tagId);
 
-              if (!tagIDs.includes(tag.tag_id)) {
-                tagFilterCheck = false;
-                break;
-              }
-            } else {
+            if (!tagIDs.includes(tag.tagId)) {
               tagFilterCheck = false;
               break;
             }
           }
+
         } else {
+          const user = item as UserDetail;
+
+
           // Check for tag label Developer
-          if (tag.label === 'Developer') {
-            if (item.skills) {
-              // Get all skills from users
-              const userSkills = item.skills.map((skill) => skill?.skill?.toLowerCase?.())
-                .filter((label) => typeof label === 'string');
-
-              // Check if skills match developer skills
-              const matched = devSkills.some((dev) => userSkills.includes(dev.toLowerCase().trim()));
-
-              if (!matched) {
-                // No match: exclude from results
-                tagFilterCheck = false;
-                break;
-              }
+          if (tag.label === 'Developer' || tag.label === 'Designer') {
+            // Get all skills from users
+            const userSkills = user.skills?.map((skill) => skill.label.toLowerCase?.())
+            let skillList = []
+            if (tag.label === 'Developer') {
+              skillList = devSkills;
+            } else{
+              skillList = desSkills;
             }
-            else {
-              // No skills: exclude from results
-              tagFilterCheck = false;
-              break;
-            }
-          }
-          // Check for tag label Designer
-          else if (tag.label === 'Designer') {
-            if (item.skills) {
-              // Get all skills from user
-              const userSkills = item.skills.map((skill) => skill?.skill?.toLowerCase?.())
-                .filter((label) => typeof label === 'string');
 
-              // Check if skills match designer skills
-              const matched = desSkills.some((des) => userSkills.includes(des.toLowerCase()));
-
-              if (!matched) {
-                // No match: exclude from results
-                tagFilterCheck = false;
-                break;
-              }
-            } else {
+            // Check if skills match developer skills
+            const matched = skillList.some((dev) => userSkills.includes(dev.toLowerCase().trim()));
+            if (!matched) {
               // No match: exclude from results
               tagFilterCheck = false;
               break;
             }
           }
+
+
+
           // Check role and major by name since IDs are not unique relative to tags
           else if (tag.type === 'Role') {
-            if (item.job_title) {
-              if (item.job_title.toLowerCase() !== tag.label.toLowerCase()) {
+            if (user.jobTitle) {
+              if (user.jobTitle.toLowerCase() !== tag.label.toLowerCase()) {
                 tagFilterCheck = false;
                 break;
               }
@@ -341,8 +319,8 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
               break;
             }
           } else if (tag.type === 'Major') {
-            if (item.major) {
-              if (item.major.toLowerCase() !== tag.label.toLowerCase()) {
+            if (user.major) {
+              if (user.major.toLowerCase() !== tag.label.toLowerCase()) {
                 tagFilterCheck = false;
                 break;
               }
@@ -350,10 +328,10 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
               tagFilterCheck = false;
               break;
             }
-          } else if (tag.tag_id) {
+          } else if (tag.tagId) {
             // Skill check can be done by ID
-            if (item.skills) {
-              const skillIDs = item.skills.map((skill) => skill.id);
+            if (user.skills) {
+              const skillIDs = user.skills.map((skill) => skill.skillId);
 
               if (!skillIDs.includes(tag.tag_id)) {
                 tagFilterCheck = false;

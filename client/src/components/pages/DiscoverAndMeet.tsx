@@ -21,6 +21,17 @@ import { ThemeIcon } from '../ThemeIcon';
 import ToTopButton from '../ToTopButton';
 import { devSkills, desSkills } from '../../constants/tags';
 
+import { loggedIn } from '../Header';
+import { useLocation } from 'react-router-dom';
+import { routes } from '../../constants/routes';
+import { Popup, PopupContent, PopupButton } from '../Popup';
+import { GeneralTab } from '../ProjectCreatorEditor/tabs/GeneralTab';
+import { LinksTab } from '../ProjectCreatorEditor/tabs/LinksTab';
+import { MediaTab } from '../ProjectCreatorEditor/tabs/MediaTab';
+import { TagsTab } from '../ProjectCreatorEditor/tabs/TagsTab';
+import { TeamTab } from '../ProjectCreatorEditor/tabs/TeamTab';
+import { emptyProject, isNewProject } from '../ProjectCreatorEditor/ProjectCreatorEditor';
+
 type DiscoverAndMeetProps = {
   category: 'projects' | 'profiles';
 };
@@ -140,6 +151,21 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
   // When passing in data for project carousel, just pass in first three projects
   const heroContent =
     category === 'projects' ? <DiscoverCarousel dataList={fullItemList.slice(0, 3)} /> : profileHero;
+
+  // Used for Popup
+  const location = useLocation(); // Hook to access the current location
+  const previousLoc = document.referrer; // Get the previous page from the location state, if available
+  const [currentTab, setCurrentTab] = useState(0); // for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
+  const [modifiedProject, setModifiedProject] = useState(emptyProject);
+  
+  // Errors
+  const [errorAddMember, setErrorAddMember] = useState('');
+  const [errorAddPosition, setErrorAddPosition] = useState('');
+  const [errorLinks, setErrorLinks] = useState('');
+
+  //State variable for error message
+  const [message, setMessage] = useState('')
+
 
   // --------------------
   // Helper functions
@@ -364,6 +390,241 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
     setFilteredItemList(tagFilteredList);
   };
 
+  // Save links to modifiedProject
+  const updateLinks = () => {
+    // temp social links
+    const newSocials: { id: number, url: string }[] = [];
+
+    // get parent element
+    const parentDiv = document.querySelector('#project-editor-link-list');
+
+    // iterate through children
+    parentDiv?.childNodes.forEach(element => {
+      // skip element if its the last (add button)
+      if (element === parentDiv.lastElementChild) {
+        return;
+      }
+
+      // get dropdown and input
+      const dropdown = (element as HTMLElement).querySelector('select');
+      const input = (element as HTMLElement).querySelector('input');
+
+      // get values
+      const id = Number(dropdown?.options[dropdown?.selectedIndex].dataset.id);
+      const url = input?.value;
+
+      // if no values at all, ignore and remove
+      if (!id && !url) {
+        return;
+      }
+      // check for valid id
+      if (isNaN(id) || id === -1) {
+        setErrorLinks('Select a website in the dropdown');
+        return;
+      }
+      if (!url) {
+        setErrorLinks('Enter a URL');
+        return;
+      }
+
+      // add to list
+      newSocials.push({ id: id, url: url });
+
+      // remove error
+      setErrorLinks('');
+    });
+
+    // update socials
+    setModifiedProject({ ...modifiedProject, socials: newSocials });
+  };
+
+  // //Save project editor changes
+  // const saveProject = async () => {
+  //   // default to no errors
+  //   setFailCheck(false);
+
+  //   // save if on link tab
+  //   if (currentTab === 4) updateLinks();
+
+  //   if (errorAddMember !== '' ||
+  //       errorAddPosition !== '' ||
+  //       errorLinks !== '') {
+  //     setFailCheck(true);
+  //     return;
+  //   }
+
+  //   // --- Creator ---
+  //   if(newProject) {
+  //     try {
+  //       // Record information from inputs
+
+  //     } 
+  //     catch (error) {
+  //       console.error(error);
+  //       return false;
+  //     }
+  //   }
+
+  //   // --- Editor ---
+  //   if (!newProject) {
+  //     try {
+  //       // Update images
+  //       let dbImages: Image[] = [];
+  //       // Get images on database
+  //       const picturesResponse = await fetch(`/api/projects/${projectID}/pictures`);
+  //       const imagesResponse = await picturesResponse.json();
+  //       const imageData = imagesResponse.data;
+
+  //       // add images to reference later
+  //       dbImages = imageData;
+
+  //       // Compare new images to database to find images to delete
+  //       const imagesToDelete: Image[] = dbImages.filter(
+  //         image => !modifiedProject.images.find( newImage => newImage.image === image.image)
+  //       );
+
+  //       // Delete images
+  //       await Promise.all(
+  //         imagesToDelete.map(async (image) => {
+  //           // remove image from database
+  //           await fetch(`/api/projects/${projectID}/pictures`, {
+  //             method: 'DELETE',
+  //             headers: {
+  //               'Content-Type': 'application/json',
+  //             },
+  //             body: JSON.stringify({ image: image.image })
+  //           });
+  //         })
+  //       );
+
+  //       // Add new images to database
+  //       // Wrap upload in promise
+  //       const uploadImages = modifiedProject.images.map(async (image) => {
+  //         if (!dbImages.find((dbImage) => dbImage.image === image.image)) {
+  //           // file must be new: recreate file
+  //           const fileResponse = await fetch(image.image);
+  //           const fileBlob = await fileResponse.blob();
+  //           const file = new File([fileBlob], image.image, { type: fileBlob.type });
+
+  //           // create form data to send
+  //           const formData = new FormData();
+  //           formData.append('image', file);
+  //           formData.append('position', image.position.toString());
+
+  //           // add image to database
+  //           await fetch(`/api/projects/${projectID}/pictures`, {
+  //             method: 'POST',
+  //             body: formData
+  //           });
+  //         }
+  //       });
+
+  //       // Wait for all images to upload
+  //       await Promise.all(uploadImages);
+
+  //       // Reestablish image positions
+  //       await fetch(`/api/projects/${projectID}/pictures`, {
+  //         method: 'PUT',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ images: modifiedProject.images })
+  //       });
+
+  //       // Compare thumbnail
+  //       if (modifiedProject.thumbnail !== projectData.thumbnail) {
+  //         // get thumbnail
+  //         const thumbnailResponse = await fetch(`/images/projects/${modifiedProject.thumbnail}`);
+
+  //         // create file
+  //         const thumbnailBlob = await thumbnailResponse.blob();
+  //         const thumbnailFile = new File([thumbnailBlob], modifiedProject.thumbnail, { type: "image/png" }); // type is valid if its added to modifiedProject
+
+  //         const formData = new FormData();
+  //         formData.append('image', thumbnailFile);
+
+  //         // update thumbnail
+  //         await fetch(`/api/projects/${projectID}/thumbnail`, {
+  //           method: 'PUT',
+  //           body: formData
+  //         });
+  //       }
+
+  //       // Send PUT request for general project info
+  //       await fetch(`/api/projects/${projectID}`, {
+  //         method: 'PUT',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify(modifiedProject),
+  //       });
+
+  //       setProjectData(modifiedProject);
+
+  //     } catch (error) {
+  //       console.error(error);
+  //       return false;
+  //     }
+  //   }
+  //   // Creator
+  //   else {
+  //     try {
+  //       // Send POST request for general project info
+  //       await fetch(`/api/projects`, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify(modifiedProject),
+  //       });
+
+  //       setProjectData(modifiedProject);
+
+  //       // Add images, if any
+  //       modifiedProject.images.map(async (image) => {
+  //         // file must be new: recreate file
+  //         const fileResponse = await fetch(image.image);
+  //         const fileBlob = await fileResponse.blob();
+  //         const file = new File([fileBlob], image.image, { type: fileBlob.type });
+
+  //         // create form data to send
+  //         const formData = new FormData();
+  //         formData.append('image', file);
+  //         formData.append('position', image.position.toString());
+
+  //         // add image to database
+  //         await fetch(`/api/projects/${projectID}/pictures`, {
+  //           method: 'POST',
+  //           body: formData
+  //         });
+  //       });
+
+  //       // Update thumbnail if a thumbnail is set
+  //       if (modifiedProject.thumbnail !== '') {
+  //         // get thumbnail
+  //         const thumbnailResponse = await fetch(`/images/projects/${modifiedProject.thumbnail}`);
+
+  //         // create file
+  //         const thumbnailBlob = await thumbnailResponse.blob();
+  //         const thumbnailFile = new File([thumbnailBlob], modifiedProject.thumbnail, { type: "image/png" }); // type is valid if its added to modifiedProject
+
+  //         const formData = new FormData();
+  //         formData.append('image', thumbnailFile);
+
+  //         // update thumbnail
+  //         await fetch(`/api/projects/${projectID}/thumbnail`, {
+  //           method: 'PUT',
+  //           body: formData
+  //         });
+  //       }
+
+  //     } catch (error) {
+  //       console.error(error);
+  //       return false;
+  //     }
+  //   }
+  // };
+
   // Main render function
   return (
     <div className="page">
@@ -390,6 +651,84 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
       </div>
       <CreditsFooter />
       <ToTopButton />
+      {/* Checks to see if the user has logged in before displaying the popup to create a project */
+      (loggedIn && previousLoc.includes("login")) ? (
+        <Popup>
+          <PopupContent>
+            <div id="project-creator-editor">
+              <div id="project-editor-tabs">
+                <button id="general-tab"
+                  onClick={() => {
+                    if (currentTab === 4) updateLinks();
+                    setCurrentTab(0);
+                  }}
+                  className={`project-editor-tab ${currentTab === 0 ? 'project-editor-tab-active' : ''}`}
+                >
+                  General
+                </button>
+                <button id="media-tab"
+                  onClick={() => {
+                    if (currentTab === 4) updateLinks();
+                    setCurrentTab(1);
+                  }}
+                  className={`project-editor-tab ${currentTab === 1 ? 'project-editor-tab-active' : ''}`}
+                >
+                  Media
+                </button>
+                <button id="tags-tab"
+                  onClick={() => {
+                    if (currentTab === 4) updateLinks();
+                    setCurrentTab(2);
+                  }}
+                  className={`project-editor-tab ${currentTab === 2 ? 'project-editor-tab-active' : ''}`}
+                >
+                  Tags
+                </button>
+                <button id='team-tab'
+                  onClick={() => {
+                    if (currentTab === 4) updateLinks();
+                    setCurrentTab(3);
+                  }}
+                  className={`project-editor-tab ${currentTab === 3 ? 'project-editor-tab-active' : ''}`}
+                >
+                  Team
+                </button>
+                <button id='links-tab'
+                  onClick={() => {
+                    if (currentTab === 4) updateLinks();
+                    setCurrentTab(4);
+                  }}
+                  className={`project-editor-tab ${currentTab === 4 ? 'project-editor-tab-active' : ''}`}
+                >
+                  Links
+                </button>
+              </div>
+
+
+              <div id="project-editor-content">
+                {
+                  currentTab === 0 ? <GeneralTab isNewProject={isNewProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
+                    currentTab === 1 ? <MediaTab isNewProject={isNewProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
+                      currentTab === 2 ? <TagsTab isNewProject={isNewProject} projectData={modifiedProject} setProjectData={setModifiedProject} /> :
+                        currentTab === 3 ? <TeamTab isNewProject={isNewProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorMember={setErrorAddMember} setErrorPosition={setErrorAddPosition} permissions={permissions} /> :
+                          currentTab === 4 ? <LinksTab isNewProject={isNewProject} projectData={modifiedProject} setProjectData={setModifiedProject} setErrorLinks={setErrorLinks} /> :
+                            <></>
+                }
+              </div>
+
+
+              <div id="invalid-input-error" className="save-error-msg">
+                <p>{message}</p>
+              </div>
+              <PopupButton buttonId="project-editor-save" callback={saveProject} doNotClose={() => !failCheck}>
+                Save Changes
+              </PopupButton>
+            </div>
+          </PopupContent>
+        </Popup>
+      ) : (
+        console.log("Bye! " + previousLoc)
+      )}
     </div>
   );
 };

@@ -60,8 +60,9 @@ interface Props {
   permissions?: number;
 }
 
+// Global Exported Variables
 // default value for project data
-const emptyProject: ProjectData = {
+export const emptyProject: ProjectData = {
   audience: '',
   description: '',
   hook: '',
@@ -76,6 +77,8 @@ const emptyProject: ProjectData = {
   thumbnail: '',
   title: '',
 };
+
+export let isNewProject = false;
 
 /**
  * This component should allow for either editing existing projects or creating new projects entirely,
@@ -110,6 +113,10 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
   //State variable for error message
   const [message, setMessage] = useState('')
 
+  // Lets the discover page's popup know if this is a new project or not
+  isNewProject = newProject;
+
+  
   // Get project data on projectID change
   useEffect(() => {
     if (!newProject) {

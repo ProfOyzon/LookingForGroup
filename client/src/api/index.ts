@@ -1,4 +1,4 @@
-import {ApiResponse} from './types';
+import {ApiResponse} from '../../../shared/types.ts';
 
 //Basic GET function for utilities
 export const GET = async (apiURL: string): Promise<ApiResponse<unknown>> => {

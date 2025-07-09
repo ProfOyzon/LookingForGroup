@@ -30,7 +30,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
 
   let startingPage: string;
 
-  let sidebarBtns = document.getElementsByClassName("sidebar-btn");
+  const sidebarBtns = document.getElementsByClassName("sidebar-btn");
 
   // Code to manage sidebar button selection
   // Here, the sidebar buttons are updated on page load (so that they work with browser back/forward)
@@ -43,17 +43,17 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
     case '/discover':
     case '/':
       startingPage = 'Discover';
-      for (let i of sidebarBtns) { i.classList.remove("active") }
+      for (const i of sidebarBtns) { i.classList.remove("active") }
       document.querySelector("#discover-sidebar-btn")?.classList.add("active");
       break;
     case '/meet':
       startingPage = 'Meet';
-      for (let i of sidebarBtns) { i.classList.remove("active") }
+      for (const i of sidebarBtns) { i.classList.remove("active") }
       document.querySelector("#meet-sidebar-btn")?.classList.add("active");
       break;
     case '/myProjects':
       startingPage = 'My Projects';
-      for (let i of sidebarBtns) { i.classList.remove("active") }
+      for (const i of sidebarBtns) { i.classList.remove("active") }
       document.querySelector("#my-projects-sidebar-btn")?.classList.add("active");
       break;
     case '/newProfile':
@@ -61,14 +61,14 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
       // Default "newProfile" brings you to your own page
       if (width < breakpoint && !window.location.href.includes('?')) { // Is it the mobile layout, and is it DEFINITELY your own page?
         startingPage = 'My Profile';
-        for (let i of sidebarBtns) { i.classList.remove("active") }
+        for (const i of sidebarBtns) { i.classList.remove("active") }
         document.querySelector("#my-profile-sidebar-btn")?.classList.add("active");
       }
       else { // Otherwise, default to MEET
         // This behavior is not ideal! The desktop layout should likely also feature a "MY PROFILE" button, and one's own profile should have a unique URL.
         // That way, going to one's own profile would display as such, rather than as selecting MEET.
         startingPage = 'Meet';
-        for (let i of sidebarBtns) { i.classList.remove("active") }
+        for (const i of sidebarBtns) { i.classList.remove("active") }
         document.querySelector("#meet-sidebar-btn")?.classList.add("active");
       }
       break;

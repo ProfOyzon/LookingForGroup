@@ -1,16 +1,8 @@
 import prisma from '#config/prisma.ts';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
+import type { UserPreview } from '../../../../shared/types.ts';
 
 type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
-
-//show only preview data
-type UserPreview = {
-  userId: number;
-  firstName: string;
-  lastName: string;
-  username: string;
-  profileImage: string | null;
-};
 
 //get user by email
 export const getUserByEmailService = async (

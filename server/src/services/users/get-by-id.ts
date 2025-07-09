@@ -1,40 +1,8 @@
 import prisma from '#config/prisma.ts';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
+import type { UserDetail, Skill, Social } from '../../../../shared/types.ts';
 
 type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
-
-// for skills
-type Skill = {
-  id: number;
-  type: string;
-  skill: string;
-  position: number;
-};
-
-// for socials
-type Social = {
-  websiteId: number;
-  label: string;
-};
-
-//show only non-sensitive data
-type UserDetail = {
-  userId: number;
-  firstName: string;
-  lastName: string;
-  username: string;
-  profileImage: string | null;
-  headline: string | null;
-  pronouns: string | null;
-  job_title: string | null;
-  major: string | null;
-  academic_year: string | null;
-  location: string | null;
-  funFact: string | null;
-  bio: string | null;
-  skills: Skill[] | null;
-  socials: Social[] | null;
-};
 
 //get user by id
 export const getUserByIdService = async (
@@ -51,7 +19,7 @@ export const getUserByIdService = async (
         profileImage: true,
         headline: true,
         pronouns: true,
-        academic_year: true,
+        academicYear: true,
         location: true,
         funFact: true,
         bio: true,
@@ -66,7 +34,7 @@ export const getUserByIdService = async (
             position: true,
             skills: {
               select: {
-                skill_id: true,
+                skillId: true,
                 label: true,
                 type: true,
               },
@@ -98,27 +66,31 @@ export const getUserByIdService = async (
       profileImage: user.profileImage,
       headline: user.headline,
       pronouns: user.pronouns,
-      academic_year: user.academic_year ?? null,
+      academicYear: user.academicYear,
       location: user.location,
       funFact: user.funFact,
       bio: user.bio,
-      job_title: user.jobTitles?.label ?? null,
+      jobTitle: user.jobTitles?.label ?? null,
       major: user.majors?.label ?? null,
       skills:
         user.userSkills.length > 0
-          ? user.userSkills.map(({ position, skills }) => ({
-              id: skills.skill_id,
-              skill: skills.label,
-              type: skills.type,
-              position,
-            }))
+          ? user.userSkills.map(
+              ({ position, skills }): Skill => ({
+                skillId: skills.skillId,
+                label: skills.label,
+                type: skills.type,
+                position,
+              }),
+            )
           : null,
       socials:
         user.userSocials.length > 0
-          ? user.userSocials.map(({ socials }) => ({
-              websiteId: socials.websiteId,
-              label: socials.label,
-            }))
+          ? user.userSocials.map(
+              ({ socials }): Social => ({
+                websiteId: socials.websiteId,
+                label: socials.label,
+              }),
+            )
           : null,
     };
 

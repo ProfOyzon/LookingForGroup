@@ -193,7 +193,7 @@ const Settings = ({ }) => {
     };
 
     // Set up params to be correctly passed into API
-    let apiParams = { confirm, password };
+    const apiParams = { confirm, password };
     switch (type) {
       case 'Username':
         apiParams['username'] = firstParam;

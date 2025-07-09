@@ -65,7 +65,7 @@ const onSaveClicked = async (e : Event) => {
 
   // pop up error text if fields invalid
   if (!firstName || !lastName || !bio) {
-    let errorText = document.getElementById('invalid-input-error');
+    const errorText = document.getElementById('invalid-input-error');
     if (errorText) {
     errorText.style.display = 'block';
     }
@@ -189,7 +189,7 @@ const switchTab = (tabIndex: number) => {
   }, []);
 
   // Component to organize the main tab content
-  let TabContent = () => {
+  const TabContent = () => {
     return (
       <div id="profile-editor-content">
         <AboutTab profile={profile}/>
@@ -253,7 +253,7 @@ const switchTab = (tabIndex: number) => {
   
 
   // Maps the pageTabs into interactable page tabs, to switch between the Tab Content
-  let editorTabs = pageTabs.map((tag, i) => {
+  const editorTabs = pageTabs.map((tag, i) => {
     return (
       <button
         key={tag}

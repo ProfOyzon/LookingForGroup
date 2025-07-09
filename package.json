@@ -18,7 +18,8 @@
     "prisma:generate": "npx prisma generate --schema=server/prisma/schema.prisma",
     "build:client": "npm run build --workspace=client",
     "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\"",
-    "test": "vitest run",
+    "test": "npm run test:vitest",
+    "test:vitest": "vitest run --config server/src/config/vitest.ts",
     "test:server": "npm run test --workspace=server",
     "test:client": "npm run test --workspace=client",
     "lint:server:types": "npm run lint:types --workspace=server",
@@ -41,5 +42,8 @@
   },
   "engines": {
     "node": ">=v23.6.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.1.0"
   }
 }

@@ -298,33 +298,39 @@ paths:
               schema:
                 type: object
                 properties:
-                  username:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
                     type: string
-                  userId:
-                    type: number
-                example:
-                  username: mistahbones
-                  userId: 18
+                    nullable: true
+                    example: null
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      userId:
+                        type: integer
+                  memetype:
+                    type: string
+                    example: application/json
+              examples:
+                default:
+                  summary: Example response
+                  value:
+                    status: 200
+                    error: null
+                    data:
+                      username: mistahbones
+                      userId: 18
+                    memetype: application/json
         '400':
           description: Missing required Shibboleth header
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                default:
-                  value:
-                    message: Missing university ID in headers
+          $ref: '#/components/responses/BadRequest'
         '404':
           description: User not found in system
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                default:
-                  value:
-                    message: User not found
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -339,11 +345,24 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserResponse'
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserResponse'
+                  memetype:
+                    type: string
+                    example: application/json
         '500':
-          description: Internal Server Error
+          $ref: '#/components/responses/InternalServerError'
 
   /api/users/{id}:
     get:
@@ -363,9 +382,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDetails'
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    $ref: '#/components/schemas/UserDetails'
+                  memetype:
+                    type: string
+                    example: application/json
         '500':
-          description: Internal Server Error or User Not Found
+          $ref: '#/components/responses/InternalServerError'
     put:
       summary: Updates user profile information
       tags:
@@ -451,16 +483,10 @@ paths:
                   type: string
         '400':
           description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
+          $ref: '#/components/responses/BadRequest'
         '404':
           description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
+          $ref: '#/components/responses/NotFound'
         '500':
           description: Internal Server Error or User Not Found
 
@@ -482,13 +508,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserPreview'
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    $ref: '#/components/schemas/UserPreview'
+                  memetype:
+                    type: string
+                    example: application/json
         '404':
           description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -510,13 +546,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserPreview'
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    $ref: '#/components/schemas/UserPreview'
+                  memetype:
+                    type: string
+                    example: application/json
         '404':
           description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -540,19 +586,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    $ref: '#/components/schemas/User'
+                  memetype:
+                    type: string
+                    example: application/json
         '401':
           description: Unauthorized - not logged in
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          description: Invalid input
+          $ref: '#/components/responses/BadRequest'
         '404':
           description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -607,14 +663,7 @@ paths:
                     message: Username already taken
         '404':
           description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                notFound:
-                  value:
-                    message: User not found
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -669,14 +718,7 @@ paths:
                     message: Username already taken
         '404':
           description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                notFound:
-                  value:
-                    message: User not found
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -1160,5 +1202,18 @@ components:
               value:
                 status: 404
                 error: Not found
+                data: null
+                memetype: application/json
+    Unauthorized:
+      description: Authentication is required and has failed or has not been provided
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            default:
+              value:
+                status: 401
+                error: Unauthorized
                 data: null
                 memetype: application/json

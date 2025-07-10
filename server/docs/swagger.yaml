@@ -1146,7 +1146,7 @@ components:
             default:
               value:
                 status: 400
-                error: Invalid project ID
+                error: Invalid parameter(s)
                 data: null
                 memetype: application/json
     NotFound:
@@ -1159,6 +1159,6 @@ components:
             default:
               value:
                 status: 404
-                error: Project not found
+                error: Not found
                 data: null
                 memetype: application/json

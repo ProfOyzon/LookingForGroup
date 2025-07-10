@@ -1,11 +1,18 @@
 import type { Request, Response } from 'express';
 import getService from '#services/datasets/get-tags.ts';
+import type { ApiResponse } from '../../../../../shared/types.ts';
 
 const getTagsController = async (_request: Request, response: Response): Promise<void> => {
   const result = await getService();
 
   if (result === 'INTERNAL_ERROR') {
-    response.status(500).json({ message: 'Internal Server Error' });
+    const resBody: ApiResponse = {
+      status: 500,
+      error: 'Internal Server Error',
+      data: null,
+      memetype: 'application/json',
+    };
+    response.status(500).json(resBody);
     return;
   }
 

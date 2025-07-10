@@ -229,7 +229,7 @@ model Users {
   visibility                                     Int                 @default(1) @db.TinyInt
   createdAt                                      DateTime            @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt                                      DateTime            @default(now()) @map("updated_at") @db.Timestamp(0)
-  phoneNumber                                    BigInt?             @map("phone_number")
+  phoneNumber                                    Int?                @map("phone_number")
   universityId                                   String?             @unique(map: "university_id_UNIQUE") @map("university_id") @db.VarChar(9)
   members                                        Members[]
   projectFollowings                              ProjectFollowings[]

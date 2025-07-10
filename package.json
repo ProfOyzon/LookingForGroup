@@ -42,8 +42,5 @@
   },
   "engines": {
     "node": ">=v23.6.0"
-  },
-  "dependencies": {
-    "dotenv": "^17.1.0"
   }
 }

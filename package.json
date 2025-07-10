@@ -18,7 +18,6 @@
     "prisma:generate": "npx prisma generate --schema=server/prisma/schema.prisma",
     "build:client": "npm run build --workspace=client",
     "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\"",
-    "test": "vitest run",
     "test:server": "npm run test --workspace=server",
     "test:client": "npm run test --workspace=client",
     "lint:server:types": "npm run lint:types --workspace=server",

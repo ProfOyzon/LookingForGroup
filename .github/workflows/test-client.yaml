@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.2.2
 
-      - name: Setup Node.js environment
+      - name: Setup Node.js Environment
         uses: actions/setup-node@v4.4.0
         with:
           node-version: ">=v23.6.0"

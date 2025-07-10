@@ -686,17 +686,29 @@ paths:
       summary: Get all projects
       tags:
         - Projects
-      description: |
-        Retrieves a list of all projects.
+      description: Retrieves a list of all projects.
       responses:
         '200':
           description: A list of projects
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Project'
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Project'
+                  memetype:
+                    type: string
+                    example: application/json
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -719,27 +731,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    $ref: '#/components/schemas/Project'
+                  memetype:
+                    type: string
+                    example: application/json
         '400':
           description: Invalid project ID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                default:
-                  value:
-                    message: Invalid project ID
+          $ref: '#/components/responses/BadRequest'
+
         '404':
           description: Project not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                default:
-                  value:
-                    message: Project not found
+          $ref: '#/components/responses/NotFound'
+
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -763,29 +776,28 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProjectImage'
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectImage'
+                  memetype:
+                    type: string
+                    example: application/json
         '400':
           description: Invalid project ID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                default:
-                  value:
-                    message: Invalid project ID
+          $ref: '#/components/responses/BadRequest'
         '404':
           description: Project not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                default:
-                  value:
-                    message: Project not found
+          $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -1122,5 +1134,31 @@ components:
               value:
                 status: 500
                 error: Internal Server Error
+                data: null
+                memetype: application/json
+    BadRequest:
+      description: The request was invalid (e.g., malformed parameters)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            default:
+              value:
+                status: 400
+                error: Invalid project ID
+                data: null
+                memetype: application/json
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            default:
+              value:
+                status: 404
+                error: Project not found
                 data: null
                 memetype: application/json

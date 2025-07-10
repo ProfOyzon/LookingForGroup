@@ -10,7 +10,7 @@ on:
       - ".github/workflows/build-client.yml"
 
 jobs:
-  build:
+  test-and-compile:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,8 +21,25 @@ jobs:
         with:
           node-version: ">=v23.6.0"
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm ci --ignore-scripts
 
-      - name: Build client
+      # Commented out until front end team fixes all the linting and typescript issues
+      # and removes the unused code.
+      # - name: Lint Types
+      #   run: npm run lint:client:types
+
+      # - name: Lint Code
+      #   run: npm run lint:client
+
+      - name: Generate Prisma Client
+        run: npm run prisma:generate
+
+      - name: Start Docker Compose Services
+        run: npm run compose:up
+
+      - name: Run Tests
+        run: npm run test:client
+
+      - name: Build Client
         run: npm run build:client

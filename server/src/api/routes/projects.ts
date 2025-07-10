@@ -19,7 +19,7 @@ router.put('/:id', PROJECT.updateProject);
 // router.delete('/:id' /* deleteProject */);
 
 //Edits a project thumbnail through a specific id
-router.put(':/id/thumbnail', PROJECT.updateThumbnail);
+router.put('/:id/thumbnail', PROJECT.updateThumbnail);
 
 //Receives pictures from project through id
 router.get('/:id/pictures', PROJECT.getProjectPics);

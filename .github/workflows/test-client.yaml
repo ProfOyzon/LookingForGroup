@@ -10,7 +10,28 @@ on:
       - ".github/workflows/build-client.yml"
 
 jobs:
-  lint-test-compile:
+  # Uncomment the following job to enable client linting
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4.2.2
+
+  #     - name: Setup Node.js Environment
+  #       uses: actions/setup-node@v4.4.0
+  #       with:
+  #         node-version: ">=v23.6.0"
+
+  #     - name: Install Dependencies
+  #       run: npm ci --ignore-scripts
+
+  #     - name: Lint Types
+  #       run: npm run lint:client:types
+
+  #     - name: Lint Code
+  #       run: npm run lint:client
+
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,14 +45,6 @@ jobs:
       - name: Install Dependencies
         run: npm ci --ignore-scripts
 
-      # Commented out until front end team fixes all the linting and typescript issues
-      # and removes the unused code.
-      # - name: Lint Types
-      #   run: npm run lint:client:types
-
-      # - name: Lint Code
-      #   run: npm run lint:client
-
       - name: Generate Prisma Client
         run: npm run prisma:generate
 
@@ -40,6 +53,20 @@ jobs:
 
       - name: Run Tests
         run: npm run test:client
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: ">=v23.6.0"
+
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
 
       - name: Build Client
         run: npm run build:client

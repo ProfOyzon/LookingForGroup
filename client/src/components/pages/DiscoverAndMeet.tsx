@@ -81,7 +81,7 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
             </div>
 
             <div id="profile-hero-blurb-2" className="profile-hero-blurb">
-              <h2>Look for people to work with!</h2>
+              {/* <h2>Look for people to work with!</h2> */}
               <ThemeIcon
                 light={'/assets/bannerImages/people2_light.png'}
                 dark={'/assets/bannerImages/people2_dark.png'}

@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
     },
     test: {
       environment: "jsdom",
+      env: env,
     },
     build: {
       outDir: "build",

@@ -16,7 +16,13 @@ const getSocialsController = async (_request: Request, response: Response): Prom
     return;
   }
 
-  response.status(200).json(result);
+  const resBody: ApiResponse<typeof result> = {
+    status: 200,
+    error: null,
+    data: result,
+    memetype: 'application/json',
+  };
+  response.status(200).json(resBody);
 };
 
 export default getSocialsController;

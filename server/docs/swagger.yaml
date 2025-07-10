@@ -20,19 +20,35 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/JobTitle'
-              examples:
-                default:
-                  summary: Example job titles list
-                  value:
-                    - titleId: 1
-                      label: Full-Stack Developer
-                    - titleId: 2
-                      label: Front-End Developer
-                    - titleId: 3
-                      label: Back-End Developer
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JobTitle'
+                  memetype:
+                    type: string
+                    example: application/json
+                examples:
+                  default:
+                    summary: Example job titles list
+                    value:
+                      status: 200
+                      error: null
+                      data:
+                        - titleId: 1
+                          label: Full-Stack Developer
+                        - titleId: 2
+                          label: Front-End Developer
+                        - titleId: 3
+                          label: Back-End Developer
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -49,20 +65,33 @@ paths:
               schema:
                 type: object
                 properties:
-                  schema:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/Social'
+                  memetype:
+                    type: string
+                    example: application/json
               examples:
                 default:
                   summary: Example socials list
                   value:
-                    - websiteId: 1
-                      label: Instagram
-                    - websiteId: 2
-                      label: Twitter
-                    - websiteId: 3
-                      label: Facebook
+                    status: 200
+                    error: null
+                    data:
+                      - websiteId: 1
+                        label: Instagram
+                      - websiteId: 2
+                        label: Twitter
+                      - websiteId: 3
+                        label: Facebook
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -79,23 +108,36 @@ paths:
               schema:
                 type: object
                 properties:
-                  schema:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/Skill'
+                  memetype:
+                    type: string
+                    example: application/json
               examples:
                 default:
                   summary: Example skill list
                   value:
-                    - skill_id: 1
-                      label: C++
-                      type: Developer
-                    - skill_id: 2
-                      label: CSS
-                      type: Developer
-                    - skill_id: 3
-                      label: C#
-                      type: Developer
+                    status: 200
+                    error: null
+                    data:
+                      - skill_id: 1
+                        label: C++
+                        type: Developer
+                      - skill_id: 2
+                        label: CSS
+                        type: Developer
+                      - skill_id: 3
+                        label: C#
+                        type: Developer
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -112,20 +154,33 @@ paths:
               schema:
                 type: object
                 properties:
-                  schema:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/ProjectType'
+                  memetype:
+                    type: string
+                    example: application/json
               examples:
                 default:
                   summary: Example project types list
                   value:
-                    - typeId: 1
-                      label: Video Game
-                    - typeId: 2
-                      label: Analog Game
-                    - typeId: 3
-                      label: Mobile Application
+                    status: 200
+                    error: null
+                    data:
+                      - typeId: 1
+                        label: Video Game
+                      - typeId: 2
+                        label: Analog Game
+                      - typeId: 3
+                        label: Mobile Application
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -142,20 +197,33 @@ paths:
               schema:
                 type: object
                 properties:
-                  schema:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/Major'
+                  memetype:
+                    type: string
+                    example: application/json
               examples:
                 default:
                   summary: Examples majors list
                   value:
-                    - majorId: 1
-                      label: Animation
-                    - majorId: 2
-                      label: Computer Engineering
-                    - majorId: 3
-                      label: Computing Engineering Technology
+                    status: 200
+                    error: null
+                    data:
+                      - majorId: 1
+                        label: Animation
+                      - majorId: 2
+                        label: Computer Engineering
+                      - majorId: 3
+                        label: Computing Engineering Technology
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -172,23 +240,36 @@ paths:
               schema:
                 type: object
                 properties:
-                  schema:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/Tag'
+                  memetype:
+                    type: string
+                    example: application/json
               examples:
                 default:
                   summary: Example tags list
                   value:
-                    - tagId: 1
-                      label: Indie
-                      type: Creative
-                    - tagId: 2
-                      label: Abstract
-                      type: Creative
-                    - tagId: 3
-                      label: Horror
-                      type: Creative
+                    status: 200
+                    error: null
+                    data:
+                      - tagId: 1
+                        label: Indie
+                        type: Creative
+                      - tagId: 2
+                        label: Abstract
+                        type: Creative
+                      - tagId: 3
+                        label: Horror
+                        type: Creative
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -711,14 +792,6 @@ paths:
 # COMPONANTS
 components:
   schemas:
-    ErrorMessage:
-      type: object
-      properties:
-        message:
-          type: string
-      example:
-        message: Internal Server Error
-
     JobTitle:
       type: object
       properties:
@@ -1015,6 +1088,28 @@ components:
         url: http://LGF.com/images/project-101.png
         altText: Picture
 
+    ErrorMessage:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 500
+        error:
+          type: string
+          example: Internal Server Error
+        data:
+          type: 'null'
+          nullable: true
+          example: null
+        memetype:
+          type: string
+          example: application/json
+      required:
+        - status
+        - error
+        - data
+        - memetype
+
   responses:
     InternalServerError:
       description: An internal server error occurred
@@ -1025,4 +1120,7 @@ components:
           examples:
             default:
               value:
-                message: Internal Server Error
+                status: 500
+                error: Internal Server Error
+                data: null
+                memetype: application/json

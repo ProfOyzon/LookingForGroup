@@ -16,7 +16,13 @@ const getGenresController = async (_request: Request, response: Response): Promi
     return;
   }
 
-  response.status(200).json(result);
+  const resBody: ApiResponse<typeof result> = {
+    status: 200,
+    error: null,
+    data: result,
+    memetype: 'application/json',
+  };
+  response.status(200).json(resBody);
 };
 
 export default getGenresController;

@@ -116,7 +116,7 @@ export type UserFollowing = {
     followedAt: Date;
 };
 
-//all user orivate data
+//all user private data
 export interface User {
     userId: number;
     username: string;
@@ -133,6 +133,8 @@ export interface User {
     funFact: string | null;
     bio: string | null;
     visibility: number;
+    skills?: Skill[] | null;
+    socials?: Social[] | null;
     phoneNumber: string | null;
     universityId: number | null;
     createdAt: Date;

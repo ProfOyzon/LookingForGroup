@@ -1,6 +1,6 @@
 import prisma from '#config/prisma.ts';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
-import type { UserDetail } from '../../../../shared/types.ts';
+import type { UserDetail, Skill, Social } from '../../../../shared/types.ts';
 
 type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
@@ -26,6 +26,29 @@ export const getAllUsersService = async (): Promise<UserDetail[] | GetUserServic
         majors: {
           select: { label: true },
         },
+        userSkills: {
+          select: {
+            position: true,
+            skills: {
+              select: {
+                skillId: true,
+                label: true,
+                type: true,
+              },
+            },
+          },
+          orderBy: { position: 'asc' },
+        },
+        userSocials: {
+          select: {
+            socials: {
+              select: {
+                websiteId: true,
+                label: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -43,6 +66,26 @@ export const getAllUsersService = async (): Promise<UserDetail[] | GetUserServic
       funFact: user.funFact,
       jobTitle: user.jobTitles?.label ?? null,
       major: user.majors?.label ?? null,
+      skills:
+        user.userSkills.length > 0
+          ? user.userSkills.map(
+              ({ position, skills }): Skill => ({
+                skillId: skills.skillId,
+                label: skills.label,
+                type: skills.type,
+                position,
+              }),
+            )
+          : null,
+      socials:
+        user.userSocials.length > 0
+          ? user.userSocials.map(
+              ({ socials }): Social => ({
+                websiteId: socials.websiteId,
+                label: socials.label,
+              }),
+            )
+          : null,
     }));
 
     return transformedUsers;

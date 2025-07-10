@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import PROJECT from '#controllers/projects/index.ts';
+import requiresLogin from '../middleware/requires-login.ts';
 
 const router = Router();
 
@@ -13,13 +14,13 @@ router.get('/', PROJECT.getProjects);
 router.get('/:id', PROJECT.getProjectByID);
 
 //Edits a project through a specific id
-router.put('/:id', PROJECT.updateProject);
+router.put('/:id', requiresLogin, PROJECT.updateProject);
 
 // //Deletes project through a specific id
 // router.delete('/:id' /* deleteProject */);
 
 //Edits a project thumbnail through a specific id
-router.put('/:id/thumbnail', PROJECT.updateThumbnail);
+router.put('/:id/thumbnail', requiresLogin, PROJECT.updateThumbnail);
 
 //Receives pictures from project through id
 router.get('/:id/pictures', PROJECT.getProjectPics);

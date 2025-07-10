@@ -357,7 +357,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/UserResponse'
+                      $ref: '#/components/schemas/UserDetails'
                   memetype:
                     type: string
                     example: application/json
@@ -952,6 +952,30 @@ components:
           nullable: true
         visibility:
           type: integer
+        skills:
+          type: array
+          nullable: true
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              skill:
+                type: string
+              type:
+                type: string
+              position:
+                type: integer
+        socials:
+          type: array
+          nullable: true
+          items:
+            type: object
+            properties:
+              websiteId:
+                type: integer
+              label:
+                type: string
         createdAt:
           type: string
           format: date-time
@@ -962,42 +986,6 @@ components:
           type: string
           nullable: true
         universityId:
-          type: string
-          nullable: true
-
-    UserResponse:
-      type: object
-      properties:
-        userId:
-          type: integer
-        firstName:
-          type: string
-        lastName:
-          type: string
-        username:
-          type: string
-        profileImage:
-          type: string
-          nullable: true
-        headline:
-          type: string
-          nullable: true
-        pronouns:
-          type: string
-          nullable: true
-        job_title:
-          type: string
-          nullable: true
-        major:
-          type: string
-          nullable: true
-        academic_year:
-          type: string
-          nullable: true
-        location:
-          type: string
-          nullable: true
-        funFact:
           type: string
           nullable: true
 
@@ -1021,7 +1009,7 @@ components:
         pronouns:
           type: string
           nullable: true
-        job_title:
+        jobTitle:
           type: string
           nullable: true
         major:
@@ -1135,7 +1123,7 @@ components:
         users:
           type: array
           items:
-            $ref: '#/components/schemas/UserResponse'
+            $ref: '#/components/schemas/UserDetails'
 
     ProjectImage:
       type: object

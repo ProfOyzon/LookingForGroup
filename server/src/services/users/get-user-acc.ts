@@ -27,6 +27,29 @@ export const getUserAccountService = async (
         funFact: true,
         bio: true,
         visibility: true,
+        userSkills: {
+          select: {
+            position: true,
+            skills: {
+              select: {
+                skillId: true,
+                label: true,
+                type: true,
+              },
+            },
+          },
+          orderBy: { position: 'asc' },
+        },
+        userSocials: {
+          select: {
+            socials: {
+              select: {
+                websiteId: true,
+                label: true,
+              },
+            },
+          },
+        },
         phoneNumber: true,
         universityId: true,
         createdAt: true,

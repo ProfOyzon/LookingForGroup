@@ -219,8 +219,11 @@ paths:
                 properties:
                   username:
                     type: string
+                  userId:
+                    type: number
                 example:
                   username: mistahbones
+                  userId: 18
         '400':
           description: Missing required Shibboleth header
           content:

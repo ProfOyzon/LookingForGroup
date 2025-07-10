@@ -22,5 +22,5 @@ export const getUsernameByShib = async (req: Request, res: Response): Promise<vo
     return;
   }
 
-  res.status(200).json({ username: result.username });
+  res.status(200).json({ username: result.username, userID: result.userId });
 };

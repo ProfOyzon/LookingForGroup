@@ -13,6 +13,9 @@ import PasswordValidator from 'password-validator';
 import ToTopButton from '../ToTopButton';
 import * as paths from '../../constants/routes';
 
+//import api utils
+import {getCurrentUsername} from '../../api/users.ts'
+
 // Take the user ID and delete it
 const deleteAccountPressed = async () => {
   // console.log('Delete Pressed!');

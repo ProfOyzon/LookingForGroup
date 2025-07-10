@@ -12,16 +12,16 @@ router.get('/', PROJECT.getProjects);
 //Get a specific project
 router.get('/:id', PROJECT.getProjectByID);
 
-// //Edits a project through a specific id
-// router.put('/:id' /* updateProject */);
+//Edits a project through a specific id
+router.put('/:id', PROJECT.updateProject);
 
 // //Deletes project through a specific id
 // router.delete('/:id' /* deleteProject */);
 
 //Edits a project thumbnail through a specific id
-//router.put(':/id/thumbnail' /* updateThumbnail */);
+router.put(':/id/thumbnail', PROJECT.updateThumbnail);
 
-//Receives picture from project through id
+//Receives pictures from project through id
 router.get('/:id/pictures', PROJECT.getProjectPics);
 
 //Creates a new picture for a project

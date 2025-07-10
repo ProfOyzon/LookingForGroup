@@ -2,7 +2,7 @@ import prisma from '#config/prisma.ts';
 import type { Projects } from '#prisma-models/index.js';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
 
-type GetServiceError = ServiceErrorSubset<'INTERNAL_ERROR'>;
+type GetServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
 const getProjectByIdService = async (
   projectId: number,
@@ -20,6 +20,8 @@ const getProjectByIdService = async (
         users: true,
       },
     });
+
+    if (!project) return 'NOT_FOUND';
 
     return project;
   } catch (e) {

@@ -1,6 +1,7 @@
 import type { RequestHandler } from 'express';
 import type { UsersAcademicYear } from '#prisma-models/index.js';
 import { updateUserInfoService } from '#services/users/update-info.ts';
+import type { ApiResponse } from '../../../../../shared/types.ts';
 
 interface UpdateUserInfo {
   firstName?: string;
@@ -25,7 +26,13 @@ export const updateUserInfo: RequestHandler<{ id: string }, unknown, UpdateUserI
   //validate ID
   const userId = parseInt(id);
   if (isNaN(userId)) {
-    res.status(400).json({ message: 'Invalid user ID' });
+    const resBody: ApiResponse = {
+      status: 400,
+      error: 'Invalid user ID',
+      data: null,
+      memetype: 'application/json',
+    };
+    res.status(400).json(resBody);
     return;
   }
 
@@ -47,20 +54,44 @@ export const updateUserInfo: RequestHandler<{ id: string }, unknown, UpdateUserI
   const invalid = Object.keys(updates).filter((field) => !updateFields.includes(field));
 
   if (invalid.length > 0) {
-    res.status(400).json({ message: `Invalid fields: ${JSON.stringify(invalid)}` });
+    const resBody: ApiResponse = {
+      status: 400,
+      error: `Invalid fields: ${JSON.stringify(invalid)}`,
+      data: null,
+      memetype: 'application/json',
+    };
+    res.status(400).json(resBody);
     return;
   }
 
   const result = await updateUserInfoService(userId, updates);
 
   if (result === 'NOT_FOUND') {
-    res.status(404).json({ message: 'User not found' });
+    const resBody: ApiResponse = {
+      status: 404,
+      error: 'User not found',
+      data: null,
+      memetype: 'application/json',
+    };
+    res.status(404).json(resBody);
     return;
   }
   if (result === 'INTERNAL_ERROR') {
-    res.status(500).json({ message: 'Internal Server Error' });
+    const resBody: ApiResponse = {
+      status: 500,
+      error: 'Internal Server Error',
+      data: null,
+      memetype: 'application/json',
+    };
+    res.status(500).json(resBody);
     return;
   }
 
-  res.status(200).json(result);
+  const resBody: ApiResponse<typeof result> = {
+    status: 200,
+    error: null,
+    data: result,
+    memetype: 'application/json',
+  };
+  res.status(200).json(resBody);
 };

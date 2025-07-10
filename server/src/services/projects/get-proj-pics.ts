@@ -1,7 +1,7 @@
 import prisma from '#config/prisma.ts';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
 
-type GetServiceError = ServiceErrorSubset<'INTERNAL_ERROR'>;
+type GetServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
 const getProjectPicturesService = async (
   projectId: number,
@@ -15,7 +15,7 @@ const getProjectPicturesService = async (
     });
 
     if (project === null) {
-      return null;
+      return 'NOT_FOUND';
     }
 
     return project.projectImages;

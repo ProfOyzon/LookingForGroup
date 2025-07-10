@@ -1,15 +1,26 @@
 import type { Request, Response } from 'express';
 import getJobTitlesService from '#services/datasets/get-job-titles.ts';
+import type { ApiResponse } from '../../../../../shared/types.ts';
 
 const getJobTitlesController = async (_request: Request, response: Response): Promise<void> => {
   const result = await getJobTitlesService();
 
   if (result === 'INTERNAL_ERROR') {
-    response.status(500).json({ message: 'Internal Server Error' });
+    const resBody: ApiResponse = {
+      status: 500,
+      error: 'Internal Server Error',
+      data: null,
+    };
+    response.status(500).json(resBody);
     return;
   }
 
-  response.status(200).json(result);
+  const resBody: ApiResponse<typeof result> = {
+    status: 200,
+    error: null,
+    data: result,
+  };
+  response.status(200).json(resBody);
 };
 
 export default getJobTitlesController;

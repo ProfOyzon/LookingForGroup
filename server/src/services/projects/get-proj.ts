@@ -12,6 +12,7 @@ const getProjectsService = async (): Promise<Projects[] | GetServiceError> => {
         projectTags: true,
         projectImages: true,
         projectSocials: true,
+        projectFollowings: true,
         jobs: true,
         members: true,
         users: true,

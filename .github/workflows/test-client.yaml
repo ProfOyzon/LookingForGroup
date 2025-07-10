@@ -10,7 +10,7 @@ on:
       - ".github/workflows/build-client.yml"
 
 jobs:
-  test-and-compile:
+  lint-test-compile:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

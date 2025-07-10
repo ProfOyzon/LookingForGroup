@@ -1,5 +1,6 @@
 import type { RequestHandler } from 'express';
 import { updateUserVisibilityService } from '#services/users/update-vis.ts';
+import type { ApiResponse } from '../../../../../shared/types.ts';
 
 export const updateVisibility: RequestHandler<
   { id: string },
@@ -18,7 +19,13 @@ export const updateVisibility: RequestHandler<
 
   //validate visibility num
   if (typeof newVisibility !== 'number' || (newVisibility !== 0 && newVisibility !== 1)) {
-    res.status(400).json({ message: 'Visibility must be 0 (private) or 1(public)' });
+    const resBody: ApiResponse = {
+      status: 400,
+      error: 'Visibility must be 0 (private) or 1(public)',
+      data: null,
+      memetype: 'application/json',
+    };
+    res.status(400).json(resBody);
     return;
   }
 
@@ -26,13 +33,31 @@ export const updateVisibility: RequestHandler<
   const result = await updateUserVisibilityService(userId, newVisibility);
 
   if (result === 'NOT_FOUND') {
-    res.status(404).json({ message: 'User not found' });
+    const resBody: ApiResponse = {
+      status: 404,
+      error: 'User not found',
+      data: null,
+      memetype: 'application/json',
+    };
+    res.status(404).json(resBody);
     return;
   }
   if (result === 'INTERNAL_ERROR') {
-    res.status(500).json({ message: 'Internal Server Error' });
+    const resBody: ApiResponse = {
+      status: 500,
+      error: 'Internal Server Error',
+      data: null,
+      memetype: 'application/json',
+    };
+    res.status(500).json(resBody);
     return;
   }
 
-  res.status(200).json(result);
+  const resBody: ApiResponse<typeof result> = {
+    status: 200,
+    error: null,
+    data: result,
+    memetype: 'application/json',
+  };
+  res.status(200).json(resBody);
 };

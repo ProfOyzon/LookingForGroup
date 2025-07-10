@@ -398,6 +398,7 @@ paths:
                     example: application/json
         '500':
           $ref: '#/components/responses/InternalServerError'
+
     put:
       summary: Updates user profile information
       tags:
@@ -453,34 +454,24 @@ paths:
 
       responses:
         '200':
-          description: A single user
+          description: Update a single user
           content:
             application/json:
               schema:
                 type: object
-                schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                headline:
-                  type: string
-                pronouns:
-                  type: string
-                jobTtitleId:
-                  type: integer
-                MajorId:
-                  type: integer
-                academic_year:
-                  type: string
-                location:
-                  type: string
-                funFact:
-                  type: string
-                bio:
-                  type: string
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    $ref: '#/components/schemas/UserDetails'
+                  memetype:
+                    type: string
+                    example: application/json
         '400':
           description: Invalid input
           $ref: '#/components/responses/BadRequest'
@@ -488,7 +479,7 @@ paths:
           description: User not found
           $ref: '#/components/responses/NotFound'
         '500':
-          description: Internal Server Error or User Not Found
+          $ref: '#/components/responses/InternalServerError'
 
   /api/users/search-username/{username}:
     get:
@@ -646,21 +637,36 @@ paths:
               schema:
                 type: object
                 properties:
-                  username:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
                     type: string
-                    description: The updated username
-                example:
-                  username: newUsername
+                    nullable: true
+                    example: null
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                        example: newUsername
+                    required:
+                      - username
+                  memetype:
+                    type: string
+                    example: application/json
+              examples:
+                default:
+                  value:
+                    status: 200
+                    error: null
+                    data:
+                      username: newUsername
+                    memetype: application/json
         '409':
           description: Username already taken
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                usernameTaken:
-                  value:
-                    message: Username already taken
+          $ref: '#/components/responses/Conflict'
+
         '404':
           description: User not found
           $ref: '#/components/responses/NotFound'
@@ -692,7 +698,8 @@ paths:
               properties:
                 visibility:
                   type: integer
-                  description: visibility (0=private & 1=public)
+                  enum: [0, 1]
+                  description: visibility (0=private, 1=public)
       responses:
         '200':
           description: Username successfully updated
@@ -701,21 +708,23 @@ paths:
               schema:
                 type: object
                 properties:
-                  username:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
                     type: string
-                    description: The new visibility
-                example:
-                  visibility: 0
-        '409':
-          description: Username already taken
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                usernameTaken:
-                  value:
-                    message: Username already taken
+                    nullable: true
+                    example: null
+                  data:
+                    type: object
+                    properties:
+                      visibility:
+                        type: integer
+                        enum: [0, 1]
+                        example: 1
+                  memetype:
+                    type: string
+                    example: application/json
         '404':
           description: User not found
           $ref: '#/components/responses/NotFound'
@@ -1215,5 +1224,18 @@ components:
               value:
                 status: 401
                 error: Unauthorized
+                data: null
+                memetype: application/json
+    Conflict:
+      description: Conflict to show resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            default:
+              value:
+                status: 409
+                error: Resource already exists
                 data: null
                 memetype: application/json

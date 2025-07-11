@@ -1,6 +1,6 @@
+import type { ApiResponse } from '@looking-for-group/shared';
 import type { RequestHandler } from 'express';
 import { updateUserVisibilityService } from '#services/users/update-vis.ts';
-import type { ApiResponse } from '../../../../../shared/types.ts';
 
 export const updateVisibility: RequestHandler<
   { id: string },

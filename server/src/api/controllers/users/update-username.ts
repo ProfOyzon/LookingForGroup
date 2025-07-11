@@ -1,7 +1,7 @@
+import type { ApiResponse } from '@looking-for-group/shared';
 import type { RequestHandler } from 'express';
 import { getUserByUsernameService } from '#services/users/get-by-username.ts';
 import { updateUserUsernameService } from '#services/users/update-username.ts';
-import type { ApiResponse } from '../../../../../shared/types.ts';
 
 export const updateUsername: RequestHandler<
   { id: string },

@@ -1,6 +1,6 @@
+import type { ApiResponse } from '@looking-for-group/shared';
 import type { Request, Response } from 'express';
 import { getUserByhibService } from '#services/users/get-user-shib.ts';
-import type { ApiResponse } from '../../../../../shared/types.ts';
 
 //get username by shibbolth
 export const getUsernameByShib = async (req: Request, res: Response): Promise<void> => {

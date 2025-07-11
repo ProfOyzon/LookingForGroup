@@ -1,6 +1,6 @@
+import type { ApiResponse } from '@looking-for-group/shared';
 import type { Request, Response } from 'express';
 import { getUserByEmailService } from '#services/users/get-by-email.ts';
-import type { ApiResponse } from '../../../../../shared/types.ts';
 
 //get the user by the email
 export const getUserByEmail = async (req: Request, res: Response): Promise<void> => {

@@ -1,7 +1,7 @@
+import type { ApiResponse } from '@looking-for-group/shared';
 import type { RequestHandler } from 'express';
 import type { UsersAcademicYear } from '#prisma-models/index.js';
 import { updateUserInfoService } from '#services/users/update-info.ts';
-import type { ApiResponse } from '../../../../../shared/types.ts';
 
 interface UpdateUserInfo {
   firstName?: string;

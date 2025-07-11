@@ -1,6 +1,6 @@
+import type { ApiResponse } from '@looking-for-group/shared';
 import type { Request, Response } from 'express';
 import { getUserByIdService } from '#services/users/get-by-id.ts';
-import type { ApiResponse } from '../../../../../shared/types.ts';
 
 //get user by id
 export const getUsernameById = async (req: Request, res: Response): Promise<void> => {

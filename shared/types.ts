@@ -98,7 +98,7 @@ export type UserDetail = {
     firstName: string;
     lastName: string;
     username: string;
-    profileImage: string | null;
+    profileImage?: string | null;
     headline: string | null;
     pronouns: string | null;
     jobTitle: string | null;

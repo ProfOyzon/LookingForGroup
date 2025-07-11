@@ -756,7 +756,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Project'
+                      $ref: '#/components/schemas/ProjectWithFollowers'
                   memetype:
                     type: string
                     example: application/json
@@ -792,7 +792,7 @@ paths:
                     nullable: true
                     example: null
                   data:
-                    $ref: '#/components/schemas/Project'
+                    $ref: '#/components/schemas/ProjectWithFollowers'
                   memetype:
                     type: string
                     example: application/json
@@ -1136,63 +1136,187 @@ components:
           type: string
           nullable: true
 
-    Project:
+    ProjectWithFollowers:
       type: object
       properties:
         projectId:
           type: integer
-        name:
+        title:
+          type: string
+        hook:
           type: string
         description:
           type: string
+        thumbnail:
+          type: string
+          nullable: true
+        purpose:
+          type: string
+          nullable: true
+        status:
+          type: string
+        audience:
+          type: string
+          nullable: true
+        userId:
+          type: integer
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
+        _count:
+          type: object
+          properties:
+            projectFollowings:
+              type: integer
         projectGenres:
           type: array
           items:
             type: object
             properties:
-              genreId:
+              projectId:
                 type: integer
-              label:
-                type: string
+              typeId:
+                type: integer
+              genres:
+                type: object
+                properties:
+                  typeId:
+                    type: integer
+                  label:
+                    type: string
         projectTags:
           type: array
           items:
-            $ref: '#/components/schemas/Tag'
+            type: object
+            properties:
+              projectId:
+                type: integer
+              tagId:
+                type: integer
+              position:
+                type: integer
+              type:
+                type: string
+              label:
+                type: string
         projectImages:
           type: array
           items:
-            $ref: '#/components/schemas/ProjectImage'
+            type: object
+            properties:
+              imageId:
+                type: integer
+              image:
+                type: string
+              altText:
+                type: string
         projectSocials:
           type: array
           items:
-            $ref: '#/components/schemas/Social'
+            type: object
+            additionalProperties: true
         jobs:
           type: array
           items:
             type: object
             properties:
-              jobId:
+              projectId:
                 type: integer
-              title:
+              titleId:
+                type: integer
+              availability:
+                type: string
+              duration:
+                type: string
+              location:
+                type: string
+              compensation:
                 type: string
               description:
                 type: string
-              requirements:
+              createdAt:
                 type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
         members:
           type: array
           items:
-            $ref: '#/components/schemas/UserPreview'
+            type: object
+            properties:
+              projectId:
+                type: integer
+              userId:
+                type: integer
+              titleId:
+                type: integer
+              permission:
+                type: integer
         users:
+          type: object
+          nullable: true
+          properties:
+            userId:
+              type: integer
+            username:
+              type: string
+            ritEmail:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+            profileImage:
+              type: string
+            headline:
+              type: string
+            pronouns:
+              type: string
+            jobTitleId:
+              type: integer
+            majorId:
+              type: integer
+            academicYear:
+              type: string
+            location:
+              type: string
+            funFact:
+              type: string
+              nullable: true
+            bio:
+              type: string
+            visibility:
+              type: integer
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+            phoneNumber:
+              type: string
+              nullable: true
+            universityId:
+              type: integer
+              nullable: true
+        projectType:
           type: array
           items:
-            $ref: '#/components/schemas/UserDetails'
+            type: object
+            properties:
+              typeId:
+                type: integer
+              label:
+                type: string
+        followers:
+          type: object
+          properties:
+            count:
+              type: integer
 
     ProjectImage:
       type: object

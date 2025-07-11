@@ -1,6 +1,6 @@
+import type { UserDetail, Skill, Social } from '@looking-for-group/shared';
 import prisma from '#config/prisma.ts';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
-import type { UserDetail, Skill, Social } from '../../../../shared/types.ts';
 
 type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 

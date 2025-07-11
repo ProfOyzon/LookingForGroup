@@ -26,8 +26,9 @@ afterAll(async () => {
  * getUsers
  */
 test('Test getUsers. Local-1: Test status. Local-2: Test information.', async () => {
-    const result = await util.getUsers();
-    console.log(result);
-    expect( result.status ).toBe(200);
-    expect( result.data ).toBeDefined();
+  const baseUrl = `http://localhost:${port}`;
+  const result = await util.getUsers(baseUrl);
+  console.log(result);
+  expect(result.status).toBe(200);
+  expect(result.data).toBeDefined();
 });

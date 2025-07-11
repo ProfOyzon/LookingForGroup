@@ -69,7 +69,7 @@ export const getCurrentUsername = async (): Promise<ApiResponse> =>{
  * Gets all data on all public users. Does not return private ones
  * @returns result - JSONified data of all users, else if error, '400'.
  */
-export const getUsers = async (): Promise<ApiResponse> => {
+export const getUsers = async (root: string): Promise<ApiResponse> => {
     const apiURL = `${root}/users`;
     const response = await GET(apiURL);
     return response;

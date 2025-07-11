@@ -24,6 +24,7 @@ afterAll(async () => {
  */
 test("local: Test gets users", async () => {
   const apiURL = `http://localhost:${port}/users`;
+  console.log(apiURL)
   const result = await util.GET(apiURL);
   expect(result.status).toBe(200);
 });

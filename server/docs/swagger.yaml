@@ -164,7 +164,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ProjectType'
+                      $ref: '#/components/schemas/ProjectGenre'
                   memetype:
                     type: string
                     example: application/json
@@ -953,7 +953,7 @@ components:
         type:
           type: string
 
-    ProjectType:
+    ProjectGenre:
       type: object
       properties:
         typeId:
@@ -1303,7 +1303,7 @@ components:
             universityId:
               type: integer
               nullable: true
-        projectType:
+        ProjectGenre:
           type: array
           items:
             type: object

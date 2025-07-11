@@ -1,10 +1,10 @@
 import prisma from '#config/prisma.ts';
-import type { Skills } from '#prisma-models/index.js';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
+import type { Skill } from '../../../../shared/types.ts';
 
 type GetSkillsServiceError = ServiceErrorSubset<'INTERNAL_ERROR'>;
 
-const getSkillsService = async (): Promise<Skills[] | GetSkillsServiceError> => {
+const getSkillsService = async (): Promise<Skill[] | GetSkillsServiceError> => {
   try {
     return await prisma.skills.findMany({
       where: {

@@ -1,4 +1,4 @@
-import type { UserDetail, Skill, Social } from '@looking-for-group/shared';
+import type { UserDetail, UserSkill, Social } from '@looking-for-group/shared';
 import prisma from '#config/prisma.ts';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
 
@@ -75,7 +75,13 @@ export const getUserByIdService = async (
       skills:
         user.userSkills.length > 0
           ? user.userSkills.map(
-              ({ position, skills }): Skill => ({
+              ({
+                position,
+                skills,
+              }: {
+                position: number;
+                skills: { skillId: number; label: string; type: string };
+              }): UserSkill => ({
                 skillId: skills.skillId,
                 label: skills.label,
                 type: skills.type,

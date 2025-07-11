@@ -20,7 +20,9 @@ export type AcademicYear =
     | "Graduate"
     | string;
 
-//API response
+
+
+//API RESPONSE
 
 export interface ApiResponse<_data = any> {
     status: number;
@@ -29,7 +31,7 @@ export interface ApiResponse<_data = any> {
     memetype?: string;
 }
 
-// Datasets
+// DATASETS
 
 export interface JobTitle {
     titleId: number;
@@ -56,32 +58,36 @@ export interface Skill {
     skillId: number;
     label: string;
     type: SkillType;
-    position: number;
 }
 
-export interface ProjectGenres {
+export interface Genre {
     typeId: number;
     label: string;
 }
 
-// Other
 
-//there is no alt text in database yet
-export interface ProjectImage {
-    imageId: number;
-    image: string;
-    altText: '';
+//USER DATA
+
+export interface UserSkill extends Skill {
+  position: number;
 }
 
-//permissions not yet in database
-export interface Member {
-    projectId: number;
+export interface UserSocial {
     userId: number;
-    titleId: number;
-    //permission: number;
+    websiteId: number;
+    url: string;
+    social: Social;
 }
 
-// Users
+//user followings
+export type UserFollowing = {
+    userId: number;
+    followingId: number;
+    followedAt: Date;
+};
+
+
+// USERS
 
 //show only preview data
 export type UserPreview = {
@@ -107,15 +113,9 @@ export type UserDetail = {
     location: string | null;
     funFact: string | null;
     bio?: string | null;
-    skills?: Skill[] | null;
+    skills?: UserSkill[] | null;
+    //might need to add userSocial
     socials?: Social[] | null;
-};
-
-//user followings
-export type UserFollowing = {
-    userId: number;
-    followingId: number;
-    followedAt: Date;
 };
 
 //all user private data
@@ -135,7 +135,7 @@ export interface User {
     funFact: string | null;
     bio: string | null;
     visibility: number;
-    skills?: Skill[] | null;
+    skills?: UserSkill[] | null;
     socials?: Social[] | null;
     phoneNumber: string | null;
     universityId: number | null;
@@ -154,11 +154,44 @@ export interface CreateUserData {
     academicYear: number;
     location: string;
     funFact: string;
-    skills: Skill[];
+    skills: UserSkill[];
     socials: Social[];
 }
 
-// Projects
+
+// FOR PROjECTS
+
+//there is no alt text in database yet
+export interface ProjectImage {
+    imageId: number;
+    image: string;
+    altText: '';
+}
+
+//tags for projects
+export interface ProjectTag {
+    projectId: number;
+    tagId: number;
+    label: string;
+    type: TagType;
+    position: number;
+}
+
+//permissions not yet in database
+export interface Member {
+    projectId: number;
+    userId: number;
+    titleId: number;
+    //permission: number;
+}
+
+// Represents the followers info for a project
+export interface ProjectFollowers {
+    count: number;
+}
+
+
+// PROJECTS
 
 export interface Project {
     projectId: number;
@@ -172,18 +205,16 @@ export interface Project {
     userId: number;
     createdAt: Date;
     updatedAt: Date;
-    projectType: ProjectGenres[];
+    //might need to add projectGenre
+    projectType: Genre[];
     projectTags: ProjectTag[];
     projectImages: ProjectImage[];
+    //might need to add projectSocial
     projectSocials: Social[];
     jobs: Job[];
     members: Member[];
 }
 
-// Represents the followers info for a project
-export interface ProjectFollowers {
-    count: number;
-}
 
 // project with the followers data
 export interface ProjectWithFollowers extends Project {
@@ -201,13 +232,4 @@ export interface Job {
     description?: string;
     createdAt: Date;
     updatedAt: Date;
-}
-
-//tags for projects
-export interface ProjectTag {
-    projectId: number;
-    tagId: number;
-    label: string;
-    type: TagType;
-    position: number;
 }

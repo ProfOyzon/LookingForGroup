@@ -1,10 +1,10 @@
 import prisma from '#config/prisma.ts';
-import type { Tags } from '#prisma-models/index.js';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
+import type { Tag } from '../../../../shared/types.ts';
 
 type GetTagsServiceError = ServiceErrorSubset<'INTERNAL_ERROR'>;
 
-const getTagsService = async (): Promise<Tags[] | GetTagsServiceError> => {
+const getTagsService = async (): Promise<Tag[] | GetTagsServiceError> => {
   try {
     return await prisma.tags.findMany({
       select: {

@@ -11,7 +11,7 @@ Profile Panel component style rules
 .profile-panel-box {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 20px;
   /* margin: 0 50px 50px 50px; */
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PagePopup, openClosePopup } from '../PagePopup';
+import { getByID } from '../../api/projects';
 // import { Popup, PopupContent, PopupButton } from "../Popup"; // Unused because I got confused while trying to use it and couldn't get it to work
 
 
@@ -351,13 +352,16 @@ const EditButton = ({ userData }) => {
   const getUsersProjects = async () => {
     const url = `/api/users/${userData.user_id}/projects`;
     try {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+     // const response = await fetch(url, {
+     //   method: 'GET',
+     //   headers: { 'Content-Type': 'application/json' },
+     // });
+     // const rawData = await response.json();
 
-      const rawData = await response.json();
-      setUserProjects(rawData.data);
+      const data = getByID(userData.user_id);
+      console.log("Sepukku. Called in Profile Edit Button.");
+      setUserProjects(data.data);     // IF DOESN'T Work, replace data.data with rawData.data
+      
     } catch (error) {
       console.log(error);
     }

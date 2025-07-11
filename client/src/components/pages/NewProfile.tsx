@@ -187,8 +187,8 @@ const NewProfile = () => {
     }
 
     try {
-      const { data } = await getByID(profileID); // INCORRECT IMPLEMENTATION NEEDS TO BE CHANGED
-      const data2 = await getAccountInformation(profileID);
+      const response = await fetch(url);          // IMPLEMENT PROJECT GETTING
+      const { data } = await response.json();
       
       console.log(data);
 

@@ -21,29 +21,31 @@ export const LinksTab = (props) => {
       // Pick which socials to use based on type
       const userID = await fetchUserID();
       
-      var data;
-      switch(type){
+     // var { data } = [];
+     // switch(type){
+     //   case 'project':
+     //     data = await getByID(userID);
+     //     break;
+     //   default:
+     //     data = await getUsersById(userID);
+     //     break;
+     // }
+     // console.log("Break")
+     // console.log(data);
+
+      let url;
+      switch (type) {
         case 'project':
-          data = getByID(userID).data;
+          url = `api/users/${userID}`; // Replace with project url
           break;
         default:
-          data = getUsersById(userID).data;
+          url = `api/users/${userID}`;
           break;
-      }
 
-      //let url;
-      //switch (type) {
-      //  case 'project':
-      //    url = `api/users/${userID}`; // Replace with project url
-      //    break;
-      //  default:
-      //    url = `api/users/${userID}`;
-      //    break;
-//
-      //}
+      }
       // fetch for profile on ID
-      //const response = await fetch(url);
-      //const { data } = await response.json(); // use data[0]
+      const response = await fetch(url);
+      const { data } = await response.json(); // use data[0]
       socials = data[0].socials;
       // Setup links
       if (socials) {

@@ -23,7 +23,7 @@ const NotFoundPage = () => {
                             alt={'404 Not Found'}
                             id={'error-image'}
                           />
-                <h2 className='error-header'>Ooops! Seems like this page is missing or moved.</h2>
+                <h2 className='error-header'>Oops! Seems like this page is missing or moved.</h2>
                 <div className = "error-button-container">
                     {/*
                         This is the Home button, because it will return users home once the Home page is up. It currently returns to Discover page

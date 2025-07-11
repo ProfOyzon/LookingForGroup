@@ -869,26 +869,29 @@ Page popup style rules
   border-radius: 4px !important;
   border: none !important;
   top: 0px;
-  right: -1.1%;
+  right: 0%;
   width: 40px !important;
   height: 40px !important;
   background: none !important;
   margin: 0 !important;
   z-index: 4;
-  /* Prevent it from being covered by small-popup */
+  padding: 8px 18px 0px 0px;
+}
+
+.popup-close.popup-close-edit {
+  right: -4%;
 }
 
 @media screen and (max-width: 1180px) {
-  .popup-close {
+  .popup-close, .popup-close.popup-close-edit {
     margin: 0 8px 0 0 !important;
     right: 1%;
   }
 }
 
 .popup-close img {
-  width: 100%;
+  width: 32px;
   height: 32px;
-  margin-top: 3px;
   filter: var(--image-filter);
 }
 

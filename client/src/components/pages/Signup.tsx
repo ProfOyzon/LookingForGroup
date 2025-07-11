@@ -241,7 +241,7 @@ const SignUp = ({ setAvatarImage, avatarImage, profileImage, setProfileImage }) 
               className="signup-input"
               autoComplete="off"
               type="text"
-              placeholder="School e-mail"
+              placeholder="School email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />

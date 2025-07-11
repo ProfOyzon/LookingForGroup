@@ -166,7 +166,7 @@ export const InterestTab = (props: { profile: ProfileData}) => {
               <button
                 key={interest}
                 type="button"
-                className={`interest-tag ${selectedInterests.includes(interest) ? 'selected' : ''}`}
+                className={`tag-button tag-button-blue-${selectedInterests.includes(interest) ? 'selected' : 'unselected'}`}
                 onClick={(e) => { 
                     e.preventDefault(); // Prevent any default behavior
                     toggleInterest(interest)

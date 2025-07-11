@@ -97,7 +97,7 @@ const logout = async (req, res) => {
 };
 
 /**
- * Takes sign up data to send confirmation e-mail. E-mail stored in database temporarily
+ * Takes sign up data to send confirmation email. Email stored in database temporarily
  * @param {express.Request} req - req.body - {username, password, confirm, email, firstName, lastName} setup input data
  * @param {express.Response} res - response
  * @returns {Promise<void>} res.status - {status:201} if success, else {status:400, error:...}

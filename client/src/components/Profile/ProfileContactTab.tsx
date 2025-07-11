@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { getUsersById } from "../../api/users";
+import { getUsersById, getUsers } from "../../api/users";
+import '../Styles/profileContactTab.css'
 
 
 interface LinkData {
@@ -12,6 +13,8 @@ const ProfileContactTab = (userID: number) => {
     const [socials, setSocials] = useState([]);
 
     let linksTSX;
+    const [firstName, setFirstName] = useState("Joe")
+    const [lastName, setLastName] = useState("Bob")
     const [email, setEmail] = useState("dummy@gmail.com");
     const [phone, setPhone] = useState("1-431-dummy");
 
@@ -21,14 +24,17 @@ const ProfileContactTab = (userID: number) => {
     useEffect(() => {
     const loadSocials = async () => {
         try {
-      const response = await getUsersById(1) // Runs into 401 access error
-      const user = response.data;
-      if (response.status === 200) {
-        //setSocials(user.socials)
-        setEmail(user.first_name);
-        setPhone(user.last_name);
-        console.log("success!")
-      }
+          const response = await getUsersById(1) // Currently still testing, grabs id #!
+          const user = response.data;
+          console.log("Response: ", response.status)
+          if (response.status === 200) {
+            setFirstName(user.data.first_name)
+            setLastName(user.data.last_name)
+            setSocials(user.socials)
+            setEmail(user[0].data.email); // Not Yet Exists
+            setPhone(user[0].data.phone); // Not Yet Exists
+            console.log("success!")
+          }
 
       console.log("response data:" + response)
 
@@ -56,24 +62,26 @@ const ProfileContactTab = (userID: number) => {
     }
     loadSocials();
   }, []);
-
-
-    
-    //console.log("Profile Displayed");
  
     return(
         <div className="profile-contact-tab">
             <h1>Contact Info</h1>
             <div className="contact-info-list">
+                {firstName && (
+                    <div className="name"> 
+                        <p>Name: {firstName + " " + lastName}</p>
+                    </div>                    
+                )}
+
                 {email && (
                     <div className="email-links"> 
-                        <p>First Name: {email}</p>
+                        <p>Email: {email}</p>
                     </div>                    
                 )}
                 
                 { phone && (
                     <div className="phone-link"> 
-                        <p>Last Name: <a href = {phone}>{phone}</a></p>
+                        <p>Phone Number: <a href = {phone}>{phone}</a></p>
                     </div>
                 )}
                 { links && (

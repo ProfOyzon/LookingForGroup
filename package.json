@@ -6,7 +6,8 @@
   "license": "CC0-1.0",
   "workspaces": [
     "client",
-    "server"
+    "server",
+    "shared"
   ],
   "scripts": {
     "prepare": "husky && npm run prisma:generate",

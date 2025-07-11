@@ -1,6 +1,7 @@
 // --- Imports ---
 import { useEffect, useState } from "react";
 import { Select, SelectButton, SelectOptions } from "../../Select";
+import { GET } from "../../../api";
 
 
 // --- Interfaces ---
@@ -106,9 +107,9 @@ export const LinksTab = ({ isNewProject = false, projectData = defaultProject, s
       const url = `/api/datasets/socials`;
 
       try {
-        const response = await fetch(url);
+        const response = await GET(url);
 
-        const socials = await response.json();
+        const socials = await response.data;
         const socialsData = socials.data;
 
         if (socialsData === undefined) {

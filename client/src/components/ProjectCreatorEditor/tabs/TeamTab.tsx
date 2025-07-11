@@ -7,6 +7,8 @@ import { Dropdown, DropdownButton, DropdownContent } from "../../Dropdown";
 import { ThemeIcon } from "../../ThemeIcon";
 import { Select, SelectButton, SelectOptions } from "../../Select";
 import { current } from "@reduxjs/toolkit";
+import { getUserByUsername, getUsers, getUsersById } from "../../../api/users";
+import { GET } from "../../../api";
 
 //backend base url for getting images
 const API_BASE = `http://localhost:8081`;
@@ -177,9 +179,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
       const url = `/api/datasets/job-titles`;
 
       try {
-        const response = await fetch(url);
-
-        const jobTitles = await response.json();
+        const response = await GET(url);
+        const jobTitles = await response.data;
         const jobTitleData = jobTitles.data;
 
         if (jobTitleData === undefined) {
@@ -198,24 +199,21 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
   // Get user list if allUsers is empty
   useEffect(() => {
     const getUsersList = async () => {
-      const url = `/api/users`;
-
       try {
-        const response = await fetch(url);
+        const response = await getUsers();
+        const users = await response.data;
 
-        const users = await response.json();
-
-        setAllUsers(users.data);
+        setAllUsers(users);
 
         // list of users to search. users searchable by first name, last name, or username
-        const searchableUsers = await Promise.all(users.data.map(async (user: User) => {
+        const searchableUsers = await Promise.all(users.map(async (user: User) => {
           // get username
-          const usernameResponse = await fetch(`/api/users/${user.user_id}`);
-          const usernameJson = await usernameResponse.json();
+          const usernameRes = await getUsersById(user.user_id);
+          const usernameData = usernameRes.data;
 
           // get make searchable user
           const filteredUser = {
-            "username": usernameJson.data[0].username,
+            "username": usernameData[0].username,
             "first_name": user.first_name,
             "last_name": user.last_name,
           };
@@ -279,17 +277,17 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
     // reset searchbar and dropdowns
     const resetFields = () => {
-    setSearchQuery('');
-    setSelectKey(prev => prev + 1);
-  };
-    
+      setSearchQuery('');
+      setSelectKey(prev => prev + 1);
+    };
+
     // notify user of error, reset fields
     const errorWarning = (message: string) => {
-    setSuccessAddMember(false);
-    setErrorAddMember(message);
-    resetFields();
-    return false;
-  };
+      setSuccessAddMember(false);
+      setErrorAddMember(message);
+      resetFields();
+      return false;
+    };
 
     // check if member is already in project
     const isMember = modifiedProject.members.find((m) => m.user_id === member.user_id);
@@ -310,10 +308,10 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
         newMember.job_title = role.value;
       }
       else {
-      setSuccessAddMember(false);
-      setErrorAddMember('Select a role');
-      setSelectKey(prev => prev + 1);
-      return false;
+        setSuccessAddMember(false);
+        setErrorAddMember('Select a role');
+        setSelectKey(prev => prev + 1);
+        return false;
       }
     }
 
@@ -372,9 +370,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
     let userId = -1;
     const getUserId = async () => {
       try {
-        const response = await fetch(`/api/users/search-username/${user.username}`);
-        const userJson = await response.json();
-        userId = userJson.data[0].user_id;
+        const userData = await getUserByUsername(user.username)
+        userId = userData.data[0].user_id;
       } catch (error) {
         console.error(error.message);
       }
@@ -557,26 +554,26 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
               Lily Carter
             </span> */}
             {modifiedProject.members.map((m) => {
-                if (m.user_id === modifiedProject.user_id) {
-                  return (
-                      <span key={m.user_id} id="position-contact-link">
-                        <img 
-                          className='project-member-image'
-                          src={(m.profile_image) ? `${API_BASE}/images/profiles/${m.profile_image}` : profileImage}
-                          alt="profile"
-                          // default profile picture if user image doesn't load
-                        onError={(e) => {
-                          const profileImg = e.target as HTMLImageElement;
-                          profileImg.src = profileImage;
-                        }}
-                        />
-                        {m.first_name} {m.last_name}
-                      </span>
-                  );
-                }
+              if (m.user_id === modifiedProject.user_id) {
+                return (
+                  <span key={m.user_id} id="position-contact-link">
+                    <img
+                      className='project-member-image'
+                      src={(m.profile_image) ? `${API_BASE}/images/profiles/${m.profile_image}` : profileImage}
+                      alt="profile"
+                      // default profile picture if user image doesn't load
+                      onError={(e) => {
+                        const profileImg = e.target as HTMLImageElement;
+                        profileImg.src = profileImage;
+                      }}
+                    />
+                    {m.first_name} {m.last_name}
+                  </span>
+                );
+              }
 
-                return null;
-              })}
+              return null;
+            })}
           </div>
         </div>
         <div id="open-position-details-right">
@@ -617,8 +614,8 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
 
   // Find selected members 
   const selectedMember = modifiedProject.members.find(
-  (m) => m.user_id === modifiedProject.user_id
-);
+    (m) => m.user_id === modifiedProject.user_id
+  );
 
   // Edit open position or creating new position
   const positionEditWindow = (
@@ -656,11 +653,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           ))}
         </select> */}
         <Select>
-          <SelectButton 
+          <SelectButton
             placeholder={(newPosition) ? 'Select' : ''}
             initialVal={(newPosition) ? '' : (allJobs.length > 0 && currentRole) ? allJobs.find((j) => j.title_id === currentRole)!.label : ''}
           />
-          <SelectOptions 
+          <SelectOptions
             callback={(e) => {
               const selectedTitle = allJobs.find((j) => j.label === e.target.value);
 
@@ -730,12 +727,12 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             ))}
           </select> */}
           <Select>
-            <SelectButton 
+            <SelectButton
               placeholder='Select'
-              
+
               initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.availability : ''}
             />
-            <SelectOptions 
+            <SelectOptions
               callback={(e) => setCurrentJob({ ...currentJob, availability: e.target.value })}
               options={availabilityOptions.map((o) => {
                 return {
@@ -763,11 +760,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             ))}
           </select> */}
           <Select>
-            <SelectButton 
+            <SelectButton
               placeholder='Select'
               initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.location : ''}
             />
-            <SelectOptions 
+            <SelectOptions
               callback={(e) => setCurrentJob({ ...currentJob, location: e.target.value })}
               options={locationOptions.map((o) => {
                 return {
@@ -781,7 +778,7 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
           <label className="edit-position-contact">Main Contact</label>
           {/* <select className="edit-position-contact"></select> */}
           <Select>
-            <SelectButton 
+            <SelectButton
               className="edit-position-contact"
               placeholder="Select"
               initialVal={selectedMember ? `${selectedMember.first_name} ${selectedMember.last_name}` : ''}
@@ -791,11 +788,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
               callback={(e) => {
                 const selectedId = parseInt(e.target.value);
                 setModifiedProject(prev => ({ ...prev, user_id: selectedId }));
-              }}       
+              }}
               options={modifiedProject.members.map((m) => ({
                 markup: (
                   <>
-                    <img className='project-member-image' 
+                    <img className='project-member-image'
                       src={m.profile_image ? `${API_BASE}/images/profiles/${m.profile_image}` : profileImage}
                       alt="profile"
                       // default profile picture if user image doesn't load
@@ -835,11 +832,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             ))}
           </select> */}
           <Select>
-            <SelectButton 
+            <SelectButton
               placeholder='Select'
               initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.duration : ''}
             />
-            <SelectOptions 
+            <SelectOptions
               callback={(e) => setCurrentJob({ ...currentJob, duration: e.target.value })}
               options={durationOptions.map((o) => {
                 return {
@@ -867,11 +864,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             ))}
           </select> */}
           <Select>
-            <SelectButton 
+            <SelectButton
               placeholder='Select'
               initialVal={(newPosition) ? '' : (currentRole) ? getProjectJob(currentRole)?.compensation : ''}
             />
-            <SelectOptions 
+            <SelectOptions
               callback={(e) => setCurrentJob({ ...currentJob, compensation: e.target.value })}
               options={compensationOptions.map((o) => {
                 return {
@@ -912,11 +909,11 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
             <div className="project-editor-project-member-info">
               <div className="project-editor-project-member-name">
                 {/* {m.first_name} {m.last_name} */}
-                {m.first_name && m.last_name 
-                ? `${m.first_name} ${m.last_name}` 
-                : m.user_id === 0  
-                ? 'You'
-                : ''
+                {m.first_name && m.last_name
+                  ? `${m.first_name} ${m.last_name}`
+                  : m.user_id === 0
+                    ? 'You'
+                    : ''
                 }
               </div>
               <div className="project-editor-project-member-role project-editor-extra-info">
@@ -957,12 +954,12 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                       }}
                     />
                     <div className="project-editor-project-member-name">
-                      {m.first_name && m.last_name 
-                      ? `${m.first_name} ${m.last_name}` 
-                      : m.user_id === 0  
-                      ? 'You'
-                      : ''
-                }
+                      {m.first_name && m.last_name
+                        ? `${m.first_name} ${m.last_name}`
+                        : m.user_id === 0
+                          ? 'You'
+                          : ''
+                      }
                     </div>
                   </div>
                   <div id="project-team-add-member-role">
@@ -1161,17 +1158,17 @@ export const TeamTab = ({ isNewProject = false, projectData = defaultProject, se
                 const memberAdded = handleNewMember();
                 return memberAdded;
               }}
-             doNotClose={(prev) => !prev}
+              doNotClose={(prev) => !prev}
             >
               Add
             </PopupButton>
             <PopupButton buttonId="team-add-member-cancel-button"
-             callback={() => {
-              setNewMember(emptyMember);
-              setErrorAddMember('');
-              handlePopupReset();
-            }} 
-            className="button-reset">
+              callback={() => {
+                setNewMember(emptyMember);
+                setErrorAddMember('');
+                handlePopupReset();
+              }}
+              className="button-reset">
               Cancel
             </PopupButton>
           </div>

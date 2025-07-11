@@ -64,12 +64,11 @@ export const Header = ({ dataSets, onSearch, hideSearchBar = false }) => {
 
           //gets user information to display on header profile dropdown
           const response = await getAccountInformation(response2.data.data);
-          const { data } = await response.data;
           const profileImgResponse = await getUsersById(response2.data.data);
 
-          setUsername(data[0].username);
-          setEmail(data[0].primary_email);
-          setProfileImg(profileImgResponse.data.data[0].profile_image);
+          setUsername(response.data[0].username);
+          setEmail(response.data[0].primary_email);
+          setProfileImg(profileImgResponse.data[0].profile_image);
         } else {
           setUsername('Guest');
         }

@@ -7,7 +7,7 @@ import { ThemeIcon } from './ThemeIcon';
 import { ProjectCreatorEditor } from './ProjectCreatorEditor/ProjectCreatorEditor';
 
 import { GET } from '../api/index';
-import { getUsersById } from '../api/users';
+import { getAccountInformation, getUsersById } from '../api/users';
 
 export interface User {
   first_name: string,
@@ -107,13 +107,13 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
         // Get and save user data
         const getUserData = async () => {
           const userResponse = await getUsersById(id);
-          const { data } = await userResponse.data;
+          const emailResponse = await getAccountInformation(id);
 
           const _userData = {
-            first_name: data.first_name,
-            last_name: data.last_name,
-            username: data.username,
-            primary_email: data.primary_email,
+            first_name: userResponse.data[0].first_name,
+            last_name: userResponse.data[0].last_name,
+            username: userResponse.data[0].username,
+            primary_email: emailResponse.data[0].primary_email,
             userId: id
           }
           setUserData(_userData);

@@ -1,6 +1,7 @@
 // --- Imports ---
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { SearchBar } from "../../SearchBar";
+import { GET } from "../../../api";
 
 
 // --- Interfaces ---
@@ -122,9 +123,9 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
       const url = `/api/datasets/project-types`;
 
       try {
-        const response = await fetch(url);
+        const response = await GET(url);
 
-        const projectTypes = await response.json();
+        const projectTypes = await response.data;
         const projectTypeData = projectTypes.data;
 
         if (projectTypeData === undefined) {
@@ -144,9 +145,9 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
       const url = `/api/datasets/tags`;
 
       try {
-        const response = await fetch(url);
+        const response = await GET(url);
 
-        const tags = await response.json();
+        const tags = await response.data;
         const tagsData = tags.data;
 
         if (tagsData === undefined) {
@@ -167,9 +168,9 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
       const url = `/api/datasets/skills`;
 
       try {
-        const response = await fetch(url);
+        const response = await GET(url);
 
-        const skills = await response.json();
+        const skills = await response.data;
         const skillData = skills.data;
 
         if (skillData === undefined) {

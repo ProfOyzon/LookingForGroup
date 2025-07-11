@@ -1,6 +1,6 @@
 import prisma from '#config/prisma.ts';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
-import type { UserDetail, Skill, Social } from '../../../../shared/types.ts';
+import type { UserDetail, UserSkill, Social } from '../../../../shared/types.ts';
 
 type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
@@ -69,7 +69,13 @@ export const getAllUsersService = async (): Promise<UserDetail[] | GetUserServic
       skills:
         user.userSkills.length > 0
           ? user.userSkills.map(
-              ({ position, skills }): Skill => ({
+              ({
+                position,
+                skills,
+              }: {
+                position: number;
+                skills: { skillId: number; label: string; type: string };
+              }): UserSkill => ({
                 skillId: skills.skillId,
                 label: skills.label,
                 type: skills.type,

@@ -1,10 +1,10 @@
 import prisma from '#config/prisma.ts';
-import type { Socials } from '#prisma-models/index.js';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
+import type { Social } from '../../../../shared/types.ts';
 
 type GetSocialsServiceError = ServiceErrorSubset<'INTERNAL_ERROR'>;
 
-const getSocialsService = async (): Promise<Socials[] | GetSocialsServiceError> => {
+const getSocialsService = async (): Promise<Social[] | GetSocialsServiceError> => {
   try {
     return await prisma.socials.findMany({
       select: {

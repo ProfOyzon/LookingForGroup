@@ -90,6 +90,7 @@ const getProjectsService = async (): Promise<ProjectWithFollowers[] | GetService
     return projectsWithFollowers;
   } catch (e) {
     console.error(`Error in getProjectsService: ${JSON.stringify(e)}`);
+
     return 'INTERNAL_ERROR';
   }
 };

@@ -58,7 +58,7 @@ export const POST = async (apiURL: string, newData: object): Promise<ApiResponse
             const obj = await response.json();
 
             if (response.ok) {
-                return { data: obj, status: response.status };
+                return { data: obj.data, status: response.status };
             } else {
                 console.log(obj.error);
                 return { error: obj.error || 'Network response was not ok', status: response.status };
@@ -97,7 +97,7 @@ export const PUT = async (apiURL: string, newData: object): Promise<ApiResponse<
             const obj = await response.json();
 
             if (response.ok) {
-                return { data: obj, status: response.status };
+                return { data: obj.data, status: response.status };
             } else {
                 console.log(obj.error);
                 return { error: obj.error || 'Network response was not ok', status: response.status };
@@ -137,7 +137,7 @@ export const DELETE = async (apiURL: string, data: object = {}): Promise<ApiResp
             const obj = await response.json();
 
             if (response.ok) {
-                return { data: obj, status: response.status };
+                return { data: obj.data, status: response.status };
             } else {
                 console.log(obj.error);
                 return { error: obj.error || 'Network response was not ok', status: response.status };

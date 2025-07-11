@@ -1,0 +1,4 @@
+# Dockerfile that builds the Express API image
+
+FROM node:current-slim as base
+

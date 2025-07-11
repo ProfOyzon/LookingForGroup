@@ -25,9 +25,19 @@ afterAll(async () => {
 /**
  * getUsers
  */
-test('Test getUsers. Local-1: Test status. Local-2: Test information.', async () => {
+test('Test getUsers, local. 1: Test status. 2: Test information.', async () => {
     const result = await util.getUsers();
     console.log(result);
     expect( result.status ).toBe(200);
     expect( result.data ).toBeDefined();
 });
+
+/**
+ * getUsersById
+ */
+test('Test getUsersById, local. 1: Test status. 2: Test information.', async () => {
+  const result = await util.getUsersById(19);
+  console.log(result);
+  expect( result.status ).toBe(200);
+  expect( result.data ).toBeDefined();
+})

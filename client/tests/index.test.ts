@@ -6,6 +6,7 @@ import util from "../src/api/index.js";
 let server: http.Server;
 let port: number;
 
+
 beforeAll(async () => {
   server = http.createServer(app);
 
@@ -26,6 +27,13 @@ test("local: Test gets users", async () => {
   const result = await util.GET(apiURL);
   expect(result.status).toBe(200);
 });
+
+test("remote: Test gets users", async () => {
+  const apiURL = `https://lfg.gccis.rit.edu/api/api/users`;
+  const result = await util.GET(apiURL);
+  //console.log(result);
+  expect(result.status).toBe(200);
+})
 
 test("local: Test gets projects", async () => {
   const apiURL = `http://localhost:${port}/projects`;

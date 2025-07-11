@@ -73,7 +73,7 @@ export const createNewProject = async (
  * Gets all projects in the database
  * @returns Array of all projects if valid, 400 if not
  */
-export const getProjects = async (): Promise<unknown> => {
+export const getProjects = async (): Promise<ApiResponse<unknown>> => {
   const apiURL = `/projects`;
 
   const response = await GET(apiURL);
@@ -89,7 +89,7 @@ export const getProjects = async (): Promise<unknown> => {
  * @param ID -  ID of project to retrieve
  * @returns - A project object if valid, 400 if not
  */
-export const getByID = async (ID: number): Promise<unknown> => {
+export const getByID = async (ID: number): Promise<ApiResponse<unknown>> => {
   const apiURL = `/projects/${ID}`;
   const response = await GET(apiURL);
   if (response.error) {
@@ -158,7 +158,7 @@ export const updateThumbnail = async (
  * @param ID - ID of the target project
  * @returns Array of image objects if valid, "400" if not
  */
-export const getPics = async (ID: number): Promise<unknown> => {
+export const getPics = async (ID: number): Promise<ApiResponse<unknown>> => {
   const apiURL = `/projects/${ID}/pictures`;
   const response = await GET(apiURL);
   if (response.error) {

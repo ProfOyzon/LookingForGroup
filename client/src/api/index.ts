@@ -1,5 +1,10 @@
 import { ApiResponse } from "../../../shared/types.ts";
 
+/**
+ * Checks env and determines which url to use
+ * Exists for tests to inject the url for the test server instance
+ * @returns Url base as a string ("/api" | "localhost:port")
+ */
 const getBaseUrl = (): string => {
   if (import.meta.env.NODE_ENV === "test") {
     if (!window.TEST_API_URL) {

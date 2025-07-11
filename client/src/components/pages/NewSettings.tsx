@@ -13,9 +13,6 @@ import PasswordValidator from 'password-validator';
 import ToTopButton from '../ToTopButton';
 import * as paths from '../../constants/routes';
 
-//import api utils
-import {getCurrentUsername} from '../../api/users.ts'
-
 // Take the user ID and delete it
 const deleteAccountPressed = async () => {
   // console.log('Delete Pressed!');
@@ -196,7 +193,7 @@ const Settings = ({ }) => {
     };
 
     // Set up params to be correctly passed into API
-    const apiParams = { confirm, password };
+    let apiParams = { confirm, password };
     switch (type) {
       case 'Username':
         apiParams['username'] = firstParam;

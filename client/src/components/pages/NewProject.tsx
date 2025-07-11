@@ -28,9 +28,6 @@ import Project from './Project';
 import { ThemeIcon } from '../ThemeIcon';
 import { sendPost, sendDelete } from '../../functions/fetch';
 
-//import api utils
-import {getCurrentUsername} from '../../api/users.ts'
-
 //backend base url for getting images
 const API_BASE = `http://localhost:8081`;
 

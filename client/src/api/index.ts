@@ -1,5 +1,6 @@
 import {ApiResponse} from '../../../shared/types.ts';
 
+
 //Basic GET function for utilities
 export const GET = async (apiURL: string): Promise<ApiResponse<unknown>> => {
     try {
@@ -17,7 +18,7 @@ export const GET = async (apiURL: string): Promise<ApiResponse<unknown>> => {
             const obj = await response.json();
 
             if (response.ok) {
-                return { data: obj, status: response.status };
+                return { data: obj.data, status: response.status };
             } else {
                 console.log(obj.error);
                 return { error: obj.error || 'Network response was not ok', status: response.status };

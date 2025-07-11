@@ -807,6 +807,75 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+    put:
+      summary: Updates project information
+      tags:
+        - Projects
+      security:
+        - shibbolethAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The project ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                hook:
+                  type: string
+                description:
+                  type: string
+                purpose:
+                  type: string
+                status:
+                  type: string
+                audience:
+                  type: string
+              example:
+                title: Mistah Bones Awesome Game
+                hook: Mistah Bones Awesomest GAME! PLAY NOW!
+                description: Mistah Bones Game is about Mistah Bones. Explore over three levels.
+                purpose: To be cool.
+                status: Completed
+                audience: YOU.
+
+      responses:
+        '200':
+          description: Update a single project
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    $ref: '#/components/schemas/ProjectDetails'
+                  memetype:
+                    type: string
+                    example: application/json
+        '400':
+          description: Invalid input
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Project not found
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   /api/projects/{id}/pictures:
     get:
       summary: Get project pictures by ID

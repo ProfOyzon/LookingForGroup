@@ -3,7 +3,7 @@ import envConfig from '#config/env.ts';
 import uidExistsService from '#services/users/uid-exists.ts';
 
 const requiresLogin = async (request: Request, response: Response, next: NextFunction) => {
-  if (envConfig.env === 'development') {
+  if (envConfig.env === 'development' || envConfig.env === 'test') {
     /// Add UID for development, missing correct header
     request.headers['uid'] = '000000001';
 

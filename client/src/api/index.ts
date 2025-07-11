@@ -1,7 +1,13 @@
 import { ApiResponse } from "../../../shared/types.ts";
 
 const getBaseUrl = (): string => {
-  return import.meta.env.NODE_ENV === "test" ? globalThis.TEST_API_URL : "/api";
+  if (import.meta.env.NODE_ENV === "test") {
+    if (!window.TEST_API_URL) {
+      throw new Error("TEST_API_URL not set");
+    }
+    return window.TEST_API_URL;
+  }
+  return "/api";
 };
 
 //Basic GET function for utilities

@@ -11,7 +11,7 @@ const startTestServer = async () => {
 
   port = (server.address() as { port: number }).port;
 
-  globalThis.TEST_API_URL = `http://localhost:${port}`;
+  window.TEST_API_URL = `http://localhost:${port}`;
 };
 
 const stopTestServer = async () => {

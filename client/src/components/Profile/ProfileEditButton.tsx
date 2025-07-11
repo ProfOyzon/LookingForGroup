@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PagePopup, openClosePopup } from '../PagePopup';
+import { GET } from '../../api';
+import { editUser, updateProjectVisibility } from '../../api/users';
 // import { Popup, PopupContent, PopupButton } from "../Popup"; // Unused because I got confused while trying to use it and couldn't get it to work
 
 
@@ -226,8 +228,8 @@ const EditButton = ({ userData }) => {
               {rolesList === undefined
                 ? ''
                 : rolesList.map((roleItem) => {
-                    return <option value={roleItem.label}>{roleItem.label}</option>;
-                  })}
+                  return <option value={roleItem.label}>{roleItem.label}</option>;
+                })}
             </select>
           </div>
 
@@ -247,8 +249,8 @@ const EditButton = ({ userData }) => {
               {majorsList === undefined
                 ? ''
                 : majorsList.map((majorItem) => {
-                    return <option value={majorItem.label}>{majorItem.label}</option>;
-                  })}
+                  return <option value={majorItem.label}>{majorItem.label}</option>;
+                })}
             </select>
           </div>
 
@@ -427,55 +429,55 @@ const EditButton = ({ userData }) => {
         <div className="edit-region-input projects">
           {userProjects !== undefined && shownProjects !== undefined
             ? userProjects.map((project) => {
-                if (project.thumbnail === null || project.thumbnail == '') {
-                  return (
-                    <div className="list-project">
-                      <div className="inner-list-project">{project.title}</div>
-                      <div className="list-project-hide-icon">
-                        <button
-                          className="list-project-hide-icon-button"
-                          onClick={(e) => {
-                            updateHiddenProjects(project);
-                          }}
-                        >
-                          {checkIfProjectIsShown(project.project_id) ? (
-                            <i className="fa-solid fa-eye"></i>
-                          ) : (
-                            <i className="fa-solid fa-eye-slash"></i>
-                          )}
-                        </button>
-                      </div>
+              if (project.thumbnail === null || project.thumbnail == '') {
+                return (
+                  <div className="list-project">
+                    <div className="inner-list-project">{project.title}</div>
+                    <div className="list-project-hide-icon">
+                      <button
+                        className="list-project-hide-icon-button"
+                        onClick={(e) => {
+                          updateHiddenProjects(project);
+                        }}
+                      >
+                        {checkIfProjectIsShown(project.project_id) ? (
+                          <i className="fa-solid fa-eye"></i>
+                        ) : (
+                          <i className="fa-solid fa-eye-slash"></i>
+                        )}
+                      </button>
                     </div>
-                  );
-                } else {
-                  const projectURL = `${API_BASE}/images/thumbnails/${project.thumbnail}`;
-                  return (
-                    <div className="list-project">
-                      <div className="inner-list-project">
-                        <img
-                          className="list-project-photo"
-                          src={projectURL}
-                          alt={`${project.title}'s Thumbnail`}
-                        ></img>
-                      </div>
-                      <div className="list-project-hide-icon">
-                        <button
-                          className="list-project-hide-icon-button"
-                          onClick={(e) => {
-                            updateHiddenProjects(project);
-                          }}
-                        >
-                          {checkIfProjectIsShown(project.project_id) ? (
-                            <i className="fa-solid fa-eye"></i>
-                          ) : (
-                            <i className="fa-solid fa-eye-slash"></i>
-                          )}
-                        </button>
-                      </div>
+                  </div>
+                );
+              } else {
+                const projectURL = `${API_BASE}/images/thumbnails/${project.thumbnail}`;
+                return (
+                  <div className="list-project">
+                    <div className="inner-list-project">
+                      <img
+                        className="list-project-photo"
+                        src={projectURL}
+                        alt={`${project.title}'s Thumbnail`}
+                      ></img>
                     </div>
-                  );
-                }
-              })
+                    <div className="list-project-hide-icon">
+                      <button
+                        className="list-project-hide-icon-button"
+                        onClick={(e) => {
+                          updateHiddenProjects(project);
+                        }}
+                      >
+                        {checkIfProjectIsShown(project.project_id) ? (
+                          <i className="fa-solid fa-eye"></i>
+                        ) : (
+                          <i className="fa-solid fa-eye-slash"></i>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+            })
             : ''}
         </div>
       </div>
@@ -703,9 +705,9 @@ const EditButton = ({ userData }) => {
     } else {
       const url = `/api/datasets/skills`;
       try {
-        const response = await fetch(url);
+        const response = await GET(url);
 
-        const rawData = await response.json();
+        const rawData = await response.data;
         setSkillsList(rawData.data);
       } catch (error) {
         console.log(error);
@@ -775,46 +777,10 @@ const EditButton = ({ userData }) => {
         {skillsList === undefined
           ? ''
           : skillsList.map((skillItem) => {
-              if (
-                skillItem.label.substring(0, currentSearch.length).toLowerCase() ==
-                currentSearch.toLowerCase()
-              ) {
-                let skillClass = `skill-item-button ${skillItem.type.toLowerCase().substring(0, 4)}`;
-                let found = false;
-                for (let i = 0; i < currentSkills.length; i++) {
-                  if (currentSkills[i].skill == skillItem.label) {
-                    found = true;
-                  }
-                }
-                if (found) {
-                  skillClass += ' chosen';
-                }
-
-                return (
-                  <button
-                    className={skillClass}
-                    onClick={(e) => {
-                      addToSkillsList({
-                        id: skillItem.skill_id,
-                        type: skillItem.type,
-                        skill: skillItem.label,
-                        position: currentSkills.length + 1,
-                      });
-                    }}
-                  >
-                    {found ? '✓' : '+'}&nbsp;&nbsp;&nbsp;{skillItem.label}
-                  </button>
-                );
-              }
-            })}
-      </div>
-    );
-  } else {
-    filteredSkillsListDisplay = (
-      <div className="skills-list">
-        {skillsList === undefined
-          ? ''
-          : skillsList.map((skillItem) => {
+            if (
+              skillItem.label.substring(0, currentSearch.length).toLowerCase() ==
+              currentSearch.toLowerCase()
+            ) {
               let skillClass = `skill-item-button ${skillItem.type.toLowerCase().substring(0, 4)}`;
               let found = false;
               for (let i = 0; i < currentSkills.length; i++) {
@@ -841,7 +807,43 @@ const EditButton = ({ userData }) => {
                   {found ? '✓' : '+'}&nbsp;&nbsp;&nbsp;{skillItem.label}
                 </button>
               );
-            })}
+            }
+          })}
+      </div>
+    );
+  } else {
+    filteredSkillsListDisplay = (
+      <div className="skills-list">
+        {skillsList === undefined
+          ? ''
+          : skillsList.map((skillItem) => {
+            let skillClass = `skill-item-button ${skillItem.type.toLowerCase().substring(0, 4)}`;
+            let found = false;
+            for (let i = 0; i < currentSkills.length; i++) {
+              if (currentSkills[i].skill == skillItem.label) {
+                found = true;
+              }
+            }
+            if (found) {
+              skillClass += ' chosen';
+            }
+
+            return (
+              <button
+                className={skillClass}
+                onClick={(e) => {
+                  addToSkillsList({
+                    id: skillItem.skill_id,
+                    type: skillItem.type,
+                    skill: skillItem.label,
+                    position: currentSkills.length + 1,
+                  });
+                }}
+              >
+                {found ? '✓' : '+'}&nbsp;&nbsp;&nbsp;{skillItem.label}
+              </button>
+            );
+          })}
       </div>
     );
   }
@@ -895,9 +897,9 @@ const EditButton = ({ userData }) => {
   const getSocials = async () => {
     const url = `/api/datasets/socials`;
     try {
-      const response = await fetch(url);
+      const response = await GET(url);
 
-      const rawData = await response.json();
+      const rawData = await response.data;
       setSocialLinks(rawData.data);
     } catch (error) {
       console.log(error);
@@ -1048,31 +1050,31 @@ const EditButton = ({ userData }) => {
             {currentLinks == null
               ? ''
               : currentLinks.map((linkItem, index: number) => {
-                  return (
-                    <div className="edit-region-link-item">
-                      {getLinksDropDown(linkItem.website, index)}
-                      <div className="edit-region-input links">
-                        <input
-                          type="text"
-                          className="edit-region-input-text"
-                          placeholder="URL"
-                          value={linkItem.url}
-                          onChange={(e) => {
-                            updateURL(index, e.target.value);
-                          }}
-                        ></input>
-                        <button
-                          className="remove-button"
-                          onClick={(e) => {
-                            removeLink(index);
-                          }}
-                        >
-                          —
-                        </button>
-                      </div>
+                return (
+                  <div className="edit-region-link-item">
+                    {getLinksDropDown(linkItem.website, index)}
+                    <div className="edit-region-input links">
+                      <input
+                        type="text"
+                        className="edit-region-input-text"
+                        placeholder="URL"
+                        value={linkItem.url}
+                        onChange={(e) => {
+                          updateURL(index, e.target.value);
+                        }}
+                      ></input>
+                      <button
+                        className="remove-button"
+                        onClick={(e) => {
+                          removeLink(index);
+                        }}
+                      >
+                        —
+                      </button>
                     </div>
-                  );
-                })}
+                  </div>
+                );
+              })}
             <div className="edit-region-button-section links">
               <button
                 className="edit-region-button links"
@@ -1208,27 +1210,22 @@ const EditButton = ({ userData }) => {
     console.log("I'M BEING RAN HAHAHAAHAHAHAHAHAHH");
     const url = `/api/users/${userData.user_id}`;
     try {
-      const response = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          firstName: currentFirstName,
-          lastName: currentLastName,
-          headline: currentQuote,
-          pronouns: currentPronouns,
-          jobTitleId: getRoleId(currentRole),
-          majorId: getMajorId(currentMajor),
-          academicYear: currentYear,
-          location: currentLocation,
-          funFact: currentFunFact,
-          bio: currentAbout,
-          skills: createSkillsList(),
-          socials: createLinksList(),
-        }),
-      });
-
+      const data = {
+        firstName: currentFirstName,
+        lastName: currentLastName,
+        headline: currentQuote,
+        pronouns: currentPronouns,
+        jobTitleId: getRoleId(currentRole),
+        majorId: getMajorId(currentMajor),
+        academicYear: currentYear,
+        location: currentLocation,
+        funFact: currentFunFact,
+        bio: currentAbout,
+        skills: createSkillsList(),
+        socials: createLinksList(),
+      }
+      editUser(userData.user_id, data);
+      
       console.log(`User data: Response status: ${response.status}`);
     } catch (error) {
       console.log(error);
@@ -1238,18 +1235,8 @@ const EditButton = ({ userData }) => {
   const saveProjectsPage = async () => {
     if (userProjects !== undefined) {
       for (let i = 0; i < userProjects.length; i++) {
-        const url = `/api/users/${userData.user_id}/projects/visibility`;
         try {
-          const response = await fetch(url, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              projectId: userProjects[i].project_id,
-              visibility: checkIfProjectIsShown(userProjects[i].project_id) ? 'public' : 'private',
-            }),
-          });
+          updateProjectVisibility(userData.user_id, userProjects[i].project_id,checkIfProjectIsShown(userProjects[i].project_id) ? 'public' : 'private')
 
           console.log(`Projects data #${i + 1}: Response status: ${response.status}`);
         } catch (error) {

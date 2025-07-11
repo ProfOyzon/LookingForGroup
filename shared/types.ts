@@ -59,24 +59,26 @@ export interface Skill {
     position: number;
 }
 
-export interface ProjectType {
+export interface ProjectGenres {
     typeId: number;
     label: string;
 }
 
 // Other
 
+//there is no alt text in database yet
 export interface ProjectImage {
     imageId: number;
-    url: string;
-    altText: string;
+    image: string;
+    altText: '';
 }
 
+//permissions not yet in database
 export interface Member {
     projectId: number;
     userId: number;
     titleId: number;
-    permission: number;
+    //permission: number;
 }
 
 // Users
@@ -163,17 +165,49 @@ export interface Project {
     title: string;
     hook: string;
     description: string;
-    thumbnail?: string;
-    purpose?: string;
-    status?: string;
-    audience?: string;
+    thumbnail?: string | null;
+    purpose?: string | null;
+    status?: string | null;
+    audience?: string | null;
+    userId: number;
     createdAt: Date;
     updatedAt: Date;
-    projectType: ProjectType[];
-    projectTags: Tag[];
+    projectType: ProjectGenres[];
+    projectTags: ProjectTag[];
     projectImages: ProjectImage[];
     projectSocials: Social[];
-    jobs: JobTitle[];
+    jobs: Job[];
     members: Member[];
-    followers?: UserPreview[];
+}
+
+// Represents the followers info for a project
+export interface ProjectFollowers {
+    count: number;
+}
+
+// project with the followers data
+export interface ProjectWithFollowers extends Project {
+    followers: ProjectFollowers;
+}
+
+//Jobs for projects
+export interface Job {
+    projectId: number;
+    titleId: number;
+    availability: string;
+    duration: string;
+    location: string;
+    compensation: string;
+    description?: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+//tags for projects
+export interface ProjectTag {
+    projectId: number;
+    tagId: number;
+    label: string;
+    type: TagType;
+    position: number;
 }

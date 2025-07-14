@@ -3,7 +3,7 @@ import type {
   ApiResponse,
   User,
   CreateUserData,
-} from "../../../shared/types.ts";
+} from "@looking-for-group/shared";
 
 /* USER CRUD */
 

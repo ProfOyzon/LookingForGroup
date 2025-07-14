@@ -1,15 +1,12 @@
 import { GET, POST, PUT, DELETE } from "./index";
 import type {
   ApiResponse,
-  ProjectType,
+  Genre,
   Tag,
   JobTitle,
   Member,
   Social,
-} from "../../../shared/types.ts";
-
-//or alternatvly use and add API_URL to .env
-// const root = import.meta.env.API_URL;
+} from "@looking-for-group/shared";
 
 /* PROJECT CRUD */
 
@@ -37,7 +34,7 @@ export const createNewProject = async (
   _purpose: string,
   _status: string,
   _audience: string,
-  _pTypes: ProjectType[],
+  _pTypes: Genre[],
   _pTags: Tag[],
   _jobs: JobTitle[],
   _members: Member[],

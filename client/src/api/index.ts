@@ -1,4 +1,4 @@
-import { ApiResponse } from "../../../shared/types.ts";
+import { ApiResponse } from "@looking-for-group/shared";
 
 /**
  * Checks env and determines which url to use

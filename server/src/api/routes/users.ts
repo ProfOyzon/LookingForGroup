@@ -6,7 +6,10 @@ import { getAllUsers } from '#controllers/users/get-all.ts';
 import { getUserByEmail } from '#controllers/users/get-by-email.ts';
 import { getUsernameById } from '#controllers/users/get-by-id.ts';
 import { getUserByUsername } from '#controllers/users/get-by-username.ts';
-import { getUserFollowing } from '#controllers/users/get-following.ts';
+import { getMyProjects } from '#controllers/users/get-my-proj.ts';
+import { getProjectsFollowing } from '#controllers/users/get-proj-following.ts';
+import { getUserFollowing } from '#controllers/users/get-user-following.ts';
+import { getOtherUserProjects } from '#controllers/users/get-user-proj.ts';
 import { getUsernameByShib } from '#controllers/users/get-username-shib.ts';
 import { updateUserInfo } from '#controllers/users/update-info.ts';
 import { updateUsername } from '#controllers/users/update-username.ts';
@@ -48,22 +51,23 @@ router.put('/:id/username', requiresLogin, updateUsername);
 router.put('/:id/visibility', requiresLogin, updateVisibility);
 
 //Gets current user's projects
-//router.get('/api/users/:id/projects', mid.checkLogin, userCtrl.getMyProjects);
+router.get('/:id/projects', requiresLogin, getMyProjects);
 
-//Gets another user's visible projects
-//router.get('/api/users/:id/projects/profile', userCtrl.getVisibleProjects);
+//Gets another user's projects
+router.get('/:id/projects/profile', getOtherUserProjects);
 
+//visibility for individual projects does not exists anymore
 //Updates user's project visibility
 
-//Gets user's following projects
-//router.get('/api/users/:id/followings/projects', userCtrl.getProjectFollowing);
+//Gets projects user is following
+router.get('/:id/followings/projects', requiresLogin, getProjectsFollowing);
 
 //Adds users following project
 
 //Delete users
 router.delete('/:id', deleteUser);
 
-//Gets user's following users
+//Gets users user is following
 router.get('/:id/followings/people', getUserFollowing);
 
 //Adds users following users

@@ -731,6 +731,138 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /api/users/{id}/projects:
+    get:
+      summary: Get current user's own projects
+      description: Returns the list of projects owned by the user identified by userID.
+      tags:
+        - Users
+      security:
+        - shibbolethAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: User ID to get projects for
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of projects owned by the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectWithFollowers'
+                  memetype:
+                    type: string
+                    example: application/json
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: No rpojects found for this user
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/users/{id}/projects/profile:
+    get:
+      summary: Get another user's projects
+      description: Retrieve projects of a user (not current user)
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of projects for the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectWithFollowers'
+                  memetype:
+                    type: string
+                    example: application/json
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: No rpojects found for this user
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/users/{id}/followings/projects:
+    get:
+      summary: Get projects a user is following
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: User ID to get followed projects for
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of projects the user is following
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectWithFollowers'
+                  memetype:
+                    type: string
+                    example: application/json
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: No followed projects are found
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   # PROJECTS
   /api/projects:
     get:

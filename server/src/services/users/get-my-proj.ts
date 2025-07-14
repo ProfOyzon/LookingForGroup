@@ -5,16 +5,18 @@ import { transformProject } from '../helper/projTransform.ts';
 
 type GetProjectsError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
-//gets projects of other uses to view
-export const getUserProjectsService = async (
+export const getMyProjectsService = async (
   userId: number,
 ): Promise<ProjectWithFollowers[] | GetProjectsError> => {
   try {
     const projects = await prisma.projects.findMany({
       where: {
-        userId,
+        projectFollowings: {
+          some: {
+            userId,
+          },
+        },
       },
-      orderBy: { createdAt: 'desc' },
       include: {
         _count: { select: { projectFollowings: true } },
         projectGenres: { include: { genres: true } },
@@ -25,15 +27,20 @@ export const getUserProjectsService = async (
         members: true,
         users: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
+    //check if they exits
     if (projects.length === 0) return 'NOT_FOUND';
 
+    //user helper to tranform project
     const fullProject = projects.map(transformProject);
 
     return fullProject;
   } catch (e) {
-    console.error(`Error in getUserProjectsService: ${JSON.stringify(e)}`);
+    console.error(`Error in getMyProjectsService: ${JSON.stringify(e)}`);
     return 'INTERNAL_ERROR';
   }
 };

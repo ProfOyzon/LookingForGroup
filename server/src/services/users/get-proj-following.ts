@@ -5,8 +5,7 @@ import { transformProject } from '../helper/projTransform.ts';
 
 type GetProjectsError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
-//gets projects of other uses to view
-export const getUserProjectsService = async (
+export const getProjectFollowingService = async (
   userId: number,
 ): Promise<ProjectWithFollowers[] | GetProjectsError> => {
   try {
@@ -33,7 +32,7 @@ export const getUserProjectsService = async (
 
     return fullProject;
   } catch (e) {
-    console.error(`Error in getUserProjectsService: ${JSON.stringify(e)}`);
+    console.error(`Error in getVisibleProjects: ${JSON.stringify(e)}`);
     return 'INTERNAL_ERROR';
   }
 };

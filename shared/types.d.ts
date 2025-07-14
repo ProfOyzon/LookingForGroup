@@ -19,7 +19,7 @@ export type AcademicYear =
     | "Senior"
     | "Graduate"
     | string;
-
+export type Visibility = 0 | 1;
 
 
 //API RESPONSE
@@ -69,7 +69,7 @@ export interface Genre {
 //USER DATA
 
 export interface UserSkill extends Skill {
-  position: number;
+    position: number;
 }
 
 export interface UserSocial {
@@ -134,7 +134,7 @@ export interface User {
     location: string | null;
     funFact: string | null;
     bio: string | null;
-    visibility: number;
+    visibility: Visibility;
     skills?: UserSkill[] | null;
     socials?: Social[] | null;
     phoneNumber: string | null;

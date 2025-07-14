@@ -34,7 +34,7 @@ const sampleUsers = prisma.users.findMany({
 type UsersGetPayload = Awaited<typeof sampleUsers>[number];
 
 //map to shared type
-export const transformProject = (user: UsersGetPayload): UserDetail => {
+export const transformUser = (user: UsersGetPayload): UserDetail => {
   return {
     userId: user.userId,
     firstName: user.firstName,

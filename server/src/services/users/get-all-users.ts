@@ -1,6 +1,7 @@
-import type { UserDetail, UserSkill, Social } from '@looking-for-group/shared';
+import type { UserDetail } from '@looking-for-group/shared';
 import prisma from '#config/prisma.ts';
 import type { ServiceErrorSubset } from '#services/service-error.ts';
+import { transformUser } from '../helpers/userTransform.ts';
 
 type GetUserServiceError = ServiceErrorSubset<'INTERNAL_ERROR' | 'NOT_FOUND'>;
 
@@ -52,48 +53,8 @@ export const getAllUsersService = async (): Promise<UserDetail[] | GetUserServic
       },
     });
 
-    //transform the users to what needs to be outputted
-    const transformedUsers: UserDetail[] = users.map((user) => ({
-      userId: user.userId,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      profileImage: user.profileImage,
-      headline: user.headline,
-      pronouns: user.pronouns,
-      academicYear: user.academicYear,
-      location: user.location,
-      funFact: user.funFact,
-      jobTitle: user.jobTitles?.label ?? null,
-      major: user.majors?.label ?? null,
-      skills:
-        user.userSkills.length > 0
-          ? user.userSkills.map(
-              ({
-                position,
-                skills,
-              }: {
-                position: number;
-                skills: { skillId: number; label: string; type: string };
-              }): UserSkill => ({
-                skillId: skills.skillId,
-                label: skills.label,
-                type: skills.type,
-                position,
-              }),
-            )
-          : null,
-      socials:
-        user.userSocials.length > 0
-          ? user.userSocials.map(
-              ({ socials }): Social => ({
-                websiteId: socials.websiteId,
-                label: socials.label,
-              }),
-            )
-          : null,
-    }));
-
+    //return the transformed users
+    const transformedUsers = users.map(transformUser);
     return transformedUsers;
   } catch (error) {
     console.error('Error in getAllUsersService:', error);

@@ -39,8 +39,8 @@ const getProjectsService = async (): Promise<ProjectWithFollowers[] | GetService
       },
     });
 
+    //return transformed projects
     const transformedProjects = result.map(transformProject);
-
     return transformedProjects;
   } catch (e) {
     console.error(`Error in getProjectsService: ${JSON.stringify(e)}`);

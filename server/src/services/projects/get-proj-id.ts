@@ -39,8 +39,10 @@ const getProjectByIdService = async (
       },
     });
 
+    //check if project exists
     if (!project) return 'NOT_FOUND';
 
+    //return transformed project
     return transformProject(project);
   } catch (e) {
     console.error(`Error in getProjectByIdService: ${JSON.stringify(e)}`);

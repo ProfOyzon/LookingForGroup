@@ -23,6 +23,7 @@ export const getUserByEmailService = async (
 
     if (!user) return 'NOT_FOUND';
 
+    //return the transformed user
     return user;
   } catch (e) {
     console.error(`Error in getUserByUsernameService: ${JSON.stringify(e)}`);

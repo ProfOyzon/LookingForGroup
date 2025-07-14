@@ -833,18 +833,12 @@ paths:
                   type: string
                 description:
                   type: string
-                purpose:
-                  type: string
-                status:
-                  type: string
                 audience:
                   type: string
               example:
                 title: Mistah Bones Awesome Game
                 hook: Mistah Bones Awesomest GAME! PLAY NOW!
                 description: Mistah Bones Game is about Mistah Bones. Explore over three levels.
-                purpose: To be cool.
-                status: Completed
                 audience: YOU.
 
       responses:

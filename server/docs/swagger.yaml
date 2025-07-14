@@ -861,6 +861,62 @@ paths:
           description: No followed projects are found
           $ref: '#/components/responses/NotFound'
         '500':
+          description: Internal server error occurred
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/users/{id}/followings/people:
+    get:
+      tags:
+        - Users
+      summary: Get list of users that the specified user is following
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of users the current user is following
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        userId:
+                          type: integer
+                          example: 1
+                        followingId:
+                          type: integer
+                          example: 2
+                        followedAt:
+                          type: string
+                          format: date-time
+                          example: 2025-05-01T10:00:00Z
+                  memetype:
+                    type: string
+                    example: application/json
+        '400':
+          description: UserID not valid
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: No followers exist for ID
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Internal server error occurred
           $ref: '#/components/responses/InternalServerError'
 
   # PROJECTS

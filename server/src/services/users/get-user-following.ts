@@ -9,7 +9,7 @@ export const getUserFollowingService = async (
   userId: number,
 ): Promise<UserFollowing[] | GetUserServiceError> => {
   try {
-    return await prisma.userFollowings.findMany({
+    const following = await prisma.userFollowings.findMany({
       where: { userId },
       select: {
         userId: true,
@@ -17,6 +17,12 @@ export const getUserFollowingService = async (
         followedAt: true,
       },
     });
+
+    if (following.length === 0) {
+      return 'NOT_FOUND';
+    }
+
+    return following;
   } catch (e) {
     console.error(`Error in getUserFollowingService: ${JSON.stringify(e)}`);
     return 'INTERNAL_ERROR';

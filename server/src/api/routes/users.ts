@@ -31,7 +31,8 @@ router.get('/:id', getUsernameById);
 //Updates users information
 router.put('/:id', requiresLogin, updateUserInfo);
 
-//Deletes users
+//Delete user
+router.delete('/:id', deleteUser);
 
 //Gets users by username
 router.get('/search-username/:username', getUserByUsername);
@@ -56,16 +57,10 @@ router.get('/:id/projects', requiresLogin, getMyProjects);
 //Gets another user's projects
 router.get('/:id/projects/profile', getOtherUserProjects);
 
-//visibility for individual projects does not exists anymore
-//Updates user's project visibility
-
 //Gets projects user is following
 router.get('/:id/followings/projects', requiresLogin, getProjectsFollowing);
 
 //Adds users following project
-
-//Delete users
-router.delete('/:id', deleteUser);
 
 //Gets users user is following
 router.get('/:id/followings/people', getUserFollowing);

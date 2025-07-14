@@ -107,7 +107,7 @@ export const getByID = async (ID: number): Promise<ApiResponse<unknown>> => {
 export const updateProject = async (
   ID: number,
   data: object
-): Promise<unknown> => {
+): Promise<ApiResponse<unknown>> => {
   const apiURL = `/projects/${ID}`;
   const response = await PUT(apiURL, data);
   if (response.error) {
@@ -123,7 +123,7 @@ export const updateProject = async (
  */
 export const deleteProject = async (
   ID: number
-): Promise<ApiResponse<any[]>> => {
+): Promise<ApiResponse<unknown>> => {
   const apiURL = `/projects/${ID}`;
   const response = await DELETE(apiURL);
   if (response.error) {

@@ -32,6 +32,7 @@ export const transformProject = (project: ProjectsGetPayload): ProjectWithFollow
     userId: project.userId ?? 0,
     createdAt: project.createdAt,
     updatedAt: project.updatedAt,
+    //visibility: project.visibility,
     projectType: project.projectGenres.map((pg) => ({
       typeId: pg.typeId,
       label: pg.genres.label,

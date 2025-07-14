@@ -1,5 +1,5 @@
+import type { ProjectWithFollowers } from '@looking-for-group/shared';
 import prisma from '#config/prisma.ts';
-import type { ProjectWithFollowers } from '../../../../shared/types.js';
 
 //sample project from prisma to be mapped
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

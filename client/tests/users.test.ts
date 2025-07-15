@@ -78,7 +78,7 @@ test("Test getUserByEmail, local. 1: Test status. 2: Test data.", async () => {
  */
 test("Test getUserFollowing, local. 1: Test status. 2: Test data.", async () => {
   const response = await util.getUserFollowing(19);
-  //console.log(response);
+  console.log(response);
   expect(response.data).toBeDefined();
   expect(response.status).toBe(200);
 });
@@ -106,8 +106,57 @@ test("Test getProjectFollowing, local. 1: Test status. 2: Test data", async () =
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 // POSTs
 
+/**
+ * createNewUser
+ */
+// test('Test createNewUser. 1: Test add and status. 2: test recieving information.', async () => {
+//   //how do we test this rn?
+// });
+
+
+
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 // PUTs
 
+/**
+ * editUser
+ */
+test('Test editUser. 1: Test change and status. 2: Test changed information.', async () => {
+  
+});
+
+/**
+ * updateProfiliePicture
+ */
+test('Test updateProfilePicture. 1: Test change and status. 2: Test changed information.', async () => {
+  const id = 1;
+  const image = new File([], '');
+  const response = await util.updateProfilePicture(id,image);
+  console.log(response);
+  expect(response.status).toBe(200);
+});
+
+/**
+ * updateUsername
+ */
+test('Test updateUsername. 1: Test change and status. 2: Test changed information.', async () => {
+  const id = 1;
+  const user = 'misterLFG';
+  
+})
+
+
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 // DELETEs;
+
+/**
+ * deleteUser
+ */
+test('Test deleteUser. 1: Test delete and status. 2: Test no recieves.', async () => {
+  const id = 1;
+  const response = await util.deleteUser(id);
+  console.log(response);
+  expect(response.status).toBe(200);
+  //
+});
+

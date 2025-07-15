@@ -142,9 +142,9 @@ test('Test addProjectFollowing. 1: Test add and status. 2: Test recieving inform
 /**
  * editUser
  */
-test('Test editUser. 1: Test change and status. 2: Test changed information.', async () => {
+// test('Test editUser. 1: Test change and status. 2: Test changed information.', async () => {
   
-});
+// });
 
 /**
  * updateProfiliePicture
@@ -166,7 +166,9 @@ test('Test updateUsername. 1: Test change and status. 2: Test changed informatio
   const response = await util.updateUsername(id,user,user,'');
   console.log(response);
   expect(response.status).toBe(200);
-  
+
+  const check = await util.getUserByUsername('misterLFG');
+  expect(check.data).toBeDefined;
 });
 
 /**
@@ -189,7 +191,10 @@ test('Test updateProjectVisibility. 1: Test change and status. 2: Test changed i
   const response = await util.updateProjectVisibility(id,project,vis);
   console.log(response);
   expect(response.status).toBe(200);
-})
+
+  const check = await util.getVisibleProjects(id);
+  expect(check.data).toBeUndefined();
+});
 
 
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
@@ -203,7 +208,9 @@ test('Test deleteUser. 1: Test delete and status. 2: Test no recieves.', async (
   const response = await util.deleteUser(id);
   console.log(response);
   expect(response.status).toBe(200);
-  //
+  
+  const check = await util.getUsersById(1);
+  expect(check.data).toBeUndefined();
 });
 
 /**
@@ -215,6 +222,9 @@ test('Test deleteUserFollowing. 1:Test delete and status. 2: Test no recieves.',
   const response = await util.deleteUserFollowing(id, uid);
   console.log(response);
   expect(response.status).toBe(200);
+
+  const check = await util.getUserFollowing(id);
+  expect(check.data).toBeUndefined();
 })
 
 /**
@@ -226,4 +236,7 @@ test('Test deleteProjectFollowing. 1: Test delete and status. 2: Test no recieve
   const response = await util.deleteProjectFollowing(id,pid);
   console.log(response);
   expect(response.status).toBe(200);
+
+  const check = await util.getProjectFollowing(id);
+  expect(check.data).toBeUndefined();
 });

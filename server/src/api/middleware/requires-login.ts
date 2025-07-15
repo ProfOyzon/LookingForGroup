@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from 'express';
-import { isLoggedInHeader } from '#config/constants.ts';
+import { isLoggedInHeader, uidHeader } from '#config/constants.ts';
 import envConfig from '#config/env.ts';
 
 const requiresLogin = (request: Request, response: Response, next: NextFunction) => {
   if (envConfig.env === 'development' || envConfig.env === 'test') {
     /// Add UID for development, missing correct header
-    request.headers['uid'] = '000000001';
+    request.headers[uidHeader] = '000000001';
 
     next();
     return;

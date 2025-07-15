@@ -35,7 +35,7 @@ export const getOtherUserProjects = async (req: Request, res: Response): Promise
   if (result === 'NOT_FOUND') {
     const resBody: ApiResponse = {
       status: 404,
-      error: 'No Visible projects for this user found',
+      error: 'No projects for this user or user private',
       data: null,
       memetype: 'application/json',
     };

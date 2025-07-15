@@ -41,6 +41,7 @@ router.get('/search-username/:username', getUserByUsername);
 router.get('/search-email/:email', getUserByEmail);
 
 //Updates users profile images
+//router.put('/:id/profile-picture', requiresLogin, checkImageFile, updateProfilePicture);
 
 //Gets user's account
 router.get('/:id/account', requiresLogin, getAccount);
@@ -61,13 +62,18 @@ router.get('/:id/projects/profile', getOtherUserProjects);
 router.get('/:id/followings/projects', requiresLogin, getProjectsFollowing);
 
 //Adds users following project
-
-//Gets users user is following
-router.get('/:id/followings/people', getUserFollowing);
-
-//Adds users following users
+//router.post('/:id/followings/projects', requiresLogin, addProjectFollowing);
 
 //Delete users following users
-router.delete('/:id/followings/:follower_id', deleteFollowing);
+//router.delete('/:id/followings/projects/:followerId', requiresLogin, deleteProjFollowing);
+
+//Gets users user is following
+router.get('/:id/followings/people', requiresLogin, getUserFollowing);
+
+//Adds users following users
+//router.post('/:id/followings/people', requiresLogin, addUserFollowing);
+
+//Delete users following users
+router.delete('/:id/followings/people/:followerId', requiresLogin, deleteFollowing);
 
 export default router;

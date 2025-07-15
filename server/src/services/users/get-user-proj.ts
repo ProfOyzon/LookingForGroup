@@ -10,9 +10,25 @@ export const getUserProjectsService = async (
   userId: number,
 ): Promise<ProjectWithFollowers[] | GetProjectsError> => {
   try {
+    //check user visibility
+    const user = await prisma.users.findUnique({
+      where: { userId },
+      select: { visibility: true },
+    });
+
+    //if user is not visible
+    if (!user || user.visibility !== 1) {
+      return 'NOT_FOUND';
+    }
+
+    //get projects of public user
     const projects = await prisma.projects.findMany({
       where: {
-        userId,
+        projectFollowings: {
+          some: {
+            userId,
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
       include: {

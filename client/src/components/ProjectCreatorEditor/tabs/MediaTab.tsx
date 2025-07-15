@@ -144,7 +144,7 @@ export const MediaTab = ({ isNewProject = false, projectData = defaultProject, s
               src = `${API_BASE}/images/projects/${image.image}`;
             }
             return (
-              <div className='project-editor-image-container'>
+              <div className='project-editor-image-container' key={image.image}>
                 <img src={src} alt="project images" />
                 {
                   modifiedProject.thumbnail === image.image &&

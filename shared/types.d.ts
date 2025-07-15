@@ -79,8 +79,8 @@ export interface UserSocial {
     social: Social;
 }
 
-//user followings
-export type UserFollowing = {
+
+export type UserFollowings = {
     userId: number;
     followingId: number;
     followedAt: Date;
@@ -159,13 +159,20 @@ export interface CreateUserData {
 }
 
 
-// FOR PROjECTS
+// PROjECT DATA
+
+export interface ProjectFollowings {
+    userId: number;
+    projectId: number;
+    followedAt: Date;
+}
+
 
 //there is no alt text in database yet
 export interface ProjectImage {
     imageId: number;
     image: string;
-    altText: '';
+    //altText: '';
 }
 
 //tags for projects

@@ -826,8 +826,6 @@ paths:
       summary: Get projects a user is following
       tags:
         - Users
-      security:
-        - shibbolethAuth: []
       parameters:
         - name: id
           in: path
@@ -870,8 +868,6 @@ paths:
     get:
       tags:
         - Users
-      security:
-        - shibbolethAuth: []
       summary: Get list of users that the specified user is following
       parameters:
         - name: id

@@ -113,6 +113,27 @@ test("Test getProjectFollowing, local. 1: Test status. 2: Test data", async () =
 //   //how do we test this rn?
 // });
 
+/**
+ * addUserFollowing
+ */
+test('Test addUserFollowing. 1: Test add and status. 2: Test recieving information.', async () => {
+  const id=1;
+  const uid=19;
+  const response = await util.addUserFollowing(id,uid);
+  console.log(response);
+  expect(response.status).toBe(200);
+});
+
+/**
+ * addProjectFollowing
+ */
+test('Test addProjectFollowing. 1: Test add and status. 2: Test recieving information.', async () => {
+  const id = 19;
+  const pid = 5;
+  const response = await util.addProjectFollowing(id,pid);
+  console.log(response);
+  expect(response.status).toBe(200);
+});
 
 
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
@@ -142,7 +163,32 @@ test('Test updateProfilePicture. 1: Test change and status. 2: Test changed info
 test('Test updateUsername. 1: Test change and status. 2: Test changed information.', async () => {
   const id = 1;
   const user = 'misterLFG';
+  const response = await util.updateUsername(id,user,user,'');
+  console.log(response);
+  expect(response.status).toBe(200);
   
+});
+
+/**
+ * updateUserVisibility
+ */
+test('Test updateUserVisibility. 1: Test change and status. 2: Test changed information.', async () => {
+  const id = 2;
+  const response = await util.updateUserVisibility(id);
+  console.log(response);
+  expect(response.status).toBe(200);
+});
+
+/**
+ * updateProjectVisibility
+ */
+test('Test updateProjectVisibility. 1: Test change and status. 2: Test changed information.', async () => {
+  const id = 1;
+  const project = 5;
+  const vis = 'public';
+  const response = await util.updateProjectVisibility(id,project,vis);
+  console.log(response);
+  expect(response.status).toBe(200);
 })
 
 
@@ -160,3 +206,24 @@ test('Test deleteUser. 1: Test delete and status. 2: Test no recieves.', async (
   //
 });
 
+/**
+ * deleteUserFollowing
+ */
+test('Test deleteUserFollowing. 1:Test delete and status. 2: Test no recieves.', async () => {
+  const id = 19;
+  const uid = 1;
+  const response = await util.deleteUserFollowing(id, uid);
+  console.log(response);
+  expect(response.status).toBe(200);
+})
+
+/**
+ * deleteProjectFollowing
+ */
+test('Test deleteProjectFollowing. 1: Test delete and status. 2: Test no recieves.', async () => {
+  const id = 19;
+  const pid = 5;
+  const response = await util.deleteProjectFollowing(id,pid);
+  console.log(response);
+  expect(response.status).toBe(200);
+});

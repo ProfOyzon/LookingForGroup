@@ -828,6 +828,7 @@ Project Creator and Editor style rules
 #project-editor-team-tabs {
   display: flex;
   justify-content: space-between;
+  overflow-x: auto;
 }
 
 #project-editor-team-tabs {
@@ -841,6 +842,7 @@ Project Creator and Editor style rules
   color: var(--neutral-gray);
   font-size: 1.6ch;
   font-weight: 600;
+  word-break: normal;
 }
 
 /* Project Editor/Creator Team Tab */

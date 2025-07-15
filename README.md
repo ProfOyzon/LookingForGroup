@@ -31,7 +31,7 @@ NODE_ENV=development
 PORT=3000
 DB_USER=root
 DB_PASS=<password>
-DB_HOST=localhost
+DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_NAME=lfg
 ```
@@ -40,7 +40,7 @@ DB_NAME=lfg
 - PORT can be set to any open port you want, `3000` is standard for development
 - DB_USER is `root` because that is the default mysql user for local development
 - DB_PASS should have the password value for the root user of your mysql db
-- DB_HOST is the ip that hosts the db, `localhost` for development
+- DB_HOST is the ip that hosts the db, `127.0.0.1` (localhost) for development
 - DB_PORT is the port value your mysql is running on, `3306` is the default
 - DB_NAME is the name of the database to access, `lfg` for us
 

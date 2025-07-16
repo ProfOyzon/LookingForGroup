@@ -1,11 +1,17 @@
 import type { Request, Response } from 'express';
+import {
+  emailHeaderKey,
+  firstNameHeaderKey,
+  lastNameHeaderKey,
+  uidHeaderKey,
+} from '#config/constants.ts';
 import createUserService from '#services/users/create-user.ts';
 
 const ssoLoginRedirectController = async (request: Request, response: Response) => {
-  const uidHeader = request.headers['uid'] as string | undefined;
-  const fNameHeader = request.headers['givenName'] as string | undefined;
-  const lNameHeader = request.headers['sn'] as string | undefined;
-  const emailHeader = request.headers['main'] as string | undefined;
+  const uidHeader = request.headers[uidHeaderKey] as string | undefined;
+  const fNameHeader = request.headers[firstNameHeaderKey] as string | undefined;
+  const lNameHeader = request.headers[lastNameHeaderKey] as string | undefined;
+  const emailHeader = request.headers[emailHeaderKey] as string | undefined;
 
   if (!uidHeader || !fNameHeader || !lNameHeader || !emailHeader) {
     response.redirect('/login');

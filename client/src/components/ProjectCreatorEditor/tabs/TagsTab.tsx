@@ -485,7 +485,7 @@ export const TagsTab = ({ isNewProject = false, projectData = defaultProject, se
         {modifiedProject.project_types.length === 0 ? <div className="error">*At least 1 type is required</div> : <></> }
         <div id="project-editor-type-tags-container">
           {modifiedProject.project_types.map((t) => (
-            <button key={t.project_type} className={`tag-button tag-button-blue-selected`}>
+            <button key={t.project_type} className={`tag-button tag-button-blue-selected`} onClick={(e) => handleTagSelect(e)}>
               <i className="fa fa-close"></i>
               &nbsp;{t.project_type}
             </button>

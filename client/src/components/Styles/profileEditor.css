@@ -30,10 +30,22 @@ textarea {
   }
 }
 
+@media (max-width: 1171px) {
+  #profile-creator-editor {
+    width: 75vw;
+  }
+}
+
 #profile-editor-tabs {
   display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   justify-content: space-around;
   margin: 0 20px;
+}
+
+.project-editor-tab {
+  white-space: nowrap;
 }
 
 #profile-editor-content {

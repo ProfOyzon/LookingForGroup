@@ -11,7 +11,7 @@ Profile Panel component style rules
 .profile-panel-box {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 20px;
   /* margin: 0 50px 50px 50px; */
 }
@@ -1010,12 +1010,12 @@ New Profile page style rules
 #profile-information-grid {
   display: grid;
   grid-template:
-    'image name buttons buttons' 40px
-    'image extra extra extra' 40px
+    'image name buttons buttons' auto
+    'image extra extra extra' auto
     'image desc desc desc' auto
     'image fact fact fact' auto
     'bio skills skills follow' auto /
-    300px 1fr 50px;
+    300px 1fr auto;
   background-color: var(--header-color);
   border-radius: 10px;
   padding: 30px;
@@ -1070,14 +1070,20 @@ New Profile page style rules
 
 #profile-info-name {
   grid-area: name;
-  align-items: flex-end;
   display: flex;
+  flex-direction: column;
   font-style: italic;
   font-size: 2ch;
   color: var(--darkGray);
   gap: 10px;
   text-align: left;
-  min-width: 0;
+  min-width: 275px;
+}
+
+@media only screen and (max-width: 1250px) {
+  #profile-info-name {
+    align-items: center;
+  }
 }
 
 #profile-follow-button {
@@ -1121,6 +1127,12 @@ New Profile page style rules
   word-break: break-word;
   width: fit-content;
   justify-self: end;
+  align-self: start;
+
+  #project-info-edit {
+    padding: 10px;
+    font-size: 20px;
+  }
 }
 
 @media only screen and (max-width: 1250px) {
@@ -1133,17 +1145,12 @@ New Profile page style rules
   font-size: 16px;
   grid-area: extra;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: start;
   gap: 20px;
   overflow-wrap: break-word;
   word-break: break-word;
-}
-
-@media only screen and (max-width: 1200px) {
-    #profile-info-extras {
-    flex-wrap: wrap;
-  }
 }
 
 .profile-extra {
@@ -1186,6 +1193,9 @@ New Profile page style rules
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  padding: 10px;
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
 }
 
 #profile-info-skills {
@@ -1446,9 +1456,10 @@ New Profile page style rules
   padding-bottom: 0;
 }
 
-#about-me-buttons button > img {
+/* ????? why was this here??? */
+/* #about-me-buttons button > img {
   margin-top: 3px;
-}
+} */
 
 #about-me-buttons button:hover {
   background-color: var(--bg-color);

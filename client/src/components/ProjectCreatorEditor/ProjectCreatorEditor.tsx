@@ -113,7 +113,7 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
 
   // Get project data on projectID change
   useEffect(() => {
-    if (!newProject) {
+    if (!newProject && projectID) {
       const getProjectData = async () => {
         try {
           const response = await getByID(projectID);

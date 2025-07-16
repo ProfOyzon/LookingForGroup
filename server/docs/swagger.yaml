@@ -864,6 +864,75 @@ paths:
           description: Internal server error occurred
           $ref: '#/components/responses/InternalServerError'
 
+  /api/users/{id}/followings/projects/{followId}:
+    post:
+      summary: Follow a project
+      security:
+        - shibbolethAuth: []
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user who is following the project
+          schema:
+            type: integer
+        - name: followId
+          in: path
+          required: true
+          description: ID of the project to follow
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Project followed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectFollowingsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Unfollow a project
+      security:
+        - shibbolethAuth: []
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user who is unfollowing the project
+          schema:
+            type: integer
+        - name: followId
+          in: path
+          required: true
+          description: ID of the project to unfollow
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Project unfollowed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectFollowingsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Project or user not found
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   /api/users/{id}/followings/people:
     get:
       tags:
@@ -917,6 +986,76 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           description: Internal server error occurred
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/users/{id}/followings/people/{followId}:
+    post:
+      summary: Follow another user
+      security:
+        - shibbolethAuth: []
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user initiating the follow
+          schema:
+            type: integer
+        - name: followId
+          in: path
+          required: true
+          description: ID of the user to be followed
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: User followed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFollowingsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      summary: Unfollow a user
+      security:
+        - shibbolethAuth: []
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user who wants to unfollow another user
+          schema:
+            type: integer
+        - name: followId
+          in: path
+          required: true
+          description: ID of the user to be unfollowed
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User unfollowed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFollowingsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: User not found or follow relationship does not exist
+          $ref: '#/components/responses/NotFound'
+        '500':
           $ref: '#/components/responses/InternalServerError'
 
   # PROJECTS
@@ -1513,6 +1652,60 @@ components:
         imageId: 2
         url: http://LGF.com/images/project-101.png
         altText: Picture
+
+    ProjectFollowingsResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 201
+        error:
+          type: string
+          nullable: true
+          example: null
+        data:
+          type: object
+          properties:
+            userId:
+              type: integer
+              example: 1
+            followId:
+              type: integer
+              example: 42
+            followedAt:
+              type: string
+              format: date-time
+              example: 2025-07-16T12:34:56Z
+        memetype:
+          type: string
+          example: application/json
+
+    UserFollowingsResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 201
+        error:
+          type: string
+          nullable: true
+          example: null
+        data:
+          type: object
+          properties:
+            userId:
+              type: integer
+              example: 1
+            followingId:
+              type: integer
+              example: 2
+            followedAt:
+              type: string
+              format: date-time
+              example: 2025-07-16T12:34:56Z
+        memetype:
+          type: string
+          example: application/json
 
     ErrorMessage:
       type: object

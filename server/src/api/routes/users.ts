@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { deleteFollowing } from '#controllers/users/delete-following.ts';
+import { addProjectFollowing } from '#controllers/users/add-follow-proj.ts';
+import { addUserFollowing } from '#controllers/users/add-follow-user.ts';
+import { deleteProjectFollowing } from '#controllers/users/delete-follow-proj.ts';
+import { deleteUserFollowing } from '#controllers/users/delete-follow-user.ts';
 import { deleteUser } from '#controllers/users/delete-user.ts';
 import { getAccount } from '#controllers/users/get-acc.ts';
 import { getAllUsers } from '#controllers/users/get-all.ts';
@@ -62,18 +65,18 @@ router.get('/:id/projects/profile', getOtherUserProjects);
 router.get('/:id/followings/projects', requiresLogin, getProjectsFollowing);
 
 //Adds users following project
-//router.post('/:id/followings/projects', requiresLogin, addProjectFollowing);
+router.post('/:id/followings/projects/:followId', requiresLogin, addProjectFollowing);
 
-//Delete users following users
-//router.delete('/:id/followings/projects/:followerId', requiresLogin, deleteProjFollowing);
+//Delete users following projects
+router.delete('/:id/followings/projects/:followId', requiresLogin, deleteProjectFollowing);
 
 //Gets users user is following
 router.get('/:id/followings/people', requiresLogin, getUserFollowing);
 
 //Adds users following users
-//router.post('/:id/followings/people', requiresLogin, addUserFollowing);
+router.post('/:id/followings/people/:followId', requiresLogin, addUserFollowing);
 
 //Delete users following users
-router.delete('/:id/followings/people/:followerId', requiresLogin, deleteFollowing);
+router.delete('/:id/followings/people/:followId', requiresLogin, deleteUserFollowing);
 
 export default router;

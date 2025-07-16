@@ -1,7 +1,7 @@
 # Dockerfile that builds the Express API image
 
 # Base Nodejs install
-FROM node:current-slim as base
+FROM node:24-slim as base
 
 # Generate the generated prisma client files
 FROM base as prisma-client
@@ -13,4 +13,4 @@ FROM base as prod-deps
 FROM base as source-files
 
 # Final stage where app will run
-FROM source-files as runner
+FROM base as runner

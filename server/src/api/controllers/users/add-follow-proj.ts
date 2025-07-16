@@ -5,10 +5,10 @@ import { addProjectFollowingService } from '#services/users/add-follow-proj.ts';
 //add project to follow list
 export const addProjectFollowing = async (req: Request, res: Response): Promise<void> => {
   const userId = parseInt(req.params.id);
-  const followId = parseInt(req.params.followId);
+  const projectId = parseInt(req.params.followId);
 
   //validate input
-  if (isNaN(userId) || isNaN(followId)) {
+  if (isNaN(userId) || isNaN(projectId)) {
     const resBody: ApiResponse = {
       status: 400,
       error: 'Invalid user ID or project ID',
@@ -19,7 +19,7 @@ export const addProjectFollowing = async (req: Request, res: Response): Promise<
     return;
   }
 
-  const result = await addProjectFollowingService(userId, followId);
+  const result = await addProjectFollowingService(userId, projectId);
 
   if (result === 'CONFLICT') {
     const resBody: ApiResponse = {

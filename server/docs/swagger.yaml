@@ -891,6 +891,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProjectFollowingsResponse'
+              example:
+                status: 201
+                error: null
+                data:
+                  userId: 1
+                  projectId: 2
+                  followedAt: '2025-07-16T12:34:56Z'
+
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1015,6 +1023,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserFollowingsResponse'
+              example:
+                status: 201
+                error: null
+                data:
+                  userId: 1
+                  followingId: 2
+                  followedAt: '2025-07-16T12:34:56Z'
+                memetype: application/json
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1658,7 +1674,7 @@ components:
       properties:
         status:
           type: integer
-          example: 201
+          example: 200
         error:
           type: string
           nullable: true
@@ -1669,7 +1685,7 @@ components:
             userId:
               type: integer
               example: 1
-            followId:
+            projectId:
               type: integer
               example: 42
             followedAt:
@@ -1685,7 +1701,7 @@ components:
       properties:
         status:
           type: integer
-          example: 201
+          example: 200
         error:
           type: string
           nullable: true

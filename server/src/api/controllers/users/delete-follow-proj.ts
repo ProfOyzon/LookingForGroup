@@ -5,10 +5,10 @@ import { deleteProjectFollowService } from '#services/users/delete-follow-proj.t
 // delete a project from follow list
 export const deleteProjectFollowing = async (req: Request, res: Response): Promise<void> => {
   const userId = parseInt(req.params.id);
-  const followId = parseInt(req.params.followId);
+  const projectId = parseInt(req.params.followId);
 
   //validate input
-  if (isNaN(userId) || isNaN(followId)) {
+  if (isNaN(userId) || isNaN(projectId)) {
     const resBody: ApiResponse = {
       status: 400,
       error: 'Invalid user ID or project ID',
@@ -20,7 +20,7 @@ export const deleteProjectFollowing = async (req: Request, res: Response): Promi
   }
 
   //call service
-  const result = await deleteProjectFollowService(userId, followId);
+  const result = await deleteProjectFollowService(userId, projectId);
 
   //internal error
   if (result === 'INTERNAL_ERROR') {

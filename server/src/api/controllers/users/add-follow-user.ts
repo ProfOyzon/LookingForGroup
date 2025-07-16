@@ -5,10 +5,10 @@ import { addUserFollowingService } from '#services/users/add-follow-user.ts';
 //add user to follow list
 export const addUserFollowing = async (req: Request, res: Response): Promise<void> => {
   const userId = parseInt(req.params.id);
-  const followId = parseInt(req.params.followId);
+  const followingId = parseInt(req.params.followId);
 
   //validate input
-  if (isNaN(userId) || isNaN(followId)) {
+  if (isNaN(userId) || isNaN(followingId)) {
     const resBody: ApiResponse = {
       status: 400,
       error: 'Invalid user IDs',
@@ -19,7 +19,7 @@ export const addUserFollowing = async (req: Request, res: Response): Promise<voi
     return;
   }
 
-  const result = await addUserFollowingService(userId, followId);
+  const result = await addUserFollowingService(userId, followingId);
 
   if (result === 'CONFLICT') {
     const resBody: ApiResponse = {

@@ -5,10 +5,10 @@ import { deleteUserFollowService } from '#services/users/delete-follow-user.ts';
 // delete a user from follow list
 export const deleteUserFollowing = async (req: Request, res: Response): Promise<void> => {
   const userId = parseInt(req.params.id);
-  const followId = parseInt(req.params.followId);
+  const followingId = parseInt(req.params.followId);
 
   //validate input
-  if (isNaN(userId) || isNaN(followId)) {
+  if (isNaN(userId) || isNaN(followingId)) {
     const resBody: ApiResponse = {
       status: 400,
       error: 'Invalid user IDs',
@@ -20,7 +20,7 @@ export const deleteUserFollowing = async (req: Request, res: Response): Promise<
   }
 
   //call service
-  const result = await deleteUserFollowService(userId, followId);
+  const result = await deleteUserFollowService(userId, followingId);
 
   //internal error
   if (result === 'INTERNAL_ERROR') {

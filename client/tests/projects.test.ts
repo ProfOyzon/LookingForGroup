@@ -81,7 +81,7 @@ test('Test addMember. 1: test add/status. 2: test get.', async () => {
   const response = await util.addMember(id,user,title,permission);
   console.log(response);
   expect(response.status).toBe(200);
-})
+});
 
 
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
@@ -110,7 +110,7 @@ test('Test updatePicPositions. 1: change picture and check status. 2: check chan
   const response = await util.updatePicPositions(id,images);
   console.log(response);
   expect(response.status).toBe(200);
-})
+});
 
 /**
  * updateMember
@@ -151,7 +151,7 @@ test('Test deletePic. 1: Test delete. 2: Test no response for getPic.', async ()
   const response = await util.deletePic(id, image);
   console.log(response);
   expect(response.status).toBe(200);
-})
+});
 
 /**
  * deleteMember
@@ -162,4 +162,4 @@ test('Test deleteMember. 1: Test delete. 2: Test no response for getMember.', as
   const response = await util.deleteMember(id, userId);
   console.log(response);
   expect(response.status).toBe(200);
-})
+});

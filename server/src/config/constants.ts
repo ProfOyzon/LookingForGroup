@@ -1,7 +1,7 @@
-const isLoggedInHeader = 'logged-in';
-const uidHeader = 'uid';
-const firstNameHeader = 'givenName';
-const lastNameHeader = 'sn';
-const emailHeader = 'mail';
+const isLoggedInHeaderKey = 'logged-in';
+const uidHeaderKey = 'uid';
+const firstNameHeaderKey = 'givenName';
+const lastNameHeaderKey = 'sn';
+const emailHeaderKey = 'mail';
 
-export { isLoggedInHeader, uidHeader, firstNameHeader, lastNameHeader, emailHeader };
+export { isLoggedInHeaderKey, uidHeaderKey, firstNameHeaderKey, lastNameHeaderKey, emailHeaderKey };

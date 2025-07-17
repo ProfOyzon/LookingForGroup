@@ -6,8 +6,8 @@ on:
       - main
     paths:
       - "server/**"
-      - ".github/workflows/test-server.yaml"
-  workflow_dispatch:
+      - "Dockerfile"
+      - ".github/workflows/deploy-server.yaml"
 
 jobs:
   build:

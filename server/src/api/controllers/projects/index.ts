@@ -1,3 +1,4 @@
+import addImage from './add-image.ts';
 import createProject from './create-project.ts';
 import getProjectPics from './get-proj-pictures.ts';
 import getProjectByID from './get-project-id.ts';
@@ -10,6 +11,7 @@ export default {
   getProjectByID,
   getProjectPics,
   createProject,
+  addImage,
   updateProject,
   updateThumbnail,
 };

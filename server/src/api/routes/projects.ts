@@ -26,7 +26,7 @@ router.put('/:id/thumbnail', requiresLogin, PROJECT.updateThumbnail);
 router.get('/:id/pictures', PROJECT.getProjectPics);
 
 //Creates a new picture for a project
-router.post('/:id/pictures' /* addPicture */);
+router.post('/:id/pictures', PROJECT.addImage);
 
 //Changes a picture for a project
 router.put('/:id/pictures' /* changePicture */);

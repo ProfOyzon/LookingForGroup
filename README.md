@@ -1,4 +1,4 @@
-# LookingForGroup
+# LookingForGroupa
 
 - [Getting Started](#getting-started)
 - [Development](#Development)

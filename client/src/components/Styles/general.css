@@ -896,6 +896,10 @@ Page popup style rules
   cursor: pointer;
 }
 
+.popup-close:disabled {
+  cursor: default;
+}
+
 #popup-close img {
   width: 40px;
   height: 40px;
@@ -1552,6 +1556,8 @@ Image Carousel style rules
   background: none;
   border: none;
   border-radius: 50px;
+
+  animation: fadeIn 0.15s ease-in-out;
 
   img {
     width: 20px;

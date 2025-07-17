@@ -93,7 +93,7 @@ export const PopupContent = ({
   // Close on Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') closePopup();
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
@@ -104,11 +104,11 @@ export const PopupContent = ({
     const handleClickOutside = (e: MouseEvent) => {
       const refNode = popupRef.current as Node | null;
       if (refNode && e.target instanceof Node && !refNode.contains(e.target) && e.button !== 2) {
-        setOpen(false);
+        closePopup();
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mouseup', handleClickOutside);
+    return () => document.removeEventListener('mouseup', handleClickOutside);
   }, []);
 
   // Close on browser button click
@@ -122,7 +122,7 @@ export const PopupContent = ({
     const handlePopState = (event: PopStateEvent) => {
       // Close popup 
       if (open && !event.state.popup) {
-        setOpen(false);
+        closePopup();
       }
     };
     window.addEventListener('popstate', handlePopState);
@@ -134,10 +134,12 @@ export const PopupContent = ({
   if (open && useClose) {
     return (
       <>
+        {/* {document.getElementsByClassName("popup-cover").length < 1 ? <div className="popup-cover" /> : <></>} */}
         <div className="popup-cover" />
         <div className="popup-container">
           <div className="popup" ref={popupRef}>
-            <button className="popup-close" onClick={closePopup}>
+            <button
+              className="popup-close" onClick={closePopup}>
               <img src={close} alt="close" />
             </button>
             {children}
@@ -148,6 +150,7 @@ export const PopupContent = ({
   } else if (open) {
     return (
       <>
+        {/* {document.getElementsByClassName("popup-cover").length < 1 ? <div className="popup-cover" /> : <></>} */}
         <div className="popup-cover" />
         <div className="popup-container">
           <div className="popup" ref={popupRef}>{children}</div>

@@ -39,7 +39,7 @@ export const ProjectsTab = (props: {profile: {}}) => {
         // Tell the user they have no projects
         render = <div>
             <p>You have no projects yet!</p>
-            <p>Start a new Project or join one</p>
+            {/* <p>Start a new Project or join one</p> */}
         </div>;
     }
 

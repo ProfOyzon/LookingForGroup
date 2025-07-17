@@ -1,12 +1,12 @@
 # Dockerfile that builds the Express API image
 
 # Base Nodejs install
-FROM node:24-slim as base
+FROM node:24-slim AS base
 
 RUN apt-get update -y && apt-get install -y openssl
 
 # Generate the generated prisma client files
-FROM base as prisma-client
+FROM base AS prisma-client
 
 WORKDIR /prisma
 
@@ -19,7 +19,7 @@ RUN npm ci --workspace=server --only=dev --ignore-scripts
 RUN npm run prisma:generate
 
 # Download only the production dependencies
-FROM base as prod-deps
+FROM base AS prod-deps
 
 WORKDIR /deps
 
@@ -29,7 +29,7 @@ COPY ./server/package.json ./server/package.json
 RUN npm ci --workspace=server --omit=dev --ignore-scripts
 
 # Final stage where app will run
-FROM base as runner
+FROM base AS runner
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 lfg

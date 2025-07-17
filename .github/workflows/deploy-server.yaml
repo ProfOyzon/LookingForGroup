@@ -8,9 +8,7 @@ on:
       - "server/**"
       - "Dockerfile"
       - ".github/workflows/deploy-server.yaml"
-  pull_request:
-    branches:
-      - backend-dev
+  workflow_dispatch:
 
 jobs:
   build:

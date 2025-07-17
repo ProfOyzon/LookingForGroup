@@ -8,7 +8,6 @@ on:
       - "server/**"
       - "Dockerfile"
       - ".github/workflows/deploy-server.yaml"
-  workflow_dispatch:
 
 jobs:
   build:

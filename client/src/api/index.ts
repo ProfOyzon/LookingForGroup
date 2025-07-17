@@ -60,7 +60,7 @@ export const POST = async (
   newData: object
 ): Promise<ApiResponse<unknown>> => {
   try {
-    const response = await fetch(apiURL, {
+    const response = await fetch(getBaseUrl() + apiURL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -104,7 +104,7 @@ export const PUT = async (
   newData: object
 ): Promise<ApiResponse<unknown>> => {
   try {
-    const response = await fetch(apiURL, {
+    const response = await fetch(getBaseUrl() + apiURL, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -148,7 +148,7 @@ export const DELETE = async (
   data: object = {}
 ): Promise<ApiResponse<unknown>> => {
   try {
-    const response = await fetch(apiURL, {
+    const response = await fetch(getBaseUrl() + apiURL, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

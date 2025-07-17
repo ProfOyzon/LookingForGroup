@@ -235,7 +235,7 @@ test('Test deleteProjectFollowing. 1: Test delete and status. 2: Test no recieve
   const pid = 5;
   const response = await util.deleteProjectFollowing(id,pid);
   console.log(response);
-  expect(response.status).toBe(200);
+  expect(response.status).toBe(201);
 
   const check = await util.getProjectFollowing(id);
   expect(check.data).toBeUndefined();

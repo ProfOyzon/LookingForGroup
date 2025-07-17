@@ -281,6 +281,7 @@ const onSaveClicked = async (e : Event) => {
     <Popup>
       <PopupButton buttonId="project-info-edit">Edit</PopupButton>
       <PopupContent
+      profilePopup={true}
         callback={() => {
           // Reset to the first tab and ensure proper hiding
           currentTab = 0;

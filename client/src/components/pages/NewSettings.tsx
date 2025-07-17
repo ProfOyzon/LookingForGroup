@@ -291,6 +291,13 @@ const Settings = ({ }) => {
                         return;
                       }
                     }
+                    if (type === 'Phone') {
+                      const phoneRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+                      if (!phoneRegex.test(firstParam)) {
+                        setError('*Please enter a valid phone number.');
+                        return;
+                      }
+                    }
 
                     const url = `/api/users/search-${type === 'Username' ? 'username' : 'email'}/${firstParam}`;
                     const response = await fetch(url);

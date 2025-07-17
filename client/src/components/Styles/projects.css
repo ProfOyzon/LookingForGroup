@@ -828,6 +828,7 @@ Project Creator and Editor style rules
 #project-editor-team-tabs {
   display: flex;
   justify-content: space-between;
+  overflow-x: auto;
 }
 
 #project-editor-team-tabs {
@@ -841,6 +842,7 @@ Project Creator and Editor style rules
   color: var(--neutral-gray);
   font-size: 1.6ch;
   font-weight: 600;
+  word-break: normal;
 }
 
 /* Project Editor/Creator Team Tab */
@@ -3073,8 +3075,16 @@ My projects page style rules
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 */
 
-@media only screen and (max-width: 800px) {
-  /* responsiveness goes here*/
+@media only screen and (min-width: 800px) {
+  .my-projects-banner {
+    min-height: 220px;
+  }
+}
+
+@media only screen and (max-width: 799px) {
+  .my-projects-banner {
+    min-height: 200px;
+  }
 }
 
 .page#my-projects {
@@ -3093,12 +3103,21 @@ My projects page style rules
 }
 
 .my-projects-banner {
-  box-sizing: border-box;
   width: 100%;
-  height: auto;
-  margin: 0 0 16px;
-  padding-left: 60px;
-  padding-right: 64px;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.projects-banner-wrapper {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.projects-banner-outer {
+  box-sizing: border-box;
+  padding: 0 60px;
+  margin-bottom: 30px;
 }
 
 /* .my-projects-profile {

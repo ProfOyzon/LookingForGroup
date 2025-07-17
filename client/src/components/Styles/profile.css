@@ -11,7 +11,7 @@ Profile Panel component style rules
 .profile-panel-box {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 20px;
   /* margin: 0 50px 50px 50px; */
 }
@@ -1057,7 +1057,7 @@ New Profile page style rules
   grid-area: image;
   object-fit: cover;
   border-radius: 10px;
-  border: 2px solid white;
+  border: 2px solid var(--primary-color);
 }
 
 #profile-bio {

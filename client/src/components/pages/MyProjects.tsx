@@ -330,12 +330,16 @@ const MyProjects = () => {
       <Header dataSets={[{ projectsList }]} onSearch={setCurrentSearch} />
 
       {/* Banner */}
+    <div className="projects-banner-outer">
+    <div className="projects-banner-wrapper">
       <ThemeIcon
         light={'/assets/projects_header_light.png'}
         dark={'/assets/projects_header_dark.png'}
         alt={'My Projects Banner'}
         addClass={'my-projects-banner'}
       />
+    </div>
+    </div>
 
       {/* Header */}
       <div className="my-projects-header-row">

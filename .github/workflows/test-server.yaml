@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: Testing
     env:
-      NODE_ENV: ${{secrets.NODE_ENV}}
       DB_USER: ${{secrets.DB_USER}}
       DB_PASS: ${{secrets.DB_PASS}}
       DB_HOST: ${{secrets.DB_HOST}}

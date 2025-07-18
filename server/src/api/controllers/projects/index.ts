@@ -8,6 +8,7 @@ import getProjects from './get-projects.ts';
 import updateProject from './update-project.ts';
 import updateThumbnail from './update-thumbnail.ts';
 import updateImage from './update-image.ts';
+import deleteMember from './delete-member.ts';
 
 export default {
   getProjects,
@@ -20,4 +21,5 @@ export default {
   updateThumbnail,
   deleteProject,
   updateImage,
+  deleteMember,
 };

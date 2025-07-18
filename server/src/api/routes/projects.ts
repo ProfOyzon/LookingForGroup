@@ -43,6 +43,6 @@ router.post('/:id/members', PROJECT.addMember);
 router.put('/:id/members' /* updateMember */);
 
 //Removes a member from a specific project through project and user ID
-router.delete('/:id/members' /* deleteMember */);
+router.delete('/:id/members', requiresLogin, PROJECT.deleteMember);
 
 export default router;

@@ -326,10 +326,8 @@ paths:
                       userId: 18
                     memetype: application/json
         '400':
-          description: Missing required Shibboleth header
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: User not found in system
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -473,10 +471,8 @@ paths:
                     type: string
                     example: application/json
         '400':
-          description: Invalid input
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: User not found
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -514,7 +510,6 @@ paths:
                     type: string
                     example: application/json
         '404':
-          description: User not found
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -552,7 +547,6 @@ paths:
                     type: string
                     example: application/json
         '404':
-          description: User not found
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -592,13 +586,10 @@ paths:
                     type: string
                     example: application/json
         '401':
-          description: Unauthorized - not logged in
           $ref: '#/components/responses/Unauthorized'
         '400':
-          description: Invalid input
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: User not found
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -664,11 +655,8 @@ paths:
                       username: newUsername
                     memetype: application/json
         '409':
-          description: Username already taken
           $ref: '#/components/responses/Conflict'
-
         '404':
-          description: User not found
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -726,7 +714,6 @@ paths:
                     type: string
                     example: application/json
         '404':
-          description: User not found
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -771,7 +758,6 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: No rpojects found for this user
           $ref: '#/components/responses/NotFound'
         '401':
           $ref: '#/components/responses/Unauthorized'
@@ -816,7 +802,6 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: No rpojects found for this user
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -858,10 +843,8 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: No followed projects are found
           $ref: '#/components/responses/NotFound'
         '500':
-          description: Internal server error occurred
           $ref: '#/components/responses/InternalServerError'
 
   /api/users/{id}/followings/projects/{followId}:
@@ -936,7 +919,6 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: Project or user not found
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -987,13 +969,10 @@ paths:
                     type: string
                     example: application/json
         '400':
-          description: UserID not valid
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: No followers exist for ID
           $ref: '#/components/responses/NotFound'
         '500':
-          description: Internal server error occurred
           $ref: '#/components/responses/InternalServerError'
 
   /api/users/{id}/followings/people/{followId}:
@@ -1069,7 +1048,6 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: User not found or follow relationship does not exist
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -1140,11 +1118,9 @@ paths:
                     type: string
                     example: application/json
         '400':
-          description: Invalid project ID
           $ref: '#/components/responses/BadRequest'
 
         '404':
-          description: Project not found
           $ref: '#/components/responses/NotFound'
 
         '500':
@@ -1205,10 +1181,8 @@ paths:
                     type: string
                     example: application/json
         '400':
-          description: Invalid input
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: Project not found
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -1250,10 +1224,8 @@ paths:
                     type: string
                     example: application/json
         '400':
-          description: Invalid project ID
           $ref: '#/components/responses/BadRequest'
         '404':
-          description: Project not found
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'

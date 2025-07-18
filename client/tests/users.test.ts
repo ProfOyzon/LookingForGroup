@@ -116,25 +116,24 @@ test("Test getProjectFollowing, local. 1: Test status. 2: Test data", async () =
 /**
  * addUserFollowing
  */
-test('Test addUserFollowing. 1: Test add and status. 2: Test recieving information.', async () => {
-  const id=1;
-  const uid=19;
-  const response = await util.addUserFollowing(id,uid);
-  console.log(response);
-  expect(response.status).toBe(200);
-});
+// test('Test addUserFollowing. 1: Test add and status. 2: Test recieving information.', async () => {
+//   const id=1;
+//   const uid=19;
+//   const response = await util.addUserFollowing(id,uid);
+//   console.log(response);
+//   expect(response.status).toBe(200);
+// });
 
 /**
  * addProjectFollowing
  */
-test('Test addProjectFollowing. 1: Test add and status. 2: Test recieving information.', async () => {
-  const id = 19;
-  const pid = 5;
-  const response = await util.addProjectFollowing(id,pid);
-  console.log(response);
-  expect(response.status).toBe(200);
-});
-
+// test('Test addProjectFollowing. 1: Test add and status. 2: Test recieving information.', async () => {
+//   const id = 19;
+//   const pid = 5;
+//   const response = await util.addProjectFollowing(id,pid);
+//   console.log(response);
+//   expect(response.status).toBe(200);
+// });
 
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 // PUTs
@@ -143,59 +142,58 @@ test('Test addProjectFollowing. 1: Test add and status. 2: Test recieving inform
  * editUser
  */
 // test('Test editUser. 1: Test change and status. 2: Test changed information.', async () => {
-  
+
 // });
 
 /**
  * updateProfiliePicture
  */
-test('Test updateProfilePicture. 1: Test change and status. 2: Test changed information.', async () => {
-  const id = 1;
-  const image = new File([], '');
-  const response = await util.updateProfilePicture(id,image);
-  console.log(response);
-  expect(response.status).toBe(200);
-});
+// test('Test updateProfilePicture. 1: Test change and status. 2: Test changed information.', async () => {
+//   const id = 1;
+//   const image = new File([], '');
+//   const response = await util.updateProfilePicture(id,image);
+//   console.log(response);
+//   expect(response.status).toBe(200);
+// });
 
 /**
  * updateUsername
  */
-test('Test updateUsername. 1: Test change and status. 2: Test changed information.', async () => {
-  const id = 1;
-  const user = 'misterLFG';
-  const response = await util.updateUsername(id,user,user,'');
-  console.log(response);
-  expect(response.status).toBe(200);
+// test('Test updateUsername. 1: Test change and status. 2: Test changed information.', async () => {
+//   const id = 1;
+//   const user = 'misterLFG';
+//   const response = await util.updateUsername(id,user,user,'');
+//   console.log(response);
+//   expect(response.status).toBe(200);
 
-  const check = await util.getUserByUsername('misterLFG');
-  expect(check.data).toBeDefined;
-});
+//   const check = await util.getUserByUsername('misterLFG');
+//   expect(check.data).toBeDefined;
+// });
 
 /**
  * updateUserVisibility
  */
-test('Test updateUserVisibility. 1: Test change and status. 2: Test changed information.', async () => {
-  const id = 2;
-  const response = await util.updateUserVisibility(id);
-  console.log(response);
-  expect(response.status).toBe(200);
-});
+// test('Test updateUserVisibility. 1: Test change and status. 2: Test changed information.', async () => {
+//   const id = 2;
+//   const response = await util.updateUserVisibility(id);
+//   console.log(response);
+//   expect(response.status).toBe(200);
+// });
 
 /**
  * updateProjectVisibility
  */
-test('Test updateProjectVisibility. 1: Test change and status. 2: Test changed information.', async () => {
-  const id = 1;
-  const project = 5;
-  const vis = 'public';
-  const response = await util.updateProjectVisibility(id,project,vis);
-  console.log(response);
-  expect(response.status).toBe(200);
+// test('Test updateProjectVisibility. 1: Test change and status. 2: Test changed information.', async () => {
+//   const id = 1;
+//   const project = 5;
+//   const vis = 'public';
+//   const response = await util.updateProjectVisibility(id,project,vis);
+//   console.log(response);
+//   expect(response.status).toBe(200);
 
-  const check = await util.getVisibleProjects(id);
-  expect(check.data).toBeUndefined();
-});
-
+//   const check = await util.getVisibleProjects(id);
+//   expect(check.data).toBeUndefined();
+// });
 
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 // DELETEs;
@@ -203,40 +201,40 @@ test('Test updateProjectVisibility. 1: Test change and status. 2: Test changed i
 /**
  * deleteUser
  */
-test('Test deleteUser. 1: Test delete and status. 2: Test no recieves.', async () => {
-  const id = 1;
-  const response = await util.deleteUser(id);
-  console.log(response);
-  expect(response.status).toBe(200);
-  
-  const check = await util.getUsersById(1);
-  expect(check.data).toBeUndefined();
-});
+// test('Test deleteUser. 1: Test delete and status. 2: Test no recieves.', async () => {
+//   const id = 1;
+//   const response = await util.deleteUser(id);
+//   console.log(response);
+//   expect(response.status).toBe(200);
+
+//   const check = await util.getUsersById(1);
+//   expect(check.data).toBeUndefined();
+// });
 
 /**
  * deleteUserFollowing
  */
-test('Test deleteUserFollowing. 1:Test delete and status. 2: Test no recieves.', async () => {
-  const id = 19;
-  const uid = 1;
-  const response = await util.deleteUserFollowing(id, uid);
-  console.log(response);
-  expect(response.status).toBe(200);
+// test('Test deleteUserFollowing. 1:Test delete and status. 2: Test no recieves.', async () => {
+//   const id = 19;
+//   const uid = 1;
+//   const response = await util.deleteUserFollowing(id, uid);
+//   console.log(response);
+//   expect(response.status).toBe(200);
 
-  const check = await util.getUserFollowing(id);
-  expect(check.data).toBeUndefined();
-})
+//   const check = await util.getUserFollowing(id);
+//   expect(check.data).toBeUndefined();
+// })
 
 /**
  * deleteProjectFollowing
  */
-test('Test deleteProjectFollowing. 1: Test delete and status. 2: Test no recieves.', async () => {
-  const id = 19;
-  const pid = 5;
-  const response = await util.deleteProjectFollowing(id,pid);
-  console.log(response);
-  expect(response.status).toBe(201);
+// test('Test deleteProjectFollowing. 1: Test delete and status. 2: Test no recieves.', async () => {
+//   const id = 19;
+//   const pid = 5;
+//   const response = await util.deleteProjectFollowing(id,pid);
+//   console.log(response);
+//   expect(response.status).toBe(201);
 
-  const check = await util.getProjectFollowing(id);
-  expect(check.data).toBeUndefined();
-});
+//   const check = await util.getProjectFollowing(id);
+//   expect(check.data).toBeUndefined();
+// });

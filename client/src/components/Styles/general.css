@@ -1465,9 +1465,13 @@ Scrollbar style rules
 
 /* Track */
 ::-webkit-scrollbar-track {
-  border: 2px solid var(--header-color);
-  border-radius: 10px;
+  /* border: 2px solid var(--header-color);
+  border-radius: 10px; */
 }
+
+/* ::-webkit-scrollbar-button {
+  display: none;
+} */
 
 /* Handle */
 ::-webkit-scrollbar-thumb {

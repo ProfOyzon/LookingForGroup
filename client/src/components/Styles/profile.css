@@ -1422,7 +1422,7 @@ New Profile page style rules
 #about-me-buttons {
   grid-area: buttons;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   /*height:calc(100% - 40px);*/
   height: 100%;
   /* padding:20px 0; */
@@ -1446,8 +1446,11 @@ New Profile page style rules
   height: 100%;
   font-weight: bold;
   font-size: 1.8ch;
-  padding-top: 0;
-  padding-bottom: 0;
+
+  img {
+    /* vertical-align:bottom actually vertically centers these icons within their buttons! */
+    vertical-align: bottom;
+  }
 }
 
 #about-me-buttons>.dropdown-container>button {
@@ -1654,7 +1657,6 @@ New Profile page style rules
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   width: 100%;
   height: 100%;
 }

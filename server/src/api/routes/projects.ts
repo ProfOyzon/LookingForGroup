@@ -32,7 +32,7 @@ router.post('/:id/pictures', PROJECT.addImage);
 router.put('/:id/pictures', requiresLogin, PROJECT.updateImage);
 
 //Removes picture from a project
-router.delete('/:id/pictures' /* deletePicture */);
+// router.delete('/:id/pictures' /* deletePicture */);
 
 //Adds member to a specific project through id
 router.post('/:id/members', PROJECT.addMember);

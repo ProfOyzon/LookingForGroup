@@ -16,7 +16,7 @@ const getBaseUrl = (): string => {
 };
 
 //Basic GET function for utilities
-export const GET = async (apiURL: string): Promise<ApiResponse<unknown>> => {
+export const GET = async (apiURL: string): Promise<ApiResponse> => {
   try {
     const response = await fetch(getBaseUrl() + apiURL, {
       method: "GET",

@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import * as paths from '../constants/routes';
-import { useSelector } from 'react-redux';
-import Notifications from './pages/Notifications';
-import { ThemeIcon } from './ThemeIcon';
-import { ProjectCreatorEditor } from './ProjectCreatorEditor/ProjectCreatorEditor';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import * as paths from "../constants/routes";
+import { useSelector } from "react-redux";
+import Notifications from "./pages/Notifications";
+import { ThemeIcon } from "./ThemeIcon";
+import { ProjectCreatorEditor } from "./ProjectCreatorEditor/ProjectCreatorEditor";
 //user utils
-import { getCurrentUsername } from '../api/users.ts';
+import { getCurrentUsername } from "../api/users.ts";
 
 export interface User {
-  first_name: string,
-  last_name: string,
-  username: string,
-  primary_email: string,
-  userId: number
+  first_name: string;
+  last_name: string;
+  username: string;
+  primary_email: string;
+  userId: number;
 }
 
 //Style changes to do:
@@ -35,48 +35,83 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
   // Code to manage sidebar button selection
   // Here, the sidebar buttons are updated on page load (so that they work with browser back/forward)
   // BOTH manual class managing lines & startingPage lines are necessary for the buttons to work with site features AND browser features
-
-  // Currently, every webpage that isn't one of the main three will have the behavior of leaving the active button as whichever one you accessed it through.
-  // However, refreshing one of these "other" pages will reset the active button to Discover - the last active page should probably be saved through localstorage
-  // Other specific erroneous behavior (most likely through mobile layout & browser buttons) is likely still findable
   switch (window.location.pathname) {
-    case '/discover':
-    case '/':
-      startingPage = 'Discover';
-      for (const i of sidebarBtns) { i.classList.remove("active") }
+    case "/discover":
+    case "/":
+      startingPage = "Discover";
+      for (const i of sidebarBtns) {
+        i.classList.remove("active");
+      }
       document.querySelector("#discover-sidebar-btn")?.classList.add("active");
       break;
-    case '/meet':
-      startingPage = 'Meet';
-      for (const i of sidebarBtns) { i.classList.remove("active") }
+    case "/meet":
+      startingPage = "Meet";
+      for (const i of sidebarBtns) {
+        i.classList.remove("active");
+      }
       document.querySelector("#meet-sidebar-btn")?.classList.add("active");
       break;
-    case '/myProjects':
-      startingPage = 'My Projects';
-      for (const i of sidebarBtns) { i.classList.remove("active") }
-      document.querySelector("#my-projects-sidebar-btn")?.classList.add("active");
+    case "/myProjects":
+      startingPage = "My Projects";
+      for (const i of sidebarBtns) {
+        i.classList.remove("active");
+      }
+      document
+        .querySelector("#my-projects-sidebar-btn")
+        ?.classList.add("active");
       break;
-    case '/newProfile':
+    case "/newProfile":
       // Only the mobile layout specifically displays the "own profile" sidebar button
       // Default "newProfile" brings you to your own page
-      if (width < breakpoint && !window.location.href.includes('?')) { // Is it the mobile layout, and is it DEFINITELY your own page?
-        startingPage = 'My Profile';
-        for (const i of sidebarBtns) { i.classList.remove("active") }
-        document.querySelector("#my-profile-sidebar-btn")?.classList.add("active");
-      }
-      else { // Otherwise, default to MEET
+      if (width < breakpoint && !window.location.href.includes("?")) {
+        // Is it the mobile layout, and is it DEFINITELY your own page?
+        startingPage = "My Profile";
+        for (const i of sidebarBtns) {
+          i.classList.remove("active");
+        }
+        document
+          .querySelector("#my-profile-sidebar-btn")
+          ?.classList.add("active");
+      } else {
+        // Otherwise, default to MEET
         // This behavior is not ideal! The desktop layout should likely also feature a "MY PROFILE" button, and one's own profile should have a unique URL.
         // That way, going to one's own profile would display as such, rather than as selecting MEET.
-        startingPage = 'Meet';
-        for (const i of sidebarBtns) { i.classList.remove("active") }
+        startingPage = "Meet";
+        for (const i of sidebarBtns) {
+          i.classList.remove("active");
+        }
         document.querySelector("#meet-sidebar-btn")?.classList.add("active");
+      }
+      break;
+    case "/settings":
+      startingPage = "Settings";
+      localStorage.setItem("lastActiveTab", startingPage);
+      for (const i of sidebarBtns) {
+        i.classList.remove("active");
       }
       break;
     // case '/messages':
     //   startingPage = 'Messages';
     //   break;
     default:
-      startingPage = 'Discover';
+      startingPage = localStorage.getItem("lastActiveTab") || "Discover";
+      for (const i of sidebarBtns) {
+        i.classList.remove("active");
+      }
+      if (startingPage === "Discover")
+        document
+          .querySelector("#discover-sidebar-btn")
+          ?.classList.add("active");
+      else if (startingPage === "Meet")
+        document.querySelector("#meet-sidebar-btn")?.classList.add("active");
+      else if (startingPage === "My Projects")
+        document
+          .querySelector("#my-projects-sidebar-btn")
+          ?.classList.add("active");
+      else if (startingPage === "My Profile")
+        document
+          .querySelector("#my-profile-sidebar-btn")
+          ?.classList.add("active");
   }
 
   const [activePage, setActivePage] = useState(startingPage); // State to manage the active page [Discover, Meet, My Projects, Messages, Profile, Settings]
@@ -104,17 +139,16 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
           last_name: res.data.last_name,
           username: res.data.username,
           primary_email: res.data.primary_email,
-          userId: res.data.userId
-        }
+          userId: res.data.userId,
+        };
 
         setUserData(_userData);
       } else {
-        // If there is any issue authenticating the user's account, 
+        // If there is any issue authenticating the user's account,
         // immediatly send the user to the login screen
         navigate(paths.routes.LOGIN);
         setCreateError(true);
       }
-
     } catch (err) {
       console.error(err);
     }
@@ -128,7 +162,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
   };
 
   React.useEffect(() => {
-    window.addEventListener('resize', () => setWidth(window.innerWidth));
+    window.addEventListener("resize", () => setWidth(window.innerWidth));
   });
 
   // Mobile layout
@@ -139,32 +173,66 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
           <div className="containerButtonSideBar">
             <div className="containerButtonSideBar">
               <button
-                id={'discover-sidebar-btn'}
-                className={activePage === 'Discover' ? 'active sidebar-btn' : 'sidebar-btn'}
-                onClick={() => handleTextChange('Discover', paths.routes.HOME)}
+                id={"discover-sidebar-btn"}
+                className={
+                  activePage === "Discover"
+                    ? "active sidebar-btn"
+                    : "sidebar-btn"
+                }
+                onClick={() => handleTextChange("Discover", paths.routes.HOME)}
               >
-                <ThemeIcon light={'/assets/black/compass.png'} dark={'/assets/white/compass.png'} alt={'discover'} />
+                <ThemeIcon
+                  light={"/assets/black/compass.png"}
+                  dark={"/assets/white/compass.png"}
+                  alt={"discover"}
+                />
               </button>
               <button
-                id={'meet-sidebar-btn'}
-                className={activePage === 'Meet' ? 'active sidebar-btn' : 'sidebar-btn'}
-                onClick={() => handleTextChange('Meet', paths.routes.MEET)}
+                id={"meet-sidebar-btn"}
+                className={
+                  activePage === "Meet" ? "active sidebar-btn" : "sidebar-btn"
+                }
+                onClick={() => handleTextChange("Meet", paths.routes.MEET)}
               >
-                <ThemeIcon light={'/assets/black/meet.png'} dark={'/assets/white/meet.png'} alt={'meet users'} />
+                <ThemeIcon
+                  light={"/assets/black/meet.png"}
+                  dark={"/assets/white/meet.png"}
+                  alt={"meet users"}
+                />
               </button>
               <button
-                id={'my-projects-sidebar-btn'}
-                className={activePage === 'My Projects' ? 'active sidebar-btn' : 'sidebar-btn'}
-                onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}
+                id={"my-projects-sidebar-btn"}
+                className={
+                  activePage === "My Projects"
+                    ? "active sidebar-btn"
+                    : "sidebar-btn"
+                }
+                onClick={() =>
+                  handleTextChange("My Projects", paths.routes.MYPROJECTS)
+                }
               >
-                <ThemeIcon light={'/assets/black/folder.png'} dark={'/assets/white/folder.png'} alt={'my projects'} />
+                <ThemeIcon
+                  light={"/assets/black/folder.png"}
+                  dark={"/assets/white/folder.png"}
+                  alt={"my projects"}
+                />
               </button>
               <button
-                id={'my-profile-sidebar-btn'}
-                className={activePage === 'My Profile' ? 'active sidebar-btn' : 'sidebar-btn'}
-                onClick={() => handleTextChange('My Profile', paths.routes.NEWPROFILE)}
+                id={"my-profile-sidebar-btn"}
+                className={
+                  activePage === "My Profile"
+                    ? "active sidebar-btn"
+                    : "sidebar-btn"
+                }
+                onClick={() =>
+                  handleTextChange("My Profile", paths.routes.NEWPROFILE)
+                }
               >
-                <ThemeIcon light={'/assets/black/profile.png'} dark={'/assets/white/profile.png'} alt={'my profile'} />
+                <ThemeIcon
+                  light={"/assets/black/profile.png"}
+                  dark={"/assets/white/profile.png"}
+                  alt={"my profile"}
+                />
               </button>
             </div>
           </div>
@@ -180,34 +248,60 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
     <div>
       <div className="SideBarContainer">
         <div className="headerContainer">
-          <h1 style={{ cursor: 'pointer' }} onClick={() => handleTextChange('Discover', paths.routes.HOME)}>
+          <h1
+            style={{ cursor: "pointer" }}
+            onClick={() => handleTextChange("Discover", paths.routes.HOME)}
+          >
             lfg.
           </h1>
         </div>
 
         <div className="containerButtonSideBar">
           <button
-            id={'discover-sidebar-btn'}
-            className={activePage === 'Discover' ? 'active sidebar-btn' : 'sidebar-btn'}
-            onClick={() => handleTextChange('Discover', paths.routes.HOME)}
+            id={"discover-sidebar-btn"}
+            className={
+              activePage === "Discover" ? "active sidebar-btn" : "sidebar-btn"
+            }
+            onClick={() => handleTextChange("Discover", paths.routes.HOME)}
           >
-            <ThemeIcon light={'/assets/black/compass.png'} dark={'/assets/white/compass.png'} alt={'discover'} />
+            <ThemeIcon
+              light={"/assets/black/compass.png"}
+              dark={"/assets/white/compass.png"}
+              alt={"discover"}
+            />
             Discover
           </button>
           <button
-            id={'meet-sidebar-btn'}
-            className={activePage === 'Meet' ? 'active sidebar-btn' : 'sidebar-btn'}
-            onClick={() => handleTextChange('Meet', paths.routes.MEET)}
+            id={"meet-sidebar-btn"}
+            className={
+              activePage === "Meet" ? "active sidebar-btn" : "sidebar-btn"
+            }
+            onClick={() => handleTextChange("Meet", paths.routes.MEET)}
           >
-            <ThemeIcon light={'/assets/black/meet.png'} dark={'/assets/white/meet.png'} alt={'meet users'} /> Meet
+            <ThemeIcon
+              light={"/assets/black/meet.png"}
+              dark={"/assets/white/meet.png"}
+              alt={"meet users"}
+            />{" "}
+            Meet
           </button>
           <button
-            id={'my-projects-sidebar-btn'}
-            className={activePage === 'My Projects' ? 'active sidebar-btn' : 'sidebar-btn'}
-            onClick={() => handleTextChange('My Projects', paths.routes.MYPROJECTS)}
+            id={"my-projects-sidebar-btn"}
+            className={
+              activePage === "My Projects"
+                ? "active sidebar-btn"
+                : "sidebar-btn"
+            }
+            onClick={() =>
+              handleTextChange("My Projects", paths.routes.MYPROJECTS)
+            }
           >
-            <ThemeIcon light={'/assets/black/folder.png'} dark={'/assets/white/folder.png'} alt={'my projects'} /> My
-            Projects
+            <ThemeIcon
+              light={"/assets/black/folder.png"}
+              dark={"/assets/white/folder.png"}
+              alt={"my projects"}
+            />{" "}
+            My Projects
           </button>
           {/* <button className={activePage === 'Following' ? 'active' : ''} onClick={() => handleTextChange('Following', paths.routes.SETTINGS)}>
             <img
@@ -231,9 +325,12 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
         {/* Sends the user to the log in page if they aren't logged in, otherwise allows them to create and edit a project */}
 
         <div className="Create">
-          <ProjectCreatorEditor newProject={createError} buttonCallback={getAuth} user={userData} />
+          <ProjectCreatorEditor
+            newProject={createError}
+            buttonCallback={getAuth}
+            user={userData}
+          />
         </div>
-
       </div>
 
       <Notifications

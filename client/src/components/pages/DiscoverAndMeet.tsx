@@ -84,7 +84,7 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
             </div>
 
             <div id="profile-hero-blurb-2" className="profile-hero-blurb">
-              <h2>Look for people to work with!</h2>
+              {/* <h2>Look for people to work with!</h2> */}
               <ThemeIcon
                 light={'/assets/bannerImages/people2_light.png'}
                 dark={'/assets/bannerImages/people2_dark.png'}
@@ -294,6 +294,19 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
             }
             else {
               // No skills: exclude from results
+              tagFilterCheck = false;
+              break;
+            }
+          }
+          // Check for specific skills
+          else if (tag.type === 'Developer Skill' || tag.type === 'Designer Skill' || tag.type === 'Soft Skill') {
+            const userSkills = item.skills?.map((s) => s?.skill?.toLowerCase())
+            .filter((s) => typeof s === 'string');
+
+            const matched = userSkills?.includes(tag.label.toLowerCase());
+
+            if (!matched) {
+              // No match: exclude from results
               tagFilterCheck = false;
               break;
             }

@@ -16,7 +16,7 @@ router.get('/:id', PROJECT.getProjectByID);
 //Edits a project through a specific id
 router.put('/:id', requiresLogin, PROJECT.updateProject);
 
-// //Deletes project through a specific id
+//Deletes project through a specific id
 router.delete('/:id', requiresLogin, PROJECT.deleteProject);
 
 //Edits a project thumbnail through a specific id

@@ -1083,6 +1083,41 @@ paths:
                     example: application/json
         '500':
           $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Create a new project
+      description: Creates a new project using the request body
+      tags:
+        - Projects
+      security:
+        - shibbolethAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectsCreateInput'
+      responses:
+        '200':
+          description: Project created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    $ref: '#/components/schemas/ProjectWithFollowers'
+                  memetype:
+                    type: string
+                    example: application/json
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 
   /api/projects/{id}:
     get:
@@ -1187,6 +1222,99 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+    delete:
+      summary: Delete a project by ID
+      description: Deletes a project by its ID.
+      tags:
+        - Projects
+      security:
+        - shibbolethAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the project to delete
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Project deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                  memetype:
+                    type: string
+                    example: application/json
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /projects/{id}/thumbnail:
+    put:
+      summary: Update the thumbnail image of a project
+      description: Updates the thumbnail URL of a project by its ID. Only the thumbnail can be updated.
+      tags:
+        - Projects
+      security:
+        - shibbolethAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the project to update
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                thumbnail:
+                  type: string
+                  format: uri
+                  example: https://example.com/new-thumbnail.jpg
+              required:
+                - thumbnail
+      responses:
+        '200':
+          description: Thumbnail updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  projectId:
+                    type: integer
+                    example: 42
+                  thumbnail:
+                    type: string
+                    format: uri
+                    example: https://example.com/new-thumbnail.jpg
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   /api/projects/{id}/pictures:
     get:
       summary: Get project pictures by ID
@@ -1223,6 +1351,134 @@ paths:
                   memetype:
                     type: string
                     example: application/json
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Add a new picture to a project
+      description: Creates a new picture entry associated with a specific project.
+      tags:
+        - Projects
+      security:
+        - shibbolethAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the project to add a picture to
+          required: true
+          schema:
+            type: integer
+            example: 42
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - projectId
+                - image
+              properties:
+                projectId:
+                  type: integer
+                  description: ID of the project
+                  example: 42
+                image:
+                  type: string
+                  format: uri
+                  description: URL of the picture
+                  example: https://example.com/image.jpg
+                altText:
+                  type: string
+                  description: Alternate text for the image
+                  example: Screenshot of the project UI
+      responses:
+        '200':
+          description: Picture added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  error:
+                    type: string
+                    nullable: true
+                    example: null
+                  data:
+                    type: object
+                    properties:
+                      imageId:
+                        type: integer
+                        example: 12
+                      projectId:
+                        type: integer
+                        example: 1
+                      image:
+                        type: string
+                        format: uri
+                        example: https://example.com/image.jpg
+                      altText:
+                        type: string
+                        example: Screenshot of the project UI
+                  memetype:
+                    type: string
+                    example: application/json
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      summary: Update a picture for a project
+      description: Updates fields of an existing project picture by image ID.
+      tags:
+        - Projects
+      security:
+        - shibbolethAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the picture to update
+          required: true
+          schema:
+            type: integer
+            example: 12
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  description: URL of the updated image
+                  example: https://example.com/new-image.jpg
+                description:
+                  type: string
+                  description: Description or alt text for the image
+                  example: Updated project screenshot
+                isThumbnail:
+                  type: boolean
+                  description: Whether this image should be set as the project thumbnail
+                  example: false
+              additionalProperties: false
+      responses:
+        '200':
+          description: Image updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1626,6 +1882,41 @@ components:
           properties:
             count:
               type: integer
+
+    ProjectsCreateInput:
+      type: object
+      required:
+        - title
+        - hook
+        - description
+        - status
+      properties:
+        title:
+          type: string
+          maxLength: 150
+        hook:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 2000
+        thumbnail:
+          type: string
+          format: uri
+          nullable: true
+        purpose:
+          type: string
+          enum: [Personal, PortfolioPiece, Academic, CoOp]
+        status:
+          type: string
+          enum: [Planning, Development, PostProduction, Complete]
+        audience:
+          type: string
+          maxLength: 300
+          nullable: true
+        userId:
+          type: integer
+          nullable: true
 
     ProjectImage:
       type: object

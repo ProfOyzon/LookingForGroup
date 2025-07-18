@@ -505,7 +505,7 @@ const NewProject = () => {
                         If interested, please contact:{' '}
                         <span
                           onClick={() =>
-                            navigate(`${paths.routes.PROFILE}?userID=${projectLead?.user_id}`)
+                            navigate(`${paths.routes.NEWPROFILE}?userID=${projectLead?.user_id}`)
                           }
                           id="position-contact-link"
                         >

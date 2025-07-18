@@ -35,25 +35,24 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
   // Code to manage sidebar button selection
   // Here, the sidebar buttons are updated on page load (so that they work with browser back/forward)
   // BOTH manual class managing lines & startingPage lines are necessary for the buttons to work with site features AND browser features
-
-  // Currently, every webpage that isn't one of the main three will have the behavior of leaving the active button as whichever one you accessed it through.
-  // However, refreshing one of these "other" pages will reset the active button to Discover - the last active page should probably be saved through localstorage
-  // Other specific erroneous behavior (most likely through mobile layout & browser buttons) is likely still findable
   switch (window.location.pathname) {
     case '/discover':
     case '/':
       startingPage = 'Discover';
-      for (const i of sidebarBtns) { i.classList.remove("active") }
+      localStorage.setItem('lastActiveTab', startingPage);
+      for (let i of sidebarBtns) { i.classList.remove("active") }
       document.querySelector("#discover-sidebar-btn")?.classList.add("active");
       break;
     case '/meet':
       startingPage = 'Meet';
-      for (const i of sidebarBtns) { i.classList.remove("active") }
+      localStorage.setItem('lastActiveTab', startingPage);
+      for (let i of sidebarBtns) { i.classList.remove("active") }
       document.querySelector("#meet-sidebar-btn")?.classList.add("active");
       break;
     case '/myProjects':
       startingPage = 'My Projects';
-      for (const i of sidebarBtns) { i.classList.remove("active") }
+      localStorage.setItem('lastActiveTab', startingPage);
+      for (let i of sidebarBtns) { i.classList.remove("active") }
       document.querySelector("#my-projects-sidebar-btn")?.classList.add("active");
       break;
     case '/newProfile':
@@ -61,22 +60,34 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
       // Default "newProfile" brings you to your own page
       if (width < breakpoint && !window.location.href.includes('?')) { // Is it the mobile layout, and is it DEFINITELY your own page?
         startingPage = 'My Profile';
-        for (const i of sidebarBtns) { i.classList.remove("active") }
+        localStorage.setItem('lastActiveTab', startingPage);
+        for (let i of sidebarBtns) { i.classList.remove("active") }
         document.querySelector("#my-profile-sidebar-btn")?.classList.add("active");
       }
       else { // Otherwise, default to MEET
         // This behavior is not ideal! The desktop layout should likely also feature a "MY PROFILE" button, and one's own profile should have a unique URL.
         // That way, going to one's own profile would display as such, rather than as selecting MEET.
         startingPage = 'Meet';
-        for (const i of sidebarBtns) { i.classList.remove("active") }
+        localStorage.setItem('lastActiveTab', startingPage);
+        for (let i of sidebarBtns) { i.classList.remove("active") }
         document.querySelector("#meet-sidebar-btn")?.classList.add("active");
       }
+      break;
+    case '/settings':
+      startingPage = 'Settings';
+      localStorage.setItem('lastActiveTab', startingPage);
+      for (let i of sidebarBtns) { i.classList.remove("active"); }
       break;
     // case '/messages':
     //   startingPage = 'Messages';
     //   break;
     default:
-      startingPage = 'Discover';
+    startingPage = localStorage.getItem('lastActiveTab') || 'Discover';
+     for (let i of sidebarBtns) { i.classList.remove("active") }
+     if (startingPage === 'Discover') document.querySelector("#discover-sidebar-btn")?.classList.add("active");
+     else if (startingPage === 'Meet') document.querySelector("#meet-sidebar-btn")?.classList.add("active");
+     else if (startingPage === 'My Projects') document.querySelector("#my-projects-sidebar-btn")?.classList.add("active");
+     else if (startingPage === 'My Profile') document.querySelector("#my-profile-sidebar-btn")?.classList.add("active");
   }
 
   const [activePage, setActivePage] = useState(startingPage); // State to manage the active page [Discover, Meet, My Projects, Messages, Profile, Settings]

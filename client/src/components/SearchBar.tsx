@@ -91,6 +91,7 @@ const handleSearch = (searchQuery: string) => {
               e.preventDefault();
             }
           }}
+          autoComplete="searchbar-off"
         />
       </div>
     </div>

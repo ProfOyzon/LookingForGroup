@@ -820,6 +820,11 @@ Page popup style rules
     width: 64vw; */
     /* height: 95vw; */
   }
+
+  /* Smaller popups within another popup should scale */
+  .popup .popup {
+    max-width: 50vw;
+  }  
 }
 
 .popup-container {
@@ -1234,6 +1239,12 @@ Header style rules
 
 #header-profile-dropdown button:hover {
   background-color: var(--header-color);
+}
+
+@media only screen and (max-width: 400px) {
+  #header {
+    width: 85%;
+  }
 }
 
 /*

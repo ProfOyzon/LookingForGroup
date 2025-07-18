@@ -35,7 +35,7 @@ router.put('/:id/pictures' /* changePicture */);
 router.delete('/:id/pictures' /* deletePicture */);
 
 //Adds member to a specific project through id
-router.post('/:id/members' /* addMember */);
+router.post('/:id/members', PROJECT.addMember);
 
 //Edits a member of a specific project through id
 router.put('/:id/members' /* updateMember */);

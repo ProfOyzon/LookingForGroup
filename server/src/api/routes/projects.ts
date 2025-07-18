@@ -17,7 +17,8 @@ router.get('/:id', PROJECT.getProjectByID);
 router.put('/:id', requiresLogin, PROJECT.updateProject);
 
 // //Deletes project through a specific id
-router.delete('/:id' /* deleteProject */);
+router.delete('/:id', requiresLogin, PROJECT.deleteProject);
+
 
 //Edits a project thumbnail through a specific id
 router.put('/:id/thumbnail', requiresLogin, PROJECT.updateThumbnail);
@@ -29,7 +30,8 @@ router.get('/:id/pictures', PROJECT.getProjectPics);
 router.post('/:id/pictures', PROJECT.addImage);
 
 //Changes a picture for a project
-router.put('/:id/pictures' /* changePicture */);
+router.put('/:id/pictures', requiresLogin, PROJECT.updateImage);
+
 
 //Removes picture from a project
 router.delete('/:id/pictures' /* deletePicture */);

@@ -78,7 +78,9 @@ export const emptyProject: ProjectData = {
   title: '',
 };
 
+// FOR DISCOVER PAGE'S POPUP
 export let isNewProject = false;
+//export let perms = ???;
 
 /**
  * This component should allow for either editing existing projects or creating new projects entirely,
@@ -95,28 +97,31 @@ export const ProjectCreatorEditor: FC<Props> = ({ newProject, buttonCallback = (
   // --- Hooks ---
   // store project data
   const [projectData, setProjectData] = useState(emptyProject);
-
+  
   // tracking temporary project changes before committing to a save
   const [modifiedProject, setModifiedProject] = useState(emptyProject);
-
+  
   // check whether or not the data in the popup is valid
   const [failCheck, setFailCheck] = useState(false);
-
+  
   // for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
   const [currentTab, setCurrentTab] = useState(0);
-
+  
   // Errors
   const [errorAddMember, setErrorAddMember] = useState('');
   const [errorAddPosition, setErrorAddPosition] = useState('');
   const [errorLinks, setErrorLinks] = useState('');
-
+  
   //State variable for error message
   const [message, setMessage] = useState('')
-
+  
   // Lets the discover page's popup know if this is a new project or not
   isNewProject = newProject;
-
   
+  // Lets the discover page's popup know what permissions it can use
+  //perms = permissions;
+  
+
   // Get project data on projectID change
   useEffect(() => {
     if (!newProject) {

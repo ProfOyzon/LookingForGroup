@@ -70,6 +70,23 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
     bio?: string;
   }
 
+  // FOR POPUP 
+  interface User {
+    first_name: string,
+    last_name: string,
+    username: string,
+    primary_email: string,
+    user_id: number
+  }
+
+  // FOR POPUP
+  interface Props {
+    newProject: boolean;
+    buttonCallback?: () => void;
+    user?: User;
+    permissions?: number;
+  }
+
   // --------------------
   // Components
   // --------------------
@@ -152,7 +169,9 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
   const heroContent =
     category === 'projects' ? <DiscoverCarousel dataList={fullItemList.slice(0, 3)} /> : profileHero;
 
-  // Used for Popup
+  /*
+    Used for Popup
+  */
   const location = useLocation(); // Hook to access the current location
   const previousLoc = document.referrer; // Get the previous page from the location state, if available
   const [currentTab, setCurrentTab] = useState(0); // for current tab: 0 - general, 1 - Media, 2 - tags, 3 - team, 4 - links
@@ -165,6 +184,9 @@ const DiscoverAndMeet = ({ category }: DiscoverAndMeetProps) => {
 
   //State variable for error message
   const [message, setMessage] = useState('')
+
+   // check whether or not the data in the popup is valid
+  const [failCheck, setFailCheck] = useState(false);
 
 
   // --------------------

@@ -6,6 +6,5 @@ dotenv.config({ path: '../.env' });
 export default defineProject({
   test: {
     environment: 'node',
-    env: { ...process.env },
   },
 });

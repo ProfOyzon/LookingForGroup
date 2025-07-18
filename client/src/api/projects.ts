@@ -24,37 +24,37 @@ const root = '/api'
  * @param _members  - List of project members
  * @param _socials - List of relevant social media pages
  * @returns 200 if valid, 400 if not
- *///might need to change Array<object>
+ */ //might need to change Array<object>
 export const createNewProject = async (
-    _userId: number,
-    _title: string,
-    _hook: string,
-    _desc: string,
-    _purpose: string,
-    _status: string,
-    _audience: string,
-    _pTypes: ProjectType[],
-    _pTags: Tag[],
-    _jobs: JobTitles[],
-    _members: Member[],
-    _socials: Social[],
+  _userId: number,
+  _title: string,
+  _hook: string,
+  _desc: string,
+  _purpose: string,
+  _status: string,
+  _audience: string,
+  _pTypes: Genre[],
+  _pTags: Tag[],
+  _jobs: JobTitle[],
+  _members: Member[],
+  _socials: Social[]
 ): Promise<unknown> => {
-    const apiURL = `${root}/projects`;
+  const apiURL = `/projects`;
 
-    const data = {
-        userId: _userId,
-        title: _title,
-        hook: _hook,
-        description: _desc,
-        purpose: _purpose,
-        status: _status,
-        audience: _audience,
-        project_types: _pTypes,
-        tags: _pTags,
-        jobs: _jobs,
-        members: _members,
-        socials: _socials,
-    };
+  const data = {
+    userId: _userId,
+    title: _title,
+    hook: _hook,
+    description: _desc,
+    purpose: _purpose,
+    status: _status,
+    audience: _audience,
+    project_types: _pTypes,
+    tags: _pTags,
+    jobs: _jobs,
+    members: _members,
+    socials: _socials,
+  };
 
     const response = await util.POST(apiURL, data);
     if (response.error) {
@@ -69,8 +69,8 @@ export const createNewProject = async (
  * Gets all projects in the database
  * @returns Array of all projects if valid, 400 if not
  */
-export const getProjects = async (): Promise<unknown> => {
-    const apiURL = `${root}/projects`;
+export const getProjects = async (): Promise<ApiResponse<unknown>> => {
+  const apiURL = `/projects`;
 
     const response = await util.GET(apiURL);
 
@@ -109,7 +109,6 @@ export const updateProject = async (ID: number, data: object): Promise<unknown> 
    return { status: 200 };
 };
 
-
 /**
  * Deletes an existing project
  * @param ID - ID of the project to delete
@@ -123,7 +122,6 @@ export const deleteProject = async (ID: number): Promise<ApiResponse<any[]>> => 
     }
      return { status: 200 };
 };
-
 
 /* ASSETS */
 
@@ -212,7 +210,6 @@ export const deletePic = async (ID: number, image: string): Promise<ApiResponse<
    return { status: 200 };
 };
 
-
 /* MEMBERS */
 
 /**
@@ -274,19 +271,18 @@ export const deleteMember = async (ID: number, userId: number): Promise<ApiRespo
    return { status: 200 };
 };
 
-
 export default {
-    createNewProject,
-    getProjects,
-    getByID,
-    updateProject,
-    deleteProject,
-    updateThumbnail,
-    getPics,
-    addPic,
-    updatePicPositions,
-    deletePic,
-    addMember,
-    updateMember,
-    deleteMember,
+  createNewProject,
+  getProjects,
+  getByID,
+  updateProject,
+  deleteProject,
+  updateThumbnail,
+  getPics,
+  addPic,
+  updatePicPositions,
+  deletePic,
+  addMember,
+  updateMember,
+  deleteMember,
 };

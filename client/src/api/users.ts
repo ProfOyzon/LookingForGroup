@@ -1,3 +1,4 @@
+import { CreateUserData } from '@looking-for-group/shared';
 import util from './index.ts';
 import { User, Skill, Social, ApiResponse } from './types';
 
@@ -5,21 +6,6 @@ const root = '/api'
 
 
 /* USER CRUD */
-
-
-export interface CreateUserData {
-    firstName: string;
-    lastName: string;
-    headline: string;
-    pronouns: string;
-    jobTitleId: number;
-    majorId: number;
-    academicYear: number;
-    location: string;
-    funFact: string;
-    skills: Skill[];
-    socials: Social[];
-}
 
 //This probably with change with shibbolth???
 /**
@@ -31,12 +17,12 @@ export interface CreateUserData {
  * @returns status - 200 if valid, 400 if not
  */
 export const createNewUser = async (
-    token: string,
-    email: string,
-    userData: CreateUserData
+  token: string,
+  email: string,
+  userData: CreateUserData
 ): Promise<ApiResponse> => {
-    //check if token is valid
-    const apiURL = `${root}/signup/${token}`;
+  //check if token is valid
+  const apiURL = `/signup/${token}`;
 
     //token validation
     const tokenRes = await util.GET(apiURL);
@@ -45,13 +31,13 @@ export const createNewUser = async (
         return { status: 400, error: 'Token does not exist.' };
     }
 
-    const userExist = await userInDatabase(email);
-    if (userExist) {
-        return {
-            status: 400,
-            error: 'User is already in database.'
-        }
-    }
+  const userExist = await userInDatabase(email);
+  if (userExist) {
+    return {
+      status: 400,
+      error: "User is already in database.",
+    };
+  }
 
     const response = await util.POST(apiURL, userData);
     if (response.status === 400) {
@@ -61,7 +47,7 @@ export const createNewUser = async (
     console.log(`User ${email} created.`);
     console.log(response);
     return response;
-}
+};
 
 /**
  * Gets all data on all public users. Does not return private ones
@@ -147,8 +133,11 @@ export const userInDatabase = async (email: string): Promise<boolean> => {
  * @param image - file, the picture to put into the user's profile
  * @return status, 200 if successful, 400 if not, and data. data=array[object] with the profile_image, string, name of the file
  */
-export const updateProfilePicture = async (id: number, image: File): Promise<ApiResponse> => {
-    const apiURL = `${root}/users/${id}/profile-picture`;
+export const updateProfilePicture = async (
+  id: number,
+  image: File
+): Promise<ApiResponse> => {
+  const apiURL = `/users/${id}/profile-picture`;
 
     const data = { image: image };
     const response = await util.PUT(apiURL, data);
@@ -199,17 +188,22 @@ export const updateEmail = async (id: number, _email: string, _confirm_email: st
  * @param _password - the user's current password.
  * @returns response, 200 if valid, 400 if not, 401 if users do not match.
  */
-export const updateUsername = async (id: number, _username: string, _confirm_user: string, _password: string): Promise<ApiResponse> => {
-    if (_username != _confirm_user) {
-        console.log('Usernames are not the same.');
-        return { status: 401, error: 'Usernames are not the same.' };
-    }
-    const apiURL = `${root}/users/${id}/username`;
-    const data = {
-        username: _username,
-        confirm_user: _confirm_user,
-        password: _password,
-    };
+export const updateUsername = async (
+  id: number,
+  _username: string,
+  _confirm_user: string,
+  _password: string
+): Promise<ApiResponse> => {
+  if (_username != _confirm_user) {
+    console.log("Usernames are not the same.");
+    return { status: 401, error: "Usernames are not the same." };
+  }
+  const apiURL = `/users/${id}/username`;
+  const data = {
+    username: _username,
+    confirm_user: _confirm_user,
+    password: _password,
+  };
 
     const response = await util.PUT(apiURL, data);
     if (response.status === 400 || response.status === 401) {
@@ -239,8 +233,6 @@ export const updateUsername = async (id: number, _username: string, _confirm_use
 //         return { status: 400, error: 'Password and confirmation are not the same.' };
 //     }
 //     console.log('Token accepted, email verified.');
-
-
 
 //     //get email if token is valid
 //     let url = `${root}/resets/password/${_token}`;
@@ -281,35 +273,34 @@ export const updateUserVisibility = async (id: number): Promise<ApiResponse> => 
         };
     }
 
-    const vis = userResponse.data.visibility;
-    let data: { visibility: number };
+  const vis = userResponse.data.visibility;
+  let data: { visibility: number };
 
-    if (vis == 1) {
-        data = {
-            visibility: 0,
-        };
-    } else if (vis == 0) {
-        data = {
-            visibility: 1,
-        };
-    } else {
-        return {
-            status: 400,
-            error: 'Invalid visibility error.'
-        };
-    }
-    const result = await editUser(id, data);
-    if (result.status === 400) {
-        console.log('Error editing user.');
-        return { status: 400, error: 'Error editing user.' };
-    }
-    return {
-        status: 200,
-        error: null,
-        data: result.data
+  if (vis == 1) {
+    data = {
+      visibility: 0,
     };
-}
-
+  } else if (vis == 0) {
+    data = {
+      visibility: 1,
+    };
+  } else {
+    return {
+      status: 400,
+      error: "Invalid visibility error.",
+    };
+  }
+  const result = await editUser(id, data);
+  if (result.status === 400) {
+    console.log("Error editing user.");
+    return { status: 400, error: "Error editing user." };
+  }
+  return {
+    status: 200,
+    error: null,
+    data: result.data,
+  };
+};
 
 /* ACCOUNT INFO/ PASSWORD RESET*/
 
@@ -333,8 +324,6 @@ export const getAccountInformation = async (user_id: number) => {
 
 //requestPasswordReset
 
-
-
 /* LOOKUP USER */
 
 /**
@@ -346,16 +335,16 @@ export const getUserByUsername = async (username: string) => {
     const url = `${root}/users/search-username/${username}`;
     const response = await util.GET(url);
 
-    if (response.status === 400) {
-        console.log('Error getting user.');
-        return { status: 400, error: response.error };
-    }
+  if (response.status === 400) {
+    console.log("Error getting user.");
+    return { status: 400, error: response.error };
+  }
 
-    //check if array is not empty
-    if (!response.data) {
-        console.log('No user found');
-        return { status: 404, error: response.error };
-    }
+  //check if array is not empty
+  if (!response.data) {
+    console.log("No user found");
+    return { status: 404, error: response.error };
+  }
 
     console.log('Data recieved.');
     return response.data;
@@ -370,16 +359,16 @@ export const getUserByEmail = async (email: string) => {
     const url = `${root}/users/search-email/${email}`;
     const response = await util.GET(url);
 
-    if (response.status === 400) {
-        console.log('Error getting user.');
-        return { status: 400, error: response.error };
-    }
+  if (response.status === 400) {
+    console.log("Error getting user.");
+    return { status: 400, error: response.error };
+  }
 
-    //check if array is not empty
-    if (!response.data) {
-        console.log('No user found');
-        return { status: 404, error: 'No user found.' };
-    }
+  //check if array is not empty
+  if (!response.data) {
+    console.log("No user found");
+    return { status: 404, error: "No user found." };
+  }
 
     console.log('Data recieved.');
     return response.data;
@@ -472,12 +461,16 @@ export const getVisibleProjects = async (id: number) => {
  * @param _visibility - either "public" or "private", set visibility
  * @return 201 if successful, 400 if not
  */
-export const updateProjectVisibility = async (userID: number, projectID: number, _visibility: string) => {
-    const url = `${root}/users/${userID}/projects/visibility`;
-    const data = {
-        projectId: projectID,
-        visibility: _visibility,
-    };
+export const updateProjectVisibility = async (
+  userID: number,
+  projectID: number,
+  _visibility: string
+) => {
+  const url = `/users/${userID}/projects/visibility`;
+  const data = {
+    projectId: projectID,
+    visibility: _visibility,
+  };
 
     const response = await util.PUT(url, data);
     if (response.status != 201) {
@@ -548,32 +541,28 @@ export const deleteProjectFollowing = async (id: number, projID: number) => {
 //addProjectFollowing
 //deleteProjectFollowing
 
-
-
 export default {
-    createNewUser,
-    getUsers,
-    getUsersById,
-    editUser,
-    deleteUser,
-    userInDatabase,
-    updateProfilePicture,
-    getAccountInformation,
-    updateEmail,
-    updateUsername,
-    //updatePassword,
-    updateUserVisibility,
-    // requestPasswordReset,
-    getUserByUsername,
-    getUserByEmail,
-    getUserFollowing,
-    addUserFollowing,
-    deleteUserFollowing,
-    getVisibleProjects,
-    updateProjectVisibility,
-    getProjectFollowing,
-    addProjectFollowing,
-    deleteProjectFollowing,
-
+  createNewUser,
+  getUsers,
+  getUsersById,
+  editUser,
+  deleteUser,
+  userInDatabase,
+  updateProfilePicture,
+  getAccountInformation,
+  updateEmail,
+  updateUsername,
+  //updatePassword,
+  updateUserVisibility,
+  // requestPasswordReset,
+  getUserByUsername,
+  getUserByEmail,
+  getUserFollowing,
+  addUserFollowing,
+  deleteUserFollowing,
+  getVisibleProjects,
+  updateProjectVisibility,
+  getProjectFollowing,
+  addProjectFollowing,
+  deleteProjectFollowing,
 };
-

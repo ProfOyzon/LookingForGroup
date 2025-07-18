@@ -1,5 +1,0 @@
-{
-  "watch": ["src", "docs"],
-  "ext": "ts,yaml",
-  "exec": "node --env-file=../.env src/index.ts"
-}

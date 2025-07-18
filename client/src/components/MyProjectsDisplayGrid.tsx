@@ -137,7 +137,7 @@ const MyProjectsDisplayGrid = ({ projectData }) => {
                           // Attempt to remove user from project.
                           // Display PagePopup.tsx on success or failure
                           // And display error message inside said popup
-                          const url = `/api/projects/${projId}`;
+                          let url = `/api/projects/${projId}`;
 
                           sendDelete(url, (result) => {
                             setRequestType('delete');

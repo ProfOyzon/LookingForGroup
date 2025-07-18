@@ -300,7 +300,7 @@ export const SkillsTab = (props: { profile: ProfileData }) => {
 
   // Components
   const TagSearchTabs = () => {
-    const tabs = tagTabs.map((tag, i) => {
+    let tabs = tagTabs.map((tag, i) => {
       return (
         <button
           key={tag}

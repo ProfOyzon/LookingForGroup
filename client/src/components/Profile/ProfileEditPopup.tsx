@@ -83,7 +83,7 @@ const onSaveClicked = async (e : Event) => {
 
   // pop up error text if fields invalid
   if (!firstName || !lastName || !bio) {
-    const errorText = document.getElementById('invalid-input-error');
+    let errorText = document.getElementById('invalid-input-error');
     if (errorText) {
       errorText.style.display = 'block';
     }
@@ -197,7 +197,7 @@ const onSaveClicked = async (e : Event) => {
   }, []);
 
   // Component to organize the main tab content
-  const TabContent = () => {
+  let TabContent = () => {
     return (
       <div id="profile-editor-content">
         <AboutTab profile={profile} selectedImageFile={selectedImageFile} setSelectedImageFile={setSelectedImageFile}/>
@@ -261,7 +261,7 @@ const onSaveClicked = async (e : Event) => {
 
 
   // Maps the pageTabs into interactable page tabs, to switch between the Tab Content
-  const editorTabs = pageTabs.map((tag, i) => {
+  let editorTabs = pageTabs.map((tag, i) => {
     return (
       <button
         key={tag}

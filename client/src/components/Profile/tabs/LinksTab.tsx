@@ -3,8 +3,8 @@ import { sendPut, sendFile, fetchUserID } from '../../../functions/fetch';
 import { SocialSelector } from '../../SocialSelector';
 
 interface LinkData {
-  id: number;
-  url: string;
+  id: Number;
+  url: String;
 }
 
 let links = [] as LinkData[];
@@ -81,7 +81,7 @@ export const LinksTab = (props) => {
   // Components ----------------------
 
   const LinkInput = (props) => {
-    const [text, setText] = useState('');
+    let [text, setText] = useState('');
 
     useEffect(() => {
       console.log(props.data);

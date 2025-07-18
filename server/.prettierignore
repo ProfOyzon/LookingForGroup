@@ -1,4 +1,0 @@
-.prettierignore
-prisma/**
-**/generated/**
-Dockerfile

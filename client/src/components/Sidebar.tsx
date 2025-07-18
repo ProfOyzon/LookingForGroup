@@ -5,8 +5,6 @@ import { useSelector } from 'react-redux';
 import Notifications from './pages/Notifications';
 import { ThemeIcon } from './ThemeIcon';
 import { ProjectCreatorEditor } from './ProjectCreatorEditor/ProjectCreatorEditor';
-//user utils
-import { getCurrentUsername } from '../api/users.ts';
 
 export interface User {
   first_name: string,
@@ -30,7 +28,7 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
 
   let startingPage: string;
 
-  const sidebarBtns = document.getElementsByClassName("sidebar-btn");
+  let sidebarBtns = document.getElementsByClassName("sidebar-btn");
 
   // Code to manage sidebar button selection
   // Here, the sidebar buttons are updated on page load (so that they work with browser back/forward)
@@ -104,21 +102,31 @@ const SideBar = ({ avatarImage, setAvatarImage, theme }) => {
     // Is user authenticated?
     // Get auth
     try {
-      const res = await getCurrentUsername();
+      const response = await fetch('/api/auth');
 
-      if (res.status === 200 && res.data?.username) {
+      // Set error accordingly
+      if (response.status !== 401) {
         // Authenticated
         setCreateError(false);
+        // Save user id
+        const { data } = await response.json();
+        const id = data;
 
-        const _userData = {
-          first_name: res.data.first_name,
-          last_name: res.data.last_name,
-          username: res.data.username,
-          primary_email: res.data.primary_email,
-          userId: res.data.userId
+        // Get and save user data
+        const getUserData = async () => {
+          const userResponse = await fetch('/api/users/get-username-session');
+          const { data } = await userResponse.json();
+          const _userData = {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            username: data.username,
+            primary_email: data.primary_email,
+            userId: id
+          }
+          setUserData(_userData);
         }
+        getUserData();
 
-        setUserData(_userData);
       } else {
         // If there is any issue authenticating the user's account, 
         // immediatly send the user to the login screen

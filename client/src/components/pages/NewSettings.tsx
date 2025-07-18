@@ -110,10 +110,9 @@ const Settings = ({ }) => {
           <PopupButton
             className="confirm-btn"
             callback={async () => {
-              // Displays success message on parent popup
               const onSuccess = (status) => {
-                // Feedback popup
-                setSuccess(`Your ${type.toLowerCase()} has been updated!`);
+                //setSuccess(`Your ${type.toLowerCase()} has been updated!`);
+                location.reload();
               };
 
               const typeToChange = type === 'Primary Email' ? 'email' : type.toLowerCase();

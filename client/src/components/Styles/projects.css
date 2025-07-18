@@ -360,7 +360,7 @@ Project Creator and Editor style rules
 }
 
 .save-error-msg, .save-error-msg-general {
-  display:none;
+  display: none;
   margin: auto;
 }
 
@@ -2739,8 +2739,19 @@ Project Carousel style rules
   background-color: var(--primary-color) !important;
   color: var(--invert-text);
   padding: 5px 20px;
-  width: 100px;
+  width: 150px;
   font-weight: 700;
+}
+
+#project-info-edit:hover {
+  color: var(--create-text) !important;
+  background-color: var(--create-bg) !important;
+  filter: drop-shadow(0px 5px 3px var(--shadow-color));
+  transition: 0.25s;
+}
+
+#project-info-edit:focus-visible{
+  outline: none !important;
 }
 
 #project-hook,
@@ -3747,6 +3758,7 @@ My projects page style rules
   .confirm-deny-btns {
     display: flex;
     flex-direction: row;
+
     button {
       margin: 5px;
     }

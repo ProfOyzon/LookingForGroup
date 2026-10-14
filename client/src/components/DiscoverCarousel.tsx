@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CarouselButton, CarouselTabs, CarouselContent, Carousel } from "./ImageCarousel";
 import { Tag } from "./Tag";
+import { TagDot } from "./TagDot";
 import * as paths from '../constants/routes';
 import placeholderThumbnail from '../images/project_temp.png';
 import { ProjectWithFollowers } from "@looking-for-group/shared";
@@ -89,10 +90,8 @@ export const DiscoverCarousel: React.FC<DiscoverCarouselProps> = ({ dataList = [
                 project.tags.map((tag, index) => {
                   if (index < 3) {
                     return (
-                      <Tag key={index} type={tag.type.toLowerCase()}
-                        selected={true}>
-                        <p>{tag.label}</p>
-                      </Tag>
+                      <TagDot key={index} projectId={project.projectId}
+                        type={tag.type.toLowerCase()} label={tag.label} />
                     );
                   } else if (index === 3) {
                     return (

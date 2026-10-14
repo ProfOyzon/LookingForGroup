@@ -94,6 +94,8 @@ Project Panel component style rules
   text-decoration: none;
   margin: 10px 0;
   max-width: 100%;
+  /* Lets the tag dots size their hover pill relative to the card (cqw) */
+  container-type: inline-size;
 
   .project-panel-meta {
     grid-area: tags;
@@ -103,7 +105,8 @@ Project Panel component style rules
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     gap: 6px;
     min-width: 0;
 
@@ -128,6 +131,13 @@ Project Panel component style rules
       min-width: 16px;
       align-items: center;
       justify-content: center;
+    }
+
+    /* Match the 30px height of the tag dots next to it */
+    .project-panel-meta-plus {
+      box-sizing: border-box;
+      height: 30px;
+      min-width: 30px;
     }
 
     .tag p {

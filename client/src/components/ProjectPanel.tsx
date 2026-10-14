@@ -4,6 +4,7 @@ import * as paths from '../constants/routes';
 import placeholderThumbnail from '../images/project_temp.png';
 import { addProjectFollowing, deleteProjectFollowing, getCurrentAccount, getProjectFollowing } from '../api/users.ts';
 import { Tag as TagElement } from './Tag';
+import { TagDot } from './TagDot';
 
 //import shares types
 import usePreloadedImage from '../functions/imageLoad.tsx';
@@ -202,7 +203,7 @@ export const ProjectPanel = ({ project, initialIsFollowing, currentUserId, onUnf
 };
 
 /**
- * Renders the bottom row of the project card: 
+ * Renders the bottom row of the project card:
  * leading medium tag and two normal tags
  */
 const ProjectPanelMeta = ({ project }: { project: ProjectWithFollowers }) => {
@@ -220,15 +221,20 @@ const ProjectPanelMeta = ({ project }: { project: ProjectWithFollowers }) => {
   return (
     <div className='project-panel-meta'>
       {project.mediums?.[0] && (
-        <TagElement type="medium" selected={true}>
-          <p>{(project.mediums[0] as ProjectMedium).label}</p>
-        </TagElement>
+        <TagDot
+          projectId={project.projectId}
+          type="medium"
+          label={(project.mediums[0] as ProjectMedium).label}
+        />
       )}
 
       {shownTags.map((tag, i) => (
-        <TagElement key={i} type={tag.type?.toLowerCase() ?? ''} selected={true}>
-          <p>{tag.label}</p>
-        </TagElement>
+        <TagDot
+          key={i}
+          projectId={project.projectId}
+          type={tag.type?.toLowerCase() ?? ''}
+          label={tag.label}
+        />
       ))}
 
       {overflowCount > 0 && (
@@ -252,9 +258,7 @@ const ProjectPanelJob = ({ project }: { project: ProjectWithFollowers }) => {
     <div className='project-panel-meta'>
 
       {shownJobs.map((jobs, i) => (
-        <TagElement key={i} type="positions" selected={true}>
-          <p>{jobs.role.label}</p>
-        </TagElement>
+        <TagDot key={i} projectId={project.projectId} type="positions" label={jobs.role.label} />
       ))}
 
       {overflowCount > 0 ? (

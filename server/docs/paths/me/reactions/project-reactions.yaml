@@ -1,0 +1,34 @@
+get:
+  summary: Get every project reaction the current user has left
+  security:
+    - googleOAuth: []
+  tags:
+    - Me Reactions
+  parameters:
+    - in: query
+      name: devId
+      schema:
+        type: integer
+      required: false
+      description: The user ID to be used as the current user
+  responses:
+    '200':
+      description: The current user's project reactions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              error:
+                type: string
+                nullable: true
+                example: null
+              data:
+                type: array
+                items:
+                  $ref: '../../../swagger.yaml#/components/schemas/MyProjectReaction'
+    '500':
+      $ref: '../../../swagger.yaml#/components/responses/InternalServerError'

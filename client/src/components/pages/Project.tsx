@@ -10,6 +10,7 @@ import * as paths from "../../constants/routes";
 import { TeamPositionsPanel } from "../TeamPositionsPanel";
 import { ShareButton } from "../ShareButton";
 import { ThemeIcon } from "../ThemeIcon";
+import { ReactionAddButton, ReactionChips } from "../Reactions";
 import { getByID, getVideos, projectApprovalRequestExists, deleteProject, requestProjectReview } from "../../api/projects";
 import { Tag as TagElement } from "../Tag";
 import Reporter from "../Reporter";
@@ -425,11 +426,22 @@ const Project = () => {
     setReportResult(true);
   };
 
+  // Shared by the reaction add button (next to the heart) and the reaction chips (under the date)
+  const reactionProps = {
+    projectId: displayedProject?.projectId ?? 0,
+    loadedCounts: displayedProject?.reactions ?? [],
+    loggedIn: !!user || userID > 0,
+    onRequireLogin: () => navigate(paths.routes.LOGIN, { state: { from: location.pathname + location.search } }),
+  };
+
   //HTML elements containing buttons used in the info panel
   //Change depending on who's viewing the project page (Outside user, project member, project owner, etc.)
   const buttonContent =
     user && displayedProject?.owner.userId === user.userId ? (
       <>
+        {/* Owners can react to their own project too, but have no heart to put it next to */}
+        <ReactionAddButton {...reactionProps} />
+
         <ProjectCreatorEditor
           mobileView={false} //error being caused by this prop not being passed in, but it also isn't used in the component at all, sooooo
           newProject={false}
@@ -574,6 +586,7 @@ const Project = () => {
         <>
           {/* Heart icon, with number indicating follows */}
           <div className="project-info-followers">
+            <ReactionAddButton {...reactionProps} />
             <p className={`follow-amt ${isFollowing ? "following" : ""}`}>
               {formatFollowCount(followCount)}
             </p>
@@ -916,6 +929,7 @@ const Project = () => {
                     day: "numeric",
                   })}
                 </div>
+                <ReactionChips {...reactionProps} />
                 {displayedProject.jobs.length > 0 ?
                   <Popup>
                     <PopupButton buttonId="project-open-positions-button">

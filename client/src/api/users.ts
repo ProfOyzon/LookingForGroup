@@ -35,6 +35,8 @@ import type {
   GalleryVideo,
   AddGalleryImageInput,
   AddGalleryVideoInput,
+  MyProjectReaction,
+  ProjectReactionType,
 } from "@looking-for-group/shared";
 
 //#region USER CRUD/LOGIN
@@ -572,6 +574,59 @@ export const deleteProjectFollowing = async (
 
 //#endregion
 
+//#region PROJECT REACTIONS
+
+/**
+ * Gets every project reaction the logged-in user has left.
+ * @returns the user's reactions, or an error response if not logged in.
+ */
+export const getMyProjectReactions = async (): Promise<
+  ApiResponse<MyProjectReaction[]>
+> => {
+  const response = await GET("/me/reactions/projects");
+  return response as ApiResponse<MyProjectReaction[]>;
+};
+
+/**
+ * React to a project.
+ * @param projectId - ID of the project you're reacting to
+ * @param reaction - The reaction to add
+ * @returns 201 if successful, 409 if you already used that reaction.
+ */
+export const addProjectReaction = async (
+  projectId: number,
+  reaction: ProjectReactionType
+): Promise<ApiResponse<MyProjectReaction>> => {
+  const response = await POST(`/me/reactions/projects/${projectId}`, {
+    reaction,
+  });
+
+  if (response.error)
+    console.log(`Error in addProjectReaction: ${response.error}`);
+  return response as ApiResponse<MyProjectReaction>;
+};
+
+/**
+ * Remove one of your reactions from a project.
+ * @param projectId - ID of the project the reaction is on
+ * @param reaction - The reaction to remove
+ * @returns 200 if successful, 404 if you hadn't used that reaction.
+ */
+export const deleteProjectReaction = async (
+  projectId: number,
+  reaction: ProjectReactionType
+): Promise<ApiResponse> => {
+  const response = await DELETE(
+    `/me/reactions/projects/${projectId}/${reaction}`
+  );
+
+  if (response.error)
+    console.log(`Error in deleteProjectReaction: ${response.error}`);
+  return response;
+};
+
+//#endregion
+
 //#region SOCIALS
 // Get socials for the current user based on ID.
 export const getUserSocials = async (): Promise<ApiResponse<MySocial[]>> => {
@@ -815,6 +870,9 @@ export default {
   getProjectFollowing,
   addProjectFollowing,
   deleteProjectFollowing,
+  getMyProjectReactions,
+  addProjectReaction,
+  deleteProjectReaction,
   getUserSocials,
   addUserSocial,
   updateUserSocial,

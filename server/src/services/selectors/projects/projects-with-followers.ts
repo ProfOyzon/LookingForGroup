@@ -1,4 +1,5 @@
 import { ProjectFollowerSelector } from './parts/project-follower.ts';
+import { ProjectReactionsSelector } from './parts/project-reactions.ts';
 import { ProjectDetailSelector } from './project-detail.ts';
 
 export const ProjectWithFollowersSelector = Object.freeze({
@@ -8,6 +9,7 @@ export const ProjectWithFollowersSelector = Object.freeze({
     },
   },
   ...ProjectDetailSelector,
+  ...ProjectReactionsSelector,
   projectFollowings: {
     select: ProjectFollowerSelector,
   },

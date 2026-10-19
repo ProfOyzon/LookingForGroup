@@ -1,5 +1,15 @@
 components:
   schemas:
+    ProjectReactionType:
+      type: string
+      enum:
+        - smile
+        - exclamation
+        - laugh
+        - fire
+        - thumbs-up
+      example: fire
+
     SkillType:
       type: string
       enum:

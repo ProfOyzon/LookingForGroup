@@ -313,9 +313,27 @@ components:
         members: []
         apiUrl: /api/projects/1
 
+    ProjectReactionCount:
+      type: object
+      properties:
+        reaction:
+          $ref: 'enums.yaml#/components/schemas/ProjectReactionType'
+        count:
+          type: integer
+      example:
+        reaction: fire
+        count: 3
+
     ProjectWithFollowers:
       allOf:
         - $ref: '#/components/schemas/ProjectDetail'
+        - type: object
+          description: Only reactions that were used at least once are listed
+          properties:
+            reactions:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProjectReactionCount'
         - type: object
           properties:
             projectId: 1

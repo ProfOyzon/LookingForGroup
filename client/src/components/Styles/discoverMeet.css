@@ -606,7 +606,7 @@ as it's misleading*/
 }
 
 /* The hovered dot's pill paints above the other dots */
-.tag-dot-wrap:is(:hover, .tag-dot-open) {
+.tag-dot-wrap.tag-dot-open {
   z-index: 3;
 }
 
@@ -636,14 +636,14 @@ as it's misleading*/
 }
 
 /* Fade the dots under the open pill */
-.project-panel-meta:has(.tag-dot-wrap:is(:hover, .tag-dot-open)) .tag-dot-wrap:not(:hover, .tag-dot-open) .tag-dot.tag-button,
-.project-tags:has(.tag-dot-wrap:is(:hover, .tag-dot-open)) .tag-dot-wrap:not(:hover, .tag-dot-open) .tag-dot.tag-button {
+.project-panel-meta:has(.tag-dot-open) .tag-dot-wrap:not(.tag-dot-open) .tag-dot.tag-button,
+.project-tags:has(.tag-dot-open) .tag-dot-wrap:not(.tag-dot-open) .tag-dot.tag-button {
   opacity: 0.3;
 }
 
-/* At rest the dot is just a colored outline. Dropping the override on hover
+/* At rest the dot is just a colored outline. Dropping the override when open
    lets the tag-{color} fill come back so the label stays readable. */
-.tag-dot-wrap:not(:hover, .tag-dot-open) .tag-dot.tag-button {
+.tag-dot-wrap:not(.tag-dot-open) .tag-dot.tag-button {
   background-color: transparent;
 }
 
@@ -658,7 +658,7 @@ as it's misleading*/
   transition: opacity 0.15s ease;
 }
 
-.tag-dot-wrap:is(:hover, .tag-dot-open) .tag-dot.tag-button {
+.tag-dot-wrap.tag-dot-open .tag-dot.tag-button {
   height: 36px;
   /* --dot-w / --dot-x come from TagDot.tsx; the fallback caps the pill to the
      card (100cqw) and leaves it growing right from the dot */
@@ -667,8 +667,37 @@ as it's misleading*/
   padding: 0 10px;
 }
 
-.tag-dot-wrap:is(:hover, .tag-dot-open) .tag-dot.tag-button p {
+.tag-dot-wrap.tag-dot-open .tag-dot.tag-button p {
   opacity: 1;
+}
+
+/* Smaller cards (narrowed windows, tablets, phones): same 30px height, but a
+   narrower dot so it's an oval instead of a circle. Cards are about 276-292px
+   wide on a full-size window, so 260px and under catches the smaller layouts,
+   and phones (~160px cards) go a little narrower still so a row of five fits
+   without wrapping. This sits after the rules above so it overrides their 30px
+   width; the open pill's own max-width rule is more specific, so expanding
+   still works at full height. */
+@container (max-width: 260px) {
+  .tag-dot-wrap {
+    width: 24px;
+  }
+
+  .tag-dot-wrap .tag-dot.tag-button {
+    min-width: 24px;
+    max-width: 24px !important;
+  }
+}
+
+@container (max-width: 200px) {
+  .tag-dot-wrap {
+    width: 22px;
+  }
+
+  .tag-dot-wrap .tag-dot.tag-button {
+    min-width: 22px;
+    max-width: 22px !important;
+  }
 }
 
 .discover-carousel-tabs {

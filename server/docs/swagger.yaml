@@ -77,6 +77,14 @@ paths:
   /api/me/followings/projects/{id}:
     $ref: './paths/me/followings/follow-user.yaml'
 
+  # REACTIONS
+  /api/me/reactions/projects:
+    $ref: './paths/me/reactions/project-reactions.yaml'
+  /api/me/reactions/projects/{id}:
+    $ref: './paths/me/reactions/project-reaction.yaml'
+  /api/me/reactions/projects/{id}/{reaction}:
+    $ref: './paths/me/reactions/project-reaction-reaction.yaml'
+
   # REPORTS
   /api/me/report-bug:
     $ref: './paths/me/reports/report-bug.yaml'
@@ -281,6 +289,8 @@ components:
       $ref: 'schemas/me.yaml#/components/schemas/MyProjectFollowing'
     MyProjectFollowsList:
       $ref: 'schemas/me.yaml#/components/schemas/MyProjectFollowsList'
+    MyProjectReaction:
+      $ref: 'schemas/me.yaml#/components/schemas/MyProjectReaction'
     MePreview:
       $ref: 'schemas/me.yaml#/components/schemas/MePreview'
     MeDetail:
@@ -314,6 +324,10 @@ components:
       $ref: 'schemas/projects.yaml#/components/schemas/ProjectDetail'
     ProjectWithFollowers:
       $ref: 'schemas/projects.yaml#/components/schemas/ProjectWithFollowers'
+    ProjectReactionCount:
+      $ref: 'schemas/projects.yaml#/components/schemas/ProjectReactionCount'
+    ProjectReactionType:
+      $ref: 'schemas/enums.yaml#/components/schemas/ProjectReactionType'
     ProjectVideo:
       $ref: 'schemas/projects.yaml#/components/schemas/ProjectVideo'
     ProjectReport:
@@ -331,6 +345,8 @@ components:
       $ref: 'schemas/inputs.yaml#/components/schemas/UpdateUserSkillInput'
     AddUserMajorInput:
       $ref: 'schemas/inputs.yaml#/components/schemas/AddUserMajorInput'
+    AddProjectReactionInput:
+      $ref: 'schemas/inputs.yaml#/components/schemas/AddProjectReactionInput'
     CreateProjectInput:
       $ref: 'schemas/inputs.yaml#/components/schemas/CreateProjectInput'
     UpdateProjectInput:

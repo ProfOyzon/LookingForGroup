@@ -1,0 +1,53 @@
+post:
+  summary: React to a project
+  description: >-
+    Only approved, public projects can be reacted to. A user can leave several
+    different reactions on a project, but each one only once.
+  security:
+    - googleOAuth: []
+  tags:
+    - Me Reactions
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID of the project to react to
+      schema:
+        type: integer
+    - in: query
+      name: devId
+      schema:
+        type: integer
+      required: false
+      description: The user ID to be used as the current user
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../../swagger.yaml#/components/schemas/AddProjectReactionInput'
+  responses:
+    '201':
+      description: Reaction added successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 201
+              error:
+                type: string
+                nullable: true
+                example: null
+              data:
+                $ref: '../../../swagger.yaml#/components/schemas/MyProjectReaction'
+    '400':
+      $ref: '../../../swagger.yaml#/components/responses/BadRequest'
+    '404':
+      $ref: '../../../swagger.yaml#/components/responses/NotFound'
+    '409':
+      $ref: '../../../swagger.yaml#/components/responses/Conflict'
+    '500':
+      $ref: '../../../swagger.yaml#/components/responses/InternalServerError'

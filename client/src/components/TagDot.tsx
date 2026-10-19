@@ -29,12 +29,15 @@ const TEXT_SLACK = 2;
  * the card, so the size and offset are measured here and passed down as the
  * --dot-w and --dot-x custom properties.
  *
- * Clicking it opens the project, matching the rest of the card/slide it sits
+ * The pill is shown by the tag-dot-open class rather than :hover. A mouse
+ * entering and leaving the dot sets it, and on touch screens (which have no
+ * hover, and leave :hover stuck on the last tapped element) a tap toggles it
+ * and a tap anywhere else closes it. Tapping a dot never opens the project on
+ * touch; the rest of the card does.
+ *
+ * A mouse click opens the project, matching the rest of the card/slide it sits
  * in. On cards this is also required: the dot sits above the card's link
- * overlay so it can receive hover, and would otherwise swallow the click.
- * Touch screens have no hover, so there the first tap expands the pill (the
- * tag-dot-open class) and a second tap opens the project; tapping anywhere
- * else closes it.
+ * overlay so it can receive the pointer, and would otherwise swallow the click.
  *
  * @param projectId - The project the dot belongs to, used for navigation
  * @param type - Tag type, which determines the dot's color
@@ -74,7 +77,7 @@ export const TagDot = ({ projectId, type, label }: TagDotProps) => {
     wrap.style.setProperty('--dot-x', `${left - wrapRect.left}px`);
   };
 
-  // While open, the pill stays expanded without a hover (touch screens)
+  // A tapped pill stays open until the next tap outside it
   useEffect(() => {
     if (!open) return;
     const closeOnOutsidePress = (e: PointerEvent) => {
@@ -84,15 +87,27 @@ export const TagDot = ({ projectId, type, label }: TagDotProps) => {
     return () => document.removeEventListener('pointerdown', closeOnOutsidePress);
   }, [open]);
 
+  // Mouse hover opens and closes the pill. Touch taps also fire pointerenter,
+  // so they're ignored here and handled by the click instead.
+  const handlePointerEnter = (e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') return;
+    fitPill();
+    setOpen(true);
+  };
+  const handlePointerLeave = (e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') return;
+    setOpen(false);
+  };
+
   const handleClick = (e: React.MouseEvent) => {
-    // Touch has no hover, so the first tap opens the pill and a second tap on
-    // it opens the project. A mouse click always opens the project.
+    // Touch has no hover, so a tap toggles the pill instead of opening the
+    // project (the rest of the card still does). A mouse click opens it.
     const pointerType = (e.nativeEvent as PointerEvent).pointerType;
     const isTouch =
       pointerType === 'touch' || (!pointerType && window.matchMedia('(hover: none)').matches);
-    if (isTouch && !open) {
-      fitPill();
-      setOpen(true);
+    if (isTouch) {
+      if (!open) fitPill();
+      setOpen(!open);
       return;
     }
     navigate(`${paths.routes.PROJECT}?projectID=${projectId}`);
@@ -102,7 +117,8 @@ export const TagDot = ({ projectId, type, label }: TagDotProps) => {
     <div
       ref={wrapRef}
       className={open ? 'tag-dot-wrap tag-dot-open' : 'tag-dot-wrap'}
-      onMouseEnter={fitPill}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
       onClick={handleClick}
     >
       <Tag type={type} selected={true} className='tag-dot'>

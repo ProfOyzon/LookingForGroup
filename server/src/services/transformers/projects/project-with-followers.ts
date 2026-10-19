@@ -2,6 +2,7 @@ import type { ProjectWithFollowers } from '@looking-for-group/shared';
 import prisma from '#config/prisma.ts';
 import { ProjectWithFollowersSelector } from '#services/selectors/projects/projects-with-followers.ts';
 import { transformProjectToFollowers } from './parts/project-followers.ts';
+import { transformProjectToReactions } from './parts/project-reactions.ts';
 import { transformProjectToDetail } from './project-detail.ts';
 
 //sample project from prisma to be mapped
@@ -19,5 +20,6 @@ export const transformProjectToWithFollowers = (
   return {
     ...transformProjectToDetail(project),
     followers: transformProjectToFollowers(project),
+    reactions: transformProjectToReactions(project),
   };
 };

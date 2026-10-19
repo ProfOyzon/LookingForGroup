@@ -181,6 +181,20 @@ model ProjectTags {
   @@map("project_tags")
 }
 
+model ProjectReactions {
+  userId    Int      @map("user_id")
+  projectId Int      @map("project_id")
+  reaction  String   @db.VarChar(20)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  projects  Projects @relation(fields: [projectId], references: [projectId], onDelete: Cascade, map: "FK_project_reactions_projects")
+  users     Users    @relation(fields: [userId], references: [userId], onDelete: Cascade, map: "FK_project_reactions_users")
+
+  @@id([userId, projectId, reaction])
+  @@index([projectId], map: "FK_project_reactions_projects")
+  @@index([userId], map: "FK_project_reactions_users")
+  @@map("project_reactions")
+}
+
 model Projects {
   projectId         Int                       @id @unique @default(autoincrement()) @map("project_id")
   title             String                    @db.VarChar(100)
@@ -199,6 +213,7 @@ model Projects {
   memberRequest     MemberRequests[]
   members           Members[]
   projectFollowings ProjectFollowings[]
+  projectReactions  ProjectReactions[]
   projectImages     ProjectImages[]           @relation("ProjectImages")
   projectSocials    ProjectSocials[]
   tags              ProjectTags[]
@@ -381,6 +396,7 @@ model Users {
   members           Members[]
   receiver          Notifications[]     @relation("FK_receiver_to_notification")
   projectFollowings ProjectFollowings[]
+  projectReactions  ProjectReactions[]
   projects          Projects[]
   reportBug         ReportBug[]
   reportProject     ReportProject[]

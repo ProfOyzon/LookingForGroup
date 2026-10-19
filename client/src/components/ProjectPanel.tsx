@@ -5,6 +5,7 @@ import placeholderThumbnail from '../images/project_temp.png';
 import { addProjectFollowing, deleteProjectFollowing, getCurrentAccount, getProjectFollowing } from '../api/users.ts';
 import { Tag as TagElement } from './Tag';
 import { TagDot } from './TagDot';
+import { ReactionAddButton, ReactionChips } from './Reactions';
 
 //import shares types
 import usePreloadedImage from '../functions/imageLoad.tsx';
@@ -147,6 +148,14 @@ export const ProjectPanel = ({ project, initialIsFollowing, currentUserId, onUnf
     }
   };
 
+  // Shared by the reaction add button (next to the heart) and the reaction chips (under the title)
+  const reactionProps = {
+    projectId: project.projectId,
+    loadedCounts: project.reactions ?? [],
+    loggedIn: !!userId && userId !== -1,
+    onRequireLogin: () => navigate(paths.routes.LOGIN),
+  };
+
   return (
     <div className={'project-panel'}>
       <Link to={projectURL} className='project-link-overlay' aria-label={`View project: ${project.title}`}>
@@ -191,7 +200,11 @@ export const ProjectPanel = ({ project, initialIsFollowing, currentUserId, onUnf
               />
             )}
 
+            {/* Last in the markup so it shows to the left of the heart (the row is reversed) */}
+            <ReactionAddButton {...reactionProps} />
+
           </div></div>
+        <ReactionChips {...reactionProps} />
         <ProjectPanelJob project={project} />
         <div>
           <hr />

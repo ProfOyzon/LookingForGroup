@@ -1343,6 +1343,47 @@ export interface ProjectWithFollowers extends ProjectDetail {
    * The project's followers
    */
   followers: ProjectFollowers;
+
+  /**
+   * How many users have used each reaction on the project.
+   * Only reactions that have been used at least once are listed.
+   */
+  reactions: ProjectReactionCount[];
+}
+
+/**
+ * The reactions a user can leave on a project
+ */
+export type ProjectReactionType = 'smile' | 'exclamation' | 'laugh' | 'fire' | 'thumbs-up';
+
+/**
+ * How many users have used one reaction on a project
+ */
+export interface ProjectReactionCount {
+  /**
+   * The reaction that was used
+   */
+  reaction: ProjectReactionType;
+
+  /**
+   * The number of users who used it
+   */
+  count: number;
+}
+
+/**
+ * A reaction the logged-in user has left on a project
+ */
+export interface MyProjectReaction {
+  /**
+   * The project that was reacted to
+   */
+  projectId: number;
+
+  /**
+   * The reaction that was used
+   */
+  reaction: ProjectReactionType;
 }
 
 /**

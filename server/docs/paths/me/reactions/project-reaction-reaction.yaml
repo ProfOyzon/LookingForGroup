@@ -1,0 +1,50 @@
+delete:
+  summary: Remove a reaction from a project
+  security:
+    - googleOAuth: []
+  tags:
+    - Me Reactions
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID of the project the reaction was left on
+      schema:
+        type: integer
+    - name: reaction
+      in: path
+      required: true
+      description: The reaction to remove
+      schema:
+        $ref: '../../../swagger.yaml#/components/schemas/ProjectReactionType'
+    - in: query
+      name: devId
+      schema:
+        type: integer
+      required: false
+      description: The user ID to be used as the current user
+  responses:
+    '200':
+      description: Reaction removed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              error:
+                type: string
+                nullable: true
+                example: null
+              data:
+                type: object
+                nullable: true
+                example: null
+    '400':
+      $ref: '../../../swagger.yaml#/components/responses/BadRequest'
+    '404':
+      $ref: '../../../swagger.yaml#/components/responses/NotFound'
+    '500':
+      $ref: '../../../swagger.yaml#/components/responses/InternalServerError'

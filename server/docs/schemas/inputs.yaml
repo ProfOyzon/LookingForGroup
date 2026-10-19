@@ -75,6 +75,14 @@ components:
         proficiency:
           $ref: 'enums.yaml#/components/schemas/SkillProficiency'
 
+    AddProjectReactionInput:
+      type: object
+      required:
+        - reaction
+      properties:
+        reaction:
+          $ref: 'enums.yaml#/components/schemas/ProjectReactionType'
+
     AddUserMajorInput:
       type: object
       required:

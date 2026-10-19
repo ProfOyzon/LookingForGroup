@@ -1,0 +1,162 @@
+/*
+  Reactions on project cards and the project page (see Reactions.tsx): a row of
+  chips for the reactions that have been used, a gray add button next to the
+  heart, and a tray of emoji to pick from.
+*/
+
+/* On cards both sit at the same z-index as .project-link-overlay, but later in
+   the DOM, so they paint on top and can be pressed without opening the project. */
+.reaction-chips,
+.reaction-add-wrap {
+  position: relative;
+  z-index: 3;
+}
+
+/* One line only: Reactions.tsx hides the chips that don't fit, so this never
+   wraps; overflow is clipped as a safety net. */
+.reaction-chips {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.reaction-add-wrap {
+  display: flex;
+  align-items: center;
+}
+
+/* The chips come later in the page at the same level, so lift the add button
+   while its tray is open or they'd paint over the tray */
+.reaction-add-wrap:has(.reaction-tray) {
+  z-index: 5;
+}
+
+.reaction-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--main-text);
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+/* "display: inline-flex" above would otherwise win over the hidden attribute
+   that Reactions.tsx sets on chips that don't fit */
+.reaction-chip[hidden] {
+  display: none;
+}
+
+.reaction-chip:hover {
+  border-color: var(--primary-color);
+}
+
+.reaction-chip.mine,
+.reaction-pick.mine {
+  border-color: var(--primary-color);
+  background-color: color-mix(in srgb, var(--primary-color) 22%, transparent);
+}
+
+.reaction-emoji {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.reaction-count {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.reaction-add-wrap .reaction-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #8d8d99;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.reaction-add-wrap .reaction-add:hover,
+.reaction-add-wrap .reaction-add[aria-expanded='true'] {
+  color: var(--primary-color);
+}
+
+/* On cards the add button sits next to the heart (34px there); the card's
+   ".project-likes svg" rule scales and re-stacks every icon in that group, which
+   this one shouldn't, so the selector is long enough to override it. */
+.project-panel .project-title-likes-tabs .project-likes .reaction-add svg {
+  transform: none;
+  z-index: auto;
+}
+
+/* On the project page the heart is smaller (28x25, not scaled up), so match it */
+#project-info-buttons .reaction-add {
+  width: 30px;
+  height: 30px;
+}
+
+#project-info-buttons .reaction-add svg {
+  width: 28px;
+  height: 28px;
+}
+
+.reaction-tray {
+  position: absolute;
+  top: calc(100% + 6px);
+  z-index: 4;
+  display: flex;
+  gap: 2px;
+  padding: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: var(--header-color);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.reaction-pick {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 1.45rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.12s, background-color 0.12s;
+}
+
+.reaction-pick:hover {
+  background-color: var(--border-color);
+  transform: scale(1.15);
+}
+
+/* Narrow cards (phones): keep all five emoji inside the card */
+@container (max-width: 200px) {
+  .reaction-tray {
+    gap: 0;
+    padding: 4px;
+  }
+
+  .reaction-pick {
+    width: 26px;
+    height: 30px;
+    font-size: 1.15rem;
+  }
+}

@@ -100,6 +100,17 @@ components:
         followedAt: 2038-01-19 03:14:07
         apiUrl: /api/me/followings/projects/1
 
+    MyProjectReaction:
+      type: object
+      properties:
+        projectId:
+          type: integer
+        reaction:
+          $ref: 'enums.yaml#/components/schemas/ProjectReactionType'
+      example:
+        projectId: 1
+        reaction: fire
+
     MyProjectFollowsList:
       type: object
       properties:

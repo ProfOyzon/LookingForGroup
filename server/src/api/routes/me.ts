@@ -27,6 +27,9 @@ import { deleteNotification } from '#controllers/me/notifications/delete-notific
 import { getNotification } from '#controllers/me/notifications/get-notification.ts';
 import { getNotifications } from '#controllers/me/notifications/get-notifications.ts';
 import { readNotification } from '#controllers/me/notifications/read-notification.ts';
+import { addProjectReaction } from '#controllers/me/reactions/add-project-reaction.ts';
+import { deleteProjectReaction } from '#controllers/me/reactions/delete-project-reaction.ts';
+import { getMyProjectReactions } from '#controllers/me/reactions/get-my-project-reactions.ts';
 import { reportBugController } from '#controllers/me/report-bug.ts';
 import { reportProjectController } from '#controllers/me/report-proj.ts';
 import { reportUserController } from '#controllers/me/report-user.ts';
@@ -102,6 +105,26 @@ router.delete(
   userExistsAt('path', 'id'),
   authenticated(userAttributeExistsAt('userFollowing', 'path', 'id')),
   authenticated(deleteUserFollowing),
+);
+//#endregion
+
+//#region Reaction routes
+//Gets every project reaction the current user has left
+router.get('/reactions/projects', authenticated(getMyProjectReactions));
+
+//Reacts to a project
+router.post(
+  '/reactions/projects/:id',
+  projectExistsAt('path', 'id'),
+  isUserBlocked(new ProjectOwnerInPathParameterLocation(), 'id', new MeParameterLocation(), ''),
+  authenticated(addProjectReaction),
+);
+
+//Removes a reaction from a project
+router.delete(
+  '/reactions/projects/:id/:reaction',
+  projectExistsAt('path', 'id'),
+  authenticated(deleteProjectReaction),
 );
 //#endregion
 
